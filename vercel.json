@@ -1,6 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "astro",
+  "buildCommand": "npm run build && npm run check:csp && npm run check:origin",
+  "outputDirectory": "dist",
   "trailingSlash": true,
   "redirects": [
     {

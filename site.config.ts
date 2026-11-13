@@ -5,8 +5,8 @@
 export const siteConfig = {
   /** TODO(owner): the site name. */
   name: "Formula Practice",
-  /** TODO(owner): the production origin, used for canonical URLs and the sitemap. */
-  url: "https://example.com",
+  /** The production origin, used for canonical URLs and the sitemap. */
+  url: "https://excelexercises.online",
   /** Language of the pages. */
   lang: "en",
   /** TODO(owner): the contact email address shown in the footer of every page. */

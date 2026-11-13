@@ -1,0 +1,84 @@
+# Keyboard shortcuts for the shortcuts page: Excel for Windows and for Mac.
+# Keys are code, so the copy linter skips them.
+groups:
+  - title: Formulas
+    items:
+      - { action: Start a formula, win: "=", mac: "=" }
+      - { action: Insert the SUM function, win: "Alt + =", mac: "Cmd + Shift + T" }
+      - { action: Cycle a reference between relative and absolute, win: "F4", mac: "Cmd + T" }
+      - { action: Show formulas instead of results, win: "Ctrl + `", mac: "Ctrl + `" }
+      - {
+          action: Enter an array formula in older versions,
+          win: "Ctrl + Shift + Enter",
+          mac: "Ctrl + Shift + Return",
+        }
+      - { action: Recalculate all open workbooks, win: "F9", mac: "Fn + F9" }
+      - { action: Edit the active cell, win: "F2", mac: "Ctrl + U" }
+      - { action: Open the Insert Function dialog, win: "Shift + F3", mac: "Fn + Shift + F3" }
+  - title: Navigation
+    items:
+      - { action: Move to the edge of the data, win: "Ctrl + Arrow", mac: "Cmd + Arrow" }
+      - { action: Go to cell A1, win: "Ctrl + Home", mac: "Fn + Ctrl + Left" }
+      - { action: Go to the last used cell, win: "Ctrl + End", mac: "Fn + Ctrl + Right" }
+      - { action: Move one screen down, win: "Page Down", mac: "Fn + Down" }
+      - { action: Move to the next sheet, win: "Ctrl + Page Down", mac: "Option + Right" }
+      - { action: Move to the previous sheet, win: "Ctrl + Page Up", mac: "Option + Left" }
+      - { action: Open Go To, win: "Ctrl + G", mac: "Ctrl + G" }
+  - title: Selecting
+    items:
+      - { action: Select the whole column, win: "Ctrl + Space", mac: "Ctrl + Space" }
+      - { action: Select the whole row, win: "Shift + Space", mac: "Shift + Space" }
+      - { action: Select all, win: "Ctrl + A", mac: "Cmd + A" }
+      - {
+          action: Extend the selection to the edge of the data,
+          win: "Ctrl + Shift + Arrow",
+          mac: "Cmd + Shift + Arrow",
+        }
+      - { action: Extend the selection by one cell, win: "Shift + Arrow", mac: "Shift + Arrow" }
+  - title: Editing
+    items:
+      - { action: Copy, win: "Ctrl + C", mac: "Cmd + C" }
+      - { action: Cut, win: "Ctrl + X", mac: "Cmd + X" }
+      - { action: Paste, win: "Ctrl + V", mac: "Cmd + V" }
+      - { action: Paste special, win: "Ctrl + Alt + V", mac: "Ctrl + Cmd + V" }
+      - { action: Undo, win: "Ctrl + Z", mac: "Cmd + Z" }
+      - { action: Redo, win: "Ctrl + Y", mac: "Cmd + Y" }
+      - { action: Fill down from the cell above, win: "Ctrl + D", mac: "Cmd + D" }
+      - { action: Fill right from the cell to the left, win: "Ctrl + R", mac: "Cmd + R" }
+      - {
+          action: Fill the selection with the current entry,
+          win: "Ctrl + Enter",
+          mac: "Ctrl + Return",
+        }
+      - { action: Start a new line in the same cell, win: "Alt + Enter", mac: "Option + Return" }
+      - { action: "Enter today's date", win: "Ctrl + ;", mac: "Ctrl + ;" }
+      - { action: Find, win: "Ctrl + F", mac: "Cmd + F" }
+      - { action: Find and replace, win: "Ctrl + H", mac: "Ctrl + H" }
+  - title: Rows, columns and tables
+    items:
+      - { action: Insert cells, rows or columns, win: "Ctrl + Shift + =", mac: "Cmd + Shift + =" }
+      - { action: Delete cells, rows or columns, win: "Ctrl + -", mac: "Cmd + -" }
+      - { action: Hide the selected rows, win: "Ctrl + 9", mac: "Cmd + 9" }
+      - { action: Hide the selected columns, win: "Ctrl + 0", mac: "Cmd + 0" }
+      - { action: Create a table, win: "Ctrl + T", mac: "Cmd + T" }
+      - { action: Turn filters on or off, win: "Ctrl + Shift + L", mac: "Cmd + Shift + F" }
+  - title: Formatting
+    items:
+      - { action: Open Format Cells, win: "Ctrl + 1", mac: "Cmd + 1" }
+      - { action: Bold, win: "Ctrl + B", mac: "Cmd + B" }
+      - { action: Italic, win: "Ctrl + I", mac: "Cmd + I" }
+      - { action: Apply the currency format, win: "Ctrl + Shift + $", mac: "Ctrl + Shift + $" }
+      - { action: Apply the percentage format, win: "Ctrl + Shift + %", mac: "Ctrl + Shift + %" }
+      - {
+          action: Apply the general number format,
+          win: "Ctrl + Shift + ~",
+          mac: "Ctrl + Shift + ~",
+        }
+  - title: Workbook
+    items:
+      - { action: New workbook, win: "Ctrl + N", mac: "Cmd + N" }
+      - { action: Open a workbook, win: "Ctrl + O", mac: "Cmd + O" }
+      - { action: Save, win: "Ctrl + S", mac: "Cmd + S" }
+      - { action: Save as, win: "F12", mac: "Cmd + Shift + S" }
+      - { action: Print, win: "Ctrl + P", mac: "Cmd + P" }
+      - { action: Insert a new sheet, win: "Shift + F11", mac: "Fn + Shift + F11" }

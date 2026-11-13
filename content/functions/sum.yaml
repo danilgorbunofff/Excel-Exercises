@@ -1,0 +1,91 @@
+name: SUM
+slug: sum
+summary: SUM adds numbers. You can give it numbers, cells, ranges or a mix of them, and it gives the total.
+syntax: SUM(number1, [number2], ...)
+arguments:
+  - name: number1
+    required: true
+    description: The first thing to add. It can be a number such as 4, a cell such as B6, or a range such as B2:B8.
+  - name: number2 to number255
+    required: false
+    description: More numbers, cells or ranges to add. SUM takes up to 255 of them in all.
+returns: The total of all the numbers it was given, as a number.
+examples:
+  - title: Add up a column
+    rows:
+      - [Cost, Amount]
+      - [Rent, 950]
+      - [Power, 120]
+      - [Phone, 45]
+      - [Total, null]
+    cell: B5
+    formula: =SUM(B2:B4)
+    result: 1115
+    explanation: The range B2:B4 holds three numbers. SUM adds them and gives 1115.
+  - title: Add a block of cells
+    rows:
+      - [Item, Jan, Feb]
+      - [Pens, 12, 15]
+      - [Paper, 30, 25]
+      - [Total, null, null]
+    cell: B4
+    formula: =SUM(B2:C3)
+    result: 82
+    explanation: A range can cover more than one column. B2:C3 holds four numbers, and their total is 82.
+  - title: Text and empty cells are skipped
+    rows:
+      - [Day, Sales]
+      - [Mon, 40]
+      - [Tue, closed]
+      - [Wed, null]
+      - [Thu, 55]
+      - [Total, null]
+    cell: B6
+    formula: =SUM(B2:B5)
+    result: 95
+    explanation: SUM skips the word closed and the empty cell, so the total is 95. Adding the same cells with `=B2+B3+B4+B5` gives `#VALUE!`, because the plus sign cannot add text.
+pitfalls:
+  - title: The range stops one row short
+    text: The last value is left out and the total is too small. Check that the range ends on the last number.
+  - title: Numbers typed into the formula
+    text: A formula such as `=SUM(950,120,45)` gives the right total today, but it does not change when a cell changes. Point at the cells instead.
+  - title: The total's own cell is inside the range
+    text: A formula in B5 that adds `B2:B5` reads its own cell. Excel calls this a circular reference and warns about it.
+  - title: Numbers stored as text
+    text: A number stored as text is often aligned to the left of its cell. SUM skips it in a range, so the total is too small.
+  - title: Adding cells with plus signs instead
+    text: A formula such as `=B2+B3+B4` gives `#VALUE!` when a cell holds text, and `#REF!` when one of its rows is deleted. SUM avoids both.
+about:
+  - SUM is often the first function people learn, and most sheets lean on it. Give it a range and it adds every number inside.
+  - It reads only numbers. Text, empty cells and TRUE or FALSE inside a range are passed over without an error. That makes SUM safer than a chain of plus signs.
+  - A range grows with the sheet. Insert a row inside `B2:B8` and the formula widens to take it in. A row added below the last cell may be left out, so check the range after adding data.
+tips:
+  - Press Alt and the equals key on Windows to insert SUM for the numbers above the cell. Excel guesses the range, so check it.
+  - Separate ranges with commas to add them in one formula, as in `=SUM(B2:B8,D2:D8)`.
+  - Select a block of numbers to see their total in the status bar, without writing a formula.
+  - To add a whole column, use `=SUM(B:B)`. Keep the formula out of that column, or it reads its own cell.
+questions:
+  - q: Why is my total too small?
+    a: The range may stop short, or some numbers are stored as text. SUM skips text, so those cells add nothing.
+  - q: Why does the cell show the formula and not a total?
+    a: The cell is formatted as text, or the formula is missing its equals sign. Set the format to General and enter the formula again.
+  - q: Does SUM count hidden rows?
+    a: Yes. SUM adds hidden and filtered rows too. SUBTOTAL can leave them out.
+  - q: How many cells can SUM add?
+    a: As many as its ranges hold. The limit of 255 is on arguments, and one argument can be a whole column.
+alternatives:
+  - name: SUMIF
+    text: Adds only the rows that meet one condition, such as the sales for one region.
+  - name: SUMIFS
+    text: Adds only the rows that meet several conditions at once.
+  - name: SUBTOTAL
+    text: Can add only the cells that are visible, leaving out hidden or filtered rows.
+related: [AVERAGE, COUNT, MAX, MIN]
+versions: Works in every version of Excel.
+checked:
+  source: Microsoft Support, SUM function
+  url: https://support.microsoft.com/en-us/office/sum-function-043e1c7d-7726-4e80-8f32-07b23e057f89
+  date: 2026-11-11
+  covers: The syntax, the arguments and their limit, and the problems with adding cells with plus signs.
+exercise: sum-a-column
+updated: 2026-11-11

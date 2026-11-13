@@ -1,0 +1,289 @@
+---
+// Why this exists: the function index, laid out as on Spreadsheet Center: a
+// search box, "Start with a task" cards, a card per essential function with
+// its syntax and exercise count, and every function by category.
+import Base from "../../layouts/Base.astro";
+import { exercisesForFunction, placedExercises } from "../../lib/exercises.ts";
+import {
+  functionPages,
+  functionPath,
+  functionsPractised,
+  loadFunctionIndex,
+} from "../../lib/functions.ts";
+
+const pages = await functionPages();
+const withPage = new Map(pages.map((p) => [p.name, functionPath(p.slug)]));
+const practised = new Map(functionsPractised(await placedExercises()));
+const index = loadFunctionIndex();
+const href = (name: string) => withPage.get(name) ?? exercisesForFunction(name);
+const plural = (n: number) => (n === 1 ? "1 exercise" : `${n} exercises`);
+const categories = [...new Set(index.functions.map((f) => f.category))].sort();
+const slug = (c: string) => c.replaceAll(" ", "-").toLowerCase();
+---
+
+<Base
+  title="Functions"
+  description="Excel functions explained with their syntax, what they are for and the exercises that practise them. Search by name or start from a task."
+  section="/functions/"
+  layout="wide"
+>
+  <header class="page-head">
+    <h1>Excel functions</h1>
+    <p class="lead">
+      Find the function you need, see how it is written, and practise it in a live sheet.
+    </p>
+    <form class="fn-search" role="search" action="/search/" method="get" data-fn-search>
+      <label class="visually-hidden" for="fn-q">Search functions</label>
+      <input
+        id="fn-q"
+        name="q"
+        type="search"
+        placeholder="Search functions such as XLOOKUP, IF or SUMIFS"
+        autocomplete="off"
+        spellcheck="false"
+      />
+    </form>
+    <p class="fn-count" role="status" data-fn-count></p>
+  </header>
+
+  <section aria-labelledby="tasks" class="block">
+    <div class="block-head">
+      <div>
+        <h2 id="tasks">Find a function by the job</h2>
+        <p>Not sure which function you need? Pick the job you are doing.</p>
+      </div>
+      <a class="button button-outline" href="#by-category">See them by category</a>
+    </div>
+    <ul class="task-grid">
+      {
+        index.groups.map((g) => (
+          <li class="card">
+            <h3>{g.title}</h3>
+            <p>{g.summary}</p>
+            <ul class="chips">
+              {index.functions
+                .filter((f) => f.group === g.slug)
+                .map((f) => (
+                  <li>
+                    <a class="chip" href={href(f.name)}>
+                      {f.name}
+                    </a>
+                  </li>
+                ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section aria-labelledby="all" class="block">
+    <div class="block-head">
+      <div>
+        <h2 id="all">The functions used most</h2>
+        <p>
+          The functions people reach for most. {pages.length} have a full guide with worked examples,
+          and every one has exercises to practise.
+        </p>
+      </div>
+    </div>
+    <ul class="fn-grid">
+      {
+        index.functions.map((f) => {
+          const count = practised.get(f.name)?.length ?? 0;
+          return (
+            <li class="card fn" data-fn={`${f.name} ${f.summary}`.toLowerCase()}>
+              <div class="fn-top">
+                <h3>
+                  <a href={href(f.name)}>{f.name}</a>
+                </h3>
+                {withPage.has(f.name) && <span class="badge badge-1">Guide</span>}
+              </div>
+              <p>{f.summary}</p>
+              <code class="syntax">{f.syntax}</code>
+              {count > 0 && (
+                <a class="arrow-link small" href={exercisesForFunction(f.name)}>
+                  {plural(count)} on this function
+                </a>
+              )}
+            </li>
+          );
+        })
+      }
+    </ul>
+  </section>
+
+  <section aria-labelledby="by-category" class="block">
+    <div class="block-head">
+      <div>
+        <h2 id="by-category">All Excel functions by category</h2>
+        <p>Every function on this site, in Microsoft's categories.</p>
+      </div>
+    </div>
+    <div class="categories">
+      {
+        categories.map((c) => (
+          <section class="card" aria-labelledby={`cat-${slug(c)}`}>
+            <h3 id={`cat-${slug(c)}`}>{c} functions</h3>
+            <ul class="chips">
+              {index.functions
+                .filter((f) => f.category === c)
+                .map((f) => (
+                  <li>
+                    <a class="chip" href={href(f.name)}>
+                      {f.name}
+                    </a>
+                  </li>
+                ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Filters the function cards as you type. Without script the box searches the site.
+  const form = document.querySelector<HTMLFormElement>("[data-fn-search]");
+  const input = form?.querySelector("input");
+  const count = document.querySelector<HTMLElement>("[data-fn-count]");
+  const cards = [...document.querySelectorAll<HTMLElement>("[data-fn]")];
+  if (form && input && count) {
+    const apply = () => {
+      const words = input.value.toLowerCase().split(/\s+/u).filter(Boolean);
+      let shown = 0;
+      for (const card of cards) {
+        card.hidden = !words.every((w) => (card.dataset["fn"] ?? "").includes(w));
+        if (!card.hidden) shown += 1;
+      }
+      count.textContent = words.length
+        ? shown
+          ? `Showing ${shown} of ${cards.length} functions.`
+          : "No function matches. Press Enter to search the whole site."
+        : "";
+    };
+    input.addEventListener("input", apply);
+    form.addEventListener("submit", (e) => {
+      if (cards.some((c) => !c.hidden) && input.value) {
+        e.preventDefault();
+        document.getElementById("all")?.scrollIntoView({ block: "start" });
+      }
+    });
+  }
+</script>
+
+<style>
+  .fn-search {
+    max-width: 36rem;
+    margin: var(--space-6) auto 0;
+  }
+  .fn-search input {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0 var(--space-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+    font-size: var(--size-base);
+  }
+  .fn-count {
+    min-height: 1.5em;
+    margin: var(--space-2) 0 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .block {
+    margin-bottom: var(--space-7);
+    scroll-margin-top: 5rem;
+  }
+  .block-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+  }
+  .block-head h2 {
+    margin: 0 0 var(--space-1);
+    font-size: var(--size-xl);
+    color: var(--heading);
+    scroll-margin-top: 5rem;
+  }
+  .block-head p {
+    margin: 0;
+    color: var(--muted);
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .task-grid,
+  .fn-grid,
+  .categories {
+    display: grid;
+    gap: var(--space-4);
+  }
+  h3 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--size-base);
+    color: var(--heading);
+  }
+  .card p {
+    margin: 0 0 var(--space-3);
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .fn[hidden] {
+    display: none;
+  }
+  .fn {
+    display: flex;
+    flex-direction: column;
+  }
+  .fn-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+  .fn h3 {
+    font-family: var(--font-mono);
+    font-size: var(--size-l);
+  }
+  .fn h3 a {
+    text-decoration: none;
+  }
+  .fn h3 a:hover {
+    color: var(--correct);
+    text-decoration: underline;
+  }
+  .syntax {
+    display: block;
+    margin-bottom: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-m);
+    background: var(--header);
+    font-size: var(--size-xs);
+    overflow-wrap: anywhere;
+  }
+  .small {
+    margin-top: auto;
+    font-size: var(--size-s);
+  }
+  @media (min-width: 40rem) {
+    .task-grid,
+    .fn-grid,
+    .categories {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 64rem) {
+    .fn-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

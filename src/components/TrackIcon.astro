@@ -1,0 +1,47 @@
+---
+// Why this exists: each learning track gets its own icon in a tinted square.
+import Icon, { type IconName } from "./Icon.astro";
+
+const BY_TRACK: Record<string, IconName> = {
+  references: "cells",
+  totals: "sigma",
+  counting: "count",
+  logic: "branch",
+  conditions: "filter",
+  lookups: "lookup",
+  rounding: "formula",
+  statistics: "chart",
+  "index-match": "link",
+  "text-search": "text",
+  "text-change": "keyboard",
+  errors: "hint",
+  dates: "clock",
+  subtotals: "bolt",
+  models: "briefcase",
+  capstone: "check",
+};
+
+interface Props {
+  slug: string;
+  size?: number;
+}
+const { slug, size = 40 } = Astro.props;
+---
+
+<span class="track-icon" style={`--box: ${size}px`}>
+  <Icon name={BY_TRACK[slug] ?? "grid"} size={Math.round(size * 0.55)} />
+</span>
+
+<style>
+  .track-icon {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: var(--box);
+    height: var(--box);
+    border: 1px solid var(--chip-line);
+    border-radius: var(--radius-l);
+    background: var(--chip-bg);
+    color: var(--chip);
+  }
+</style>

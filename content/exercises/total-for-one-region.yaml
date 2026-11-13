@@ -1,0 +1,46 @@
+id: total-for-one-region
+slug: total-for-one-region
+level: 2
+title: Total for one region
+topic: conditions
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B8, add up the sales for the North region only.
+    rows:
+      - [Region, Sales]
+      - [North, 420]
+      - [South, 310]
+      - [North, 275]
+      - [East, 190]
+      - [North, 160]
+      - [South, 230]
+      - [North total, null]
+    answerCell: B8
+    expected: 855
+    answer: '=SUMIF(A2:A7,"North",B2:B7)'
+    requiredFunctions: [SUMIF]
+    hints:
+      nudge: One function adds only the rows that match a condition.
+      rule: SUMIF takes the range to test, then the condition, then the range to add.
+    misses:
+      syntax: Put the region in double quotes, as in `"North"`.
+      required-function: Use SUMIF, so the total updates when a sale or a region changes.
+      reference: Point at the sales in B2 to B7, not at B8.
+      value: Check the order. The regions to test come first, and the sales to add come last.
+    accept:
+      - '=SUMIF(A2:A7,"North",B2:B7)'
+      - '=SUMIF(A2:A7,"north",B2:B7)'
+    reject:
+      - { formula: "=SUMIF(A2:A7,North,B2:B7)", rule: syntax }
+      - { formula: "=B2+B4+B6", rule: required-function }
+      - { formula: '=SUMIF(A2:A7,"North",B2:B8)', rule: reference }
+      - { formula: '=SUMIF(B2:B7,"North",A2:A7)', rule: value }
+      - { formula: '=SUMIF(A2:A7,"North")', rule: value }
+notes:
+  summary: SUMIF adds the values in one range where a matching cell in another range meets a condition.
+  syntax: SUMIF(range, criteria, [sum_range])
+  example: '`=SUMIF(A2:A9,"Rent",B2:B9)` adds the amounts in column B on rows that say Rent.'
+  commonErrors:
+    - Swapping the range to test and the range to add, which gives 0.
+    - Leaving out the range to add, so SUMIF tries to add the text in the tested range.

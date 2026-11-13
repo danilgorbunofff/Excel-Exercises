@@ -1,0 +1,95 @@
+---
+// Why this exists: what you have done, what is next, and what is due for
+// review. It reads progress from this browser; nothing is stored elsewhere.
+import ExerciseTable from "../../components/ExerciseTable.astro";
+import Base from "../../layouts/Base.astro";
+import { exercisePath, placedExercises } from "../../lib/exercises.ts";
+import { REVIEW_GAPS } from "../../scripts/progress.ts";
+
+const placed = await placedExercises();
+const first = placed[0];
+if (!first) throw new Error("The track has no exercises");
+const list = placed.map((p) => ({
+  id: p.exercise.id,
+  number: p.number,
+  title: p.exercise.title,
+  href: exercisePath(p.exercise.slug),
+}));
+const gaps = `${REVIEW_GAPS.slice(0, -1).join(", ")} and ${REVIEW_GAPS.at(-1)} days`;
+---
+
+<Base
+  title="Progress"
+  description="What you have solved, what is next, and which exercises are due for review. Kept in your browser only."
+  section="/progress/"
+>
+  <h1>Progress</h1>
+  <p>
+    Your progress is kept in this browser only. It does not follow you to another browser or
+    device, and nothing about it is sent anywhere.
+  </p>
+  <noscript>
+    <p>This page needs JavaScript to read your progress from this browser.</p>
+  </noscript>
+
+  <h2>Next</h2>
+  <p data-next>
+    Start with <a href={exercisePath(first.exercise.slug)}>{first.exercise.title}</a>, exercise 1
+    of {placed.length}.
+  </p>
+
+  <h2>Due for review</h2>
+  <p data-due-empty>
+    Nothing is due. A solved exercise comes back here after {gaps}, counting from the last time you
+    solved it.
+  </p>
+  <ul data-due hidden></ul>
+
+  <h2 id="all">All exercises</h2>
+  <p data-summary>You have not solved an exercise yet.</p>
+  <ExerciseTable rows={placed} labelledby="all" />
+
+  <h2>Clear your progress</h2>
+  <p>This removes every solve and review from this browser. It cannot be undone.</p>
+  <div class="clear" data-clear>
+    <button class="button button-secondary" type="button" data-clear-ask>Clear my progress</button>
+    <p class="confirm" data-clear-confirm hidden>
+      <span>Clear all progress in this browser?</span>
+      <button class="button button-primary" type="button" data-clear-yes>Yes, clear it</button>
+      <button class="link-button" type="button" data-clear-no>Keep it</button>
+    </p>
+    <p role="status" data-clear-status></p>
+  </div>
+
+  <script type="application/json" data-exercises set:html={JSON.stringify(list)} />
+</Base>
+
+<script>
+  import "../../scripts/catalogue.ts";
+  import "../../scripts/progress-page.ts";
+</script>
+
+<style>
+  h2 {
+    margin: var(--space-6) 0 var(--space-2);
+    font-size: var(--size-xl);
+  }
+  [hidden] {
+    display: none;
+  }
+  ul {
+    padding-left: var(--space-5);
+  }
+  li {
+    padding-block: var(--space-1);
+  }
+  .confirm {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .confirm[hidden] {
+    display: none;
+  }
+</style>

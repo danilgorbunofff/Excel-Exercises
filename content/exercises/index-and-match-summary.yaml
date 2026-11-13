@@ -1,0 +1,48 @@
+id: index-and-match-summary
+slug: index-and-match-summary
+level: 2
+title: INDEX and MATCH summary
+topic: index-match
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B6, return the commission rate for the units in B5 from the band table.
+    rows:
+      - [Units from, Rate]
+      - [0, 0.02]
+      - [100, 0.04]
+      - [200, 0.06]
+      - [Units sold, 150]
+      - [Rate, null]
+    answerCell: B6
+    expected: 0.04
+    answer: =INDEX(B2:B4,MATCH(B5,A2:A4,1))
+    requiredFunctions: [INDEX, MATCH]
+    hints:
+      nudge: The units fall between two band starts, so MATCH needs its approximate mode, not an exact match.
+      rule: MATCH with 1 as its last argument returns the position of the largest value not above the one you look for, in a column sorted ascending. INDEX then reads the rate on that row.
+    misses:
+      value: 150 clears 100 and does not reach 200, so the second band applies and its rate in B3 is 0.04.
+      syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
+      required-function: INDEX turns the position into the rate sitting on that row of B2:B4.
+      reference: Take the units from B5 so a new figure changes the rate without an edit to the formula.
+    accept:
+      - =INDEX(B2:B4,MATCH(B5,A2:A4,1))
+      - =index(b2:b4,match(b5,a2:a4,1))
+      - =INDEX($B$2:$B$4,MATCH($B$5,$A$2:$A$4,1))
+      - =INDEX(B2:B4,MATCH(B5,A2:A4,1))*1
+      - =ROUND(INDEX(B2:B4,MATCH(B5,A2:A4,1)),2)
+    reject:
+      - { formula: "=INDEX(B2:B4,MATCH(B5,A2:A4,1)", rule: syntax }
+      - { formula: "=MATCH(B5,A2:A4,1)", rule: required-function }
+      - { formula: "=INDEX(B2:B4,2)", rule: required-function }
+      - { formula: "=INDEX(B2:B4,MATCH(B5,A2:A4,0))", rule: value }
+      - { formula: "=INDEX(B2:B4,MATCH(B5,A2:A4,1)+1)", rule: value }
+      - { formula: "=INDEX(B2:B4,MATCH(B5,A2:A4,1))/0", rule: reference }
+notes:
+  summary: MATCH with 1 as its last argument finds the band a value falls into, in a column of band starts sorted ascending. INDEX then returns the value on that row.
+  syntax: INDEX(rates, MATCH(units, bands, 1))
+  example: "`=INDEX(B2:B4,MATCH(150,A2:A4,1))` with 0, 100 and 200 in A2:A4 returns B3, because 100 is the largest start not above 150."
+  commonErrors:
+    - The units figure is below the first starting point in A2, so no band applies and there is no rate to read.
+    - The band column is not sorted ascending, so MATCH settles on a neighbouring row and returns its rate.

@@ -1,0 +1,256 @@
+---
+// Why this exists: everything on the site in one place, by goal, plus a few
+// outside references. No affiliate links.
+import Icon, { type IconName } from "../../components/Icon.astro";
+import Base from "../../layouts/Base.astro";
+import { allArticles, articlePath } from "../../lib/articles.ts";
+import { placedExercises, topicPath, trackSummaries, tracksPath } from "../../lib/exercises.ts";
+import { explainerPath } from "../../lib/explainers.ts";
+
+const tracks = trackSummaries(await placedExercises());
+const essentials = tracks.filter((t) => t.topic.group === "essentials");
+const skills = tracks.filter((t) => t.topic.group === "skill");
+const articles = await allArticles();
+const goals: { title: string; text: string; links: { label: string; href: string }[] }[] = [
+  {
+    title: "Excel fundamentals",
+    text: "New to formulas. Start with references, arithmetic and totals.",
+    links: essentials.map((t) => ({ label: t.topic.title, href: topicPath(t.topic.slug) })),
+  },
+  {
+    title: "Office and admin work",
+    text: "Counting, conditions and IF for everyday reports and trackers.",
+    links: skills
+      .filter((t) => ["counting", "logic", "conditions"].includes(t.topic.slug))
+      .map((t) => ({ label: t.topic.title, href: topicPath(t.topic.slug) })),
+  },
+  {
+    title: "Data and analysis",
+    text: "Lookups and conditional totals, the core of most analysis sheets.",
+    links: skills
+      .filter((t) => ["conditions", "lookups"].includes(t.topic.slug))
+      .map((t) => ({ label: t.topic.title, href: topicPath(t.topic.slug) })),
+  },
+];
+const tools: { icon: IconName; title: string; text: string; href: string }[] = [
+  {
+    icon: "book",
+    title: "Function reference",
+    text: "Each function with its syntax, what it is for and the exercises that use it.",
+    href: "/functions/",
+  },
+  {
+    icon: "formula",
+    title: "Formula explainer",
+    text: "Paste a formula and see every part worked out on example data.",
+    href: explainerPath,
+  },
+  {
+    icon: "keyboard",
+    title: "Keyboard shortcuts",
+    text: "Shortcuts for Excel on Windows and Mac, grouped by task.",
+    href: "/excel-shortcuts/",
+  },
+  {
+    icon: "route",
+    title: "Learning tracks",
+    text: "Every exercise in a sensible order, grouped by skill.",
+    href: tracksPath,
+  },
+];
+const outside = [
+  {
+    title: "SUM function on Microsoft Support",
+    text: "Microsoft's own page for SUM, with its syntax and examples.",
+    href: "https://support.microsoft.com/en-us/office/sum-function-043e1c7d-7726-4e80-8f32-07b23e057f89",
+  },
+  {
+    title: "VLOOKUP function on Microsoft Support",
+    text: "Microsoft's own page for VLOOKUP, including approximate and exact matches.",
+    href: "https://support.microsoft.com/en-us/office/vlookup-function-0bbc8083-26fe-4963-8ab8-93a18ad188a1",
+  },
+];
+---
+
+<Base
+  title="Excel resources"
+  description="Everything on the site in one place: practice by goal, the function reference, tools, guides and outside references."
+  layout="wide"
+>
+  <header class="head">
+    <h1>Excel resources</h1>
+    <p class="lead">
+      The practice, reference pages and guides on this site, with a few outside references we
+      trust.
+    </p>
+  </header>
+
+  <section class="block" aria-labelledby="goal">
+    <h2 id="goal">Pick by what you do</h2>
+    <p class="block-lead">Tracks that build the skills each kind of work leans on. Pick the one closest to yours.</p>
+    <ul class="grid">
+      {
+        goals.map((g) => (
+          <li class="card">
+            <h3>{g.title}</h3>
+            <p>{g.text}</p>
+            <ul class="links">
+              {g.links.map((l) => (
+                <li>
+                  <a href={l.href}>{l.label}</a>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="block" aria-labelledby="tools">
+    <h2 id="tools">Reference and tools</h2>
+    <ul class="grid grid-4">
+      {
+        tools.map((t) => (
+          <li>
+            <a class="card tool" href={t.href}>
+              <span class="icon-box">
+                <Icon name={t.icon} size={22} />
+              </span>
+              <span class="tool-title">{t.title}</span>
+              <span class="tool-text">{t.text}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="block" aria-labelledby="guides">
+    <h2 id="guides">Guides and articles</h2>
+    <ul class="grid">
+      {
+        articles.map((a) => (
+          <li>
+            <a class="card tool" href={articlePath(a.id)}>
+              <span class="tool-title">{a.data.title}</span>
+              <span class="tool-text">{a.data.description}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="block" aria-labelledby="outside">
+    <h2 id="outside">Outside references</h2>
+    <ul class="grid">
+      {
+        outside.map((o) => (
+          <li>
+            <a class="card tool" href={o.href} rel="noopener">
+              <span class="tool-title">
+                {o.title} <Icon name="link" size={16} />
+              </span>
+              <span class="tool-text">{o.text}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .head {
+    max-width: 48rem;
+    padding: var(--space-7) 0 var(--space-5);
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--size-page);
+    color: var(--heading);
+  }
+  .lead {
+    margin: var(--space-3) 0 0;
+    font-size: var(--size-l);
+    color: var(--muted);
+  }
+  .block {
+    margin-bottom: var(--space-7);
+  }
+  .block h2 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--size-xl);
+    color: var(--heading);
+  }
+  .block-lead {
+    margin: 0 0 var(--space-4);
+    color: var(--muted);
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .grid {
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+  }
+  .grid > li {
+    display: grid;
+  }
+  h3 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--size-base);
+    color: var(--heading);
+  }
+  .card p {
+    margin: 0 0 var(--space-3);
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .links {
+    display: grid;
+    gap: var(--space-1);
+    font-size: var(--size-s);
+  }
+  .links a {
+    color: var(--correct);
+    font-weight: 600;
+  }
+  .tool {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .tool-title {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-weight: 600;
+    color: var(--heading);
+  }
+  .tool:hover .tool-title {
+    color: var(--correct);
+    text-decoration: underline;
+  }
+  .tool-text {
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  @media (min-width: 48rem) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .grid-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 64rem) {
+    .grid-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

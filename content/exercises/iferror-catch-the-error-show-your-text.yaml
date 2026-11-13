@@ -1,0 +1,49 @@
+id: iferror-catch-the-error-show-your-text
+slug: iferror-catch-the-error-show-your-text
+level: 2
+title: "IFERROR: catch the error, show your text"
+topic: errors
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: The SKU to find is in A4, below the price list in A2:B3. In B5, look up its price, and show "no price" if the lookup fails.
+    rows:
+      - [SKU, Price]
+      - [TX-101, 19.99]
+      - [TX-102, 14]
+      - [TX-109, null]
+      - [Price, null]
+    answerCell: B5
+    expected: no price
+    answer: =IFERROR(VLOOKUP(A4,A2:B3,2,FALSE),"no price")
+    requiredFunctions: [IFERROR]
+    hints:
+      nudge: Look up the price as usual, then wrap the lookup in a function that catches errors.
+      rule: IFERROR takes a calculation and a fallback. If the calculation returns any error, the cell shows the fallback instead.
+    misses:
+      value: TX-109 is not in A2:B3, so B5 should hold the fallback text the prompt names, not the error.
+      syntax: "Two arguments with a comma between: =IFERROR(what might fail, what to show instead)."
+      required-function: "The lookup on its own returns `#N/A` in B5. IFERROR wraps that call and supplies the words."
+      reference: Ask for the code held in A4, so a different SKU changes the answer.
+    accept:
+      - =IFERROR(VLOOKUP(A4,A2:B3,2,FALSE),"no price")
+      - =iferror(vlookup(a4,a2:b3,2,false),"no price")
+      - =IFERROR(VLOOKUP($A$4,$A$2:$B$3,2,FALSE),"no price")
+      - =IFERROR(XLOOKUP(A4,A2:A3,B2:B3),"no price")
+      - =IFERROR(INDEX(B2:B3,MATCH(A4,A2:A3,0)),"no price")
+      - =IFERROR(VLOOKUP(A4,A2:B3,2,FALSE),"no price")&""
+    reject:
+      - { formula: '=IFERROR(VLOOKUP(A4,A2:B3,2,FALSE),"no price"', rule: syntax }
+      - { formula: "=VLOOKUP(A4,A2:B3,2,FALSE)", rule: required-function }
+      - { formula: "=IFERROR(VLOOKUP(A4,A2:B3,2,FALSE))", rule: syntax }
+      - { formula: '=IFERROR(A4,"no price")', rule: value }
+      - { formula: '=IFERROR(VLOOKUP(A4,A2:B3,2,FALSE),"missing")', rule: value }
+      - { formula: '=IFERROR(VLOOKUP(A4,A2:B3,2,FALSE),"no price")+1', rule: value }
+notes:
+  summary: "IFERROR takes two arguments: the calculation that might fail, and what to show when it does. Anything that goes wrong inside the first argument is replaced by the second."
+  syntax: IFERROR(value, value_if_error)
+  example: '`=IFERROR(10/0,"n/a")` gives n/a instead of `#DIV/0!`.'
+  commonErrors:
+    - The lookup finds nothing and no fallback is supplied, so the cell shows the error instead of words.
+    - "A number is added to the fallback text outside the wrapper, so the whole cell turns into `#VALUE!`."
+    - The same fallback answers a broken reference too, so a formula fault prints as a missing price and nobody looks.

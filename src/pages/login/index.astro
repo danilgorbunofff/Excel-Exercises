@@ -1,0 +1,32 @@
+---
+// Why this exists: the Log in page. Accounts are not open yet, so the form is
+// shown disabled with a note; see siteConfig.accountsOpen.
+import AuthCard from "../../components/AuthCard.astro";
+import Base from "../../layouts/Base.astro";
+---
+
+<Base title="Log in" description="Log in to sync your Excel practice progress across devices." layout="flush">
+  <AuthCard title="Log in" lead="Welcome back. Log in to sync your progress across devices.">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" />
+    <p class="forgot"><a href="/forgot-password/">Forgot your password?</a></p>
+    <button class="button button-primary" type="submit">Log in</button>
+    <p slot="after" class="switch">
+      New here? <a href="/register/">Create an account</a>
+    </p>
+  </AuthCard>
+</Base>
+
+<style>
+  .forgot {
+    margin: 0;
+    text-align: right;
+    font-size: var(--size-s);
+  }
+  .forgot a {
+    color: var(--correct);
+    font-weight: 600;
+  }
+</style>

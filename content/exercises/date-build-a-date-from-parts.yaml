@@ -1,0 +1,80 @@
+id: date-build-a-date-from-parts
+slug: date-build-a-date-from-parts
+level: 2
+title: "DATE: build a date from parts"
+topic: dates
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: Column E wants the raised date as a real date number built from the year, month and day in B2:D2, so start with INV-2001 in E2.
+    rows:
+      - [Invoice, Year, Month, Day, Date]
+      - [INV-2001, 2024, 3, 1, null]
+      - [INV-2002, 2024, 4, 15, null]
+      - [INV-2003, 2024, 5, 31, null]
+    answerCell: E2
+    expected: 45352
+    answer: =DATE(B2,C2,D2)
+    requiredFunctions: [DATE]
+    hints:
+      nudge: One function takes a year, a month and a day and returns the date.
+      rule: DATE takes the year, the month and the day, in that order, and returns the serial number of that date.
+    misses:
+      value: 2024, 3 and 1 build 45352, which is 1 March 2024. A nearby serial means a part came from the wrong column.
+      syntax: "Check the brackets, commas and quote marks. DATE follows the pattern `=DATE(year, month, day)`."
+      required-function: All three parts belong in one call; splitting them across two DATE calls adds two serials together.
+      reference: Read the year, month and day from row 2, so the formula fills down to the other invoices.
+    accept:
+      - =DATE(B2,C2,D2)
+      - =date(b2,c2,d2)
+      - =DATE($B$2,$C$2,$D$2)
+      - =DATE(B2,C2,D2)+0
+      - =DATE(B$2,C$2,D$2)
+    reject:
+      - { formula: =45352, rule: required-function }
+      - { formula: "=DATE(B2,C2)", rule: syntax }
+      - { formula: "=DATE(2024,3,1)", rule: reference }
+      - { formula: "=DATE(B3,C3,D3)", rule: value }
+      - { formula: "=DATE(B2,C2,D3)", rule: value }
+      - { formula: "=DATE(B2,C2,D2)/0", rule: value }
+      - { formula: "=DATE(B2,C2,D2", rule: syntax }
+  - prompt: "In B3, build the first day of the month after the statement month in B2, in 2024: March means 1 April 2024."
+    rows:
+      - [Item, Value]
+      - [Statement month, 3]
+      - [First day of next month, null]
+    answerCell: B3
+    expected: 45383
+    answer: =DATE(2024,B2+1,1)
+    requiredFunctions: [DATE]
+    hints:
+      nudge: The month argument can be a calculation, such as the month in a cell plus one.
+      rule: DATE accepts a month above 12 and rolls it into the next year, so month 13 is January of the following year. A day of 1 gives the first of the month.
+    misses:
+      value: 1 March 2024 is 45352 and March has 31 days, so 1 April 2024 is 45383. A result of 45352 means the month never moved.
+      syntax: "Check the brackets, commas and quote marks. DATE follows the pattern `=DATE(year, month, day)`."
+      required-function: Keep the +1 inside the call, where the year and the roll-over stay Excel's job.
+      reference: Pass B2 rather than a typed 3, then add the one inside the brackets.
+    accept:
+      - =DATE(2024,B2+1,1)
+      - =date(2024,b2+1,1)
+      - =DATE(2024,1+B2,1)
+      - =DATE(2024,B2+1,1)+0
+      - =DATE(2024,B2+1,1)*1
+      - =EDATE(DATE(2024,B2,1),1)
+    reject:
+      - { formula: "=DATE(2024,B2,1)", rule: value }
+      - { formula: "=DATE(2024,B2+1,0)", rule: value }
+      - { formula: "=DATE(2024,4,1)", rule: reference }
+      - { formula: =45383, rule: required-function }
+      - { formula: "=DATE(2024,B2+1)", rule: syntax }
+      - { formula: "=DATE(2024,B2+1,1)/0", rule: value }
+      - { formula: "=DATE(2024,B2+1,1", rule: syntax }
+notes:
+  summary: DATE builds a date from a year, a month and a day and returns its serial number. Excel counts days from 1 January 1900 as day 1, and the cell format only changes how the serial looks.
+  syntax: DATE(year, month, day)
+  example: "`=DATE(2024,2,29)` gives 45351, the serial number for 29 February 2024."
+  commonErrors:
+    - A part is text that does not read as a number, so DATE has nothing to build the serial from.
+    - A negative year, or parts that push the result past 31 December 9999, fall outside the serials Excel holds.
+    - A month built as B2+2 rolls into the following month, so 1 May appears where 1 April was asked for.

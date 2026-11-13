@@ -1,0 +1,17 @@
+---
+// Why this exists: sets a new password from a reset link. Disabled until
+// accounts open.
+import AuthCard from "../../components/AuthCard.astro";
+import Base from "../../layouts/Base.astro";
+---
+
+<Base title="Set a new password" description="Choose a new password for your account." layout="flush">
+  <AuthCard title="Reset your password" lead="Choose a new password for your account.">
+    <label for="password">New password</label>
+    <input id="password" name="password" type="password" autocomplete="new-password" />
+    <label for="password2">Repeat the new password</label>
+    <input id="password2" name="password2" type="password" autocomplete="new-password" />
+    <button class="button button-primary" type="submit">Save the new password</button>
+    <p slot="after" class="switch"><a href="/login/">Back to log in</a></p>
+  </AuthCard>
+</Base>

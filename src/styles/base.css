@@ -1,0 +1,620 @@
+/* Global base: fonts, reset, text, links, focus and the shared button styles.
+   Component styles live with their components. */
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter-latin-600-normal.woff2") format("woff2");
+  font-weight: 500 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("/fonts/ibm-plex-mono-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("/fonts/ibm-plex-mono-latin-600-normal.woff2") format("woff2");
+  font-weight: 500 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 var(--size-base) / var(--leading) var(--font-text);
+}
+main {
+  flex: 1;
+}
+main:focus {
+  outline: none;
+}
+h1,
+h2,
+h3 {
+  line-height: var(--leading-tight);
+  text-wrap: balance;
+}
+p,
+li {
+  text-wrap: pretty;
+}
+html {
+  scroll-padding-top: 5rem;
+}
+a {
+  color: inherit;
+  text-underline-offset: 0.18em;
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+code,
+kbd {
+  font-family: var(--font-mono);
+  font-size: 0.9375em;
+  font-variant-ligatures: none;
+}
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.skip {
+  position: absolute;
+  left: var(--space-4);
+  top: -10rem;
+  z-index: 3;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-s);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: 600;
+}
+.skip:focus {
+  top: var(--space-2);
+}
+
+/* Buttons: one primary action per view, and a quiet secondary style.
+   States: hover, active, focus, disabled and busy. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--target);
+  padding: 0 var(--space-5);
+  border: 1px solid transparent;
+  border-radius: var(--radius-m);
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.button-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.button-primary:hover {
+  background: var(--primary-hover);
+}
+.button-primary:active {
+  background: var(--primary-active);
+}
+.button-secondary {
+  border-color: var(--line);
+  background: var(--surface);
+  color: var(--text);
+}
+.button-secondary:hover {
+  background: var(--header);
+}
+.button-secondary:active {
+  background: var(--rule);
+}
+.button-next {
+  background: var(--surface);
+  color: var(--correct);
+}
+.button-next:hover {
+  text-decoration: underline 2px;
+}
+.button:disabled,
+.button[aria-disabled="true"] {
+  border-color: var(--rule);
+  background: var(--header);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+.button[aria-busy="true"] {
+  cursor: progress;
+}
+.link-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target);
+  padding: 0;
+  border: 0;
+  background: none;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+.link-button:hover {
+  text-decoration-thickness: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .button,
+  .link-button {
+    transition:
+      background-color var(--duration) var(--ease),
+      border-color var(--duration) var(--ease),
+      color var(--duration) var(--ease),
+      transform 80ms var(--ease);
+  }
+  .button:active {
+    transform: translateY(1px);
+  }
+  a,
+  input {
+    transition:
+      color var(--duration) var(--ease),
+      text-decoration-color var(--duration) var(--ease),
+      border-color var(--duration) var(--ease),
+      box-shadow var(--duration) var(--ease);
+  }
+  /* Switching theme fades the big surfaces instead of snapping. */
+  body,
+  .site-header,
+  dialog,
+  .card {
+    transition:
+      background-color 250ms var(--ease),
+      border-color 250ms var(--ease),
+      color 250ms var(--ease);
+  }
+  a.card {
+    transition:
+      background-color 250ms var(--ease),
+      border-color var(--duration) var(--ease),
+      color 250ms var(--ease),
+      box-shadow var(--duration) var(--ease),
+      transform var(--duration) var(--ease);
+  }
+  .progress-bar > span {
+    transition: width 400ms var(--ease);
+  }
+  a.card:hover,
+  a.card:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-pop);
+  }
+
+  /* Moving between pages fades instead of flashing. The header stays put. */
+  @view-transition {
+    navigation: auto;
+  }
+  .site-header {
+    view-transition-name: site-header;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 150ms;
+    animation-timing-function: var(--ease);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    interpolate-size: allow-keywords;
+  }
+
+  /* Small hover fades and nudges. */
+  tbody tr,
+  a.chip,
+  .button-outline,
+  .suggestions li {
+    transition: background-color var(--duration) var(--ease);
+  }
+  .arrow-link span[aria-hidden="true"],
+  .offer-link span[aria-hidden="true"] {
+    display: inline-block;
+    transition: transform var(--duration) var(--ease);
+  }
+  .arrow-link:hover span[aria-hidden="true"],
+  .offer-link:hover span[aria-hidden="true"] {
+    transform: translateX(3px);
+  }
+  .suggestions:not([hidden]) {
+    animation: fade-down 120ms var(--ease) both;
+  }
+  @keyframes fade-down {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+
+  /* Open and close any <details> smoothly. */
+  details::details-content {
+    block-size: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      block-size 200ms var(--ease),
+      opacity 200ms var(--ease),
+      content-visibility 200ms allow-discrete;
+  }
+  details[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+
+  /* Scroll animations. Browsers without scroll timelines skip this block, so
+     nothing is ever left hidden. Only small pieces fade in; whole tall
+     sections would stay half faded while you read them. */
+  @supports (animation-timeline: view()) {
+    @keyframes reveal {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+    }
+    :is(main.flush, main.wide, main.page)
+      :is(
+        .section-head,
+        .grid-3 > li,
+        .stats-inner > div,
+        .faq-head,
+        .faq details,
+        .cta > .container,
+        .group-head,
+        .card
+      ):not(.filter, .contents) {
+      animation: reveal linear backwards;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+
+    /* The header gains a shadow once the page moves, and a thin line shows
+       how far down the page you are. */
+    @keyframes header-shadow {
+      to {
+        box-shadow: var(--shadow-card);
+      }
+    }
+    @keyframes read-progress {
+      to {
+        transform: scaleX(1);
+      }
+    }
+    .site-header {
+      animation: header-shadow linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 4rem;
+    }
+    .site-header::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 -1px;
+      height: 2px;
+      background: var(--primary);
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: read-progress linear both;
+      animation-timeline: scroll(root);
+    }
+  }
+}
+
+/* Shared pieces for the wider pages, in the Spreadsheet Center look: white
+   cards with a soft shadow on a pale grey page, green chips, coloured
+   difficulty pills and a green call to action. */
+.container {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+@media (min-width: 48rem) {
+  .container {
+    padding-inline: var(--space-6);
+  }
+}
+.card {
+  display: block;
+  padding: var(--space-5);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-l);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+a.card {
+  color: inherit;
+  text-decoration: none;
+}
+a.card:hover {
+  border-color: var(--chip-line);
+}
+.page-head {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: var(--space-7) 0 var(--space-6);
+  text-align: center;
+}
+.page-head h1 {
+  margin: 0;
+  font-size: var(--size-xxl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--heading);
+}
+.page-head .lead {
+  margin: var(--space-4) 0 0;
+  font-size: var(--size-l);
+  color: var(--muted);
+}
+@media (min-width: 48rem) {
+  .page-head h1 {
+    font-size: var(--size-page);
+  }
+}
+.section-head {
+  max-width: 44rem;
+  margin: 0 auto var(--space-6);
+  text-align: center;
+}
+.section-head h2 {
+  margin: 0 0 var(--space-3);
+  font-size: var(--size-xxl);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--heading);
+}
+.section-head p {
+  margin: 0;
+  font-size: var(--size-l);
+  color: var(--muted);
+}
+@media (min-width: 48rem) {
+  .section-head h2 {
+    font-size: var(--size-page);
+  }
+}
+/* A list in a card: a header row names it, hairlines separate the rows. */
+.ruled {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-l);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.list-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg);
+  font-size: var(--size-s);
+}
+.list-head h2,
+.list-head h3 {
+  margin: 0;
+  font-size: var(--size-s);
+  font-weight: 600;
+  color: var(--heading);
+}
+.ruled > ul,
+.ruled > ol,
+ul.ruled,
+ol.ruled {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ruled li + li,
+.ruled > ul > li + li,
+.ruled > ol > li + li {
+  border-top: 1px solid var(--rule);
+}
+.section-title {
+  margin: 0 0 var(--space-3);
+  font-size: var(--size-xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--heading);
+}
+.pill-note {
+  display: inline-block;
+  padding: var(--space-1) var(--space-4);
+  border: 1px solid var(--chip-line);
+  border-radius: var(--radius-pill);
+  background: var(--chip-bg);
+  color: var(--chip);
+  font-size: var(--size-s);
+  font-weight: 600;
+}
+.page-head .pill-note {
+  margin-top: var(--space-4);
+}
+/* Difficulty: a coloured pill with the word. .level-N and .badge-N agree. */
+.level,
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.625rem;
+  border-radius: var(--radius-pill);
+  background: var(--beginner-bg);
+  color: var(--beginner);
+  font-size: var(--size-xs);
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.level-1,
+.badge-1 {
+  background: var(--beginner-bg);
+  color: var(--beginner);
+}
+.level-2,
+.badge-2 {
+  background: var(--intermediate-bg);
+  color: var(--intermediate);
+}
+.level-3,
+.badge-3 {
+  background: var(--advanced-bg);
+  color: var(--advanced);
+}
+.tag,
+.badge-pro {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--radius-pill);
+  background: var(--pro-bg);
+  color: var(--pro);
+  font-size: var(--size-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  vertical-align: middle;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.75rem;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--chip-line);
+  border-radius: var(--radius-pill);
+  background: var(--chip-bg);
+  color: var(--chip);
+  font-family: var(--font-mono);
+  font-size: var(--size-xs);
+  font-weight: 600;
+  text-decoration: none;
+}
+a.chip:hover {
+  text-decoration: underline;
+}
+.button-outline {
+  border: 2px solid var(--primary);
+  background: transparent;
+  color: var(--correct);
+}
+.button-outline:hover {
+  background: var(--chip-bg);
+}
+.button-l {
+  min-height: 3.25rem;
+  padding: 0 var(--space-6);
+  font-size: var(--size-l);
+}
+.arrow-link {
+  color: var(--correct);
+  font-weight: 600;
+  text-decoration: none;
+}
+.arrow-link:hover {
+  text-decoration: underline;
+}
+.icon-box {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-l);
+  background: var(--chip-bg);
+  color: var(--chip);
+}
+.progress-bar {
+  height: 0.375rem;
+  border-radius: var(--radius-pill);
+  background: var(--header);
+  overflow: hidden;
+}
+.progress-bar > span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--primary);
+}
+.num,
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+/* One chevron for every select, drawn with gradients (the CSP blocks data:
+   images) and kept inside the field instead of on its edge. */
+select {
+  font: inherit;
+  color: inherit;
+  appearance: none;
+  padding-right: 2.5rem;
+  background-image:
+    linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position:
+    calc(100% - 1.375rem) 50%,
+    calc(100% - 1.0625rem) 50%;
+  background-size: 0.3125rem 0.3125rem;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}

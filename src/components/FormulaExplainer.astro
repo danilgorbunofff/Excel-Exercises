@@ -1,0 +1,350 @@
+---
+// Why this exists: the formula explainer tool. A formula box and Explain
+// button, the result, the formula taken apart step by step with each part's
+// value, and the example data beside it. The first explanation is rendered at
+// build time; the script redoes it when the formula or a cell changes.
+// A function page uses the compact form: the data first, the formula under
+// it, no step list, and the result written into the cell the formula sits in.
+import { columnLetters, parseAddress } from "@practice/grader";
+import type { Walkthrough } from "../content/schema.ts";
+import { explain, type Step } from "../lib/explain.ts";
+import { functionSummaries } from "../lib/explainers.ts";
+
+interface Props {
+  walkthrough: Pick<Walkthrough, "formula" | "rows">;
+  /** Data first, formula under it, and no step list. */
+  compact?: boolean;
+  /** The cell the formula sits in, such as "C5". It shows the result and cannot be edited. */
+  resultCell?: string;
+  /** The name on the bar above the data. */
+  dataTitle?: string;
+}
+const { walkthrough, compact = false, resultCell, dataTitle = "Example data" } = Astro.props;
+const out = resultCell ? parseAddress(resultCell) : null;
+// The bar's name is a heading on the explainer page. In a page header it
+// would come before the first h2, so there it is a plain line.
+const DataTitle = compact ? "p" : "h3";
+const summaries = functionSummaries();
+const first = explain(walkthrough.formula, walkthrough.rows, summaries);
+const width = walkthrough.rows[0]?.length ?? 0;
+const columns = Array.from({ length: width }, (_, i) => columnLetters(i + 1));
+const data = JSON.stringify({ rows: walkthrough.rows, summaries }).replaceAll("<", "\\u003c");
+
+function render(step: Step): string {
+  const esc = (s: string) =>
+    s
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;");
+  const kids = step.children.length ? `<ol>${step.children.map(render).join("")}</ol>` : "";
+  return `<li><div class="step"><code class="part">${esc(step.text)}</code><span class="arrow" aria-hidden="true">→</span><span class="value">${esc(step.result)}</span></div><p class="note">${esc(step.note)}</p>${kids}</li>`;
+}
+const tree = first.ok ? `<ol class="tree">${render(first.steps)}</ol>` : "";
+---
+
+<div class:list={["explainer", { compact }]} data-explainer>
+  <form class="bar" data-explainer-form>
+    <label class="visually-hidden" for="formula-explainer-input">Your formula</label>
+    <textarea
+      id="formula-explainer-input"
+      rows="2"
+      spellcheck="false"
+      autocomplete="off"
+      autocapitalize="off"
+      data-explainer-input>{walkthrough.formula}</textarea>
+    <button class="button button-primary button-l" type="submit">Explain it</button>
+  </form>
+  <p class="result" role="status" data-explainer-result>
+    {
+      first.ok ? (
+        <>
+          Result: <strong class="value">{first.result}</strong>
+        </>
+      ) : (
+        first.message
+      )
+    }
+  </p>
+  <div class="panes">
+    <section class="card inside" aria-labelledby="inside-heading">
+      <h2 id="inside-heading">How Excel reads it</h2>
+      <div data-explainer-tree set:html={tree} />
+    </section>
+    <section class="data" aria-labelledby="data-heading">
+      <div class="data-bar">
+        <DataTitle class="data-title" id="data-heading">{dataTitle}</DataTitle>
+        <button class="reset" type="button" data-explainer-reset>Reset</button>
+      </div>
+      <div class="grid-wrap">
+        <table class="grid">
+          <caption class="visually-hidden">Example data. Edit a cell to see the values update.</caption>
+          <thead>
+            <tr>
+              <td class="corner"></td>
+              {columns.map((c) => <th scope="col">{c}</th>)}
+            </tr>
+          </thead>
+          <tbody>
+            {
+              walkthrough.rows.map((row, r) => (
+                <tr>
+                  <th scope="row">{r + 1}</th>
+                  {row.map((v, c) =>
+                    out?.row === r + 1 && out.col === c + 1 ? (
+                      <td class="out">
+                        <input
+                          aria-label={`${columns[c]}${r + 1}, the result`}
+                          value={first.ok ? first.result : ""}
+                          readonly
+                          data-explainer-out
+                        />
+                      </td>
+                    ) : (
+                      <td>
+                        <input
+                          aria-label={`${columns[c]}${r + 1}`}
+                          value={v === null ? "" : String(v)}
+                          data-cell={`${r},${c}`}
+                          class:list={{ num: typeof v === "number" }}
+                        />
+                      </td>
+                    ),
+                  )}
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+  <script type="application/json" data-explainer-data set:html={data} />
+</div>
+
+<script>
+  import "../scripts/explainer.ts";
+</script>
+
+<style>
+  .bar {
+    display: grid;
+    gap: var(--space-3);
+  }
+  textarea {
+    width: 100%;
+    min-height: 3.5rem;
+    padding: var(--space-3) var(--space-4);
+    border: 2px solid var(--line);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+    font: 500 var(--size-l) / 1.4 var(--font-mono);
+    resize: vertical;
+  }
+  textarea:focus-visible {
+    border-color: var(--primary);
+    outline: none;
+  }
+  .result {
+    margin: var(--space-3) 0 var(--space-5);
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .result :global(.value) {
+    display: inline-block;
+    margin-left: var(--space-1);
+    padding: 0.125rem 0.625rem;
+    border: 1px solid var(--chip-line);
+    border-radius: var(--radius-m);
+    background: var(--chip-bg);
+    color: var(--chip);
+    font-family: var(--font-mono);
+  }
+  .panes {
+    display: grid;
+    gap: var(--space-5);
+    align-items: start;
+  }
+  .inside h2 {
+    margin: 0 0 var(--space-3);
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .inside :global(ol) {
+    margin: 0;
+    padding-left: var(--space-5);
+    list-style: none;
+    border-left: 1px dashed var(--rule);
+  }
+  .inside :global(.tree) {
+    padding-left: 0;
+    border-left: 0;
+  }
+  .inside :global(li) {
+    margin: var(--space-2) 0;
+  }
+  .inside :global(.step) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .inside :global(.part) {
+    padding: 0.125rem 0.375rem;
+    border-radius: var(--radius-s);
+    background: var(--read-tint);
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+  .inside :global(.arrow) {
+    color: var(--faint);
+  }
+  .inside :global(.value) {
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-s);
+    background: var(--chip-bg);
+    color: var(--chip);
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    font-weight: 600;
+  }
+  .inside :global(.note) {
+    margin: var(--space-1) 0 0;
+    font-size: var(--size-xs);
+    color: var(--muted);
+  }
+  .data {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-l);
+    overflow: hidden;
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+  }
+  .data-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-1) var(--space-2) var(--space-1) var(--space-3);
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+  .data-title {
+    margin: 0;
+    font-size: var(--size-s);
+    font-weight: 600;
+  }
+  .reset {
+    min-height: 2.25rem;
+    padding: 0 var(--space-3);
+    border: 0;
+    border-radius: var(--radius-s);
+    background: var(--surface);
+    color: var(--correct);
+    font-size: var(--size-s);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .reset:focus-visible {
+    outline-color: var(--on-primary);
+  }
+  .grid-wrap {
+    overflow-x: auto;
+  }
+  .grid {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--size-s);
+    font-variant-numeric: tabular-nums;
+  }
+  .grid th,
+  .corner {
+    height: 1.75rem;
+    padding: 0 var(--space-1);
+    background: var(--header);
+    color: var(--muted);
+    font-size: var(--size-xs);
+    font-weight: 500;
+    text-align: center;
+    border: 1px solid var(--rule);
+  }
+  .grid tbody th {
+    width: 2.5rem;
+  }
+  .grid td {
+    padding: 0;
+    border: 1px solid var(--rule);
+  }
+  .grid input {
+    width: 100%;
+    min-width: 5rem;
+    height: 2rem;
+    padding: 0 var(--space-2);
+    border: 0;
+    background: transparent;
+  }
+  .grid input.num {
+    text-align: right;
+  }
+  .grid input:focus-visible {
+    outline-offset: -2px;
+  }
+  /* The cell the formula sits in: outlined as the selected cell. */
+  .grid .out {
+    outline: 2px solid var(--primary);
+    outline-offset: -2px;
+    background: var(--correct-tint);
+  }
+  .grid .out input {
+    font-weight: 600;
+    text-align: right;
+  }
+  .compact {
+    display: flex;
+    flex-direction: column;
+  }
+  .compact .panes {
+    order: 1;
+  }
+  .compact .inside {
+    display: none;
+  }
+  .compact .data {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .compact .bar {
+    order: 2;
+    padding: var(--space-3) var(--space-3) 0;
+    border-top: 1px solid var(--rule);
+  }
+  .compact textarea {
+    min-height: var(--target);
+    padding: var(--space-2) var(--space-3);
+    border-width: 1px;
+    border-radius: var(--radius-m);
+    font-size: var(--size-m);
+  }
+  .compact .bar :global(.button) {
+    min-height: var(--target);
+    padding: 0 var(--space-4);
+    font-size: var(--size-base);
+  }
+  .compact .result {
+    order: 3;
+    margin: var(--space-2) var(--space-3) var(--space-3);
+  }
+  @media (min-width: 64rem) {
+    .bar {
+      grid-template-columns: 1fr auto;
+      align-items: stretch;
+    }
+    .panes {
+      grid-template-columns: 1fr 1fr;
+    }
+    /* The step list is hidden here, so the data takes the full width. */
+    .compact .panes {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

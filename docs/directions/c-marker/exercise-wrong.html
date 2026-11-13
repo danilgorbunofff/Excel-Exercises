@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Add up a column (wrong answer)</title>
+  <link rel="stylesheet" href="../base.css" />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="direction.css" />
+</head>
+<body class="page-exercise dir-c-marker">
+  <a class="skip" href="#formula">Skip to the formula</a>
+  <header class="site">
+    <a class="brand" href="landing.html">Formula Practice</a>
+    <nav class="nav-wide" aria-label="Main"><ul><li><a href="/exercises/">Exercises</a></li><li><a href="/functions/">Functions</a></li><li><a href="/progress/">Progress</a></li></ul></nav>
+    <button class="menu" type="button" commandfor="menu" command="show-modal">Menu</button>
+    <dialog id="menu" aria-label="Menu">
+      <nav aria-label="Main"><ul><li><a href="/exercises/">Exercises</a></li><li><a href="/functions/">Functions</a></li><li><a href="/progress/">Progress</a></li></ul></nav>
+      <button type="button" commandfor="menu" command="close">Close</button>
+    </dialog>
+  </header>
+  <main id="main">
+    <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="/exercises/">Exercises</a></li><li><a href="/topics/totals/">Totals</a></li></ol></nav>
+    <h1>Add up a column</h1>
+    <p class="count">Exercise 1 of 24 in Totals</p>
+    <section class="exercise exercise-wrong" aria-labelledby="ex-title">
+      <h2 id="ex-title" class="visually-hidden">The exercise</h2>
+      <div class="task">
+        <p class="prompt">In B6, add up the sales in B2 to B5.</p>
+        <p class="checks">This exercise checks that you use SUM, point at the cells, and get the right total.</p>
+      </div>
+      <form class="work" action="/exercises/add-up-a-column/">
+        <div class="bar">
+          <span class="namebox" aria-hidden="true">B6</span>
+          <label class="visually-hidden" for="formula">Formula for B6</label>
+          <input class="formula" id="formula" name="formula" type="text" value="=SUM(B2:B4)" placeholder="=" autocomplete="off" autocapitalize="off" spellcheck="false" />
+          <button class="primary" type="submit">Check</button>
+        </div>
+        <div class="verdict" role="status"><p class="status status-miss">Wrong total in B6</p>
+          <p>B6 should show 446. Your formula gives 358.</p>
+          <p class="readout">It reads <code>=SUM(<mark class="ref">B2:B4</mark>)</code>: 3 cells, total 358. They are outlined in the grid.</p></div>
+      </form>
+      <div class="sheet">
+      <table class="grid">
+        <caption>Sales by month. Your answer goes in B6.</caption>
+        <thead><tr><td class="corner"></td><th scope="col">A</th><th scope="col">B</th></tr></thead>
+        <tbody>
+        <tr><th scope="row">1</th><td class="label">Month</td><td class="">Sales</td></tr>
+        <tr><th scope="row">2</th><td>Jan</td><td class="num read read-first">120</td></tr>
+        <tr><th scope="row">3</th><td>Feb</td><td class="num read">95</td></tr>
+        <tr><th scope="row">4</th><td>Mar</td><td class="num read read-last">143</td></tr>
+        <tr><th scope="row">5</th><td>Apr</td><td class="num">88</td></tr>
+        <tr><th scope="row">6</th><td>Total</td><td class="num answer answer-wrong">358</td></tr>
+        </tbody>
+      </table>
+      <ul class="legend">
+        <li><span class="swatch swatch-read" aria-hidden="true"></span>Read by your formula</li>
+        <li><span class="swatch swatch-answer" aria-hidden="true"></span>Your answer cell</li>
+      </ul>
+      </div>
+      <p class="help"><button class="secondary" type="button">Show a hint</button></p>
+    </section>
+  </main>
+  <footer class="site">
+    <ul>
+      <li><a href="/exercises/">Exercises</a></li>
+      <li><a href="/functions/">Functions</a></li>
+      <li><a href="/progress/">Progress</a></li>
+      <li><a href="/privacy/">Privacy</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+  </footer>
+</body>
+</html>

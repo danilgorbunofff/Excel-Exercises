@@ -1,0 +1,41 @@
+id: sales-bonus
+slug: sales-bonus
+level: 2
+title: Work out a sales bonus
+topic: logic
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: Reps with sales over 10000 earn a bonus of 5% of their sales. Other reps earn 0. In C2, work out the bonus.
+    rows:
+      - [Rep, Sales, Bonus]
+      - [Mo, 12400, null]
+    answerCell: C2
+    expected: 620
+    answer: =IF(B2>10000,B2*5%,0)
+    requiredFunctions: [IF]
+    hints:
+      nudge: The bonus is either a share of the sales or nothing.
+      rule: IF can return a calculation as well as text. `5%` is the same as 0.05.
+    misses:
+      syntax: Separate the parts of IF with commas, not semicolons.
+      required-function: Use IF, so the bonus is 0 when the sales are 10000 or less.
+      reference: Point at the sales in B2, so the bonus changes when the sales do.
+      value: When the test is true, IF should return the sales times 5%, not the rate alone.
+    accept:
+      - =IF(B2>10000,B2*5%,0)
+      - =IF(B2>10000,B2*0.05,0)
+      - =IF(B2<=10000,0,B2*0.05)
+      - =IF(B2>10000,0.05*B2,0)
+    reject:
+      - { formula: "=IF(B2>10000;B2*0.05;0)", rule: syntax }
+      - { formula: "=B2*0.05", rule: required-function }
+      - { formula: "=IF(B2>10000,12400*0.05,0)", rule: reference }
+      - { formula: "=IF(B2>10000,0.05,0)", rule: value }
+notes:
+  summary: IF can return the result of a calculation. A percent sign after a number divides it by 100.
+  syntax: IF(logical_test, value_if_true, [value_if_false])
+  example: "`=IF(A1>100,A1*10%,0)` gives 10% of A1 when A1 is more than 100, and 0 otherwise."
+  commonErrors:
+    - Returning the rate, such as 0.05, instead of the sales times the rate.
+    - Semicolons between arguments, which only some language settings of Excel use.

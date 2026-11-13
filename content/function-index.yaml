@@ -1,0 +1,335 @@
+# The function cards on the Functions page and the task groups they sit in.
+# A function with a reference page links to it; the rest link to the
+# catalogue, filtered to the exercises that use the function.
+groups:
+  - slug: summarise
+    title: Totals and averages
+    summary: Total a range, and find the average, largest and smallest values.
+  - slug: count
+    title: Count cells
+    summary: Count numbers, filled cells, empty cells and rows that match.
+  - slug: decide
+    title: Choose between results
+    summary: Show one result or another, depending on a test.
+  - slug: conditional
+    title: Add up what matches
+    summary: Add only the rows that meet one or more conditions.
+  - slug: lookup
+    title: Find a value in a table
+    summary: Find a value in a table from a code or a name.
+  - slug: round
+    title: Round and adjust numbers
+    summary: Round to decimals or to a multiple, and drop the sign of a number.
+  - slug: rank
+    title: Pick and rank values
+    summary: Find the nth largest, the middle, the most common value and a rank.
+  - slug: text
+    title: Work with text
+    summary: Cut, find, join, split and tidy text.
+  - slug: errors
+    title: Catch errors and test cells
+    summary: Show your own text for an error, and test what a cell holds.
+  - slug: dates
+    title: Work with dates
+    summary: Build dates and count the days, months or years between them.
+functions:
+  - name: SUM
+    group: summarise
+    category: Math and trigonometry
+    summary: Adds numbers in cells and ranges.
+    syntax: =SUM(number1, [number2], ...)
+  - name: AVERAGE
+    group: summarise
+    category: Statistical
+    summary: Returns the mean of a range of numbers.
+    syntax: =AVERAGE(number1, [number2], ...)
+  - name: MAX
+    group: summarise
+    category: Statistical
+    summary: Returns the largest number in a range.
+    syntax: =MAX(number1, [number2], ...)
+  - name: MIN
+    group: summarise
+    category: Statistical
+    summary: Returns the smallest number in a range.
+    syntax: =MIN(number1, [number2], ...)
+  - name: COUNT
+    group: count
+    category: Statistical
+    summary: Counts the cells that hold numbers.
+    syntax: =COUNT(value1, [value2], ...)
+  - name: COUNTA
+    group: count
+    category: Statistical
+    summary: Counts the cells that are not empty.
+    syntax: =COUNTA(value1, [value2], ...)
+  - name: COUNTBLANK
+    group: count
+    category: Statistical
+    summary: Counts the empty cells in a range.
+    syntax: =COUNTBLANK(range)
+  - name: COUNTIF
+    group: count
+    category: Statistical
+    summary: Counts the cells that meet one condition.
+    syntax: =COUNTIF(range, criteria)
+  - name: IF
+    group: decide
+    category: Logical
+    summary: Returns one value when a test is true and another when it is false.
+    syntax: =IF(logical_test, value_if_true, [value_if_false])
+  - name: AND
+    group: decide
+    category: Logical
+    summary: Returns TRUE when every test is true.
+    syntax: =AND(logical1, [logical2], ...)
+  - name: OR
+    group: decide
+    category: Logical
+    summary: Returns TRUE when at least one test is true.
+    syntax: =OR(logical1, [logical2], ...)
+  - name: SUMIF
+    group: conditional
+    category: Math and trigonometry
+    summary: Adds the cells that meet one condition.
+    syntax: =SUMIF(range, criteria, [sum_range])
+  - name: SUMIFS
+    group: conditional
+    category: Math and trigonometry
+    summary: Adds the cells that meet several conditions.
+    syntax: =SUMIFS(sum_range, criteria_range1, criteria1, ...)
+  - name: XLOOKUP
+    group: lookup
+    category: Lookup and reference
+    summary: Finds a value in one range and returns the matching value from another.
+    syntax: =XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])
+  - name: VLOOKUP
+    group: lookup
+    category: Lookup and reference
+    summary: Finds a value in the first column of a table and returns a value from the same row.
+    syntax: =VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])
+  - name: INDEX
+    group: lookup
+    category: Lookup and reference
+    summary: Returns the value at a given row and column of a range.
+    syntax: =INDEX(array, row_num, [column_num])
+  - name: MATCH
+    group: lookup
+    category: Lookup and reference
+    summary: Returns the position of a value in a range.
+    syntax: =MATCH(lookup_value, lookup_array, [match_type])
+  - name: COUNTIFS
+    group: count
+    category: Statistical
+    summary: Counts the rows that meet every condition.
+    syntax: =COUNTIFS(criteria_range1, criteria1, [criteria_range2, criteria2], ...)
+  - name: IFS
+    group: decide
+    category: Logical
+    summary: Returns the result for the first test that is true.
+    syntax: =IFS(logical_test1, value_if_true1, [logical_test2, value_if_true2], ...)
+  - name: SWITCH
+    group: decide
+    category: Logical
+    summary: Matches a value against a list of cases and returns the result for the match.
+    syntax: =SWITCH(expression, value1, result1, [value2, result2], ..., [default])
+  - name: AVERAGEIFS
+    group: conditional
+    category: Statistical
+    summary: Averages the rows that meet every condition.
+    syntax: =AVERAGEIFS(average_range, criteria_range1, criteria1, ...)
+  - name: SUMPRODUCT
+    group: summarise
+    category: Math and trigonometry
+    summary: Multiplies matching values in ranges and adds the results.
+    syntax: =SUMPRODUCT(array1, [array2], ...)
+  - name: SUBTOTAL
+    group: summarise
+    category: Math and trigonometry
+    summary: Totals, counts or averages a range, picked by a function number.
+    syntax: =SUBTOTAL(function_num, ref1, [ref2], ...)
+  - name: AGGREGATE
+    group: summarise
+    category: Math and trigonometry
+    summary: Totals a range by a function number, with options to skip errors.
+    syntax: =AGGREGATE(function_num, options, ref1, [ref2], ...)
+  - name: HLOOKUP
+    group: lookup
+    category: Lookup and reference
+    summary: Finds a value in the top row of a table and returns a value from a row below.
+    syntax: =HLOOKUP(lookup_value, table_array, row_index_num, [range_lookup])
+  - name: ROUND
+    group: round
+    category: Math and trigonometry
+    summary: Rounds a number to a set number of decimal places.
+    syntax: =ROUND(number, num_digits)
+  - name: ROUNDUP
+    group: round
+    category: Math and trigonometry
+    summary: Rounds a number away from zero.
+    syntax: =ROUNDUP(number, num_digits)
+  - name: ROUNDDOWN
+    group: round
+    category: Math and trigonometry
+    summary: Rounds a number toward zero.
+    syntax: =ROUNDDOWN(number, num_digits)
+  - name: MROUND
+    group: round
+    category: Math and trigonometry
+    summary: Rounds a number to the nearest multiple.
+    syntax: =MROUND(number, multiple)
+  - name: FLOOR
+    group: round
+    category: Math and trigonometry
+    summary: Rounds a number down to a multiple.
+    syntax: =FLOOR(number, significance)
+  - name: ABS
+    group: round
+    category: Math and trigonometry
+    summary: Returns a number without its sign.
+    syntax: =ABS(number)
+  - name: LARGE
+    group: rank
+    category: Statistical
+    summary: Returns the nth largest number in a range.
+    syntax: =LARGE(array, k)
+  - name: SMALL
+    group: rank
+    category: Statistical
+    summary: Returns the nth smallest number in a range.
+    syntax: =SMALL(array, k)
+  - name: MEDIAN
+    group: rank
+    category: Statistical
+    summary: Returns the middle number of a range.
+    syntax: =MEDIAN(number1, [number2], ...)
+  - name: MODE
+    group: rank
+    category: Statistical
+    summary: Returns the number that appears most often.
+    syntax: =MODE(number1, [number2], ...)
+  - name: RANK
+    group: rank
+    category: Statistical
+    summary: Returns the position of a number in a list, largest first by default.
+    syntax: =RANK(number, ref, [order])
+  - name: LEFT
+    group: text
+    category: Text
+    summary: Returns characters from the start of text.
+    syntax: =LEFT(text, [num_chars])
+  - name: RIGHT
+    group: text
+    category: Text
+    summary: Returns characters from the end of text.
+    syntax: =RIGHT(text, [num_chars])
+  - name: MID
+    group: text
+    category: Text
+    summary: Returns characters from the middle of text.
+    syntax: =MID(text, start_num, num_chars)
+  - name: LEN
+    group: text
+    category: Text
+    summary: Counts the characters in text.
+    syntax: =LEN(text)
+  - name: FIND
+    group: text
+    category: Text
+    summary: Returns where one piece of text starts in another, matching case.
+    syntax: =FIND(find_text, within_text, [start_num])
+  - name: SEARCH
+    group: text
+    category: Text
+    summary: Returns where one piece of text starts in another, ignoring case.
+    syntax: =SEARCH(find_text, within_text, [start_num])
+  - name: TEXTBEFORE
+    group: text
+    category: Text
+    summary: Returns the text before a delimiter.
+    syntax: =TEXTBEFORE(text, delimiter, [instance_num], ...)
+  - name: TEXTAFTER
+    group: text
+    category: Text
+    summary: Returns the text after a delimiter.
+    syntax: =TEXTAFTER(text, delimiter, [instance_num], ...)
+  - name: CONCAT
+    group: text
+    category: Text
+    summary: Joins text from cells and ranges.
+    syntax: =CONCAT(text1, [text2], ...)
+  - name: TEXTJOIN
+    group: text
+    category: Text
+    summary: Joins text with a separator, and can skip empty cells.
+    syntax: =TEXTJOIN(delimiter, ignore_empty, text1, [text2], ...)
+  - name: UPPER
+    group: text
+    category: Text
+    summary: Changes text to capital letters.
+    syntax: =UPPER(text)
+  - name: LOWER
+    group: text
+    category: Text
+    summary: Changes text to small letters.
+    syntax: =LOWER(text)
+  - name: PROPER
+    group: text
+    category: Text
+    summary: Capitalises the first letter of each word.
+    syntax: =PROPER(text)
+  - name: TRIM
+    group: text
+    category: Text
+    summary: Removes extra spaces, leaving single spaces between words.
+    syntax: =TRIM(text)
+  - name: SUBSTITUTE
+    group: text
+    category: Text
+    summary: Replaces one piece of text with another.
+    syntax: =SUBSTITUTE(text, old_text, new_text, [instance_num])
+  - name: IFERROR
+    group: errors
+    category: Logical
+    summary: Returns your own value when a formula gives an error.
+    syntax: =IFERROR(value, value_if_error)
+  - name: IFNA
+    group: errors
+    category: Logical
+    summary: Returns your own value when a formula gives #N/A.
+    syntax: =IFNA(value, value_if_na)
+  - name: ISERROR
+    group: errors
+    category: Information
+    summary: Returns TRUE when a value is any error.
+    syntax: =ISERROR(value)
+  - name: ISNA
+    group: errors
+    category: Information
+    summary: Returns TRUE when a value is #N/A.
+    syntax: =ISNA(value)
+  - name: ISBLANK
+    group: errors
+    category: Information
+    summary: Returns TRUE when a cell is empty.
+    syntax: =ISBLANK(value)
+  - name: ISNUMBER
+    group: errors
+    category: Information
+    summary: Returns TRUE when a value is a number.
+    syntax: =ISNUMBER(value)
+  - name: DATE
+    group: dates
+    category: Date and time
+    summary: Builds a date from a year, a month and a day.
+    syntax: =DATE(year, month, day)
+  - name: DAYS
+    group: dates
+    category: Date and time
+    summary: Returns the number of days between two dates.
+    syntax: =DAYS(end_date, start_date)
+  - name: DATEDIF
+    group: dates
+    category: Date and time
+    summary: Counts whole days, months or years between two dates.
+    syntax: =DATEDIF(start_date, end_date, unit)

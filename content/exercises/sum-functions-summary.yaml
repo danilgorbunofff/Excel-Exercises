@@ -1,0 +1,86 @@
+id: sum-functions-summary
+slug: sum-functions-summary
+level: 3
+title: Sum functions summary
+topic: conditions
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B7, total everything sold, and then be ready for the question that follows.
+    rows:
+      - [Region, Amount]
+      - [North, 320]
+      - [South, 250]
+      - [North, 180]
+      - [West, 300]
+      - [North, 400]
+      - [Everything, null]
+    answerCell: B7
+    expected: 1450
+    answer: =SUM(B2:B6)
+    requiredFunctions: [SUM]
+    hints:
+      nudge: One function adds the whole amount column.
+      rule: SUM adds every number in a range and skips text and empty cells. Point it at the column rather than typing the numbers.
+    misses:
+      value: 320 + 250 + 180 + 300 + 400 is 1450.
+      syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
+      required-function: Every number in the column, added by one function.
+      reference: Point at the amount column rather than typing the five numbers.
+    accept:
+      - =SUM(B2:B6)
+      - =sum(b2:b6)
+      - =SUM($B$2:$B$6)
+      - =SUM(B2:B6)+0
+      - =SUM(B2:B6)*1
+      - =SUM(B$2:B$6)
+    reject:
+      - { formula: =SUM(B2:B5), rule: value }
+      - { formula: =B2+B3+B4+B5+B6, rule: required-function }
+      - { formula: =SUM(B3:B6), rule: value }
+      - { formula: =SUM(B2:B6)/0, rule: value }
+      - { formula: =SUM(B2:B6, rule: syntax }
+      - { formula: =SUM(C2:C6), rule: value }
+  - prompt: "In C7, total everything that is not North: one SUM, one SUMIF, subtracted."
+    rows:
+      - [Region, Rep, Amount]
+      - [North, Ada, 320]
+      - [South, Ben, 250]
+      - [North, Cleo, 180]
+      - [West, Dev, 300]
+      - [North, Ada, 400]
+      - [Outside North, null, null]
+    answerCell: C7
+    expected: 550
+    answer: =SUM(C2:C6)-SUMIF(A2:A6,"North",C2:C6)
+    requiredFunctions: [SUM, SUMIF]
+    hints:
+      nudge: Take the total of every row, then subtract the total of the North rows.
+      rule: SUM gives the whole column and SUMIF gives the rows that meet one condition. Subtracting one from the other leaves the rows that do not match.
+    misses:
+      value: 1450 in total minus 900 of North sales leaves 550.
+      syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
+      required-function: The total of the column is a SUM; the part to remove is not.
+      reference: Read both the regions and the amounts from the grid.
+    accept:
+      - =SUM(C2:C6)-SUMIF(A2:A6,"North",C2:C6)
+      - =sum(c2:c6)-sumif(a2:a6,"north",c2:c6)
+      - =SUM($C$2:$C$6)-SUMIF($A$2:$A$6,"North",$C$2:$C$6)
+      - =SUM(C2:C6)-SUMIF(A2:A6,"North",C2:C6)+0
+      - =SUM(C2:C6)-SUMIF(A2:A6,"North",C2:C6)*1
+      - =SUM(C$2:C$6)-SUMIF(A$2:A$6,"North",C$2:C$6)
+    reject:
+      - { formula: '=SUMIF(A2:A6,"North",C2:C6)', rule: required-function }
+      - { formula: =SUM(C2:C6), rule: required-function }
+      - { formula: '=SUM(C2:C6)-SUMIF(A2:A6,"South",C2:C6)', rule: value }
+      - { formula: '=SUM(C2:C6)+SUMIF(A2:A6,"North",C2:C6)', rule: value }
+      - { formula: '=SUM(C2:C6)-SUMIF(A2:A6,"North",C2:C6)/0', rule: value }
+      - { formula: '=SUM(C2:C6)-SUMIF(A2:A6 "North",C2:C6)', rule: syntax }
+notes:
+  summary: SUM adds a whole range, SUMIF adds the rows that meet one condition, and SUMIFS adds the rows that meet several. Subtracting a SUMIF from a SUM gives what is left over.
+  syntax: SUM(range) and =SUMIF(criteria_range, condition, sum_range), combined by subtraction
+  example: '`=SUM(B1:B3)-SUMIF(A1:A3,"North",B1:B3)` with North 10, South 20 and North 5 gives 20.'
+  commonErrors:
+    - A range in the call holds text where numbers were expected, or a comparison has lost its quotes.
+    - SUMIF was typed as SUMIFS with SUMIF arguments, or the function is misspelled.
+    - Ranges of different shapes match the wrong rows. The total is off by one row.

@@ -1,0 +1,49 @@
+id: concat-and-the-operator
+slug: concat-and-the-operator
+level: 2
+title: CONCAT and the & operator
+topic: text-change
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B4, join the first name in A2 and the last name in B2 with a single space between them.
+    rows:
+      - [First, Last]
+      - [Ada, Lovelace]
+      - [Grace, Hopper]
+      - [Full name, null]
+    answerCell: B4
+    expected: Ada Lovelace
+    answer: =CONCAT(A2," ",B2)
+    requiredFunctions: [CONCAT]
+    hints:
+      nudge: CONCAT joins the pieces in the order you list them, and the space is a piece of its own.
+      rule: CONCAT takes any number of arguments and joins them into one string. Text you type yourself, such as a space, goes in quotes.
+    misses:
+      value: That is not first name, space, last name in that order. Check which cell comes first.
+      syntax: "Check the brackets, commas and quote marks. CONCAT follows the pattern `=CONCAT(text1, [text2], ...)`."
+      required-function: CONCAT glues its arguments together in order. The space has to be passed in as an argument of its own.
+      reference: Point at A2 and B2. Typing Ada and Lovelace gives an answer that ignores the next row.
+    accept:
+      - =CONCAT(A2," ",B2)
+      - =concat(a2," ",b2)
+      - =CONCAT($A$2," ",$B$2)
+      - =CONCAT(A2," ",B2)&""
+      - =TRIM(CONCAT(A2," ",B2))
+      - =CONCAT(A2," ",B2&"")
+    reject:
+      - { formula: '=CONCAT(A2," ",B2', rule: syntax }
+      - { formula: =A2&" "&B2, rule: required-function }
+      - { formula: =CONCAT(A2:B2), rule: value }
+      - { formula: '=CONCATENATE(A2," ",B2)', rule: required-function }
+      - { formula: '=CONCAT(B2," ",A2)', rule: value }
+      - { formula: '=CONCAT("Ada"," ","Lovelace")', rule: reference }
+      - { formula: '=CONCAT(A2," ",B2)/0', rule: value }
+notes:
+  summary: CONCAT joins its arguments into one string, in the order you list them. The & operator does the same job, and any space between pieces is added as text in quotes.
+  syntax: CONCAT(text1, [text2], ...) and =text1 & text2
+  example: '`=CONCAT("Mon","-","Fri")` and `="Mon"&"-"&"Fri"` both give Mon-Fri.'
+  commonErrors:
+    - The joined text was used in arithmetic, as when the whole call is divided by zero.
+    - CONCAT is typed as CONCATE, and the sheet has no function by that name.
+    - The call =CONCAT(A2,B2) passes no separator, so the two names come out as AdaLovelace and the grader rejects it.

@@ -1,0 +1,57 @@
+id: index-match
+slug: index-match
+level: 3
+title: "INDEX + MATCH: lookup either way"
+topic: index-match
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In E3, return the salary for the ID in D3 with INDEX and MATCH instead of VLOOKUP.
+    rows:
+      - [ID, Name, Salary, Lookup, Result]
+      - [E-101, Ana, 61500, null, null]
+      - [E-102, Bo, 57000, E-103, null]
+      - [E-103, Cy, 88000, null, null]
+      - [E-104, Dee, 54000, null, null]
+      - [E-105, Eli, 49500, null, null]
+    answerCell: E3
+    expected: 88000
+    answer: =INDEX(C2:C6,MATCH(D3,A2:A6,0))
+    requiredFunctions: [INDEX, MATCH]
+    hints:
+      nudge: "Let MATCH find which row the ID is on, then let INDEX read the salary from that row."
+      rule: "MATCH with a match type of 0 returns the position of a value in the search column. INDEX then returns the item at that position in the return column."
+    misses:
+      value: 88000 is Cy's salary, on row 4 of the sheet and third in C2:C6. Check which column INDEX reads and which one MATCH searches.
+      syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
+      required-function: INDEX needs the salaries in C2:C6 and a row number. On its own it has no way to know which row you want.
+      forbidden-function: This screen practises INDEX and MATCH, so leave VLOOKUP out. The same pair can also return columns left of the key, which VLOOKUP cannot.
+      reference: Point at D3 for the ID and at the table for both ranges, so the formula still works when payroll adds a row.
+    accept:
+      - =INDEX(C2:C6,MATCH(D3,A2:A6,0))
+      - =index(c2:c6,match(d3,a2:a6,0))
+      - =INDEX(C2:C6,MATCH(D3,A2:A6,FALSE))
+      - =INDEX($C$2:$C$6,MATCH($D$3,$A$2:$A$6,0))
+      - =INDEX(C2:C6,MATCH(D3,A2:A6,0))+0
+      - =INDEX(C2:C6,MATCH(D3,A2:A6,0))*1
+    reject:
+      - { formula: "=INDEX(B2:B6,MATCH(D3,A2:A6,0))", rule: value }
+      - { formula: "=INDEX(C2:C6,3)", rule: required-function }
+      - { formula: "=MATCH(D3,A2:A6,0)", rule: required-function }
+      - {
+          formula: "=INDEX(C2:C6,MATCH(D3,A2:A6,0))+VLOOKUP(D3,A2:A6,2,FALSE)",
+          rule: forbidden-function,
+        }
+      - { formula: '=INDEX(C2:C6,MATCH("E-103",B2:B6,0))', rule: value }
+      - { formula: "=INDEX(C2:C6,MATCH(D3,A2:A6,0))/0", rule: value }
+      - { formula: =88000, rule: required-function }
+      - { formula: "=INDEX(C2:C6,MATCH(D3,A2:A6,0)", rule: syntax }
+    forbiddenFunctions: [VLOOKUP]
+notes:
+  summary: "MATCH finds the position of a value in one column, and INDEX returns the item at that position in another column. Together they can look up in either direction."
+  syntax: INDEX(return_column, MATCH(lookup_value, search_column, 0))
+  example: '`=INDEX(B1:B3,MATCH("Y",A1:A3,0))` with X, Y and Z in column A returns B2.'
+  commonErrors:
+    - MATCH found no exact E-103 in A2:A6, usually because the ID carries a trailing space or is stored as text.
+    - The row number from MATCH sits past the end of C2:C6, which happens when the two ranges cover different numbers of rows.
+    - INDEX was handed no row number, or MATCH was given the whole table where a single column belongs.

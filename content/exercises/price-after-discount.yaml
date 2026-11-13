@@ -1,0 +1,39 @@
+id: price-after-discount
+slug: price-after-discount
+level: 2
+title: Price after a discount
+topic: references
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In D2, work out the sale price. The discount in C2 is a fraction, so 0.25 means 25% off.
+    rows:
+      - [Item, Price, Discount, Sale price]
+      - [Jacket, 80, 0.25, null]
+    answerCell: D2
+    expected: 60
+    answer: =B2*(1-C2)
+    hints:
+      nudge: The sale price is the price times the part that is left after the discount.
+      rule: Excel multiplies and divides before it adds and subtracts. Brackets make Excel work out their contents first.
+    misses:
+      syntax: Check that every opening bracket has a closing bracket.
+      reference: Point at B2 and C2, so the sale price changes when the price or the discount changes.
+      value: The sale price is the price minus the discount. Without brackets, Excel multiplies before it subtracts.
+    accept:
+      - =B2*(1-C2)
+      - =(1-C2)*B2
+      - =B2-B2*C2
+      - =B2-(B2*C2)
+    reject:
+      - { formula: "=B2*(1-C2", rule: syntax }
+      - { formula: "=80*(1-0.25)", rule: reference }
+      - { formula: "=B2*1-C2", rule: value }
+      - { formula: "=B2*C2", rule: value }
+notes:
+  summary: Excel works out brackets first, then powers, then multiplication and division, then addition and subtraction.
+  syntax: =cell*(1-cell)
+  example: "`=(A1+A2)*2` adds A1 and A2, then doubles the result."
+  commonErrors:
+    - Leaving out the brackets, so Excel multiplies before it subtracts.
+    - Typing the discount as 25 rather than 0.25 or 25%.

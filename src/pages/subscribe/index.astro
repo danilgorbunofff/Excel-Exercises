@@ -1,0 +1,48 @@
+---
+// Why this exists: where a PRO subscription will start. Not open yet.
+import Base from "../../layouts/Base.astro";
+---
+
+<Base title="Subscribe" description="PRO subscriptions are not open yet." layout="flush">
+  <div class="wrap">
+    <div class="card panel">
+      <h1>Subscriptions open later</h1>
+      <p>PRO is not open yet. Every exercise is free until it is.</p>
+      <div class="actions">
+        <a class="button button-primary" href="/exercises/">Go back to the exercises</a>
+        <a class="button button-outline" href="/pro/">Join the PRO waitlist</a>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .wrap {
+    display: grid;
+    place-items: center;
+    padding: 6rem var(--space-4);
+  }
+  .panel {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+    max-width: 32rem;
+    text-align: center;
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--size-xl);
+    color: var(--heading);
+  }
+  p {
+    margin: 0;
+    color: var(--muted);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+</style>

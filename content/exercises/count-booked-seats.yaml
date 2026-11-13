@@ -1,0 +1,44 @@
+id: count-booked-seats
+slug: count-booked-seats
+level: 1
+title: Count the booked seats
+topic: counting
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: Each booked seat has a name next to it. In B8, count how many seats are booked.
+    rows:
+      - [Seat, Name]
+      - [1, Ana]
+      - [2, null]
+      - [3, Ravi]
+      - [4, Lu]
+      - [5, null]
+      - [6, Omar]
+      - [Booked, null]
+    answerCell: B8
+    expected: 4
+    answer: =COUNTA(B2:B7)
+    requiredFunctions: [COUNTA]
+    hints:
+      nudge: The names are text, so a function that counts only numbers finds none of them.
+      rule: COUNTA counts every cell that is not empty, whether it holds text or a number.
+    misses:
+      syntax: Write the range as the first cell, a colon, then the last cell.
+      required-function: Use COUNTA, which counts cells with text as well as numbers.
+      reference: Point at the names in B2 to B7, not at B8.
+      value: Check the column. Count the names in B2 to B7, not the seat numbers.
+    accept:
+      - =COUNTA(B2:B7)
+      - =counta(B2:B7)
+    reject:
+      - { formula: "=COUNTA(B2:B7", rule: syntax }
+      - { formula: "=COUNT(B2:B7)", rule: required-function }
+      - { formula: "=COUNTA(B2:B8)", rule: reference }
+      - { formula: "=COUNTA(A2:A7)", rule: value }
+notes:
+  summary: COUNTA counts the cells that are not empty, whatever they hold.
+  syntax: COUNTA(value1, [value2], ...)
+  example: "`=COUNTA(A1:A4)` with Ana, 7, an empty cell and Bo gives 3."
+  commonErrors:
+    - A cell that only holds a space looks empty but is counted.

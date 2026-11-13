@@ -1,0 +1,106 @@
+id: len-left-and-right-count-and-cut
+slug: len-left-and-right-count-and-cut
+level: 1
+title: "LEN, LEFT and RIGHT: count and cut"
+topic: text-search
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B2, count how many characters the code in A2 has, spaces included.
+    rows:
+      - [Code, Characters]
+      - [Invoice 2026-03, null]
+    answerCell: B2
+    expected: 15
+    answer: =LEN(A2)
+    requiredFunctions: [LEN]
+    hints:
+      nudge: One function counts the characters in a cell instead of reading them.
+      rule: LEN takes one cell and returns how many characters it holds. Spaces, digits and punctuation all count.
+    misses:
+      value: Count every character of Invoice 2026-03, the space between word and year included.
+      syntax: "Check the brackets, commas and quote marks. LEN follows the pattern `=LEN(text)`."
+      required-function: LEN answers how long the code is, not what it says.
+      reference: Measure A2, not a typed copy of the code.
+    accept:
+      - =LEN(A2)
+      - =len(a2)
+      - =LEN($A$2)
+      - =LEN(A2)+0
+      - =LEN(A2)*1
+      - =LEN(TRIM(A2))
+    reject:
+      - { formula: =LEN(A2, rule: syntax }
+      - { formula: "=LEFT(A2,15)", rule: required-function }
+      - { formula: =LEN(), rule: syntax }
+      - { formula: =LEN(A2)-1, rule: value }
+      - { formula: =LEN("Invoice 2026-03"), rule: reference }
+      - { formula: =LEN(A2)/0, rule: value }
+  - prompt: In B2, cut the first three characters of A2 to get the document prefix.
+    rows:
+      - [Code, Prefix]
+      - [Invoice 2026-03, null]
+    answerCell: B2
+    expected: Inv
+    answer: =LEFT(A2,3)
+    requiredFunctions: [LEFT]
+    hints:
+      nudge: The prefix sits at the start of the code, so cut from the left.
+      rule: LEFT takes the text and a count, and keeps that many characters from the start.
+    misses:
+      value: The first three characters of Invoice 2026-03 are I, n and v.
+      syntax: "Check the brackets, commas and quote marks. LEFT follows the pattern `=LEFT(text, [num_chars])`."
+      required-function: The prefix sits at the start, so LEFT is the cutter you want here.
+      reference: Cut from A2, not from typed text.
+    accept:
+      - =LEFT(A2,3)
+      - =left(a2,3)
+      - =LEFT($A$2,3)
+      - =LEFT(A2,3)&""
+      - =TRIM(LEFT(A2,3))
+      - =PROPER(LEFT(A2,3))
+    reject:
+      - { formula: "=LEFT(A2,3", rule: syntax }
+      - { formula: "=RIGHT(A2,3)", rule: required-function }
+      - { formula: =LEFT(A2), rule: value }
+      - { formula: "=LEFT(A2,2)", rule: value }
+      - { formula: '=LEFT("Invoice 2026-03",3)', rule: reference }
+      - { formula: "=LEFT(A2,-1)", rule: value }
+  - prompt: In B2, cut the last seven characters of A2 to get the year and month.
+    rows:
+      - [Code, Year and month]
+      - [Invoice 2026-03, null]
+    answerCell: B2
+    expected: "2026-03"
+    answer: =RIGHT(A2,7)
+    requiredFunctions: [RIGHT]
+    hints:
+      nudge: The year and month sit at the end of the code, so cut from the right.
+      rule: RIGHT takes the text and a count, and keeps that many characters from the end.
+    misses:
+      value: The last seven characters are 2026-03.
+      syntax: "Check the brackets, commas and quote marks. RIGHT follows the pattern `=RIGHT(text, [num_chars])`."
+      required-function: The year and month sit at the end, so this calls for the end-cutter.
+      reference: Take the code from A2.
+    accept:
+      - =RIGHT(A2,7)
+      - =right(a2,7)
+      - =RIGHT($A$2,7)
+      - =RIGHT(A2,7)&""
+      - =TRIM(RIGHT(A2,7))
+      - =UPPER(RIGHT(A2,7))
+    reject:
+      - { formula: "=RIGHT(A2,7", rule: syntax }
+      - { formula: "=LEFT(A2,7)", rule: required-function }
+      - { formula: =RIGHT(A2), rule: value }
+      - { formula: "=RIGHT(A2,4)", rule: value }
+      - { formula: '=RIGHT("Invoice 2026-03",7)', rule: reference }
+      - { formula: "=RIGHT(A2,-7)", rule: value }
+notes:
+  summary: LEN counts the characters in a cell, spaces included. LEFT keeps a number of characters from the start of the text, and RIGHT keeps them from the end.
+  syntax: LEN(text), =LEFT(text, count), =RIGHT(text, count)
+  example: '`=LEN("Q1 total")` gives 8, `=LEFT("Q1 total",2)` gives Q1 and `=RIGHT("Q1 total",5)` gives total.'
+  commonErrors:
+    - "A negative count gives LEFT or RIGHT nothing to cut, so the cell shows `#VALUE!`."
+    - A count that suits one code takes the wrong characters from a code of a different length.
+    - "The function is spelled LN or LEF, and Excel returns `#NAME?`."

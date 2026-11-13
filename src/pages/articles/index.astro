@@ -1,0 +1,73 @@
+---
+// Why this exists: the article index, as a grid of cards with drawn covers.
+// Short reads on ideas the exercises use, then a way on to the exercises.
+import ArticleCard from "../../components/articles/ArticleCard.astro";
+import Base from "../../layouts/Base.astro";
+import { allArticles } from "../../lib/articles.ts";
+
+const articles = await allArticles();
+---
+
+<Base
+  title="Articles"
+  description="Short articles on Excel formulas: references, lookups and errors, each with exercises to practise."
+  section="/articles/"
+  layout="wide"
+>
+  <header class="page-head">
+    <h1>Excel articles</h1>
+    <p class="lead">Short reads on the ideas behind the formulas. Each ends with exercises to try.</p>
+  </header>
+  <ul class="grid">
+    {
+      articles.map((a, i) => (
+        <li>
+          <ArticleCard article={a} index={i} />
+        </li>
+      ))
+    }
+  </ul>
+  <section class="card next" aria-labelledby="next">
+    <h2 id="next">Read enough?</h2>
+    <p>The exercises put these ideas to work on a real sheet, one formula at a time.</p>
+    <a class="button button-primary" href="/exercises/">Open the exercises</a>
+  </section>
+</Base>
+
+<style>
+  .grid {
+    display: grid;
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .next {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-7);
+    padding: var(--space-6);
+    text-align: center;
+  }
+  .next h2 {
+    margin: 0;
+    font-size: var(--size-xl);
+    color: var(--heading);
+  }
+  .next p {
+    max-width: 36rem;
+    margin: 0 0 var(--space-2);
+    color: var(--muted);
+  }
+  @media (min-width: 40rem) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 64rem) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

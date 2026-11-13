@@ -1,0 +1,61 @@
+---
+// Why this exists: hints on request, in order. Step 1 nudges, step 2 states the
+// rule and compares the formula's ranges with the answer's, step 3 shows the
+// answer and marks the exercise as solved with help.
+import type { Screen } from "../content/schema.ts";
+import RichText from "./RichText.astro";
+
+interface Props {
+  screen: Screen;
+  index: number;
+}
+const { screen, index } = Astro.props;
+---
+
+<div class="hints" data-hints={index}>
+  <details data-hint="1">
+    <summary>Hint 1</summary>
+    <p><RichText text={screen.hints.nudge} /></p>
+  </details>
+  <details data-hint="2">
+    <summary>Hint 2</summary>
+    <p><RichText text={screen.hints.rule} /></p>
+    <p data-compare hidden></p>
+  </details>
+  <details data-hint="3">
+    <summary>Show the answer</summary>
+    <p>The answer is <code>{screen.answer}</code>.</p>
+  </details>
+</div>
+
+<style>
+  details {
+    border-bottom: 1px solid var(--rule);
+  }
+  details:first-child {
+    border-top: 1px solid var(--rule);
+  }
+  summary {
+    display: flex;
+    align-items: center;
+    min-height: var(--target);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  summary::before {
+    content: "+" / "";
+    display: inline-block;
+    width: 1.25rem;
+    font-family: var(--font-mono);
+    color: var(--muted);
+  }
+  details[open] > summary::before {
+    content: "-" / "";
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  p {
+    margin: 0 0 var(--space-3);
+  }
+</style>

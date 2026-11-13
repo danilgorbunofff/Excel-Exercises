@@ -1,0 +1,86 @@
+id: add-only-the-positives
+slug: add-only-the-positives
+level: 2
+title: Add only the positives
+topic: conditions
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B7, add up the months that went up and leave the drops alone.
+    rows:
+      - [Month, Change]
+      - [Jan, 12]
+      - [Feb, -8]
+      - [Mar, 15]
+      - [Apr, -3]
+      - [May, 20]
+      - [Gains, null]
+    answerCell: B7
+    expected: 47
+    answer: =SUMIF(B2:B6,">0")
+    requiredFunctions: [SUMIF]
+    hints:
+      nudge: Add only the cells whose change is above zero.
+      rule: SUMIF adds the cells that meet one condition. A comparison condition is written in double quotes, with the sign before the number.
+    misses:
+      value: The gains are 12, 15 and 20, which total 47.
+      syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, [sum_range])`."
+      required-function: SUM takes everything. You want the months that went up and nothing else.
+      reference: Test the changes from the grid, not from numbers typed into the formula.
+    accept:
+      - =SUMIF(B2:B6,">0")
+      - =sumif(b2:b6,">0")
+      - =SUMIF($B$2:$B$6,">0")
+      - =SUMIF(B2:B6,">0")+0
+      - =SUMIF(B2:B6,">0")*1
+      - =SUMIF(B$2:B$6,">0")
+    reject:
+      - { formula: =SUM(B2:B6), rule: required-function }
+      - { formula: '=SUMIF(B2:B6,"<0")', rule: value }
+      - { formula: '=SUMIF(B2:B6,">=15")', rule: value }
+      - { formula: '=SUMIF(B3:B6,">0")', rule: value }
+      - { formula: '=SUMIF(B2:B6,">0")/0', rule: value }
+      - { formula: =SUMIF(B2:B6 ">0"), rule: syntax }
+  - prompt: In B7, report the size of the losses as a positive number.
+    rows:
+      - [Week, Variance]
+      - [W-1, -4]
+      - [W-2, 6]
+      - [W-3, -9]
+      - [W-4, -2]
+      - [W-5, 3]
+      - [Losses, null]
+    answerCell: B7
+    expected: 15
+    answer: =-SUMIF(B2:B6,"<0")
+    requiredFunctions: [SUMIF]
+    hints:
+      nudge: Add only the negative weeks, then flip the sign of the result.
+      rule: A condition of less than zero picks the losses, which add to a negative total. A minus sign in front of the function turns that total into a positive size.
+    misses:
+      value: The losses add to -15, so their size is 15.
+      syntax: "Check the brackets and operators. Every opening bracket needs a closing one."
+      required-function: Add only the negative weeks, and let SUMIF do the adding.
+      reference: Read the variances from the grid so the filter applies to real cells.
+    accept:
+      - =-SUMIF(B2:B6,"<0")
+      - =-sumif(b2:b6,"<0")
+      - =-SUMIF($B$2:$B$6,"<0")
+      - =-SUMIF(B2:B6,"<0")+0
+      - =-SUMIF(B2:B6,"<0")*1
+      - =-SUMIF(B$2:B$6,"<0")
+    reject:
+      - { formula: =SUM(B2:B6), rule: required-function }
+      - { formula: '=SUMIF(B2:B6,"<0")', rule: value }
+      - { formula: '=SUMIF(B2:B6,">0")', rule: value }
+      - { formula: '=SUMIF(B3:B6,"<0")', rule: value }
+      - { formula: '=-SUMIF(B2:B6,"<0")/0', rule: value }
+      - { formula: =-SUMIF(B2:B6 "<0"), rule: syntax }
+notes:
+  summary: 'SUMIF splits a column of changes by sign: ">0" adds the gains and "<0" adds the drops. A minus in front turns the total of the drops into a positive size.'
+  syntax: SUMIF(range, ">0") and =-SUMIF(range, "<0")
+  example: '`=SUMIF(A1:A3,">0")` with 5, -2 and 3 gives 8.'
+  commonErrors:
+    - The criteria range holds text that cannot be compared with a number, or a comparison lost its quotes and is read as a cell reference.
+    - The function is misspelled, or SUMIFS was used with the argument order SUMIF keeps.
+    - Losses are negative, so a report that wants their size needs the minus in front of SUMIF. Without it the figure reads as -15 rather than 15.

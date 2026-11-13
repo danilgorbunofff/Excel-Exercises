@@ -1,0 +1,105 @@
+---
+// Why this exists: the learning tracks as cards: an icon, the name, how many
+// exercises and how long, and a progress bar from this browser's progress.
+import { formatMinutes, type TrackSummary, topicPath } from "../lib/exercises.ts";
+import TrackIcon from "./TrackIcon.astro";
+
+interface Props {
+  tracks: readonly TrackSummary[];
+  /** Show each track's summary under its name. */
+  detailed?: boolean;
+  /** The id of the heading that names the list. */
+  labelledby?: string;
+}
+const { tracks, detailed = false, labelledby } = Astro.props;
+---
+
+<ul class="tracks" aria-labelledby={labelledby}>
+  {
+    tracks.map((t) => (
+      <li>
+        <a class="card track-card" href={topicPath(t.topic.slug)}>
+          <span class="top">
+            <TrackIcon slug={t.topic.slug} />
+            <span class="text">
+              <span class="name">{t.topic.title}</span>
+              <span class="facts">
+                {t.exercises.length} exercises · {formatMinutes(t.minutes)}
+              </span>
+            </span>
+          </span>
+          {detailed && <span class="summary">{t.topic.summary}</span>}
+          <span class="progress" data-track-progress={t.exercises.map((p) => p.exercise.id).join(" ")}>
+            <span class="progress-bar" aria-hidden="true">
+              <span data-bar />
+            </span>
+            <span class="progress-text" data-bar-text>
+              0 of {t.exercises.length} done
+            </span>
+          </span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .tracks {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  li {
+    display: grid;
+  }
+  .track-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+  .top {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .text {
+    display: grid;
+    gap: 0.125rem;
+  }
+  .name {
+    font-size: var(--size-s);
+    font-weight: 600;
+    color: var(--heading);
+  }
+  .track-card:hover .name {
+    color: var(--correct);
+    text-decoration: underline;
+  }
+  .facts,
+  .progress-text {
+    font-size: var(--size-xs);
+    color: var(--faint);
+  }
+  .summary {
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .progress {
+    display: grid;
+    gap: var(--space-1);
+    margin-top: auto;
+  }
+  @media (min-width: 40rem) {
+    .tracks {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 64rem) {
+    .tracks {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,86 @@
+id: average-functions-summary
+slug: average-functions-summary
+level: 2
+title: Average functions summary
+topic: statistics
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: Put the average of the two slowest (highest) times into C2, taking the values from the unsorted column.
+    rows:
+      - [Swimmer, Seconds, Slowest-two average]
+      - [Ada, 58, null]
+      - [Ben, 61, null]
+      - [Cleo, 55, null]
+      - [Dev, 57, null]
+      - [Eli, 50, null]
+    answerCell: C2
+    expected: 59.5
+    answer: =(LARGE(B2:B6,1)+LARGE(B2:B6,2))/2
+    requiredFunctions: [LARGE]
+    hints:
+      nudge: "Ask for the largest and the second largest times separately, then average the pair."
+      rule: "LARGE returns the value at a given position from the top, so position 1 is the largest. To average two values, add them and divide by 2."
+    misses:
+      value: The two largest are 61 and 58. Add them, divide by two, and the cell holds 59.5.
+      syntax: "Check the brackets and operators. Every opening bracket needs a closing one."
+      required-function: LARGE returns one position at a time, so ask it twice and average the pair.
+      reference: Both calls point at B2:B6, so no time is typed into the formula.
+    accept:
+      - =(LARGE(B2:B6,1)+LARGE(B2:B6,2))/2
+      - =(large(b2:b6,1)+large(b2:b6,2))/2
+      - =(LARGE($B$2:$B$6,1)+LARGE($B$2:$B$6,2))/2
+      - =(LARGE(B2:B6,1)+LARGE(B2:B6,2))/2+0
+      - =(LARGE(B2:B6,1)+LARGE(B2:B6,2))*1/2
+      - =(MAX(B2:B6)+LARGE(B2:B6,2))/2
+    reject:
+      - { formula: =AVERAGE(B2:B6), rule: required-function }
+      - { formula: =MAX(B2:B6), rule: required-function }
+      - { formula: "=(LARGE(B3:B6,1)+LARGE(B3:B6,2))/2", rule: value }
+      - { formula: "=LARGE(B2:B6,2)", rule: value }
+      - { formula: "=(LARGE(B2:B6,2)+LARGE(B2:B6,3))/2", rule: value }
+      - { formula: "=(LARGE(B2:B6,1)+LARGE(B2:B6,2))/0", rule: value }
+      - { formula: =LARGE(B2:B6 1), rule: syntax }
+  - prompt: Put the place the middle time earns into C2, so the row shows where the median sits.
+    rows:
+      - [Swimmer, Seconds, Median's place]
+      - [Ada, 58, null]
+      - [Ben, 61, null]
+      - [Cleo, 55, null]
+      - [Dev, 57, null]
+      - [Eli, 50, null]
+    answerCell: C2
+    expected: 3
+    answer: =RANK(MEDIAN(B2:B6),B2:B6)
+    requiredFunctions: [RANK, MEDIAN]
+    hints:
+      nudge: "Find the middle time first, then ask what place that time takes in the team."
+      rule: "A function can sit inside another as an argument. MEDIAN returns the middle value, and RANK returns the place a value takes in a range."
+    misses:
+      value: The five times run 50, 55, 57, 58, 61, so 57 is third from the top.
+      syntax: "Check the brackets, commas and quote marks. RANK follows the pattern `=RANK(number, ref, [order])`."
+      required-function: Once MEDIAN returns 57, RANK turns that 57 into third place.
+      reference: Both functions read B2:B6, so the comparison stays inside the team.
+    accept:
+      - =RANK(MEDIAN(B2:B6),B2:B6)
+      - =rank(median(b2:b6),b2:b6)
+      - =RANK(MEDIAN($B$2:$B$6),$B$2:$B$6)
+      - =RANK(MEDIAN(B2:B6),B2:B6)+0
+      - =RANK(MEDIAN(B2:B6),B2:B6)*1
+      - =RANK(MEDIAN(B$2:B$6),B$2:B$6)
+    reject:
+      - { formula: =MEDIAN(B2:B6), rule: required-function }
+      - { formula: "=RANK(AVERAGE(B2:B6),B2:B6)", rule: required-function }
+      - { formula: "=RANK(B2,B2:B6)", rule: required-function }
+      - { formula: "=RANK(MEDIAN(B2:B6),B2:B6)/0", rule: value }
+      - { formula: "=RANK(MEDIAN(B2:B6),B2:B6", rule: syntax }
+      - { formula: "=RANK(MEDIAN(B3:B6),B3:B6)", rule: value }
+      - { formula: "=RANK(MEDIAN(B2:B6),B2:B6)*2", rule: value }
+notes:
+  summary: "Some summaries need two functions joined together. Add two LARGE results to average the top two values, or put MEDIAN inside RANK to find the middle value's place."
+  syntax: RANK(MEDIAN(range), range) and =(LARGE(range,1)+LARGE(range,2))/2
+  example: "`=(LARGE(A1:A4,1)+LARGE(A1:A4,2))/2` with 3, 8, 6 and 10 gives 9."
+  commonErrors:
+    - One of the LARGE positions runs past the end of the range, which leaves LARGE no value to add.
+    - "RANK was given a number that is not in the range, which an average of a subset often produces: 59.5 appears nowhere among the times."
+    - An argument in the nest arrived as text that cannot be read as a number.

@@ -1,0 +1,89 @@
+---
+// Why this exists: a worked example as a small read-only grid. The cell with
+// the formula shows its result, and the caption says which formula it holds.
+import { columnLetters, formatValue, parseAddress } from "@practice/grader";
+
+interface Props {
+  rows: readonly (readonly (string | number | boolean | null)[])[];
+  cell: string;
+  formula: string;
+  result: string | number | boolean;
+}
+const { rows, cell, formula, result } = Astro.props;
+const at = parseAddress(cell);
+const width = rows[0]?.length ?? 0;
+const kind = (v: unknown) => (typeof v === "number" ? "num" : typeof v === "boolean" ? "bool" : "");
+---
+
+<div class="example-wrap">
+  <table class="example">
+    <caption>{cell} holds <code>{formula}</code> and shows {formatValue(result)}.</caption>
+    <thead>
+      <tr>
+        <td></td>
+        {Array.from({ length: width }, (_, i) => <th scope="col">{columnLetters(i + 1)}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row, r) => (
+          <tr>
+            <th scope="row">{r + 1}</th>
+            {row.map((v, c) => {
+              const isResult = at?.row === r + 1 && at?.col === c + 1;
+              return isResult ? (
+                <td class:list={["result", kind(result)]}>{formatValue(result)}</td>
+              ) : (
+                <td class={kind(v)}>{formatValue(v)}</td>
+              );
+            })}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .example-wrap {
+    max-width: 32rem;
+    margin: 0 0 var(--space-3);
+  }
+  .example {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    font-size: var(--size-m);
+    font-variant-numeric: tabular-nums;
+  }
+  caption {
+    text-align: left;
+    padding-bottom: var(--space-2);
+  }
+  th,
+  thead td {
+    width: 2rem;
+    background: var(--header);
+    color: var(--muted);
+    font-size: var(--size-xs);
+    font-weight: 500;
+    text-align: center;
+    border: 1px solid var(--rule);
+  }
+  td {
+    height: 2rem;
+    padding: 0 var(--space-2);
+    border: 1px solid var(--rule);
+  }
+  .num {
+    text-align: right;
+  }
+  .bool {
+    text-align: center;
+  }
+  .result {
+    background: var(--correct-tint);
+    box-shadow: inset 0 0 0 2px var(--correct);
+    font-weight: 600;
+  }
+</style>

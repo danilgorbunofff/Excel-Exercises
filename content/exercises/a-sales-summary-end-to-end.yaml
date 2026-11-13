@@ -1,0 +1,92 @@
+id: a-sales-summary-end-to-end
+slug: a-sales-summary-end-to-end
+level: 3
+title: Sales summary end to end
+topic: capstone
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In D2, total the amount column for the North rows only.
+    rows:
+      - [Region, Rep, Amount, Answer]
+      - [North, Ana, 1200, null]
+      - [South, Bo, 850, null]
+      - [North, Cy, 1450, null]
+      - [East, Di, 600, null]
+    answerCell: D2
+    expected: 2650
+    answer: =SUMIFS(C2:C5,A2:A5,"North")
+    requiredFunctions: [SUMIFS]
+    hints:
+      nudge: Add up the amounts only on the rows where the region matches.
+      rule: SUMIFS takes the range to add first, then pairs of a range to test and its condition. Text conditions go in double quotes.
+    misses:
+      value: 1200 and 1450 are the two North rows, so the total is 2650.
+      syntax: "Check the brackets, commas and quote marks. SUMIFS follows the pattern `=SUMIFS(sum_range, criteria_range1, criteria1, ...)`."
+      required-function: Only the North rows count, so the total needs a criterion.
+      reference: The amounts run down C2:C5 and the region labels down A2:A5.
+    accept:
+      - =SUMIFS(C2:C5,A2:A5,"North")
+      - =sumifs(c2:c5,a2:a5,"north")
+      - =SUMIFS($C$2:$C$5,$A$2:$A$5,"North")
+      - =SUMIFS(C$2:C$5,A$2:A$5,"North")
+      - =SUMIFS( C2:C5 , A2:A5 , "North" )
+      - =SUMIFS(C2:C5,A2:A5,"North")+0
+    reject:
+      - { formula: =SUM(C2:C5), rule: required-function }
+      - { formula: '=SUMIFS(C2:C5,B2:B5,"North")', rule: value }
+      - { formula: '=SUMIFS(C2:C3,A2:A3,"North")', rule: value }
+      - { formula: '=SUMIFS(C2:C5,A2:A5,"South")', rule: value }
+      - { formula: '=SUMIFS(C3:C5,A3:A5,"North")', rule: value }
+      - { formula: '=SUMIFS(C2:C5,A2:A5,"North")/0', rule: value }
+      - { formula: '=SUMIFS C2:C5,A2:A5,"North"', rule: syntax }
+  - prompt: In D2, name the region with the larger total, North or South.
+    rows:
+      - [Region, Rep, Amount, Answer]
+      - [North, Ana, 1200, null]
+      - [South, Bo, 850, null]
+      - [North, Cy, 1450, null]
+      - [East, Di, 600, null]
+    answerCell: D2
+    expected: North
+    answer: =IF(SUMIFS(C2:C5,A2:A5,"North")>SUMIFS(C2:C5,A2:A5,"South"),"North","South")
+    requiredFunctions: [IF, SUMIFS]
+    hints:
+      nudge: Work out both region totals, compare them, and let one function choose the word.
+      rule: IF takes a test, the value when it is true and the value when it is false. The test can compare two formulas with a greater than sign.
+    misses:
+      value: 2650 against 850, so the larger region is North.
+      syntax: '=IF(SUMIFS(...)>SUMIFS(...),"North","South"): the test, the answer when it holds, the answer when it does not.'
+      required-function: The cell has to choose between two words.
+      reference: Both totals read the amount column, C2:C5.
+    accept:
+      - =IF(SUMIFS(C2:C5,A2:A5,"North")>SUMIFS(C2:C5,A2:A5,"South"),"North","South")
+      - =IF(SUMIFS(C2:C5,A2:A5,"North")>=SUMIFS(C2:C5,A2:A5,"South"),"North","South")
+      - =IF(SUMIFS($C$2:$C$5,$A$2:$A$5,"North")>SUMIFS($C$2:$C$5,$A$2:$A$5,"South"),"North","South")
+      - =IF(SUMIFS(C$2:C$5,A$2:A$5,"North")>SUMIFS(C$2:C$5,A$2:A$5,"South"),"North","South")
+      - =IF( SUMIFS(C2:C5,A2:A5,"North") > SUMIFS(C2:C5,A2:A5,"South") , "North" , "South" )
+      - =IF(SUMIFS(C2:C5,A2:A5,"North")>SUMIFS(C2:C5,A2:A5,"South"),"North","South")&""
+    reject:
+      - { formula: '=SUMIFS(C2:C5,A2:A5,"North")', rule: required-function }
+      - { formula: '=IF(C2>C3,"North","South")', rule: required-function }
+      - {
+          formula: '=IF(SUMIFS(C2:C5,A2:A5,"North")>SUMIFS(C2:C5,A2:A5,"South"),"South","North")',
+          rule: value,
+        }
+      - {
+          formula: '=IF(SUMIFS(C2:C5,A2:A5,"South")>SUMIFS(C2:C5,A2:A5,"North"),"North","South")',
+          rule: value,
+        }
+      - { formula: '=IF(SUMIFS(C2:C5,A2:A5,"North")/0>0,"North","South")', rule: value }
+      - {
+          formula: '=IF SUMIFS(C2:C5,A2:A5,"North")>SUMIFS(C2:C5,A2:A5,"South"),"North","South"',
+          rule: syntax,
+        }
+notes:
+  summary: SUMIFS adds the values in one range on rows where every condition is met, and it takes the range to add first. IF can then compare two such totals and return a word.
+  syntax: SUMIFS(amounts,criteria_range,"North") totals one region; wrap it in IF to compare two
+  example: '`=IF(SUMIFS(B1:B4,A1:A4,"East")>500,"high","low")` gives high when the East amounts add up to more than 500.'
+  commonErrors:
+    - The criteria range and the sum range are different shapes, so the rows cannot be lined up.
+    - The function name is misspelled, and Excel returns `#NAME?`.
+    - The criterion points at the rep column instead of the region column, and the answer comes back as 0.

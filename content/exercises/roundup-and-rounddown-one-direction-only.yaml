@@ -1,0 +1,86 @@
+id: roundup-and-rounddown-one-direction-only
+slug: roundup-and-rounddown-one-direction-only
+level: 2
+title: "ROUNDUP and ROUNDDOWN: one direction only"
+topic: rounding
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: "In B6, work out the crates needed: twelve units to a crate, and a part crate still ships."
+    rows:
+      - [Item, Units]
+      - [Bolts, 250]
+      - [Nuts, 130]
+      - [Washers, 96]
+      - [Total units, 476]
+      - [Crates needed, null]
+    answerCell: B6
+    expected: 40
+    answer: =ROUNDUP(B5/12,0)
+    requiredFunctions: [ROUNDUP]
+    hints:
+      nudge: "A part crate still ships, so the division has to round up, never to the nearest."
+      rule: "ROUNDUP always rounds away from zero, whatever the decimal. It takes the number, then how many decimals to keep, and 0 keeps none."
+    misses:
+      value: "476 units is 39 full crates and 8 over, so the order needs the next crate up: 40."
+      syntax: "Check the brackets, commas and quote marks. ROUNDUP follows the pattern `=ROUNDUP(number, num_digits)`."
+      required-function: The part crate still ships, so the count has to move up, whatever the decimal says.
+      reference: Divide the total in B5, so a change to the unit counts changes the crate order.
+    accept:
+      - =ROUNDUP(B5/12,0)
+      - =roundup(b5/12,0)
+      - =ROUNDUP($B$5/12,0)
+      - =ROUNDUP(B5/12,0)+0
+      - =ROUNDUP(B5/12,0)*1
+      - =ROUNDUP(B5/12,0)/1
+    reject:
+      - { formula: "=ROUNDUP(B5/12,0", rule: syntax }
+      - { formula: "=ROUNDDOWN(B5/12,0)", rule: required-function }
+      - { formula: "=ROUND(B5/12,0)", rule: required-function }
+      - { formula: "=ROUNDUP(B5/12,2)", rule: value }
+      - { formula: "=ROUNDUP(476/12,0)", rule: reference }
+      - { formula: "=ROUNDUP(B5,0)", rule: value }
+      - { formula: "=ROUNDUP(B5/12,0)/0", rule: value }
+  - prompt: Now in B6, count only the crates that are completely full.
+    rows:
+      - [Item, Units]
+      - [Bolts, 250]
+      - [Nuts, 130]
+      - [Washers, 96]
+      - [Total units, 476]
+      - [Full crates, null]
+    answerCell: B6
+    expected: 39
+    answer: =ROUNDDOWN(B5/12,0)
+    requiredFunctions: [ROUNDDOWN]
+    hints:
+      nudge: "A part crate is not a full crate, so drop the fraction instead of rounding it."
+      rule: "ROUNDDOWN always rounds toward zero, so it cuts off the fraction. It takes the number, then how many decimals to keep, and 0 keeps none."
+    misses:
+      value: 476 divided by 12 is 39.67, so 39 crates are full and 8 units are left over.
+      syntax: "Check the brackets, commas and quote marks. ROUNDDOWN follows the pattern `=ROUNDDOWN(number, num_digits)`."
+      required-function: A full crate throws the part crate away, so the count moves toward zero.
+      reference: Take the total from B5 rather than typing 476, so the count follows the sheet.
+    accept:
+      - =ROUNDDOWN(B5/12,0)
+      - =rounddown(b5/12,0)
+      - =ROUNDDOWN($B$5/12,0)
+      - =ROUNDDOWN(B5/12,0)+0
+      - =ROUNDDOWN(B5/12,0)-0
+      - =ROUNDDOWN(B5/12,0)/1
+    reject:
+      - { formula: "=ROUNDDOWN(B5/12,0", rule: syntax }
+      - { formula: "=ROUNDUP(B5/12,0)", rule: required-function }
+      - { formula: "=ROUND(B5/12,0)", rule: required-function }
+      - { formula: "=ROUNDDOWN(B5/12,2)", rule: value }
+      - { formula: "=ROUNDDOWN(476/12,0)", rule: reference }
+      - { formula: "=ROUNDDOWN(B5,0)", rule: value }
+      - { formula: "=ROUNDDOWN(B5/12,0)/0", rule: value }
+notes:
+  summary: "ROUNDUP always rounds away from zero and ROUNDDOWN always rounds toward zero. Both take the number and the decimals to keep, like ROUND."
+  syntax: ROUNDUP(number, digits) and =ROUNDDOWN(number, digits)
+  example: "`=ROUNDUP(3.21,0)` gives 4, and `=ROUNDDOWN(3.89,0)` gives 3."
+  commonErrors:
+    - The digits argument is text, or a range was passed where a single number belongs.
+    - The name is typed ROUND-UP or ROUND_UP, and the function is one word.
+    - ROUNDDOWN returns 39 and leaves 8 units unshipped, where the order needs 40 crates.

@@ -1,0 +1,337 @@
+---
+// Why this exists: the spreadsheet part of an exercise. The name box shows the
+// answer cell, the formula bar is where the formula is typed, and the grid is a
+// real table rendered on the server. Every cell carries its address, so the
+// exercise script can outline what a formula reads.
+import { columnLetters, formatValue, parseAddress } from "@practice/grader";
+import type { Screen } from "../content/schema.ts";
+
+interface Props {
+  screen: Screen;
+  /** 0-based screen index; the first screen's input is the skip link target. */
+  index: number;
+  action: string;
+  /** No empty rows and columns around the data, for a sheet inside another page. */
+  compact?: boolean;
+}
+const { screen, index, action, compact = false } = Astro.props;
+const answer = parseAddress(screen.answerCell);
+const width = screen.rows[0]?.length ?? 0;
+const columns = Array.from({ length: width }, (_, i) => columnLetters(i + 1));
+// Empty rows and columns around the data make it read as a sheet on wide
+// screens. They hold nothing, are hidden from assistive tech and from phones.
+const padColumns = compact
+  ? []
+  : Array.from({ length: Math.max(6 - width, 2) }, (_, i) => columnLetters(width + i + 1));
+const padRows = compact
+  ? []
+  : Array.from(
+      { length: Math.max(16 - screen.rows.length, 3) },
+      (_, i) => screen.rows.length + i + 1,
+    );
+const inputId = index === 0 ? "formula" : `formula-${index + 1}`;
+const formId = `work-${index + 1}`;
+const verdictId = `verdict-${index + 1}`;
+const kind = (v: unknown) =>
+  typeof v === "number" ? "num" : typeof v === "boolean" ? "bool" : v === null ? "empty" : "text";
+---
+
+<div class="sheet">
+  <div class="sheet-bar">
+    <h2>Exercise</h2>
+    <button class="reset" type="button" data-reset disabled>Reset</button>
+  </div>
+  <form class="formula-row" id={formId} action={action} method="get" data-form>
+    <span class="namebox" aria-hidden="true">{screen.answerCell}</span>
+    <label class="visually-hidden" for={inputId}>Formula for {screen.answerCell}</label>
+    <div class="formula-field">
+      <div class="formula-mirror" aria-hidden="true" data-mirror></div>
+      <input
+        class="formula"
+        id={inputId}
+        name="formula"
+        type="text"
+        placeholder="="
+        autocomplete="off"
+        autocapitalize="off"
+        autocorrect="off"
+        spellcheck="false"
+        enterkeyhint="done"
+        aria-describedby={verdictId}
+        data-input
+      />
+    </div>
+  </form>
+  <div class="grid-wrap" data-grid-wrap>
+    <table class="grid" data-grid>
+      <caption class="visually-hidden">
+        The sheet for this exercise. Your formula goes in {screen.answerCell}.
+      </caption>
+      <thead>
+        <tr>
+          <td class="corner"></td>
+          {
+            columns.map((c, i) => (
+              <th scope="col" class:list={{ active: answer?.col === i + 1 }}>
+                {c}
+              </th>
+            ))
+          }
+          {
+            padColumns.map((c) => (
+              <td class="pad pad-head" aria-hidden="true">
+                {c}
+              </td>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody>
+        {
+          screen.rows.map((row, r) => (
+            <tr>
+              <th scope="row" class:list={{ active: answer?.row === r + 1 }}>
+                {r + 1}
+              </th>
+              {row.map((value, c) => {
+                const address = `${columns[c]}${r + 1}`;
+                const isAnswer = address === screen.answerCell;
+                return (
+                  <td
+                    data-cell={address}
+                    class:list={[kind(value), { answer: isAnswer }]}
+                    aria-label={isAnswer ? `${address}, your answer` : undefined}
+                  >
+                    {isAnswer ? "" : formatValue(value)}
+                  </td>
+                );
+              })}
+              {padColumns.map(() => (
+                <td class="pad" aria-hidden="true" />
+              ))}
+            </tr>
+          ))
+        }
+        {
+          padRows.map((n) => (
+            <tr class="pad" aria-hidden="true">
+              <td class="pad-head">{n}</td>
+              {[...columns, ...padColumns].map(() => (
+                <td />
+              ))}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  .sheet {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-m);
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .sheet-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-1) var(--space-2) var(--space-1) var(--space-3);
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+  h2 {
+    margin: 0;
+    font-size: var(--size-s);
+    font-weight: 600;
+  }
+  .reset {
+    min-height: 2.25rem;
+    min-width: var(--target);
+    padding: 0 var(--space-3);
+    border: 0;
+    border-radius: var(--radius-s);
+    background: var(--surface);
+    color: var(--correct);
+    font-size: var(--size-s);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .reset:hover {
+    text-decoration: underline;
+  }
+  .reset:focus-visible {
+    outline-color: var(--on-primary);
+  }
+  .reset:disabled {
+    background: transparent;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.55);
+    color: rgb(255 255 255 / 0.8);
+    cursor: not-allowed;
+    text-decoration: none;
+  }
+  .formula-row {
+    display: flex;
+    border-bottom: 1px solid var(--rule);
+  }
+  .namebox {
+    display: flex;
+    align-items: center;
+    flex: none;
+    width: 4rem;
+    padding: 0 var(--space-3);
+    border-right: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: var(--size-m);
+  }
+  /* The mirror sits behind the transparent input and draws marks under the
+     references and the part of the formula a verdict is about. */
+  .formula-field {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+  }
+  .formula,
+  .formula-mirror {
+    font: 400 var(--size-base) / 2.75rem var(--font-mono);
+    font-variant-ligatures: none;
+    letter-spacing: 0;
+    padding: 0 var(--space-3);
+    white-space: pre;
+  }
+  .formula {
+    position: relative;
+    width: 100%;
+    height: 2.75rem;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--text);
+  }
+  .formula::placeholder {
+    color: var(--muted);
+  }
+  .formula:focus-visible {
+    outline-offset: -2px;
+  }
+  .formula[aria-invalid="true"] {
+    box-shadow: inset 0 -2px 0 var(--miss);
+  }
+  .formula-mirror {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    color: transparent;
+  }
+  .formula-mirror :global(mark) {
+    color: transparent;
+    border-radius: 2px;
+  }
+  .formula-mirror :global(mark.read) {
+    background: var(--read-tint);
+    box-shadow: inset 0 -2px 0 var(--read);
+  }
+  .formula-mirror :global(mark.miss) {
+    background: var(--miss-tint);
+    box-shadow: inset 0 -2px 0 var(--miss);
+  }
+  .grid-wrap {
+    overflow-x: auto;
+  }
+  .grid {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-cell);
+    font-size: var(--size-m);
+    font-variant-numeric: tabular-nums;
+  }
+  th,
+  .corner {
+    height: 1.75rem;
+    padding: 0 var(--space-1);
+    background: var(--header);
+    color: var(--muted);
+    font-size: var(--size-xs);
+    font-weight: 500;
+    text-align: center;
+    border: 1px solid var(--rule);
+  }
+  tbody th {
+    width: 2.5rem;
+  }
+  th.active {
+    background: var(--correct-tint);
+    color: var(--correct);
+    font-weight: 700;
+  }
+  td {
+    height: 2rem;
+    padding: 0 var(--space-2);
+    border: 1px solid var(--rule);
+  }
+  td.num {
+    text-align: right;
+    white-space: nowrap;
+  }
+  td.bool,
+  td:global(.err) {
+    text-align: center;
+  }
+  td.answer {
+    box-shadow: inset 0 0 0 2px var(--primary);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  /* Cells the formula read: Excel's reference colour, as an outline and a tint.
+     The edge classes draw the outline of each range. */
+  td:global(.read) {
+    --rt: 0 0 transparent;
+    --rr: 0 0 transparent;
+    --rb: 0 0 transparent;
+    --rl: 0 0 transparent;
+    background: var(--read-tint);
+    box-shadow: var(--rt), var(--rr), var(--rb), var(--rl);
+  }
+  td:global(.read-top) {
+    --rt: inset 0 2px 0 var(--read);
+  }
+  td:global(.read-right) {
+    --rr: inset -2px 0 0 var(--read);
+  }
+  td:global(.read-bottom) {
+    --rb: inset 0 -2px 0 var(--read);
+  }
+  td:global(.read-left) {
+    --rl: inset 2px 0 0 var(--read);
+  }
+  td.answer:global(.answer-miss) {
+    background: var(--miss-tint);
+    box-shadow: inset 0 0 0 2px var(--miss);
+  }
+  td.answer:global(.answer-correct) {
+    background: var(--correct-tint);
+    box-shadow: inset 0 0 0 2px var(--correct);
+  }
+  .pad-head {
+    background: var(--header);
+    color: var(--muted);
+    font-size: var(--size-xs);
+    font-weight: 500;
+    text-align: center;
+  }
+  @media (max-width: 63.99rem) {
+    .pad {
+      display: none;
+    }
+  }
+  @media (max-width: 29.99rem) {
+    .grid {
+      font-size: var(--size-s);
+    }
+    td {
+      padding: 0 var(--space-1);
+    }
+  }
+</style>

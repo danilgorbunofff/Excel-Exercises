@@ -1,0 +1,61 @@
+---
+// Why this exists: the trail of parent pages. It never repeats a level and
+// never includes the page itself, whose name is the h1. Search engines get
+// the same trail as structured data.
+interface Props {
+  items: readonly { label: string; href: string }[];
+  /** Phones hide the trail on the exercise screen to keep the sheet in view. */
+  hideOnPhone?: boolean;
+}
+const { items, hideOnPhone = false } = Astro.props;
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((item, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: item.label,
+    item: new URL(item.href, Astro.site).href,
+  })),
+}).replaceAll("<", "\\u003c");
+---
+
+<nav class:list={["crumbs", { "hide-phone": hideOnPhone }]} aria-label="Breadcrumb">
+  <ol>
+    {
+      items.map((item) => (
+        <li>
+          <a href={item.href}>{item.label}</a>
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+<script type="application/ld+json" set:html={jsonLd} />
+
+<style>
+  .crumbs {
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  ol {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  li + li::before {
+    content: "/" / "";
+    padding: 0 var(--space-2);
+  }
+  a {
+    display: inline-block;
+    padding-block: var(--space-1);
+  }
+  @media (max-width: 47.99rem) {
+    .hide-phone {
+      display: none;
+    }
+  }
+</style>

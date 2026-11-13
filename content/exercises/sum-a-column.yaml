@@ -1,0 +1,46 @@
+id: sum-a-column
+slug: sum-a-column
+level: 1
+title: Add up a column
+topic: totals
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B6, add up the sales in B2 to B5.
+    rows:
+      - [Month, Sales]
+      - [Jan, 120]
+      - [Feb, 95]
+      - [Mar, 143]
+      - [Apr, 88]
+      - [Total, null]
+    answerCell: B6
+    expected: 446
+    answer: =SUM(B2:B5)
+    requiredFunctions: [SUM]
+    hints:
+      nudge: One function adds a whole range of cells.
+      rule: SUM takes a range written as the first cell, a colon, then the last cell.
+    misses:
+      syntax: Check that every opening bracket has a closing bracket.
+      required-function: Use SUM, so the total updates when a sale changes.
+      reference: Point at the cells. Typed numbers do not update when the data changes.
+      value: Check that the range starts at B2 and ends at B5.
+    accept:
+      - =SUM(B2:B5)
+      - =sum(b2:b5)
+      - =SUM(B2,B3,B4,B5)
+      - =SUM($B$2:$B$5)
+    reject:
+      - { formula: "=SUM(B2:B5", rule: syntax }
+      - { formula: "=B2+B3+B4+B5", rule: required-function }
+      - { formula: "=SUM(120,95,143,88)", rule: reference }
+      - { formula: "=SUM(B2:B6)", rule: reference }
+      - { formula: "=SUM(B2:B4)", rule: value }
+notes:
+  summary: SUM adds numbers. In a range, it skips text and empty cells.
+  syntax: SUM(number1, [number2], ...)
+  example: "`=SUM(A1:A10)` adds the ten values in A1 to A10."
+  commonErrors:
+    - A range that stops one row short leaves out the last value.
+    - A range that includes the total's own cell makes a circular reference.

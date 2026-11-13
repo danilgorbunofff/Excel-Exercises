@@ -1,0 +1,50 @@
+id: lookup-functions-summary
+slug: lookup-functions-summary
+level: 2
+title: Lookup functions summary
+topic: lookups
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B7, return the product name for the SKU in B6, even though the name column sits left of the key.
+    rows:
+      - [Product, SKU, On hand]
+      - [Bracket, BX-210, 240]
+      - [Clamp, CX-330, 96]
+      - [Dowel, DX-410, 60]
+      - [Extrusion, EX-500, 18]
+      - [Which SKU?, DX-410, null]
+      - [Product, null, null]
+    answerCell: B7
+    expected: Dowel
+    answer: =XLOOKUP(B6,B2:B5,A2:A5)
+    requiredFunctions: [XLOOKUP]
+    hints:
+      nudge: "The name sits left of the key, so use the lookup that can return from either side."
+      rule: "XLOOKUP searches one range and returns from another, which can sit left or right of it. VLOOKUP can only return columns to the right of the key."
+    misses:
+      value: DX-410 is the third SKU down, so the answer is the third name in the column to its left.
+      syntax: "Check the brackets, commas and quote marks. XLOOKUP follows the pattern `=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])`."
+      required-function: The name sits left of the SKU, which is the case XLOOKUP handles without help.
+      reference: Take the SKU from B6, so the next question is one edit away.
+    accept:
+      - =XLOOKUP(B6,B2:B5,A2:A5)
+      - =xlookup(b6,b2:b5,a2:a5)
+      - =XLOOKUP($B$6,$B$2:$B$5,$A$2:$A$5)
+      - =XLOOKUP(B6,B2:B5,A2:A5)&""
+      - =TRIM(XLOOKUP(B6,B2:B5,A2:A5))
+      - =PROPER(LOWER(XLOOKUP(B6,B2:B5,A2:A5)))
+    reject:
+      - { formula: "=XLOOKUP(B6,B2:B5,A2:A5", rule: syntax }
+      - { formula: "=VLOOKUP(B6,A2:B5,1,FALSE)", rule: required-function }
+      - { formula: "=INDEX(A2:A5,MATCH(B6,B2:B5,0))", rule: required-function }
+      - { formula: "=XLOOKUP(B6,A2:A5,B2:B5)", rule: value }
+      - { formula: "=XLOOKUP(B6,B2:B5,C2:C5)", rule: value }
+      - { formula: "=XLOOKUP(B6,B2:B5,B2:B5)", rule: value }
+notes:
+  summary: "Four functions do this job: VLOOKUP, HLOOKUP, INDEX with MATCH, and XLOOKUP. VLOOKUP only reads right from the key column, while XLOOKUP and INDEX with MATCH can return from either side."
+  syntax: XLOOKUP(value, search column, return column)
+  example: '`=XLOOKUP("K2",B1:B3,A1:A3)` with K1, K2 and K3 in B1:B3 returns A2, the cell left of K2.'
+  commonErrors:
+    - Nothing in the searched column matched, so the lookup has no row to return from.
+    - A VLOOKUP column number counted past the returned range, so it points at a column that is not there.

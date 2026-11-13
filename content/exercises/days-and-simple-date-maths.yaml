@@ -1,0 +1,79 @@
+id: days-and-simple-date-maths
+slug: days-and-simple-date-maths
+level: 2
+title: DAYS and simple date maths
+topic: dates
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: Both dates are serials. In D2, put the number of days from the escalation's From date to its To date.
+    rows:
+      - [Milestone, From, To, Days]
+      - [Escalation, 45352, 45366, null]
+      - [Resolution, 45358, 45366, null]
+    answerCell: D2
+    expected: 14
+    answer: =DAYS(C2,B2)
+    requiredFunctions: [DAYS]
+    hints:
+      nudge: One function counts the days from one date to another, and it wants the later date first.
+      rule: DAYS takes the end date first and the start date second, and returns the number of days between them. Swapping them gives a negative number.
+    misses:
+      value: 15 March minus 1 March is 14 days, with C2 as the end.
+      syntax: "Check the brackets, commas and quote marks. DAYS follows the pattern `=DAYS(end_date, start_date)`."
+      required-function: Name DAYS rather than subtracting by hand, so the sheet says which date is the end.
+      reference: Pass C2 and B2, so the second milestone fills down from the same pattern.
+    accept:
+      - =DAYS(C2,B2)
+      - =days(c2,b2)
+      - =DAYS($C$2,$B$2)
+      - =DAYS(C2,B2)+0
+      - =DAYS(C2,B2)*1
+      - =DAYS(C$2,B$2)
+    reject:
+      - { formula: =B2-C2, rule: required-function }
+      - { formula: =DAYS(C2), rule: syntax }
+      - { formula: "=DAYS(45366,45352)", rule: reference }
+      - { formula: "=DAYS(B2,C2)", rule: value }
+      - { formula: "=DAYS(C2,B2)/0", rule: value }
+      - { formula: "=DAYS(C2,B2", rule: syntax }
+  - prompt: Give the audit's length in weeks in D2, building the division on the days between the two dates.
+    rows:
+      - [Project, Start, End, Weeks]
+      - [Audit, 45352, 45415, null]
+      - [Migration, 45366, 45443, null]
+    answerCell: D2
+    expected: 9
+    answer: =DAYS(C2,B2)/7
+    requiredFunctions: [DAYS]
+    hints:
+      nudge: Count the days between the two dates first, then turn the days into weeks.
+      rule: DAYS returns a count of days, and a week is seven days, so dividing that count by 7 gives the weeks.
+    misses:
+      value: 1 March to 3 May is 63 days, so 63/7 is 9 weeks.
+      syntax: "Check the brackets, commas and quote marks. DAYS follows the pattern `=DAYS(end_date, start_date)`."
+      required-function: Count the days first; the weeks are arithmetic on the result.
+      reference: Read the start and end from B2 and C2 rather than typing the serials.
+    accept:
+      - =DAYS(C2,B2)/7
+      - =days(c2,b2)/7
+      - =DAYS($C$2,$B$2)/7
+      - =DAYS(C2,B2)/7+0
+      - =DAYS(C2,B2)*1/7
+      - =ROUND(DAYS(C2,B2)/7,0)
+    reject:
+      - { formula: =(C2-B2)/7, rule: required-function }
+      - { formula: =DAYS(C2), rule: syntax }
+      - { formula: "=DAYS(45415,45352)/7", rule: reference }
+      - { formula: "=DAYS(C2,B2)", rule: value }
+      - { formula: "=DAYS(B2,C2)/7", rule: value }
+      - { formula: "=DAYS(C2,B2)/0", rule: value }
+      - { formula: "=DAYS(C2,B2)/7)", rule: syntax }
+notes:
+  summary: DAYS takes an end date and a start date, in that order, and returns the number of days between them. Subtracting the start date from the end date gives the same number.
+  syntax: DAYS(end, start)
+  example: "`=DAYS(B1,A1)` with 1 March 2024 in A1 and 15 March 2024 in B1 gives 14."
+  commonErrors:
+    - A date argument is text that Excel cannot read as a date, so DAYS has no serial to subtract.
+    - An argument sits outside the range of serials this workbook can hold, so no distance can be computed.
+    - The arguments are the wrong way round, so DAYS returns -14.

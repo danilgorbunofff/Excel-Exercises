@@ -1,0 +1,90 @@
+id: countif-with-wildcards
+slug: countif-with-wildcards
+level: 3
+title: COUNTIF with wildcards
+topic: conditions
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B9, count the products whose name starts with "Widget" using one wildcard.
+    rows:
+      - [Product, Qty]
+      - [Widget A, 12]
+      - [Widget B, 8]
+      - [Gadget A, 5]
+      - [Widget C, 20]
+      - [Gizmo B, 3]
+      - [Widget D, 9]
+      - [Gadget B, 4]
+      - [Names starting with Widget, null]
+    answerCell: B9
+    expected: 4
+    answer: =COUNTIF(A2:A8,"Widget*")
+    requiredFunctions: [COUNTIF]
+    hints:
+      nudge: A wildcard after the shared start of the name covers the different endings.
+      rule: In a COUNTIF condition, * stands for any run of characters, including none, and ? for exactly one. The pattern goes in double quotes.
+    misses:
+      value: The star covers the rest of each name, so all four Widget rows count.
+      syntax: "Check the brackets, commas and quote marks. COUNTIF follows the pattern `=COUNTIF(range, criteria)`."
+      required-function: The column is text, so the count has to come from matches rather than numbers.
+      reference: Match the pattern against the product column itself, not against the answer cell.
+    accept:
+      - =COUNTIF(A2:A8,"Widget*")
+      - =countif(a2:a8,"widget*")
+      - =COUNTIF($A$2:$A$8,"Widget*")
+      - =COUNTIF(A2:A8,"Widget*")+0
+      - =COUNTIF(A2:A8,"Widget*")*1
+      - =COUNTIF(A2:A8,"WIDGET*")
+    reject:
+      - { formula: =COUNT(A2:A8), rule: required-function }
+      - { formula: '=COUNTIF(A2:A8,"Widget")', rule: value }
+      - { formula: '=COUNTIF(A2:A8,"Widget A")', rule: value }
+      - { formula: '=COUNTIF(A3:A8,"Widget*")', rule: value }
+      - { formula: '=COUNTIF(A2:A8,"Widget*")/0', rule: value }
+      - { formula: =COUNTIF(A2:A8 "Widget*"), rule: syntax }
+      - { formula: =COUNTA(A2:A8), rule: required-function }
+  - prompt: In B9, count the products whose name ends with "B".
+    rows:
+      - [Product, Qty]
+      - [Widget A, 12]
+      - [Widget B, 8]
+      - [Gadget A, 5]
+      - [Widget C, 20]
+      - [Gizmo B, 3]
+      - [Widget D, 9]
+      - [Gadget B, 4]
+      - [Ending in B, null]
+    answerCell: B9
+    expected: 3
+    answer: =COUNTIF(A2:A8,"*B")
+    requiredFunctions: [COUNTIF]
+    hints:
+      nudge: This time the shared part is at the end, so the wildcard goes before it.
+      rule: A star in front of a letter matches any text that ends with that letter. COUNTIF patterns ignore case, so a lower case b would match too.
+    misses:
+      value: "Three names end in B: Widget B, Gizmo B and Gadget B."
+      syntax: "Check the brackets, commas and quote marks. COUNTIF follows the pattern `=COUNTIF(range, criteria)`."
+      required-function: Matching part of a name is still a counting question, not a lookup.
+      reference: Point the pattern at column A, where the names live.
+    accept:
+      - =COUNTIF(A2:A8,"*B")
+      - =countif(a2:a8,"*b")
+      - =COUNTIF($A$2:$A$8,"*B")
+      - =COUNTIF(A2:A8,"*B")+0
+      - =COUNTIF(A2:A8,"*B")*1
+    reject:
+      - { formula: '=COUNTIF(A2:A8,"B*")', rule: value }
+      - { formula: '=COUNTIF(A2:A8,"B")', rule: value }
+      - { formula: '=COUNTIF(A2:A8,"*A")', rule: value }
+      - { formula: '=COUNTIF(A2:A8,"*B")/0', rule: value }
+      - { formula: '=COUNTIF(A2:A8,"*B"', rule: syntax }
+      - { formula: =COUNT(A2:A8)+2, rule: required-function }
+notes:
+  summary: COUNTIF criteria accept wildcards, which turn an exact match into a pattern. The star stands for any run of characters, including none, and the question mark for exactly one.
+  syntax: COUNTIF(range, "pattern*") counts the names that match; * stands for any run of characters and ? for exactly one
+  example: '`=COUNTIF(A1:A3,"Red*")` with Red pen, Blue pen and Red cap gives 2.'
+  commonErrors:
+    - A pattern typed without quotes, as in Widget*, is read as a name that does not exist.
+    - An exact criterion that no cell holds, such as Widget on its own, returns 0.
+    - A star on the wrong end counts a different set of rows and returns that count.

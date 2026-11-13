@@ -1,0 +1,83 @@
+id: sum-across-several-blocks
+slug: sum-across-several-blocks
+level: 2
+title: SUM across several blocks
+topic: totals
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B4, total both quarters, which sit in two blocks with an empty column between them.
+    rows:
+      - [Team, Q1, null, Q2]
+      - [North, 320, null, 300]
+      - [South, 250, null, 260]
+      - [Both quarters, null, null, null]
+    answerCell: B4
+    expected: 1130
+    answer: =SUM(B2:B3,D2:D3)
+    requiredFunctions: [SUM]
+    hints:
+      nudge: The two quarters are separate blocks, and one SUM can take both.
+      rule: SUM accepts several arguments separated by commas, and each one can be its own range. The empty column between the blocks is left out.
+    misses:
+      value: 320 + 250 + 300 + 260 is 1130.
+      syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
+      required-function: One function should take both blocks; adding them separately hides a mistake.
+      reference: Point at the two blocks in the grid rather than typing the four numbers in.
+    accept:
+      - =SUM(B2:B3,D2:D3)
+      - =sum(b2:b3,d2:d3)
+      - =SUM($B$2:$B$3,$D$2:$D$3)
+      - =SUM(B2:B3,D2:D3)+0
+      - =SUM(B2:B3,D2:D3)*1
+      - =SUM(B$2:B$3,D$2:D$3)
+    reject:
+      - { formula: =SUM(B2:B3), rule: value }
+      - { formula: "=SUM(B2:B3,D3:D3)", rule: value }
+      - { formula: "=SUM(C2:C3,D2:D3)", rule: value }
+      - { formula: =B2+B3+D2+D3, rule: required-function }
+      - { formula: "=SUM(B3:B3,D2:D3)", rule: value }
+      - { formula: "=SUM(B2:B3,D2:D3)/0", rule: value }
+      - { formula: =SUM(B2:B3 D2:D3), rule: syntax }
+  - prompt: In B5, total the whole block, skipping the text cell and the empty one.
+    rows:
+      - [Team, Jan, Feb, Mar]
+      - [North, 320, 180, 300]
+      - [South, 250, n/a, 260]
+      - [West, 400, null, 150]
+      - [Block total, null, null, null]
+    answerCell: B5
+    expected: 1860
+    answer: =SUM(B2:D4)
+    requiredFunctions: [SUM]
+    hints:
+      nudge: The months form one rectangle, so a single range can cover them all.
+      rule: A range from the top-left cell to the bottom-right cell covers a whole rectangle. SUM adds the numbers in it and skips text and empty cells.
+    misses:
+      value: The numbers are 320, 180, 300, 250, 260, 400 and 150, which total 1860.
+      syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
+      required-function: This is a single SUM over a rectangle, not an addition of columns.
+      reference: Read the block from the grid; a typed list cannot hold the text cells at all.
+    accept:
+      - =SUM(B2:D4)
+      - =sum(b2:d4)
+      - =SUM($B$2:$D$4)
+      - =SUM(B2:D4)+0
+      - =SUM(B2:D4)*1
+      - =SUM(B$2:D$4)
+    reject:
+      - { formula: =SUM(B2:B4), rule: value }
+      - { formula: =SUM(B2:C4), rule: value }
+      - { formula: =SUM(B2:D4)*2, rule: value }
+      - { formula: =B2+C2+D2+B3+C3+D3+B4+C4+D4, rule: required-function }
+      - { formula: =SUM(C2:D4), rule: value }
+      - { formula: =SUM(B2:D4)/0, rule: value }
+      - { formula: =SUM(B2:D4, rule: syntax }
+notes:
+  summary: SUM takes as many arguments as you need, and each one can be its own block. A comma between ranges adds them all in one call.
+  syntax: SUM(range1, range2, ...) across separate blocks, or =SUM(B2:D4) across one rectangle
+  example: "`=SUM(A1:A2,C1:C2)` with 1 and 2 in A1:A2 and 3 and 4 in C1:C2 gives 10."
+  commonErrors:
+    - A cell in a hand-written chain holds text. SUM over a whole range would have stepped over it.
+    - A block names a range that no longer exists after rows or columns were deleted.
+    - A rectangle that swallows its own total row adds the subtotal to the detail. Check the last row of the range.

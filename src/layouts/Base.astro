@@ -1,0 +1,121 @@
+---
+// Why this exists: the shell every page shares. It sets the title, description
+// and canonical URL, loads the design system, and puts the skip link, header
+// and footer in one place.
+import "../styles/font-fallbacks.css";
+import "../styles/tokens.css";
+import "../styles/base.css";
+import { siteConfig } from "../../site.config.ts";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import { hiddenFromSearch } from "../lib/routes.ts";
+
+interface Props {
+  title: string;
+  description: string;
+  /** The main section this page belongs to, such as "/exercises/". */
+  section?: string;
+  /** Where the skip link goes. The exercise page sends it to the formula input. */
+  skipTo?: { href: string; label: string };
+  /**
+   * Class on <main>: "page" is a 44rem reading column, "wide" an 80rem
+   * container, "flush" full width for pages made of bands, "exercise" the
+   * exercise workbench.
+   */
+  layout?: string;
+}
+
+const {
+  title,
+  description,
+  section,
+  skipTo = { href: "#main", label: "Skip to content" },
+  layout = "page",
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const fullTitle = Astro.url.pathname === "/" ? title : `${title} | ${siteConfig.name}`;
+// Share previews need absolute URLs. The image is made by tools/share-images.ts.
+const shareImage = new URL("/og.png", Astro.site).href;
+const noindex = hiddenFromSearch(Astro.url.pathname, siteConfig.accountsOpen);
+---
+
+<!doctype html>
+<html lang={siteConfig.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <script is:inline>
+      try {
+        const t = localStorage.getItem("theme");
+        if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteConfig.name} />
+    <meta property="og:image" content={shareImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <link
+      rel="preload"
+      href="/fonts/inter-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter-latin-700-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+  </head>
+  <body>
+    <a class="skip" href={skipTo.href}>{skipTo.label}</a>
+    <SiteHeader current={section} />
+    <main id="main" tabindex="-1" class={layout}>
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>
+
+<style is:global>
+  main.page {
+    width: 100%;
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-4) var(--space-7);
+  }
+  main.page h1 {
+    font-size: var(--size-xxl);
+    margin: 0 0 var(--space-4);
+    color: var(--heading);
+  }
+  main.wide {
+    width: 100%;
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 var(--space-4) var(--space-7);
+  }
+  @media (min-width: 48rem) {
+    main.wide {
+      padding-inline: var(--space-6);
+    }
+  }
+  main.flush {
+    width: 100%;
+  }
+</style>

@@ -1,0 +1,1139 @@
+{
+  "measuredAt": "2026-11-10T20:40:16.856Z",
+  "profile": "375x812 mobile, Slow 4G (150 ms RTT, 1.6 Mbps down), 4x CPU, headless Chromium, cold cache",
+  "results": [
+    {
+      "name": "excelexercises-home",
+      "url": "https://excelexercises.com/",
+      "status": 200,
+      "finalUrl": "https://excelexercises.com/",
+      "readyMs": 5711,
+      "dclMs": 1101,
+      "loadMs": 5706,
+      "title": "Excel Exercises: Fun, Hands-On Excel Practice Problems",
+      "h1": ["Excel Exercises helps regular people learn Excel as quickly as possible."],
+      "covers": [],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 0,
+      "iframes": [],
+      "requests": 36,
+      "thirdPartyHosts": {
+        "fonts.googleapis.com": 2,
+        "www.googletagmanager.com": 2,
+        "fonts.gstatic.com": 1,
+        "bat.bing.com": 2,
+        "connect.facebook.net": 2,
+        "www.google.com": 2,
+        "ad.doubleclick.net": 1,
+        "www.google-analytics.com": 2,
+        "www.clarity.ms": 1,
+        "bat.bing.net": 2,
+        "scripts.clarity.ms": 1,
+        "p.clarity.ms": 2,
+        "region1.analytics.google.com": 1,
+        "stats.g.doubleclick.net": 1,
+        "www.google.cz": 1
+      },
+      "desktop": {
+        "title": "Excel Exercises: Fun, Hands-On Excel Practice Problems",
+        "h1": ["Excel Exercises helps regular people learn Excel as quickly as possible."],
+        "covers": [],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 0,
+        "iframes": []
+      }
+    },
+    {
+      "name": "excelexercises-practice",
+      "url": "https://excelexercises.com/practice.html?lesson=89",
+      "status": 200,
+      "finalUrl": "https://excelexercises.com/practice.html?lesson=89",
+      "readyMs": 3689,
+      "dclMs": 3608,
+      "loadMs": 0,
+      "title": "Intro to Excel Practice | Excel Exercises",
+      "h1": ["You've Completed All the Lessons!", "Intro to Excel"],
+      "covers": [],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 5,
+      "canvases": 0,
+      "iframes": ["https://excelexercises.com/practice.html?lesson=89"],
+      "requests": 67,
+      "thirdPartyHosts": {
+        "fonts.googleapis.com": 2,
+        "cdnjs.cloudflare.com": 1,
+        "www.googletagmanager.com": 6,
+        "connect.facebook.net": 5,
+        "apis.google.com": 1,
+        "www.gstatic.com": 4,
+        "ajax.googleapis.com": 1,
+        "fonts.gstatic.com": 1,
+        "firestore.googleapis.com": 5,
+        "bat.bing.com": 2,
+        "www.google.com": 2,
+        "ad.doubleclick.net": 1,
+        "www.google-analytics.com": 2,
+        "unpkg.com": 5,
+        "www.clarity.ms": 1,
+        "bat.bing.net": 2,
+        "scripts.clarity.ms": 1,
+        "b.clarity.ms": 1,
+        "region1.analytics.google.com": 1,
+        "stats.g.doubleclick.net": 1,
+        "www.google.cz": 1
+      },
+      "desktop": {
+        "title": "Intro to Excel Practice | Excel Exercises",
+        "h1": ["You've Completed All the Lessons!", "Intro to Excel"],
+        "covers": [
+          {
+            "position": "sticky",
+            "coverPct": 14,
+            "text": "1. Intro to Excel IN PROGRESS 2. Cell Selection Shortcuts 3. COUNT Function 4. Larger Cell Selections 5. SUM Function 6. True & False 7. IF "
+          },
+          {
+            "position": "fixed",
+            "coverPct": 13,
+            "text": "Skip Question"
+          }
+        ],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 5,
+        "canvases": 3,
+        "iframes": ["https://excelexercises.com/practice.html?lesson=89"]
+      }
+    },
+    {
+      "name": "spreadsheetcenter-home",
+      "url": "https://spreadsheetcenter.com/",
+      "status": 200,
+      "finalUrl": "https://spreadsheetcenter.com/",
+      "readyMs": 10896,
+      "dclMs": 994,
+      "loadMs": 1498,
+      "title": "Learn Excel by Doing - Free Interactive Practice | Spreadsheet Center",
+      "h1": ["Learn Excel by doing"],
+      "covers": [
+        {
+          "position": "sticky",
+          "coverPct": 8,
+          "text": "Open main menu"
+        }
+      ],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 3,
+      "iframes": [],
+      "requests": 63,
+      "thirdPartyHosts": {},
+      "desktop": {
+        "title": "Learn Excel by Doing - Free Interactive Practice | Spreadsheet Center",
+        "h1": ["Learn Excel by doing"],
+        "covers": [
+          {
+            "position": "sticky",
+            "coverPct": 8,
+            "text": "Search Exercises Functions Articles Log in Sign up"
+          }
+        ],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 3,
+        "iframes": []
+      }
+    },
+    {
+      "name": "spreadsheetcenter-exercise",
+      "url": "https://spreadsheetcenter.com/excel-exercises/basic-sum-monthly-revenue/",
+      "status": 200,
+      "finalUrl": "https://spreadsheetcenter.com/excel-exercises/basic-sum-monthly-revenue/",
+      "readyMs": "not ready within 45 s",
+      "dclMs": 905,
+      "loadMs": 1477,
+      "title": "Excel SUM Exercise: Basic SUM | Spreadsheet Center",
+      "h1": ["Basic SUM"],
+      "covers": [
+        {
+          "position": "sticky",
+          "coverPct": 8,
+          "text": "Open main menu"
+        }
+      ],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 0,
+      "iframes": [],
+      "requests": 70,
+      "thirdPartyHosts": {},
+      "desktop": {
+        "title": "Excel SUM Exercise: Basic SUM | Spreadsheet Center",
+        "h1": ["Basic SUM"],
+        "covers": [
+          {
+            "position": "sticky",
+            "coverPct": 8,
+            "text": "Search Exercises Functions Articles Log in Sign up"
+          }
+        ],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 3,
+        "iframes": []
+      }
+    },
+    {
+      "name": "coddy-excel",
+      "url": "https://coddy.tech/playground/excel",
+      "status": 403,
+      "finalUrl": "https://coddy.tech/playground/excel?__cf_chl_rt_tk=nMCqgy7a90C0Kl8yiiLHUQLfWKN0etEZr2sdVdUXrtQ-1794342708-1.0.1.1-z1k1ITkeGY5fwJL4sJOZ3DDvq8_4eu0pHnAu8tQXybo",
+      "readyMs": "not ready within 45 s",
+      "dclMs": 435,
+      "loadMs": 2094,
+      "title": "Just a moment...",
+      "h1": ["coddy.tech"],
+      "covers": [],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 0,
+      "iframes": [],
+      "requests": 18,
+      "thirdPartyHosts": {
+        "challenges.cloudflare.com": 6,
+        "brunhild.challenges.cloudflare.com": 1
+      },
+      "desktop": {
+        "title": "Just a moment...",
+        "h1": ["coddy.tech"],
+        "covers": [],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 0,
+        "iframes": []
+      }
+    },
+    {
+      "name": "excelpractices-home",
+      "url": "https://excelpractices.pages.dev/",
+      "status": 200,
+      "finalUrl": "https://excelpractices.pages.dev/",
+      "readyMs": 1706,
+      "dclMs": 551,
+      "loadMs": 1703,
+      "title": "Excel Practice Online — Free Excel Exercises & Shortcut Training | ExcelPractices.online",
+      "h1": ["Practice Excel Online for Free"],
+      "covers": [],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 0,
+      "iframes": [],
+      "requests": 6,
+      "thirdPartyHosts": {
+        "www.googletagmanager.com": 1,
+        "fonts.googleapis.com": 1,
+        "fonts.gstatic.com": 1,
+        "region1.google-analytics.com": 1
+      },
+      "desktop": {
+        "title": "Excel Practice Online — Free Excel Exercises & Shortcut Training | ExcelPractices.online",
+        "h1": ["Practice Excel Online for Free"],
+        "covers": [],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 0,
+        "iframes": []
+      }
+    },
+    {
+      "name": "excelpractices-guide",
+      "url": "https://excelpractices.pages.dev/guide/arrow-keys",
+      "status": 200,
+      "finalUrl": "https://excelpractices.pages.dev/guide/arrow-keys/",
+      "readyMs": 1855,
+      "dclMs": 697,
+      "loadMs": 1852,
+      "title": "Arrow Key Navigation — Excel Practice Tutorial | ExcelPractices.online",
+      "h1": ["Excel Practice: Arrow Key Navigation"],
+      "covers": [],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 1,
+      "canvases": 0,
+      "iframes": [],
+      "requests": 7,
+      "thirdPartyHosts": {
+        "www.googletagmanager.com": 1,
+        "fonts.googleapis.com": 1,
+        "fonts.gstatic.com": 1,
+        "region1.google-analytics.com": 1
+      },
+      "desktop": {
+        "title": "Arrow Key Navigation — Excel Practice Tutorial | ExcelPractices.online",
+        "h1": ["Excel Practice: Arrow Key Navigation"],
+        "covers": [],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 1,
+        "canvases": 0,
+        "iframes": []
+      }
+    },
+    {
+      "name": "automateexcel-formulas",
+      "url": "https://www.automateexcel.com/formulas-functions/",
+      "status": 200,
+      "finalUrl": "https://www.automateexcel.com/formulas-functions/",
+      "readyMs": 7658,
+      "dclMs": 2246,
+      "loadMs": 7651,
+      "error": "Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'slice')\n    at eval (eval at evaluate (:370:30), <anonymous>:18:72)\n    at Array.map (<anonymous>)\n    at eval (eval at e",
+      "requests": 171,
+      "thirdPartyHosts": {
+        "fonts.googleapis.com": 4,
+        "cdn.iubenda.com": 11,
+        "cdnjs.cloudflare.com": 1,
+        "static.cloudflareinsights.com": 1,
+        "cdn.pushcrew.com": 3,
+        "connect.facebook.net": 2,
+        "fonts.gstatic.com": 1,
+        "cs.iubenda.com": 1,
+        "idb.iubenda.com": 1,
+        "www.googletagmanager.com": 1,
+        "pushcrew.com": 1
+      },
+      "desktopError": "Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'slice')\n    at eval (eval at evaluate (:370:30), <anonymous>:18:72)\n    at Array.map (<anonymous>)\n    at eval (eval at e"
+    },
+    {
+      "name": "w3schools-exercise",
+      "url": "https://www.w3schools.com/excel/exercise.php?filename=exercise_syntax1",
+      "status": 200,
+      "finalUrl": "https://www.w3schools.com/excel/exercise.php?filename=exercise_syntax1",
+      "readyMs": "not ready within 45 s",
+      "dclMs": 2944,
+      "loadMs": 5845,
+      "title": "Exercise v3.0",
+      "h1": ["Exercise:"],
+      "covers": [
+        {
+          "position": "fixed",
+          "coverPct": 10,
+          "text": "Submit Answer ❯ Show Answer"
+        },
+        {
+          "position": "fixed",
+          "coverPct": 100,
+          "text": ""
+        }
+      ],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 1,
+      "canvases": 0,
+      "iframes": [],
+      "requests": 42,
+      "thirdPartyHosts": {
+        "static.fastcmp.com": 3,
+        "sync.sparteo.com": 1,
+        "www.flashb.id": 7,
+        "www.googletagmanager.com": 2,
+        "connect.facebook.net": 2,
+        "assets.sparteo.com": 1,
+        "eu.fastcmp.com": 1,
+        "t.fastcmp.com": 3,
+        "srv.flashb.id": 1,
+        "tn.flashb.id": 1,
+        "region1.google-analytics.com": 2
+      },
+      "desktop": {
+        "title": "Exercise v3.0",
+        "h1": ["Exercise:"],
+        "covers": [
+          {
+            "position": "fixed",
+            "coverPct": 20,
+            "text": "Log in Sign Up Completed 0 of 49 Exercises: EXCEL Syntax Exercise 1 Exercise 2 Exercise 3 Go to EXCEL Syntax Tutorial EXCEL Ranges Exercise "
+          },
+          {
+            "position": "fixed",
+            "coverPct": 100,
+            "text": ""
+          }
+        ],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 1,
+        "canvases": 0,
+        "iframes": []
+      }
+    },
+    {
+      "name": "ref-microsoft-sumif",
+      "url": "https://support.microsoft.com/en-us/office/sumif-function-169b8c99-c05c-4483-a712-1697a653039b",
+      "status": 200,
+      "finalUrl": "https://support.microsoft.com/en-us/excel/functions/sumif-function",
+      "readyMs": 5277,
+      "dclMs": 4140,
+      "loadMs": 5216,
+      "title": "SUMIF function | Microsoft Support",
+      "h1": ["SUMIF function"],
+      "covers": [],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 3,
+      "canvases": 0,
+      "iframes": [
+        "https://learn-video.azurefd.net/vod/player?id=49d09ada-5df1-4634-b1aa-ea943b7067",
+        "https://support.microsoft.com/en-us/authentication/silentsignin?ru=%2Fen-us%2Fsi"
+      ],
+      "requests": 70,
+      "thirdPartyHosts": {
+        "learn-video.azurefd.net": 1,
+        "mem.gfx.ms": 4,
+        "js.monitor.azure.com": 2,
+        "fonts.gstatic.com": 2,
+        "videoencodingpublic-hgeaeyeba8gycee3.b01.azurefd.net": 1,
+        "login.microsoftonline.com": 5,
+        "aadcdn.msauth.net": 1,
+        "aadcdn.msftauth.net": 2,
+        "login.live.com": 2,
+        "logincdn.msftauth.net": 1
+      },
+      "desktop": {
+        "title": "SUMIF function | Microsoft Support",
+        "h1": ["SUMIF function"],
+        "covers": [],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 3,
+        "canvases": 0,
+        "iframes": [
+          "https://learn-video.azurefd.net/vod/player?id=49d09ada-5df1-4634-b1aa-ea943b7067",
+          "https://support.microsoft.com/en-us/authentication/silentsignin?ru=%2Fen-us%2Fsi"
+        ]
+      }
+    },
+    {
+      "name": "ref-exceljet-sumif",
+      "url": "https://exceljet.net/functions/sumif-function",
+      "status": 200,
+      "finalUrl": "https://exceljet.net/functions/sumif-function",
+      "readyMs": 6775,
+      "dclMs": 2062,
+      "loadMs": 6770,
+      "title": "Excel SUMIF function | Exceljet",
+      "h1": ["SUMIF Function"],
+      "covers": [
+        {
+          "position": "fixed",
+          "coverPct": 100,
+          "text": "We value your privacy We and our partners store and/or access information on a device, such as cookies and process personal data, such as un"
+        }
+      ],
+      "dialogs": [
+        "We value your privacy We and our partners store and/or access information on a device, such as cookies and process personal data, such as un"
+      ],
+      "overflowX": false,
+      "tables": 2,
+      "canvases": 0,
+      "iframes": [],
+      "requests": 58,
+      "thirdPartyHosts": {
+        "www.googletagmanager.com": 2,
+        "cdn.confiant-integrations.net": 2,
+        "hb-exceljet.s3.us-east-2.amazonaws.com": 1,
+        "cmp.inmobi.com": 9,
+        "api.cmp.inmobi.com": 1,
+        "asc-a.hbwrapper.com": 2,
+        "region1.google-analytics.com": 1
+      },
+      "desktop": {
+        "title": "Excel SUMIF function | Exceljet",
+        "h1": ["SUMIF Function"],
+        "covers": [
+          {
+            "position": "fixed",
+            "coverPct": 100,
+            "text": "We value your privacy We and our partners store and/or access information on a device, such as cookies and process personal data, such as un"
+          },
+          {
+            "position": "sticky",
+            "coverPct": 12,
+            "text": "Exceljet Training Videos Functions Formulas Shortcuts Articles Cart Login"
+          }
+        ],
+        "dialogs": [
+          "We value your privacy We and our partners store and/or access information on a device, such as cookies and process personal data, such as un"
+        ],
+        "overflowX": false,
+        "tables": 2,
+        "canvases": 0,
+        "iframes": []
+      }
+    },
+    {
+      "name": "ref-ablebits-sumif",
+      "url": "https://www.ablebits.com/office-addins-blog/excel-sumif-function/",
+      "status": 200,
+      "finalUrl": "https://www.ablebits.com/office-addins-blog/excel-sumif-function-formula-examples/",
+      "readyMs": 3136,
+      "dclMs": 3069,
+      "loadMs": 3107,
+      "title": "How to use SUMIF function in Excel with formula examples",
+      "h1": ["How to use SUMIF function in Excel with formula examples"],
+      "covers": [
+        {
+          "position": "fixed",
+          "coverPct": 94,
+          "text": "Consent Details About Cookies and similar technologies on our website When you use and access our website, we may place several cookie files"
+        }
+      ],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 1,
+      "canvases": 0,
+      "iframes": ["https://consentcdn.cookiebot.com/sdk/bc-v5.min.html"],
+      "requests": 25,
+      "thirdPartyHosts": {
+        "consent.cookiebot.com": 2,
+        "www.googletagmanager.com": 1,
+        "consentcdn.cookiebot.com": 3
+      },
+      "desktop": {
+        "title": "How to use SUMIF function in Excel with formula examples",
+        "h1": ["How to use SUMIF function in Excel with formula examples"],
+        "covers": [
+          {
+            "position": "fixed",
+            "coverPct": 47,
+            "text": "Consent Details About Cookies and similar technologies on our website When you use and access our website, we may place several cookie files"
+          }
+        ],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 1,
+        "canvases": 0,
+        "iframes": ["https://consentcdn.cookiebot.com/sdk/bc-v5.min.html"]
+      }
+    },
+    {
+      "name": "ref-exceleasy-sumif",
+      "url": "https://www.excel-easy.com/examples/sumif.html",
+      "status": 200,
+      "finalUrl": "https://www.excel-easy.com/examples/sumif.html",
+      "readyMs": 5758,
+      "dclMs": 1478,
+      "loadMs": 5694,
+      "title": "SUMIF function in Excel - Made Simple",
+      "h1": [
+        "SUMIF function",
+        "Excel Easy asks for your consent to use your personal data to:",
+        "Manage your data",
+        "Confirm our vendors",
+        ""
+      ],
+      "covers": [
+        {
+          "position": "fixed",
+          "coverPct": 100,
+          "text": "Excel Easy asks for your consent to use your personal data to: Personalised advertising and content, advertising and content measurement, au"
+        }
+      ],
+      "dialogs": [
+        "Excel Easy asks for your consent to use your personal data to: Personalised advertising and content, advertising and content measurement, au"
+      ],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 0,
+      "iframes": ["about:blank", "about:blank", "about:blank"],
+      "requests": 35,
+      "thirdPartyHosts": {
+        "www.googletagmanager.com": 1,
+        "pagead2.googlesyndication.com": 2,
+        "region1.google-analytics.com": 1,
+        "fundingchoicesmessages.google.com": 8,
+        "fonts.googleapis.com": 1,
+        "lh3.googleusercontent.com": 1,
+        "fonts.gstatic.com": 1
+      },
+      "desktop": {
+        "title": "SUMIF function in Excel - Made Simple",
+        "h1": [
+          "SUMIF function in Excel",
+          "Excel Easy asks for your consent to use your personal data to:",
+          "Manage your data",
+          "Confirm our vendors",
+          ""
+        ],
+        "covers": [
+          {
+            "position": "fixed",
+            "coverPct": 100,
+            "text": "Excel Easy asks for your consent to use your personal data to: Personalised advertising and content, advertising and content measurement, au"
+          }
+        ],
+        "dialogs": [
+          "Excel Easy asks for your consent to use your personal data to: Personalised advertising and content, advertising and content measurement, au"
+        ],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 0,
+        "iframes": ["about:blank", "about:blank", "about:blank"]
+      }
+    },
+    {
+      "name": "freecodecamp-home",
+      "url": "https://www.freecodecamp.org/",
+      "status": 200,
+      "finalUrl": "https://www.freecodecamp.org/",
+      "readyMs": 13475,
+      "dclMs": 1997,
+      "loadMs": 13459,
+      "title": "Learn to Code for Free. Coding Courses & Certifications | freeCodeCamp",
+      "h1": ["Build Your Skills for Free."],
+      "covers": [],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 0,
+      "iframes": [
+        "https://js.stripe.com/v3/controller-with-preconnect-ab885546d0d857a6352fd9f50797",
+        "https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html#url=https"
+      ],
+      "requests": 47,
+      "thirdPartyHosts": {
+        "static.cloudflareinsights.com": 1,
+        "www.googletagmanager.com": 2,
+        "js.stripe.com": 11,
+        "r.stripe.com": 6,
+        "region1.google-analytics.com": 1,
+        "m.stripe.network": 2,
+        "m.stripe.com": 1
+      },
+      "desktop": {
+        "title": "Learn to Code for Free. Coding Courses & Certifications | freeCodeCamp",
+        "h1": ["Build Your Skills for Free."],
+        "covers": [],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 0,
+        "iframes": [
+          "https://js.stripe.com/v3/controller-with-preconnect-ab885546d0d857a6352fd9f50797",
+          "https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html#url=https"
+        ]
+      }
+    },
+    {
+      "name": "freecodecamp-learn",
+      "url": "https://www.freecodecamp.org/learn/",
+      "status": 200,
+      "finalUrl": "https://www.freecodecamp.org/learn",
+      "readyMs": 13848,
+      "dclMs": 1841,
+      "loadMs": 13815,
+      "title": "Learn to Code for Free. Coding Courses & Certifications | freeCodeCamp",
+      "h1": ["Welcome to freeCodeCamp's curriculum."],
+      "covers": [],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 0,
+      "iframes": [
+        "https://js.stripe.com/v3/controller-with-preconnect-ab885546d0d857a6352fd9f50797",
+        "https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html#url=https"
+      ],
+      "requests": 52,
+      "thirdPartyHosts": {
+        "static.cloudflareinsights.com": 1,
+        "www.googletagmanager.com": 2,
+        "js.stripe.com": 11,
+        "region1.google-analytics.com": 1,
+        "r.stripe.com": 6,
+        "qmjyl5wyti-dsn.algolia.net": 1,
+        "m.stripe.network": 2,
+        "m.stripe.com": 1
+      },
+      "desktop": {
+        "title": "Learn to Code for Free. Coding Courses & Certifications | freeCodeCamp",
+        "h1": ["Welcome to freeCodeCamp's curriculum."],
+        "covers": [],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 0,
+        "iframes": [
+          "https://js.stripe.com/v3/controller-with-preconnect-ab885546d0d857a6352fd9f50797",
+          "https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html#url=https"
+        ]
+      }
+    },
+    {
+      "name": "exercism-home",
+      "url": "https://exercism.org/",
+      "status": 200,
+      "finalUrl": "https://exercism.org/",
+      "readyMs": 5249,
+      "dclMs": 4504,
+      "loadMs": 5227,
+      "title": "Exercism",
+      "h1": ["Get \nreally good at programming."],
+      "covers": [
+        {
+          "position": "sticky",
+          "coverPct": 8,
+          "text": "Sign up Log in"
+        }
+      ],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 0,
+      "iframes": [],
+      "requests": 106,
+      "thirdPartyHosts": {
+        "static.cloudflareinsights.com": 1,
+        "cloudflareinsights.com": 1
+      },
+      "desktop": {
+        "title": "Exercism",
+        "h1": ["Get \nreally good at programming."],
+        "covers": [],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 0,
+        "iframes": []
+      }
+    },
+    {
+      "name": "exercism-exercise",
+      "url": "https://exercism.org/tracks/python/exercises/hello-world",
+      "status": 200,
+      "finalUrl": "https://exercism.org/tracks/python/exercises/hello-world",
+      "readyMs": 4924,
+      "dclMs": 4493,
+      "loadMs": 4878,
+      "title": "Hello World in Python on Exercism",
+      "h1": ["Hello World"],
+      "covers": [
+        {
+          "position": "sticky",
+          "coverPct": 8,
+          "text": "Sign up Explore"
+        }
+      ],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 0,
+      "iframes": [],
+      "requests": 147,
+      "thirdPartyHosts": {
+        "static.cloudflareinsights.com": 1,
+        "cloudflareinsights.com": 1,
+        "stream.mux.com": 1,
+        "image.mux.com": 3,
+        "manifest-oci-us-ashburn-1-vop1.edgemv.mux.com": 1,
+        "chunk-oci-us-ashburn-1-vop1.edgemv.mux.com": 1
+      },
+      "desktop": {
+        "title": "Hello World in Python on Exercism",
+        "h1": ["Hello World"],
+        "covers": [],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 0,
+        "iframes": []
+      }
+    },
+    {
+      "name": "executeprogram-home",
+      "url": "https://www.executeprogram.com/",
+      "status": 200,
+      "finalUrl": "https://www.executeprogram.com/",
+      "readyMs": "not ready within 45 s",
+      "dclMs": 2440,
+      "loadMs": 3065,
+      "title": "Execute Program",
+      "h1": [],
+      "covers": [],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 0,
+      "iframes": [],
+      "requests": 95,
+      "thirdPartyHosts": {
+        "plausible.io": 1,
+        "sessions.bugsnag.com": 1
+      },
+      "desktop": {
+        "title": "Execute Program",
+        "h1": [],
+        "covers": [],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 0,
+        "iframes": []
+      }
+    },
+    {
+      "name": "khanacademy-home",
+      "url": "https://www.khanacademy.org/",
+      "status": 200,
+      "finalUrl": "https://www.khanacademy.org/",
+      "readyMs": "not ready within 45 s",
+      "dclMs": 404,
+      "loadMs": 0,
+      "title": "Khan Academy",
+      "h1": [],
+      "covers": [],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 0,
+      "iframes": [],
+      "requests": 14,
+      "thirdPartyHosts": {
+        "cdn.kastatic.org": 4,
+        "www.googletagmanager.com": 1
+      },
+      "desktop": {
+        "title": "Khan Academy | Free Online Courses, Lessons & Practice",
+        "h1": ["Turn big learning goals into real results."],
+        "covers": [
+          {
+            "position": "fixed",
+            "coverPct": 13,
+            "text": "Use of cookies Cookies are small files placed on your device that collect information when you use Khan Academy. Strictly necessary cookies "
+          }
+        ],
+        "dialogs": [
+          "Use of cookies Cookies are small files placed on your device that collect information when you use Khan Academy. Strictly necessary cookies "
+        ],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 0,
+        "iframes": []
+      }
+    },
+    {
+      "name": "brilliant-home",
+      "url": "https://brilliant.org/",
+      "status": 200,
+      "finalUrl": "https://brilliant.org/",
+      "readyMs": 18484,
+      "dclMs": 11635,
+      "loadMs": 18479,
+      "title": "Brilliant | Your Personal Tutor for Math and Coding",
+      "h1": ["Your personal tutor for\nmath and coding"],
+      "covers": [
+        {
+          "position": "fixed",
+          "coverPct": 15,
+          "text": "We use cookies to improve Brilliant, understand how it’s used, and support advertising from us and our partners. You're in control of option"
+        }
+      ],
+      "dialogs": [
+        "We use cookies to improve Brilliant, understand how it’s used, and support advertising from us and our partners. You're in control of option"
+      ],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 1,
+      "iframes": [
+        "https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html#url=https"
+      ],
+      "requests": 140,
+      "thirdPartyHosts": {
+        "www.googletagmanager.com": 2,
+        "cdn.cookielaw.org": 10,
+        "geolocation.onetrust.com": 1,
+        "js.stripe.com": 3,
+        "sr-client-cfg.amplitude.com": 1,
+        "brilliant-privacy.my.onetrust.com": 1,
+        "m.stripe.network": 2,
+        "m.stripe.com": 1
+      },
+      "desktop": {
+        "title": "Brilliant | Your Personal Tutor for Math and Coding",
+        "h1": ["Your personal tutor for\nmath and coding"],
+        "covers": [],
+        "dialogs": [
+          "We use cookies to improve Brilliant, understand how it’s used, and support advertising from us and our partners. You're in control of option"
+        ],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 1,
+        "iframes": [
+          "https://js.stripe.com/v3/m-outer-3437aaddcdf6922d623e172c2d6f9278.html#url=https"
+        ]
+      }
+    },
+    {
+      "name": "codecademy-home",
+      "url": "https://www.codecademy.com/",
+      "status": 200,
+      "finalUrl": "https://www.codecademy.com/",
+      "readyMs": 12001,
+      "dclMs": 11401,
+      "loadMs": 11405,
+      "title": "Learn to Code - for Free | Codecademy",
+      "h1": ["Develop your\n/skills"],
+      "covers": [
+        {
+          "position": "fixed",
+          "coverPct": 35,
+          "text": "Our website uses cookies and similar technologies to personalize your experience and advertising, offer sign-on options, and to analyze our "
+        }
+      ],
+      "dialogs": [
+        "Our website uses cookies and similar technologies to personalize your experience and advertising, offer sign-on options, and to analyze our "
+      ],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 0,
+      "iframes": [],
+      "requests": 78,
+      "thirdPartyHosts": {
+        "skillsoft-codecademy.fides-cdn.ethyca.com": 1,
+        "www.googletagmanager.com": 2
+      },
+      "desktop": {
+        "title": "Learn to Code - for Free | Codecademy",
+        "h1": ["Develop your\n/skills"],
+        "covers": [
+          {
+            "position": "fixed",
+            "coverPct": 18,
+            "text": "Our website uses cookies and similar technologies to personalize your experience and advertising, offer sign-on options, and to analyze our "
+          },
+          {
+            "position": "sticky",
+            "coverPct": 10,
+            "text": "Catalog Live Courses Resources Pricing Teams Search Log In Sign Up"
+          }
+        ],
+        "dialogs": [
+          "Our website uses cookies and similar technologies to personalize your experience and advertising, offer sign-on options, and to analyze our "
+        ],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 0,
+        "iframes": []
+      }
+    },
+    {
+      "name": "codecademy-course",
+      "url": "https://www.codecademy.com/learn/learn-python-3",
+      "status": 200,
+      "finalUrl": "https://www.codecademy.com/learn/learn-python-3",
+      "readyMs": 52073,
+      "dclMs": 19409,
+      "loadMs": 52018,
+      "title": "Learn Python 3 | Codecademy",
+      "h1": ["Learn Python 3"],
+      "covers": [
+        {
+          "position": "fixed",
+          "coverPct": 35,
+          "text": "Our website uses cookies and similar technologies to personalize your experience and advertising, offer sign-on options, and to analyze our "
+        }
+      ],
+      "dialogs": [
+        "Our website uses cookies and similar technologies to personalize your experience and advertising, offer sign-on options, and to analyze our "
+      ],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 0,
+      "iframes": [],
+      "requests": 95,
+      "thirdPartyHosts": {
+        "www.gravatar.com": 3,
+        "i.vimeocdn.com": 1,
+        "skillsoft-codecademy.fides-cdn.ethyca.com": 1,
+        "www.googletagmanager.com": 2,
+        "www.lightboxcdn.com": 1,
+        "www.zeropartyforms.com": 6,
+        "pagead2.googlesyndication.com": 1
+      },
+      "desktop": {
+        "title": "Learn Python 3 | Codecademy",
+        "h1": ["Learn Python 3"],
+        "covers": [
+          {
+            "position": "fixed",
+            "coverPct": 18,
+            "text": "Our website uses cookies and similar technologies to personalize your experience and advertising, offer sign-on options, and to analyze our "
+          },
+          {
+            "position": "sticky",
+            "coverPct": 10,
+            "text": "Catalog Live Courses Resources Pricing Teams Search Log In Sign Up"
+          }
+        ],
+        "dialogs": [
+          "Our website uses cookies and similar technologies to personalize your experience and advertising, offer sign-on options, and to analyze our "
+        ],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 0,
+        "iframes": []
+      }
+    },
+    {
+      "name": "datacamp-home",
+      "url": "https://www.datacamp.com/",
+      "status": 403,
+      "finalUrl": "https://www.datacamp.com/?__cf_chl_rt_tk=XUAquV7lmev6W4rOOSseRFxsGneYsH9wJkJZcBHOAbQ-1794343170-1.0.1.1-zYQh32w15IOwBvYr3wmRF7l.haTromEZcaG5agPL02E",
+      "readyMs": 2147,
+      "dclMs": 427,
+      "loadMs": 2070,
+      "title": "Just a moment...",
+      "h1": ["www.datacamp.com"],
+      "covers": [],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 0,
+      "iframes": [],
+      "requests": 18,
+      "thirdPartyHosts": {
+        "challenges.cloudflare.com": 6,
+        "brunhild.challenges.cloudflare.com": 1
+      },
+      "desktop": {
+        "title": "Just a moment...",
+        "h1": ["www.datacamp.com"],
+        "covers": [],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 0,
+        "iframes": []
+      }
+    },
+    {
+      "name": "datacamp-course",
+      "url": "https://www.datacamp.com/courses/intro-to-python-for-data-science",
+      "status": 403,
+      "finalUrl": "https://www.datacamp.com/courses/intro-to-python-for-data-science?__cf_chl_rt_tk=KUm8hcXgEo5_s1k1qvtEWgUk_5dAUe7bpkBvY_b.ZHU-1794343180-1.0.1.1-9u7Xw8N_Kq.1IcLOdwnsDaZLssrqy38aPgRW0uMiA5s",
+      "readyMs": 2052,
+      "dclMs": 396,
+      "loadMs": 1978,
+      "title": "Just a moment...",
+      "h1": ["www.datacamp.com"],
+      "covers": [],
+      "dialogs": [],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 0,
+      "iframes": [],
+      "requests": 18,
+      "thirdPartyHosts": {
+        "challenges.cloudflare.com": 6,
+        "brunhild.challenges.cloudflare.com": 1
+      },
+      "desktop": {
+        "title": "Just a moment...",
+        "h1": ["www.datacamp.com"],
+        "covers": [],
+        "dialogs": [],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 0,
+        "iframes": []
+      }
+    },
+    {
+      "name": "duolingo-home",
+      "url": "https://www.duolingo.com/",
+      "status": 200,
+      "finalUrl": "https://www.duolingo.com/",
+      "readyMs": 15913,
+      "dclMs": 7884,
+      "loadMs": 15907,
+      "title": "Duolingo - The world’s most popular way to learn",
+      "h1": [
+        "The most fun way to learn languages, chess, and more!",
+        "learn anytime, anywhere",
+        "learn a language with duolingo"
+      ],
+      "covers": [
+        {
+          "position": "fixed",
+          "coverPct": 9,
+          "text": ""
+        },
+        {
+          "position": "fixed",
+          "coverPct": 38,
+          "text": "Duo loves cookies We and third parties, such as our advertising partners and service providers, use cookies and similar technologies to prov"
+        }
+      ],
+      "dialogs": [
+        "Duo loves cookies We and third parties, such as our advertising partners and service providers, use cookies and similar technologies to prov"
+      ],
+      "overflowX": false,
+      "tables": 0,
+      "canvases": 0,
+      "iframes": [
+        "https://www.recaptcha.net/recaptcha/enterprise/anchor?ar=1&k=6LcLOdsjAAAAAFfwGus"
+      ],
+      "requests": 129,
+      "thirdPartyHosts": {
+        "cdn.cookielaw.org": 6,
+        "d35aaqx5ub95lt.cloudfront.net": 97,
+        "www.recaptcha.net": 3,
+        "geolocation.onetrust.com": 1,
+        "www.gstatic.com": 5,
+        "www.googletagmanager.com": 1,
+        "accounts.google.com": 2,
+        "fonts.gstatic.com": 1
+      },
+      "desktop": {
+        "title": "Duolingo - The world’s most popular way to learn",
+        "h1": [
+          "The most fun way to learn languages, chess, and more!",
+          "learn anytime, anywhere",
+          "learn a language with duolingo"
+        ],
+        "covers": [
+          {
+            "position": "fixed",
+            "coverPct": 9,
+            "text": "SITE LANGUAGE: ENGLISH"
+          },
+          {
+            "position": "fixed",
+            "coverPct": 20,
+            "text": "Duo loves cookies We and third parties, such as our advertising partners and service providers, use cookies and similar technologies to prov"
+          }
+        ],
+        "dialogs": [
+          "Duo loves cookies We and third parties, such as our advertising partners and service providers, use cookies and similar technologies to prov"
+        ],
+        "overflowX": false,
+        "tables": 0,
+        "canvases": 0,
+        "iframes": [
+          "https://www.recaptcha.net/recaptcha/enterprise/anchor?ar=1&k=6LcLOdsjAAAAAFfwGus"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+/* Design tokens: direction D, Workbench. Colour, type, spacing, radii,
+   elevation and motion. Every text and UI colour pair is measured by
+   src/styles/tokens.test.ts in both themes. Light and dark follow the
+   visitor's system setting until they pick one with the theme switch. */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+:root {
+  color-scheme: light dark;
+
+  /* Surfaces and text. */
+  --bg: light-dark(#f9fafb, #0f141c);
+  --surface: light-dark(#ffffff, #161c26);
+  --header: light-dark(#f3f4f6, #1f2733);
+  --panel: light-dark(#e9f5ee, #111f18); /* behind the sheet only, carries no text */
+  --text: light-dark(#101828, #f3f4f6);
+  --muted: light-dark(#4a5565, #a3abb8);
+  --rule: light-dark(#e5e7eb, #2b3442); /* hairlines between areas, not a UI boundary */
+  --line: light-dark(#6a7282, #8a94a3); /* borders of controls */
+  --focus: light-dark(#101828, #f3f4f6);
+  --heading: light-dark(#1e1e1e, #f9fafb); /* large headings */
+  --faint: light-dark(#6a7282, #8a94a3); /* meta text, at text contrast */
+
+  /* The footer is the one dark band. */
+  --footer-bg: light-dark(#1e1e1e, #0a0d12);
+  --on-footer: light-dark(#f3f4f6, #e6e9ec);
+  --on-footer-muted: light-dark(#b8bec8, #a3abb8);
+  /* Only the search suggestions and the menu float above the page. */
+  --shadow-pop: 0 8px 24px rgb(16 24 40 / 0.14);
+
+  /* Spreadsheet Center look: hero wash, cards, badges, chips and tabs. */
+  --hero-tint: light-dark(#e6f6ec, #10241a);
+  --hero-tint-2: light-dark(#eef4fb, #111a26);
+  --shadow-card: 0 1px 2px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.08);
+  --shadow-header: 0 1px 2px rgb(16 24 40 / 0.08);
+  --beginner: light-dark(#016630, #7ee2a8);
+  --beginner-bg: light-dark(#dbfce7, #0d2e1c);
+  --intermediate: light-dark(#894b00, #f7c873);
+  --intermediate-bg: light-dark(#fef9c2, #33260a);
+  --advanced: light-dark(#9f0712, #ff9b9b);
+  --advanced-bg: light-dark(#ffe2e2, #3b1214);
+  --pro: light-dark(#5b21b6, #c8b4ff);
+  --pro-bg: light-dark(#ede9fe, #251a45);
+  --chip: light-dark(#126a41, #7ee2a8);
+  --chip-bg: light-dark(#ecfdf3, #10241a);
+  --chip-line: light-dark(#a6e3bf, #2d5a40);
+  --tab-active: light-dark(#0063b1, #6cb4ff);
+
+  /* Solid blocks on the home page. They carry white text in both themes. */
+  --offer-blue: #1d5fbf;
+  --offer-charcoal: light-dark(#1e1e1e, #1f2733);
+  --on-dark-card: light-dark(#2d2d2d, #161c26); /* cards on the footer colour */
+  --correct-tint-solid: #e9f9ef; /* hover for a white button on green */
+
+  /* The one action colour. */
+  --primary: #18804f;
+  --primary-hover: #126a41;
+  --primary-active: #0e5434;
+  --on-primary: #ffffff;
+
+  /* States. Each colour has one meaning, and a word always goes with it. */
+  --read: light-dark(#0063b1, #6cb4ff); /* read by your formula */
+  --read-tint: light-dark(#e3f0fd, #0d2a47);
+  --miss: light-dark(#b42318, #ff8a80); /* a miss */
+  --miss-tint: light-dark(#fee4e2, #3d1412);
+  --correct: light-dark(#18804f, #5ad08a); /* correct */
+  --correct-tint: light-dark(#e9f9ef, #0f2f1d);
+
+  /* Type. Cells use the text face with tabular figures, as Excel does.
+     Formulas, references and the name box use the mono face. */
+  --font-text: "Inter", "Inter Fallback", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "IBM Plex Mono Fallback", ui-monospace, monospace;
+  --font-cell: var(--font-text);
+  --size-xs: 0.75rem;
+  --size-s: 0.875rem;
+  --size-m: 0.9375rem;
+  --size-base: 1rem;
+  --size-l: 1.125rem;
+  --size-xl: 1.5rem;
+  --size-xxl: 2rem;
+  --size-page: 2.25rem; /* page titles */
+  --size-hero: 3.75rem; /* the home headline */
+  --leading: 1.5;
+  --leading-tight: 1.25;
+
+  /* Spacing, on a 4 px grid. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+
+  /* Radii and elevation. Areas are separated by hairlines, as rows are in a
+     sheet. Only the menu and the search suggestions float. */
+  --radius-s: 4px;
+  --radius-m: 6px; /* the one radius for panels, inputs and buttons */
+  --radius-l: 8px; /* cards */
+  --radius-xl: 16px; /* the solid offer blocks */
+  --radius-pill: 999px;
+  --target: 2.75rem; /* 44 px touch target */
+  --elevation-dialog: 0 0 0 100vmax rgb(0 0 0 / 0.45);
+
+  /* Motion. Used only inside prefers-reduced-motion: no-preference. */
+  --duration: 150ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}

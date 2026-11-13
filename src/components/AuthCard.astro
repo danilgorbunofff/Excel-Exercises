@@ -1,0 +1,117 @@
+---
+// Why this exists: the card that holds the Log in, Sign up and waitlist forms.
+// Until accounts open, the fields are disabled and a note says why, so
+// nothing is ever sent.
+import { siteConfig } from "../../site.config.ts";
+import Logo from "./Logo.astro";
+
+interface Props {
+  title: string;
+  lead: string;
+  /** h1 on its own page, h2 when the card sits inside another page. */
+  level?: 1 | 2;
+  /** Overrides the note shown while accounts are closed. */
+  note?: string;
+  /** Show the form enabled even while accounts are closed. */
+  enabled?: boolean;
+}
+const { title, lead, level = 1, note, enabled = false } = Astro.props;
+const Heading = level === 1 ? "h1" : "h2";
+const open = siteConfig.accountsOpen || enabled;
+---
+
+<div class="auth">
+  <div class="card">
+    <div class="head">
+      <Logo size={36} />
+      <Heading class="title">{title}</Heading>
+      <p>{lead}</p>
+    </div>
+    {
+      !open && (
+        <p class="note" id="accounts-note">
+          {note ??
+            "Accounts open soon. Until then there is nothing to sign in to: your progress is saved in this browser, and every exercise works without an account."}
+        </p>
+      )
+    }
+    <form method="post" action="#" aria-describedby={open ? undefined : "accounts-note"} data-auth-form>
+      <fieldset disabled={!open}>
+        <slot />
+      </fieldset>
+    </form>
+    <slot name="after" />
+  </div>
+</div>
+
+<style>
+  .auth {
+    display: grid;
+    place-items: center;
+    padding: var(--space-7) var(--space-4);
+  }
+  .card {
+    width: 100%;
+    max-width: 28rem;
+    padding: var(--space-6);
+  }
+  .head {
+    display: grid;
+    gap: var(--space-1);
+  }
+  .title {
+    margin: 0;
+    font-size: var(--size-xl);
+    color: var(--heading);
+  }
+  .head p {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--size-s);
+  }
+  .note {
+    margin: var(--space-5) 0 0;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-m);
+    background: var(--header);
+    color: var(--text);
+    font-size: var(--size-s);
+  }
+  fieldset {
+    display: grid;
+    gap: var(--space-2);
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    border: 0;
+  }
+  fieldset :global(label) {
+    margin-top: var(--space-2);
+    font-size: var(--size-s);
+    font-weight: 600;
+  }
+  fieldset :global(input) {
+    width: 100%;
+    min-height: var(--target);
+    padding: 0 var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+  }
+  fieldset:disabled :global(input) {
+    background: var(--header);
+    cursor: not-allowed;
+  }
+  fieldset :global(.button) {
+    width: 100%;
+    margin-top: var(--space-4);
+  }
+  .card :global(.switch) {
+    margin: var(--space-5) 0 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .card :global(.switch a) {
+    color: var(--text);
+    font-weight: 600;
+  }
+</style>

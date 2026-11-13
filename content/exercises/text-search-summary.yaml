@@ -1,0 +1,86 @@
+id: text-search-summary
+slug: text-search-summary
+level: 2
+title: Text search summary
+topic: text-search
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In D2, read the four digits that follow the hyphen in the code in A2.
+    rows:
+      - [Code, Region, Amount, Answer]
+      - [AN-1042, North, 120, null]
+      - [BO-2299, South, 80, null]
+      - [CY-3140, North, 200, null]
+      - [DE-4471, North, 60, null]
+    answerCell: D2
+    expected: "1042"
+    answer: =MID(A2,FIND("-",A2)+1,4)
+    requiredFunctions: [MID, FIND]
+    hints:
+      nudge: FIND gives the position of the hyphen, and the digits start one place after it.
+      rule: MID takes the text, a start position and a count. Use FIND for the start so the formula works wherever the hyphen sits.
+    misses:
+      value: The hyphen is third, so the four digits start at four.
+      syntax: "Check the brackets, commas and quote marks. MID follows the pattern `=MID(text, start_num, num_chars)`."
+      required-function: The digits are a slice of the code, so MID reads them.
+      reference: The code is in A2.
+    accept:
+      - =MID(A2,FIND("-",A2)+1,4)
+      - =mid(a2,find("-",a2)+1,4)
+      - =MID($A$2,FIND("-",$A$2)+1,4)
+      - =MID(A$2,FIND("-",A$2)+1,4)
+      - =MID( A2 , FIND("-",A2)+1 , 4 )
+      - =MID(A2,FIND("-",A2)+1,LEN(A2)-FIND("-",A2))
+      - =MID(A2,FIND("-",A2)+1,99)
+    reject:
+      - { formula: "=MID(A2,4,4)", rule: required-function }
+      - { formula: '=FIND("-",A2)', rule: required-function }
+      - { formula: '=MID(A2,FIND("-",A2)+2,4)', rule: value }
+      - { formula: '=MID(A2,FIND("-",A2)+1,3)', rule: value }
+      - { formula: '=MID(A3,FIND("-",A3)+1,4)', rule: value }
+      - { formula: '=MID(A2,FIND("_",A2)+1,4)', rule: value }
+      - { formula: '=MID A2,FIND("-",A2)+1,4', rule: syntax }
+  - prompt: In D2, round the average of the North amounts to one decimal place.
+    rows:
+      - [Code, Region, Amount, Answer]
+      - [AN-1042, North, 120, null]
+      - [BO-2299, South, 80, null]
+      - [CY-3140, North, 200, null]
+      - [DE-4471, North, 60, null]
+    answerCell: D2
+    expected: 126.7
+    answer: =ROUND(AVERAGEIFS(C2:C5,B2:B5,"N*"),1)
+    requiredFunctions: [AVERAGEIFS]
+    hints:
+      nudge: Average only the rows whose region starts with N, then round the result.
+      rule: AVERAGEIFS takes the range to average first, then a criteria range and its criterion, which can hold a wildcard. ROUND with 1 as its second argument keeps one decimal place.
+    misses:
+      value: 380 across three rows is 126.66, which rounds to 126.7.
+      syntax: ROUND wraps the average, so the pattern sits inside the AVERAGEIFS call and the digits come last.
+      required-function: "A conditional average is AVERAGEIFS' job: the amounts first, the condition second."
+      reference: The amounts to average are in C2:C5.
+    accept:
+      - =ROUND(AVERAGEIFS(C2:C5,B2:B5,"N*"),1)
+      - =round(averageifs(c2:c5,b2:b5,"n*"),1)
+      - =ROUND(AVERAGEIFS($C$2:$C$5,$B$2:$B$5,"N*"),1)
+      - =ROUND(AVERAGEIFS(C$2:C$5,B$2:B$5,"N*"),1)
+      - =ROUND( AVERAGEIFS(C2:C5, B2:B5, "N*" ) , 1 )
+      - =ROUND(AVERAGEIFS(C2:C5,B2:B5,"North"),1)
+      - =ROUND(AVERAGEIFS(C2:C5,B2:B5,"N????"),1)
+    reject:
+      - { formula: "=ROUND(AVERAGE(C2:C5),1)", rule: required-function }
+      - { formula: '=AVERAGEIFS(C2:C5,B2:B5,"N*")', rule: value }
+      - { formula: '=ROUND(AVERAGEIFS(C2:C5,B2:B5,"S*"),1)', rule: value }
+      - { formula: '=ROUND(AVERAGEIFS(C2:C4,B2:B4,"N*"),1)', rule: value }
+      - { formula: '=ROUND(AVERAGEIFS(C2:C5,B2:B5,"N*")/0,1)', rule: value }
+      - { formula: '=ROUND(AVERAGEIFS(B2:B5,B2:B5,"N*"),1)', rule: value }
+      - { formula: '=ROUND AVERAGEIFS(C2:C5,B2:B5,"N*"),1', rule: syntax }
+notes:
+  summary: FIND gives the position of a separator, so MID can start reading just after it. In COUNTIF, SUMIF and AVERAGEIFS criteria, a star matches any run of characters.
+  syntax: MID(text,FIND("-",text)+1,4) finds the separator then slices after it; criteria take patterns
+  example: '`=MID("AB-9071",FIND("-","AB-9071")+1,2)` gives 90.'
+  commonErrors:
+    - FIND cannot see the hyphen in the code, so the MID call receives no start position.
+    - No row matches the pattern, so AVERAGEIFS has no numbers to average.
+    - Dropping the plus one returns -104, which is four characters starting at the hyphen.

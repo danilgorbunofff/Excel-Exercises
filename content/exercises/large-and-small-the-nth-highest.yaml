@@ -1,0 +1,85 @@
+id: large-and-small-the-nth-highest
+slug: large-and-small-the-nth-highest
+level: 2
+title: "LARGE and SMALL: the nth highest"
+topic: statistics
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: Put the second-slowest time in the team into C2, keeping the list unsorted.
+    rows:
+      - [Swimmer, Seconds, Second slowest]
+      - [Ada, 58, null]
+      - [Ben, 61, null]
+      - [Cleo, 55, null]
+      - [Dev, 57, null]
+      - [Eli, 50, null]
+    answerCell: C2
+    expected: 58
+    answer: =LARGE(B2:B6,2)
+    requiredFunctions: [LARGE]
+    hints:
+      nudge: "MAX gives only the top value, and you need the one after it."
+      rule: "LARGE takes a range and a position, and returns the value at that place counted from the top. Position 1 gives the same result as MAX."
+    misses:
+      value: The 2 is a position, not a row number. The highest time is 61, so the second highest is 58.
+      syntax: "Check the brackets, commas and quote marks. LARGE follows the pattern `=LARGE(array, k)`."
+      required-function: MAX gives the top time only. The second one needs a function that counts in from the top.
+      reference: Point at the column of times instead of listing them inside the formula.
+    accept:
+      - =LARGE(B2:B6,2)
+      - =large(b2:b6,2)
+      - =LARGE($B$2:$B$6,2)
+      - =LARGE(B2:B6,2)+0
+      - =LARGE(B2:B6,2)*1
+      - =LARGE(B$2:B$6,2)
+    reject:
+      - { formula: =MAX(B2:B6), rule: required-function }
+      - { formula: "=SMALL(B2:B6,2)", rule: required-function }
+      - { formula: =LARGE(B2:B6), rule: syntax }
+      - { formula: "=LARGE(B3:B6,2)", rule: value }
+      - { formula: "=LARGE(B2:B6,1)", rule: value }
+      - { formula: "=LARGE(B2:B6,2)/0", rule: value }
+      - { formula: =LARGE(B2:B6 2), rule: syntax }
+  - prompt: Put the second-cheapest quote into C2 without re-sorting the table.
+    rows:
+      - [Quote, Cost, Second cheapest]
+      - [Q-1, 40, null]
+      - [Q-2, 35, null]
+      - [Q-3, 52, null]
+      - [Q-4, 38, null]
+      - [Q-5, 47, null]
+    answerCell: C2
+    expected: 38
+    answer: =SMALL(B2:B6,2)
+    requiredFunctions: [SMALL]
+    hints:
+      nudge: "Count up from the cheapest instead of down from the most expensive."
+      rule: "SMALL takes a range and a position, and returns the value at that place counted from the bottom. Position 1 gives the same result as MIN."
+    misses:
+      value: 35 is the cheapest. The second cheapest is 38, which is what the 2 asks for.
+      syntax: "Check the brackets, commas and quote marks. SMALL follows the pattern `=SMALL(array, k)`."
+      required-function: MIN returns the cheapest quote and stops there. The next one up needs SMALL.
+      reference: Read the quotes from B2:B6, so the numbers live in one place.
+    accept:
+      - =SMALL(B2:B6,2)
+      - =small(b2:b6,2)
+      - =SMALL($B$2:$B$6,2)
+      - =SMALL(B2:B6,2)+0
+      - =SMALL(B2:B6,2)*1
+      - =SMALL(B$2:B$6,2)
+    reject:
+      - { formula: =MIN(B2:B6), rule: required-function }
+      - { formula: "=LARGE(B2:B6,2)", rule: required-function }
+      - { formula: "=SMALL(B2:B6,1)", rule: value }
+      - { formula: "=SMALL(B2:B6,4)", rule: value }
+      - { formula: "=SMALL(B2:B6,2)/0", rule: value }
+      - { formula: =SMALL(B2:B6 2), rule: syntax }
+notes:
+  summary: LARGE returns the value at a given position counted from the top of the list, and SMALL counts the same way from the bottom. The second argument is a rank, so 1 is the highest and 2 the one after it.
+  syntax: LARGE(range, n) and =SMALL(range, n)
+  example: "`=LARGE(A1:A4,2)` with 4, 9, 7 and 2 gives 7, and `=SMALL(A1:A4,2)` gives 4."
+  commonErrors:
+    - The position is 0 or larger than the count of values, and LARGE has no such place in the order.
+    - The first argument holds text rather than a block of numbers, and text has no order to count through.
+    - LARGE on a list of times returns the slowest and SMALL the fastest, so the number is right and the label above it is wrong.

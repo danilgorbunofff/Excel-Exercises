@@ -1,0 +1,87 @@
+id: true-and-false-what-a-comparison-returns
+slug: true-and-false-what-a-comparison-returns
+level: 2
+title: "TRUE and FALSE: what a comparison returns"
+topic: logic
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B9, answer TRUE when the total units are over 100.
+    rows:
+      - [Item, Units]
+      - [Bolt, 18]
+      - [Nut, 22]
+      - [Washer, 25]
+      - [Screw, 30]
+      - [Clip, 24]
+      - [Pin, 31]
+      - [Total, 150]
+      - [Over 100?, null]
+    answerCell: B9
+    expected: true
+    answer: =SUM(B2:B7)>100
+    requiredFunctions: [SUM]
+    hints:
+      nudge: A comparison on its own already returns TRUE or FALSE, so no IF is needed.
+      rule: A comparison such as > or >= returns the logical value TRUE or FALSE. Its left side can be a whole function, such as a total.
+    misses:
+      value: The items come to 150, and 150 is over 100, so the cell should show TRUE.
+      syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
+      required-function: The question is about the total, so the six units have to be added inside the formula.
+      reference: Add the cells in B2:B7 rather than typing 150.
+    accept:
+      - =SUM(B2:B7)>100
+      - =sum(b2:b7)>100
+      - =SUM($B$2:$B$7)>100
+      - =SUM(B$2:B$7)>100
+      - =SUM(B$2:$B7)>100
+    reject:
+      - { formula: '=IF(SUM(B2:B7)>100,"TRUE","FALSE")', rule: value }
+      - { formula: =SUM(B2:B7)<100, rule: value }
+      - { formula: ="TRUE", rule: required-function }
+      - { formula: =SUM(B2:B7)>100/0, rule: value }
+      - { formula: =SUM B2:B7>100, rule: syntax }
+  - prompt: In B9, answer TRUE when the average units are at least 20.
+    rows:
+      - [Item, Units]
+      - [Bolt, 18]
+      - [Nut, 22]
+      - [Washer, 25]
+      - [Screw, 30]
+      - [Clip, 24]
+      - [Pin, 31]
+      - [Total, 150]
+      - [Average at least 20?, null]
+    answerCell: B9
+    expected: true
+    answer: =AVERAGE(B2:B7)>=20
+    requiredFunctions: [AVERAGE]
+    hints:
+      nudge: Compare the average of the units with 20, using the sign for at least.
+      rule: AVERAGE adds the numbers in a range and divides by how many there are. The sign >= means at least, so a value equal to 20 also gives TRUE.
+    misses:
+      value: 150 across six items is 25 each, which clears 20, so the answer is TRUE.
+      syntax: "Check the brackets, commas and quote marks. AVERAGE follows the pattern `=AVERAGE(number1, [number2], ...)`."
+      required-function: The question asks about the average, so a total of 150 would answer a different one.
+      reference: Average the units column of the grid.
+    accept:
+      - =AVERAGE(B2:B7)>=20
+      - =average(b2:b7)>=20
+      - =AVERAGE($B$2:$B$7)>=20
+      - =AVERAGE(B2:B7)>=20+0
+      - =AVERAGE(B2:B7)>=20*1
+      - =AVERAGE(B$2:B$7)>=20
+    reject:
+      - { formula: =SUM(B2:B7)>=20, rule: required-function }
+      - { formula: =AVERAGE(B2:B7)>30, rule: value }
+      - { formula: =AVERAGE(B2:B7)>=20/0, rule: value }
+      - { formula: '=IF(AVERAGE(B2:B7)>=20,"TRUE","FALSE")', rule: value }
+      - { formula: =AVERAGE B2:B7>=20, rule: syntax }
+notes:
+  summary: A comparison such as `=A1>100` is a formula in its own right and returns TRUE or FALSE. IF, AND and conditional formatting all read that logical value directly.
+  syntax: SUM(B2:B7)>100 returns TRUE or FALSE; it is the comparison, not a word
+  example: "`=A1>100` with 150 in A1 gives TRUE."
+  commonErrors:
+    - The cell holds the four characters TRUE as text, so a later IF reads a label where it expected a logical value.
+    - A function name or a cell reference was mistyped, so Excel cannot tell which cells to compare.
+    - The comparison is divided by zero, so the cell shows an error where TRUE or FALSE belonged.

@@ -1,0 +1,40 @@
+id: free-delivery
+slug: free-delivery
+level: 2
+title: Free delivery when either test passes
+topic: logic
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: Delivery is free when the order is over 50 or the customer is a member. In D2, show TRUE if Ola gets free delivery.
+    rows:
+      - [Customer, Order, Member, Free delivery]
+      - [Ola, 38, "Yes", null]
+    answerCell: D2
+    expected: true
+    answer: '=OR(B2>50,C2="Yes")'
+    requiredFunctions: [OR]
+    hints:
+      nudge: One of the two tests is enough.
+      rule: OR returns TRUE when at least one test inside it is true. To compare with text, put the text in double quotes.
+    misses:
+      syntax: Put text in double quotes, as in `"Yes"`.
+      required-function: Use OR, since either test is enough.
+      reference: Point at the order in B2 and the member column in C2.
+      value: Check each test. The order is in B2 and the member answer is in C2.
+    accept:
+      - '=OR(B2>50,C2="Yes")'
+      - '=OR(C2="yes",B2>50)'
+      - '=IF(OR(B2>50,C2="Yes"),TRUE,FALSE)'
+    reject:
+      - { formula: "=OR(B2>50,C2=Yes)", rule: syntax }
+      - { formula: '=AND(B2>50,C2="Yes")', rule: required-function }
+      - { formula: '=OR(38>50,C2="Yes")', rule: reference }
+      - { formula: '=OR(B2>50,C2="No")', rule: value }
+notes:
+  summary: OR returns TRUE when any of its tests is true, and FALSE only when all are false. Text comparisons ignore case.
+  syntax: OR(logical1, [logical2], ...)
+  example: '`=OR(A1="Red",A1="Blue")` gives TRUE when A1 is Red or Blue.'
+  commonErrors:
+    - Using AND when either condition is enough.
+    - Text without double quotes, which Excel reads as a name.

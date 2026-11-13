@@ -1,0 +1,92 @@
+id: logical-functions-summary
+slug: logical-functions-summary
+level: 3
+title: "Logical functions: putting the pieces together"
+topic: logic
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B9, put PASS in the cell when the total is over 100 and no item is under 15 units, otherwise FAIL.
+    rows:
+      - [Item, Units]
+      - [Bolt, 18]
+      - [Nut, 22]
+      - [Washer, 25]
+      - [Screw, 30]
+      - [Clip, 24]
+      - [Pin, 31]
+      - [Total, 150]
+      - [Verdict, null]
+    answerCell: B9
+    expected: PASS
+    answer: =IF(AND(B8>100,MIN(B2:B7)>=15),"PASS","FAIL")
+    requiredFunctions: [IF, AND]
+    hints:
+      nudge: Combine the two tests first, then let an IF turn the answer into a word.
+      rule: AND returns TRUE only when every test holds. IF then shows one text result for TRUE and another for FALSE, with text in double quotes.
+    misses:
+      value: 150 clears the total test and 18 clears the floor, so B9 reads PASS.
+      syntax: '=IF(AND(test 1, test 2),"PASS","FAIL"): the tests sit inside the IF, in brackets of their own.'
+      required-function: The cell has to say PASS or FAIL, so the combined test needs an IF around it.
+      reference: Read the total from B8 and the units from B2:B7.
+    accept:
+      - =IF(AND(B8>100,MIN(B2:B7)>=15),"PASS","FAIL")
+      - =if(and(b8>100,min(b2:b7)>=15),"PASS","FAIL")
+      - =IF(AND($B$8>100,MIN($B$2:$B$7)>=15),"PASS","FAIL")
+      - =IF(AND(B$8>100,MIN(B$2:B$7)>=15),"PASS","FAIL")
+      - =IF(AND($B8>100,MIN($B2:$B$7)>=15),"PASS","FAIL")
+      - =IF(AND(B8>100,MIN(B2:B7)>14),"PASS","FAIL")
+    reject:
+      - { formula: "=AND(B8>100,MIN(B2:B7)>=15)", rule: required-function }
+      - { formula: '=IF(B8>100,"FAIL","PASS")', rule: required-function }
+      - { formula: '=IF(AND(B8>100,MIN(B2:B7)>=20),"PASS","FAIL")', rule: value }
+      - { formula: '=IF(AND(B8>100,MIN(B2:B7)>=15),"PASS","FAIL")/0', rule: value }
+      - { formula: '=IF(AND(B8>100 MIN(B2:B7)>=15),"PASS","FAIL")', rule: syntax }
+  - prompt: In D9, average the price column and round it to one decimal, but say none when there is nothing to average.
+    rows:
+      - [Item, Units, Price, Answer]
+      - [Bolt, 18, 4.5, null]
+      - [Nut, 22, 3.9, null]
+      - [Washer, 25, 4.2, null]
+      - [Screw, 30, 5.1, null]
+      - [Clip, 24, 3.4, null]
+      - [Pin, 31, 4.8, null]
+      - [Total, 150, null, null]
+      - [Average price, null, null, null]
+    answerCell: D9
+    expected: 4.3
+    answer: =IF(ISNUMBER(AVERAGE(C2:C7)),ROUND(AVERAGE(C2:C7),1),"none")
+    requiredFunctions: [IF, ISNUMBER, ROUND]
+    hints:
+      nudge: Check that the average is a number before you round it, and show none otherwise.
+      rule: ISNUMBER returns TRUE for a number and FALSE for an error, so it can guard an IF. ROUND takes a number and the count of decimals to keep.
+    misses:
+      value: The six prices come to 25.9, which is 4.3166 each, so one decimal place gives 4.3.
+      syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
+      required-function: A number or the word none is two outcomes, which is what IF is for.
+      reference: Average C2:C7, the price column.
+    accept:
+      - =IF(ISNUMBER(AVERAGE(C2:C7)),ROUND(AVERAGE(C2:C7),1),"none")
+      - =if(isnumber(average(c2:c7)),round(average(c2:c7),1),"none")
+      - =IF(ISNUMBER(AVERAGE($C$2:$C$7)),ROUND(AVERAGE($C$2:$C$7),1),"none")
+      - =IF(ISNUMBER(AVERAGE(C$2:C$7)),ROUND(AVERAGE(C$2:C$7),1),"none")
+      - =IF(ISNUMBER(AVERAGE(C2:C7)),ROUND(AVERAGE(C2:C7),1),"none")+0
+      - =IF(ISNUMBER(AVERAGE(C2:C7)),ROUND(AVERAGE(C2:C7),1),"none")*1
+    reject:
+      - { formula: "=ROUND(AVERAGE(C2:C7),2)", rule: required-function }
+      - {
+          formula: '=IF(ROUND(AVERAGE(C2:C7),1)>10,ROUND(AVERAGE(C2:C7),1),"none")',
+          rule: required-function,
+        }
+      - { formula: '=IF(ISNUMBER(AVERAGE(C2:C7)),AVERAGE(C2:C7),"none")', rule: required-function }
+      - { formula: '=IF(ISNUMBER(AVERAGE(C2:C7)),ROUND(AVERAGE(C2:C7),2),"none")', rule: value }
+      - { formula: '=IF(ISNUMBER(AVERAGE(C2:C7)),ROUND(AVERAGE(C2:C7),1),"none")/0', rule: value }
+      - { formula: '=IF(ISNUMBER(AVERAGE(C2:C7)) ROUND(AVERAGE(C2:C7),1),"none")', rule: syntax }
+notes:
+  summary: IF turns a logical test into a result you choose, and the test can be built from AND, OR or an IS function. Nesting them lets one cell check several things and answer in words.
+  syntax: IF(AND(test 1, test 2),"PASS","FAIL"); =IF(ISNUMBER(AVERAGE(range)),ROUND(...,1),"none")
+  example: '`=IF(AND(A1>0,A2>0),"Yes","No")` with 4 and 0 gives No.'
+  commonErrors:
+    - The finished text result was used in arithmetic, as when PASS is divided by zero.
+    - AVERAGE found no numbers in C2:C7 and divided a zero total by a count of zero.
+    - One of the nested function names was mistyped, so the whole formula fails.

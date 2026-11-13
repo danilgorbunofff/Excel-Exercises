@@ -1,0 +1,37 @@
+id: subtract-costs
+slug: subtract-costs
+level: 1
+title: Subtract the costs
+topic: references
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In D2, work out the profit for March, which is the revenue minus the costs.
+    rows:
+      - [Month, Revenue, Costs, Profit]
+      - [March, 8200, 5650, null]
+    answerCell: D2
+    expected: 2550
+    answer: =B2-C2
+    hints:
+      nudge: Profit is what is left of the revenue after the costs.
+      rule: The minus sign takes the second value away from the first, so the order matters.
+    misses:
+      syntax: Write the first cell, a minus sign, then the second cell.
+      reference: Point at B2 and C2, so the profit changes when the figures change.
+      value: A negative result means the cells are the wrong way round. Start with the revenue.
+    accept:
+      - =B2-C2
+      - = B2 - C2
+      - =-C2+B2
+    reject:
+      - { formula: "=B2-C2-", rule: syntax }
+      - { formula: "=8200-5650", rule: reference }
+      - { formula: "=B2-D2", rule: reference }
+      - { formula: "=C2-B2", rule: value }
+notes:
+  summary: The minus sign subtracts the value on its right from the value on its left.
+  syntax: =cell-cell
+  example: "`=A1-A2` takes the value in A2 away from the value in A1."
+  commonErrors:
+    - Swapping the two cells gives the same number with the wrong sign.

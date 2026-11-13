@@ -1,0 +1,50 @@
+id: index-a-value-at-a-row-and-column
+slug: index-a-value-at-a-row-and-column
+level: 2
+title: "INDEX: a value at a row and column"
+topic: index-match
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B7, read the units at the row in B5 and the column in B6, counting from the first product and from Q1.
+    rows:
+      - [Product, Q1, Q2, Q3]
+      - [Widget, 100, 120, 130]
+      - [Gadget, 90, 110, 125]
+      - [Gizmo, 140, 160, 150]
+      - [Row to read, 3, null, null]
+      - [Column to read, 2, null, null]
+      - [Units, null, null, null]
+    answerCell: B7
+    expected: 160
+    answer: =INDEX(B2:D4,B5,B6)
+    requiredFunctions: [INDEX]
+    hints:
+      nudge: "Give the block of figures, then how many rows down and columns across to go."
+      rule: "INDEX returns the cell at a given row and column inside a range. Both counts start at 1 from the range's top-left cell."
+    misses:
+      value: Three rows down from B2 is row 4, Gizmo. Two columns across is Q2, and the figure there is 160.
+      syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
+      required-function: INDEX needs a block with both height and width. Given B2:D4 it can return any of the nine figures.
+      reference: Take the row and column from B5 and B6. Typing 3 and 2 freezes the answer to Gizmo's Q2.
+    accept:
+      - =INDEX(B2:D4,B5,B6)
+      - =index(b2:d4,b5,b6)
+      - =INDEX($B$2:$D$4,$B$5,$B$6)
+      - =INDEX(B2:D4,B5,B6)+0
+      - =INDEX(B2:D4,B5,B6)*1
+      - =INDEX(B2:D4,B5,B6)/1
+    reject:
+      - { formula: "=INDEX(B2:D4,B5,B6", rule: syntax }
+      - { formula: "=INDEX(B2:D4,B5)", rule: value }
+      - { formula: "=VLOOKUP(B5,A2:D4,B6+1,FALSE)", rule: required-function }
+      - { formula: "=INDEX(B2:D4,B5,B5)", rule: value }
+      - { formula: "=INDEX(B2:D4,B5,9)", rule: value }
+notes:
+  summary: "INDEX returns the value at a given row and column inside a block of cells. Both numbers count from the block's top-left cell, which is position 1, 1."
+  syntax: INDEX(array, row_num, [column_num])
+  example: "`=INDEX(A1:C3,2,3)` returns the value in C2, the second row and third column of the block."
+  commonErrors:
+    - The row or column number points outside B2:D4, as when 9 is asked for from a three-column block.
+    - The row or column argument arrived as text, which INDEX cannot count with.
+    - B5 and B6 went in as column then row, so the formula reads Gadget's Q3 at 125 and no error appears.

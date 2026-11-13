@@ -1,0 +1,101 @@
+name: VLOOKUP
+slug: vlookup
+summary: VLOOKUP finds a value in the first column of a table and returns a value from the same row, from a column you choose.
+syntax: VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])
+arguments:
+  - name: lookup_value
+    required: true
+    description: The value to find. It must be in the first column of the table. It can be a value or a cell that holds one.
+  - name: table_array
+    required: true
+    description: The table to search. Its first column holds the values to find, and it must include the column to return from.
+  - name: col_index_num
+    required: true
+    description: Which column of the table to return from, counting the table's first column as 1.
+  - name: range_lookup
+    required: false
+    description: FALSE or 0 finds an exact match. TRUE or 1 finds an approximate match. Leaving it out means TRUE.
+returns: The value from the matching row, in the chosen column.
+examples:
+  - title: Find a price by its code
+    rows:
+      - [Code, Product, Price]
+      - [P-1, Desk, 120]
+      - [P-2, Chair, 85]
+      - [P-3, Lamp, 30]
+      - [Find, P-2, null]
+    cell: C5
+    formula: =VLOOKUP(B5,A2:C4,3,FALSE)
+    result: 85
+    explanation: VLOOKUP finds P-2 in the first column of A2:C4 and returns the value from the 3rd column of that row, 85.
+  - title: Find the band a score falls in
+    rows:
+      - [From, Grade]
+      - [0, F]
+      - [50, C]
+      - [70, B]
+      - [85, A]
+      - [Score, 78]
+      - [Grade, null]
+    cell: B7
+    formula: =VLOOKUP(B6,A2:B5,2,TRUE)
+    result: B
+    explanation: 78 is not in the table. With TRUE, VLOOKUP takes the largest value that is not more than 78, which is 70, and returns B. The first column is sorted from smallest to largest, which TRUE needs.
+  - title: Find text that starts with some letters
+    rows:
+      - [Name, Team, null]
+      - [Ana Ito, Sales, null]
+      - [Bernd Roth, IT, null]
+      - [Cleo Park, Finance, null]
+    cell: C2
+    formula: '=VLOOKUP("Bern*",A2:B4,2,FALSE)'
+    result: IT
+    explanation: With FALSE, an asterisk stands for any characters and a question mark for one character. Bern* matches Bernd Roth, so VLOOKUP returns IT.
+pitfalls:
+  - title: "`#N/A` with FALSE"
+    text: The exact value is not in the first column. Check the spelling, extra spaces, and whether the first column is the one you search.
+  - title: "`#N/A` with TRUE"
+    text: The value is smaller than the smallest value in the first column, so it falls in no band.
+  - title: "`#REF!`"
+    text: The column number is larger than the number of columns in the table.
+  - title: "`#VALUE!`"
+    text: The column number is less than 1.
+  - title: "`#NAME?`"
+    text: Text to find is missing its double quotes, so Excel reads it as a name. Write `"P-2"`, not `P-2`.
+  - title: A wrong result without an error
+    text: With TRUE or the last argument left out, an unsorted first column gives a result that may be wrong and shows no error. Use FALSE for exact matches.
+  - title: The column number counts from the wrong place
+    text: Columns count from the table's first column, not from column A of the sheet. In a table that starts in column C, column E is number 3.
+about:
+  - Use VLOOKUP when you know one value, such as a product code, and want something else from the same row, such as its price. The V stands for vertical. It reads down the first column of the table until it finds the value.
+  - The last argument decides how it matches. FALSE asks for the exact value, which is the safe choice for codes and names. TRUE finds the nearest value below, which suits bands such as grades or delivery rates.
+  - VLOOKUP only returns values to the right of the column it searches. When the value you want sits to the left, use XLOOKUP, or INDEX with MATCH.
+tips:
+  - Write FALSE as the last argument unless you want a band. It is easy to leave out, and the default is TRUE.
+  - Fix the table with dollar signs, as in `$A$2:$C$4`, before you copy the formula down. Without them the table moves with the formula.
+  - Inserting a column inside the table changes what the column number points at. Check the number after you change the table.
+  - A number does not match the same number stored as text. If two codes look alike but give `#N/A`, check how each column is stored.
+  - To show your own text when nothing is found, wrap the formula in IFNA, as in `=IFNA(VLOOKUP(B5,A2:C4,3,FALSE),"Not found")`.
+questions:
+  - q: Is XLOOKUP better than VLOOKUP?
+    a: For new work in Microsoft 365 or Excel 2021, usually yes. XLOOKUP finds exact matches by default and can return from any column. VLOOKUP is the one that works in every version.
+  - q: What if the value I want is to the left of the one I search?
+    a: VLOOKUP cannot reach it, because it always searches the first column of the table. Use XLOOKUP, or INDEX with MATCH.
+  - q: Does VLOOKUP care about capital letters?
+    a: No. It treats `p-2` and `P-2` as the same value.
+  - q: What happens when the value appears twice?
+    a: With FALSE, VLOOKUP returns the first match from the top and ignores the rest.
+alternatives:
+  - name: XLOOKUP
+    text: Searches any column and returns from any column, even one to the left, and finds exact matches unless told otherwise. It needs Excel 2021 or later, or Microsoft 365.
+  - name: INDEX
+    text: With MATCH, looks up in any direction and works in every version of Excel.
+related: [XLOOKUP, HLOOKUP, INDEX, MATCH]
+versions: Works in every version of Excel.
+checked:
+  source: Microsoft Support, VLOOKUP function
+  url: https://support.microsoft.com/en-us/office/vlookup-function-0bbc8083-26fe-4963-8ab8-93a18ad188a1
+  date: 2026-11-11
+  covers: "The syntax, the arguments, the default of TRUE, the sorting rule, wildcards, and the causes of `#N/A`, `#REF!` and `#NAME?`."
+exercise: find-an-extension
+updated: 2026-11-11

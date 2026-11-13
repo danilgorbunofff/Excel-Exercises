@@ -1,0 +1,41 @@
+{
+  "recordedAt": "2026-11-10T20:40:53.805Z",
+  "results": [
+    {
+      "site": "spreadsheetcenter",
+      "attempt": "range one row short",
+      "formula": "=SUM(B2:B6)",
+      "newText": [],
+      "liveRegions": [],
+      "screenshot": "docs/research/shots/feedback-spreadsheetcenter-1.jpg"
+    },
+    {
+      "site": "spreadsheetcenter",
+      "attempt": "typed numbers instead of references",
+      "formula": "=18200+16500+19350+21000+19800+22500",
+      "newText": [
+        "Exercise completed",
+        "Nice work! You calculated a total with SUM.",
+        "SUM is the fastest way to add a column of numbers, and it updates automatically when the values change.",
+        "Next recommended exercise →",
+        "Simple percentage calculation"
+      ],
+      "liveRegions": [],
+      "screenshot": "docs/research/shots/feedback-spreadsheetcenter-2.jpg"
+    },
+    {
+      "site": "spreadsheetcenter",
+      "attempt": "correct",
+      "formula": "=SUM(B2:B7)",
+      "newText": [
+        "Exercise completed",
+        "Nice work! You calculated a total with SUM.",
+        "SUM is the fastest way to add a column of numbers, and it updates automatically when the values change.",
+        "Next recommended exercise →",
+        "Simple percentage calculation"
+      ],
+      "liveRegions": [],
+      "screenshot": "docs/research/shots/feedback-spreadsheetcenter-3.jpg"
+    }
+  ]
+}

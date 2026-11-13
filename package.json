@@ -1,0 +1,46 @@
+{
+  "name": "excel-formula-practice",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "format": "biome format --write .",
+    "lint": "biome check --error-on-warnings .",
+    "typecheck": "tsc -p packages/grader/tsconfig.json && astro check",
+    "test": "vitest run --coverage",
+    "content:validate": "node tools/validate-content.ts",
+    "lint:copy": "node tools/copy-lint.ts",
+    "budgets": "node tools/budgets.ts",
+    "motion": "node tools/motion-check.ts",
+    "e2e": "playwright test",
+    "lhci": "lhci autorun",
+    "check:all": "npm run lint && npm run typecheck && npm run test && npm run content:validate && npm run build && npm run lint:copy && npm run budgets && npm run motion && npm run e2e && npm run lhci",
+    "check:origin": "node tools/check-origin.ts",
+    "check:csp": "node tools/csp.ts",
+    "csp:write": "node tools/csp.ts --write",
+    "share-images": "node tools/share-images.ts"
+  },
+  "dependencies": {
+    "astro": "7.4.9",
+    "yaml": "2.9.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@axe-core/playwright": "4.14.0",
+    "@biomejs/biome": "2.6.6",
+    "@lhci/cli": "0.16.0",
+    "@playwright/test": "1.65.0",
+    "@types/node": "24.19.2",
+    "@vitest/coverage-v8": "5.1.0",
+    "typescript": "6.0.3",
+    "vitest": "5.1.0"
+  }
+}

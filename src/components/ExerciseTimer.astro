@@ -1,0 +1,53 @@
+---
+// Why this exists: an optional stopwatch on the exercise page. It starts when
+// you first type a formula, pauses while the page is hidden and stops on the
+// right answer. The eye button hides it; the choice is remembered.
+import Icon from "./Icon.astro";
+// The clock face is the digits themselves; only the eye button has an icon.
+---
+
+<div class="timer" data-timer>
+  <span class="time" role="timer" aria-label="Time on this exercise" data-timer-text>00:00:00</span>
+  <button class="toggle" type="button" aria-pressed="false" data-timer-toggle>
+    <span class="visually-hidden">Hide the timer</span>
+    <span class="on"><Icon name="eye" size={16} /></span>
+    <span class="off"><Icon name="eye-off" size={16} /></span>
+  </button>
+</div>
+
+<style>
+  .timer {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    color: var(--muted);
+    font-size: var(--size-s);
+  }
+  .time {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  .timer.is-hidden .time {
+    visibility: hidden;
+  }
+  .toggle {
+    display: inline-grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 0;
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .toggle:hover {
+    color: var(--text);
+  }
+  .off,
+  .timer.is-hidden .on {
+    display: none;
+  }
+  .timer.is-hidden .off {
+    display: inline;
+  }
+</style>

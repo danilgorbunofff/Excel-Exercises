@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Practice Excel formulas on real grids</title>
+  <link rel="stylesheet" href="../base.css" />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="direction.css" />
+</head>
+<body class="page-landing dir-c-marker">
+  <a class="skip" href="#formula">Skip to the formula</a>
+  <header class="site">
+    <a class="brand" href="landing.html">Formula Practice</a>
+    <nav class="nav-wide" aria-label="Main"><ul><li><a href="/exercises/">Exercises</a></li><li><a href="/functions/">Functions</a></li><li><a href="/progress/">Progress</a></li></ul></nav>
+    <button class="menu" type="button" commandfor="menu" command="show-modal">Menu</button>
+    <dialog id="menu" aria-label="Menu">
+      <nav aria-label="Main"><ul><li><a href="/exercises/">Exercises</a></li><li><a href="/functions/">Functions</a></li><li><a href="/progress/">Progress</a></li></ul></nav>
+      <button type="button" commandfor="menu" command="close">Close</button>
+    </dialog>
+  </header>
+  <main id="main">
+    <div class="intro">
+      <h1>Practice Excel formulas on real grids</h1>
+      <p class="lede">Type one formula and press Enter. You see what it read, and why it is right or wrong.</p>
+    </div>
+    <section class="exercise exercise-initial" aria-labelledby="ex-title">
+      <h2 id="ex-title">Try it: add up a column</h2>
+      <div class="task">
+        <p class="prompt">In B6, add up the sales in B2 to B5.</p>
+        <p class="checks">This exercise checks that you use SUM, point at the cells, and get the right total.</p>
+      </div>
+      <form class="work" action="/exercises/add-up-a-column/">
+        <div class="bar">
+          <span class="namebox" aria-hidden="true">B6</span>
+          <label class="visually-hidden" for="formula">Formula for B6</label>
+          <input class="formula" id="formula" name="formula" type="text" placeholder="=" autocomplete="off" autocapitalize="off" spellcheck="false" />
+          <button class="primary" type="submit">Check</button>
+        </div>
+        <div class="verdict" role="status"></div>
+      </form>
+      <div class="sheet">
+      <table class="grid">
+        <caption>Sales by month. Your answer goes in B6.</caption>
+        <thead><tr><td class="corner"></td><th scope="col">A</th><th scope="col">B</th></tr></thead>
+        <tbody>
+        <tr><th scope="row">1</th><td class="label">Month</td><td class="">Sales</td></tr>
+        <tr><th scope="row">2</th><td>Jan</td><td class="num">120</td></tr>
+        <tr><th scope="row">3</th><td>Feb</td><td class="num">95</td></tr>
+        <tr><th scope="row">4</th><td>Mar</td><td class="num">143</td></tr>
+        <tr><th scope="row">5</th><td>Apr</td><td class="num">88</td></tr>
+        <tr><th scope="row">6</th><td>Total</td><td class="num answer answer-initial"></td></tr>
+        </tbody>
+      </table>
+      <ul class="legend">
+        <li><span class="swatch swatch-read" aria-hidden="true"></span>Read by your formula</li>
+        <li><span class="swatch swatch-answer" aria-hidden="true"></span>Your answer cell</li>
+      </ul>
+      </div>
+      <p class="help"><button class="secondary" type="button">Show a hint</button></p>
+    </section>
+    <section class="after" aria-labelledby="free">
+      <h2 id="free">What is free</h2>
+      <p>Every exercise is free, and you never need an account. Your progress stays in this browser.</p>
+      <h2 id="first">The first exercises</h2>
+      <ol class="list">
+        <li><a href="/exercises/add-up-a-column/">Add up a column</a> <span class="fn">SUM</span></li>
+        <li><a href="/exercises/find-the-average/">Find the average</a> <span class="fn">AVERAGE</span></li>
+        <li><a href="/exercises/find-the-largest-and-smallest/">Find the largest and smallest</a> <span class="fn">MAX, MIN</span></li>
+        <li><a href="/exercises/count-the-numbers/">Count the numbers</a> <span class="fn">COUNT</span></li>
+        <li><a href="/exercises/count-the-filled-cells/">Count the filled cells</a> <span class="fn">COUNTA</span></li>
+      </ol>
+      <p><a href="/exercises/">All exercises</a></p>
+    </section>
+  </main>
+  <footer class="site">
+    <ul>
+      <li><a href="/exercises/">Exercises</a></li>
+      <li><a href="/functions/">Functions</a></li>
+      <li><a href="/progress/">Progress</a></li>
+      <li><a href="/privacy/">Privacy</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+  </footer>
+</body>
+</html>

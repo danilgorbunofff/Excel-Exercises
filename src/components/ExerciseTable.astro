@@ -1,0 +1,231 @@
+---
+// Why this exists: the one way exercises are listed, as a table in track
+// order: Complete, Title and Difficulty, as on Spreadsheet Center. The
+// catalogue and the progress page use it. Each row carries what the
+// catalogue script needs to filter and sort.
+import { exercisePath, functionsOf, LEVELS, type Placed } from "../lib/exercises.ts";
+
+interface Props {
+  rows: readonly Placed[];
+  /** The id of the heading that names the table. */
+  labelledby: string;
+  /** Show the position in the track as the first column. */
+  numbered?: boolean;
+  /** Column headers become sort buttons. */
+  sortable?: boolean;
+  /** Show which track each exercise belongs to. */
+  showTrack?: boolean;
+}
+const { rows, labelledby, numbered = false, sortable = false, showTrack = true } = Astro.props;
+const columns = [
+  ...(numbered ? [{ key: "order", label: "No." }] : []),
+  { key: "state", label: "Complete" },
+  { key: "title", label: "Title" },
+  { key: "level", label: "Difficulty" },
+];
+---
+
+<div class="table-wrap">
+  <table aria-labelledby={labelledby} data-exercise-table>
+    <thead>
+      <tr>
+        {
+          columns.map((c) => (
+            <th scope="col" class={`col-${c.key}`} data-sort-key={sortable ? c.key : undefined}>
+              {sortable ? (
+                <button type="button" class="sort" data-sort={c.key}>
+                  {c.label}
+                  <span class="sort-mark" aria-hidden="true" />
+                </button>
+              ) : (
+                c.label
+              )}
+            </th>
+          ))
+        }
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((p) => {
+          const fns = functionsOf(p.exercise);
+          return (
+            <tr
+              data-row
+              data-order={p.number}
+              data-level={p.exercise.level}
+              data-track={p.topic.slug}
+              data-title={p.exercise.title}
+              data-search={[p.exercise.title, ...fns].join(" ").toLowerCase()}
+              data-functions={fns.join(" ")}
+            >
+              {numbered && <td class="num">{p.topicNumber}</td>}
+              <td class="state">
+                <span class="status" data-status-for={p.exercise.id}>
+                  <span class="dot" aria-hidden="true" />
+                  <span class="visually-hidden" data-status-label>
+                    Not started
+                  </span>
+                </span>
+              </td>
+              <th scope="row">
+                <span class="title-line">
+                  <a href={exercisePath(p.exercise.slug)}>{p.exercise.title}</a>
+                  {p.exercise.pro && <span class="badge badge-pro">PRO</span>}
+                </span>
+                <span class="meta">
+                  {fns.length > 0 ? fns.join(", ") : "Cell references"}
+                  {showTrack && <span class="track"> · {p.topic.title}</span>}
+                </span>
+              </th>
+              <td>
+                <span class={`badge badge-${p.exercise.level}`}>
+                  {LEVELS[p.exercise.level as 1 | 2 | 3]}
+                </span>
+              </td>
+            </tr>
+          );
+        })
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--size-s);
+  }
+  th,
+  td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--rule);
+    text-align: left;
+    vertical-align: middle;
+  }
+  tbody tr:last-child > * {
+    border-bottom: 0;
+  }
+  thead th {
+    background: var(--bg);
+    font-size: var(--size-xs);
+    font-weight: 600;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .col-state,
+  .col-order {
+    width: 6.5rem;
+  }
+  .col-level {
+    width: 8rem;
+  }
+  .sort {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: 2rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  .sort:hover {
+    color: var(--text);
+  }
+  .sort-mark::after {
+    content: "↕";
+    opacity: 0.5;
+  }
+  th[aria-sort="ascending"] .sort-mark::after {
+    content: "↑";
+    opacity: 1;
+  }
+  th[aria-sort="descending"] .sort-mark::after {
+    content: "↓";
+    opacity: 1;
+  }
+  tbody th {
+    font-weight: 400;
+  }
+  tbody tr:hover {
+    background: var(--bg);
+  }
+  .title-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .title-line a {
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .title-line a:hover {
+    color: var(--correct);
+    text-decoration: underline;
+  }
+  .meta {
+    display: block;
+    margin-top: 0.125rem;
+    font-size: var(--size-xs);
+    color: var(--faint);
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+  }
+  .status {
+    display: inline-flex;
+    align-items: center;
+  }
+  .dot {
+    display: inline-grid;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid var(--line);
+    border-radius: 50%;
+  }
+  .status[data-state="solved"] .dot,
+  .status[data-state="helped"] .dot {
+    border-color: var(--primary);
+    background: var(--primary);
+  }
+  .status[data-state="solved"] .dot::after,
+  .status[data-state="helped"] .dot::after {
+    content: "";
+    width: 0.3rem;
+    height: 0.55rem;
+    margin-top: -0.125rem;
+    border: solid var(--on-primary);
+    border-width: 0 2px 2px 0;
+    rotate: 45deg;
+  }
+  .status[data-state="revealed"] .dot {
+    border-style: dashed;
+    border-color: var(--intermediate);
+  }
+  tr[hidden] {
+    display: none;
+  }
+  @media (max-width: 29.99rem) {
+    .track {
+      display: none;
+    }
+    th,
+    td {
+      padding-inline: var(--space-2);
+    }
+  }
+</style>

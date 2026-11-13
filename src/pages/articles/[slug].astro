@@ -1,0 +1,225 @@
+---
+// Why this exists: one article in a reading column: a drawn cover, its
+// sections listed at the top, then exercises to practise and more articles.
+import { render } from "astro:content";
+import ArticleCard from "../../components/articles/ArticleCard.astro";
+import ArticleCover from "../../components/articles/ArticleCover.astro";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Base from "../../layouts/Base.astro";
+import { type ArticleEntry, allArticles } from "../../lib/articles.ts";
+import { exercisePath, LEVELS, placedExercises } from "../../lib/exercises.ts";
+import { functionPages, functionPath } from "../../lib/functions.ts";
+import { relatedArticles } from "../../lib/related.ts";
+
+export async function getStaticPaths() {
+  return (await allArticles()).map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+
+interface Props {
+  article: ArticleEntry;
+}
+const { article } = Astro.props;
+const all = await allArticles();
+const position = all.findIndex((a) => a.id === article.id);
+const more = relatedArticles(all, article.id);
+const { Content, headings } = await render(article);
+const placed = await placedExercises();
+const practise = article.data.exercises
+  .map((id) => placed.find((p) => p.exercise.id === id))
+  .filter((p) => p !== undefined);
+const pages = new Map((await functionPages()).map((p) => [p.name, functionPath(p.slug)]));
+const date = new Date(`${article.data.updated}T12:00:00Z`).toLocaleDateString("en-GB", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+});
+const sections = headings.filter((h) => h.depth === 2);
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: article.data.title,
+  description: article.data.description,
+  dateModified: article.data.updated,
+  inLanguage: "en",
+}).replaceAll("<", "\\u003c");
+---
+
+<Base title={article.data.title} description={article.data.description} section="/articles/">
+  <Breadcrumbs items={[{ label: "Articles", href: "/articles/" }]} />
+  <ArticleCover
+    text={article.data.cover ?? article.data.functions[0] ?? "fx"}
+    tone={position}
+    wide
+  />
+  <h1>{article.data.title}</h1>
+  <p class="lead">{article.data.description}</p>
+  <p class="meta">{article.data.minutes} min read. Updated {date}.</p>
+  {
+    article.data.functions.length > 0 && (
+      <ul class="chips" aria-label="Functions in this article">
+        {article.data.functions.map((f) => (
+          <li>
+            {pages.has(f) ? (
+              <a class="chip" href={pages.get(f)}>
+                {f}
+              </a>
+            ) : (
+              <span class="chip">{f}</span>
+            )}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  {
+    sections.length > 1 && (
+      <nav class="contents" aria-labelledby="contents">
+        <h2 id="contents">On this page</h2>
+        <ol>
+          {sections.map((h) => (
+            <li>
+              <a href={`#${h.slug}`}>{h.text}</a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )
+  }
+
+  <div class="prose">
+    <Content />
+  </div>
+
+  {
+    practise.length > 0 && (
+      <section class="practise" aria-labelledby="practise">
+        <h2 id="practise">Practise what you read</h2>
+        <ul>
+          {practise.map((p) => (
+            <li>
+              <a href={exercisePath(p.exercise.slug)}>{p.exercise.title}</a>
+              <span class={`level level-${p.exercise.level}`}>
+                {LEVELS[p.exercise.level as 1 | 2 | 3]}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+  {
+    more.length > 0 && (
+      <section class="more" aria-labelledby="more">
+        <h2 id="more">More articles</h2>
+        <ul>
+          {more.map((a) => (
+            <li>
+              <ArticleCard article={a} index={all.indexOf(a)} level="h3" />
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+  <script type="application/ld+json" set:html={jsonLd} />
+</Base>
+
+<style>
+  h1 {
+    margin-top: var(--space-5);
+  }
+  .more {
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--rule);
+  }
+  .more h2 {
+    margin: 0 0 var(--space-4);
+    font-size: var(--size-l);
+  }
+  .more ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .lead {
+    margin: 0 0 var(--space-2);
+    font-size: var(--size-l);
+    color: var(--muted);
+  }
+  .meta {
+    margin: 0 0 var(--space-3);
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .chips {
+    margin-bottom: var(--space-5);
+  }
+  .contents {
+    margin-bottom: var(--space-6);
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--rule);
+  }
+  .contents h2 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .contents ol {
+    margin: 0;
+    padding-left: var(--space-5);
+  }
+  .contents li {
+    margin: var(--space-1) 0;
+  }
+  .prose :global(h2) {
+    margin: var(--space-6) 0 var(--space-3);
+    font-size: var(--size-xl);
+    color: var(--heading);
+    scroll-margin-top: 5rem;
+  }
+  .prose :global(p),
+  .prose :global(li) {
+    line-height: 1.7;
+  }
+  .prose :global(code) {
+    padding: 0.0625rem 0.3rem;
+    border-radius: var(--radius-s);
+    background: var(--header);
+  }
+  .practise {
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--rule);
+  }
+  .practise h2 {
+    margin: 0 0 var(--space-3);
+    font-size: var(--size-l);
+  }
+  .practise ul {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .practise li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .practise li:last-child {
+    border-bottom: 0;
+  }
+</style>

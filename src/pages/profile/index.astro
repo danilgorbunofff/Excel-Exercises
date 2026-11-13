@@ -1,0 +1,13 @@
+---
+// Why this exists: the signed-in dashboard, once accounts open.
+import SignedOutPanel from "../../components/SignedOutPanel.astro";
+import Base from "../../layouts/Base.astro";
+---
+
+<Base title="Your profile" description="Your solved exercises and tracks." layout="flush">
+  <SignedOutPanel
+    title="Your profile"
+    lead="Log in to see your solved exercises, finished tracks and practice history on any device."
+    icon="chart"
+  />
+</Base>

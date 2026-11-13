@@ -1,0 +1,37 @@
+id: multiply-price-by-quantity
+slug: multiply-price-by-quantity
+level: 1
+title: Multiply price by quantity
+topic: references
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In D2, work out the line total, which is the price times the quantity.
+    rows:
+      - [Product, Price, Quantity, Line total]
+      - [Notebook, 3.5, 12, null]
+    answerCell: D2
+    expected: 42
+    answer: =B2*C2
+    hints:
+      nudge: Excel does not use the × sign or the letter x to multiply.
+      rule: The asterisk `*` multiplies two values.
+    misses:
+      syntax: Excel multiplies with an asterisk `*`, not with × or the letter x.
+      reference: Point at B2 and C2, so the line total changes when the price or quantity changes.
+      value: Check that the formula multiplies the price and the quantity, rather than adding them.
+    accept:
+      - =B2*C2
+      - =C2*B2
+      - =PRODUCT(B2:C2)
+    reject:
+      - { formula: "=B2×C2", rule: syntax }
+      - { formula: "=B2xC2", rule: syntax }
+      - { formula: "=3.5*12", rule: reference }
+      - { formula: "=B2+C2", rule: value }
+notes:
+  summary: The asterisk multiplies. The forward slash divides.
+  syntax: =cell*cell
+  example: "`=A1*A2` multiplies the values in A1 and A2."
+  commonErrors:
+    - Typing × or x, which Excel does not read as multiply.

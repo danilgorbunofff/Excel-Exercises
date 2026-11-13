@@ -1,0 +1,51 @@
+---
+// Why this exists: the page shown for any unknown address. It offers a search
+// of the exercises and the way back to the catalogue.
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Page not found" description="There is no page at this address.">
+  <p class="code" aria-hidden="true"><code>#REF!</code></p>
+  <h1>Page not found</h1>
+  <p>There is no page at this address. It may have moved, or the address may have a typo.</p>
+  <form class="search" role="search" action="/exercises/" method="get">
+    <label for="q">Search the exercises</label>
+    <div class="row">
+      <input id="q" name="q" type="search" autocomplete="off" spellcheck="false" />
+      <button class="button button-primary" type="submit">Search</button>
+    </div>
+  </form>
+  <p>Or go to <a href="/exercises/">all exercises</a> or the <a href="/">home page</a>.</p>
+</Base>
+
+<style>
+  .code {
+    margin: var(--space-4) 0 var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--size-xl);
+    font-weight: 600;
+    color: var(--miss);
+  }
+  .search {
+    margin: var(--space-5) 0;
+  }
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: var(--space-1);
+  }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  input {
+    flex: 1 1 14rem;
+    max-width: 24rem;
+    min-height: var(--target);
+    padding: 0 var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+  }
+</style>

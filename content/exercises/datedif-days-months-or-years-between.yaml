@@ -1,0 +1,82 @@
+id: datedif-days-months-or-years-between
+slug: datedif-days-months-or-years-between
+level: 3
+title: "DATEDIF: days, months or years between"
+topic: dates
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: "The dates in B and C are serials, not text: put the complete years Ada has served into D2, counting only full years."
+    rows:
+      - [Employee, Started, Review date, Years served]
+      - [Ada Lovelace, 44562, 45352, null]
+      - [Grace Hopper, 44197, 45352, null]
+    answerCell: D2
+    expected: 2
+    answer: =DATEDIF(B2,C2,"Y")
+    requiredFunctions: [DATEDIF]
+    hints:
+      nudge: One function counts whole years between two dates when you name the unit.
+      rule: DATEDIF takes the start date, the end date and a unit in quotes. The unit "Y" counts complete years and drops any part year left over.
+    misses:
+      value: 1 January 2022 to 1 March 2024 is 2 whole years. The two months after that anniversary do not count.
+      syntax: "Check the brackets, commas and quote marks. DATEDIF follows the pattern `=DATEDIF(start_date, end_date, unit)`."
+      required-function: Subtracting the two serials gives 790 days; the Y unit is what turns that into complete years.
+      reference: Point at B2 and C2, so the second employee needs no new formula.
+    accept:
+      - =DATEDIF(B2,C2,"Y")
+      - =DATEDIF(B2,C2,"y")
+      - =DATEDIF($B$2,$C$2,"Y")
+      - =DATEDIF(B2,C2,"Y")+0
+      - =DATEDIF(B2,C2,"Y")*1
+      - =DATEDIF(B$2,C$2,"Y")
+    reject:
+      - { formula: "=DAYS(C2,B2)", rule: required-function }
+      - { formula: "=DATEDIF(B2,C2)", rule: syntax }
+      - { formula: '=DATEDIF(44562,45352,"Y")', rule: reference }
+      - { formula: '=DATEDIF(B2,C2,"M")', rule: value }
+      - { formula: '=DATEDIF(B2,C2,"D")', rule: value }
+      - { formula: '=DATEDIF(C2,B2,"Y")', rule: value }
+      - { formula: '=DATEDIF(B2,C2,"Q")', rule: value }
+      - { formula: '=DATEDIF(B2,C2,"Y"', rule: syntax }
+  - prompt: "Different person, different unit: put the complete months since Grace started into D2."
+    rows:
+      - [Employee, Started, Review date, Full months]
+      - [Grace Hopper, 44197, 45352, null]
+      - [Ada Lovelace, 44562, 45352, null]
+    answerCell: D2
+    expected: 38
+    answer: =DATEDIF(B2,C2,"M")
+    requiredFunctions: [DATEDIF]
+    hints:
+      nudge: The same function answers in months when you change the unit.
+      rule: With "M" as the unit, DATEDIF counts the complete months between the start and end dates. A part month at the end is dropped.
+    misses:
+      value: "1 January 2021 to 1 March 2024 is 38 whole months: 36 for the three years, then two more."
+      syntax: "Check the brackets, commas and quote marks. DATEDIF follows the pattern `=DATEDIF(start_date, end_date, unit)`."
+      required-function: M counts complete months, not days divided by thirty.
+      reference: Read Grace's start and the review date from B2 and C2.
+    accept:
+      - =DATEDIF(B2,C2,"M")
+      - =DATEDIF(B2,C2,"m")
+      - =DATEDIF($B$2,$C$2,"M")
+      - =DATEDIF(B2,C2,"M")+0
+      - =DATEDIF(B2,C2,"M")*1
+      - =DATEDIF(B$2,C$2,"M")
+    reject:
+      - { formula: "=DAYS(C2,B2)", rule: required-function }
+      - { formula: "=DATEDIF(B2,C2)", rule: syntax }
+      - { formula: '=DATEDIF(44197,45352,"M")', rule: reference }
+      - { formula: '=DATEDIF(B2,C2,"Y")', rule: value }
+      - { formula: '=DATEDIF(B2,C2,"D")', rule: value }
+      - { formula: '=DATEDIF(B2,C2,"YM")', rule: value }
+      - { formula: '=DATEDIF(B2,C2,"L")', rule: value }
+      - { formula: '=DATEDIF(B2,C2,"M"', rule: syntax }
+notes:
+  summary: DATEDIF counts the time between a start date and an end date in the unit you name in quotes. Y counts complete years, M complete months and D days.
+  syntax: DATEDIF(start, end, "unit")
+  example: '`=DATEDIF(A1,B1,"M")` with 15 January 2024 in A1 and 14 April 2024 in B1 gives 2.'
+  commonErrors:
+    - The end date falls before the start date, which leaves DATEDIF no positive interval to report.
+    - The unit in quotes is not Y, M, D, YM, MD or YD, which DATEDIF cannot count in.
+    - One of the dates is text that Excel cannot read as a date, so DATEDIF has no serial to compare.

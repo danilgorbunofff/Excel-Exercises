@@ -1,0 +1,456 @@
+---
+// Why this exists: one learning track. What it teaches, the functions it
+// uses, progress, then the exercises as a numbered list with the next one
+// marked, and where to go after.
+import Breadcrumbs from "../../../components/Breadcrumbs.astro";
+import Icon from "../../../components/Icon.astro";
+import RichText from "../../../components/RichText.astro";
+import TrackIcon from "../../../components/TrackIcon.astro";
+import Base from "../../../layouts/Base.astro";
+import {
+  exercisePath,
+  exercisesForFunction,
+  formatMinutes,
+  functionsOf,
+  LEVELS,
+  placedExercises,
+  type TrackSummary,
+  topicPath,
+  trackSummaries,
+  tracksPath,
+} from "../../../lib/exercises.ts";
+import { functionPages, functionPath } from "../../../lib/functions.ts";
+
+export async function getStaticPaths() {
+  const tracks = trackSummaries(await placedExercises());
+  return tracks.map((track, i) => ({
+    params: { slug: track.topic.slug },
+    props: { track, next: tracks[i + 1] ?? null, count: tracks.length },
+  }));
+}
+
+interface Props {
+  track: TrackSummary;
+  next: TrackSummary | null;
+  count: number;
+}
+const { track, next, count } = Astro.props;
+const { topic, exercises } = track;
+const first = exercises[0];
+const ids = exercises.map((p) => p.exercise.id).join(" ");
+const pages = new Map((await functionPages()).map((p) => [p.name, functionPath(p.slug)]));
+const fnHref = (name: string) => pages.get(name) ?? exercisesForFunction(name);
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: topic.title,
+  itemListElement: exercises.map((p, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: p.exercise.title,
+    url: new URL(exercisePath(p.exercise.slug), Astro.site).href,
+  })),
+}).replaceAll("<", "\\u003c");
+---
+
+<Base
+  title={`${topic.title}: ${exercises.length} practice exercises`}
+  description={`${exercises.length} free Excel exercises on ${topic.title}. ${topic.summary}`}
+  section="/exercises/"
+  layout="wide"
+>
+  <div class="crumbs-row">
+    <Breadcrumbs
+      items={[
+        { label: "Exercises", href: "/exercises/" },
+        { label: "Learning tracks", href: tracksPath },
+      ]}
+    />
+  </div>
+
+  <header class="head">
+    <div class="title-row">
+      <TrackIcon slug={topic.slug} size={48} />
+      <div>
+        <p class="eyebrow">Learning track {track.number} of {count}</p>
+        <h1>{topic.title}</h1>
+      </div>
+    </div>
+    <p class="facts">
+      <span class={`badge badge-${track.level}`}>{LEVELS[track.level]}</span>
+      <span><Icon name="clock" size={16} /> {formatMinutes(track.minutes)}</span>
+      <span><Icon name="grid" size={16} /> {exercises.length} exercises</span>
+    </p>
+    <p class="lead">{topic.summary}</p>
+
+    {
+      topic.learn.length > 0 && (
+        <>
+          <h2 class="small-head">What this track covers</h2>
+          <ul class="learn">
+            {topic.learn.map((l) => (
+              <li>
+                <Icon name="check" size={18} />
+                <span>{l}</span>
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    }
+
+    {
+      track.functions.length > 0 && (
+        <>
+          <h2 class="small-head">Functions in this track</h2>
+          <ul class="chips">
+            {track.functions.map((f) => (
+              <li>
+                <a class="chip" href={fnHref(f)}>
+                  {f}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    }
+
+    {
+      first && (
+        <a class="button button-primary start" href={exercisePath(first.exercise.slug)} data-start-track={ids}>
+          <span data-start-label>Start track</span> <Icon name="arrow" size={16} />
+        </a>
+      )
+    }
+  </header>
+
+  <section aria-labelledby="list" class="list-section">
+    <div class="list-head">
+      <h2 id="list">The exercises, in order</h2>
+      <div class="progress" data-track-progress={ids}>
+        <span class="progress-text" data-bar-text>0 of {exercises.length} done</span>
+        <span class="progress-bar" aria-hidden="true"><span data-bar></span></span>
+      </div>
+    </div>
+    <ol class="steps">
+      {
+        exercises.map((p) => {
+          const fns = functionsOf(p.exercise);
+          return (
+            <li class="card step" data-row data-exercise-id={p.exercise.id}>
+              <span class="num" aria-hidden="true">
+                {p.topicNumber}
+              </span>
+              <div class="step-body">
+                <h3>
+                  <a href={exercisePath(p.exercise.slug)}>{p.exercise.title}</a>
+                  <span class={`badge badge-${p.exercise.level}`}>
+                    {LEVELS[p.exercise.level as 1 | 2 | 3]}
+                  </span>
+                  {p.exercise.pro && <span class="badge badge-pro">PRO</span>}
+                  <span class="up-next" data-up-next hidden>
+                    Up next
+                  </span>
+                </h3>
+                <p>
+                  <RichText text={p.exercise.screens[0]?.prompt ?? ""} />
+                </p>
+                <div class="step-foot">
+                  {fns.length > 0 && (
+                    <ul class="chips">
+                      {fns.map((f) => (
+                        <li class="chip">{f}</li>
+                      ))}
+                    </ul>
+                  )}
+                  <span class="status" data-status-for={p.exercise.id}>
+                    <span class="dot" aria-hidden="true" />
+                    <span class="visually-hidden" data-status-label>
+                      Not started
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <a class="button button-primary go" href={exercisePath(p.exercise.slug)}>
+                <span aria-hidden="true" data-action-label>Start</span><span class="visually-hidden"><span data-action-label>Start</span>: {p.exercise.title}</span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </section>
+
+  <section aria-labelledby="where" class="where">
+    <h2 id="where">After this track</h2>
+    <div class="where-grid">
+      {
+        next ? (
+          <a class="card where-card" href={topicPath(next.topic.slug)}>
+            <TrackIcon slug={next.topic.slug} />
+            <span class="where-text">
+              <span class="where-title">{next.topic.title}</span>
+              <span>{next.topic.summary}</span>
+            </span>
+            <Icon name="arrow" size={18} />
+          </a>
+        ) : (
+          <a class="card where-card" href="/exercises/">
+            <span class="where-text">
+              <span class="where-title">You have reached the last track</span>
+              <span>Go back over any exercise from the full list.</span>
+            </span>
+            <Icon name="arrow" size={18} />
+          </a>
+        )
+      }
+      <a class="card where-card" href={tracksPath}>
+        <span class="where-text">
+          <span class="where-title">Need a different skill?</span>
+          <span>See every learning track, grouped by level.</span>
+        </span>
+        <Icon name="arrow" size={18} />
+      </a>
+    </div>
+  </section>
+  <script type="application/ld+json" set:html={jsonLd} />
+</Base>
+
+<script>
+  import "../../../scripts/catalogue.ts";
+  import { isDone, trackStatus } from "../../../lib/catalogue.ts";
+  import { readProgress } from "../../../scripts/progress.ts";
+
+  // Mark the first exercise not yet done as "Up next", and point Start there.
+  const progress = readProgress();
+  const steps = [...document.querySelectorAll<HTMLElement>("[data-exercise-id]")];
+  const doneCount = steps.filter((s) => isDone(progress[s.dataset["exerciseId"] ?? ""]?.state ?? "")).length;
+  const next = steps.find((s) => !isDone(progress[s.dataset["exerciseId"] ?? ""]?.state ?? ""));
+  const mark = next?.querySelector<HTMLElement>("[data-up-next]");
+  if (mark) mark.hidden = false;
+  const start = document.querySelector<HTMLAnchorElement>("[data-start-track]");
+  const link = next?.querySelector<HTMLAnchorElement>("h3 a");
+  const label = start?.querySelector("[data-start-label]");
+  if (start && label) {
+    if (link && doneCount > 0) start.href = link.href;
+    label.textContent = trackStatus(doneCount, steps.length).action;
+  }
+</script>
+
+<style>
+  .crumbs-row {
+    padding-top: var(--space-5);
+  }
+  .head {
+    max-width: 56rem;
+    padding: var(--space-4) 0 var(--space-6);
+  }
+  .title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .eyebrow {
+    margin: 0;
+    font-size: var(--size-xs);
+    font-weight: 600;
+    color: var(--faint);
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--size-xxl);
+    color: var(--heading);
+  }
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+    margin: var(--space-4) 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .facts span:not(.badge) {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+  .lead {
+    margin: 0 0 var(--space-5);
+    font-size: var(--size-l);
+    font-weight: 600;
+    color: var(--text);
+  }
+  .small-head {
+    margin: var(--space-5) 0 var(--space-3);
+    font-size: var(--size-s);
+    font-weight: 600;
+    color: var(--muted);
+  }
+  ul,
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .learn {
+    display: grid;
+    gap: var(--space-2) var(--space-6);
+  }
+  .learn li {
+    display: flex;
+    gap: var(--space-2);
+    font-size: var(--size-s);
+  }
+  .learn :global(.icon) {
+    flex: none;
+    color: var(--correct);
+  }
+  .start {
+    margin-top: var(--space-6);
+  }
+  .list-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+  .list-head h2,
+  .where h2 {
+    margin: 0;
+    font-size: var(--size-xl);
+    color: var(--heading);
+  }
+  .progress {
+    display: grid;
+    gap: var(--space-1);
+    min-width: 14rem;
+  }
+  .progress-text {
+    font-size: var(--size-xs);
+    color: var(--faint);
+    text-align: right;
+  }
+  .steps {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .step {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-3) var(--space-4);
+    align-items: center;
+    padding: var(--space-4) var(--space-5);
+  }
+  .num {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--header);
+    font-weight: 700;
+    color: var(--muted);
+  }
+  .step h3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-1);
+    font-size: var(--size-base);
+  }
+  .step h3 a {
+    color: var(--heading);
+    text-decoration: none;
+  }
+  .step h3 a:hover {
+    color: var(--correct);
+    text-decoration: underline;
+  }
+  .up-next {
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-pill);
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: var(--size-xs);
+    font-weight: 600;
+  }
+  .up-next[hidden] {
+    display: none;
+  }
+  .step p {
+    margin: 0 0 var(--space-2);
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .step-foot {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .go {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+  .status .dot {
+    display: inline-grid;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid var(--line);
+    border-radius: 50%;
+  }
+  .status[data-state="solved"] .dot,
+  .status[data-state="helped"] .dot {
+    border-color: var(--primary);
+    background: var(--primary);
+  }
+  .where {
+    margin: var(--space-7) 0;
+  }
+  .where-grid {
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+  }
+  .where-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    color: inherit;
+  }
+  .where-text {
+    display: grid;
+    gap: var(--space-1);
+    flex: 1;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .where-title {
+    font-size: var(--size-base);
+    font-weight: 600;
+    color: var(--heading);
+  }
+  .where-card:hover .where-title {
+    color: var(--correct);
+    text-decoration: underline;
+  }
+  @media (min-width: 48rem) {
+    .learn {
+      grid-template-columns: 1fr 1fr;
+    }
+    .step {
+      grid-template-columns: auto 1fr auto;
+    }
+    .go {
+      grid-column: auto;
+    }
+    .where-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

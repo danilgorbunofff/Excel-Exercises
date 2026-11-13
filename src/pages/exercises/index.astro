@@ -1,0 +1,419 @@
+---
+// Why this exists: the catalogue, laid out as on Spreadsheet Center: a
+// centred head with a green note, learning track cards, one sortable table of
+// every exercise, a start card and filters on the right, then picks for
+// beginners and for work, and common questions.
+import { siteConfig } from "../../../site.config.ts";
+import ExerciseTable from "../../components/ExerciseTable.astro";
+import Icon from "../../components/Icon.astro";
+import TrackList from "../../components/TrackList.astro";
+import Base from "../../layouts/Base.astro";
+import {
+  exercisePath,
+  functionsOf,
+  LEVELS,
+  placedExercises,
+  topicPath,
+  trackSummaries,
+  tracksPath,
+} from "../../lib/exercises.ts";
+import { ACCOUNT_NAV } from "../../lib/nav.ts";
+
+const placed = await placedExercises();
+const tracks = trackSummaries(placed);
+const total = placed.length;
+const free = siteConfig.freeCount === null ? total : Math.min(siteConfig.freeCount, total);
+const firstTrack = tracks[0];
+const functionNames = [...new Set(placed.flatMap((p) => functionsOf(p.exercise)))].sort();
+const beginners = placed.filter((p) => p.exercise.level === 1).slice(0, 3);
+const forWork = placed.filter((p) => p.exercise.level >= 2).slice(-6);
+const faq = [
+  {
+    q: "I am new to Excel. Where do I begin?",
+    a: "Start with the first track, Cells and arithmetic. Each exercise adds one idea, and the tracks build on each other in order.",
+  },
+  {
+    q: "Can these exercises help me prepare for a job that uses Excel?",
+    a: "Yes. The later tracks cover the conditions and lookups that office, finance and data roles use every day.",
+  },
+  {
+    q: "How much time does one exercise need?",
+    a: "Most take five to ten minutes. Each asks for one formula, and the hints are there if you get stuck.",
+  },
+  {
+    q: "What if I get stuck?",
+    a: "Yes. Each exercise has two hints and then the answer. Seeing the answer marks the exercise as solved with help.",
+  },
+  {
+    q: "Which versions of Excel do the formulas work in?",
+    a: "The exercises follow Excel for Microsoft 365. XLOOKUP needs Excel 2021 or later. Everything else works in older versions too.",
+  },
+];
+---
+
+<Base
+  title="Exercises"
+  description={`All ${total} Excel formula exercises, in order from cell references to capstone tasks, with learning tracks and filters.`}
+  section="/exercises/"
+  layout="wide"
+>
+  <header class="page-head">
+    <h1>Excel formula exercises</h1>
+    <p class="pill-note">Runs in your browser. Free, with no account.</p>
+    <p class="lead">
+      Work through {total} short spreadsheet tasks on totals, logic, lookups, text, dates and
+      more, with instant feedback. {free === total ? `All ${total} are free.` : `The first ${free} are free.`}
+    </p>
+  </header>
+
+  <div class="layout">
+    <section aria-labelledby="tracks-heading" class="tracks">
+      <div class="tracks-head">
+        <div>
+          <h2 id="tracks-heading">Learning tracks</h2>
+          <p>Each track takes one skill from its first formula to its hardest.</p>
+        </div>
+        <a class="arrow-link" href={tracksPath}>All tracks&nbsp;<span aria-hidden="true">→</span></a>
+      </div>
+      <div class="track-grid">
+        <TrackList tracks={tracks.slice(0, 4)} labelledby="tracks-heading" />
+      </div>
+    </section>
+
+    <div class="all">
+      <h2 id="all" class="visually-hidden">All exercises</h2>
+      <ExerciseTable rows={placed} labelledby="all" sortable />
+
+      <section class="picks" aria-labelledby="for-beginners">
+        <h2 id="for-beginners">Good first exercises</h2>
+        <p>New to formulas? These three are a good first sitting.</p>
+        <ul class="pick-grid">
+          {
+            beginners.map((p) => (
+              <li>
+                <a class="card pick" href={exercisePath(p.exercise.slug)}>
+                  <span class={`badge badge-${p.exercise.level}`}>
+                    {LEVELS[p.exercise.level as 1 | 2 | 3]}
+                  </span>
+                  <span class="pick-title">{p.exercise.title}</span>
+                  <span class="pick-text">{p.exercise.screens[0]?.prompt}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="picks" aria-labelledby="for-work">
+        <h2 id="for-work">Exercises for everyday work</h2>
+        <p>Conditions and lookups: the formulas reports and trackers use most.</p>
+        <ul class="pick-grid">
+          {
+            forWork.map((p) => (
+              <li>
+                <a class="card pick" href={exercisePath(p.exercise.slug)}>
+                  <span class={`badge badge-${p.exercise.level}`}>
+                    {LEVELS[p.exercise.level as 1 | 2 | 3]}
+                  </span>
+                  <span class="pick-title">{p.exercise.title}</span>
+                  <span class="pick-text">{p.exercise.screens[0]?.prompt}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="faq" aria-labelledby="faq">
+        <h2 id="faq">Frequently asked questions</h2>
+        {
+          faq.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </section>
+    </div>
+
+    <aside class="side" aria-label="Start and filter">
+      {
+        firstTrack && (
+          <div class="card start">
+            <h2>Practise on a real sheet</h2>
+            <p>Short tasks, with a check that explains itself.</p>
+            <a class="button button-primary" href={topicPath(firstTrack.topic.slug)}>
+              <Icon name="play" size={16} /> Start the first track
+            </a>
+            <ul class="facts">
+              <li>
+                <Icon name="bolt" /> Checked at once
+              </li>
+              <li>
+                <Icon name="grid" /> {total} exercises
+              </li>
+              <li>
+                <Icon name="hint" /> Two hints each
+              </li>
+            </ul>
+            {
+              siteConfig.accountsOpen ? (
+                <a class="sync" href={ACCOUNT_NAV.register.href}>
+                  Sign up to keep progress on every device&nbsp;<span aria-hidden="true">→</span>
+                </a>
+              ) : (
+                <a class="sync" href="/progress/">
+                  Saved in this browser. See your progress&nbsp;<span aria-hidden="true">→</span>
+                </a>
+              )
+            }
+          </div>
+        )
+      }
+
+      <form class="card filter" role="search" action="/exercises/" method="get" data-filter>
+        <h2>Filter exercises</h2>
+        <p class="count" role="status" data-filter-count>{total} exercises</p>
+        <label for="q">Find an exercise</label>
+        <input id="q" name="q" type="search" autocomplete="off" spellcheck="false" placeholder="Title or function" />
+        <label for="progress">Progress</label>
+        <select id="progress" name="progress">
+          <option value="">All</option>
+          <option value="todo">Not completed</option>
+          <option value="done">Completed</option>
+        </select>
+        <label for="level">Difficulty</label>
+        <select id="level" name="level">
+          <option value="">All</option>
+          {Object.entries(LEVELS).map(([v, l]) => <option value={v}>{l}</option>)}
+        </select>
+        <label for="fn">Function</label>
+        <select id="fn" name="fn">
+          <option value="">All</option>
+          {functionNames.map((name) => <option value={name}>{name}</option>)}
+        </select>
+        <label for="track">Track</label>
+        <select id="track" name="track">
+          <option value="">All</option>
+          {tracks.map((t) => <option value={t.topic.slug}>{t.topic.title}</option>)}
+        </select>
+        <button class="button button-secondary" type="reset">Clear filters</button>
+      </form>
+    </aside>
+  </div>
+</Base>
+
+<script>
+  import "../../scripts/catalogue.ts";
+</script>
+
+<style>
+  .layout {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-areas: "tracks" "side" "all";
+  }
+  .tracks {
+    grid-area: tracks;
+    min-width: 0;
+  }
+  .all {
+    grid-area: all;
+    min-width: 0;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .tracks-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+    margin-bottom: var(--space-4);
+  }
+  .tracks-head h2 {
+    margin: 0 0 var(--space-1);
+    font-size: var(--size-l);
+    color: var(--heading);
+  }
+  .tracks-head p {
+    margin: 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .track-grid :global(.tracks) {
+    grid-template-columns: 1fr;
+  }
+  .side {
+    grid-area: side;
+    display: grid;
+    gap: var(--space-5);
+    align-content: start;
+  }
+  .side h2 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--size-l);
+    color: var(--heading);
+  }
+  .start p {
+    margin: 0 0 var(--space-4);
+    color: var(--muted);
+    font-size: var(--size-s);
+  }
+  .start .button {
+    width: 100%;
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2);
+    margin: var(--space-5) 0;
+    text-align: center;
+    font-size: var(--size-xs);
+    color: var(--muted);
+  }
+  .facts li {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-1);
+  }
+  .facts :global(.icon) {
+    color: var(--chip);
+  }
+  .sync {
+    display: block;
+    text-align: right;
+    font-size: var(--size-xs);
+    color: var(--correct);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .sync:hover {
+    text-decoration: underline;
+  }
+  .filter {
+    display: grid;
+    gap: var(--space-2);
+  }
+  /* The filter needs the script. Its space is kept from the start, so showing
+     it moves nothing on the page. */
+  .filter:not(.ready) {
+    visibility: hidden;
+  }
+  .count {
+    margin: 0 0 var(--space-2);
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  label {
+    margin-top: var(--space-2);
+    font-size: var(--size-s);
+    font-weight: 600;
+  }
+  input,
+  select {
+    width: 100%;
+    min-height: var(--target);
+    padding: 0 var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    background-color: var(--surface);
+    font-size: var(--size-s);
+  }
+  select {
+    padding-right: 2.5rem;
+  }
+  .filter .button {
+    margin-top: var(--space-3);
+  }
+  .picks {
+    margin-top: var(--space-7);
+  }
+  .picks h2,
+  .faq h2 {
+    margin: 0 0 var(--space-1);
+    font-size: var(--size-xl);
+    color: var(--heading);
+  }
+  .picks > p {
+    margin: 0 0 var(--space-4);
+    color: var(--muted);
+  }
+  .pick-grid {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .pick-grid li {
+    display: grid;
+  }
+  .pick {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+  .pick-title {
+    font-weight: 600;
+    color: var(--heading);
+  }
+  .pick:hover .pick-title {
+    color: var(--correct);
+    text-decoration: underline;
+  }
+  .pick-text {
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .faq {
+    margin-top: var(--space-7);
+  }
+  .faq h2 {
+    margin-bottom: var(--space-3);
+  }
+  .faq details {
+    border-bottom: 1px solid var(--rule);
+  }
+  .faq summary {
+    display: flex;
+    align-items: center;
+    min-height: var(--target);
+    padding: var(--space-2) 0;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .faq details p {
+    margin: 0 0 var(--space-4);
+    color: var(--muted);
+  }
+  @media (min-width: 40rem) {
+    .track-grid :global(.tracks) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 48rem) {
+    .pick-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (min-width: 64rem) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr) 18rem;
+      grid-template-rows: auto 1fr;
+      grid-template-areas: "tracks side" "all side";
+    }
+    .side {
+      position: sticky;
+      top: 5rem;
+      align-self: start;
+    }
+  }
+  @media (max-width: 63.99rem) {
+    .start {
+      display: none;
+    }
+  }
+</style>

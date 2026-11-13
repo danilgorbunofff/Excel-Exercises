@@ -1,0 +1,89 @@
+id: wildcards-in-text-criteria
+slug: wildcards-in-text-criteria
+level: 2
+title: Wildcards in text criteria
+topic: text-search
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In D2, count the North rows with a wildcard criterion.
+    rows:
+      - [Code, Region, Amount, Answer]
+      - [AN-1042, North, 120, null]
+      - [BO-2299, South, 80, null]
+      - [CY-3140, North, 200, null]
+      - [DE-4471, North, 60, null]
+    answerCell: D2
+    expected: 3
+    answer: =COUNTIF(B2:B5,"Nor*")
+    requiredFunctions: [COUNTIF]
+    hints:
+      nudge: A star in the criterion matches any run of characters after the letters you type.
+      rule: COUNTIF takes a range and a criterion in quotes. In the criterion, * stands for any run of characters and ? for exactly one.
+    misses:
+      value: "Three regions start with Nor: rows 2, 4 and 5."
+      syntax: "Check the brackets, commas and quote marks. COUNTIF follows the pattern `=COUNTIF(range, criteria)`."
+      required-function: Counting rows that fit a pattern is COUNTIF's own job.
+      reference: The regions are in B2:B5.
+    accept:
+      - =COUNTIF(B2:B5,"Nor*")
+      - =countif(b2:b5,"nor*")
+      - =COUNTIF($B$2:$B$5,"Nor*")
+      - =COUNTIF(B$2:B$5,"Nor*")
+      - =COUNTIF( B2:B5 , "Nor*" )
+      - =COUNTIF(B2:B5,"N*")
+      - =COUNTIF(B2:B5,"N????")
+    reject:
+      - { formula: =COUNTA(B2:B5), rule: required-function }
+      - { formula: =SUM(C2:C5), rule: required-function }
+      - { formula: '=COUNTIF(B2:B5,"N")', rule: value }
+      - { formula: '=COUNTIF(B2:B4,"Nor*")', rule: value }
+      - { formula: '=COUNTIF(B2:B5,"S*")', rule: value }
+      - { formula: '=COUNTIF(C2:C5,">100")', rule: value }
+      - { formula: '=COUNTIF(B2:B5,"Nor*")/0', rule: value }
+      - { formula: '=COUNTIF B2:B5,"Nor*"', rule: syntax }
+  - prompt: In D2, add the amounts of every code that fits the two-letter pattern with a wildcard.
+    rows:
+      - [Code, Region, Amount, Answer]
+      - [AN-1042, North, 120, null]
+      - [BO-2299, South, 80, null]
+      - [CY-3140, North, 200, null]
+      - [DE-4471, North, 60, null]
+    answerCell: D2
+    expected: 460
+    answer: =SUMIF(A2:A5,"??-*",C2:C5)
+    requiredFunctions: [SUMIF]
+    hints:
+      nudge: Each question mark stands for one character, and a star covers the rest of the code.
+      rule: SUMIF takes the range to test, the criterion, then the range to add. Wildcards in the criterion work as they do in COUNTIF.
+    misses:
+      value: All four codes are two letters, a hyphen and four digits, so all four amounts count.
+      syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, [sum_range])`."
+      required-function: A total that depends on a pattern is SUMIF's job.
+      reference: The codes are in A2:A5.
+    accept:
+      - =SUMIF(A2:A5,"??-*",C2:C5)
+      - =sumif(a2:a5,"??-*",c2:c5)
+      - =SUMIF($A$2:$A$5,"??-*",$C$2:$C$5)
+      - =SUMIF(A$2:A$5,"??-*",C$2:C$5)
+      - =SUMIF( A2:A5 , "??-*" , C2:C5 )
+      - =SUMIF(A2:A5,"*-*",C2:C5)
+      - =SUMIF(A2:A5,"*",C2:C5)
+      - =SUMIF(A2:A5,"??-*",C2:C5)+0
+    reject:
+      - { formula: =SUM(C2:C5), rule: required-function }
+      - { formula: '=COUNTIF(A2:A5,"??-*")', rule: required-function }
+      - { formula: '=SUMIF(A2:A5,"*-1*",C2:C5)', rule: value }
+      - { formula: '=SUMIF(A2:A4,"??-*",C2:C4)', rule: value }
+      - { formula: '=SUMIF(A2:A5,"??-*",B2:B5)', rule: value }
+      - { formula: '=SUMIF(C2:C5,">100",C2:C5)', rule: value }
+      - { formula: '=SUMIF(A2:A5,"??-*",C2:C5)/0', rule: value }
+      - { formula: '=SUMIF A2:A5,"??-*",C2:C5', rule: syntax }
+notes:
+  summary: A criterion is the text that tells COUNTIF or SUMIF which rows count, and two marks inside it act as wildcards. A question mark stands for exactly one character, a star for any run of them including none.
+  syntax: In a criterion, ? matches one character and * matches any run of them
+  example: '`=COUNTIF(A1:A3,"Re*")` with Red, Reed and Blue gives 2.'
+  commonErrors:
+    - The criterion cannot be read as text or as a comparison, usually because its quotes are unbalanced.
+    - A range points at rows that no longer exist after a column was deleted.
+    - COUNTIF(B2:B5,"N") matches nothing and returns 0.

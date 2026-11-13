@@ -1,0 +1,84 @@
+id: clean-up-an-imported-list
+slug: clean-up-an-imported-list
+level: 3
+title: Clean up an imported list
+topic: capstone
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B2, tidy the imported name in A2 so it has no stray spaces and each word is capitalised.
+    rows:
+      - [Imported, Answer]
+      - ["  ANA  LOPEZ  ", null]
+      - ["  bo   CHEN ", null]
+      - [CY  patel, null]
+      - ["  di  OKORO  ", null]
+    answerCell: B2
+    expected: Ana Lopez
+    answer: =PROPER(TRIM(A2))
+    requiredFunctions: [TRIM, PROPER]
+    hints:
+      nudge: Remove the extra spaces first, then fix the capital letters.
+      rule: TRIM removes spaces at both ends and leaves single spaces between words. PROPER capitalises the first letter of each word and lowers the rest.
+    misses:
+      value: Padding and doubled spaces collapse, and the words become Ana Lopez.
+      syntax: "Check the brackets, commas and quote marks. PROPER follows the pattern `=PROPER(text)`."
+      required-function: The cell is padded and doubled up, so the spaces go first.
+      reference: The imported name is in A2.
+    accept:
+      - =PROPER(TRIM(A2))
+      - =proper(trim(a2))
+      - =PROPER(TRIM($A$2))
+      - =PROPER(TRIM(A$2))
+      - =PROPER( TRIM( A2 ) )
+      - =PROPER(TRIM(A2))&""
+    reject:
+      - { formula: =TRIM(A2), rule: required-function }
+      - { formula: =PROPER(A2), rule: required-function }
+      - { formula: =UPPER(A2), rule: required-function }
+      - { formula: =PROPER(TRIM(A2))&" ", rule: value }
+      - { formula: =PROPER(TRIM(A3)), rule: value }
+      - { formula: =PROPER(TRIM(A2))/0, rule: value }
+      - { formula: =PROPER TRIM(A2), rule: syntax }
+  - prompt: In B2, build a lower-case key from the imported name in A2 with a dot where the space was.
+    rows:
+      - [Imported, Answer]
+      - ["  ANA  LOPEZ  ", null]
+      - ["  bo   CHEN ", null]
+      - [CY  patel, null]
+      - ["  di  OKORO  ", null]
+    answerCell: B2
+    expected: ana.lopez
+    answer: =LOWER(SUBSTITUTE(TRIM(A2)," ","."))
+    requiredFunctions: [TRIM, SUBSTITUTE, LOWER]
+    hints:
+      nudge: Tidy the spaces first, swap each space for a dot, then make the text lower case.
+      rule: SUBSTITUTE takes the text, the old text and the new text, and replaces every match. LOWER turns every letter into lower case.
+    misses:
+      value: Ana Lopez becomes ana.lopez once the padding is gone.
+      syntax: "Check the brackets, commas and quote marks. LOWER follows the pattern `=LOWER(text)`."
+      required-function: Trim first, or the doubled spaces turn into doubled dots.
+      reference: The imported name is in A2, at the top of the column.
+    accept:
+      - =LOWER(SUBSTITUTE(TRIM(A2)," ","."))
+      - =lower(substitute(trim(a2)," ","."))
+      - =LOWER(SUBSTITUTE(TRIM($A$2)," ","."))
+      - =LOWER(SUBSTITUTE(TRIM(A$2)," ","."))
+      - =LOWER( SUBSTITUTE( TRIM( A2 ) , " " , "." ) )
+      - =LOWER(SUBSTITUTE(TRIM(A2)," ","."))&""
+    reject:
+      - { formula: '=SUBSTITUTE(TRIM(A2)," ",".")', rule: required-function }
+      - { formula: =LOWER(TRIM(A2)), rule: required-function }
+      - { formula: '=LOWER(SUBSTITUTE(A2," ","."))', rule: required-function }
+      - { formula: '=LOWER(SUBSTITUTE(TRIM(A2)," ","-"))', rule: value }
+      - { formula: '=LOWER(SUBSTITUTE(TRIM(A3)," ","."))', rule: value }
+      - { formula: '=LOWER(SUBSTITUTE(TRIM(A2)," ","."))/0', rule: value }
+      - { formula: '=LOWER SUBSTITUTE(TRIM(A2)," ",".")', rule: syntax }
+notes:
+  summary: TRIM removes spaces at both ends of a text and collapses runs of spaces inside it to one. PROPER, LOWER and SUBSTITUTE then fix the case and swap characters.
+  syntax: PROPER(TRIM(text)) tidies spacing and case; nest SUBSTITUTE and LOWER for a key
+  example: '`=PROPER(TRIM(A1))` with "  jo   SMITH " in A1 gives Jo Smith.'
+  commonErrors:
+    - A function is handed a whole range instead of one cell, which is not a single string to clean.
+    - The function name is misspelled, and Excel returns `#NAME?`.
+    - SUBSTITUTE runs before TRIM and every run of spaces becomes a run of dots in the key.

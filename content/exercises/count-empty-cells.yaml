@@ -1,0 +1,45 @@
+id: count-empty-cells
+slug: count-empty-cells
+level: 1
+title: Count the empty cells
+topic: counting
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: Some tasks have no owner yet. In B8, count the tasks that have no owner.
+    rows:
+      - [Task, Owner]
+      - [Order stock, Kim]
+      - [Book a van, null]
+      - [Call the printer, Sam]
+      - [Pay the invoice, null]
+      - [Update prices, Kim]
+      - [Email the team, null]
+      - [No owner, null]
+    answerCell: B8
+    expected: 3
+    answer: =COUNTBLANK(B2:B7)
+    requiredFunctions: [COUNTBLANK]
+    hints:
+      nudge: One function counts the empty cells in a range.
+      rule: COUNTBLANK counts the cells in a range that hold nothing.
+    misses:
+      syntax: Write the range as the first cell, a colon, then the last cell.
+      required-function: Use COUNTBLANK, which counts the empty cells.
+      reference: Point at the owners in B2 to B7, not at B8.
+      value: Check that the range covers every task, from B2 to B7.
+    accept:
+      - =COUNTBLANK(B2:B7)
+      - =countblank(b2:b7)
+    reject:
+      - { formula: "=COUNTBLANK(B2:B7", rule: syntax }
+      - { formula: "=COUNTA(B2:B7)", rule: required-function }
+      - { formula: "=COUNTBLANK(B2:B8)", rule: reference }
+      - { formula: "=COUNTBLANK(B2:B6)", rule: value }
+      - { formula: "=COUNTBLANK(A2:A7)", rule: value }
+notes:
+  summary: COUNTBLANK counts the empty cells in a range. A cell with a formula that returns empty text also counts.
+  syntax: COUNTBLANK(range)
+  example: "`=COUNTBLANK(A1:A4)` with Ana, an empty cell, Bo and an empty cell gives 2."
+  commonErrors:
+    - A cell that holds 0 is not empty, so it is not counted.

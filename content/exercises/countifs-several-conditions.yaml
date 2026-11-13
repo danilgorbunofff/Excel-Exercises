@@ -1,0 +1,88 @@
+id: countifs-several-conditions
+slug: countifs-several-conditions
+level: 3
+title: "COUNTIFS: several conditions"
+topic: conditions
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In D9, count the North orders that are still open with one function taking two conditions.
+    rows:
+      - [Order, Region, Status, Units]
+      - [SO-1001, North, Open, 5]
+      - [SO-1002, South, Open, 3]
+      - [SO-1003, North, Closed, 4]
+      - [SO-1004, East, Open, 2]
+      - [SO-1005, North, Open, 6]
+      - [SO-1006, South, Closed, 1]
+      - [SO-1007, North, Open, 8]
+      - [North & open, null, null, null]
+    answerCell: D9
+    expected: 3
+    answer: =COUNTIFS(B2:B8,"North",C2:C8,"Open")
+    requiredFunctions: [COUNTIFS]
+    hints:
+      nudge: Give the function one range and condition for the region, then another pair for the status.
+      rule: COUNTIFS takes pairs of range and condition and counts the rows where every condition holds. Text conditions go in double quotes and ignore case.
+    misses:
+      value: Rows 2, 6 and 8 are North and open. Row 4 is North but closed, so it does not count.
+      syntax: "Check the brackets, commas and quote marks. COUNTIFS follows the pattern `=COUNTIFS(criteria_range1, criteria1, [criteria_range2, criteria2], ...)`."
+      required-function: COUNTIF takes one condition. A second condition needs COUNTIFS.
+      reference: Point the first range at the region column and the second at the status column.
+    accept:
+      - =COUNTIFS(B2:B8,"North",C2:C8,"Open")
+      - =countifs(b2:b8,"north",c2:c8,"open")
+      - =COUNTIFS($B$2:$B$8,"North",$C$2:$C$8,"Open")
+      - =COUNTIFS(B2:B8,"North",C2:C8,"Open")+0
+      - =COUNTIFS(C2:C8,"Open",B2:B8,"North")
+    reject:
+      - { formula: '=COUNTIF(B2:B8,"North")', rule: required-function }
+      - { formula: '=COUNTIFS(B2:B8,"North")', rule: value }
+      - { formula: '=COUNTIFS(B2:B8,"North",C2:C8,"Closed")', rule: value }
+      - { formula: '=COUNTIFS(B3:B8,"North",C3:C8,"Open")', rule: value }
+      - { formula: '=COUNTIFS(B2:B8,"North",C2:C8,"Open")/0', rule: value }
+      - { formula: '=COUNTIFS(B2:B8 "North",C2:C8,"Open")', rule: syntax }
+      - { formula: =SUMPRODUCT((B2:B8="North")*(C2:C8="Open")), rule: required-function }
+  - prompt: In D9, count the open orders that came to more than 5 units.
+    rows:
+      - [Order, Region, Status, Units]
+      - [SO-1001, North, Open, 5]
+      - [SO-1002, South, Open, 3]
+      - [SO-1003, North, Closed, 4]
+      - [SO-1004, East, Open, 2]
+      - [SO-1005, North, Open, 6]
+      - [SO-1006, South, Closed, 1]
+      - [SO-1007, North, Open, 8]
+      - [Open & over 5 units, null, null, null]
+    answerCell: D9
+    expected: 2
+    answer: =COUNTIFS(C2:C8,"Open",D2:D8,">5")
+    requiredFunctions: [COUNTIFS]
+    hints:
+      nudge: One condition checks the status and the other checks the units against 5.
+      rule: A comparison condition is written in double quotes, with the sign before the number. COUNTIFS counts a row only when every pair matches.
+    misses:
+      value: Rows 6 and 8 are open with 6 and 8 units. Row 2 has exactly 5, so it does not count.
+      syntax: "Check the brackets, commas and quote marks. COUNTIFS follows the pattern `=COUNTIFS(criteria_range1, criteria1, [criteria_range2, criteria2], ...)`."
+      required-function: Two conditions over one table is what COUNTIFS is built for.
+      reference: Compare the threshold against the units column, so >5 is tested on real cells.
+    accept:
+      - =COUNTIFS(C2:C8,"Open",D2:D8,">5")
+      - =countifs(c2:c8,"open",d2:d8,">5")
+      - =COUNTIFS($C$2:$C$8,"Open",$D$2:$D$8,">5")
+      - =COUNTIFS(C2:C8,"Open",D2:D8,">5")+0
+      - =COUNTIFS(D2:D8,">5",C2:C8,"Open")
+    reject:
+      - { formula: '=COUNTIF(D2:D8,">5")', rule: required-function }
+      - { formula: '=COUNTIFS(C2:C8,"Open",D2:D8,">=5")', rule: value }
+      - { formula: '=COUNTIFS(C2:C8,"Closed",D2:D8,">5")', rule: value }
+      - { formula: '=COUNTIFS(C2:C8,"Open",D2:D8,">5")/0', rule: value }
+      - { formula: '=COUNTIFS(C2:C8,"Open",D2:D8,">5"', rule: syntax }
+notes:
+  summary: COUNTIFS counts the rows where every condition holds at the same time. Its arguments alternate range, condition, range, condition, and each range has to cover the same rows.
+  syntax: COUNTIFS(criteria_range1, criteria1, [criteria_range2, criteria2], ...)
+  example: '`=COUNTIFS(A1:A3,"North",B1:B3,">5")` with North 6, South 8 and North 2 gives 1.'
+  commonErrors:
+    - One criteria range covers a different number of rows from the others, so the conditions stop lining up.
+    - Two conditions that exclude each other, such as North and South on the same column, can never both hold for one row, and the count comes back as 0.
+    - Dropping the second pair counts every North order, which is 4 rather than 3.

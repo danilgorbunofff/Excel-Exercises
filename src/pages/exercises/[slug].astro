@@ -1,0 +1,440 @@
+---
+// Why this exists: one page per exercise, in the single track order. The task,
+// the sheet and the verdict line render on the server; the exercise script
+// grades in the browser and draws what the formula read.
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import CompletionDialog from "../../components/CompletionDialog.astro";
+import ExerciseData from "../../components/ExerciseData.astro";
+import ExerciseTimer from "../../components/ExerciseTimer.astro";
+import HintLadder from "../../components/HintLadder.astro";
+import RichText from "../../components/RichText.astro";
+import Sheet from "../../components/Sheet.astro";
+import SplitDivider from "../../components/SplitDivider.astro";
+import StatusBar from "../../components/StatusBar.astro";
+import Base from "../../layouts/Base.astro";
+import {
+  exercisePath,
+  exercisesForFunction,
+  functionsOf,
+  LEVELS,
+  listWords as list,
+  nextAction,
+  type Placed,
+  placedExercises,
+  stepsFor,
+  topicPath,
+} from "../../lib/exercises.ts";
+import { functionPages, functionPath } from "../../lib/functions.ts";
+
+export async function getStaticPaths() {
+  const all = await placedExercises();
+  return all.map((placed, i) => ({
+    params: { slug: placed.exercise.slug },
+    // The next few in track order, wrapping round to the start.
+    props: {
+      placed,
+      more: [1, 2, 3]
+        .map((d) => all[(i + d) % all.length])
+        .filter((p) => p !== undefined && p !== placed),
+    },
+  }));
+}
+
+interface Props {
+  placed: Placed;
+  more: Placed[];
+}
+const { placed, more } = Astro.props;
+const pages = new Map((await functionPages()).map((p) => [p.name, functionPath(p.slug)]));
+const fnHref = (name: string) => pages.get(name) ?? exercisesForFunction(name);
+const { exercise, topic } = placed;
+const { screens, notes } = exercise;
+const path = exercisePath(exercise.slug);
+const first = screens[0];
+if (!first) throw new Error(`${exercise.id} has no screens`);
+
+const functions = functionsOf(exercise);
+const checks = [
+  first.requiredFunctions.length > 0 && `use ${list(first.requiredFunctions)}`,
+  first.forbiddenFunctions.length > 0 && `not use ${list(first.forbiddenFunctions)}`,
+  first.requireReference && "point at the cells rather than typed numbers",
+  `give the right result in ${first.answerCell}`,
+].filter((c): c is string => typeof c === "string");
+
+const description = `Practise ${functions.length > 0 ? list(functions) : "Excel formulas"} on a real grid. ${first.prompt}`;
+---
+
+<Base
+  title={exercise.title}
+  description={description}
+  section="/exercises/"
+  skipTo={{ href: "#formula", label: "Skip to the formula" }}
+  layout="exercise"
+>
+  <div class="exercise-root" data-exercise>
+  <div class="tabs-row">
+    <div class="tabs" role="tablist" aria-label="Exercise and answer" data-tabs>
+      <button type="button" role="tab" id="tab-exercise" aria-controls="panel-exercise" aria-selected="true" data-tab="exercise">
+        Exercise
+      </button>
+      <button type="button" role="tab" id="tab-answer" aria-controls="panel-answer" aria-selected="false" tabindex="-1" data-tab="answer">
+        Answer
+      </button>
+    </div>
+    <ExerciseTimer />
+  </div>
+
+  <div class="task">
+    <Breadcrumbs
+      items={[
+        { label: "Exercises", href: "/exercises/" },
+        { label: topic.title, href: topicPath(topic.slug) },
+      ]}
+      hideOnPhone
+    />
+    <div class="title-row">
+      <h1>{exercise.title}</h1>
+      <span class={`level level-${exercise.level}`}>{LEVELS[exercise.level as 1 | 2 | 3]}</span>
+      {exercise.pro && <span class="tag">PRO</span>}
+    </div>
+    {
+      screens.map((s, i) => (
+        <p class="prompt" data-prompt={i} hidden={i > 0}>
+          {screens.length > 1 && (
+            <span class="step">
+              Step {i + 1} of {screens.length}.{" "}
+            </span>
+          )}
+          <RichText text={s.prompt} />
+        </p>
+      ))
+    }
+  </div>
+
+  <SplitDivider />
+
+  {
+    screens.map((s, i) => (
+      <section class="work" aria-label="Sheet" data-screen={i} hidden={i > 0}>
+        <Sheet screen={s} index={i} action={path} />
+        <StatusBar index={i} answerCell={s.answerCell} next={nextAction(placed, i)} />
+      </section>
+    ))
+  }
+
+  <div class="details" role="tabpanel" id="panel-exercise" aria-labelledby="tab-exercise">
+    <h2>Your task</h2>
+    {
+      screens.map((s, i) => (
+        <ol class="todo" data-prompt={i} hidden={i > 0}>
+          {stepsFor(s).map((line) => (
+            <li>
+              <RichText text={line} />
+            </li>
+          ))}
+        </ol>
+      ))
+    }
+    <p class="progress" data-progress hidden></p>
+
+    <h2>What this exercise checks</h2>
+    <p>Your formula must {list(checks)}.</p>
+    <p class="count">
+      Formulas use English function names and commas between arguments, as Excel for Microsoft 365
+      does in English.
+    </p>
+
+    <h2 id="hints">Stuck?</h2>
+    <p>
+      Open the hints in order. The last one shows the answer and marks the exercise as solved with
+      help.
+    </p>
+    {screens.map((s, i) => <HintLadder screen={s} index={i} />)}
+
+    {
+      functions.length > 0 && (
+        <>
+          <h2>Related functions</h2>
+          <ul class="chips">
+            {functions.map((f) => (
+              <li>
+                <a class="chip" href={fnHref(f)}>
+                  {f}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    }
+
+    <h2>About {functions.length > 0 ? list(functions) : "this formula"}</h2>
+    <p><RichText text={notes.summary} /></p>
+    <pre><code>{notes.syntax}</code></pre>
+    <p><RichText text={notes.example} /></p>
+    <h3>What goes wrong</h3>
+    <ul class="errors">
+      {
+        notes.commonErrors.map((e) => (
+          <li>
+            <RichText text={e} />
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2>More exercises</h2>
+    <ul class="more">
+      {
+        more.map((p) => (
+          <li>
+            <a href={exercisePath(p.exercise.slug)}>{p.exercise.title}</a>
+            <span class={`level level-${p.exercise.level}`}>
+              {LEVELS[p.exercise.level as 1 | 2 | 3]}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="back">
+      <a href="/exercises/">Back to the exercise list</a>
+    </p>
+  </div>
+
+  <div class="details answer-panel" role="tabpanel" id="panel-answer" aria-labelledby="tab-answer" hidden>
+    <h2>The answer</h2>
+    <p>Seeing the answer marks this exercise as solved with help. Solve it again on a later day to count it as solved.</p>
+    {
+      screens.map((s, i) => (
+        <div class="answer-block">
+          {screens.length > 1 && <h3>Step {i + 1}</h3>}
+          <p>
+            In <strong>{s.answerCell}</strong>, type:
+          </p>
+          <pre><code>{s.answer}</code></pre>
+          <p>
+            <RichText text={s.hints.rule} />
+          </p>
+        </div>
+      ))
+    }
+    <h2>Why it works</h2>
+    <p><RichText text={notes.summary} /></p>
+    <p><RichText text={notes.example} /></p>
+  </div>
+
+    <ExerciseData exercise={exercise} />
+    <CompletionDialog
+      practised={`You practised ${functions.length > 0 ? list(functions) : "cell references and arithmetic"}. ${notes.summary.replace(/`/gu, "")}`}
+      next={nextAction(placed, screens.length - 1)}
+    />
+  </div>
+</Base>
+
+<script>
+  import "../../scripts/workbench.ts";
+</script>
+
+<style is:global>
+  .exercise-root {
+    display: contents;
+  }
+  main.exercise {
+    --pane: 40%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "tabs" "task" "work" "details" "answer";
+    align-content: start;
+    background: var(--surface);
+  }
+  .exercise .tabs-row {
+    grid-area: tabs;
+  }
+  .exercise .task {
+    grid-area: task;
+    padding: var(--space-3) var(--space-4) var(--space-2);
+    background: var(--surface);
+  }
+  .exercise .work {
+    grid-area: work;
+    padding: var(--space-3);
+    background: var(--panel);
+  }
+  .exercise .work[hidden],
+  .exercise .details[hidden] {
+    display: none;
+  }
+  .exercise .details {
+    grid-area: details;
+    padding: var(--space-2) var(--space-4) var(--space-6);
+    background: var(--surface);
+  }
+  .exercise .answer-panel {
+    grid-area: answer;
+  }
+  @media (min-width: 64rem) {
+    main.exercise {
+      grid-template-columns: minmax(20rem, var(--pane)) 0.75rem minmax(0, 1fr);
+      grid-template-areas:
+        "tabs divider work"
+        "task divider work"
+        "details divider work"
+        "answer divider work";
+      grid-template-rows: auto auto auto 1fr;
+    }
+    .exercise .task {
+      padding: var(--space-5) var(--space-5) 0;
+    }
+    .exercise .details {
+      padding: 0 var(--space-5) var(--space-6);
+    }
+    .exercise .work {
+      position: sticky;
+      top: 4rem;
+      align-self: start;
+      height: calc(100dvh - 4rem);
+      overflow: auto;
+      padding: var(--space-5) var(--space-5) var(--space-5) var(--space-3);
+    }
+  }
+</style>
+
+<style>
+  .title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1) var(--space-3);
+    margin-top: var(--space-1);
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--size-xl);
+    font-weight: 700;
+    color: var(--heading);
+  }
+  .tabs-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: 0 var(--space-4);
+    border-bottom: 1px solid var(--rule);
+    background: var(--surface);
+  }
+  .tabs {
+    display: flex;
+    gap: var(--space-5);
+  }
+  [role="tab"] {
+    min-height: 3rem;
+    padding: 0 var(--space-1);
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: var(--muted);
+    font-size: var(--size-s);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  [role="tab"]:hover {
+    color: var(--text);
+  }
+  [role="tab"][aria-selected="true"] {
+    border-bottom-color: var(--tab-active);
+    color: var(--tab-active);
+  }
+  [role="tab"]:focus-visible {
+    outline-offset: -2px;
+  }
+  .todo {
+    margin: 0 0 var(--space-3);
+    padding-left: var(--space-5);
+  }
+  .todo li {
+    margin-bottom: var(--space-2);
+  }
+  .todo[hidden] {
+    display: none;
+  }
+  .chips {
+    margin-bottom: var(--space-3);
+  }
+  .more {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0 0 var(--space-4);
+    padding: 0;
+    list-style: none;
+  }
+  .more li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .more a {
+    font-weight: 500;
+  }
+  .back {
+    margin-top: var(--space-5);
+  }
+  .answer-block pre {
+    font-size: var(--size-base);
+  }
+  .prompt {
+    margin: var(--space-2) 0 0;
+  }
+  .prompt[hidden] {
+    display: none;
+  }
+  .step {
+    font-weight: 600;
+  }
+  .count,
+  .progress {
+    margin: var(--space-3) 0 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .progress[hidden] {
+    display: none;
+  }
+  h2 {
+    margin: var(--space-5) 0 var(--space-2);
+    font-size: var(--size-l);
+    font-weight: 600;
+  }
+  h3 {
+    margin: var(--space-4) 0 var(--space-1);
+    font-size: var(--size-base);
+    font-weight: 600;
+  }
+  .details p {
+    margin: 0 0 var(--space-3);
+  }
+  pre {
+    margin: 0 0 var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    white-space: pre-wrap;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-s);
+    background: var(--header);
+    font-size: var(--size-s);
+  }
+  .errors {
+    margin: 0;
+    padding-left: var(--space-5);
+  }
+  @media (min-width: 64rem) {
+    h1 {
+      font-size: var(--size-xxl);
+    }
+    .prompt {
+      font-size: var(--size-l);
+    }
+  }
+</style>

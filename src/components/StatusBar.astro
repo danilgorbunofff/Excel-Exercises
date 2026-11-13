@@ -1,0 +1,112 @@
+---
+// Why this exists: the line under the sheet that holds the verdict and the one
+// main action. Check turns into Next in the same place once the answer is right.
+interface Props {
+  index: number;
+  answerCell: string;
+  next: { href: string; label: string; isStep: boolean };
+}
+const { index, answerCell, next } = Astro.props;
+const formId = `work-${index + 1}`;
+const verdictId = `verdict-${index + 1}`;
+---
+
+<div class="status" data-status>
+  <div class="verdict" id={verdictId} role="status" data-verdict>
+    <p>Type a formula for <strong>{answerCell}</strong>, then press Enter or Check.</p>
+  </div>
+  <noscript>
+    <p class="noscript">Checking a formula needs JavaScript. The task, the sheet and the hints work without it.</p>
+  </noscript>
+  <div class="actions">
+    <button class="link-button" type="button" data-hint-next>Show a hint</button>
+    <button class="button button-primary" type="submit" form={formId} data-check>Check</button>
+    {
+      next.isStep ? (
+        <button class="button button-next" type="button" data-next hidden>
+          {next.label}
+        </button>
+      ) : (
+        <a class="button button-next" href={next.href} data-next hidden>
+          {next.label}
+        </a>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    margin-top: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+  }
+  .verdict {
+    flex: 1 1 16rem;
+    font-size: var(--size-m);
+  }
+  .verdict :global(p) {
+    margin: 0;
+  }
+  .verdict :global(p + p) {
+    margin-top: var(--space-1);
+  }
+  .verdict :global(code.ref) {
+    padding: 0 var(--space-1);
+    border-radius: 3px;
+    background: var(--read-tint);
+    color: var(--read);
+    box-shadow: inset 0 0 0 1px var(--read);
+    font-weight: 600;
+  }
+  .noscript {
+    margin: 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-left: auto;
+  }
+  .status:global(.status-miss) {
+    background: var(--miss-tint);
+    border-color: var(--miss);
+  }
+  .status:global(.status-miss) .verdict :global(strong.label) {
+    color: var(--miss);
+  }
+  .status:global(.status-correct) {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--on-primary);
+  }
+  .status:global(.status-correct) .verdict :global(code.ref) {
+    background: var(--surface);
+  }
+  .status:global(.status-correct) :global(.button-next:focus-visible) {
+    outline-color: var(--focus);
+  }
+  [hidden] {
+    display: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .status:global(.status-miss) .verdict :global(p),
+    .status:global(.status-correct) .verdict :global(p) {
+      animation: verdict-in 200ms var(--ease) both;
+    }
+    @keyframes verdict-in {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+    }
+  }
+</style>

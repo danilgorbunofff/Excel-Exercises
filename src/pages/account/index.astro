@@ -1,0 +1,9 @@
+---
+// Why this exists: account settings, for signed-in visitors once accounts open.
+import SignedOutPanel from "../../components/SignedOutPanel.astro";
+import Base from "../../layouts/Base.astro";
+---
+
+<Base title="Account" description="Your account settings." layout="flush">
+  <SignedOutPanel title="Account settings" lead="Log in to change your email, password and email preferences." />
+</Base>

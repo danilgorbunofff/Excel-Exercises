@@ -1,0 +1,575 @@
+---
+// Why this exists: a function reference page, the way most visitors arrive
+// from search. An example to edit in the header, then syntax, what the
+// function is for, exercises, walkthroughs, worked examples run through the
+// grader, what goes wrong, tips, questions, alternatives and a live exercise.
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import ExampleGrid from "../../components/ExampleGrid.astro";
+import FormulaExplainer from "../../components/FormulaExplainer.astro";
+import LiveExercise from "../../components/LiveExercise.astro";
+import RichText from "../../components/RichText.astro";
+import Base from "../../layouts/Base.astro";
+import {
+  exercisePath,
+  exercisesForFunction,
+  LEVELS,
+  type Placed,
+  placedExercises,
+} from "../../lib/exercises.ts";
+import { loadExplainers, walkthroughPath } from "../../lib/explainers.ts";
+import {
+  type FunctionEntry,
+  functionPages,
+  functionPath,
+  loadFunctionIndex,
+} from "../../lib/functions.ts";
+import { walkthroughsFor } from "../../lib/walkthroughs.ts";
+
+export async function getStaticPaths() {
+  const pages = await functionPages();
+  const placed = await placedExercises();
+  const linked = new Map(pages.map((p) => [p.name, functionPath(p.slug)]));
+  return pages.map((page) => {
+    const exercise = placed.find((p) => p.exercise.id === page.exercise);
+    if (!exercise) throw new Error(`${page.name} names unknown exercise ${page.exercise}`);
+    return {
+      params: { slug: page.slug },
+      props: {
+        page,
+        exercise,
+        linked: Object.fromEntries(linked),
+        using: placed.filter((p) =>
+          p.exercise.screens.some((s) => s.requiredFunctions.includes(page.name)),
+        ),
+      },
+    };
+  });
+}
+
+interface Props {
+  page: FunctionEntry;
+  exercise: Placed;
+  linked: Record<string, string>;
+  using: Placed[];
+}
+const { page, exercise, linked, using } = Astro.props;
+const entry = loadFunctionIndex().functions.find((f) => f.name === page.name);
+const firstExample = page.examples[0];
+const walkthroughs = walkthroughsFor(page.name, loadExplainers().walkthroughs);
+const date = (iso: string) =>
+  new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+const sections = [
+  ["syntax", "Syntax"],
+  ["about", `About ${page.name}`],
+  ["exercises", `Exercises using ${page.name}`],
+  ...(walkthroughs.length > 0 ? [["steps", `See a ${page.name} formula step by step`]] : []),
+  ["examples", "Worked examples"],
+  ["problems", "What goes wrong"],
+  ["tips", "Tips and notes"],
+  ["questions", "Common questions"],
+  ["alternatives", "Alternatives"],
+  ["related", "Related functions"],
+  ["practise", `Practise ${page.name}`],
+] as [string, string][];
+const jsonLd = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  headline: `${page.name} function`,
+  description: page.summary,
+  dateModified: page.updated,
+  inLanguage: "en",
+  about: { "@type": "Thing", name: `Microsoft Excel ${page.name} function` },
+  citation: page.checked.url,
+}).replaceAll("<", "\\u003c");
+---
+
+<Base
+  title={`${page.name} function`}
+  description={`How the Excel ${page.name} function works, with its syntax, worked examples, what goes wrong and an exercise to try.`}
+  section="/functions/"
+  layout="wide"
+>
+  <div class="crumbs-row">
+    <Breadcrumbs items={[{ label: "Functions", href: "/functions/" }]} />
+  </div>
+
+  <header class="fn-head">
+    <div class="fn-intro">
+      <h1>{page.name}</h1>
+      <p class="lead"><RichText text={page.summary} /></p>
+      <ul class="facts">
+        {entry && <li class="chip">{entry.category}</li>}
+        <li>{page.versions}</li>
+      </ul>
+      <p class="meta">
+        Checked against <a href={page.checked.url}>{page.checked.source}</a> on {
+          date(page.checked.date)
+        }. That check covered:
+        <RichText text={page.checked.covers.charAt(0).toLowerCase() + page.checked.covers.slice(1)} />
+        The worked examples come from this site's grader and have not been checked in Excel.
+      </p>
+    </div>
+    {
+      firstExample && (
+        <div class="editor">
+          <FormulaExplainer
+            walkthrough={{ formula: firstExample.formula, rows: firstExample.rows }}
+            resultCell={firstExample.cell}
+            dataTitle="Try it: change a cell or the formula"
+            compact
+          />
+        </div>
+      )
+    }
+  </header>
+
+  <div class="fn-body">
+    <article class="content">
+      <h2 id="syntax">Syntax</h2>
+      <div class="syntax-box">
+        <code>{page.syntax}</code>
+        <span class="returns">Returns: <RichText text={page.returns} /></span>
+      </div>
+      <h3 id="arguments">Arguments</h3>
+      <div class="table-wrap">
+        <table class="args" aria-labelledby="arguments">
+          <thead>
+            <tr>
+              <th scope="col">Argument</th>
+              <th scope="col">Needed</th>
+              <th scope="col">What it is</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              page.arguments.map((a) => (
+                <tr>
+                  <th scope="row">
+                    <code>{a.name}</code>
+                  </th>
+                  <td>
+                    <span class={a.required ? "badge badge-1" : "badge badge-2"}>
+                      {a.required ? "Required" : "Optional"}
+                    </span>
+                  </td>
+                  <td>
+                    <RichText text={a.description} />
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="about">About {page.name}</h2>
+      <div class="prose">
+        {
+          page.about.map((text) => (
+            <p>
+              <RichText text={text} />
+            </p>
+          ))
+        }
+      </div>
+
+      <h2 id="exercises">Exercises using {page.name}</h2>
+      <ul class="ex-grid">
+        {
+          using.map((p) => (
+            <li>
+              <a class="card ex" href={exercisePath(p.exercise.slug)}>
+                <span class="ex-title">{p.exercise.title}</span>
+                <span class={`badge badge-${p.exercise.level}`}>
+                  {LEVELS[p.exercise.level as 1 | 2 | 3]}
+                </span>
+                <span class="ex-text">{p.exercise.screens[0]?.prompt}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      {
+        walkthroughs.length > 0 && (
+          <>
+            <h2 id="steps">See a {page.name} formula step by step</h2>
+            <ul class="ex-grid">
+              {walkthroughs.map((w) => (
+                <li>
+                  <a class="card ex" href={walkthroughPath(w.slug)}>
+                    <span class="ex-title">{w.title}</span>
+                    <code class="walk-formula">{w.formula}</code>
+                    <span class="ex-text">{w.description}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+
+      <h2 id="examples">Worked examples</h2>
+      {
+        page.examples.map((ex) => (
+          <section class="card example">
+            <h3>{ex.title}</h3>
+            <ExampleGrid rows={ex.rows} cell={ex.cell} formula={ex.formula} result={ex.result} />
+            <p>
+              <RichText text={ex.explanation} />
+            </p>
+          </section>
+        ))
+      }
+
+      <h2 id="problems">What goes wrong</h2>
+      <ul class="watch">
+        {
+          page.pitfalls.map((p) => (
+            <li class="card">
+              <h3>
+                <RichText text={p.title} />
+              </h3>
+              <p>
+                <RichText text={p.text} />
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h2 id="tips">Tips and notes</h2>
+      <ul class="tips">
+        {
+          page.tips.map((text) => (
+            <li>
+              <RichText text={text} />
+            </li>
+          ))
+        }
+      </ul>
+
+      <h2 id="questions">Common questions</h2>
+      <dl class="questions">
+        {
+          page.questions.map((item) => (
+            <>
+              <dt>{item.q}</dt>
+              <dd>
+                <RichText text={item.a} />
+              </dd>
+            </>
+          ))
+        }
+      </dl>
+
+      <h2 id="alternatives">Alternatives</h2>
+      <dl>
+        {
+          page.alternatives.map((a) => (
+            <>
+              <dt>{linked[a.name] ? <a href={linked[a.name]}>{a.name}</a> : a.name}</dt>
+              <dd>
+                <RichText text={a.text} />
+              </dd>
+            </>
+          ))
+        }
+      </dl>
+
+      <h2 id="related">Related functions</h2>
+      <ul class="chips">
+        {
+          page.related.map((name) => (
+            <li>
+              {linked[name] ? (
+                <a class="chip" href={linked[name]}>
+                  {name}
+                </a>
+              ) : (
+                <a class="chip" href={exercisesForFunction(name)}>
+                  {name}
+                </a>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+
+      <div id="practise" class="practise">
+        <LiveExercise placed={exercise} heading={`Practise ${page.name}`} />
+      </div>
+    </article>
+
+    <nav class="contents" aria-labelledby="contents">
+      <h2 id="contents">On this page</h2>
+      <ol>
+        {
+          sections.map(([id, label]) => (
+            <li>
+              <a href={`#${id}`}>{label}</a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+  </div>
+  <script type="application/ld+json" set:html={jsonLd} />
+</Base>
+
+<style>
+  .crumbs-row {
+    padding-top: var(--space-5);
+  }
+  .fn-head {
+    display: grid;
+    gap: var(--space-6);
+    align-items: start;
+    padding: var(--space-4) 0 var(--space-6);
+    border-bottom: 1px solid var(--rule);
+  }
+  h1 {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 2.5rem;
+    color: var(--heading);
+  }
+  .lead {
+    margin: var(--space-3) 0 var(--space-4);
+    font-size: var(--size-l);
+    color: var(--muted);
+  }
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    margin: 0 0 var(--space-4);
+    padding: 0;
+    list-style: none;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .facts .chip {
+    font-family: var(--font-text);
+  }
+  .meta {
+    margin: 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .meta a {
+    color: var(--text);
+  }
+  .editor {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-l);
+    overflow: hidden;
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+  }
+  .prose p {
+    max-width: 44rem;
+    margin: 0 0 var(--space-3);
+    line-height: 1.7;
+  }
+  .walk-formula {
+    font-size: var(--size-s);
+    overflow-wrap: anywhere;
+  }
+  .tips {
+    display: grid;
+    gap: var(--space-2);
+    max-width: 44rem;
+    padding-left: var(--space-5);
+    list-style: disc;
+  }
+  .tips li {
+    line-height: 1.6;
+  }
+  .questions {
+    max-width: 44rem;
+  }
+  .fn-body {
+    display: grid;
+    gap: var(--space-6);
+    padding-bottom: var(--space-7);
+  }
+  .content {
+    min-width: 0;
+  }
+  .content h2 {
+    margin: var(--space-7) 0 var(--space-3);
+    font-size: var(--size-xl);
+    color: var(--heading);
+    scroll-margin-top: 5rem;
+  }
+  .content h3 {
+    margin: var(--space-5) 0 var(--space-2);
+    font-size: var(--size-base);
+    color: var(--heading);
+  }
+  .syntax-box {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+  }
+  .syntax-box code {
+    font-size: var(--size-base);
+    overflow-wrap: anywhere;
+  }
+  .returns {
+    padding: 0.125rem 0.625rem;
+    border-radius: var(--radius-pill);
+    background: var(--read-tint);
+    color: var(--read);
+    font-size: var(--size-xs);
+    font-weight: 600;
+  }
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+  }
+  .args {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--size-s);
+  }
+  .args th,
+  .args td {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--rule);
+    text-align: left;
+    vertical-align: top;
+  }
+  .args thead th {
+    background: var(--bg);
+    font-size: var(--size-xs);
+    color: var(--muted);
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .ex-grid,
+  .watch {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .ex-grid li {
+    display: grid;
+  }
+  .ex {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+  .ex-title {
+    font-weight: 600;
+    color: var(--heading);
+  }
+  .ex:hover .ex-title {
+    color: var(--correct);
+    text-decoration: underline;
+  }
+  .ex-text,
+  .watch p,
+  .example p {
+    margin: 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .watch h3,
+  .example h3 {
+    margin-top: 0 !important;
+  }
+  .example {
+    margin-bottom: var(--space-4);
+  }
+  dt {
+    margin-top: var(--space-3);
+    font-weight: 600;
+  }
+  dd {
+    margin: 0;
+    color: var(--muted);
+  }
+  .practise {
+    margin-top: var(--space-7);
+  }
+  .contents {
+    align-self: start;
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+  }
+  .contents h2 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .contents ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .contents a {
+    display: block;
+    padding: var(--space-1) 0;
+    font-size: var(--size-s);
+    text-decoration: none;
+  }
+  .contents a:hover {
+    color: var(--correct);
+    text-decoration: underline;
+  }
+  @media (min-width: 48rem) {
+    .ex-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (min-width: 64rem) {
+    .fn-head {
+      grid-template-columns: 1fr 1fr;
+    }
+    .fn-body {
+      grid-template-columns: minmax(0, 1fr) 15rem;
+    }
+    .contents {
+      position: sticky;
+      top: 5rem;
+      order: 2;
+    }
+  }
+  @media (max-width: 63.99rem) {
+    .contents {
+      order: -1;
+    }
+    /* The same example opens Worked examples. On a phone it would sit under
+       text that reflows when the web font arrives, and shift. */
+    .editor {
+      display: none;
+    }
+    /* One item per line, so the row cannot wrap differently once Inter loads. */
+    .facts {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

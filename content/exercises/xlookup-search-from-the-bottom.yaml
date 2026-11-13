@@ -1,0 +1,92 @@
+id: xlookup-search-from-the-bottom
+slug: xlookup-search-from-the-bottom
+level: 3
+title: "XLOOKUP: search from the bottom"
+topic: lookups
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B7, return the most recent price logged for the SKU in A7, which the log records twice.
+    rows:
+      - [SKU, Price]
+      - [TX-101, 19.99]
+      - [TX-102, 14]
+      - [TX-101, 21.5]
+      - [TX-103, 9.5]
+      - [TX-102, 16.25]
+      - [TX-101, null]
+      - [TX-102, null]
+    answerCell: B7
+    expected: 21.5
+    answer: =XLOOKUP(A7,A2:A6,B2:B6,,0,-1)
+    requiredFunctions: [XLOOKUP]
+    hints:
+      nudge: "XLOOKUP can start its search at the last row instead of the first."
+      rule: "The sixth argument of XLOOKUP sets the search mode. 1 searches from the first row and -1 from the last, so -1 finds the newest entry in a log."
+    misses:
+      value: That is the first entry, 19.99. Search mode 1 starts at the top, and the newest entry is the last match.
+      syntax: "Check the brackets, commas and quote marks. XLOOKUP follows the pattern `=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])`."
+      required-function: "Six arguments: the key, the keys, the prices, the text for a miss, the match mode, and the search direction."
+      reference: Point at A7 rather than typing the SKU, so the row above and the row below behave the same.
+    accept:
+      - =XLOOKUP(A7,A2:A6,B2:B6,,0,-1)
+      - =xlookup(a7,a2:a6,b2:b6,,0,-1)
+      - =XLOOKUP(A7,$A$2:$A$6,$B$2:$B$6,,0,-1)
+      - =XLOOKUP(A7,A2:A6,B2:B6,"none",0,-1)
+      - =XLOOKUP(A7,A2:A6,B2:B6,0,0,-1)
+      - =XLOOKUP( A7 , A2:A6 , B2:B6 , , 0 , -1 )
+      - =XLOOKUP(A7,A1:A6,B1:B6,,0,-1)
+      - =XLOOKUP(A7,A2:A5,B2:B5,,0,-1)
+    reject:
+      - { formula: "=XLOOKUP(A7,A2:A6,B2:B6,,0,-1", rule: syntax }
+      - { formula: "=VLOOKUP(A7,A2:B6,2,FALSE)", rule: required-function }
+      - { formula: "=INDEX(B2:B6,MATCH(A7,A2:A6,0))", rule: required-function }
+      - { formula: "=XLOOKUP(A7,A2:A6,B2:B6)", rule: value }
+      - { formula: "=XLOOKUP(A7,A2:A6,B2:B6,,0,1)", rule: value }
+      - { formula: "=XLOOKUP(A7,C2:C6,B2:B6,,0,-1)", rule: value }
+      - { formula: "=XLOOKUP(A7,A2:A6,B2:B5,,0,-1)", rule: value }
+  - prompt: In B8, do the same for the SKU in A8, whose two entries are the second and the last in the log.
+    rows:
+      - [SKU, Price]
+      - [TX-101, 19.99]
+      - [TX-102, 14]
+      - [TX-101, 21.5]
+      - [TX-103, 9.5]
+      - [TX-102, 16.25]
+      - [TX-101, null]
+      - [TX-102, null]
+    answerCell: B8
+    expected: 16.25
+    answer: =XLOOKUP(A8,A2:A6,B2:B6,,0,-1)
+    requiredFunctions: [XLOOKUP]
+    hints:
+      nudge: "Use the same search from the bottom, now for the SKU in the row below."
+      rule: "Search mode -1 returns the last match in the list. Leave the fourth argument empty and set the match mode to 0 for an exact match."
+    misses:
+      value: The first TX-102 is 14, in row 3. Working from the bottom, the last one is 16.25.
+      syntax: "Check the brackets, commas and quote marks. XLOOKUP follows the pattern `=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])`."
+      required-function: The same six arguments as the row above, and the same two empty slots.
+      reference: Point at A8, which holds TX-102. That SKU appears in rows 3 and 6.
+    accept:
+      - =XLOOKUP(A8,A2:A6,B2:B6,,0,-1)
+      - =xlookup(a8,a2:a6,b2:b6,,0,-1)
+      - =XLOOKUP(A8,$A$2:$A$6,$B$2:$B$6,,0,-1)
+      - =XLOOKUP(A8,A2:A6,B2:B6,"none",0,-1)
+      - =XLOOKUP(A8,A2:A6,B2:B6,0,0,-1)
+      - =XLOOKUP( A8 , A2:A6 , B2:B6 , , 0 , -1 )
+      - =XLOOKUP(A8,A1:A6,B1:B6,,0,-1)
+    reject:
+      - { formula: "=XLOOKUP(A8,A2:A6,B2:B6,,0,-1", rule: syntax }
+      - { formula: "=VLOOKUP(A8,A2:B6,2,FALSE)", rule: required-function }
+      - { formula: "=INDEX(B2:B6,MATCH(A8,A2:A6,0))", rule: required-function }
+      - { formula: "=XLOOKUP(A8,A2:A6,B2:B6)", rule: value }
+      - { formula: "=XLOOKUP(A8,A2:A6,B2:B6,,0,1)", rule: value }
+      - { formula: "=XLOOKUP(A8,C2:C6,B2:B6,,0,-1)", rule: value }
+      - { formula: "=XLOOKUP(A8,A2:A6,B2:B5,,0,-1)", rule: value }
+notes:
+  summary: "XLOOKUP with search mode -1 starts at the last row and works up. In a log that adds new rows at the bottom, that returns the most recent entry."
+  syntax: XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode])
+  example: '`=XLOOKUP("A",A1:A3,B1:B3,,0,-1)` with A, B and A in column A and 5, 6 and 7 in column B gives 7.'
+  commonErrors:
+    - The key is not in the searched range, which happens when the range points at the price column or stops before the last row.
+    - The key range and the price range are different sizes, so a row in one has no partner in the other.

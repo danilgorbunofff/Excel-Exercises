@@ -1,0 +1,80 @@
+id: running-total-down-a-column
+slug: running-total-down-a-column
+level: 3
+title: Running total down a column
+topic: totals
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In C2, start a running total with a formula that fills down the column unchanged.
+    rows:
+      - [Day, Units, Running]
+      - [Mon, 12, null]
+      - [Tue, 8, null]
+      - [Wed, 15, null]
+      - [Thu, 3, null]
+    answerCell: C2
+    expected: 12
+    answer: =SUM(B$2:B2)
+    requiredFunctions: [SUM]
+    hints:
+      nudge: The range should start on the first day and end on the current row.
+      rule: A dollar sign before a row number keeps that row fixed when the formula is filled down. Lock the start of the range and leave the end free, so the range grows.
+    misses:
+      value: Monday alone is 12; nothing has been added to it yet.
+      syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
+      required-function: A running total is a SUM whose range grows; this exercise wants the function.
+      reference: Point at the units column so the range grows with the rows.
+    accept:
+      - =SUM(B$2:B2)
+      - =sum(b$2:b2)
+      - =SUM($B$2:B2)
+      - =SUM(B$2:B2)+0
+      - =SUM(B$2:B2)*1
+    reject:
+      - { formula: =SUM(B2:B5), rule: value }
+      - { formula: =B2, rule: required-function }
+      - { formula: =SUM(B2:B3), rule: value }
+      - { formula: =SUM(B3:B3), rule: value }
+      - { formula: =SUM(B$2:B2)/0, rule: value }
+      - { formula: =SUM(B$2 B2), rule: syntax }
+  - prompt: "In C4, give Wednesday's running total: the same formula, filled down two rows."
+    rows:
+      - [Day, Units, Running]
+      - [Mon, 12, null]
+      - [Tue, 8, null]
+      - [Wed, 15, null]
+      - [Thu, 3, null]
+    answerCell: C4
+    expected: 35
+    answer: =SUM(B$2:B4)
+    requiredFunctions: [SUM]
+    hints:
+      nudge: Filling down two rows moves only the end of the range.
+      rule: When a formula is filled down, plain row numbers move with it and rows with a dollar sign stay put. The start stays on row 2 while the end follows the current row.
+    misses:
+      value: 12 + 8 + 15 is 35; Thursday is not counted yet.
+      syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
+      required-function: The running total is a SUM over a growing range.
+      reference: The range starts at B2, where the week's units begin.
+    accept:
+      - =SUM(B$2:B4)
+      - =sum(b$2:b4)
+      - =SUM($B$2:B4)
+      - =SUM(B$2:B4)+0
+      - =SUM(B$2:B4)*1
+    reject:
+      - { formula: =SUM(B2:B5), rule: value }
+      - { formula: =SUM(B$2:B3), rule: value }
+      - { formula: =SUM(B$3:B4), rule: value }
+      - { formula: =B2+B3+B4, rule: required-function }
+      - { formula: =SUM(B$2:B4)/0, rule: value }
+      - { formula: =SUM(B$2 B4), rule: syntax }
+notes:
+  summary: A running total is one SUM filled down a column. The start of the range has its row locked with a dollar sign, so the range grows by one row each time.
+  syntax: SUM(B$2:B2) filled down a column
+  example: "`=SUM(A$1:A1)` filled down beside 5, 2 and 4 gives 5, 7 and 11."
+  commonErrors:
+    - Pinning both halves of the range freezes it, so every row repeats the first total. Only the start row takes the dollar sign.
+    - A filled-down range names rows outside the sheet, usually after the start cell was deleted.
+    - A heading caught in the growing range is text. SUM skips it, but a chain of plus signs returns `#VALUE!`.

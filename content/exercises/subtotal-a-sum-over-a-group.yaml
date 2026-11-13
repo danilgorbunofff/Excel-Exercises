@@ -1,0 +1,83 @@
+id: subtotal-a-sum-over-a-group
+slug: subtotal-a-sum-over-a-group
+level: 3
+title: "SUBTOTAL: one function number, six answers"
+topic: subtotals
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In D5, add up the prices with SUBTOTAL rather than SUM.
+    rows:
+      - [Item, Price, Qty, Answer]
+      - [pen, 10, 2, null]
+      - [pad, 5, 4, null]
+      - [ink, 20, 3, null]
+      - [Price total, null, null, null]
+    answerCell: D5
+    expected: 35
+    answer: =SUBTOTAL(9,B2:B4)
+    requiredFunctions: [SUBTOTAL]
+    hints:
+      nudge: SUBTOTAL needs a number in front of the range, and one of those numbers means sum.
+      rule: SUBTOTAL takes a function number, then the range. 9 adds the values, 1 averages them, 2 counts them and 4 returns the largest.
+    misses:
+      value: Ten plus five plus twenty is 35.
+      syntax: "Check the brackets, commas and quote marks. SUBTOTAL follows the pattern `=SUBTOTAL(function_num, ref1, [ref2], ...)`."
+      required-function: Nine is the SUM inside SUBTOTAL, which is what the total row of a filtered table needs.
+      reference: The range is the price column of the table.
+    accept:
+      - =SUBTOTAL(9,B2:B4)
+      - =subtotal(9,b2:b4)
+      - =SUBTOTAL(9,$B$2:$B$4)
+      - =SUBTOTAL(9,B$2:B$4)
+      - =SUBTOTAL( 9 , B2:B4 )
+      - =SUBTOTAL(9,B2:B4)+0
+    reject:
+      - { formula: =SUM(B2:B4), rule: required-function }
+      - { formula: "=SUBTOTAL(9,B2:B3)", rule: value }
+      - { formula: "=SUBTOTAL(2,B2:B4)", rule: value }
+      - { formula: "=SUBTOTAL(9,B3:B4)", rule: value }
+      - { formula: "=SUBTOTAL(9,B2:B4)/0", rule: value }
+      - { formula: "=SUBTOTAL 9,B2:B4", rule: syntax }
+  - prompt: In D5, find the largest price in the table with SUBTOTAL.
+    rows:
+      - [Item, Price, Qty, Answer]
+      - [pen, 10, 2, null]
+      - [pad, 5, 4, null]
+      - [ink, 20, 3, null]
+      - [Highest price, null, null, null]
+    answerCell: D5
+    expected: 20
+    answer: =SUBTOTAL(4,B2:B4)
+    requiredFunctions: [SUBTOTAL]
+    hints:
+      nudge: Keep SUBTOTAL and the range, and change only the number in front.
+      rule: The first argument of SUBTOTAL picks the calculation. 4 returns the largest value and 5 the smallest.
+    misses:
+      value: The largest of ten, five and twenty is 20.
+      syntax: "Check the brackets, commas and quote marks. SUBTOTAL follows the pattern `=SUBTOTAL(function_num, ref1, [ref2], ...)`."
+      required-function: "MAX is not called by name here: the number in front of the range selects it."
+      reference: The prices live in B2:B4.
+    accept:
+      - =SUBTOTAL(4,B2:B4)
+      - =subtotal(4,b2:b4)
+      - =SUBTOTAL(4,$B$2:$B$4)
+      - =SUBTOTAL(4,B$2:B$4)
+      - =SUBTOTAL( 4 , B2:B4 )
+      - =SUBTOTAL(4,B2:B4)*1
+    reject:
+      - { formula: =MAX(B2:B4), rule: required-function }
+      - { formula: "=SUBTOTAL(5,B2:B4)", rule: value }
+      - { formula: "=SUBTOTAL(9,B2:B4)", rule: value }
+      - { formula: "=SUBTOTAL(4,B2:B3)", rule: value }
+      - { formula: "=SUBTOTAL(4,C2:C4)", rule: value }
+      - { formula: =SUBTOTAL(4 B2:B4), rule: syntax }
+      - { formula: "=SUBTOTAL(4,B2:B4)/0", rule: value }
+notes:
+  summary: SUBTOTAL takes a function number and a range. The number picks the calculation, such as 9 to add, 1 to average and 4 for the largest, and rows hidden by a filter are left out.
+  syntax: SUBTOTAL(function-number, range) with 9 (or 109) for SUM, 4 for MAX, 5 for MIN, 2 for COUNT
+  example: "`=SUBTOTAL(9,A1:A3)` with 4, 6 and 10 in A1:A3 gives 20."
+  commonErrors:
+    - The first argument is missing or is not one of the numbers SUBTOTAL recognises, so nothing says what to calculate.
+    - The range was deleted, so the reference no longer points at any cells.
+    - The number says COUNT or MAX while the question asked for a sum, and the answer measures something else.

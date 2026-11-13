@@ -1,0 +1,41 @@
+---
+// Why this exists: the terms of use, kept short and plain.
+import Base from "../../layouts/Base.astro";
+---
+
+<Base
+  title="Terms"
+  description="The terms of use for this site: free to use, no account, and no warranty."
+>
+  <h1>Terms</h1>
+  <p>Last updated 11 November 2026.</p>
+
+  <h2>Using the site</h2>
+  <p>
+    The exercises, hints and function pages are free to use for learning. You do not need an
+    account.
+  </p>
+
+  <h2>No warranty</h2>
+  <p>
+    The site checks formulas with its own grader, which follows Excel's documented behaviour. It
+    can differ from Excel in some cases, and the expected values have not all been checked in
+    Excel. Check important work in Excel itself.
+  </p>
+
+  <h2>Trademarks</h2>
+  <p>
+    Microsoft and Excel are trademarks of the Microsoft group of companies. This site is not made,
+    endorsed or supported by Microsoft.
+  </p>
+
+  <h2>Questions</h2>
+  <p>Use the <a href="/contact/">contact page</a>.</p>
+</Base>
+
+<style>
+  h2 {
+    margin: var(--space-6) 0 var(--space-2);
+    font-size: var(--size-xl);
+  }
+</style>

@@ -1,0 +1,50 @@
+id: match-find-a-position
+slug: match-find-a-position
+level: 2
+title: "MATCH: find a value's position"
+topic: index-match
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B7, find the position of the month in B6 within A2:A5, counting the first row as 1.
+    rows:
+      - [Month, Units]
+      - [Jan, 120]
+      - [Feb, 180]
+      - [Mar, 150]
+      - [Apr, 210]
+      - [Which month?, Mar]
+      - [Position, null]
+    answerCell: B7
+    expected: 3
+    answer: =MATCH(B6,A2:A5,0)
+    requiredFunctions: [MATCH]
+    hints:
+      nudge: "You want the month's place in the list, not the units beside it."
+      rule: "MATCH returns the position of a value within a range, counting the first cell as 1. A match type of 0 asks for an exact match."
+    misses:
+      value: Jan is 1, Feb is 2, Mar is 3. Counting starts at the top of A2:A5, not the top of the sheet.
+      syntax: "Check the brackets, commas and quote marks. MATCH follows the pattern `=MATCH(lookup_value, lookup_array, [match_type])`."
+      required-function: MATCH hands back a count of cells, 3. The units in B4 are INDEX's job.
+      reference: Take the month from B6. Typing Mar into the formula means April needs an edit to the formula, not the sheet.
+    accept:
+      - =MATCH(B6,A2:A5,0)
+      - =match(b6,a2:a5,0)
+      - =MATCH($B$6,$A$2:$A$5,0)
+      - =MATCH(B6,A2:A5,0)+0
+      - =MATCH(B6,A2:A5,0)*1
+      - =MATCH(B6,A2:A5,0)/1
+    reject:
+      - { formula: "=MATCH(B6,A2:A5,0", rule: syntax }
+      - { formula: "=MATCH(B6,A2:A5)", rule: value }
+      - { formula: "=MATCH(B6,A2:A5,1)", rule: value }
+      - { formula: "=MATCH(B6,A2:A5,0)+1", rule: value }
+      - { formula: "=MATCH(B6,A2:A3,0)", rule: value }
+notes:
+  summary: "MATCH returns the position of a value within a range, counting the first cell as 1. With a match type of 0 it looks for an exact match."
+  syntax: MATCH(lookup_value, lookup_array, [match_type])
+  example: '`=MATCH("Mar",A1:A4,0)` with Jan, Feb, Mar and Apr gives 3.'
+  commonErrors:
+    - No cell in A2:A5 holds the month, so MATCH has no position to return.
+    - The searched range was a block rather than one row or column, or the match type was text.
+    - The match type was left out or set to 1, so MATCH searched a calendar-order list as though it were ascending and picked a neighbouring month.

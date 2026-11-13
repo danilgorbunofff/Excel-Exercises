@@ -1,0 +1,16 @@
+---
+// Why this exists: hands an exercise's grading data to the exercise script.
+// It sits inside the element marked data-exercise that it belongs to.
+import { type ExerciseEntry, exerciseData } from "../lib/exercises.ts";
+
+interface Props {
+  exercise: ExerciseEntry["data"];
+}
+const json = JSON.stringify(exerciseData(Astro.props.exercise)).replaceAll("<", "\\u003c");
+---
+
+<script type="application/json" data-exercise-data set:html={json} />
+
+<script>
+  import "../scripts/exercise.ts";
+</script>

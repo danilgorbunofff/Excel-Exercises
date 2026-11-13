@@ -1,0 +1,88 @@
+id: debug-a-total-that-skips-a-row
+slug: debug-a-total-that-skips-a-row
+level: 3
+title: Debug a total that skips a row
+topic: totals
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B8, total every store's sales even though one cell in the column holds text.
+    rows:
+      - [Store, Sales]
+      - [Brooklyn, 320]
+      - [Queens, 250]
+      - [Bronx, n/a]
+      - [Harlem, 300]
+      - [Astoria, 400]
+      - [Fulton, 180]
+      - [City total, null]
+    answerCell: B8
+    expected: 1450
+    answer: =SUM(B2:B7)
+    requiredFunctions: [SUM]
+    hints:
+      nudge: SUM over the whole column steps over the text cell for you.
+      rule: SUM adds the numbers in a range and ignores text and empty cells. A chain of plus signs fails with `#VALUE!` as soon as it reaches text.
+    misses:
+      value: The numbers are 320, 250, 300, 400 and 180, which total 1450. The text in the middle is skipped.
+      syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
+      required-function: Adding the cells one at a time is how a total ends up short. Use SUM over the block.
+      reference: Point at the column, or the range stops where somebody typed a row number by hand.
+    accept:
+      - =SUM(B2:B7)
+      - =sum(b2:b7)
+      - =SUM($B$2:$B$7)
+      - =SUM(B2:B7)+0
+      - =SUM(B2:B7)*1
+      - =SUM(B$2:B$7)
+    reject:
+      - { formula: =SUM(B2:B6), rule: value }
+      - { formula: =SUM(B2:B5), rule: value }
+      - { formula: =B2+B3+B4+B5+B6+B7, rule: required-function }
+      - { formula: =SUM(B3:B7), rule: value }
+      - { formula: =SUM(B2:B7)/0, rule: value }
+      - { formula: =SUM(B2:B7, rule: syntax }
+  - prompt: In B7, total January to April without counting the Q1 subtotal row above it.
+    rows:
+      - [Month, Amount]
+      - [Jan, 320]
+      - [Feb, 250]
+      - [Mar, 180]
+      - [Apr, 140]
+      - [Q1 total, 750]
+      - [Four months, null]
+    answerCell: B7
+    expected: 890
+    answer: =SUM(B2:B5)
+    requiredFunctions: [SUM]
+    hints:
+      nudge: The range should stop on the last month, above the subtotal.
+      rule: A range includes every cell from its first address to its last. Stop it above a subtotal row, or the same money is counted twice.
+    misses:
+      value: 320 + 250 + 180 + 140 is 890. Pulling the 750 subtotal in as well gives 1640.
+      syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
+      required-function: Add the months with SUM rather than by naming the cells one at a time.
+      reference: Read the amount column from the grid so the range covers every month.
+    accept:
+      - =SUM(B2:B5)
+      - =sum(b2:b5)
+      - =SUM($B$2:$B$5)
+      - =SUM(B2:B5)+0
+      - =SUM(B2:B5)*1
+      - =SUM(B$2:B$5)
+    reject:
+      - { formula: =SUM(B2:B6), rule: value }
+      - { formula: =SUM(B2:B4), rule: value }
+      - { formula: =SUM(B2:B5)-B6, rule: value }
+      - { formula: =B2+B3+B4+B5, rule: required-function }
+      - { formula: =SUM(B3:B5), rule: value }
+      - { formula: =SUM(B2:B5)/0, rule: value }
+      - { formula: =SUM(B2 B5), rule: syntax }
+notes:
+  summary: A total that skips a row is nearly always a range problem. The range stops one short, starts one late, or reaches up into a subtotal it should have stayed below.
+  syntax: SUM(first_cell:last_cell)
+  example: "`=SUM(A1:A3)` with 10, n/a and 5 gives 15."
+  commonErrors:
+    - A cell in the range holds text that a chain of plus signs cannot add. SUM over the range would have skipped it.
+    - The range names a column or row that no longer exists after rows were deleted.
+    - A range that reaches a subtotal counts the same money twice, and a range that stops early leaves a store out. Neither raises an error.

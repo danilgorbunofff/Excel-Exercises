@@ -1,0 +1,83 @@
+id: sumproduct-multiply-then-add
+slug: sumproduct-multiply-then-add
+level: 3
+title: "SUMPRODUCT: multiply the pair, then add them up"
+topic: subtotals
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: "In D5, total the value of the stock: price times quantity on every row, added up."
+    rows:
+      - [Item, Price, Qty, Value]
+      - [pen, 10, 2, null]
+      - [pad, 5, 4, null]
+      - [ink, 20, 3, null]
+      - [Total stock, null, null, null]
+    answerCell: D5
+    expected: 100
+    answer: =SUMPRODUCT(B2:B4,C2:C4)
+    requiredFunctions: [SUMPRODUCT]
+    hints:
+      nudge: One function multiplies two columns row by row and adds up the results.
+      rule: SUMPRODUCT takes ranges of the same size, multiplies the matching cells and returns the sum of those products.
+    misses:
+      value: "Ten times two, five times four, twenty times three: 100."
+      syntax: "Check the brackets, commas and quote marks. SUMPRODUCT follows the pattern `=SUMPRODUCT(array1, [array2], ...)`."
+      required-function: Both columns go in, and the function does the multiplying and adding itself.
+      reference: Point at the price and quantity cells, not at numbers typed into the formula.
+    accept:
+      - =SUMPRODUCT(B2:B4,C2:C4)
+      - =sumproduct(b2:b4,c2:c4)
+      - =SUMPRODUCT($B$2:$B$4,$C$2:$C$4)
+      - =SUMPRODUCT(B$2:B$4,C$2:C$4)
+      - =SUMPRODUCT( B2:B4 , C2:C4 )
+      - =SUMPRODUCT(B2:B4,C2:C4)+0
+    reject:
+      - { formula: =SUM(B2:B4), rule: required-function }
+      - { formula: =SUMPRODUCT(B2:B4), rule: value }
+      - { formula: "=SUMPRODUCT(B2:B4,B2:B4)", rule: value }
+      - { formula: "=SUMPRODUCT(B3:B4,C3:C4)", rule: value }
+      - { formula: "=SUMPRODUCT(B2:B4,C2:C4)/0", rule: value }
+      - { formula: "=SUMPRODUCT B2:B4,C2:C4", rule: syntax }
+  - prompt: In D5, work out the average price paid per item, counting each row once per unit it holds, rounded to one decimal place.
+    rows:
+      - [Item, Price, Qty, Answer]
+      - [pen, 10, 2, null]
+      - [pad, 5, 4, null]
+      - [ink, 20, 3, null]
+      - [Average price, null, null, null]
+    answerCell: D5
+    expected: 11.1
+    answer: =ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUM(C2:C4),1)
+    requiredFunctions: [SUMPRODUCT]
+    hints:
+      nudge: An average that counts every unit is the total value divided by the total number of units.
+      rule: A weighted average divides the sum of value times weight by the sum of the weights. ROUND with 1 as its second argument keeps one decimal place.
+    misses:
+      value: 100 divided by 9 units is 11.111..., which rounds to 11.1.
+      syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
+      required-function: The numerator is the value of the whole stock, so it is a pair of ranges.
+      reference: Both totals, the value and the quantity, come from the table rows.
+    accept:
+      - =ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUM(C2:C4),1)
+      - =round(sumproduct(b2:b4,c2:c4)/sum(c2:c4),1)
+      - =ROUND(SUMPRODUCT($B$2:$B$4,$C$2:$C$4)/SUM($C$2:$C$4),1)
+      - =ROUND(SUMPRODUCT(B$2:B$4,C$2:C$4)/SUM(C$2:C$4),1)
+      - =ROUND( SUMPRODUCT(B2:B4, C2:C4) / SUM(C2:C4) , 1 )
+      - =ROUND(SUMPRODUCT(B2:B4,C2:C4)/(C2+C3+C4),1)
+    reject:
+      - { formula: =AVERAGE(B2:B4), rule: required-function }
+      - { formula: "=SUMPRODUCT(B2:B4,C2:C4)/SUM(C2:C4)", rule: value }
+      - { formula: "=ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUM(B2:B4),1)", rule: value }
+      - { formula: "=ROUND(SUMPRODUCT(B3:B4,C3:C4)/SUM(C2:C4),1)", rule: value }
+      - { formula: "=ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUM(C2:C4),0)", rule: value }
+      - { formula: "=ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUM(C2:C4),1)/0", rule: value }
+      - { formula: "=ROUND SUMPRODUCT(B2:B4,C2:C4)/SUM(C2:C4),1", rule: syntax }
+notes:
+  summary: SUMPRODUCT pairs two ranges cell by cell, multiplies each pair, then adds the products. Both ranges must be the same size.
+  syntax: SUMPRODUCT(prices, quantities) multiplies the two ranges row by row and adds the products
+  example: "`=SUMPRODUCT(A1:A2,B1:B2)` with 3 and 4 in A1:A2 and 5 and 6 in B1:B2 gives 39."
+  commonErrors:
+    - The two ranges are a different height, so the pairs stop lining up and Excel refuses the call.
+    - The function name is misspelt, so Excel reads it as an undefined name.
+    - A range that starts one row below the other pairs each price with the next quantity, and the total is wrong without any error.

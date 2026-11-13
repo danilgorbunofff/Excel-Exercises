@@ -1,0 +1,645 @@
+---
+// Why this exists: the home page, in the Spreadsheet Center order: a split
+// hero that runs the first exercise, the numbers, three solid offer cards, how
+// it works beside what a check says about a wrong formula, why to practise
+// here, a dark band on who uses it, the tracks, questions and a solid green
+// last call to start.
+import { siteConfig } from "../../site.config.ts";
+import MissExample from "../components/home/MissExample.astro";
+import Icon, { type IconName } from "../components/Icon.astro";
+import LiveExercise from "../components/LiveExercise.astro";
+import TrackList from "../components/TrackList.astro";
+import Base from "../layouts/Base.astro";
+import { exercisePath, placedExercises, trackSummaries, tracksPath } from "../lib/exercises.ts";
+import { loadFunctionIndex } from "../lib/functions.ts";
+
+const placed = await placedExercises();
+const first = placed[0];
+if (!first) throw new Error("The track has no exercises");
+const total = placed.length;
+const tracks = trackSummaries(placed);
+const functionCount = loadFunctionIndex().functions.length;
+const free = siteConfig.freeCount === null ? total : Math.min(siteConfig.freeCount, total);
+const sumExercise = placed.find((p) => p.exercise.id === "sum-a-column");
+const missScreen = sumExercise?.exercise.screens[0];
+
+const faq = [
+  {
+    q: "Is it free?",
+    a:
+      free === total
+        ? `Yes. All ${total} exercises, the hints and the function pages are free. PRO will add more exercises later, and the free ones stay free.`
+        : `The first ${free} of ${total} exercises are free.`,
+  },
+  {
+    q: "Do I need Excel?",
+    a: "No. Every exercise runs in your browser, so there is nothing to install and no licence to buy.",
+  },
+  {
+    q: "Which Excel does it follow?",
+    a: "Excel for Microsoft 365 in English: English function names, commas between arguments and the 1900 date system.",
+  },
+  {
+    q: "Where is my progress kept?",
+    a: "In this browser only. Accounts that sync progress across devices are on the way.",
+  },
+];
+
+const stats = [
+  { value: String(total), label: "exercises to solve" },
+  { value: String(tracks.length), label: "learning tracks" },
+  { value: String(functionCount), label: "functions practised" },
+  { value: "0", label: "downloads needed" },
+];
+const offers: {
+  value: string;
+  title: string;
+  text: string;
+  href: string;
+  link: string;
+}[] = [
+  {
+    value: String(total),
+    title: "Hands-on exercises",
+    text: "Short tasks on a real grid. Type the formula in the cell and see what it reads and what it returns.",
+    href: "/exercises/",
+    link: "Open the exercises",
+  },
+  {
+    value: String(functionCount),
+    title: "Function reference",
+    text: "Each function with its syntax, what it is for and the exercises that use it.",
+    href: "/functions/",
+    link: "Browse the functions",
+  },
+  {
+    value: String(tracks.length),
+    title: "Learning tracks",
+    text: "Guided paths from your first cell reference to capstone tasks, with the exercises in a sensible order.",
+    href: tracksPath,
+    link: "View the tracks",
+  },
+];
+const steps = [
+  {
+    title: "Choose a task",
+    text: "Pick a track or a single topic. Each exercise is one short task built around a real sheet.",
+  },
+  {
+    title: "Write the formula",
+    text: "Write the formula in the formula bar, as you would in Excel. The grid shows the cells it reads.",
+  },
+  {
+    title: "Read the verdict",
+    text: "Get a verdict at once. When the formula is wrong, you see which rule it missed and where.",
+  },
+];
+const different: { icon: IconName; title: string; text: string }[] = [
+  {
+    icon: "cells",
+    title: "A sheet that looks like Excel",
+    text: "Row and column headers, a name box and a formula bar. It looks like the program you use at work.",
+  },
+  {
+    icon: "bolt",
+    title: "No setup",
+    text: "There is nothing to install and no account to make. Your progress is saved in this browser.",
+  },
+  {
+    icon: "check",
+    title: "Feedback on the method",
+    text: "The check looks at how you got the answer, so typed numbers or the wrong range do not pass.",
+  },
+];
+const audiences: { title: string; text: string }[] = [
+  {
+    title: "New to formulas",
+    text: "The first track starts with a single cell reference. Each exercise adds one idea.",
+  },
+  {
+    title: "Using Excel at work",
+    text: "Practise the formulas that reports and trackers use every day, until you write them without looking.",
+  },
+  {
+    title: "Facing an Excel test",
+    text: "Many office, finance and data roles test Excel. Practise the lookups and conditions they ask for.",
+  },
+  {
+    title: "Working with data",
+    text: "SUMIFS, XLOOKUP and INDEX with MATCH, checked against how Excel for Microsoft 365 works.",
+  },
+];
+---
+
+<Base
+  title="Practise Excel formulas on a real grid"
+  description={`${total} short Excel formula exercises you solve in the browser. Each check shows which cells your formula read and why the result is right or wrong.`}
+  layout="flush"
+>
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <h1>Practise Excel formulas on a real grid</h1>
+        <p class="lead">
+          Type real formulas in your browser and see the cells they read. Nothing to install.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary button-l" href={exercisePath(first.exercise.slug)}>
+            Start the first exercise
+          </a>
+          <a class="button button-outline button-l" href="/exercises/">See all exercises</a>
+        </div>
+      </div>
+      <div class="hero-try">
+        <LiveExercise placed={first} heading="Try the first exercise" />
+      </div>
+    </div>
+  </section>
+
+  <section class="stats" aria-label="In numbers">
+    <dl class="container stats-inner">
+      {
+        stats.map((s) => (
+          <div>
+            <dt>{s.label}</dt>
+            <dd>{s.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <div class="section-head">
+        <h2>Three ways to use the site</h2>
+        <p>Solve exercises, look up a function, or follow a track from start to finish.</p>
+      </div>
+      <ul class="grid-3">
+        {
+          offers.map((o, i) => (
+            <li class={`offer offer-${i + 1}`}>
+              <p class="offer-value">{o.value}</p>
+              <h3>{o.title}</h3>
+              <p>{o.text}</p>
+              <a class="offer-link" href={o.href}>
+                {o.link}&nbsp;<span aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="band band-surface" aria-labelledby="how">
+    <div class="container how">
+      <div>
+        <div class="section-head">
+          <h2 id="how">How it works</h2>
+          <p>Every exercise follows the same three steps.</p>
+        </div>
+        <ol class="steps">
+          {
+            steps.map((s, i) => (
+              <li>
+                <span class="step-number" aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <h3>{s.title}</h3>
+                  <p>{s.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        <a class="button button-primary" href={exercisePath(first.exercise.slug)}>
+          Try it yourself
+        </a>
+      </div>
+      {
+        missScreen && (
+          <div class="how-example">
+            <h3 id="check">A wrong answer tells you why</h3>
+            <MissExample screen={missScreen} formula="=SUM(B2:B4)" />
+            <p>
+              Here someone typed <code>=SUM(B2:B4)</code> for the total in B6. The check outlines the
+              range the formula read in blue, marks the answer cell in red, and names what went wrong.
+            </p>
+            <p>
+              It looks at the method as well as the result, so typing the numbers in by hand or
+              picking the wrong range does not pass.
+            </p>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="container">
+      <div class="section-head">
+        <h2>Why practise here</h2>
+        <p>A check that reads your formula, on a sheet that behaves like Excel.</p>
+      </div>
+      <ul class="grid-3">
+        {
+          different.map((d) => (
+            <li class="card">
+              <span class="icon-box">
+                <Icon name={d.icon} size={22} />
+              </span>
+              <h3>{d.title}</h3>
+              <p>{d.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="band band-dark">
+    <div class="container">
+      <div class="section-head">
+        <h2>Who uses it</h2>
+        <p>The tracks start from zero and end with capstone tasks, so there is a place to begin for everyone.</p>
+      </div>
+      <ul class="grid-2">
+        {
+          audiences.map((a) => (
+            <li>
+              <h3>{a.title}</h3>
+              <p>{a.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="tracks">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="tracks">Work through the tracks in order</h2>
+        <p>Each track builds on the ones before it. Start at the top if you are new to formulas.</p>
+      </div>
+      <TrackList tracks={tracks} labelledby="tracks" />
+      <p class="more">
+        <a class="arrow-link" href={tracksPath}>All tracks&nbsp;<span aria-hidden="true">→</span></a>
+      </p>
+    </div>
+  </section>
+
+  <section class="band band-surface">
+    <div class="container faq-wrap">
+      <div class="faq-head">
+        <h2 class="section-title">Questions before you start</h2>
+        <p>Short answers about cost, Excel versions and your progress.</p>
+        <a class="button button-primary" href={exercisePath(first.exercise.slug)}>
+          Open the first exercise
+        </a>
+      </div>
+      <div class="faq">
+        {
+          faq.map((f, i) => (
+            <details open={i === 0}>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container">
+      <h2>Write your first formula</h2>
+      <p>The first exercise adds two cells and needs no setup.</p>
+      <a class="button button-on-primary button-l" href={exercisePath(first.exercise.slug)}>
+        Start the first exercise
+      </a>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import "../scripts/catalogue.ts";
+</script>
+
+<style>
+  .hero {
+    background: linear-gradient(135deg, var(--hero-tint) 0%, var(--bg) 55%, var(--hero-tint-2) 100%);
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero-inner {
+    display: grid;
+    gap: var(--space-7);
+    align-items: center;
+    padding-block: var(--space-7);
+  }
+  h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    color: var(--heading);
+  }
+  .lead {
+    max-width: 32rem;
+    margin: var(--space-5) 0 0;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+  .hero-try :global(.live) {
+    margin: 0;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+    box-shadow: 0 8px 24px rgb(16 24 40 / 0.12);
+  }
+  .stats {
+    background: var(--surface);
+    border-bottom: 1px solid var(--rule);
+  }
+  .stats-inner {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-block: 0;
+  }
+  .stats-inner > div {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    padding: var(--space-5) var(--space-3);
+    text-align: center;
+  }
+  .stats dd {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--correct);
+  }
+  .stats dt {
+    color: var(--muted);
+    font-size: var(--size-s);
+  }
+  .band {
+    padding-block: var(--space-7);
+  }
+  .band-surface {
+    background: var(--surface);
+    border-block: 1px solid var(--rule);
+  }
+  ul,
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  h3 {
+    margin: var(--space-3) 0 var(--space-2);
+    font-size: var(--size-l);
+    color: var(--heading);
+  }
+  /* Section heads sit on the left, as on Spreadsheet Center. */
+  .section-head {
+    margin-inline: 0;
+    text-align: left;
+  }
+  .grid-2,
+  .grid-3 {
+    display: grid;
+    gap: var(--space-5);
+  }
+  .grid-3 p {
+    margin: 0 0 var(--space-3);
+    color: var(--muted);
+  }
+  /* The three offers are solid blocks: green, blue and charcoal. Each sets its
+     own text colour, so they read the same in light and dark. */
+  .offer {
+    position: relative;
+    overflow: hidden;
+    padding: var(--space-6);
+    border-radius: var(--radius-xl);
+    background: var(--offer-bg);
+    color: var(--on-primary);
+  }
+  .offer::after {
+    content: "";
+    position: absolute;
+    top: -2.5rem;
+    right: -2.5rem;
+    width: 9rem;
+    height: 9rem;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 0.12);
+  }
+  .offer-1 {
+    --offer-bg: var(--primary);
+  }
+  .offer-2 {
+    --offer-bg: var(--offer-blue);
+  }
+  .offer-3 {
+    --offer-bg: var(--offer-charcoal);
+  }
+  .offer .offer-value {
+    margin: 0;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: inherit;
+  }
+  .offer h3 {
+    margin: var(--space-2) 0 var(--space-3);
+    color: inherit;
+  }
+  .offer p:not(.offer-value) {
+    margin: 0 0 var(--space-5);
+    color: inherit;
+  }
+  .offer-link {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--target);
+    color: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+  .offer-link:focus-visible {
+    outline-color: var(--on-primary);
+  }
+  .how {
+    display: grid;
+    gap: var(--space-7);
+    align-items: start;
+  }
+  .steps {
+    display: grid;
+    gap: var(--space-5);
+    margin-bottom: var(--space-6);
+  }
+  .steps li {
+    display: flex;
+    gap: var(--space-4);
+    align-items: flex-start;
+  }
+  .steps h3 {
+    margin: var(--space-1) 0 var(--space-1);
+    font-size: var(--size-xl);
+  }
+  .steps p {
+    margin: 0;
+    color: var(--muted);
+  }
+  .step-number {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-l);
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: var(--size-s);
+    font-weight: 700;
+  }
+  .how-example h3 {
+    margin: 0 0 var(--space-3);
+    font-size: var(--size-s);
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .how-example p {
+    margin: var(--space-3) 0 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  /* Who uses it: the one dark band above the footer. */
+  .band-dark {
+    background: var(--footer-bg);
+    color: var(--on-footer);
+  }
+  .band-dark .section-head h2 {
+    color: var(--on-footer);
+  }
+  .band-dark .section-head p {
+    color: var(--on-footer-muted);
+  }
+  .band-dark li {
+    padding: var(--space-5);
+    border-radius: var(--radius-l);
+    background: var(--on-dark-card);
+  }
+  .band-dark h3 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--size-base);
+    color: var(--on-footer);
+  }
+  .band-dark li p {
+    margin: 0;
+    color: var(--on-footer-muted);
+  }
+  .more {
+    margin: var(--space-5) 0 0;
+    text-align: center;
+  }
+  .faq-wrap {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .faq-head p {
+    margin: 0 0 var(--space-5);
+    color: var(--muted);
+  }
+  .faq details {
+    border-bottom: 1px solid var(--rule);
+  }
+  .faq summary {
+    display: flex;
+    align-items: center;
+    min-height: var(--target);
+    padding: var(--space-3) 0;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .faq details p {
+    margin: 0 0 var(--space-4);
+    color: var(--muted);
+  }
+  .cta {
+    padding-block: 5rem;
+    background: var(--primary);
+    color: var(--on-primary);
+    text-align: center;
+  }
+  .cta h2 {
+    margin: 0 0 var(--space-3);
+    font-size: var(--size-page);
+    color: inherit;
+  }
+  .cta p {
+    margin: 0 0 var(--space-6);
+    font-size: var(--size-l);
+    color: inherit;
+  }
+  .button-on-primary {
+    background: var(--on-primary);
+    color: var(--primary-hover);
+    box-shadow: var(--shadow-pop);
+  }
+  .button-on-primary:hover {
+    background: var(--correct-tint-solid);
+  }
+  .button-on-primary:focus-visible {
+    outline-color: var(--on-primary);
+  }
+  @media (min-width: 48rem) {
+    h1 {
+      font-size: var(--size-hero);
+      line-height: 1.2;
+    }
+    .stats-inner {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .stats-inner > div + div {
+      border-left: 1px solid var(--rule);
+    }
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .cta h2 {
+      font-size: 3rem;
+    }
+  }
+  @media (min-width: 64rem) {
+    .hero-inner {
+      grid-template-columns: 1fr 1fr;
+      padding-block: 5rem;
+    }
+    .how {
+      grid-template-columns: 1fr 1fr;
+    }
+    .faq-wrap {
+      grid-template-columns: 1fr 1.6fr;
+    }
+  }
+</style>

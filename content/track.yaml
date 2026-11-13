@@ -1,0 +1,258 @@
+# The one order of exercises. The catalogue, the numbering, the Next button
+# and any free set all read this list. Nothing else orders exercises.
+# Draft order by prerequisite: each topic uses only what earlier topics teach.
+# The owner sets the final order by moving lines in this file.
+topics:
+  - slug: references
+    title: Cells and arithmetic
+    summary: Point at cells, then add, subtract, multiply and use brackets.
+    group: essentials
+    learn:
+      - Point a formula at a cell by its address
+      - Add, subtract and multiply values from different cells
+      - Use brackets to control the order of a calculation
+      - Work out a price after a percentage discount
+  - slug: totals
+    title: SUM, AVERAGE, MIN and MAX
+    summary: Total a column, and find its average, largest and smallest values.
+    group: essentials
+    learn:
+      - Add up a whole column with one function
+      - Find the average of a range
+      - Pick out the largest and smallest values
+      - Write a range as first cell, colon, last cell
+  - slug: counting
+    title: COUNT, COUNTA and COUNTBLANK
+    summary: Count numbers, filled cells and empty cells.
+    group: skill
+    learn:
+      - Count the cells that hold numbers
+      - Count every filled cell, text included
+      - Count the empty cells in a range
+      - Turn a count into a share of the total
+  - slug: logic
+    title: IF, AND and OR
+    summary: Show a result that depends on a test.
+    group: skill
+    learn:
+      - Show one result or another with IF
+      - Test two conditions at once with AND
+      - Accept either of two conditions with OR
+      - Return text or numbers from a test
+  - slug: conditions
+    title: COUNTIF, SUMIF and SUMIFS
+    summary: Count and add only the rows that match a condition.
+    group: skill
+    learn:
+      - Count the rows that match one condition
+      - Count values above a limit
+      - Add only the rows for one region
+      - Add the rows that meet two conditions
+  - slug: rounding
+    title: ROUND, ROUNDUP and MROUND
+    summary: Round money and quantities the way the task asks for.
+    group: skill
+    learn:
+      - Round a price to two decimal places
+      - Round always up or always down
+      - Round to the nearest multiple, such as 5
+      - Round down to a whole pack or crate
+  - slug: statistics
+    title: LARGE, SMALL, MEDIAN, MODE and RANK
+    summary: Pick the second highest, the middle, the most common and a rank.
+    group: skill
+    learn:
+      - Find the second highest or lowest value
+      - Find the middle value of a list
+      - Find the value that comes up most often
+      - Rank a value without sorting the list
+  - slug: lookups
+    title: XLOOKUP, VLOOKUP, INDEX and MATCH
+    summary: Find a value in a table from a code or a name.
+    group: skill
+    learn:
+      - Find a price from a product code with XLOOKUP
+      - Read a value from a table with VLOOKUP
+      - Look up a band with an approximate match
+      - Combine INDEX and MATCH for a flexible lookup
+  - slug: index-match
+    title: INDEX and MATCH
+    summary: Find a position, read a cell by row and column, then combine the two.
+    group: skill
+    learn:
+      - Find the position of a value with MATCH
+      - Read a value at a row and column with INDEX
+      - Combine INDEX and MATCH for any lookup
+      - Look up by row and column at once
+  - slug: text-search
+    title: LEFT, MID, FIND and SEARCH
+    summary: Cut text by position, and find where a piece of text starts.
+    group: skill
+    learn:
+      - Take characters from the start, middle or end
+      - Count the characters in a cell
+      - Find where a piece of text starts
+      - Split a code at a delimiter
+  - slug: text-change
+    title: CONCAT, TEXTJOIN and SUBSTITUTE
+    summary: Join text, change its case and swap one piece for another.
+    group: skill
+    learn:
+      - Join cells with CONCAT or the & operator
+      - Join a range and skip the blanks
+      - Change text to upper, lower or proper case
+      - Replace one piece of text with another
+  - slug: errors
+    title: IFERROR, IFNA and error values
+    summary: Read what an error means, and show your own text instead.
+    group: skill
+    learn:
+      - Show your own text when a formula fails
+      - Catch only a missing match with IFNA
+      - Tell #N/A, #VALUE! and #REF! apart
+      - Choose which error to catch
+  - slug: dates
+    title: DATE, DAYS and DATEDIF
+    summary: Build dates from parts and count the time between two dates.
+    group: skill
+    learn:
+      - Build a date from a year, month and day
+      - Count the days between two dates
+      - Count whole months or years between dates
+      - Add days to a date
+  - slug: subtotals
+    title: SUMPRODUCT, SUBTOTAL and AGGREGATE
+    summary: Multiply and add in one step, and pick a total by its code.
+    group: skill
+    learn:
+      - Multiply pairs of values and add the results
+      - Pick a total or a count by its code
+      - Total a range while skipping errors
+      - Check one total against another
+  - slug: models
+    title: Small working sheets
+    summary: Commission, payroll, stock and a month end checklist, each built from formulas.
+    group: skill
+    learn:
+      - Work out commission from a rate table
+      - Total headcount and payroll
+      - Flag the items that need reordering
+      - Track which month end tasks are done
+  - slug: capstone
+    title: Capstone tasks
+    summary: Longer tasks that use the functions from every other track.
+    group: skill
+    learn:
+      - Build a sales summary from raw rows
+      - Pull answers from three tables
+      - Clean up an imported list
+      - Find and fix broken formulas
+order:
+  # Cells and arithmetic
+  - add-two-cells
+  - subtract-costs
+  - multiply-price-by-quantity
+  - price-after-discount
+  # SUM, AVERAGE, MIN and MAX
+  - sum-a-column
+  - average-score
+  - largest-sale
+  - lowest-temperature
+  - sum-across-several-blocks
+  - running-total-down-a-column
+  - debug-a-total-that-skips-a-row
+  # COUNT, COUNTA and COUNTBLANK
+  - count-paid-orders
+  - count-booked-seats
+  - count-empty-cells
+  - share-handed-in
+  - count-functions-summary
+  # IF, AND and OR
+  - pass-or-fail
+  - sales-bonus
+  - both-scores-pass
+  - free-delivery
+  - true-and-false-what-a-comparison-returns
+  - and-or-not-combining-tests
+  - ifs-more-than-two-outcomes
+  - switch-match-a-list-of-values
+  - isblank-isnumber-istext
+  - logical-functions-summary
+  # COUNTIF, SUMIF and SUMIFS
+  - count-orders-by-region
+  - count-over-a-limit
+  - total-for-one-region
+  - total-for-two-conditions
+  - countifs-several-conditions
+  - countif-with-wildcards
+  - sumif-a-sum-range-on-another-column
+  - add-only-the-positives
+  - sumifs-two-conditions-at-once
+  - sum-functions-summary
+  # ROUND, ROUNDUP and MROUND
+  - round-markup
+  - roundup-and-rounddown-one-direction-only
+  - mround-and-floor-round-to-a-multiple
+  # LARGE, SMALL, MEDIAN, MODE and RANK
+  - large-and-small-the-nth-highest
+  - median-the-middle-value
+  - mode-the-most-common-value
+  - rank-a-list-without-sorting-it
+  - average-functions-summary
+  # XLOOKUP, VLOOKUP, INDEX and MATCH
+  - find-a-price
+  - find-an-extension
+  - delivery-band
+  - find-a-code
+  - hlookup-look-across-a-row
+  - vlookup-with-a-wildcard
+  - two-way-lookup-with-vlookup-and-match
+  - xlookup-search-from-the-bottom
+  - xlookup-with-a-fallback-when-nothing-matches
+  - vlookup-and-xlookup-on-the-same-table
+  - lookup-functions-summary
+  # INDEX and MATCH
+  - match-find-a-position
+  - index-a-value-at-a-row-and-column
+  - index-match
+  - two-way-index-match
+  - index-and-match-summary
+  # LEFT, MID, FIND and SEARCH
+  - len-left-and-right-count-and-cut
+  - mid-characters-from-the-middle
+  - left-find-prefix
+  - find-and-search-case
+  - wildcards-in-text-criteria
+  - textbefore-and-textafter
+  - text-search-summary
+  # CONCAT, TEXTJOIN and SUBSTITUTE
+  - concat-and-the-operator
+  - textjoin-join-a-range-and-skip-blanks
+  - upper-lower-and-proper
+  - substitute-replace-one-piece-of-text
+  # IFERROR, IFNA and error values
+  - iferror-catch-the-error-show-your-text
+  - ifna-catch-only-a-missing-match
+  - reading-error-values
+  - error-handling-summary
+  # DATE, DAYS and DATEDIF
+  - date-build-a-date-from-parts
+  - days-and-simple-date-maths
+  - datedif-days-months-or-years-between
+  # SUMPRODUCT, SUBTOTAL and AGGREGATE
+  - sumproduct-multiply-then-add
+  - subtotal-a-sum-over-a-group
+  - aggregate-a-total-that-can-skip
+  - aggregate-functions-summary
+  # Small working sheets
+  - a-commission-sheet-that-updates-itself
+  - a-headcount-and-payroll-summary
+  - an-inventory-reorder-report
+  - a-monthly-close-checklist-in-formulas
+  # Capstone tasks
+  - a-sales-summary-end-to-end
+  - a-lookup-dashboard-from-three-tables
+  - clean-up-an-imported-list
+  - budget-versus-actual-with-a-variance-flag
+  - formula-audit-fix-five-broken-sheets
+  - capstone-margin

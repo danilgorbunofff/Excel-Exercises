@@ -1,0 +1,45 @@
+id: largest-sale
+slug: largest-sale
+level: 1
+title: Find the largest sale
+topic: totals
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B7, find the largest sale.
+    rows:
+      - [Rep, Sale]
+      - [Ivy, 1250]
+      - [Raj, 980]
+      - [Mo, 860]
+      - [Lena, 1175]
+      - [Tom, 1430]
+      - [Largest, null]
+    answerCell: B7
+    expected: 1430
+    answer: =MAX(B2:B6)
+    requiredFunctions: [MAX]
+    hints:
+      nudge: One function returns the biggest number in a range.
+      rule: MAX returns the largest number in a range. MIN returns the smallest.
+    misses:
+      syntax: Write the range as the first cell, a colon, then the last cell.
+      required-function: Use MAX, so the result stays right when a sale changes.
+      reference: Point at the sales in B2 to B6 rather than typing them.
+      value: Check that the range includes every sale, down to B6.
+    accept:
+      - =MAX(B2:B6)
+      - =max(B2:B6)
+      - =MAX(B6,B2:B5)
+    reject:
+      - { formula: "=MAX(B2:B6", rule: syntax }
+      - { formula: "=MIN(B2:B6)", rule: required-function }
+      - { formula: "=MAX(1250,980,860,1175,1430)", rule: reference }
+      - { formula: "=MAX(B2:B7)", rule: reference }
+      - { formula: "=MAX(B2:B5)", rule: value }
+notes:
+  summary: MAX returns the largest number in its arguments. It skips text and empty cells in a range.
+  syntax: MAX(number1, [number2], ...)
+  example: "`=MAX(A1:A3)` with 4, 9 and 2 gives 9."
+  commonErrors:
+    - A range that stops short can miss the largest value.

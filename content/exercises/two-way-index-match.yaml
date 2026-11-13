@@ -1,0 +1,50 @@
+id: two-way-index-match
+slug: two-way-index-match
+level: 2
+title: Two-way INDEX MATCH
+topic: index-match
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B7, read the units for the region in B5 and the quarter in B6 from the grid B2:D4.
+    rows:
+      - [Region, Q1, Q2, Q3]
+      - [North, 120, 140, 160]
+      - [South, 90, 110, 130]
+      - [West, 75, 95, 115]
+      - [Region?, South, null, null]
+      - [Quarter?, Q3, null, null]
+      - [Units, null, null, null]
+    answerCell: B7
+    expected: 130
+    answer: =INDEX(B2:D4,MATCH(B5,A2:A4,0),MATCH(B6,B1:D1,0))
+    requiredFunctions: [INDEX, MATCH]
+    hints:
+      nudge: INDEX can take a row number and a column number, and each one can come from its own MATCH.
+      rule: INDEX(grid, row, column) reads the cell where a row and a column cross. MATCH with 0 gives the position of a label, so one searches A2:A4 and the other B1:D1.
+    misses:
+      value: South is the second region down and Q3 is the third column across, so INDEX reads 130.
+      syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
+      required-function: INDEX needs both numbers. With only the row it reads along the first column of B2:D4 and ignores the quarter.
+      reference: Read the region from B5 and the quarter from B6 so the sheet drives the answer.
+    accept:
+      - =INDEX(B2:D4,MATCH(B5,A2:A4,0),MATCH(B6,B1:D1,0))
+      - =index(b2:d4,match(b5,a2:a4,0),match(b6,b1:d1,0))
+      - =INDEX($B$2:$D$4,MATCH($B$5,$A$2:$A$4,0),MATCH($B$6,$B$1:$D$1,0))
+      - =INDEX(B2:D4,MATCH(B5,A2:A4,FALSE),MATCH(B6,B1:D1,FALSE))
+      - =INDEX(B2:D4,MATCH(B5,A2:A4,0),MATCH(B6,B1:D1,0))+0
+      - =INDEX(B2:D4,MATCH(B5,A2:A4,0),MATCH(B6,B1:D1,0))*1
+    reject:
+      - { formula: "=INDEX(B2:D4,MATCH(B5,A2:A4,0),MATCH(B6,B1:D1,0)", rule: syntax }
+      - { formula: "=INDEX(B2:D4,2,3)", rule: required-function }
+      - { formula: "=MATCH(B5,A2:A4,0)", rule: required-function }
+      - { formula: "=INDEX(B2:D4,MATCH(B5,A2:A4,0),MATCH(B6,B2:D2,0))", rule: value }
+      - { formula: "=INDEX(B2:D4,MATCH(B5,A2:A4,0),MATCH(B6,B1:D1,0)-1)", rule: value }
+notes:
+  summary: INDEX can take a row number and a column number to read one cell from a grid. Two MATCH calls supply them, one searching the row labels and one the column headers.
+  syntax: INDEX(grid, row, column)
+  example: '`=INDEX(B2:C3,MATCH("South",A2:A3,0),MATCH("Q1",B1:C1,0))` with North and South in A2:A3 and Q1, Q2 in B1:C1 returns the value in B3.'
+  commonErrors:
+    - A region missing from A2:A4, or a quarter missing from B1:D1, leaves one of the two positions without a value.
+    - The two MATCH calls went in the wrong order, so INDEX reads row 3 column 2 and returns 95.
+    - A MATCH run over a range that reaches past the grid returns a position B2:D4 does not have.

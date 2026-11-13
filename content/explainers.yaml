@@ -1,0 +1,121 @@
+# Formula walkthroughs for the formula explainer. Each one is a formula and a
+# small sheet; the explainer works out every part with the grader at build
+# time and again in the browser when the visitor edits it.
+walkthroughs:
+  - slug: sumifs-two-conditions
+    title: SUMIFS with two conditions
+    description: Add the sales for one region and one product, step by step.
+    formula: '=SUMIFS(C2:C7,A2:A7,"North",B2:B7,"Tea")'
+    rows:
+      - [Region, Product, Sales]
+      - [North, Tea, 120]
+      - [South, Tea, 95]
+      - [North, Coffee, 143]
+      - [North, Tea, 88]
+      - [South, Coffee, 60]
+      - [North, Tea, 41]
+    how:
+      - SUMIFS takes the range to add first, then pairs of a range to test and the value it must match.
+      - A row counts only when every test passes, so here the region must be North and the product must be Tea.
+      - Three rows pass, and their sales add up to the result.
+    mistakes:
+      - q: Why does SUMIFS return 0?
+        a: Usually a condition matches nothing. Check for extra spaces or a different spelling in the data.
+      - q: Why do I get #VALUE!?
+        a: Every range must be the same size. A sum range of six rows needs test ranges of six rows.
+    exercise: total-for-two-conditions
+  - slug: if-and-bonus
+    title: IF with AND for a bonus
+    description: Pay a bonus only when two tests both pass.
+    formula: "=IF(AND(B2>=1000,C2>=4),B2*10%,0)"
+    rows:
+      - [Name, Sales, Rating]
+      - [Ana, 1250, 5]
+    how:
+      - AND checks both tests and returns TRUE only when sales are at least 1000 and the rating is at least 4.
+      - IF uses that TRUE or FALSE to pick a result. Here both pass, so it works out ten percent of the sales.
+    mistakes:
+      - q: Why does IF always return the second result?
+        a: One of the tests inside AND is false. Open each test to see which one.
+      - q: Can I use OR instead of AND?
+        a: Yes. OR returns TRUE when either test passes, so the bonus would be paid on either condition.
+    exercise: both-scores-pass
+  - slug: index-match-lookup
+    title: INDEX and MATCH together
+    description: Find a value by name, then read the matching row from another column.
+    formula: '=INDEX(C2:C6,MATCH("P-104",A2:A6,0))'
+    rows:
+      - [Code, Name, Price]
+      - [P-101, Pen, 1.2]
+      - [P-102, Pad, 3.5]
+      - [P-103, Ruler, 2.1]
+      - [P-104, Stapler, 7.9]
+      - [P-105, Tape, 1.8]
+    how:
+      - MATCH finds the code in A2:A6 and returns its position. The 0 asks for an exact match.
+      - INDEX reads that position from C2:C6, so it returns the price on the same row.
+    mistakes:
+      - q: Why does MATCH return #N/A?
+        a: The value is not in the range exactly as typed. Check for spaces, or numbers stored as text.
+      - q: Do the two ranges need to start on the same row?
+        a: Yes. Position 4 in one range must be the same row as position 4 in the other.
+    exercise: find-a-code
+  - slug: xlookup-with-fallback
+    title: XLOOKUP with a fallback
+    description: Look up a value and show your own text when it is missing.
+    formula: '=XLOOKUP("Leeds",A2:A5,B2:B5,"Not listed")'
+    rows:
+      - [City, Extension]
+      - [London, 201]
+      - [Paris, 305]
+      - [Madrid, 412]
+      - [Berlin, 518]
+    how:
+      - XLOOKUP looks for the city in A2:A5 and returns the value on the same row of B2:B5.
+      - Leeds is not in the list, so instead of an error it returns the fourth argument, the fallback text.
+    mistakes:
+      - q: Why do I still see #N/A?
+        a: The fallback is the fourth argument. Check that it is there and that the commas are in place.
+      - q: Does XLOOKUP work in my version of Excel?
+        a: It needs Excel for Microsoft 365 or Excel 2021 or later. In older versions use INDEX with MATCH.
+    exercise: find-an-extension
+  - slug: vlookup-exact-match
+    title: VLOOKUP with an exact match
+    description: Find a row by its code and read a value from another column.
+    formula: '=VLOOKUP("P-103",A2:C6,3,FALSE)'
+    rows:
+      - [Code, Name, Price]
+      - [P-101, Pen, 1.2]
+      - [P-102, Pad, 3.5]
+      - [P-103, Ruler, 2.1]
+      - [P-104, Stapler, 7.9]
+      - [P-105, Tape, 1.8]
+    how:
+      - VLOOKUP reads down the first column of A2:C6 until it finds the code.
+      - The 3 asks for the third column of the table, which holds the price.
+      - FALSE asks for an exact match, so a code that is missing gives an error and not a near miss.
+    mistakes:
+      - q: Why do I get #N/A?
+        a: The code is not in the first column exactly as typed. Check the spelling and look for spaces.
+      - q: Why is the result from the wrong column?
+        a: The column number counts from the start of the table, not from column A of the sheet.
+    exercise: find-an-extension
+  - slug: sum-less-costs
+    title: SUM inside a subtraction
+    description: Take one total away from another in a single formula.
+    formula: "=SUM(B2:B4)-SUM(C2:C4)"
+    rows:
+      - [Month, Income, Costs]
+      - [Jan, 4200, 3100]
+      - [Feb, 3900, 2950]
+      - [Mar, 4600, 3300]
+    how:
+      - Each SUM adds its own range first.
+      - The minus sign then takes the second total away from the first.
+      - Change any number and both totals and the result update.
+    mistakes:
+      - q: Why is the result negative?
+        a: The second total is larger than the first. Check which range comes first.
+      - q: Can one SUM do this?
+        a: Not on its own. SUM only adds, so the subtraction needs two totals.
+    exercise: sum-a-column

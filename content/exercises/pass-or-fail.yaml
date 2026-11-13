@@ -1,0 +1,41 @@
+id: pass-or-fail
+slug: pass-or-fail
+level: 1
+title: Pass or fail
+topic: logic
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: The pass mark is 50. In C2, show Pass if the score is at least 50, and Fail if it is not.
+    rows:
+      - [Student, Score, Result]
+      - [Ana, 64, null]
+    answerCell: C2
+    expected: Pass
+    answer: '=IF(B2>=50,"Pass","Fail")'
+    requiredFunctions: [IF]
+    hints:
+      nudge: IF picks one of two results, depending on a test.
+      rule: IF takes a test, then the result when the test is true, then the result when it is false. Text results go in double quotes.
+    misses:
+      syntax: Put text results in double quotes, as in `"Pass"`.
+      required-function: Use IF, so the result changes when the score changes.
+      reference: Point at the score in B2, so the result changes when the score does.
+      value: Check the order. The result for a true test comes first, and the text must match Pass exactly.
+    accept:
+      - '=IF(B2>=50,"Pass","Fail")'
+      - '=IF(B2<50,"Fail","Pass")'
+      - '=if(b2>=50,"Pass","Fail")'
+    reject:
+      - { formula: "=IF(B2>=50,Pass,Fail)", rule: syntax }
+      - { formula: '="Pass"', rule: required-function }
+      - { formula: '=IF(64>=50,"Pass","Fail")', rule: reference }
+      - { formula: '=IF(B2>=50,"Fail","Pass")', rule: value }
+      - { formula: '=IF(B2>=50,"pass","fail")', rule: value }
+notes:
+  summary: IF returns one value when a test is true and another when it is false.
+  syntax: IF(logical_test, value_if_true, [value_if_false])
+  example: '`=IF(A1>10,"High","Low")` gives High when A1 is more than 10.'
+  commonErrors:
+    - Text results without double quotes, which Excel reads as names.
+    - Using > when the task says at least, which needs >=.

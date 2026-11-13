@@ -1,0 +1,156 @@
+---
+// Why this exists: the full search results. Every page is listed by kind, so
+// without script this is a directory of the site; with script, ?q= filters it
+// and orders the matches.
+import Base from "../../layouts/Base.astro";
+import { searchItems } from "../../lib/search-items.ts";
+
+const items = await searchItems();
+const kinds = ["Function", "Exercise", "Track", "Walkthrough", "Article", "Page"] as const;
+const headings = {
+  Function: "Functions",
+  Exercise: "Exercises",
+  Track: "Learning tracks",
+  Walkthrough: "Formula walkthroughs",
+  Article: "Articles",
+  Page: "Tools and pages",
+} as const;
+---
+
+<Base
+  title="Search"
+  description="Search the exercises, functions, learning tracks, formula walkthroughs and articles."
+  layout="wide"
+>
+  <header class="page-head">
+    <h1>Search</h1>
+    <form class="search" role="search" action="/search/" method="get" data-search-page>
+      <label class="visually-hidden" for="search-q">Search the site</label>
+      <input id="search-q" name="q" type="search" autocomplete="off" spellcheck="false" placeholder="A function, a task or an exercise name" />
+      <button class="button button-primary" type="submit">Search</button>
+    </form>
+    <p class="count" role="status" data-search-count></p>
+  </header>
+  <div class="results">
+    {
+      kinds.map((k) => (
+        <section data-kind={k} aria-labelledby={`kind-${k}`}>
+          <h2 id={`kind-${k}`}>{headings[k]}</h2>
+          <ul>
+            {items
+              .filter((i) => i.kind === k)
+              .map((i) => (
+                <li data-item={JSON.stringify(i)}>
+                  <a href={i.url}>{i.title}</a>
+                </li>
+              ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</Base>
+
+<script>
+  import { type SearchItem, search } from "../../lib/search.ts";
+
+  const input = document.querySelector<HTMLInputElement>("#search-q");
+  const count = document.querySelector<HTMLElement>("[data-search-count]");
+  const lis = [...document.querySelectorAll<HTMLLIElement>("[data-item]")];
+  const items = lis.map((li) => JSON.parse(li.dataset["item"] ?? "{}") as SearchItem);
+  const apply = () => {
+    if (!input || !count) return;
+    const q = input.value.trim();
+    if (!q) {
+      for (const li of lis) li.hidden = false;
+      for (const s of document.querySelectorAll<HTMLElement>("[data-kind]")) s.hidden = false;
+      count.textContent = "";
+      return;
+    }
+    const found = search(items, q);
+    const rank = new Map(found.map((f, i) => [f.url + f.title, i]));
+    lis.forEach((li, i) => {
+      const item = items[i];
+      const r = item ? rank.get(item.url + item.title) : undefined;
+      li.hidden = r === undefined;
+      li.style.order = String(r ?? 0);
+    });
+    for (const s of document.querySelectorAll<HTMLElement>("[data-kind]")) {
+      s.hidden = !s.querySelector("li:not([hidden])");
+    }
+    count.textContent = found.length
+      ? `${found.length} ${found.length === 1 ? "result" : "results"} for "${q}".`
+      : `Nothing matches "${q}". Try a function name such as SUM.`;
+  };
+  if (input) {
+    input.value = new URLSearchParams(location.search).get("q") ?? "";
+    input.addEventListener("input", apply);
+    input.form?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      history.replaceState(null, "", `?q=${encodeURIComponent(input.value)}`);
+      apply();
+    });
+    apply();
+  }
+</script>
+
+<style>
+  .search {
+    display: flex;
+    gap: var(--space-2);
+    max-width: 36rem;
+    margin: 0 auto;
+  }
+  input {
+    flex: 1;
+    min-width: 0;
+    min-height: var(--target);
+    padding: 0 var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+  }
+  .count {
+    min-height: 1.5em;
+    margin: var(--space-3) 0 0;
+    color: var(--muted);
+  }
+  .results {
+    display: grid;
+    gap: var(--space-5);
+    max-width: 48rem;
+    margin: 0 auto;
+  }
+  section[hidden],
+  li[hidden] {
+    display: none;
+  }
+  h2 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--size-l);
+    color: var(--heading);
+  }
+  ul {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+  }
+  li + li {
+    border-top: 1px solid var(--rule);
+  }
+  li a {
+    display: block;
+    padding: var(--space-3) var(--space-4);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  li a:hover {
+    background: var(--bg);
+    color: var(--correct);
+  }
+</style>

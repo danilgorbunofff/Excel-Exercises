@@ -1,0 +1,141 @@
+---
+// Why this exists: what PRO will add, the exercises already marked PRO, and
+// the waitlist. Nothing is locked and nothing is sold yet.
+import AuthCard from "../../components/AuthCard.astro";
+import Base from "../../layouts/Base.astro";
+import { exercisePath, LEVELS, placedExercises } from "../../lib/exercises.ts";
+
+const placed = await placedExercises();
+const pro = placed.filter((p) => p.exercise.pro);
+const total = placed.length;
+const plans: { title: string; text: string }[] = [
+  {
+    title: "Job-ready exercises",
+    text: "Longer tasks built on finance, operations and analyst work, with several formulas per sheet.",
+  },
+  {
+    title: "Advanced tracks",
+    text: "Dynamic arrays, dates and text cleaning, in the same step-by-step order as the free tracks.",
+  },
+  {
+    title: "Practice tests",
+    text: "Timed sets of exercises like the ones employers use, with a summary at the end.",
+  },
+];
+---
+
+<Base
+  title="PRO"
+  description="What PRO will add to the Excel exercises, and how to join the waitlist. Every free exercise stays free."
+  layout="wide"
+>
+  <header class="page-head">
+    <p class="eyebrow"><span class="tag">PRO</span> Coming later</p>
+    <h1>More practice for work and interviews</h1>
+    <p class="lead">
+      PRO is on the way. All {total} current exercises stay free, including the ones marked PRO,
+      until it opens.
+    </p>
+  </header>
+
+  <div class="cols">
+    <section aria-labelledby="plans">
+      <h2 id="plans" class="section-title">What PRO will add</h2>
+      <dl class="plans">
+        {
+          plans.map((p) => (
+            <div>
+              <dt>{p.title}</dt>
+              <dd>{p.text}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      {
+        pro.length > 0 && (
+          <>
+            <h2 id="marked" class="section-title marked-title">
+              Exercises marked PRO
+            </h2>
+            <p class="note">These are a preview of PRO. Try them now, free.</p>
+            <ul class="ruled marked" aria-labelledby="marked">
+              {pro.map((p) => (
+                <li>
+                  <a href={exercisePath(p.exercise.slug)}>{p.exercise.title}</a>
+                  <span class={`level level-${p.exercise.level}`}>
+                    {LEVELS[p.exercise.level as 1 | 2 | 3]}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+    </section>
+
+    <AuthCard level={2} title="Join the waitlist" lead="Hear when PRO opens. One email, no newsletter.">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" />
+      <button class="button button-primary" type="submit">Join the waitlist</button>
+    </AuthCard>
+  </div>
+</Base>
+
+<style>
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-2);
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .cols {
+    display: grid;
+    gap: var(--space-6);
+    padding-bottom: var(--space-7);
+  }
+  .plans {
+    margin: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .plans div {
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  dt {
+    font-weight: 600;
+  }
+  dd {
+    margin: var(--space-1) 0 0;
+    color: var(--muted);
+  }
+  .marked-title {
+    margin-top: var(--space-6);
+  }
+  .note {
+    margin: 0 0 var(--space-3);
+    color: var(--muted);
+  }
+  .marked li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+  }
+  .marked a {
+    font-weight: 500;
+  }
+  .cols :global(.auth) {
+    padding: 0;
+    place-items: start;
+  }
+  @media (min-width: 64rem) {
+    .cols {
+      grid-template-columns: minmax(0, 1fr) 26rem;
+      gap: var(--space-7);
+    }
+  }
+</style>

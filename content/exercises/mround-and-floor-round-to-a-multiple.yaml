@@ -1,0 +1,79 @@
+id: mround-and-floor-round-to-a-multiple
+slug: mround-and-floor-round-to-a-multiple
+level: 2
+title: "MROUND and FLOOR: round to a multiple"
+topic: rounding
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: Round each pallet's unit count to the nearest five and put the first one in C2.
+    rows:
+      - [Pallet, Units, Nearest 5]
+      - [P-01, 47, null]
+      - [P-02, 92, null]
+    answerCell: C2
+    expected: 45
+    answer: =MROUND(B2,5)
+    requiredFunctions: [MROUND]
+    hints:
+      nudge: "One function rounds to the nearest multiple of any number you name."
+      rule: "MROUND takes a number and a multiple, and returns the multiple nearest to the number. A value exactly halfway rounds away from zero."
+    misses:
+      value: 47 sits two units above 45 and three below 50, so 45 is nearer.
+      syntax: "Check the brackets, commas and quote marks. MROUND follows the pattern `=MROUND(number, multiple)`."
+      required-function: The target here is a multiple of five, so name the five in the second argument.
+      reference: Read the count from B2, so the second pallet gets its own answer in C3.
+    accept:
+      - =MROUND(B2,5)
+      - =mround(b2,5)
+      - =MROUND($B$2,5)
+      - =MROUND(B2,5)+0
+      - =MROUND(B2,5)*1
+      - =MROUND(B$2,5)
+    reject:
+      - { formula: "=ROUND(B2,0)", rule: required-function }
+      - { formula: "=FLOOR(B2,5)", rule: required-function }
+      - { formula: "=MROUND(47,5)", rule: reference }
+      - { formula: "=MROUND(B2,10)", rule: value }
+      - { formula: "=MROUND(B2,5)/0", rule: value }
+      - { formula: =MROUND(B2 5), rule: syntax }
+  - prompt: Only whole packs ship, so put the units that fit the full packs of the first order into D2.
+    rows:
+      - [Order, Units, Pack, Shipped]
+      - [A-10, 47, 6, null]
+      - [A-11, 92, 6, null]
+    answerCell: D2
+    expected: 42
+    answer: =FLOOR(B2,C2)
+    requiredFunctions: [FLOOR]
+    hints:
+      nudge: "A part pack does not ship, so round down to a whole number of packs."
+      rule: "FLOOR rounds a number down to the nearest multiple of its second argument. CEILING rounds up instead, and MROUND rounds to the nearest."
+    misses:
+      value: 47 units fill seven packs of six, which is 42, and 5 units are left over.
+      syntax: "Check the brackets, commas and quote marks. FLOOR follows the pattern `=FLOOR(number, significance)`."
+      required-function: Only whole packs ship, so drop the part pack instead of rounding to the nearest one.
+      reference: Read units and pack size from B2 and C2, so the second order is calculated the same way.
+    accept:
+      - =FLOOR(B2,C2)
+      - =floor(b2,c2)
+      - =FLOOR($B$2,$C$2)
+      - =FLOOR(B2,C2)+0
+      - =FLOOR(B2,C2)*1
+      - =FLOOR(B$2,C$2)
+    reject:
+      - { formula: "=ROUND(B2/C2,0)*C2", rule: required-function }
+      - { formula: "=CEILING(B2,C2)", rule: required-function }
+      - { formula: "=FLOOR(47,6)", rule: reference }
+      - { formula: "=FLOOR(B2,1)", rule: value }
+      - { formula: "=FLOOR(B2,C2-2)", rule: value }
+      - { formula: "=FLOOR(B2,C2)/0", rule: value }
+      - { formula: =FLOOR(B2 C2), rule: syntax }
+notes:
+  summary: "MROUND rounds a number to the nearest multiple you name. FLOOR always rounds down to a multiple, so it keeps only what fills whole units."
+  syntax: MROUND(number, multiple) and =FLOOR(number, significance)
+  example: "`=MROUND(13,5)` gives 15, and `=FLOOR(13,5)` gives 10."
+  commonErrors:
+    - The multiple is zero, and zero gives MROUND no grid of multiples to land on.
+    - The number and the multiple have different signs, so MROUND cannot choose a multiple between them.
+    - MROUND where FLOOR is needed returns 48 and promises a pack nobody filled.

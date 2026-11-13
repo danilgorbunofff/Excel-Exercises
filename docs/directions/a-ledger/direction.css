@@ -1,0 +1,258 @@
+/* Direction A, Ledger: a worked sheet in a reference book. One reading
+   column, ruled lines, ink-on-paper. The grid sits in the text like a table. */
+body {
+  font-size: 1.125rem;
+  line-height: 1.55;
+}
+header.site,
+main,
+footer.site {
+  max-width: 44rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+header.site {
+  padding-block: 0.9rem;
+  border-bottom: 1px solid var(--rule);
+}
+.brand {
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+.nav-wide a {
+  text-decoration: none;
+}
+.nav-wide a:hover {
+  text-decoration: underline;
+}
+.menu,
+dialog button {
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border: 1px solid var(--line);
+  background: none;
+}
+h1 {
+  font-size: 2rem;
+  line-height: 1.15;
+  font-weight: 600;
+  margin: 1rem 0 0.25rem;
+}
+h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 2rem 0 0.5rem;
+}
+.lede {
+  margin: 0 0 1rem;
+  color: var(--muted);
+}
+.count,
+.crumbs {
+  color: var(--muted);
+  font-size: 1rem;
+}
+.crumbs {
+  margin-top: 1rem;
+}
+.count {
+  margin: 0 0 1rem;
+}
+.page-landing h1 {
+  margin-top: 2rem;
+}
+
+/* The exercise reads top to bottom: task, formula bar, verdict, sheet. */
+.exercise {
+  border-top: 1px solid var(--text);
+  border-bottom: 1px solid var(--text);
+  padding-block: 0.5rem 0.75rem;
+}
+.page-landing .exercise h2 {
+  margin-top: 0.25rem;
+}
+.prompt {
+  margin: 0;
+  font-weight: 600;
+}
+.checks {
+  margin: 0.2rem 0 0.5rem;
+  color: var(--muted);
+  font-size: 1rem;
+}
+.bar {
+  gap: 0;
+  min-height: 3rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.namebox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  border-right: 1px solid var(--line);
+  background: var(--header);
+  font-size: 1rem;
+}
+.formula {
+  border: 0;
+  background: transparent;
+  padding: 0 0.75rem;
+  font-size: 1.125rem;
+}
+.formula:focus-visible {
+  outline-offset: -3px;
+}
+.primary {
+  min-height: 3rem;
+  padding: 0 1.25rem;
+  border: 0;
+  background: var(--primary);
+  color: var(--onPrimary);
+  font-weight: 600;
+}
+.verdict:not(:empty) {
+  padding-top: 0.6rem;
+}
+.verdict p {
+  margin: 0 0 0.35rem;
+}
+.status {
+  font-weight: 600;
+}
+.status-miss {
+  color: var(--miss);
+}
+.status-correct {
+  color: var(--correct);
+}
+.readout {
+  font-size: 1rem;
+}
+mark.ref {
+  color: var(--read);
+  text-decoration: underline 2px;
+  text-underline-offset: 0.2em;
+}
+.sheet {
+  margin-top: 0.75rem;
+}
+.grid {
+  font-size: 1rem;
+  width: min(100%, 26rem);
+}
+.grid caption {
+  font-size: 1rem;
+  color: var(--muted);
+  padding-bottom: 0.35rem;
+}
+.grid thead th,
+.grid tbody th {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 0.875rem;
+}
+.grid thead th {
+  border-bottom: 1px solid var(--text);
+}
+.grid tbody th {
+  width: 2.5rem;
+  padding-right: 0.9rem;
+  height: 2rem;
+}
+.grid td {
+  border-bottom: 1px solid var(--rule);
+  min-width: 5.5rem;
+  height: 2rem;
+}
+.grid td.label {
+  font-weight: 600;
+}
+.grid tbody tr:last-child td {
+  border-top: 3px double var(--text);
+}
+td.read {
+  --rt: 0 0 transparent;
+  --rb: 0 0 transparent;
+  background: var(--readTint);
+  box-shadow:
+    inset 2px 0 0 var(--read),
+    inset -2px 0 0 var(--read),
+    var(--rt),
+    var(--rb);
+}
+td.read-first {
+  --rt: inset 0 2px 0 var(--read);
+}
+td.read-last {
+  --rb: inset 0 -2px 0 var(--read);
+}
+td.answer {
+  box-shadow: inset 0 0 0 2px var(--line);
+}
+td.answer-wrong {
+  background: var(--missTint);
+  box-shadow: inset 0 0 0 2px var(--miss);
+}
+td.answer-correct {
+  background: var(--correctTint);
+  box-shadow: inset 0 0 0 2px var(--correct);
+}
+.legend {
+  margin: 0.6rem 0 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+.swatch-read {
+  background: var(--readTint);
+  box-shadow: inset 0 0 0 2px var(--read);
+}
+.swatch-answer {
+  box-shadow: inset 0 0 0 2px var(--line);
+}
+.exercise-wrong .swatch-answer {
+  background: var(--missTint);
+  box-shadow: inset 0 0 0 2px var(--miss);
+}
+.exercise-correct .swatch-answer {
+  background: var(--correctTint);
+  box-shadow: inset 0 0 0 2px var(--correct);
+}
+.exercise-initial .swatch-read,
+.exercise-initial .legend li:first-child {
+  display: none;
+}
+.help {
+  margin: 0.75rem 0 0;
+}
+.secondary {
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+.list {
+  padding-left: 1.5rem;
+}
+.list li {
+  padding: 0.2rem 0;
+}
+.fn {
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin-left: 0.4rem;
+}
+footer.site {
+  margin-top: 3rem;
+  padding-block: 1.25rem 2rem;
+  border-top: 1px solid var(--rule);
+  font-size: 1rem;
+}
+@media (min-width: 48rem) {
+  h1 {
+    font-size: 2.5rem;
+  }
+}

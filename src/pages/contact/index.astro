@@ -1,0 +1,138 @@
+---
+// Why this exists: the contact form. There is no server, so sending opens the
+// visitor's email program with the message filled in, addressed to the
+// contact email from site.config.ts. Until that address is set, the form is
+// shown disabled.
+import { siteConfig } from "../../../site.config.ts";
+import Base from "../../layouts/Base.astro";
+
+const email = siteConfig.contactEmail;
+const topics = [
+  "A question",
+  "A mistake in an exercise",
+  "An idea for a new exercise",
+  "Something else",
+];
+---
+
+<Base title="Contact" description="Ask a question, report a mistake in an exercise or suggest a new one." layout="flush">
+  <div class="wrap">
+    <div class="card form-card">
+      <h1>Contact</h1>
+      <p class="lead">
+        Tell us about a mistake, ask a question or suggest an exercise.
+      </p>
+      {
+        !email && (
+          <p class="note" id="contact-note">
+            The contact address is not set up yet, so the form cannot send. Please check back soon.
+          </p>
+        )
+      }
+      <form data-contact={email ?? ""} aria-describedby={email ? undefined : "contact-note"}>
+        <fieldset disabled={!email}>
+          <label for="topic">What is it about?</label>
+          <select id="topic" name="topic">
+            {topics.map((t) => <option>{t}</option>)}
+          </select>
+          <label for="name">Name (optional)</label>
+          <input id="name" name="name" type="text" autocomplete="name" placeholder="Your name" />
+          <label for="from">Email address</label>
+          <input id="from" name="from" type="email" autocomplete="email" placeholder="you@example.com" />
+          <label for="subject">Subject</label>
+          <input id="subject" name="subject" type="text" />
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="6" placeholder="How can we help you?"></textarea>
+          <p class="hint">
+            If an exercise marks a correct formula as wrong, include the exercise name and the
+            formula you typed.
+          </p>
+          <button class="button button-primary" type="submit">Send message</button>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</Base>
+
+<script>
+  // Opens the visitor's email program with the message filled in.
+  const form = document.querySelector<HTMLFormElement>("form[data-contact]");
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const to = form.dataset["contact"];
+    if (!to) return;
+    const data = new FormData(form);
+    const subject = `${data.get("topic")}: ${data.get("subject") ?? ""}`;
+    const body = `${data.get("message") ?? ""}\n\n${data.get("name") ?? ""}\n${data.get("from") ?? ""}`;
+    location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+</script>
+
+<style>
+  .wrap {
+    display: grid;
+    place-items: center;
+    padding: var(--space-7) var(--space-4);
+  }
+  .form-card {
+    width: 100%;
+    max-width: 40rem;
+    padding: var(--space-6);
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--size-page);
+    color: var(--heading);
+  }
+  .lead {
+    margin: var(--space-3) 0 var(--space-5);
+    color: var(--muted);
+  }
+  .note {
+    margin: 0 0 var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--chip-line);
+    border-radius: var(--radius-m);
+    background: var(--chip-bg);
+    font-size: var(--size-s);
+  }
+  fieldset {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  label {
+    margin-top: var(--space-2);
+    font-size: var(--size-s);
+    font-weight: 600;
+  }
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-height: var(--target);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    background-color: var(--surface);
+    font: inherit;
+  }
+  select {
+    padding-right: 2.5rem;
+  }
+  fieldset:disabled :is(input, select, textarea) {
+    background: var(--header);
+    cursor: not-allowed;
+  }
+  .hint {
+    margin: var(--space-1) 0 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .button {
+    justify-self: start;
+    margin-top: var(--space-3);
+  }
+</style>

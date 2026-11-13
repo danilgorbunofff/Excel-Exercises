@@ -1,0 +1,62 @@
+[
+  {
+    "state": "initial",
+    "fits-375": {
+      "task": 133,
+      "input": 246,
+      "grid": 487,
+      "verdict": 595,
+      "allVisible": true
+    },
+    "axe-light": [],
+    "fits-1280": {
+      "task": 182,
+      "input": 177,
+      "grid": 658,
+      "verdict": 735,
+      "allVisible": true
+    },
+    "axe-dark": [],
+    "sidewaysScrollAt320": false
+  },
+  {
+    "state": "wrong",
+    "fits-375": {
+      "task": 133,
+      "input": 246,
+      "grid": 487,
+      "verdict": 621,
+      "allVisible": true
+    },
+    "axe-light": [],
+    "fits-1280": {
+      "task": 182,
+      "input": 177,
+      "grid": 658,
+      "verdict": 740,
+      "allVisible": true
+    },
+    "axe-dark": [],
+    "sidewaysScrollAt320": false
+  },
+  {
+    "state": "correct",
+    "fits-375": {
+      "task": 133,
+      "input": 246,
+      "grid": 487,
+      "verdict": 617,
+      "allVisible": true
+    },
+    "axe-light": [],
+    "fits-1280": {
+      "task": 182,
+      "input": 177,
+      "grid": 658,
+      "verdict": 735,
+      "allVisible": true
+    },
+    "axe-dark": [],
+    "sidewaysScrollAt320": false
+  }
+]

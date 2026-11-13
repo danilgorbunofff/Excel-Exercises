@@ -1,0 +1,69 @@
+---
+// Why this exists: what the site does with data, stated from what the code
+// does. The owner's host choice fills in the one part the code cannot know.
+import { siteConfig } from "../../../site.config.ts";
+import Base from "../../layouts/Base.astro";
+import { STORAGE_KEY } from "../../scripts/progress.ts";
+
+const host = siteConfig.host;
+---
+
+<Base
+  title="Privacy"
+  description="What this site stores and sends: progress in your browser only, no analytics, no cookies and no third-party requests."
+>
+  <h1>Privacy</h1>
+  <p>Last updated 11 November 2026.</p>
+
+  <h2>What stays in your browser</h2>
+  <p>
+    Your progress is saved in your browser's local storage, under the name <code>{STORAGE_KEY}</code>.
+    It holds which exercises you solved or opened the answer to, and on which days. It is never sent
+    to the site.
+  </p>
+  <p>
+    To remove it, use <a href="/progress/">Clear my progress</a> on the progress page, or clear this
+    site's data in your browser settings.
+  </p>
+
+  <h2>What the site does not do</h2>
+  <ul>
+    <li>No accounts and no sign-up.</li>
+    <li>No cookies.</li>
+    <li>No analytics, advertising or tracking of any kind.</li>
+    <li>
+      No requests to other websites. Fonts and scripts come from this site, and a test checks every
+      page for requests elsewhere.
+    </li>
+    <li>The formulas you type are checked in your browser and are not sent anywhere.</li>
+  </ul>
+
+  <h2>What any web server receives</h2>
+  <p>
+    Every web server receives some details when your browser asks for a page. These are your IP
+    address, the address of the page and your browser's name.
+  </p>
+  {
+    host ? (
+      <p>
+        This site is hosted by {host.name}. How long it keeps that information is set out in its
+        <a href={host.privacyUrl}>privacy notice</a>.
+      </p>
+    ) : (
+      <p>The host for this site is not chosen yet. This page will name it when it is.</p>
+    )
+  }
+
+  <h2>Questions</h2>
+  <p>Use the <a href="/contact/">contact page</a>.</p>
+</Base>
+
+<style>
+  h2 {
+    margin: var(--space-6) 0 var(--space-2);
+    font-size: var(--size-xl);
+  }
+  li {
+    padding-block: var(--space-1);
+  }
+</style>

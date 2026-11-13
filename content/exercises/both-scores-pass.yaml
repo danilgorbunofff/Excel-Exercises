@@ -1,0 +1,40 @@
+id: both-scores-pass
+slug: both-scores-pass
+level: 2
+title: Check that both scores pass
+topic: logic
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: A candidate passes when both scores are at least 60. In D2, show TRUE if Lee passed and FALSE if not.
+    rows:
+      - [Candidate, Written, Practical, Passed]
+      - [Lee, 72, 58, null]
+    answerCell: D2
+    expected: false
+    answer: =AND(B2>=60,C2>=60)
+    requiredFunctions: [AND]
+    hints:
+      nudge: Both tests must be true at the same time.
+      rule: AND returns TRUE only when every test inside it is true.
+    misses:
+      syntax: Separate the tests inside AND with commas.
+      required-function: Use AND, which checks that both scores pass.
+      reference: Point at the scores in B2 and C2.
+      value: Check both tests. Each score must be at least 60.
+    accept:
+      - =AND(B2>=60,C2>=60)
+      - =AND(C2>=60,B2>=60)
+      - =IF(AND(B2>=60,C2>=60),TRUE,FALSE)
+    reject:
+      - { formula: "=AND(B2>=60;C2>=60)", rule: syntax }
+      - { formula: "=OR(B2>=60,C2>=60)", rule: required-function }
+      - { formula: "=AND(72>=60,58>=60)", rule: reference }
+      - { formula: "=AND(B2>=60)", rule: value }
+      - { formula: "=AND(B2>=60,C2>=50)", rule: value }
+notes:
+  summary: AND returns TRUE when all its tests are true, and FALSE when any one is false.
+  syntax: AND(logical1, [logical2], ...)
+  example: "`=AND(A1>0,A1<10)` gives TRUE when A1 is between 0 and 10."
+  commonErrors:
+    - Checking only one of the conditions.

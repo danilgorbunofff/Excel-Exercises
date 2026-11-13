@@ -1,0 +1,87 @@
+id: sumif-a-sum-range-on-another-column
+slug: sumif-a-sum-range-on-another-column
+level: 2
+title: "SUMIF: a sum range on another column"
+topic: conditions
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In C7, total the North bonus from column C, testing the region in column A.
+    rows:
+      - [Region, Amount, Bonus]
+      - [North, 320, 32]
+      - [South, 250, 25]
+      - [North, 180, 18]
+      - [West, 300, 30]
+      - [North, 400, 40]
+      - [North bonus, null, null]
+    answerCell: C7
+    expected: 90
+    answer: =SUMIF(A2:A6,"North",C2:C6)
+    requiredFunctions: [SUMIF]
+    hints:
+      nudge: Test the regions in one column, but add the bonuses from another.
+      rule: SUMIF takes the range to test, the condition, then the range to add. The range to add must cover the same rows as the tested range.
+    misses:
+      value: The North bonuses are 32, 18 and 40, which come to 90. The full column holds more than that.
+      syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, [sum_range])`."
+      required-function: SUMIF adds only the rows that match, and here the money sits in a different column from the test.
+      reference: Read the regions from the grid rather than typing them into the formula.
+    accept:
+      - =SUMIF(A2:A6,"North",C2:C6)
+      - =sumif(a2:a6,"north",c2:c6)
+      - =SUMIF($A$2:$A$6,"North",$C$2:$C$6)
+      - =SUMIF(A2:A6,"North",C2:C6)+0
+      - =SUMIF(A2:A6,"North",C2:C6)*1
+      - =SUMIF(A$2:A$6,"North",C$2:C$6)
+    reject:
+      - { formula: '=SUMIF(A2:A6,"North")', rule: value }
+      - { formula: '=SUMIFS(C2:C6,A2:A6,"North")', rule: required-function }
+      - { formula: '=SUMIF(A2:A6,"South",C2:C6)', rule: value }
+      - { formula: '=SUMIF(A2:A6,"North",B2:B6)', rule: value }
+      - { formula: '=SUMIF(A3:A6,"North",C3:C6)', rule: value }
+      - { formula: '=SUMIF(A2:A6,"North",C2:C6)/0', rule: value }
+      - { formula: '=SUMIF(A2:A6 "North",C2:C6)', rule: syntax }
+  - prompt: In B7, total the scores above 40 by letting SUMIF add the cells it tested.
+    rows:
+      - [Item, Score]
+      - [A-1, 40]
+      - [A-2, 35]
+      - [B-1, 52]
+      - [B-2, 38]
+      - [B-3, 47]
+      - [Scored over 40, null]
+    answerCell: B7
+    expected: 99
+    answer: =SUMIF(B2:B6,">40")
+    requiredFunctions: [SUMIF]
+    hints:
+      nudge: When the test and the numbers share a column, the third argument can be left out.
+      rule: Without a sum range, SUMIF adds the cells it tested. A comparison condition goes in double quotes, with the sign before the number.
+    misses:
+      value: The scores above 40 are 52 and 47, which total 99.
+      syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, [sum_range])`."
+      required-function: A plain SUM adds every score; filtering them is the whole question here.
+      reference: Test the scores in the grid rather than a list of numbers typed into the formula.
+    accept:
+      - =SUMIF(B2:B6,">40")
+      - =sumif(b2:b6,">40")
+      - =SUMIF($B$2:$B$6,">40")
+      - =SUMIF(B2:B6,">40")+0
+      - =SUMIF(B2:B6,">40")*1
+      - =SUMIF(B$2:B$6,">40")
+    reject:
+      - { formula: =SUM(B2:B6), rule: required-function }
+      - { formula: '=COUNTIF(B2:B6,">40")', rule: required-function }
+      - { formula: '=SUMIF(B2:B6,"<40")', rule: value }
+      - { formula: '=SUMIF(B2:B6,">=40")', rule: value }
+      - { formula: '=SUMIF(B2:B6,">40")/0', rule: value }
+      - { formula: =SUMIF(B2:B6 ">40"), rule: syntax }
+notes:
+  summary: SUMIF adds the rows that meet one condition, and its optional third argument is the range to add. Leave it out and SUMIF adds the cells it tested.
+  syntax: SUMIF(criteria_range, condition, [sum_range])
+  example: '`=SUMIF(A1:A3,"North",B1:B3)` with North 10, South 20 and North 5 gives 15.'
+  commonErrors:
+    - The sum range holds text where numbers were expected, which happens when the region column is given as the third argument.
+    - The function is spelled SMIF, or SUMIFS was used with the argument order SUMIF keeps.
+    - Two arguments means SUMIF adds the criteria range. With words in that column the answer is 0, and no error marks it.

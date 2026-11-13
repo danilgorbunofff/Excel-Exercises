@@ -1,0 +1,86 @@
+id: textbefore-and-textafter
+slug: textbefore-and-textafter
+level: 3
+title: "TEXTBEFORE and TEXTAFTER: split on a delimiter"
+topic: text-search
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B2, read the three letters before the hyphen in the order code in A2.
+    rows:
+      - [Order, Prefix]
+      - [ORD-4471, null]
+      - [INV-2210, null]
+      - [RCP-9008, null]
+    answerCell: B2
+    expected: ORD
+    answer: =TEXTBEFORE(A2,"-")
+    requiredFunctions: [TEXTBEFORE]
+    hints:
+      nudge: One function returns everything that comes before a delimiter you name.
+      rule: TEXTBEFORE takes the text and a delimiter in quotes, and returns the part before the first match of the delimiter.
+    misses:
+      value: Everything before the hyphen is ORD.
+      syntax: "Check the brackets, commas and quote marks. TEXTBEFORE follows the pattern `=TEXTBEFORE(text, delimiter, [instance_num], ...)`."
+      required-function: The prefix is everything before the hyphen, which is what TEXTBEFORE answers.
+      reference: The order code is in A2.
+    accept:
+      - =TEXTBEFORE(A2,"-")
+      - =textbefore(a2,"-")
+      - =TEXTBEFORE($A$2,"-")
+      - =TEXTBEFORE(A$2,"-")
+      - =TEXTBEFORE( A2 , "-" )
+      - =TEXTBEFORE(A2,"-",1)
+      - =UPPER(TEXTBEFORE(A2,"-"))
+    reject:
+      - { formula: "=LEFT(A2,3)", rule: required-function }
+      - { formula: '=TEXTBEFORE(A2,"4")', rule: value }
+      - { formula: '=TEXTBEFORE(A2,"-")&" "', rule: value }
+      - { formula: '=LOWER(TEXTBEFORE(A2,"-"))', rule: value }
+      - { formula: '=TEXTBEFORE(A3,"-")', rule: value }
+      - { formula: '=TEXTBEFORE(A2,"-",2)', rule: value }
+      - { formula: '=TEXTBEFORE(A2,"_")', rule: value }
+      - { formula: '=TEXTBEFORE("ORD-4471","-")', rule: reference }
+      - { formula: '=TEXTBEFORE A2,"-"', rule: syntax }
+  - prompt: In B2, read the four digits after the hyphen in the order code in A2.
+    rows:
+      - [Order, Number]
+      - [ORD-4471, null]
+      - [INV-2210, null]
+      - [RCP-9008, null]
+    answerCell: B2
+    expected: "4471"
+    answer: =TEXTAFTER(A2,"-")
+    requiredFunctions: [TEXTAFTER]
+    hints:
+      nudge: This time you want the part that follows the hyphen.
+      rule: TEXTAFTER takes the text and a delimiter in quotes, and returns the part after the first match of the delimiter.
+    misses:
+      value: Everything after the hyphen is 4471.
+      syntax: "Check the brackets, commas and quote marks. TEXTAFTER follows the pattern `=TEXTAFTER(text, delimiter, [instance_num], ...)`."
+      required-function: The number sits after the hyphen, which is TEXTAFTER's half.
+      reference: The order code is in A2.
+    accept:
+      - =TEXTAFTER(A2,"-")
+      - =textafter(a2,"-")
+      - =TEXTAFTER($A$2,"-")
+      - =TEXTAFTER(A$2,"-")
+      - =TEXTAFTER( A2 , "-" )
+      - =TEXTAFTER(A2,"-",1)
+      - =TEXTAFTER(A2,"-",-1)
+    reject:
+      - { formula: "=RIGHT(A2,4)", rule: required-function }
+      - { formula: '=TEXTAFTER(A2,"ORD")', rule: value }
+      - { formula: '=TEXTAFTER(A2,"4")', rule: value }
+      - { formula: '=TEXTAFTER(A3,"-")', rule: value }
+      - { formula: '=TEXTAFTER(A2,"-",2)', rule: value }
+      - { formula: '=TEXTAFTER("ORD-4471","-")', rule: reference }
+      - { formula: '=TEXTAFTER A2,"-"', rule: syntax }
+notes:
+  summary: TEXTBEFORE and TEXTAFTER split a cell on a delimiter, one function per side. You name the delimiter as a piece of text, so no position number appears anywhere in the formula.
+  syntax: TEXTBEFORE(text,"-") keeps what precedes the delimiter; =TEXTAFTER keeps what follows
+  example: '`=TEXTBEFORE("inv-77","-")` gives inv and `=TEXTAFTER("inv-77","-")` gives 77 as text.'
+  commonErrors:
+    - The cell holds no copy of the delimiter, which leaves no place to split.
+    - The workbook was built in an Excel version older than the one that added these functions.
+    - The two functions differ by one word, and the wrong one returns the other half of the code.

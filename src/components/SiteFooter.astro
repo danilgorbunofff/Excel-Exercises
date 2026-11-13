@@ -1,0 +1,120 @@
+---
+// Why this exists: the dark band at the end of every page, with what the site
+// is and the links to every section.
+import { siteConfig } from "../../site.config.ts";
+import { FOOTER_NAV } from "../lib/nav.ts";
+
+const contact = {
+  label: "Contact",
+  href: siteConfig.contactEmail ? `mailto:${siteConfig.contactEmail}` : "/contact/",
+};
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="inner">
+    <div class="about">
+      <a class="brand" href="/">{siteConfig.name}</a>
+      <p>
+        Practise Excel formulas on a real grid in your browser. Short exercises, function guides
+        and learning tracks.
+      </p>
+    </div>
+    <nav aria-label="Footer">
+      <div>
+        <h2>Learn</h2>
+        <ul>
+          {
+            FOOTER_NAV.learn.map((l) => (
+              <li>
+                <a href={l.href}>{l.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <h2>Support</h2>
+        <ul>
+          {
+            [...FOOTER_NAV.support, contact].map((l) => (
+              <li>
+                <a href={l.href}>{l.label}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <p class="legal">© {year} {siteConfig.name}. Excel is a trademark of Microsoft. This site is not affiliated with Microsoft.</p>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--footer-bg);
+    color: var(--on-footer-muted);
+    font-size: var(--size-s);
+  }
+  .inner {
+    display: grid;
+    gap: var(--space-6);
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-6) var(--space-5);
+  }
+  .brand {
+    color: var(--on-footer);
+    font-weight: 700;
+    font-size: var(--size-base);
+    text-decoration: none;
+  }
+  .about p {
+    max-width: 24rem;
+    margin: var(--space-3) 0 0;
+  }
+  nav {
+    display: flex;
+    gap: var(--space-7);
+  }
+  h2 {
+    margin: 0 0 var(--space-2);
+    color: var(--on-footer);
+    font-size: var(--size-s);
+    font-weight: 600;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.25rem;
+    color: var(--on-footer-muted);
+    text-decoration: none;
+  }
+  nav a:hover {
+    color: var(--on-footer);
+    text-decoration: underline;
+  }
+  .legal {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: var(--space-4) var(--space-6) var(--space-6);
+    border-top: 1px solid rgb(255 255 255 / 0.12);
+    font-size: var(--size-xs);
+  }
+  @media (min-width: 48rem) {
+    .inner {
+      grid-template-columns: 1fr auto;
+    }
+  }
+  @media (max-width: 47.99rem) {
+    .inner,
+    .legal {
+      padding-inline: var(--space-4);
+    }
+  }
+</style>

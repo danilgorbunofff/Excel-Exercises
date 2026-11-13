@@ -1,0 +1,49 @@
+id: find-a-price
+slug: find-a-price
+level: 2
+title: Find a price with XLOOKUP
+topic: lookups
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B9, find the price of the product whose code is in B8.
+    rows:
+      - [Code, Product, Price]
+      - [P-101, Desk lamp, 24]
+      - [P-102, Chair, 89]
+      - [P-103, Shelf, 45]
+      - [P-104, Rug, 120]
+      - [P-105, Mirror, 60]
+      - [null, null, null]
+      - [Find code, P-104, null]
+      - [Price, null, null]
+    answerCell: B9
+    expected: 120
+    answer: =XLOOKUP(B8,A2:A6,C2:C6)
+    requiredFunctions: [XLOOKUP]
+    hints:
+      nudge: Find the code in one column and return the price from the same row.
+      rule: XLOOKUP takes what to find, the range to search, then the range to return from. Both ranges need the same number of rows.
+    misses:
+      syntax: Separate the three parts of XLOOKUP with commas, and close the bracket.
+      required-function: Use XLOOKUP, which this exercise practises.
+      reference: Point at the code in B8, so the price updates when the code changes.
+      value: Check the ranges. The codes are in A2 to A6 and the prices are in C2 to C6.
+    accept:
+      - =XLOOKUP(B8,A2:A6,C2:C6)
+      - =xlookup(b8,a2:a6,c2:c6)
+      - =XLOOKUP(B8,$A$2:$A$6,$C$2:$C$6)
+    reject:
+      - { formula: "=XLOOKUP(B8,A2:A6,C2:C6", rule: syntax }
+      - { formula: "=VLOOKUP(B8,A2:C6,3,FALSE)", rule: required-function }
+      - { formula: "=XLOOKUP(B9,A2:A6,C2:C6)", rule: reference }
+      - { formula: "=XLOOKUP(B8,A2:A6,B2:B6)", rule: value }
+      - { formula: "=XLOOKUP(B8,B2:B6,C2:C6)", rule: value }
+      - { formula: "=XLOOKUP(B8,A2:A6,C2:C5)", rule: value }
+notes:
+  summary: XLOOKUP searches one range for a value and returns the item in the same position of another range. It needs Excel 2021 or Microsoft 365.
+  syntax: XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode])
+  example: "`=XLOOKUP(E2,A2:A50,D2:D50)` finds E2 in column A and returns the value from column D."
+  commonErrors:
+    - Search and return ranges of different sizes, which give a #VALUE! error.
+    - Searching the wrong column, which gives #N/A.

@@ -1,0 +1,218 @@
+---
+// Why this exists: shows on the home page what a check says about a wrong
+// formula. Nothing here is drawn by hand: the grader grades the formula at
+// build time and the same view code as the exercise page words the verdict.
+import { columnLetters, formatValue, grade, type Rule } from "@practice/grader";
+import type { Screen } from "../../content/schema.ts";
+import type { Segment } from "../../lib/rich-text.ts";
+import { outlineClasses, verdictView } from "../../scripts/view.ts";
+
+interface Props {
+  screen: Screen;
+  formula: string;
+}
+const { screen, formula } = Astro.props;
+const spec = {
+  rows: screen.rows,
+  answerCell: screen.answerCell,
+  expected: screen.expected,
+  requiredFunctions: screen.requiredFunctions,
+  forbiddenFunctions: screen.forbiddenFunctions,
+  requireReference: screen.requireReference,
+};
+const width = screen.rows[0]?.length ?? 0;
+const height = screen.rows.length;
+const columns = Array.from({ length: width }, (_, i) => columnLetters(i + 1));
+const valueAt = (address: string) => {
+  const m = /^([A-Z]+)(\d+)$/u.exec(address);
+  if (!m) return null;
+  const col = [...(m[1] ?? "")].reduce((n, ch) => n * 26 + ch.charCodeAt(0) - 64, 0);
+  return screen.rows[Number(m[2]) - 1]?.[col - 1] ?? null;
+};
+const verdict = grade(formula, spec);
+if (verdict.correct) throw new Error(`The miss example ${formula} is graded correct`);
+// Drop absent miss texts, as the page data does, so the types line up.
+const misses = Object.fromEntries(
+  Object.entries(screen.misses).filter(([, v]) => v !== undefined),
+) as Partial<Record<Rule, string>>;
+const view = verdictView(verdict, screen.answerCell, misses, valueAt);
+const outlines = outlineClasses(verdict.reads, width, height);
+const read = verdict.reads[0];
+const before = read ? formula.slice(0, read.start) : formula;
+const marked = read ? formula.slice(read.start, read.end) : "";
+const after = read ? formula.slice(read.end) : "";
+const lines: Segment[][] = [view.message, view.miss, view.reads].filter((l) => l.length > 0);
+---
+
+<figure class="miss">
+  <div class="sheet">
+    <div class="formula-row" aria-hidden="true">
+      <span class="namebox">{screen.answerCell}</span>
+      <code class="formula">{before}<mark>{marked}</mark>{after}</code>
+    </div>
+    <table>
+      <caption class="visually-hidden">
+        A wrong attempt: {screen.answerCell} holds {formula}.
+      </caption>
+      <thead>
+        <tr>
+          <td class="corner"></td>
+          {columns.map((c) => <th scope="col">{c}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {
+          screen.rows.map((row, r) => (
+            <tr>
+              <th scope="row">{r + 1}</th>
+              {row.map((v, c) => {
+                const address = `${columns[c]}${r + 1}`;
+                const isAnswer = address === screen.answerCell;
+                return (
+                  <td
+                    class:list={[
+                      outlines.get(address),
+                      {
+                        num: typeof v === "number" || isAnswer,
+                        "answer-miss": isAnswer,
+                      },
+                    ]}
+                  >
+                    {isAnswer ? verdict.display : formatValue(v)}
+                  </td>
+                );
+              })}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <figcaption class="verdict">
+    {
+      lines.map((line, i) => (
+        <p>
+          {i === 0 && <strong class="label">{view.label}</strong>}{" "}
+          {line.map((s) =>
+            s.kind === "code" ? (
+              <code class="ref">{s.text}</code>
+            ) : s.kind === "cell" ? (
+              <strong>{s.text}</strong>
+            ) : (
+              s.text
+            ),
+          )}
+        </p>
+      ))
+    }
+  </figcaption>
+</figure>
+
+<style>
+  .miss {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+  }
+  .sheet {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-m);
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .formula-row {
+    display: flex;
+    align-items: center;
+    min-height: 2.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .namebox {
+    width: 3.5rem;
+    padding: 0 var(--space-3);
+    border-right: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+  }
+  .formula {
+    padding: 0 var(--space-3);
+    font-size: var(--size-base);
+  }
+  mark {
+    background: var(--read-tint);
+    box-shadow: inset 0 -2px 0 var(--read);
+    color: inherit;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--size-m);
+    font-variant-numeric: tabular-nums;
+  }
+  th,
+  .corner {
+    height: 1.75rem;
+    background: var(--header);
+    color: var(--muted);
+    font-size: var(--size-xs);
+    font-weight: 500;
+    border: 1px solid var(--rule);
+  }
+  tbody th {
+    width: 2.5rem;
+  }
+  td {
+    height: 2rem;
+    padding: 0 var(--space-2);
+    border: 1px solid var(--rule);
+  }
+  td.num {
+    text-align: right;
+  }
+  td.read {
+    --rt: 0 0 transparent;
+    --rr: 0 0 transparent;
+    --rb: 0 0 transparent;
+    --rl: 0 0 transparent;
+    background: var(--read-tint);
+    box-shadow: var(--rt), var(--rr), var(--rb), var(--rl);
+  }
+  td.read-top {
+    --rt: inset 0 2px 0 var(--read);
+  }
+  td.read-right {
+    --rr: inset -2px 0 0 var(--read);
+  }
+  td.read-bottom {
+    --rb: inset 0 -2px 0 var(--read);
+  }
+  td.read-left {
+    --rl: inset 2px 0 0 var(--read);
+  }
+  td.answer-miss {
+    background: var(--miss-tint);
+    box-shadow: inset 0 0 0 2px var(--miss);
+    font-weight: 600;
+  }
+  .verdict {
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--miss);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+    font-size: var(--size-m);
+  }
+  .verdict p {
+    margin: 0;
+  }
+  .verdict p + p {
+    margin-top: var(--space-1);
+  }
+  .label {
+    color: var(--miss);
+  }
+  .ref {
+    padding: 0 0.25rem;
+    border-radius: var(--radius-s);
+    background: var(--read-tint);
+    color: var(--read);
+  }
+</style>

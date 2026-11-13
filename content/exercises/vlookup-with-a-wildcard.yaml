@@ -1,0 +1,57 @@
+id: vlookup-with-a-wildcard
+slug: vlookup-with-a-wildcard
+level: 3
+title: VLOOKUP with a wildcard
+topic: lookups
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B7, look up the lead time of the first Northwind supplier in A1:C6, using the partial name in A7 with a wildcard.
+    rows:
+      - [Supplier, Country, Lead time (days)]
+      - [Baltic Freight, Latvia, 12]
+      - [Baltic Couriers, Latvia, 4]
+      - [Northwind Air, Ireland, 7]
+      - [Northwind Rail, Ireland, 19]
+      - [Northwind Sea, Ireland, 26]
+      - [Northwind, null, null]
+    answerCell: B7
+    expected: 7
+    answer: =VLOOKUP(A7&"*",A1:C6,3,FALSE)
+    requiredFunctions: [VLOOKUP]
+    hints:
+      nudge: "Join a star to the end of the partial name so it matches any ending."
+      rule: "In an exact-match VLOOKUP, the lookup value can hold wildcards. A star matches any run of characters, and a question mark matches exactly one."
+    misses:
+      value: That is the country. Supplier is 1, country 2, lead time 3, so the third argument is 3.
+      syntax: "Check the brackets, commas and quote marks. VLOOKUP follows the pattern `=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])`."
+      required-function: INDEX and MATCH could answer too, but the point here is what a wildcard does inside VLOOKUP's first argument.
+      reference: Build the pattern from A7. A typed "Northwind*" is right today and dead tomorrow.
+    accept:
+      - =VLOOKUP(A7&"*",A1:C6,3,FALSE)
+      - =vlookup(a7&"*",a1:c6,3,false)
+      - =VLOOKUP($A$7&"*",$A$1:$C$6,3,FALSE)
+      - =VLOOKUP(A7&"*",A1:C6,3,0)
+      - =VLOOKUP(A7&"*",A1:C6,3,FALSE)+0
+      - =VLOOKUP(A$7&"*",A$1:C$6,3,FALSE)
+      - =VLOOKUP(CONCAT(A7,"*"),A1:C6,3,FALSE)
+      - =VLOOKUP(A7&"*",A1:C6,3,FALSE)*1
+    reject:
+      - { formula: '=VLOOKUP(A7&"*",A1:C6,3,FALSE', rule: syntax }
+      - { formula: '=VLOOKUP(A7&"*",A1:C6)', rule: syntax }
+      - { formula: '=VLOOKUP(A7&"*",A1:C6,3)', rule: value }
+      - { formula: '=VLOOKUP(A7&"*",A1:C6,3,TRUE)', rule: value }
+      - { formula: "=VLOOKUP(A7,A1:C6,3,FALSE)", rule: value }
+      - { formula: '=VLOOKUP(A7&"*",A1:C6,2,FALSE)', rule: value }
+      - { formula: '=VLOOKUP(A7&"*",A1:C6,"lead",FALSE)', rule: value }
+      - { formula: '=VLOOKUP(A7&"*",A1:C6,4,FALSE)', rule: value }
+      - { formula: '=VLOOKUP(A7&"?",A1:C6,3,FALSE)', rule: value }
+      - { formula: '=INDEX(C1:C6,MATCH(A7&"*",A1:A6,0))', rule: required-function }
+notes:
+  summary: "A wildcard turns the lookup value into a pattern. In an exact-match VLOOKUP, a partial name followed by a star finds the first entry that starts with it."
+  syntax: VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])
+  example: '`=VLOOKUP("Bal*",A1:B3,2,FALSE)` returns the column B value for the first name in A1:A3 that starts with Bal.'
+  commonErrors:
+    - The pattern matched no supplier, usually because the star is missing or the prefix is wrong.
+    - The column number is a word such as lead, which cannot be counted to.
+    - The column number runs past column C, the last one in A1:C6.

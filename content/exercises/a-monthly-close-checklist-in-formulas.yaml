@@ -1,0 +1,83 @@
+id: a-monthly-close-checklist-in-formulas
+slug: a-monthly-close-checklist-in-formulas
+level: 3
+title: A monthly close checklist in formulas
+topic: models
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In C2, flag the first reconciliation ready when its variance is zero and check otherwise.
+    rows:
+      - [Check, Variance, Status]
+      - [bank, 0, null]
+      - [accruals, 12.5, null]
+      - [prepaids, -3, null]
+      - [payroll, 0, null]
+    answerCell: C2
+    expected: ready
+    answer: =IF(B2=0,"ready","check")
+    requiredFunctions: [IF]
+    hints:
+      nudge: One function tests a condition and returns one of two words.
+      rule: IF takes a test, the value to return when it is true and the value to return when it is false. Text values go in double quotes.
+    misses:
+      value: The bank variance is zero, so the status reads ready.
+      syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
+      required-function: One cell has to choose between two words, which is IF's work.
+      reference: The variance is in B2.
+    accept:
+      - =IF(B2=0,"ready","check")
+      - =if(b2=0,"ready","check")
+      - =IF($B$2=0,"ready","check")
+      - =IF(B$2=0,"ready","check")
+      - =IF( B2 = 0 , "ready" , "check" )
+      - =IF(B2=0,"ready","check")&""
+    reject:
+      - { formula: ="ready", rule: required-function }
+      - { formula: '=IF(B2=0,"check","ready")', rule: value }
+      - { formula: '=IF(B2<>0,"ready","check")', rule: value }
+      - { formula: '=IF(B3=0,"ready","check")', rule: value }
+      - { formula: '=IF(B2/0=0,"ready","check")', rule: reference }
+      - { formula: '=IF B2=0,"ready","check"', rule: syntax }
+  - prompt: In C2, count the reconciliations whose variance is not zero. The count goes in the Status column.
+    rows:
+      - [Check, Variance, Status]
+      - [bank, 0, null]
+      - [accruals, 12.5, null]
+      - [prepaids, -3, null]
+      - [payroll, 0, null]
+    answerCell: C2
+    expected: 2
+    answer: =COUNTIF(B2:B5,"<>0")
+    requiredFunctions: [COUNTIF]
+    hints:
+      nudge: One function counts the cells that meet a condition, and here the condition is not equal to zero.
+      rule: COUNTIF takes a range and a condition in quotes. The operator <> means not equal to, and it goes inside the quotes before the value.
+    misses:
+      value: Accruals and prepaids are out, so the count is two.
+      syntax: "Check the brackets, commas and quote marks. COUNTIF follows the pattern `=COUNTIF(range, criteria)`."
+      required-function: Counting rows that meet a condition is what COUNTIF does.
+      reference: The variances run down B2:B5.
+    accept:
+      - =COUNTIF(B2:B5,"<>0")
+      - =countif(b2:b5,"<>0")
+      - =COUNTIF($B$2:$B$5,"<>0")
+      - =COUNTIF(B$2:B$5,"<>0")
+      - =COUNTIF( B2:B5 , "<>0" )
+      - =COUNTIF(B2:B5,">0")+COUNTIF(B2:B5,"<0")
+    reject:
+      - { formula: =COUNTA(B2:B5), rule: required-function }
+      - { formula: '=COUNTIF(B2:B5,">0")', rule: value }
+      - { formula: '=COUNTIF(B2:B5,"<0")', rule: value }
+      - { formula: '=COUNTIF(B2:B5,"<>0")+1', rule: value }
+      - { formula: '=COUNTIF(C2:C5,"<>0")', rule: reference }
+      - { formula: '=COUNTIF(B2:B5,"<>0")/0', rule: reference }
+      - { formula: '=COUNTIF B2:B5,"<>0"', rule: syntax }
+notes:
+  summary: IF tests a condition and returns one value when it is true and another when it is false, so a checklist row can answer in words. COUNTIF counts how many rows meet a condition.
+  syntax: IF(variance=0,"ready","check") flags one check; =COUNTIF(range,"<>0") counts the rest
+  example: '`=COUNTIF(A1:A4,"<>0")` with 0, 5, 0 and -2 in A1:A4 gives 2.'
+  commonErrors:
+    - A variance is divided by zero before the comparison is made.
+    - The function is typed as IF or COUNTIF with a letter missing, and Excel returns `#NAME?`.
+    - The two branches are swapped, so a variance of zero reads check.

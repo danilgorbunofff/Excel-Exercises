@@ -1,0 +1,49 @@
+id: hlookup-look-across-a-row
+slug: hlookup-look-across-a-row
+level: 2
+title: "HLOOKUP: look across a row"
+topic: lookups
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B5, look up the month in B4 across the top row of B1:D3 and write that month's price.
+    rows:
+      - [Month, Jan, Feb, Mar]
+      - [Units, 120, 180, 200]
+      - [Price, 4.5, 5, 5.25]
+      - [Lookup, Feb, null, null]
+      - [Price, null, null, null]
+    answerCell: B5
+    expected: 5
+    answer: =HLOOKUP(B4,B1:D3,3,FALSE)
+    requiredFunctions: [HLOOKUP]
+    hints:
+      nudge: "The months run across the top row, so search across rather than down."
+      rule: "HLOOKUP finds a value in the first row of a table and returns the item from the row number you name. FALSE asks for an exact match."
+    misses:
+      value: That is the units figure. Row 3 of B1:D3 holds the price, so the third argument is 3.
+      syntax: "Check the brackets, commas and quote marks. HLOOKUP follows the pattern `=HLOOKUP(lookup_value, table_array, row_index_num, [range_lookup])`."
+      required-function: HLOOKUP reads across a row. VLOOKUP would search column B for a month and find none.
+      reference: Take the month from B4, so the price answers the cell rather than a typed word.
+    accept:
+      - =HLOOKUP(B4,B1:D3,3,FALSE)
+      - =hlookup(b4,b1:d3,3,false)
+      - =HLOOKUP($B$4,$B$1:$D$3,3,FALSE)
+      - =HLOOKUP(B4,B1:D3,3,0)
+      - =HLOOKUP(B4,B1:D3,3,FALSE)+0
+      - =HLOOKUP($B4,B$1:$D$3,3,FALSE)
+    reject:
+      - { formula: "=HLOOKUP(B4,B1:D3,3,FALSE", rule: syntax }
+      - { formula: "=HLOOKUP(B4,B1:D3,3)", rule: value }
+      - { formula: "=HLOOKUP(B4,B1:D3,3,TRUE)", rule: value }
+      - { formula: "=VLOOKUP(B4,B1:D3,3,FALSE)", rule: required-function }
+      - { formula: "=HLOOKUP(B4,B1:D3,2,FALSE)", rule: value }
+      - { formula: '=HLOOKUP(B4,B1:D3,"price",FALSE)', rule: value }
+notes:
+  summary: "HLOOKUP searches the first row of a table for a value. It then returns the item in the same column from the row number you name."
+  syntax: HLOOKUP(lookup_value, table_array, row_index_num, [range_lookup])
+  example: '`=HLOOKUP("Feb",A1:B2,2,FALSE)` with Jan and Feb in row 1 and 10 and 20 in row 2 gives 20.'
+  commonErrors:
+    - The month is not in the first row of B1:D3, which leaves no column to read down.
+    - The row number is the word price rather than a number.
+    - The row number reaches below row 3 of B1:D3, so the answer sits outside the range.

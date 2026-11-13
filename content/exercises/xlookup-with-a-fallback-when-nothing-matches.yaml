@@ -1,0 +1,48 @@
+id: xlookup-with-a-fallback-when-nothing-matches
+slug: xlookup-with-a-fallback-when-nothing-matches
+level: 2
+title: XLOOKUP with a fallback when nothing matches
+topic: lookups
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B6, look up the price of the SKU in B5, and return "not stocked" when the list has no such SKU.
+    rows:
+      - [SKU, Price]
+      - [TX-101, 19.99]
+      - [TX-102, 14]
+      - [TX-103, 9.5]
+      - [Lookup, TX-104]
+      - [Price, null]
+    answerCell: B6
+    expected: not stocked
+    answer: =XLOOKUP(B5,A2:A4,B2:B4,"not stocked")
+    requiredFunctions: [XLOOKUP]
+    hints:
+      nudge: "XLOOKUP has an optional slot for what to show when nothing matches."
+      rule: "The fourth argument of XLOOKUP is returned when the value is not in the search range. Without it, a miss gives `#N/A`."
+    misses:
+      value: TX-104 is not in the list, so the answer is the fallback, spelled as the prompt spells it.
+      syntax: "Check the brackets, commas and quote marks. XLOOKUP follows the pattern `=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])`."
+      required-function: "Four arguments here. The fourth only matters when nothing matches, and the three-argument form would show `#N/A`."
+      reference: Search for the SKU in B5, so asking about another one is a single edit.
+    accept:
+      - =XLOOKUP(B5,A2:A4,B2:B4,"not stocked")
+      - =xlookup(b5,a2:a4,b2:b4,"not stocked")
+      - =XLOOKUP($B$5,$A$2:$A$4,$B$2:$B$4,"not stocked")
+      - =XLOOKUP(B5,A2:A4,B2:B4,"not stocked",0)
+      - =XLOOKUP(B5,A2:A4,B2:B4,"not stocked")&""
+      - =XLOOKUP(B5,A2:A4,B2:B4,"not stocked",0,1)
+    reject:
+      - { formula: '=XLOOKUP(B5,A2:A4,B2:B4,"not stocked"', rule: syntax }
+      - { formula: "=VLOOKUP(B5,A2:B4,2,FALSE)", rule: required-function }
+      - { formula: "=XLOOKUP(B5,A2:A4,B2:B4)", rule: value }
+      - { formula: '=XLOOKUP(B5,A2:A4,B2:B4,"Not stocked")', rule: value }
+      - { formula: '=XLOOKUP(B5,A2:A5,B2:B4,"not stocked")', rule: value }
+notes:
+  summary: "The fourth argument of XLOOKUP sets what to return when nothing matches. Without it a missing value gives `#N/A`, which says less than a short message."
+  syntax: XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])
+  example: '`=XLOOKUP("Z",A1:A3,B1:B3,"none")` gives none when Z is not in A1:A3.'
+  commonErrors:
+    - No fallback was supplied, so a SKU that is not in A2:A4 came back with nothing to say.
+    - The search column and the return column are different sizes, and some rows have no partner.

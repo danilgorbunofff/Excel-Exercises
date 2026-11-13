@@ -1,0 +1,88 @@
+id: isblank-isnumber-istext
+slug: isblank-isnumber-istext
+level: 3
+title: "ISBLANK, ISNUMBER, ISTEXT: reading a cell's type"
+topic: logic
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B8, answer TRUE when A3 is empty.
+    rows:
+      - [Value, Answer]
+      - [12, null]
+      - [text, null]
+      - [null, null]
+      - [true, null]
+      - [4.5, null]
+      - [n/a, null]
+      - [Empty?, null]
+    answerCell: B8
+    expected: false
+    answer: =ISBLANK(A3)
+    requiredFunctions: [ISBLANK]
+    hints:
+      nudge: One IS function answers TRUE only for an empty cell.
+      rule: ISBLANK returns TRUE when a cell is empty and FALSE when it holds anything, including text or 0.
+    misses:
+      value: A3 holds the word text, so the cell is not empty and the answer is FALSE.
+      syntax: "Check the brackets, commas and quote marks. ISBLANK follows the pattern `=ISBLANK(value)`."
+      required-function: The question asks what is in the cell, so it needs a type test rather than a count.
+      reference: Point at A3, the cell the prompt names.
+    accept:
+      - =ISBLANK(A3)
+      - =isblank(a3)
+      - =ISBLANK($A$3)
+      - =ISBLANK(A$3)
+      - =ISBLANK($A3)
+      - =IsBlank(A3)
+    reject:
+      - { formula: =A3="", rule: required-function }
+      - { formula: =ISBLANK(A4), rule: value }
+      - { formula: =ISTEXT(A3), rule: required-function }
+      - { formula: =ISBLANK(A3)=FALSE, rule: value }
+      - { formula: =ISBLANK(A3)/0, rule: value }
+      - { formula: =ISBLANK A3, rule: syntax }
+  - prompt: In B8, answer TRUE when A7 holds a number.
+    rows:
+      - [Value, Answer]
+      - [12, null]
+      - [text, null]
+      - [null, null]
+      - [true, null]
+      - [4.5, null]
+      - [n/a, null]
+      - [A number?, null]
+    answerCell: B8
+    expected: false
+    answer: =ISNUMBER(A7)
+    requiredFunctions: [ISNUMBER]
+    hints:
+      nudge: One IS function answers TRUE only when the cell holds a number.
+      rule: ISNUMBER returns TRUE when a cell holds a number and FALSE for text, logical values and empty cells. ISTEXT works the same way for text.
+    misses:
+      value: A7 holds text, so the answer is FALSE, while the 12 in A2 would answer TRUE.
+      syntax: "Check the brackets, commas and quote marks. ISNUMBER follows the pattern `=ISNUMBER(value)`."
+      required-function: Whether a cell holds a number is a question for ISNUMBER, not for a comparison with 0.
+      reference: Test A7, the row holding n/a.
+    accept:
+      - =ISNUMBER(A7)
+      - =isnumber(a7)
+      - =ISNUMBER($A$7)
+      - =ISNUMBER(A$7)
+      - =ISNUMBER($A7)
+      - =IsNumber(A7)
+    reject:
+      - { formula: =ISNUMBER(A7)=FALSE, rule: value }
+      - { formula: =ISNUMBER(A2), rule: value }
+      - { formula: =ISTEXT(A7), rule: required-function }
+      - { formula: ="FALSE", rule: required-function }
+      - { formula: =ISNUMBER(A7)/0, rule: value }
+      - { formula: =ISNUMBER A7, rule: syntax }
+notes:
+  summary: The IS functions ask what kind of value a cell holds rather than how large it is. ISBLANK is TRUE only for a cell that was never filled.
+  syntax: ISBLANK(cell), =ISNUMBER(cell), =ISTEXT(cell) return a logical value
+  example: "`=ISNUMBER(A1)` with n/a in A1 gives FALSE, while `=ISTEXT(A1)` gives TRUE."
+  commonErrors:
+    - The logical answer was used in arithmetic, as when a TRUE is divided by zero.
+    - The function name was mistyped, and Excel returns `#NAME?`.
+    - The cell holds the characters FALSE typed in quotes, so a later IF reads a label where it expected a logical value.

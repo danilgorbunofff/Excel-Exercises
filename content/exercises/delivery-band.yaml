@@ -1,0 +1,47 @@
+id: delivery-band
+slug: delivery-band
+level: 2
+title: Find a delivery band
+topic: lookups
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: Delivery cost depends on weight bands. In B8, find the cost for the parcel weight in B7.
+    rows:
+      - [From kg, Cost]
+      - [0, 4.5]
+      - [2, 7]
+      - [5, 11]
+      - [10, 18]
+      - [null, null]
+      - [Parcel kg, 6.4]
+      - [Cost, null]
+    answerCell: B8
+    expected: 11
+    answer: =VLOOKUP(B7,A2:B5,2,TRUE)
+    requiredFunctions: [VLOOKUP]
+    hints:
+      nudge: The weight is not in the table. Find the band it falls in.
+      rule: With TRUE as its last argument, VLOOKUP finds the largest value that is not more than the one you look for. The first column must be sorted from smallest to largest.
+    misses:
+      syntax: Separate the four parts of VLOOKUP with commas, and close the bracket.
+      required-function: Use VLOOKUP, which can find the band a weight falls in.
+      reference: Point at the weight in B7, so the cost updates when the weight changes.
+      value: Check the last two arguments. The cost is in column 2, and TRUE finds the band a weight falls in when the exact weight is not listed.
+    accept:
+      - =VLOOKUP(B7,A2:B5,2,TRUE)
+      - =VLOOKUP(B7,A2:B5,2)
+      - =VLOOKUP(B7,A2:B5,2,1)
+    reject:
+      - { formula: "=VLOOKUP(B7,A2:B5,2,TRUE", rule: syntax }
+      - { formula: "=XLOOKUP(B7,A2:A5,B2:B5,,-1)", rule: required-function }
+      - { formula: "=VLOOKUP(6.4,A2:B5,2,TRUE)", rule: reference }
+      - { formula: "=VLOOKUP(B7,A2:B5,2,FALSE)", rule: value }
+      - { formula: "=VLOOKUP(B7,A2:B5,1,TRUE)", rule: value }
+notes:
+  summary: With TRUE or no last argument, VLOOKUP finds the band a value falls in. The first column must be sorted in ascending order.
+  syntax: VLOOKUP(lookup_value, table_array, col_index_num, TRUE)
+  example: "`=VLOOKUP(73,A2:B6,2,TRUE)` with bands 0, 50, 70 and 90 in column A returns the row for 70."
+  commonErrors:
+    - Using FALSE, which gives #N/A when the value is between two bands.
+    - A first column that is not sorted, which gives wrong results without an error.

@@ -1,0 +1,272 @@
+/* Direction C, Marker: a printed exercise sheet marked with a highlighter.
+   Large type, heavy rules, and the formula line under the sheet, right above
+   the phone keyboard, with the verdict directly below it. */
+body {
+  font-size: 1.1875rem;
+  line-height: 1.5;
+}
+header.site,
+main,
+footer.site {
+  max-width: 40rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+header.site {
+  padding-block: 0.5rem;
+  border-bottom: 2px solid var(--text);
+}
+.brand {
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+.nav-wide a {
+  font-weight: 600;
+}
+.menu,
+dialog button {
+  min-height: 3rem;
+  padding: 0 1rem;
+  border: 2px solid var(--line);
+  background: var(--bg);
+  font-weight: 600;
+}
+h1 {
+  font-size: 1.75rem;
+  line-height: 1.15;
+  font-weight: 600;
+  margin: 0.75rem 0 0.25rem;
+}
+h2 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin: 2rem 0 0.5rem;
+}
+.lede,
+.count,
+.crumbs,
+.checks {
+  color: var(--muted);
+}
+.lede {
+  margin: 0 0 1rem;
+}
+.crumbs {
+  margin-top: 0.75rem;
+  font-size: 1rem;
+}
+.count {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+/* Task, then the sheet, then the formula line and its verdict. */
+.exercise {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.exercise > h2 {
+  margin: 0.5rem 0 0;
+}
+.task {
+  order: 1;
+}
+.sheet {
+  order: 2;
+}
+.work {
+  order: 3;
+}
+.help {
+  order: 4;
+}
+.prompt {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+.checks {
+  margin: 0.2rem 0 0;
+  font-size: 0.9375rem;
+}
+.bar {
+  gap: 0.5rem;
+}
+.namebox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.75rem;
+  border: 2px solid var(--line);
+  font-weight: 600;
+}
+.formula {
+  min-height: 3.25rem;
+  padding: 0 0.75rem;
+  border: 2px solid var(--line);
+  background: var(--surface);
+  font-size: 1.25rem;
+}
+.primary {
+  min-height: 3.25rem;
+  padding: 0 1.25rem;
+  border: 2px solid var(--primary);
+  background: var(--primary);
+  color: var(--onPrimary);
+  font-weight: 600;
+}
+.verdict:not(:empty) {
+  margin-top: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--line);
+}
+.exercise-wrong .verdict {
+  background: var(--missTint);
+  border-color: var(--miss);
+}
+.exercise-correct .verdict {
+  background: var(--correctTint);
+  border-color: var(--correct);
+}
+.verdict p {
+  margin: 0 0 0.3rem;
+}
+.verdict p:last-child {
+  margin-bottom: 0;
+}
+.status {
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+.status-miss {
+  color: var(--miss);
+}
+.status-correct {
+  color: var(--correct);
+}
+.readout {
+  font-size: 1rem;
+}
+mark.ref {
+  background: var(--readTint);
+  color: var(--text);
+  box-shadow: inset 0 0 0 2px var(--read);
+  padding: 0 0.15rem;
+}
+.grid {
+  width: 100%;
+  border: 2px solid var(--text);
+  font-size: 1.0625rem;
+}
+.grid caption {
+  font-family: var(--font-text);
+  font-size: 1rem;
+  color: var(--muted);
+  padding-bottom: 0.4rem;
+}
+.grid th,
+.grid td.corner {
+  background: var(--header);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-align: center;
+  border: 1px solid var(--rule);
+}
+.grid thead th,
+.grid td.corner {
+  border-bottom: 2px solid var(--text);
+}
+.grid tbody th {
+  width: 2.75rem;
+  border-right: 2px solid var(--text);
+}
+.grid td {
+  border: 1px solid var(--rule);
+  height: 2.25rem;
+}
+.grid td.label {
+  font-weight: 600;
+}
+td.read {
+  --rt: 0 0 transparent;
+  --rb: 0 0 transparent;
+  background: var(--readTint);
+  box-shadow:
+    inset 3px 0 0 var(--read),
+    inset -3px 0 0 var(--read),
+    var(--rt),
+    var(--rb);
+}
+td.read-first {
+  --rt: inset 0 3px 0 var(--read);
+}
+td.read-last {
+  --rb: inset 0 -3px 0 var(--read);
+}
+td.answer {
+  box-shadow: inset 0 0 0 3px var(--line);
+}
+td.answer-wrong {
+  background: var(--missTint);
+  box-shadow: inset 0 0 0 3px var(--miss);
+  font-weight: 600;
+}
+td.answer-correct {
+  background: var(--correctTint);
+  box-shadow: inset 0 0 0 3px var(--correct);
+  font-weight: 600;
+}
+.legend {
+  margin: 0.25rem 0 0;
+  font-size: 0.9375rem;
+  gap: 0.25rem 1rem;
+}
+.swatch {
+  width: 1.5rem;
+  height: 1.1rem;
+}
+.swatch-read {
+  background: var(--readTint);
+  box-shadow: inset 0 0 0 3px var(--read);
+}
+.swatch-answer {
+  box-shadow: inset 0 0 0 3px var(--line);
+}
+.exercise-wrong .swatch-answer {
+  background: var(--missTint);
+  box-shadow: inset 0 0 0 3px var(--miss);
+}
+.exercise-correct .swatch-answer {
+  background: var(--correctTint);
+  box-shadow: inset 0 0 0 3px var(--correct);
+}
+.exercise-initial .legend li:first-child {
+  display: none;
+}
+.help {
+  margin: 0;
+}
+.secondary {
+  min-height: 3rem;
+  padding: 0 1rem;
+  border: 2px solid var(--line);
+  background: var(--bg);
+  font-weight: 600;
+}
+.list {
+  padding-left: 1.75rem;
+}
+.list li {
+  padding: 0.25rem 0;
+}
+.fn {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  margin-left: 0.4rem;
+}
+footer.site {
+  margin-top: 3rem;
+  padding-block: 1.25rem 2rem;
+  border-top: 2px solid var(--text);
+}

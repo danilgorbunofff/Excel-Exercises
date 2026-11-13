@@ -1,0 +1,50 @@
+id: find-a-code
+slug: find-a-code
+level: 3
+pro: true
+title: Find a code with INDEX and MATCH
+topic: lookups
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: The codes are to the left of the items, so VLOOKUP cannot return them. In B9, use INDEX and MATCH to find the code of the item in B8.
+    rows:
+      - [Code, Item, Stock]
+      - [S-01, Kettle, 14]
+      - [S-02, Toaster, 6]
+      - [S-03, Blender, 9]
+      - [S-04, Mixer, 3]
+      - [S-05, Grill, 11]
+      - [null, null, null]
+      - [Find item, Blender, null]
+      - [Code, null, null]
+    answerCell: B9
+    expected: S-03
+    answer: =INDEX(A2:A6,MATCH(B8,B2:B6,0))
+    requiredFunctions: [INDEX, MATCH]
+    hints:
+      nudge: MATCH finds the position of the item. INDEX returns the value at that position.
+      rule: MATCH takes what to find, the range to search, then 0 for an exact match. INDEX takes a range and a position in it.
+    misses:
+      syntax: Check that both functions close their brackets. MATCH sits inside INDEX.
+      required-function: Use MATCH to find the row and INDEX to return the code.
+      reference: Point at the codes in A2 to A6 and the items in B2 to B6, not at B9.
+      value: Check each range. MATCH searches the items in column B, and INDEX returns from the codes in column A.
+    accept:
+      - =INDEX(A2:A6,MATCH(B8,B2:B6,0))
+      - =INDEX(A2:C6,MATCH(B8,B2:B6,0),1)
+      - =INDEX($A$2:$A$6,MATCH(B8,$B$2:$B$6,0))
+    reject:
+      - { formula: "=INDEX(A2:A6,MATCH(B8,B2:B6,0)", rule: syntax }
+      - { formula: "=INDEX(A2:A6,3)", rule: required-function }
+      - { formula: "=VLOOKUP(B8,A2:C6,1,FALSE)", rule: required-function }
+      - { formula: "=INDEX(A2:A9,MATCH(B8,B2:B9,0))", rule: reference }
+      - { formula: "=INDEX(A2:A6,MATCH(B8,A2:A6,0))", rule: value }
+      - { formula: "=INDEX(C2:C6,MATCH(B8,B2:B6,0))", rule: value }
+notes:
+  summary: MATCH returns the position of a value in a range. INDEX returns the value at a position. Together they can look up in any direction.
+  syntax: INDEX(array, MATCH(lookup_value, lookup_array, 0))
+  example: "`=INDEX(A2:A50,MATCH(E2,C2:C50,0))` finds E2 in column C and returns the value from column A."
+  commonErrors:
+    - Leaving out the 0 in MATCH, so it looks for the nearest match.
+    - INDEX and MATCH ranges that start on different rows.

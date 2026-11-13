@@ -1,0 +1,85 @@
+id: median-the-middle-value
+slug: median-the-middle-value
+level: 2
+title: "MEDIAN: the middle value"
+topic: statistics
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: Put the typical reading into C2, choosing the summary that one noisy reading cannot drag.
+    rows:
+      - [Reading, Value, Typical]
+      - [R-1, 12, null]
+      - [R-2, 18, null]
+      - [R-3, 14, null]
+      - [R-4, 19, null]
+      - [R-5, 15, null]
+    answerCell: C2
+    expected: 15
+    answer: =MEDIAN(B2:B6)
+    requiredFunctions: [MEDIAN]
+    hints:
+      nudge: "Put the readings in order in your head and take the one in the middle."
+      rule: "MEDIAN returns the middle value of the numbers in a range. An extreme value at either end does not pull it the way it pulls AVERAGE."
+    misses:
+      value: "Sorted, the five readings are 12, 14, 15, 18, 19: the middle one is 15."
+      syntax: "Check the brackets, commas and quote marks. MEDIAN follows the pattern `=MEDIAN(number1, [number2], ...)`."
+      required-function: A mean moves when one reading moves; the middle of the list does not, and that is a different function.
+      reference: Read the readings from B2:B6 instead of listing them in the formula.
+    accept:
+      - =MEDIAN(B2:B6)
+      - =median(b2:b6)
+      - =MEDIAN($B$2:$B$6)
+      - =MEDIAN(B2:B6)+0
+      - =MEDIAN(B2:B6)*1
+      - =MEDIAN(B$2:B$6)
+    reject:
+      - { formula: =AVERAGE(B2:B6), rule: required-function }
+      - { formula: =MEDIAN(B2:B4), rule: value }
+      - { formula: =MEDIAN(B2:B5), rule: value }
+      - { formula: =MEDIAN(B3:B6), rule: value }
+      - { formula: =MEDIAN(B2:B6)/0, rule: value }
+      - { formula: =MEDIAN(B2:B6, rule: syntax }
+  - prompt: The audit has an even number of readings, so put the median into C2 and accept the half-way value.
+    rows:
+      - [Reading, Value, Median]
+      - [R-1, 12, null]
+      - [R-2, 18, null]
+      - [R-3, 14, null]
+      - [R-4, 19, null]
+      - [R-5, 15, null]
+      - [R-6, 40, null]
+    answerCell: C2
+    expected: 16.5
+    answer: =MEDIAN(B2:B7)
+    requiredFunctions: [MEDIAN]
+    hints:
+      nudge: "Six readings have two middle values, and the function deals with that for you."
+      rule: "With an even count, MEDIAN returns the average of the two middle values. The range has to cover every reading."
+    misses:
+      value: The middle two are 15 and 18, so the median is the half-way value, 16.5.
+      syntax: "Check the brackets, commas and quote marks. MEDIAN follows the pattern `=MEDIAN(number1, [number2], ...)`."
+      required-function: An even count has no single middle element, and MEDIAN handles that for you.
+      reference: Read all six readings from the sheet so a new one is picked up automatically.
+    accept:
+      - =MEDIAN(B2:B7)
+      - =median(b2:b7)
+      - =MEDIAN($B$2:$B$7)
+      - =MEDIAN(B2:B7)+0
+      - =MEDIAN(B2:B7)*1
+      - =MEDIAN(B$2:B$7)
+    reject:
+      - { formula: =AVERAGE(B2:B7), rule: required-function }
+      - { formula: =MEDIAN(B2:B6), rule: value }
+      - { formula: =MEDIAN(B3:B7), rule: value }
+      - { formula: =MEDIAN(B2:B7)/0, rule: value }
+      - { formula: =MEDIAN(B2:B7, rule: syntax }
+      - { formula: =MEDIAN(B2:B5), rule: value }
+notes:
+  summary: MEDIAN returns the middle value once the numbers are put in order. Half the readings sit above it and half below, so one extreme figure barely moves it.
+  syntax: MEDIAN(range)
+  example: "`=MEDIAN(A1:A4)` with 3, 9, 4 and 100 gives 6.5."
+  commonErrors:
+    - The range holds no numbers at all, which leaves MEDIAN no middle value to report.
+    - A word was passed as an argument, as in =MEDIAN("n/a"), so it cannot join the sort.
+    - "A range that stops one row short changes the answer: five readings give 15 where six give 16.5."

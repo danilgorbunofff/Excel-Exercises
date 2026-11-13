@@ -1,0 +1,530 @@
+/* Direction D, Workbench: Spreadsheet Center's look (Inter, gray scale, white
+   panels on a light page, 1 px lines, 4 px corners, a green sheet bar on a
+   pale green panel) with the study's fixes: a real table grid, the grid first
+   on phones, a verdict for every miss, AA contrast and a dark theme. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 1rem / 1.5 var(--font-text);
+}
+a {
+  color: inherit;
+  text-underline-offset: 0.18em;
+}
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+code,
+.formula,
+.namebox {
+  font-family: var(--font-mono);
+  font-variant-ligatures: none;
+}
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.visually-hidden,
+.next-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (min-width: 30rem) {
+  .next-title {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+  }
+}
+.skip {
+  position: absolute;
+  left: 1rem;
+  top: -10rem;
+  z-index: 2;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  background: var(--primary);
+  color: var(--onPrimary);
+}
+.skip:focus {
+  top: 0.5rem;
+}
+
+/* Header: white bar, visible links on wide screens, a menu dialog on phones. */
+header.site {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  height: 4rem;
+  padding: 0 1.5rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--rule);
+}
+.brand {
+  margin-right: auto;
+  font-weight: 700;
+  font-size: 1.125rem;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+header.site ul,
+footer.site ul,
+.chips,
+.crumbs ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-wide ul {
+  display: flex;
+  gap: 2rem;
+}
+.nav-wide a {
+  text-decoration: none;
+  font-weight: 500;
+}
+.nav-wide a[aria-current="page"] {
+  text-decoration: underline 2px;
+  text-underline-offset: 0.45em;
+}
+.menu,
+dialog button {
+  min-height: 2.75rem;
+  padding: 0 1rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--surface);
+  font-weight: 500;
+}
+dialog {
+  border: 0;
+  padding: 1.5rem;
+  margin: 0 0 0 auto;
+  width: min(20rem, 100vw);
+  height: 100dvh;
+  max-height: 100dvh;
+  background: var(--surface);
+  color: var(--text);
+}
+dialog ul {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* The exercise. Phone order: task, sheet, status, details. */
+.exercise {
+  display: grid;
+  grid-template-areas: "task" "work" "details";
+}
+.task {
+  grid-area: task;
+  padding: 0.75rem 1rem 0.5rem;
+  background: var(--surface);
+}
+.crumbs {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+}
+.crumbs li + li::before {
+  content: "/";
+  padding: 0 0.5rem;
+}
+.title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  margin-top: 0.25rem;
+}
+h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  font-weight: 700;
+}
+.badge {
+  padding: 0.125rem 0.625rem;
+  border-radius: 999px;
+  background: var(--correctTint);
+  color: var(--correct);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.prompt {
+  margin: 0.375rem 0 0;
+  font-size: 1rem;
+}
+.work {
+  grid-area: work;
+  padding: 0.75rem;
+  background: var(--panel);
+}
+.sheet {
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.sheet-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.375rem 0.5rem 0.375rem 0.875rem;
+  background: var(--primary);
+  color: var(--onPrimary);
+}
+.sheet-bar h2 {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.reset {
+  min-height: 2.25rem;
+  padding: 0 0.875rem;
+  border: 0;
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--correct);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.formula-row {
+  display: flex;
+  border-bottom: 1px solid var(--rule);
+}
+.namebox {
+  display: flex;
+  align-items: center;
+  width: 4rem;
+  padding: 0 0.75rem;
+  border-right: 1px solid var(--rule);
+  font-size: 0.9375rem;
+}
+.formula {
+  flex: 1;
+  min-width: 0;
+  height: 2.75rem;
+  padding: 0 0.75rem;
+  border: 0;
+  background: var(--surface);
+  font-size: 1rem;
+}
+.formula:focus-visible {
+  outline-offset: -2px;
+}
+.grid-wrap {
+  overflow-x: auto;
+}
+.grid {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+.grid th,
+.grid td.corner {
+  height: 1.75rem;
+  background: var(--header);
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+  border: 1px solid var(--rule);
+}
+.grid tbody th {
+  width: 2.5rem;
+}
+.grid thead th:nth-child(2),
+.grid thead th:nth-child(3) {
+  width: 34%;
+}
+.arrow {
+  margin-left: 0.5rem;
+}
+.grid th.active {
+  background: var(--correctTint);
+  color: var(--correct);
+  font-weight: 700;
+}
+.grid td {
+  height: 1.875rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--rule);
+  white-space: nowrap;
+}
+.grid td.label {
+  font-weight: 600;
+}
+.grid td.num {
+  text-align: right;
+}
+/* Cells the formula read: Excel's reference colour, outline and tint. */
+td.read {
+  --rt: 0 0 transparent;
+  --rb: 0 0 transparent;
+  background: var(--readTint);
+  box-shadow:
+    inset 2px 0 0 var(--read),
+    inset -2px 0 0 var(--read),
+    var(--rt),
+    var(--rb);
+}
+td.read-first {
+  --rt: inset 0 2px 0 var(--read);
+}
+td.read-last {
+  --rb: inset 0 -2px 0 var(--read);
+}
+td.answer {
+  box-shadow: inset 0 0 0 2px var(--line);
+}
+td.answer-initial {
+  box-shadow: inset 0 0 0 2px var(--primary);
+}
+td.answer-wrong {
+  background: var(--missTint);
+  box-shadow: inset 0 0 0 2px var(--miss);
+  font-weight: 600;
+}
+td.answer-correct {
+  background: var(--correctTint);
+  box-shadow: inset 0 0 0 2px var(--correct);
+  font-weight: 600;
+}
+
+/* The status bar under the sheet holds the verdict and the one main action. */
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  margin-top: 0.625rem;
+  padding: 0.625rem 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--surface);
+}
+.verdict {
+  flex: 1 1 14rem;
+  font-size: 0.9375rem;
+}
+.verdict p {
+  margin: 0;
+}
+.verdict p + p {
+  margin-top: 0.25rem;
+}
+.status-wrong {
+  background: var(--missTint);
+  border-color: var(--miss);
+}
+.status-wrong strong {
+  color: var(--miss);
+}
+.status-correct {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--onPrimary);
+}
+.status-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+code.ref {
+  padding: 0 0.25rem;
+  border-radius: 3px;
+  background: var(--readTint);
+  color: var(--read);
+  box-shadow: inset 0 0 0 1px var(--read);
+  font-weight: 600;
+}
+.primary,
+.next {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  border: 0;
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+.primary {
+  background: var(--primary);
+  color: var(--onPrimary);
+}
+.next {
+  background: var(--surface);
+  color: var(--correct);
+}
+.link-button {
+  font-weight: 500;
+  font-size: 0.9375rem;
+}
+
+/* Details: the full task, hints and related functions. */
+.details {
+  grid-area: details;
+  padding: 0.5rem 1rem 2rem;
+  background: var(--surface);
+  color: var(--text);
+}
+.details > p {
+  color: var(--muted);
+}
+.count {
+  font-size: 0.875rem;
+  margin: 0.75rem 0 0;
+}
+.details h2 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+.steps {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+.steps li {
+  padding: 0.125rem 0;
+}
+.checks {
+  font-size: 0.875rem;
+}
+details {
+  border-bottom: 1px solid var(--rule);
+}
+summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 2.75rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+summary::after {
+  content: "Show";
+  color: var(--correct);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+details[open] summary::after {
+  content: "Hide";
+}
+details p {
+  margin: 0 0 0.75rem;
+  color: var(--muted);
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.chips a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  color: var(--correct);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.back {
+  margin-top: 1.5rem;
+  font-size: 0.9375rem;
+}
+footer.site {
+  padding: 1.5rem;
+  border-top: 1px solid var(--rule);
+  background: var(--surface);
+  font-size: 0.9375rem;
+}
+footer.site ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+}
+
+/* Phones: hide the menu links, show the menu button and a smaller sheet. */
+@media (max-width: 47.99rem) {
+  .nav-wide {
+    display: none;
+  }
+  header.site {
+    height: 3.5rem;
+    padding: 0 1rem;
+  }
+  .extra-col,
+  .extra-row {
+    display: none;
+  }
+  .crumbs {
+    display: none;
+  }
+}
+@media (min-width: 48rem) {
+  .menu {
+    display: none;
+  }
+}
+
+/* Wide screens: details on the left at 40%, the sheet on the right. */
+@media (min-width: 64rem) {
+  .grid thead th:nth-child(2),
+  .grid thead th:nth-child(3) {
+    width: 9.5rem;
+  }
+  .exercise {
+    grid-template-columns: minmax(22rem, 40%) 1fr;
+    grid-template-areas: "task work" "details work";
+    grid-template-rows: auto 1fr;
+    min-height: calc(100dvh - 4rem);
+  }
+  .task {
+    padding: 1.25rem 1.5rem 0;
+    border-right: 1px solid var(--rule);
+  }
+  .details {
+    padding: 0 1.5rem 2rem;
+    border-right: 1px solid var(--rule);
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  .prompt {
+    font-size: 1.0625rem;
+  }
+  .work {
+    padding: 1.25rem;
+  }
+}

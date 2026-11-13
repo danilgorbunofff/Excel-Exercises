@@ -1,0 +1,103 @@
+---
+// Why this exists: the search box in the header. Without script it is a plain
+// GET form to the search page. With script it suggests matches as you type.
+interface Props {
+  id?: string;
+}
+const { id = "site-search" } = Astro.props;
+---
+
+<form class="header-search" action="/search/" method="get" role="search" data-search>
+  <label class="visually-hidden" for={id}>Search the site</label>
+  <svg class="icon" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
+    <circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"></circle>
+    <path d="M13 13l4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+  </svg>
+  <input
+    id={id}
+    name="q"
+    type="search"
+    placeholder="Search exercises and functions"
+    autocomplete="off"
+    role="combobox"
+    aria-expanded="false"
+    aria-controls={`${id}-list`}
+    aria-autocomplete="list"
+    data-search-input
+  />
+  <ul class="suggestions" id={`${id}-list`} role="listbox" aria-label="Suggestions" hidden data-search-list>
+  </ul>
+</form>
+
+<script>
+  import "../scripts/search.ts";
+</script>
+
+<style>
+  .header-search {
+    position: relative;
+    flex: 1;
+    max-width: 28rem;
+  }
+  .icon {
+    position: absolute;
+    left: var(--space-3);
+    top: 50%;
+    translate: 0 -50%;
+    color: var(--faint);
+    pointer-events: none;
+  }
+  input {
+    width: 100%;
+    min-height: 2.5rem;
+    padding: 0 var(--space-3) 0 2.25rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+    font-size: var(--size-s);
+  }
+  input::placeholder {
+    color: var(--faint);
+  }
+  .suggestions {
+    position: absolute;
+    z-index: 5;
+    top: calc(100% + var(--space-1));
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: var(--space-1);
+    list-style: none;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+    box-shadow: var(--shadow-pop);
+  }
+  .suggestions[hidden] {
+    display: none;
+  }
+  .suggestions :global(li) {
+    border-radius: var(--radius-s);
+  }
+  .suggestions :global(a) {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--size-s);
+    text-decoration: none;
+  }
+  .suggestions :global(li[aria-selected="true"]),
+  .suggestions :global(li:hover) {
+    background: var(--header);
+  }
+  .suggestions :global(.kind) {
+    color: var(--muted);
+    font-size: var(--size-xs);
+  }
+  .suggestions :global(.empty) {
+    padding: var(--space-2) var(--space-3);
+    color: var(--muted);
+    font-size: var(--size-s);
+  }
+</style>

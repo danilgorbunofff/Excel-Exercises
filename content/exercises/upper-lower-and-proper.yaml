@@ -1,0 +1,88 @@
+id: upper-lower-and-proper
+slug: upper-lower-and-proper
+level: 2
+title: UPPER, LOWER and PROPER
+topic: text-change
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B7, put the reference in A2 into capitals so it matches the shipping labels.
+    rows:
+      - [Reference, Status]
+      - [ab-2291-xk, open]
+      - [cd-1180-qt, closed]
+      - [ef-4472-mp, open]
+      - [gh-9031-lr, open]
+      - [ij-6620-bn, closed]
+      - [Label, null]
+    answerCell: B7
+    expected: AB-2291-XK
+    answer: =UPPER(A2)
+    requiredFunctions: [UPPER]
+    hints:
+      nudge: One function turns every letter into a capital.
+      rule: UPPER takes one piece of text and returns it in capitals. Digits and punctuation do not change.
+    misses:
+      value: Every letter becomes a capital. The digits and both hyphens stay as they are.
+      syntax: "Check the brackets, commas and quote marks. UPPER follows the pattern `=UPPER(text)`."
+      required-function: The label is all capitals. LOWER goes the other way, and PROPER leaves part of the code in lower case.
+      reference: Point at A2. A reference typed by hand would not follow a corrected code.
+    accept:
+      - =UPPER(A2)
+      - =upper(a2)
+      - =UPPER($A$2)
+      - =UPPER(A2)&""
+      - =TRIM(UPPER(A2))
+      - =UPPER(TRIM(A2))
+    reject:
+      - { formula: =UPPER(A2, rule: syntax }
+      - { formula: =LOWER(A2), rule: required-function }
+      - { formula: =PROPER(A2), rule: required-function }
+      - { formula: =TRIM(A2), rule: required-function }
+      - { formula: =UPPER("ab-2291-xk"), rule: reference }
+      - { formula: =UPPER(A2)&"?", rule: value }
+      - { formula: =UPPER(A2)/0, rule: value }
+  - prompt: In B7, tidy the name in A2 so each word starts with a capital and the rest is lower case.
+    rows:
+      - [Name, Team]
+      - [ada LOVELACE, engine]
+      - [GRACE hopper, research]
+      - [alan TURING, engine]
+      - [katherine JOHNSON, research]
+      - [mary jackson, ops]
+      - [Tidy name, null]
+    answerCell: B7
+    expected: Ada Lovelace
+    answer: =PROPER(A2)
+    requiredFunctions: [PROPER]
+    hints:
+      nudge: One function gives each word a capital first letter and lowers the rest.
+      rule: PROPER takes one piece of text and returns it with a capital at the start of each word and lower case everywhere else.
+    misses:
+      value: "Each word starts with a capital and the rest drops to lower case: Ada Lovelace."
+      syntax: "Check the brackets, commas and quote marks. PROPER follows the pattern `=PROPER(text)`."
+      required-function: One name is shouted and the other is not, which is the case PROPER fixes.
+      reference: Read the name from A2 rather than typing Ada Lovelace into the formula.
+    accept:
+      - =PROPER(A2)
+      - =proper(a2)
+      - =PROPER($A$2)
+      - =PROPER(A2)&""
+      - =TRIM(PROPER(A2))
+      - =PROPER(TRIM(A2))
+    reject:
+      - { formula: =PROPER(A2, rule: syntax }
+      - { formula: =UPPER(A2), rule: required-function }
+      - { formula: =LOWER(A2), rule: required-function }
+      - { formula: =TRIM(A2), rule: required-function }
+      - { formula: =PROPER("ada LOVELACE"), rule: reference }
+      - { formula: =PROPER(A2)&"?", rule: value }
+      - { formula: =PROPER(A2)/0, rule: value }
+notes:
+  summary: UPPER makes every letter a capital, LOWER takes them all down, and PROPER capitalises the first letter of each word. Each takes one piece of text and returns new text.
+  syntax: UPPER(text) · =LOWER(text) · =PROPER(text)
+  example: '`=PROPER("mARY ann")` gives Mary Ann, and `=LOWER("OK")` gives ok.'
+  commonErrors:
+    - The converted text was used in arithmetic, as in =UPPER(A2)/0.
+    - "UPPER was typed with an extra letter, and Excel returns `#NAME?`."
+    - PROPER on a code starts a new word after each hyphen, so the label comes out Ab-2291-Xk.

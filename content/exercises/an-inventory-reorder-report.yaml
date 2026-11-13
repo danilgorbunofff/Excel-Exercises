@@ -1,0 +1,85 @@
+id: an-inventory-reorder-report
+slug: an-inventory-reorder-report
+level: 3
+title: An inventory reorder report
+topic: models
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In D2, report how many bolts to order, never a negative number.
+    rows:
+      - [Item, On hand, Reorder at, Answer]
+      - [bolt, 4, 10, null]
+      - [nut, 12, 8, null]
+      - [washer, 2, 6, null]
+      - [screw, 9, 15, null]
+    answerCell: D2
+    expected: 6
+    answer: =MAX(0,C2-B2)
+    requiredFunctions: [MAX]
+    hints:
+      nudge: Work out the shortfall, then stop it from going below zero.
+      rule: MAX returns the largest of its arguments. With 0 beside a subtraction, it returns the result when it is positive and 0 when it is negative.
+    misses:
+      value: Ten to reorder less four in stock leaves six.
+      syntax: "Check the brackets, commas and quote marks. MAX follows the pattern `=MAX(number1, [number2], ...)`."
+      required-function: The order quantity has to stop at zero on an over-stocked row.
+      reference: Stock on hand is in B2 and the reorder point is in C2.
+    accept:
+      - =MAX(0,C2-B2)
+      - =max(0,c2-b2)
+      - =MAX(0,$C$2-$B$2)
+      - =MAX(0,C$2-B$2)
+      - =MAX( 0 , C2 - B2 )
+      - =MAX(0,C2-B2)+0
+    reject:
+      - { formula: =C2-B2, rule: required-function }
+      - { formula: "=MAX(0,B2-C2)", rule: value }
+      - { formula: "=MAX(0,C2-B2)+1", rule: value }
+      - { formula: "=MAX(0,C2-B2)+2", rule: reference }
+      - { formula: "=MAX(0,C3-B3)", rule: value }
+      - { formula: "=MAX(0,C2-B2)/0", rule: value }
+      - { formula: "=MAX 0,C2-B2", rule: syntax }
+  - prompt: In D2, report how far total stock on hand falls short of the total of the reorder points, never below zero.
+    rows:
+      - [Item, On hand, Reorder at, Answer]
+      - [bolt, 4, 10, null]
+      - [nut, 12, 8, null]
+      - [washer, 2, 6, null]
+      - [screw, 9, 15, null]
+    answerCell: D2
+    expected: 12
+    answer: =MAX(0,SUM(C2:C5)-SUM(B2:B5))
+    requiredFunctions: [MAX, SUM]
+    hints:
+      nudge: Compare the total of the reorder points with the total on hand, and keep the zero floor.
+      rule: SUM adds a column, and MAX with 0 as one argument floors the difference of two totals at zero.
+    misses:
+      value: 39 to reorder against 27 in stock leaves 12.
+      syntax: "Check the brackets, commas and quote marks. MAX follows the pattern `=MAX(number1, [number2], ...)`."
+      required-function: The sheet can be ahead of its reorder points, so the net needs a floor.
+      reference: The stock column runs B2:B5.
+    accept:
+      - =MAX(0,SUM(C2:C5)-SUM(B2:B5))
+      - =max(0,sum(c2:c5)-sum(b2:b5))
+      - =MAX(0,SUM($C$2:$C$5)-SUM($B$2:$B$5))
+      - =MAX(0,SUM(C$2:C$5)-SUM(B$2:B$5))
+      - =MAX( 0 , SUM(C2:C5) - SUM(B2:B5) )
+      - =MAX(0,SUM(C2:C5)-SUM(B2:B5))+0
+    reject:
+      - { formula: =SUM(C2:C5)-SUM(B2:B5), rule: required-function }
+      - { formula: "=MAX(0,SUM(B2:B5)-SUM(C2:C5))", rule: value }
+      - { formula: "=MAX(0,SUM(C2:C5)-SUM(B2:B4))", rule: value }
+      - { formula: "=MAX(0,SUM(C2:C4)-SUM(B2:B5))", rule: value }
+      - { formula: "=MAX(0,SUM(C2:C5)-SUM(B3:B5))", rule: value }
+      - { formula: "=MAX(0,C2-B2)", rule: required-function }
+      - { formula: "=MAX(0,SUM(C2:C5)-SUM(B2:B5))/0", rule: value }
+      - { formula: "=MAX 0,SUM(C2:C5)-SUM(B2:B5)", rule: syntax }
+notes:
+  summary: MAX returns the largest number it is given, so MAX with 0 and a shortfall returns the shortfall when it is positive and 0 otherwise. An order quantity built this way never goes negative.
+  syntax: MAX(0,reorder_at-on_hand) floors a shortfall at zero; MAX(0,a-b) over totals nets it out
+  example: "`=MAX(0,A1-B1)` with 3 in A1 and 8 in B1 gives 0, and with 8 and 3 it gives 5."
+  commonErrors:
+    - A cell in the subtraction holds text, which is not a number to work with.
+    - MAX is misspelled in the call, and Excel returns `#NAME?`.
+    - MAX is left off, so an over-stocked row asks for a negative number of parts.

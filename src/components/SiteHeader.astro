@@ -1,0 +1,303 @@
+---
+// Why this exists: the header on every page. Wide screens show the logo, the
+// search box, the section links and the account buttons. Phones get a Menu
+// button that opens a native dialog with the same links.
+import { siteConfig } from "../../site.config.ts";
+import { ACCOUNT_NAV, MAIN_NAV } from "../lib/nav.ts";
+import HeaderSearch from "./HeaderSearch.astro";
+import Icon from "./Icon.astro";
+import Logo from "./Logo.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+
+interface Props {
+  /** The section the page belongs to, marked as current in the links. */
+  current?: string | undefined;
+}
+const { current } = Astro.props;
+const menuLinks = [
+  { label: "Start here", href: "/exercises/tracks/" },
+  ...MAIN_NAV,
+  { label: "Progress", href: "/progress/" },
+  { label: "Search", href: "/search/" },
+];
+---
+
+<header class="site-header">
+  <div class="bar">
+    <a class="brand" href="/">
+      <Logo />
+      <span>{siteConfig.name}</span>
+    </a>
+    <div class="search-wide"><HeaderSearch /></div>
+    <div class="theme-wide"><ThemeToggle /></div>
+    <nav class="nav-wide" aria-label="Main">
+      <ul>
+        {
+          MAIN_NAV.map((item) => (
+            <li>
+              <a href={item.href} aria-current={item.href === current ? "page" : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <div class="account">
+      <a class="login" href={ACCOUNT_NAV.login.href}>{ACCOUNT_NAV.login.label}</a>
+      <a class="button button-primary signup" href={ACCOUNT_NAV.register.href}>
+        {ACCOUNT_NAV.register.label}
+      </a>
+    </div>
+    <div class="menu-wrap">
+      <span class="theme-phone"><ThemeToggle /></span>
+      <button class="button button-secondary menu" type="button" commandfor="menu" command="show-modal">
+        <Icon name="menu" size={22} />
+        <span class="visually-hidden">Menu</span>
+      </button>
+    </div>
+  </div>
+  <dialog id="menu" aria-label="Menu" closedby="any">
+    <HeaderSearch id="menu-search" />
+    <nav aria-label="Main">
+      <ul>
+        {
+          menuLinks.map((item) => (
+            <li>
+              <a href={item.href} aria-current={item.href === current ? "page" : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <div class="menu-account">
+      <a class="button button-secondary" href={ACCOUNT_NAV.login.href}>{ACCOUNT_NAV.login.label}</a>
+      <a class="button button-primary" href={ACCOUNT_NAV.register.href}>
+        {ACCOUNT_NAV.register.label}
+      </a>
+    </div>
+    <button class="button button-secondary close" type="button" commandfor="menu" command="close">
+      Close
+    </button>
+  </dialog>
+</header>
+
+<script>
+  // Browsers without button commands get the same behaviour from a click handler.
+  if (!("command" in HTMLButtonElement.prototype)) {
+    for (const button of document.querySelectorAll<HTMLButtonElement>("button[commandfor]")) {
+      const dialog = document.getElementById(button.getAttribute("commandfor") ?? "");
+      if (!(dialog instanceof HTMLDialogElement)) continue;
+      button.addEventListener("click", () =>
+        button.getAttribute("command") === "close" ? dialog.close() : dialog.showModal(),
+      );
+    }
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    background: var(--surface);
+    border-bottom: 1px solid var(--rule);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    max-width: 80rem;
+    min-height: 4rem;
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-shrink: 0;
+    font-weight: 700;
+    font-size: var(--size-l);
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    color: var(--heading);
+  }
+  .search-wide {
+    display: flex;
+    flex: 1;
+    max-width: 28rem;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .theme-wide {
+    margin-left: auto;
+  }
+  .nav-wide ul {
+    display: flex;
+    gap: var(--space-6);
+  }
+  .nav-wide a,
+  .login {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target);
+    font-size: var(--size-s);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .nav-wide a:hover,
+  .nav-wide a[aria-current="page"],
+  .login:hover {
+    text-decoration: underline 2px;
+    text-underline-offset: 0.45em;
+  }
+  .account {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+  }
+  .signup {
+    min-height: 2.5rem;
+    padding: 0 var(--space-4);
+    font-size: var(--size-s);
+  }
+  .menu {
+    width: var(--target);
+    padding: 0;
+    border-color: transparent;
+    background: transparent;
+  }
+  .menu-wrap {
+    display: none;
+    align-items: center;
+    gap: var(--space-2);
+    margin-left: auto;
+  }
+  dialog {
+    margin: 0 0 0 auto;
+    width: min(20rem, 100vw);
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    padding: var(--space-5);
+    border: 0;
+    background: var(--surface);
+    color: var(--text);
+  }
+  dialog[open] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  dialog::backdrop {
+    background: rgb(0 0 0 / 0.45);
+  }
+  dialog :global(.header-search) {
+    flex: none;
+    max-width: none;
+  }
+  dialog ul {
+    display: grid;
+    gap: var(--space-1);
+  }
+  dialog nav a {
+    display: flex;
+    align-items: center;
+    min-height: var(--target);
+    font-size: var(--size-l);
+    font-weight: 500;
+  }
+  .menu-account {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .close {
+    margin-top: auto;
+  }
+  @media (max-width: 63.99rem) {
+    .search-wide {
+      display: none;
+    }
+  }
+  @media (max-width: 47.99rem) {
+    .bar {
+      gap: var(--space-3);
+      min-height: 3.5rem;
+      padding: 0 var(--space-4);
+    }
+    .brand {
+      font-size: var(--size-base);
+    }
+    .theme-wide,
+    .nav-wide,
+    .account {
+      display: none;
+    }
+    .menu-wrap {
+      display: flex;
+    }
+  }
+  /* Small phones: the logo, switch and Menu button all have to fit one row. */
+  @media (max-width: 25rem) {
+    .bar {
+      gap: var(--space-2);
+      padding: 0 var(--space-3);
+    }
+    .brand {
+      flex-shrink: 1;
+      min-width: 0;
+      gap: var(--space-1);
+      font-size: var(--size-s);
+    }
+    .brand span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .menu-wrap {
+      gap: var(--space-1);
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    dialog {
+      opacity: 0;
+      transform: translateX(100%);
+      transition:
+        opacity 200ms var(--ease),
+        transform 200ms var(--ease),
+        overlay 200ms allow-discrete,
+        display 200ms allow-discrete;
+    }
+    dialog[open] {
+      opacity: 1;
+      transform: none;
+    }
+    @starting-style {
+      dialog[open] {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+    }
+    dialog::backdrop {
+      background-color: transparent;
+      transition:
+        background-color 200ms var(--ease),
+        overlay 200ms allow-discrete,
+        display 200ms allow-discrete;
+    }
+    dialog[open]::backdrop {
+      background-color: rgb(0 0 0 / 0.45);
+    }
+    @starting-style {
+      dialog[open]::backdrop {
+        background-color: transparent;
+      }
+    }
+  }
+</style>

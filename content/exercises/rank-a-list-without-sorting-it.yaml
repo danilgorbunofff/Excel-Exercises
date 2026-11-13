@@ -1,0 +1,85 @@
+id: rank-a-list-without-sorting-it
+slug: rank-a-list-without-sorting-it
+level: 2
+title: Rank a list without sorting it
+topic: statistics
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: Put Ada's place in the team into C2 using the default order, without sorting the sheet.
+    rows:
+      - [Swimmer, Seconds, Place (slowest first)]
+      - [Ada, 58, null]
+      - [Ben, 61, null]
+      - [Cleo, 55, null]
+      - [Dev, 57, null]
+      - [Eli, 50, null]
+    answerCell: C2
+    expected: 2
+    answer: =RANK(B2,B2:B6)
+    requiredFunctions: [RANK]
+    hints:
+      nudge: "One function gives a value's place in a list without sorting it."
+      rule: "RANK takes the value, then the range to compare it with. With no third argument, the largest value takes place 1."
+    misses:
+      value: With no order argument the largest time takes place 1, so Ben's 61 is first and Ada's 58 is second.
+      syntax: "Check the brackets, commas and quote marks. RANK follows the pattern `=RANK(number, ref, [order])`."
+      required-function: Counting the numbers larger than 58 gives the place by hand. RANK does that count against the range.
+      reference: The second argument is the range B2:B6, so every swimmer is in the comparison.
+    accept:
+      - =RANK(B2,B2:B6)
+      - =rank(b2,b2:b6)
+      - =RANK(B2,$B$2:$B$6)
+      - =RANK(B2,B2:B6)+0
+      - =RANK(B2,B2:B6)*1
+      - =RANK(B2,B$2:B$6)
+    reject:
+      - { formula: '=COUNTIF(B2:B6,">"&B2)+1', rule: required-function }
+      - { formula: "=RANK(B2,B2:B6,1)", rule: value }
+      - { formula: "=RANK(B3,B2:B6)", rule: value }
+      - { formula: "=RANK(B3,B3:B5,1)", rule: value }
+      - { formula: "=RANK(B2,B2:B6)/0", rule: value }
+      - { formula: =RANK(B2 B2:B6), rule: syntax }
+  - prompt: Flip the order argument so the smallest time takes place 1, and put Ada's place in C2.
+    rows:
+      - [Swimmer, Seconds, Place (fastest first)]
+      - [Ada, 58, null]
+      - [Ben, 61, null]
+      - [Cleo, 55, null]
+      - [Dev, 57, null]
+      - [Eli, 50, null]
+    answerCell: C2
+    expected: 4
+    answer: =RANK(B2,B2:B6,1)
+    requiredFunctions: [RANK]
+    hints:
+      nudge: "The third argument decides which end of the list counts as place 1."
+      rule: "RANK with a third argument of 0, or none, ranks the largest value first. Any other number, such as 1, ranks the smallest first."
+    misses:
+      value: Counting up, Eli's 50 is place 1, then 55 and 57, so Ada's 58 is place 4.
+      syntax: "Check the brackets, commas and quote marks. RANK follows the pattern `=RANK(number, ref, [order])`."
+      required-function: This is the same ranking read from the other end, and RANK takes the order as its third argument.
+      reference: Point the second argument at B2:B6 instead of typing the five times.
+    accept:
+      - =RANK(B2,B2:B6,1)
+      - =rank(b2,b2:b6,1)
+      - =RANK(B2,$B$2:$B$6,1)
+      - =RANK(B2,B2:B6,1)+0
+      - =RANK(B2,B2:B6,1)*1
+      - =RANK(B2,B$2:B$6,1)
+    reject:
+      - { formula: "=RANK(B2,B2:B6)", rule: value }
+      - { formula: "=RANK(B3,B2:B6,1)", rule: value }
+      - { formula: "=RANK(B3,B3:B5,1)", rule: value }
+      - { formula: "=RANK(B2,B2:B6,1)/0", rule: value }
+      - { formula: =RANK(B2 B2:B6 1), rule: syntax }
+      - { formula: "=SMALL(B2:B6,2)", rule: required-function }
+      - { formula: "=RANK(B2,B2:B6,1)*2", rule: value }
+notes:
+  summary: "RANK compares one value against a range and returns the place it takes. The optional third argument sets the direction: 0 or nothing ranks the largest number first, and any other value ranks the smallest first."
+  syntax: RANK(number, ref, [order])
+  example: "`=RANK(A1,A1:A4)` with 40, 70, 55 and 20 gives 3, and `=RANK(A1,A1:A4,1)` gives 2."
+  commonErrors:
+    - The value being ranked is not in the range, which happens when the number argument points at a different row from the list.
+    - The number argument is text, so there is nothing to compare with the other values.
+    - A third argument of 1 ranks the smallest value first, so a missing argument flips every place on the sheet.

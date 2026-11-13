@@ -1,0 +1,83 @@
+id: aggregate-functions-summary
+slug: aggregate-functions-summary
+level: 3
+title: Totals that multiply, skip and reconcile
+topic: subtotals
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In D5, total the Line column with SUBTOTAL.
+    rows:
+      - [Item, Price, Qty, Line]
+      - [pen, 10, 2, 20]
+      - [pad, 5, 4, 20]
+      - [ink, 20, 3, 60]
+      - [Line total, null, null, null]
+    answerCell: D5
+    expected: 100
+    answer: =SUBTOTAL(9,D2:D4)
+    requiredFunctions: [SUBTOTAL]
+    hints:
+      nudge: SUBTOTAL needs a number in front of the range to say which calculation to run.
+      rule: SUBTOTAL takes a function number, then the range. 9 adds the values and leaves out rows hidden by a filter.
+    misses:
+      value: Twenty plus twenty plus sixty is 100.
+      syntax: "Check the brackets, commas and quote marks. SUBTOTAL follows the pattern `=SUBTOTAL(function_num, ref1, [ref2], ...)`."
+      required-function: The total under a table that may be filtered is a SUBTOTAL, with 9 for SUM.
+      reference: The line values are D2:D4.
+    accept:
+      - =SUBTOTAL(9,D2:D4)
+      - =subtotal(9,d2:d4)
+      - =SUBTOTAL(9,$D$2:$D$4)
+      - =SUBTOTAL(9,D$2:D$4)
+      - =SUBTOTAL( 9 , D2:D4 )
+      - =SUBTOTAL(9,D2:D4)+0
+    reject:
+      - { formula: =SUM(D2:D4), rule: required-function }
+      - { formula: "=SUBTOTAL(9,D2:D3)", rule: value }
+      - { formula: "=SUBTOTAL(4,D2:D4)", rule: value }
+      - { formula: "=SUBTOTAL(9,D3:D4)", rule: value }
+      - { formula: "=SUBTOTAL(9,D2:D4)/0", rule: value }
+      - { formula: "=SUBTOTAL 9,D2:D4", rule: syntax }
+  - prompt: In D5, divide the price-times-quantity total by the line total and round it to one decimal place.
+    rows:
+      - [Item, Price, Qty, Line]
+      - [pen, 10, 2, 20]
+      - [pad, 5, 4, 20]
+      - [ink, 20, 3, 60]
+      - [Line total, null, null, null]
+    answerCell: D5
+    expected: 1
+    answer: =ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUBTOTAL(9,D2:D4),1)
+    requiredFunctions: [SUMPRODUCT, SUBTOTAL]
+    hints:
+      nudge: Build the price times quantity total with one function, the line total with another, then divide.
+      rule: SUMPRODUCT multiplies two ranges row by row and adds the products. SUBTOTAL with 9 adds a column, and ROUND with 1 keeps one decimal place.
+    misses:
+      value: 100 divided by 100 is 1, so the two routes agree.
+      syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
+      required-function: The numerator is price times quantity across the rows, which is what SUMPRODUCT does.
+      reference: Both routes read the table rows instead of numbers typed by hand.
+    accept:
+      - =ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUBTOTAL(9,D2:D4),1)
+      - =round(sumproduct(b2:b4,c2:c4)/subtotal(9,d2:d4),1)
+      - =ROUND(SUMPRODUCT($B$2:$B$4,$C$2:$C$4)/SUBTOTAL(9,$D$2:$D$4),1)
+      - =ROUND(SUMPRODUCT(B$2:B$4,C$2:C$4)/SUBTOTAL(9,D$2:D$4),1)
+      - =ROUND( SUMPRODUCT(B2:B4, C2:C4) / SUBTOTAL(9, D2:D4) , 1 )
+      - =ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUBTOTAL(9,D2:D4)*1,1)
+    reject:
+      - { formula: =AVERAGE(B2:B4), rule: required-function }
+      - { formula: "=ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUM(C2:C4),1)", rule: required-function }
+      - { formula: "=ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUBTOTAL(9,C2:C4),1)", rule: value }
+      - { formula: "=ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUBTOTAL(9,D2:D3),1)", rule: value }
+      - { formula: "=ROUND(SUMPRODUCT(B3:B4,C3:C4)/SUBTOTAL(9,D2:D4),1)", rule: value }
+      - { formula: "=ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUBTOTAL(9,D2:D4),1)/0", rule: value }
+      - { formula: "=ROUND SUMPRODUCT(B2:B4,C2:C4)/SUBTOTAL(9,D2:D4),1", rule: syntax }
+notes:
+  summary: SUMPRODUCT values a table straight from its prices and quantities, and SUBTOTAL adds a column that already holds each line. When the line column is right, the two totals agree and their ratio is 1.
+  syntax: SUMPRODUCT(pairs) values a table; =SUBTOTAL(9,range) adds a group; a ratio of the two is a weighted figure
+  example: With 2 and 3 in A1:A2, 5 and 4 in B1:B2, and 10 and 12 in C1:C2, `=SUMPRODUCT(A1:A2,B1:B2)/SUBTOTAL(9,C1:C2)` gives 1.
+  commonErrors:
+    - The subtotal under the line column is zero, so there is nothing to divide by.
+    - The two ranges in SUMPRODUCT are a different height, so the pairs cannot form.
+    - A line value was typed over, so the two routes disagree and the ratio drifts away from 1.

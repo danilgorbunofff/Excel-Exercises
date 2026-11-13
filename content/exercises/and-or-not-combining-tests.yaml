@@ -1,0 +1,89 @@
+id: and-or-not-combining-tests
+slug: and-or-not-combining-tests
+level: 3
+title: "AND, OR and NOT: combining tests"
+topic: logic
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B9, answer TRUE only when the total is over 100 and every item has at least 15 units.
+    rows:
+      - [Item, Units]
+      - [Bolt, 18]
+      - [Nut, 22]
+      - [Washer, 25]
+      - [Screw, 30]
+      - [Clip, 24]
+      - [Pin, 31]
+      - [Total, 150]
+      - [Both tests, null]
+    answerCell: B9
+    expected: true
+    answer: =AND(B8>100,MIN(B2:B7)>=15)
+    requiredFunctions: [AND]
+    hints:
+      nudge: Both tests must hold, and the smallest item tells you whether every item has at least 15.
+      rule: AND returns TRUE only when every test inside it is TRUE. MIN gives the smallest value, so one test on MIN checks every item at once.
+    misses:
+      value: The total is 150 and the smallest item is 18, so both tests hold and the cell should say TRUE.
+      syntax: "=AND(test 1, test 2): the answer is TRUE only when both tests are."
+      required-function: The question joins two conditions with and, so it needs AND.
+      reference: Read the total from B8 and the units from B2:B7.
+    accept:
+      - =AND(B8>100,MIN(B2:B7)>=15)
+      - =and(b8>100,min(b2:b7)>=15)
+      - =AND($B$8>100,MIN($B$2:$B$7)>=15)
+      - =AND($B8>100,MIN($B2:$B$7)>=15)
+      - =AND(B$8>100,MIN(B$2:B$7)>=15)
+      - =AND(B8>100,MIN(B$2:B$7)>=15)
+    reject:
+      - { formula: =B8>100, rule: required-function }
+      - { formula: "=AND(B8>100,MIN(B2:B7)>20)", rule: value }
+      - { formula: "=OR(B8>100,MIN(B2:B7)>=15)", rule: required-function }
+      - { formula: "=AND(C8>100,MIN(B2:B7)>=15)", rule: value }
+      - { formula: "=AND(B8>100,MIN(B2:B7)>=15)/0", rule: value }
+      - { formula: =AND(B8>100 MIN(B2:B7)>=15), rule: syntax }
+  - prompt: In B9, answer TRUE when any single item has fewer than 20 units or the total is over 200.
+    rows:
+      - [Item, Units]
+      - [Bolt, 18]
+      - [Nut, 22]
+      - [Washer, 25]
+      - [Screw, 30]
+      - [Clip, 24]
+      - [Pin, 31]
+      - [Total, 150]
+      - [Either test, null]
+    answerCell: B9
+    expected: true
+    answer: =OR(MIN(B2:B7)<20,B8>200)
+    requiredFunctions: [OR]
+    hints:
+      nudge: Either test is enough, and the smallest item tells you whether any item is under 20.
+      rule: OR returns TRUE when at least one test inside it is TRUE. MIN gives the smallest value, so a test on MIN checks whether any item falls below a limit.
+    misses:
+      value: Bolt has 18 units, under 20, so the first test already makes the answer TRUE.
+      syntax: "=OR(test 1, test 2): one TRUE is enough."
+      required-function: The question says or, so either test passing should make the answer TRUE.
+      reference: Look through the units column for the smallest item and read the total from B8.
+    accept:
+      - =OR(MIN(B2:B7)<20,B8>200)
+      - =or(min(b2:b7)<20,b8>200)
+      - =OR(MIN($B$2:$B$7)<20,$B$8>200)
+      - =OR(MIN(B$2:B$7)<20,B$8>200)
+      - =OR(MIN(B2:B7)<20,$B8>200)
+    reject:
+      - { formula: "=AND(MIN(B2:B7)<20,B8>200)", rule: required-function }
+      - { formula: =MIN(B2:B7)<20, rule: required-function }
+      - { formula: "=OR(MIN(B2:B7)<15,B8>200)", rule: value }
+      - { formula: "=OR(MIN(B3:B7)<20,B8>200)", rule: value }
+      - { formula: "=OR(MIN(B2:B7)<20,B8>200)/0", rule: value }
+      - { formula: =OR(MIN(B2:B7)<20 B8>200), rule: syntax }
+notes:
+  summary: AND, OR and NOT take logical tests and return a single TRUE or FALSE. AND needs every argument to hold and OR needs one, while NOT flips the value it is given.
+  syntax: AND(test1, test2, ...) needs every test; =OR(...) needs one; =NOT(test) flips it
+  example: "`=AND(A1>0,A2>0)` with 5 and -2 gives FALSE, while `=OR(A1>0,A2>0)` gives TRUE."
+  commonErrors:
+    - An argument is text where a logical test belongs, as when a word reaches AND without quotes.
+    - A function name is mistyped, so no test runs at all.
+    - A formula holding a single comparison looks complete but skips the second condition, so a short item still passes.

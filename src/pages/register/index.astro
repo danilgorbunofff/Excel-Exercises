@@ -1,0 +1,37 @@
+---
+// Why this exists: the Sign up page. Accounts are not open yet, so the form is
+// shown disabled with a note; see siteConfig.accountsOpen.
+import AuthCard from "../../components/AuthCard.astro";
+import Base from "../../layouts/Base.astro";
+---
+
+<Base title="Sign up" description="Create an account to sync your Excel practice progress across devices." layout="flush">
+  <AuthCard title="Create an account" lead="Save your progress to an account and pick up on any device.">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" autocomplete="new-password" />
+    <label for="password2">Repeat password</label>
+    <input id="password2" name="password2" type="password" autocomplete="new-password" />
+    <label class="check"><input type="checkbox" name="terms" /> I agree to the <a href="/terms/">terms</a> and the <a href="/privacy/">privacy policy</a></label>
+    <label class="check"><input type="checkbox" name="news" /> Send me an email when new exercises arrive</label>
+    <button class="button button-primary" type="submit">Sign up</button>
+    <p slot="after" class="switch">
+      Already have an account? <a href="/login/">Log in</a>
+    </p>
+  </AuthCard>
+</Base>
+
+<style>
+  .check {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    font-weight: 400 !important;
+  }
+  .check input {
+    width: auto !important;
+    min-height: 0 !important;
+    margin-top: 0.25rem;
+  }
+</style>

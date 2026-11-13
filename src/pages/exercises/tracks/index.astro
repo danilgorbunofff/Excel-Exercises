@@ -1,0 +1,376 @@
+---
+// Why this exists: every learning track, grouped by where you are: the
+// essentials first, then one skill at a time. Each card shows its level,
+// size, time and this browser's progress.
+import Breadcrumbs from "../../../components/Breadcrumbs.astro";
+import Icon from "../../../components/Icon.astro";
+import TrackIcon from "../../../components/TrackIcon.astro";
+import Base from "../../../layouts/Base.astro";
+import {
+  formatMinutes,
+  LEVELS,
+  placedExercises,
+  type TrackSummary,
+  topicPath,
+  trackSummaries,
+} from "../../../lib/exercises.ts";
+
+const placed = await placedExercises();
+const tracks = trackSummaries(placed);
+const essentials = tracks.filter((t) => t.topic.group === "essentials");
+const skills = tracks.filter((t) => t.topic.group === "skill");
+const essentialMinutes = essentials.reduce((s, t) => s + t.minutes, 0);
+const essentialCount = essentials.reduce((s, t) => s + t.exercises.length, 0);
+const essentialFunctions = [...new Set(essentials.flatMap((t) => t.functions))];
+const idsOf = (t: TrackSummary) => t.exercises.map((p) => p.exercise.id).join(" ");
+const how = [
+  {
+    icon: "route" as const,
+    title: "Choose where to start",
+    text: "Start with the essentials, or go straight to the skill you need for work.",
+  },
+  {
+    icon: "grid" as const,
+    title: "Solve each exercise",
+    text: "Each exercise opens a real sheet. Type the formula and get a verdict straight away.",
+  },
+  {
+    icon: "chart" as const,
+    title: "Watch the track fill in",
+    text: "Solved exercises are ticked off on every track, and stay in this browser.",
+  },
+];
+---
+
+<Base
+  title="Learning tracks"
+  description={`${tracks.length} Excel learning tracks, from your first cell reference to lookups, text, dates and capstone tasks, in a sensible order.`}
+  section="/exercises/"
+  layout="wide"
+>
+  <div class="crumbs-row">
+    <Breadcrumbs items={[{ label: "Exercises", href: "/exercises/" }]} />
+  </div>
+  <header class="intro">
+    <h1>Pick a track for the skill you need</h1>
+    <p class="lead">
+      A track is a short run of exercises on one skill. Do them all in order, or jump to the one
+      your work needs.
+    </p>
+  </header>
+
+  <section class="group" aria-labelledby="g-essentials">
+    <div class="group-head">
+      <h2 id="g-essentials">Start here if formulas are new to you</h2>
+      <p>These tracks lay the groundwork for everything else: references, arithmetic and totals.</p>
+    </div>
+    <div class="essentials">
+      <ul class="cards">
+        {
+          essentials.map((t) => (
+            <li>
+              <article class="card track" data-track-progress={idsOf(t)}>
+                <div class="track-top">
+                  <TrackIcon slug={t.topic.slug} />
+                  <span class="status-pill" data-track-state>
+                    Not started
+                  </span>
+                  <span class={`badge badge-${t.level}`}>{LEVELS[t.level]}</span>
+                </div>
+                <h3>{t.topic.title}</h3>
+                <p>{t.topic.summary}</p>
+                <p class="facts">
+                  <span>{t.exercises.length} exercises</span>
+                  <span>{formatMinutes(t.minutes)}</span>
+                </p>
+                <span class="progress-bar" aria-hidden="true">
+                  <span data-bar />
+                </span>
+                <span class="visually-hidden" data-bar-text>
+                  0 of {t.exercises.length} done
+                </span>
+                <a class="button button-primary" href={topicPath(t.topic.slug)}>
+                  <span aria-hidden="true" data-track-action>Start track</span><span class="visually-hidden"><span data-track-action>Start track</span>: {t.topic.title}</span>
+                </a>
+              </article>
+            </li>
+          ))
+        }
+      </ul>
+      <aside class="practise-panel" aria-labelledby="practise-heading">
+        <h3 id="practise-heading">In these two tracks</h3>
+        <dl>
+          <div>
+            <dt>exercises with hints</dt>
+            <dd>{essentialCount}</dd>
+          </div>
+          <div>
+            <dt>of practice, roughly</dt>
+            <dd>{formatMinutes(essentialMinutes)}</dd>
+          </div>
+        </dl>
+        <p>
+          Cell references, arithmetic and brackets, then {essentialFunctions.join(", ")}.
+        </p>
+        <p class="faint">Every later track builds on these.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="group" aria-labelledby="g-skill">
+    <div class="group-head">
+      <h2 id="g-skill">Go deeper on one family of functions</h2>
+      <p>Counting, logic, lookups, text, dates and more, one track each.</p>
+    </div>
+    <ul class="cards cards-3">
+      {
+        skills.map((t) => (
+          <li>
+            <article class="card track" data-track-progress={idsOf(t)}>
+              <div class="track-top">
+                <TrackIcon slug={t.topic.slug} />
+                <span class="status-pill" data-track-state>
+                  Not started
+                </span>
+                <span class={`badge badge-${t.level}`}>{LEVELS[t.level]}</span>
+              </div>
+              <h3>{t.topic.title}</h3>
+              <p>{t.topic.summary}</p>
+              <p class="facts">
+                <span>{t.exercises.length} exercises</span>
+                <span>{formatMinutes(t.minutes)}</span>
+              </p>
+              <span class="progress-bar" aria-hidden="true">
+                <span data-bar />
+              </span>
+              <span class="visually-hidden" data-bar-text>
+                0 of {t.exercises.length} done
+              </span>
+              <a class="button button-primary" href={topicPath(t.topic.slug)}>
+                <span aria-hidden="true" data-track-action>Start track</span><span class="visually-hidden"><span data-track-action>Start track</span>: {t.topic.title}</span>
+              </a>
+            </article>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="group how" aria-labelledby="g-how">
+    <h2 id="g-how">How a track works</h2>
+    <ol class="how-list">
+      {
+        how.map((h) => (
+          <li class="card">
+            <span class="icon-box">
+              <Icon name={h.icon} size={22} />
+            </span>
+            <h3>{h.title}</h3>
+            <p>{h.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="card browse" aria-labelledby="g-browse">
+    <h2 id="g-browse">Want the full list instead?</h2>
+    <p>Every exercise is also in one table, with filters for difficulty, track and progress.</p>
+    <a class="button button-outline" href="/exercises/">Open the catalogue</a>
+  </section>
+</Base>
+
+<script>
+  // The catalogue script paints each card: the bar, the status pill and
+  // whether its button says Start, Continue or Review.
+  import "../../../scripts/catalogue.ts";
+</script>
+
+<style>
+  .crumbs-row {
+    padding-top: var(--space-5);
+  }
+  .intro {
+    max-width: 52rem;
+    padding: var(--space-5) 0 var(--space-6);
+  }
+  .intro h1 {
+    margin: 0 0 var(--space-4);
+    font-size: var(--size-xxl);
+    line-height: 1.2;
+    color: var(--heading);
+  }
+  .lead {
+    margin: 0;
+    font-size: var(--size-l);
+    color: var(--muted);
+  }
+  .group {
+    margin-bottom: var(--space-7);
+  }
+  .group-head h2,
+  .how h2 {
+    margin: 0 0 var(--space-1);
+    font-size: var(--size-xl);
+    color: var(--heading);
+  }
+  .group-head p {
+    margin: 0 0 var(--space-5);
+    color: var(--muted);
+  }
+  ul,
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .essentials {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+  .cards li {
+    display: grid;
+    min-width: 0;
+  }
+  .track {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .track-top {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .track-top :global(.track-icon) {
+    margin-right: auto;
+  }
+  .status-pill {
+    padding: 0.125rem 0.5rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-pill);
+    font-size: var(--size-xs);
+    color: var(--muted);
+  }
+  .status-pill[data-state="done"] {
+    border-color: var(--chip-line);
+    background: var(--chip-bg);
+    color: var(--chip);
+  }
+  .track h3 {
+    margin: 0;
+    font-size: var(--size-l);
+    color: var(--heading);
+  }
+  .track p {
+    margin: 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .facts {
+    display: flex;
+    gap: var(--space-2);
+  }
+  .facts span {
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-s);
+    background: var(--header);
+    font-size: var(--size-xs);
+  }
+  .track .button {
+    margin-top: auto;
+  }
+  .practise-panel {
+    padding: var(--space-6);
+    border-radius: var(--radius-l);
+    background: var(--footer-bg);
+    color: var(--on-footer-muted);
+  }
+  .practise-panel h3 {
+    margin: 0 0 var(--space-4);
+    color: var(--on-footer);
+    font-size: var(--size-base);
+  }
+  .practise-panel dl {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: start;
+    gap: var(--space-4) var(--space-6);
+    margin: 0 0 var(--space-4);
+  }
+  .practise-panel dl div {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .practise-panel dd {
+    margin: 0;
+    white-space: nowrap;
+    font-size: var(--size-xxl);
+    font-weight: 700;
+    color: var(--on-footer);
+  }
+  .practise-panel dt {
+    font-size: var(--size-s);
+  }
+  .practise-panel p {
+    margin: 0 0 var(--space-3);
+    font-size: var(--size-s);
+  }
+  .how-list {
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+  }
+  .how-list h3 {
+    margin: var(--space-3) 0 var(--space-1);
+    font-size: var(--size-base);
+    color: var(--heading);
+  }
+  .how-list p {
+    margin: 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .icon-box {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-l);
+    background: var(--chip-bg);
+    color: var(--chip);
+  }
+  .browse {
+    margin-bottom: var(--space-7);
+    text-align: center;
+  }
+  .browse h2 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--size-l);
+    color: var(--heading);
+  }
+  .browse p {
+    margin: 0 0 var(--space-4);
+    color: var(--muted);
+  }
+  @media (min-width: 48rem) {
+    .cards {
+      grid-template-columns: 1fr 1fr;
+    }
+    .cards-3,
+    .how-list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (min-width: 64rem) {
+    .essentials {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    }
+  }
+</style>

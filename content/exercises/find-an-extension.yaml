@@ -1,0 +1,48 @@
+id: find-an-extension
+slug: find-an-extension
+level: 2
+title: Find an extension with VLOOKUP
+topic: lookups
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B9, find the phone extension of the person whose ID is in B8. Use an exact match.
+    rows:
+      - [ID, Name, Team, Extension]
+      - [1041, Ana, Sales, 214]
+      - [1042, Ben, Finance, 305]
+      - [1043, Cleo, Sales, 218]
+      - [1044, Dev, IT, 402]
+      - [1045, Eve, Finance, 311]
+      - [null, null, null, null]
+      - [Find ID, 1043, null, null]
+      - [Extension, null, null, null]
+    answerCell: B9
+    expected: 218
+    answer: =VLOOKUP(B8,A2:D6,4,FALSE)
+    requiredFunctions: [VLOOKUP]
+    hints:
+      nudge: VLOOKUP searches the first column of a table and returns a value from the same row.
+      rule: VLOOKUP takes what to find, the table, the column number to return, then FALSE for an exact match. Columns count from the left of the table.
+    misses:
+      syntax: Separate the four parts of VLOOKUP with commas, and close the bracket.
+      required-function: Use VLOOKUP, which this exercise practises.
+      reference: Point at the ID in B8, so the result updates when the ID changes.
+      value: Count the columns from the left edge of the table. The extension is in the 4th column of A to D.
+    accept:
+      - =VLOOKUP(B8,A2:D6,4,FALSE)
+      - =VLOOKUP(B8,A2:D6,4,0)
+      - =VLOOKUP(B8,$A$2:$D$6,4,FALSE)
+    reject:
+      - { formula: "=VLOOKUP(B8,A2:D6,4,FALSE", rule: syntax }
+      - { formula: "=XLOOKUP(B8,A2:A6,D2:D6)", rule: required-function }
+      - { formula: "=VLOOKUP(1043,A2:D6,4,FALSE)", rule: reference }
+      - { formula: "=VLOOKUP(B8,A2:D6,3,FALSE)", rule: value }
+      - { formula: "=VLOOKUP(B8,B2:D6,4,FALSE)", rule: value }
+notes:
+  summary: VLOOKUP finds a value in the first column of a table and returns a value from a column to its right.
+  syntax: VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])
+  example: "`=VLOOKUP(E2,A2:C50,3,FALSE)` finds E2 in column A and returns the value from column C."
+  commonErrors:
+    - Leaving out FALSE, so VLOOKUP looks for the nearest match instead of an exact one.
+    - Counting the column number from column A of the sheet rather than from the table's first column.

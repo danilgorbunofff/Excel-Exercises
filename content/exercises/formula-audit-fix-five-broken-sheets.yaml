@@ -1,0 +1,189 @@
+id: formula-audit-fix-five-broken-sheets
+slug: formula-audit-fix-five-broken-sheets
+level: 3
+title: "Formula audit: fix five broken sheets"
+topic: capstone
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In D3, repair the ratio for the rep with no visits so it reads n/a instead of an error.
+    rows:
+      - [Rep, Visits, Orders, Ratio]
+      - [Ana, 10, 4, null]
+      - [Bo, 0, 0, null]
+      - [Cy, 8, 6, null]
+      - [Di, 5, 0, null]
+    answerCell: D3
+    expected: n/a
+    answer: =IF(B3=0,"n/a",C3/B3)
+    requiredFunctions: [IF]
+    hints:
+      nudge: Test the visits before dividing, since dividing by zero gives an error.
+      rule: IF can check the denominator first and return a word when it is zero. The division then runs only when there is something to divide by.
+    misses:
+      value: With no visits the answer is the word n/a, not a number.
+      syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
+      required-function: The cell has to choose between a word and a division.
+      reference: The visits figure for that rep is in B3.
+    accept:
+      - =IF(B3=0,"n/a",C3/B3)
+      - =if(b3=0,"n/a",c3/b3)
+      - =IF($B$3=0,"n/a",$C$3/$B$3)
+      - =IF(B$3=0,"n/a",C$3/B$3)
+      - =IF( B3 = 0 , "n/a" , C3 / B3 )
+      - =IF(B3<>0,C3/B3,"n/a")
+    reject:
+      - { formula: =C3/B3, rule: required-function }
+      - { formula: '=IFERROR(C3/B3,"n/a")', rule: required-function }
+      - { formula: '=IF(B3=0,"none",C3/B3)', rule: value }
+      - { formula: '=IF(B3=0,"n/a",C3/B3)&" "', rule: value }
+      - { formula: '=IF(B2=0,"n/a",C2/B2)', rule: value }
+      - { formula: '=IF(B3="x","n/a",C3/B3)', rule: value }
+      - { formula: '=IF B3=0,"n/a",C3/B3', rule: syntax }
+  - prompt: In F2, look up the orders for the name in E2, and show not found when the name is not in the list.
+    rows:
+      - [Rep, Visits, Orders, Ratio, Name, Orders found]
+      - [Ana, 10, 4, null, Zed, null]
+      - [Bo, 0, 0, null, null, null]
+      - [Cy, 8, 6, null, null, null]
+      - [Di, 5, 0, null, null, null]
+    answerCell: F2
+    expected: not found
+    answer: =IF(COUNTIF(A2:A5,E2)=0,"not found",VLOOKUP(E2,A2:C5,3,FALSE))
+    requiredFunctions: [COUNTIF, VLOOKUP]
+    hints:
+      nudge: Check whether the name is in the list before looking it up.
+      rule: COUNTIF returns 0 when a value is not in a range, so IF can test that count first. VLOOKUP with FALSE then runs only for a name that exists.
+    misses:
+      value: Zed is not in the list, so the answer is the word not found.
+      syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
+      required-function: The key is tested for before the lookup asks for its row.
+      reference: The typed name is in E2.
+    accept:
+      - =IF(COUNTIF(A2:A5,E2)=0,"not found",VLOOKUP(E2,A2:C5,3,FALSE))
+      - =if(countif(a2:a5,e2)=0,"not found",vlookup(e2,a2:c5,3,false))
+      - =IF(COUNTIF($A$2:$A$5,$E$2)=0,"not found",VLOOKUP($E$2,$A$2:$C$5,3,FALSE))
+      - =IF(COUNTIF(A$2:A$5,E$2)=0,"not found",VLOOKUP(E$2,A$2:C$5,3,FALSE))
+      - =IF( COUNTIF(A2:A5,E2) = 0 , "not found" , VLOOKUP(E2,A2:C5,3,FALSE) )
+      - =IF(COUNTIF(A2:A5,E2)=0,"not found",VLOOKUP(E2,A2:C5,3,FALSE))&""
+    reject:
+      - { formula: "=VLOOKUP(E2,A2:C5,3,FALSE)", rule: required-function }
+      - { formula: '=IF(COUNTIF(A2:A5,E2)=0," not found",VLOOKUP(E2,A2:C5,3,FALSE))', rule: value }
+      - { formula: '=IF(COUNTIF(A2:A5,E2)=0,"missing",VLOOKUP(E2,A2:C5,3,FALSE))', rule: value }
+      - { formula: '=IF(COUNTIF(A2:A5,E2)=1,"not found",VLOOKUP(E2,A2:C5,3,FALSE))', rule: value }
+      - { formula: '=IF(COUNTIF(A2:A5,E2)=0,"not found","found")', rule: required-function }
+      - { formula: '=IF(1=0,"not found","found")', rule: required-function }
+      - {
+          formula: '=IF(COUNTIF(A2:A5,E2)/0=0,"not found",VLOOKUP(E2,A2:C5,3,FALSE))',
+          rule: reference,
+        }
+      - { formula: '=IF COUNTIF(A2:A5,E2)=0,"not found",VLOOKUP(E2,A2:C5,3,FALSE)', rule: syntax }
+  - prompt: In D3, repair the line value so a quantity that is not a number contributes nothing instead of failing.
+    rows:
+      - [Item, Qty, Price, Value]
+      - [bolt, 4, 2.5, null]
+      - [nut, n/a, 1.5, null]
+      - [washer, 10, 0.4, null]
+      - [screw, 6, 0.8, null]
+    answerCell: D3
+    expected: 0
+    answer: =IF(ISNUMBER(B3),B3*C3,0)
+    requiredFunctions: [ISNUMBER]
+    hints:
+      nudge: Check that the quantity is a number before multiplying.
+      rule: ISNUMBER returns TRUE for a number and FALSE for text. Inside IF, it lets the multiplication run only when the quantity is a number.
+    misses:
+      value: A line with no usable quantity is worth nothing, so it contributes zero.
+      syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
+      required-function: The quantity is text on that row, so the fix starts with a type test.
+      reference: The quantity is in B3.
+    accept:
+      - =IF(ISNUMBER(B3),B3*C3,0)
+      - =if(isnumber(b3),b3*c3,0)
+      - =IF(ISNUMBER($B$3),$B$3*$C$3,0)
+      - =IF(ISNUMBER(B$3),B$3*C$3,0)
+      - =IF( ISNUMBER( B3 ) , B3 * C3 , 0 )
+      - =IF(ISNUMBER(B3),B3*C3,0)+0
+    reject:
+      - { formula: =B3*C3, rule: required-function }
+      - { formula: =0, rule: required-function }
+      - { formula: '=IF(ISNUMBER(B3),B3*C3,"")', rule: value }
+      - { formula: "=IF(ISNUMBER(B3),B3*C3,1)", rule: value }
+      - { formula: "=IF(ISNUMBER(C3),B3*C3,0)", rule: value }
+      - { formula: "=IF(ISNUMBER(B2),B2*C2,0)", rule: value }
+      - { formula: "=IF(ISNUMBER(B3),B3*C3,0)/0", rule: value }
+      - { formula: "=IF ISNUMBER(B3),B3*C3,0", rule: syntax }
+  - prompt: In C2, repair the North total so its ranges cover every row of the table.
+    rows:
+      - [Region, Amount, Answer]
+      - [North, 100, null]
+      - [South, 200, null]
+      - [North, 150, null]
+      - [East, 90, null]
+    answerCell: C2
+    expected: 250
+    answer: =SUMIF(A2:A5,"North",B2:B5)
+    requiredFunctions: [SUMIF]
+    hints:
+      nudge: Both ranges must run from the first row of data to the last.
+      rule: SUMIF takes the range to test, the condition, then the range to add. The two ranges should cover the same rows.
+    misses:
+      value: A hundred and a hundred and fifty are the two North rows, so 250.
+      syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, [sum_range])`."
+      required-function: Only the North rows count, so the total needs a criterion.
+      reference: The amount column is B2:B5.
+    accept:
+      - =SUMIF(A2:A5,"North",B2:B5)
+      - =sumif(a2:a5,"north",b2:b5)
+      - =SUMIF($A$2:$A$5,"North",$B$2:$B$5)
+      - =SUMIF(A$2:A$5,"North",B$2:B$5)
+      - =SUMIF( A2:A5 , "North" , B2:B5 )
+      - =SUMIF(A2:A5,"North",B2:B5)+0
+    reject:
+      - { formula: =SUM(B2:B5), rule: required-function }
+      - { formula: '=SUMIF(A2:A3,"North",B2:B3)', rule: value }
+      - { formula: '=SUMIF(A2:A5,"South",B2:B5)', rule: value }
+      - { formula: '=SUMIF(A3:A5,"North",B3:B5)', rule: value }
+      - { formula: '=SUMIF(A2:A5,"North",B2:B5)/0', rule: value }
+      - { formula: '=SUMIF A2:A5,"North",B2:B5', rule: syntax }
+  - prompt: In C2, repair the average so it stops reading a name error and reports the score column.
+    rows:
+      - [Name, Score, Answer]
+      - [Ana, 82, null]
+      - [Bo, 91, null]
+      - [Cy, 78, null]
+      - [Di, 88, null]
+    answerCell: C2
+    expected: 84.75
+    answer: =AVERAGE(B2:B5)
+    requiredFunctions: [AVERAGE]
+    hints:
+      nudge: A name error usually means Excel does not recognise the function name, so check the spelling.
+      rule: Excel shows `#NAME?` when a function name is misspelt. AVERAGE adds the numbers in a range and divides by how many there are.
+    misses:
+      value: 339 across four names is 84.75.
+      syntax: "Check the brackets, commas and quote marks. AVERAGE follows the pattern `=AVERAGE(number1, [number2], ...)`."
+      required-function: The repaired cell reports the mean of the scores.
+      reference: The score column is B2:B5.
+    accept:
+      - =AVERAGE(B2:B5)
+      - =average(b2:b5)
+      - =AVERAGE($B$2:$B$5)
+      - =AVERAGE(B$2:B$5)
+      - =AVERAGE( B2:B5 )
+      - =AVERAGE(B2:B5)+0
+    reject:
+      - { formula: =AVRAGE(B2:B5), rule: syntax }
+      - { formula: =SUM(B2:B5), rule: required-function }
+      - { formula: =AVERAGE(B2:B4), rule: value }
+      - { formula: =AVERAGE(B3:B5), rule: value }
+      - { formula: =AVERAGE(B2:B5)/0, rule: value }
+      - { formula: =AVERAGE B2:B5, rule: syntax }
+notes:
+  summary: Each error code names one kind of break, such as a zero divisor, a missing lookup key, text in arithmetic or a misspelt function name. Most repairs test for that cause before the failing step runs.
+  syntax: "each error code names one break: a zero divisor, a missing key, text in arithmetic, a wrong range, a misspelling"
+  example: '`=IF(B1=0,"n/a",A1/B1)` with 6 in A1 and 0 in B1 gives n/a instead of `#DIV/0!`.'
+  commonErrors:
+    - A denominator is zero, so the division has no result and the cell needs a test in front of it.
+    - A lookup key is not in the table, which leaves no row to read, so the key has to be counted first.
+    - An operand is text where a number belongs, so the arithmetic needs a type test before it runs.

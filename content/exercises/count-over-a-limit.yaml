@@ -1,0 +1,46 @@
+id: count-over-a-limit
+slug: count-over-a-limit
+level: 2
+title: Count values over a limit
+topic: conditions
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B8, count the invoices for more than 100. An invoice for exactly 100 does not count.
+    rows:
+      - [Invoice, Amount]
+      - [INV-1, 85]
+      - [INV-2, 240]
+      - [INV-3, 120]
+      - [INV-4, 60]
+      - [INV-5, 310]
+      - [INV-6, 100]
+      - [Over 100, null]
+    answerCell: B8
+    expected: 3
+    answer: '=COUNTIF(B2:B7,">100")'
+    requiredFunctions: [COUNTIF]
+    hints:
+      nudge: A condition can compare, such as more than a number.
+      rule: A comparison goes in double quotes with its operator, as in `">50"`. The sign `>` means more than, and `>=` means at least.
+    misses:
+      syntax: Put the condition in double quotes, operator included, as in `">50"`.
+      required-function: Use COUNTIF with a condition, so the count updates when an amount changes.
+      reference: Point at the amounts in B2 to B7, not at B8.
+      value: Check the condition, as in `">50"`. More than 100 leaves out an invoice for exactly 100.
+    accept:
+      - '=COUNTIF(B2:B7,">100")'
+      - '=COUNTIF(B2:B7,"> 100")'
+    reject:
+      - { formula: "=COUNTIF(B2:B7,>100)", rule: syntax }
+      - { formula: "=COUNT(B2:B7)", rule: required-function }
+      - { formula: '=COUNTIF(B2:B8,">100")', rule: reference }
+      - { formula: '=COUNTIF(B2:B7,">=100")', rule: value }
+      - { formula: '=COUNTIF(B2:B7,"over 100")', rule: value }
+notes:
+  summary: A COUNTIF condition can compare numbers with the operators =, <>, <, <=, > and >=.
+  syntax: COUNTIF(range, criteria)
+  example: '`=COUNTIF(A1:A10,"<0")` counts the negative numbers in A1 to A10.'
+  commonErrors:
+    - Using >= when the task says more than.
+    - Leaving the condition out of double quotes.

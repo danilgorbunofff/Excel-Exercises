@@ -1,0 +1,70 @@
+---
+// Why this exists: what account-only pages show to a visitor who is not
+// signed in, which until accounts open is everyone.
+import { ACCOUNT_NAV } from "../lib/nav.ts";
+import Icon, { type IconName } from "./Icon.astro";
+
+interface Props {
+  title: string;
+  lead: string;
+  icon?: IconName;
+}
+const { title, lead, icon = "user" } = Astro.props;
+---
+
+<div class="wrap">
+  <div class="card panel">
+    <span class="icon-box"><Icon name={icon} size={24} /></span>
+    <h1>{title}</h1>
+    <p>{lead}</p>
+    <p class="note">
+      Accounts open soon. Your progress is saved in this browser in the meantime.
+    </p>
+    <div class="actions">
+      <a class="button button-primary" href={ACCOUNT_NAV.login.href}>{ACCOUNT_NAV.login.label}</a>
+      <a class="button button-outline" href="/progress/">See my progress</a>
+    </div>
+    <slot />
+  </div>
+</div>
+
+<style>
+  .wrap {
+    display: grid;
+    place-items: center;
+    padding: var(--space-7) var(--space-4);
+  }
+  .panel {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    max-width: 32rem;
+    padding: var(--space-6);
+    text-align: center;
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--size-xl);
+    color: var(--heading);
+  }
+  p {
+    margin: 0;
+    color: var(--muted);
+  }
+  .note {
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--chip-line);
+    border-radius: var(--radius-m);
+    background: var(--chip-bg);
+    color: var(--text);
+    font-size: var(--size-s);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+</style>

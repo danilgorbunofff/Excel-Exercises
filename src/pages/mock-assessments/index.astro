@@ -1,0 +1,15 @@
+---
+// Why this exists: timed practice tests, a PRO feature that needs an account.
+import SignedOutPanel from "../../components/SignedOutPanel.astro";
+import Base from "../../layouts/Base.astro";
+---
+
+<Base title="Mock assessments" description="Timed Excel practice tests like the ones employers use." layout="flush">
+  <SignedOutPanel
+    title="Mock assessments"
+    lead="Timed sets of exercises like the ones employers use, with a summary at the end. They are part of PRO and need an account."
+    icon="clock"
+  >
+    <a class="arrow-link" href="/pro/">What PRO will add&nbsp;<span aria-hidden="true">→</span></a>
+  </SignedOutPanel>
+</Base>

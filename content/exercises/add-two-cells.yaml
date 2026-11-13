@@ -1,0 +1,44 @@
+id: add-two-cells
+slug: add-two-cells
+level: 1
+title: Add two cells
+topic: references
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B4, add the price in B2 and the delivery charge in B3.
+    rows:
+      - [Item, Cost]
+      - [Price, 24.5]
+      - [Delivery, 4.99]
+      - [Total, null]
+    answerCell: B4
+    expected: 29.49
+    answer: =B2+B3
+    forbiddenFunctions: [SUM]
+    hints:
+      nudge: A formula can point at a cell by its address, such as B2.
+      rule: The plus sign adds two values. Write the first cell, a plus sign, then the second cell.
+    misses:
+      syntax: A formula starts with = and joins two cells with a plus sign, as in `=A1+A2`.
+      forbidden-function: This exercise practises the plus sign. Add the two cells without SUM.
+      reference: Point at B2 and B3, so the total changes when the price or the delivery changes.
+      value: Check that the formula adds B2 and B3, and nothing else.
+    accept:
+      - =B2+B3
+      - =b2+b3
+      - =B3+B2
+      - = B2 + B3
+    reject:
+      - { formula: "=B2+B3)", rule: syntax }
+      - { formula: "=SUM(B2:B3)", rule: forbidden-function }
+      - { formula: "=24.5+4.99", rule: reference }
+      - { formula: "=B2+B4", rule: reference }
+      - { formula: "=B2", rule: value }
+notes:
+  summary: A formula starts with =. A cell address such as B2 stands for the value in that cell.
+  syntax: =cell+cell
+  example: "`=A1+A2` adds the values in A1 and A2."
+  commonErrors:
+    - Typing the numbers instead of the cell addresses, so the result does not update.
+    - Leaving out the = sign, so Excel shows the text instead of a result.

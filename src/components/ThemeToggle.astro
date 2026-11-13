@@ -1,0 +1,124 @@
+---
+// Why this exists: a button that switches between light and dark. Until the
+// visitor presses it, the site follows their system setting. The choice is
+// kept in this browser only.
+import Icon from "./Icon.astro";
+---
+
+<button class="button theme-toggle" type="button" aria-label="Switch to dark theme">
+  <span class="thumb">
+    <Icon name="sun" size={16} class="sun" />
+    <Icon name="moon" size={16} class="moon" />
+  </span>
+</button>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>(".theme-toggle");
+  const root = document.documentElement;
+  const dark = matchMedia("(prefers-color-scheme: dark)");
+  const isDark = () => (root.dataset.theme ? root.dataset.theme === "dark" : dark.matches);
+  const sync = () => {
+    for (const b of buttons) {
+      b.setAttribute("aria-label", isDark() ? "Switch to light theme" : "Switch to dark theme");
+    }
+  };
+  sync();
+  dark.addEventListener("change", sync);
+  const toggle = () => {
+    const next = isDark() ? "light" : "dark";
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem("theme", next);
+    } catch {
+      // Private mode or blocked storage: the choice lasts until the page closes.
+    }
+    sync();
+  };
+  for (const b of buttons) b.addEventListener("click", toggle);
+</script>
+
+<style>
+  /* --on is 0 in light and 1 in dark; every animated value is derived from it. */
+  .theme-toggle {
+    --on: 0;
+    --travel: 1.5rem;
+    position: relative;
+    width: 3.75rem;
+    height: 2rem;
+    min-height: 0;
+    padding: 0;
+    flex-shrink: 0;
+    justify-content: flex-start;
+    overflow: hidden;
+    border-radius: 999px;
+    background: light-dark(#bfe3ff, #1b2540);
+    box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.25);
+  }
+  .theme-toggle::before {
+    /* Stars that fade in at night. */
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: var(--on);
+    background:
+      radial-gradient(circle at 22% 30%, #fff 0 1px, transparent 1.5px),
+      radial-gradient(circle at 40% 68%, #fff 0 1.2px, transparent 1.7px),
+      radial-gradient(circle at 12% 72%, #fff 0 0.8px, transparent 1.3px),
+      radial-gradient(circle at 52% 24%, #fff 0 0.8px, transparent 1.3px);
+  }
+  .thumb {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: 0.25rem;
+    border-radius: 50%;
+    background: light-dark(#fff, #2d3a5c);
+    box-shadow: 0 1px 4px rgb(0 0 0 / 0.35);
+    transform: translateX(calc(var(--on) * var(--travel)));
+  }
+  .theme-toggle:hover .thumb {
+    box-shadow: 0 1px 8px rgb(0 0 0 / 0.5);
+  }
+  .theme-toggle:active .thumb {
+    transform: translateX(calc(var(--on) * var(--travel))) scale(0.92);
+  }
+  .thumb :global(.icon) {
+    grid-area: 1 / 1;
+  }
+  .thumb :global(.sun) {
+    color: #f59e0b;
+    opacity: calc(1 - var(--on));
+    transform: rotate(calc(var(--on) * 90deg)) scale(calc(1 - var(--on) * 0.5));
+  }
+  .thumb :global(.moon) {
+    color: #c8d4ff;
+    opacity: var(--on);
+    transform: rotate(calc((1 - var(--on)) * -90deg)) scale(calc(0.5 + var(--on) * 0.5));
+  }
+  :global(:root[data-theme="dark"]) .theme-toggle {
+    --on: 1;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme])) .theme-toggle {
+      --on: 1;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .theme-toggle {
+      transition: background-color 0.4s ease;
+    }
+    .theme-toggle::before {
+      transition: opacity 0.4s ease;
+    }
+    .thumb {
+      transition: transform 0.45s cubic-bezier(0.68, -0.4, 0.27, 1.4);
+    }
+    .thumb :global(.icon) {
+      transition:
+        opacity 0.3s ease,
+        transform 0.45s ease;
+    }
+  }
+</style>

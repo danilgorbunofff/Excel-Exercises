@@ -1,0 +1,46 @@
+id: share-handed-in
+slug: share-handed-in
+level: 2
+title: Share of essays handed in
+topic: counting
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: Each essay that was handed in has a mark. In B10, work out the share of students who handed one in, as a fraction such as 0.5.
+    rows:
+      - [Student, Mark]
+      - [Ana, 14]
+      - [Ben, null]
+      - [Cara, 17]
+      - [Dan, 12]
+      - [Eve, null]
+      - [Finn, 19]
+      - [Gus, 15]
+      - [Hana, null]
+      - [Share handed in, null]
+    answerCell: B10
+    expected: 0.625
+    answer: =COUNT(B2:B9)/COUNTA(A2:A9)
+    requiredFunctions: [COUNT, COUNTA]
+    hints:
+      nudge: Divide the number of marks by the number of students.
+      rule: COUNT counts numbers, so it counts the marks. COUNTA counts any filled cell, so it counts the names.
+    misses:
+      syntax: The forward slash `/` divides. Check that each bracket is closed.
+      required-function: Count the marks with COUNT and the students with COUNTA, so the share updates when the list changes.
+      value: Check what each function counts. COUNT finds numbers, COUNTA finds any filled cell, and the names start in A2.
+    accept:
+      - =COUNT(B2:B9)/COUNTA(A2:A9)
+      - =count(b2:b9)/counta(a2:a9)
+    reject:
+      - { formula: "=COUNT(B2:B9)/COUNTA(A2:A9", rule: syntax }
+      - { formula: "=COUNT(B2:B9)/8", rule: required-function }
+      - { formula: "=COUNTA(B2:B9)/COUNT(A2:A9)", rule: value }
+      - { formula: "=COUNT(B2:B9)/COUNTA(A1:A9)", rule: value }
+notes:
+  summary: Dividing one count by another gives a share. COUNT and COUNTA count different things.
+  syntax: COUNT(range)/COUNTA(range)
+  example: "`=COUNT(B2:B5)/COUNTA(A2:A5)` gives 0.75 when three of four people have a number in column B."
+  commonErrors:
+    - Using COUNT on names, which gives 0 and a division by zero.
+    - Including the heading row, which adds one to COUNTA.

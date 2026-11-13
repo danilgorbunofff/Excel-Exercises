@@ -1,0 +1,60 @@
+---
+// Why this exists: the picture on an article card and at the top of an
+// article. It is drawn in CSS, a sheet with one selected cell that holds a few
+// characters from the article, so the site ships no stock photos.
+interface Props {
+  /** A few characters of formula text, such as "$A$1". */
+  text: string;
+  /** Which of the three colours to use. Any number; it wraps. */
+  tone?: number;
+  /** A shallow band for the top of an article. */
+  wide?: boolean;
+}
+const { text, tone = 0, wide = false } = Astro.props;
+---
+
+<span class:list={["cover", `tone-${(tone % 3) + 1}`, { wide }]} aria-hidden="true">
+  <code class="cell">{text}</code>
+</span>
+
+<style>
+  .cover {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 9;
+    background-color: var(--cover-bg);
+    /* Cell borders, as on a sheet. */
+    background-image:
+      linear-gradient(var(--cover-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--cover-line) 1px, transparent 1px);
+    background-size: 4.5rem 1.75rem;
+    background-position: -1px -1px;
+  }
+  .cover.wide {
+    aspect-ratio: 4 / 1;
+    border-radius: var(--radius-l);
+  }
+  .tone-1 {
+    --cover-bg: var(--primary);
+  }
+  .tone-2 {
+    --cover-bg: var(--offer-blue);
+  }
+  .tone-3 {
+    --cover-bg: var(--offer-charcoal);
+  }
+  .cover {
+    --cover-line: rgb(255 255 255 / 0.14);
+  }
+  .cell {
+    min-width: 9rem;
+    padding: var(--space-2) var(--space-4);
+    border: 2px solid var(--on-primary);
+    background: var(--cover-bg);
+    color: var(--on-primary);
+    font-family: var(--font-mono);
+    font-size: var(--size-xl);
+    font-weight: 600;
+    text-align: center;
+  }
+</style>

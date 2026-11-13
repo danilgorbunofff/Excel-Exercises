@@ -1,0 +1,16 @@
+---
+// Why this exists: renders exercise prose with code and cell names marked, the
+// same way the exercise script renders verdicts.
+import { richText } from "../lib/rich-text.ts";
+
+interface Props {
+  text: string;
+}
+const segments = richText(Astro.props.text);
+---
+
+{
+  segments.map((s) =>
+    s.kind === "code" ? <code>{s.text}</code> : s.kind === "cell" ? <strong>{s.text}</strong> : s.text,
+  )
+}

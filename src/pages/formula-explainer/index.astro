@@ -1,0 +1,18 @@
+---
+// Why this exists: the formula explainer tool, opened on the first walkthrough.
+import ExplainerPage from "../../components/ExplainerPage.astro";
+import Base from "../../layouts/Base.astro";
+import { loadExplainers } from "../../lib/explainers.ts";
+
+const first = loadExplainers().walkthroughs[0];
+if (!first) throw new Error("content/explainers.yaml has no walkthroughs");
+---
+
+<Base
+  title="Formula explainer"
+  description="Paste an Excel formula and see every part worked out step by step, next to example data you can edit."
+  section="/formula-explainer/"
+  layout="wide"
+>
+  <ExplainerPage walkthrough={first} isIndex />
+</Base>

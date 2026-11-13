@@ -1,0 +1,48 @@
+id: total-for-two-conditions
+slug: total-for-two-conditions
+level: 3
+pro: true
+title: Total for two conditions
+topic: conditions
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In C8, add up the units of Pens sold in the North region.
+    rows:
+      - [Region, Product, Units]
+      - [North, Pens, 40]
+      - [North, Paper, 25]
+      - [South, Pens, 30]
+      - [North, Pens, 15]
+      - [South, Paper, 20]
+      - [North, Paper, 10]
+      - [North pens, null, null]
+    answerCell: C8
+    expected: 55
+    answer: '=SUMIFS(C2:C7,A2:A7,"North",B2:B7,"Pens")'
+    requiredFunctions: [SUMIFS]
+    hints:
+      nudge: Two conditions must both match on the same row.
+      rule: SUMIFS takes the range to add first, then pairs of a range to test and its condition.
+    misses:
+      syntax: Put each condition in double quotes, as in `"Pens"`.
+      required-function: Use SUMIFS, which tests two conditions at once.
+      reference: Point at the units in C2 to C7, not at C8.
+      value: Check that both conditions are there, the region in column A and the product in column B.
+    accept:
+      - '=SUMIFS(C2:C7,A2:A7,"North",B2:B7,"Pens")'
+      - '=SUMIFS(C2:C7,B2:B7,"Pens",A2:A7,"North")'
+      - '=sumifs(c2:c7,a2:a7,"north",b2:b7,"pens")'
+    reject:
+      - { formula: '=SUMIFS(C2:C7,A2:A7,North,B2:B7,"Pens")', rule: syntax }
+      - { formula: '=SUMIF(A2:A7,"North",C2:C7)', rule: required-function }
+      - { formula: '=SUMIFS(C2:C8,A2:A8,"North",B2:B8,"Pens")', rule: reference }
+      - { formula: '=SUMIFS(C2:C7,A2:A7,"North")', rule: value }
+      - { formula: '=SUMIFS(C2:C7,A2:A7,"North",B2:B7,"Paper")', rule: value }
+notes:
+  summary: SUMIFS adds the values in one range on rows where every condition is met.
+  syntax: SUMIFS(sum_range, criteria_range1, criteria1, [criteria_range2, criteria2], ...)
+  example: '`=SUMIFS(C2:C9,A2:A9,"Rent",B2:B9,"Jan")` adds the January rent.'
+  commonErrors:
+    - Putting the range to add last, as in SUMIF. SUMIFS takes it first.
+    - Ranges of different sizes, which give a #VALUE! error.

@@ -1,0 +1,92 @@
+---
+// Why this exists: a working exercise inside another page. The home page runs
+// the first exercise this way, and each function page ends with one.
+import { exercisePath, LEVELS, nextAction, type Placed } from "../lib/exercises.ts";
+import ExerciseData from "./ExerciseData.astro";
+import HintLadder from "./HintLadder.astro";
+import RichText from "./RichText.astro";
+import Sheet from "./Sheet.astro";
+import StatusBar from "./StatusBar.astro";
+
+interface Props {
+  placed: Placed;
+  heading: string;
+  /** Lines under the heading, before the task. */
+  intro?: string;
+}
+const { placed, heading, intro } = Astro.props;
+// An embedded sheet shows only its data, without the empty rows around it.
+const { exercise, number, total } = placed;
+const path = exercisePath(exercise.slug);
+---
+
+<section class="live" data-exercise aria-labelledby="live-heading">
+  <h2 id="live-heading">{heading}</h2>
+  {intro && <p class="intro">{intro}</p>}
+  <p class="task">
+    <strong>{exercise.title}.</strong>
+    {
+      exercise.screens.map((s, i) => (
+        <span data-prompt={i} hidden={i > 0}>
+          <RichText text={s.prompt} />
+        </span>
+      ))
+    }
+  </p>
+  {
+    exercise.screens.map((s, i) => (
+      <div class="work" data-screen={i} hidden={i > 0}>
+        <Sheet screen={s} index={i} action={path} compact />
+        <StatusBar index={i} answerCell={s.answerCell} next={nextAction(placed, i)} />
+      </div>
+    ))
+  }
+  <p class="meta">
+    Exercise {number} of {total}, {LEVELS[exercise.level as 1 | 2 | 3].toLowerCase()}.
+    <span data-progress hidden></span>
+    <a href={path}>Open it on its own page</a> for notes on the function.
+  </p>
+  <h3>Hints</h3>
+  {exercise.screens.map((s, i) => <HintLadder screen={s} index={i} />)}
+  <ExerciseData exercise={exercise} />
+</section>
+
+<style>
+  .live {
+    margin: var(--space-5) calc(-1 * var(--space-4)) 0;
+    padding: var(--space-4);
+    background: var(--panel);
+  }
+  h2 {
+    margin: 0 0 var(--space-2);
+    font-size: var(--size-l);
+  }
+  .intro,
+  .task,
+  .meta {
+    margin: 0 0 var(--space-3);
+  }
+  .meta {
+    margin: var(--space-3) 0 var(--space-2);
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .meta a {
+    color: var(--text);
+  }
+  .work[hidden],
+  [data-prompt][hidden],
+  [data-progress][hidden] {
+    display: none;
+  }
+  h3 {
+    margin: var(--space-4) 0 var(--space-1);
+    font-size: var(--size-base);
+  }
+  @media (min-width: 48rem) {
+    .live {
+      margin-inline: 0;
+      border-radius: var(--radius-m);
+    }
+  }
+</style>

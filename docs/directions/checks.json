@@ -1,0 +1,107 @@
+[
+  {
+    "direction": "Ledger",
+    "page": "landing",
+    "axe-light": [],
+    "axe-dark": [],
+    "sidewaysScrollAt320": false
+  },
+  {
+    "direction": "Ledger",
+    "page": "exercise-wrong",
+    "axe-light": [],
+    "fitsPhoneScreen": {
+      "task": 249,
+      "input": 359,
+      "grid": 785,
+      "verdict": 514,
+      "allVisible": true
+    },
+    "axe-dark": [],
+    "sidewaysScrollAt320": false
+  },
+  {
+    "direction": "Ledger",
+    "page": "exercise-correct",
+    "axe-light": [],
+    "fitsPhoneScreen": {
+      "task": 249,
+      "input": 359,
+      "grid": 730,
+      "verdict": 459,
+      "allVisible": true
+    },
+    "axe-dark": [],
+    "sidewaysScrollAt320": false
+  },
+  {
+    "direction": "Instrument",
+    "page": "landing",
+    "axe-light": [],
+    "axe-dark": [],
+    "sidewaysScrollAt320": false
+  },
+  {
+    "direction": "Instrument",
+    "page": "exercise-wrong",
+    "axe-light": [],
+    "fitsPhoneScreen": {
+      "task": 246,
+      "input": 358,
+      "grid": 793,
+      "verdict": 499,
+      "allVisible": true
+    },
+    "axe-dark": [],
+    "sidewaysScrollAt320": false
+  },
+  {
+    "direction": "Instrument",
+    "page": "exercise-correct",
+    "axe-light": [],
+    "fitsPhoneScreen": {
+      "task": 246,
+      "input": 358,
+      "grid": 740,
+      "verdict": 446,
+      "allVisible": true
+    },
+    "axe-dark": [],
+    "sidewaysScrollAt320": false
+  },
+  {
+    "direction": "Marker",
+    "page": "landing",
+    "axe-light": [],
+    "axe-dark": [],
+    "sidewaysScrollAt320": false
+  },
+  {
+    "direction": "Marker",
+    "page": "exercise-wrong",
+    "axe-light": [],
+    "fitsPhoneScreen": {
+      "task": 212,
+      "input": 636,
+      "grid": 551,
+      "verdict": 807,
+      "allVisible": true
+    },
+    "axe-dark": [],
+    "sidewaysScrollAt320": false
+  },
+  {
+    "direction": "Marker",
+    "page": "exercise-correct",
+    "axe-light": [],
+    "fitsPhoneScreen": {
+      "task": 212,
+      "input": 636,
+      "grid": 551,
+      "verdict": 754,
+      "allVisible": true
+    },
+    "axe-dark": [],
+    "sidewaysScrollAt320": false
+  }
+]

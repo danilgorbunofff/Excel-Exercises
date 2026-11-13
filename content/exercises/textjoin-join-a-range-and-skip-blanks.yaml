@@ -1,0 +1,51 @@
+id: textjoin-join-a-range-and-skip-blanks
+slug: textjoin-join-a-range-and-skip-blanks
+level: 2
+title: "TEXTJOIN: join a range and skip blanks"
+topic: text-change
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B7, join the departments in B2:B6 into one line, separated by a comma and a space, skipping the blanks.
+    rows:
+      - [Name, Department]
+      - [Ada, Engineering]
+      - [Grace, null]
+      - [Alan, Research]
+      - [Katherine, null]
+      - [Mary, Ops]
+      - [Departments, null]
+    answerCell: B7
+    expected: Engineering, Research, Ops
+    answer: =TEXTJOIN(", ",TRUE,B2:B6)
+    requiredFunctions: [TEXTJOIN]
+    hints:
+      nudge: One function joins a range with a separator and can leave out the empty cells.
+      rule: TEXTJOIN takes the separator in quotes, then TRUE to skip empty cells or FALSE to keep them, then the range.
+    misses:
+      value: Three of the five rows hold a department, joined by a comma and a space.
+      syntax: "Check the brackets, commas and quote marks. TEXTJOIN follows the pattern `=TEXTJOIN(delimiter, ignore_empty, text1, [text2], ...)`."
+      required-function: TEXTJOIN is the one function with a separator and a blank rule. CONCAT has neither and runs the departments into one word.
+      reference: Join B2:B6 so a department typed into a blank row is picked up.
+    accept:
+      - =TEXTJOIN(", ",TRUE,B2:B6)
+      - =textjoin(", ",true,b2:b6)
+      - =TEXTJOIN(", ",1,B2:B6)
+      - =TEXTJOIN(", ",TRUE,$B$2:$B$6)
+      - =TEXTJOIN(", ",TRUE,B2,B3,B4,B5,B6)
+    reject:
+      - { formula: '=TEXTJOIN(", ",TRUE,B2:B6', rule: syntax }
+      - { formula: =CONCAT(B2:B6), rule: required-function }
+      - { formula: '=TEXTJOIN(", ",FALSE,B2:B6)', rule: value }
+      - { formula: '=TEXTJOIN(" ",TRUE,B2:B6)', rule: value }
+      - { formula: '=TEXTJOIN(", ",TRUE,B2:B5)', rule: value }
+      - { formula: '=TEXTJOIN(", ",TRUE,"Engineering","Research","Ops")', rule: reference }
+      - { formula: '=TEXTJOIN(", ",TRUE,B2:B6)&1/0', rule: value }
+notes:
+  summary: TEXTJOIN joins a range into one string with a separator between the pieces. Its second argument, TRUE or FALSE, says whether empty cells are skipped.
+  syntax: TEXTJOIN(delimiter, ignore_empty, range)
+  example: '`=TEXTJOIN("/",TRUE,A1:A3)` with red, an empty cell and blue gives red/blue.'
+  commonErrors:
+    - The joined text was used in arithmetic, as when the result is divided by a number.
+    - "TEXTJOIN is typed without its last letter, and Excel returns `#NAME?`."
+    - FALSE in the second argument keeps the two empty rows, so the line has two comma pairs with nothing between them.

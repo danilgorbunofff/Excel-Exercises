@@ -1,0 +1,96 @@
+id: ifna-catch-only-a-missing-match
+slug: ifna-catch-only-a-missing-match
+level: 3
+title: "IFNA: catch only a missing match"
+topic: errors
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B9, look the code in A8 up in the table and say not on the list when it is missing.
+    rows:
+      - [Code, Price]
+      - [A-1, 10]
+      - [B-2, 20]
+      - [C-3, 30]
+      - [A-1, 12]
+      - [B-2, 22]
+      - [C-3, 32]
+      - [Q-9, null]
+      - [Missing code, null]
+    answerCell: B9
+    expected: not on the list
+    answer: =IFNA(VLOOKUP(A8,A2:B7,2,FALSE),"not on the list")
+    requiredFunctions: [IFNA, VLOOKUP]
+    hints:
+      nudge: Wrap the lookup in a guard that replaces only the error for a missing match.
+      rule: "VLOOKUP with FALSE returns `#N/A` when the code is missing. IFNA shows its second argument for `#N/A` and lets every other error through."
+    misses:
+      value: Q-9 is not in the code column, so the fallback words are the answer.
+      syntax: "Check the brackets, commas and quote marks. IFNA follows the pattern `=IFNA(value, value_if_na)`."
+      required-function: "Only `#N/A` is replaced here. A broken reference would stay on screen for someone to fix."
+      reference: Read the code from A8 instead of typing Q-9 into the formula.
+    accept:
+      - =IFNA(VLOOKUP(A8,A2:B7,2,FALSE),"not on the list")
+      - =ifna(vlookup(a8,a2:b7,2,false),"not on the list")
+      - =IFNA(VLOOKUP($A$8,$A$2:$B$7,2,FALSE),"not on the list")
+      - =IFNA(VLOOKUP(A8,A2:B7,2,0),"not on the list")
+      - =IFNA(VLOOKUP($A$8,$A$2:$B$7,2,0),"not on the list")
+      - =IFNA(VLOOKUP(A$8,$A$2:$B$7,2,FALSE),"not on the list")
+    reject:
+      - { formula: '=IFNA(VLOOKUP(A8,A2:B7,2,TRUE),"not on the list")', rule: value }
+      - { formula: '=IFERROR(VLOOKUP(A8,A2:B7,2,FALSE),"missing")', rule: required-function }
+      - {
+          formula: '=IFNA(INDEX(B2:B7,MATCH(A8,A2:A7,0)),"not on the list")',
+          rule: required-function,
+        }
+      - { formula: '=IFNA(VLOOKUP(A8,A2:B7,3,FALSE),"not on the list")', rule: value }
+      - { formula: '=IFNA(VLOOKUP(A8,A2:B7,2,FALSE),"not on the list")/0', rule: value }
+      - { formula: '=IFNA(VLOOKUP(A8,A2:B7,2,FALSE) "not on the list")', rule: syntax }
+  - prompt: In B9, price the code in A2 with the same lookup, keeping the fallback for a missing code.
+    rows:
+      - [Code, Price]
+      - [A-1, 10]
+      - [B-2, 20]
+      - [C-3, 30]
+      - [A-1, 12]
+      - [B-2, 22]
+      - [C-3, 32]
+      - [Q-9, null]
+      - [Found code, null]
+    answerCell: B9
+    expected: 10
+    answer: =IFNA(VLOOKUP(A2,A2:B7,2,FALSE),"not on the list")
+    requiredFunctions: [IFNA, VLOOKUP]
+    hints:
+      nudge: Keep the same guard and lookup, and change only which code you look up.
+      rule: VLOOKUP with FALSE returns the first exact match, reading down from the top. IFNA passes a found value through unchanged.
+    misses:
+      value: A-1 first appears in row 2 at 10. The duplicate at row 5 holds 12 and is never reached.
+      syntax: "Check the brackets, commas and quote marks. IFNA follows the pattern `=IFNA(value, value_if_na)`."
+      required-function: Keep the guard even though this row is found. The formula is meant for the rows that miss.
+      reference: Take the code from A2 rather than typing A-1.
+    accept:
+      - =IFNA(VLOOKUP(A2,A2:B7,2,FALSE),"not on the list")
+      - =ifna(vlookup(a2,a2:b7,2,false),"not on the list")
+      - =IFNA(VLOOKUP($A$2,$A$2:$B$7,2,FALSE),"not on the list")
+      - =IFNA(VLOOKUP($A2,$A$2:$B$7,2,FALSE),"not on the list")
+      - =IFNA(VLOOKUP(A$2,A2:B7,2,FALSE),"not on the list")
+    reject:
+      - { formula: "=VLOOKUP(A2,A2:B7,2,FALSE)", rule: required-function }
+      - { formula: '=IFNA(VLOOKUP(A2,A2:B7,1,FALSE),"not on the list")', rule: value }
+      - { formula: '=IFNA(VLOOKUP("A-1",C1:D7,2,FALSE),"not on the list")', rule: value }
+      - {
+          formula: '=IFNA(INDEX(B2:B7,MATCH(A2,A2:A7,0)),"not on the list")',
+          rule: required-function,
+        }
+      - { formula: '=IFNA(VLOOKUP(A2,A2:B7,4,FALSE),"not on the list")', rule: value }
+      - { formula: '=IFNA(VLOOKUP(A2,A2:B7,2,FALSE),"not on the list")/0', rule: value }
+      - { formula: '=IFNA(VLOOKUP(A2 A2:B7,2,FALSE),"not on the list")', rule: syntax }
+notes:
+  summary: "IFNA returns its first argument unless that argument is `#N/A`, and then it returns the second. A lookup that finds nothing gives `#N/A`, so IFNA catches a missing match and lets other errors show."
+  syntax: "IFNA(value, value_if_na) replaces #N/A and nothing else"
+  example: '`=IFNA(MATCH("Z",A1:A3,0),"none")` gives none when Z is not in A1:A3, but `=IFNA(1/0,"none")` still shows `#DIV/0!`.'
+  commonErrors:
+    - The lookup matched nothing; without the guard this is the error B9 would hold.
+    - The function name is typed as IFNAA or IFA, and Excel reads what is there without guessing.
+    - The fourth argument is set to TRUE or left out, so an approximate match answers 32 for Q-9 and the fallback never fires.

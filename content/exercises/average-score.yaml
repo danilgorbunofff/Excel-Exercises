@@ -1,0 +1,46 @@
+id: average-score
+slug: average-score
+level: 1
+title: Average score
+topic: totals
+updated: 2026-11-11
+checkedInExcel: null
+screens:
+  - prompt: In B7, work out the average score. Chen missed the test, so B4 is empty and should not count.
+    rows:
+      - [Student, Score]
+      - [Ana, 72]
+      - [Ben, 85]
+      - [Chen, null]
+      - [Dee, 64]
+      - [Eli, 91]
+      - [Average, null]
+    answerCell: B7
+    expected: 78
+    answer: =AVERAGE(B2:B6)
+    requiredFunctions: [AVERAGE]
+    hints:
+      nudge: One function works out the mean of a range.
+      rule: AVERAGE adds the numbers in a range and divides by how many numbers there are. It does not count empty cells.
+    misses:
+      syntax: Write the range as the first cell, a colon, then the last cell.
+      required-function: Use AVERAGE. A sum divided by a typed count goes wrong when a cell is empty.
+      reference: Point at the scores, so the average updates when a score changes.
+      value: Check that the range covers every score, from B2 to B6.
+    accept:
+      - =AVERAGE(B2:B6)
+      - =average(b2:b6)
+      - =AVERAGE(B2:B3,B5:B6)
+    reject:
+      - { formula: "=AVERAGE(B2:B6", rule: syntax }
+      - { formula: "=SUM(B2:B6)/5", rule: required-function }
+      - { formula: "=AVERAGE(72,85,64,91)", rule: reference }
+      - { formula: "=AVERAGE(B2:B7)", rule: reference }
+      - { formula: "=AVERAGE(B2:B5)", rule: value }
+notes:
+  summary: AVERAGE returns the mean of the numbers in a range. It skips text and empty cells, but counts zeros.
+  syntax: AVERAGE(number1, [number2], ...)
+  example: "`=AVERAGE(A1:A4)` with 2, 4, 6 and an empty cell gives 4."
+  commonErrors:
+    - Dividing a SUM by a typed count, which is wrong when a cell is empty.
+    - Typing 0 for a missing value, which AVERAGE does count.

@@ -1,0 +1,58 @@
+# Why this exists: runs every quality gate on each push and pull request.
+# Actions are pinned to commit SHAs, with the release tag in a comment.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - name: Lint and format
+        run: npm run lint
+      - name: Type check
+        run: npm run typecheck
+      - name: Unit tests with coverage
+        run: npm test
+      - name: Content schema
+        run: npm run content:validate
+      - name: Build
+        run: npm run build
+      - name: Content-Security-Policy hashes match the build
+        run: npm run check:csp
+      # The placeholder origin in site.config.ts is fine day to day, but it must
+      # not reach the live site, which deploys from main.
+      - name: Origin is the live domain
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: npm run check:origin
+      - name: Copy rules
+        run: npm run lint:copy
+      - name: Size budgets
+        run: npm run budgets
+      - name: Reduced motion
+        run: npm run motion
+      - name: Accessibility, privacy and metadata (Chromium, Firefox, WebKit)
+        run: npm run e2e
+      - name: Lighthouse (mobile)
+        run: npm run lhci
+      - if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: reports
+          path: |
+            playwright-report/
+            .lighthouseci/
+          retention-days: 7

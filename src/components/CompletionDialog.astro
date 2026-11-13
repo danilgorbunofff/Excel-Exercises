@@ -34,8 +34,13 @@ const { practised, next } = Astro.props;
       {
         siteConfig.accountsOpen ? (
           <>
-            <a href={ACCOUNT_NAV.register.href}>Create an account</a> to keep your progress on every
-            device.
+            <span data-when="out">
+              <a href={ACCOUNT_NAV.register.href}>Create an account</a> to keep your progress on
+              every device.
+            </span>
+            <span data-when="in" hidden>
+              Your progress is saved to your account. <a href="/progress/">See what is next</a>.
+            </span>
           </>
         ) : (
           <>

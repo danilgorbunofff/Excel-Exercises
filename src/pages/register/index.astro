@@ -1,19 +1,19 @@
 ---
-// Why this exists: the Sign up page. Accounts are not open yet, so the form is
-// shown disabled with a note; see siteConfig.accountsOpen.
+// Why this exists: the Sign up page. The form posts to /api/auth/register/.
 import AuthCard from "../../components/AuthCard.astro";
 import Base from "../../layouts/Base.astro";
 ---
 
 <Base title="Sign up" description="Create an account to sync your Excel practice progress across devices." layout="flush">
-  <AuthCard title="Create an account" lead="Save your progress to an account and pick up on any device.">
+  <AuthCard title="Create an account" lead="Save your progress to an account and pick up on any device." action="/api/auth/register/" google>
     <label for="email">Email</label>
-    <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
+    <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
     <label for="password">Password</label>
-    <input id="password" name="password" type="password" autocomplete="new-password" />
+    <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required />
+    <p class="hint">At least 8 characters.</p>
     <label for="password2">Repeat password</label>
-    <input id="password2" name="password2" type="password" autocomplete="new-password" />
-    <label class="check"><input type="checkbox" name="terms" /> I agree to the <a href="/terms/">terms</a> and the <a href="/privacy/">privacy policy</a></label>
+    <input id="password2" name="password2" type="password" autocomplete="new-password" minlength="8" required />
+    <label class="check"><input type="checkbox" name="terms" required /> I agree to the <a href="/terms/">terms</a> and the <a href="/privacy/">privacy policy</a></label>
     <label class="check"><input type="checkbox" name="news" /> Send me an email when new exercises arrive</label>
     <button class="button button-primary" type="submit">Sign up</button>
     <p slot="after" class="switch">
@@ -28,6 +28,11 @@ import Base from "../../layouts/Base.astro";
     align-items: flex-start;
     gap: var(--space-2);
     font-weight: 400 !important;
+  }
+  .hint {
+    margin: 0;
+    font-size: var(--size-s);
+    color: var(--muted);
   }
   .check input {
     width: auto !important;

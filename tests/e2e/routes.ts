@@ -7,13 +7,13 @@ import { ACCOUNT_PATHS } from "../../src/lib/routes.ts";
 export const NOT_FOUND_PATH = "/this-page-does-not-exist/";
 
 export function sitemapRoutes(): string[] {
-  const xml = readFileSync("dist/sitemap.xml", "utf8");
+  const xml = readFileSync("dist/client/sitemap.xml", "utf8");
   return [...xml.matchAll(/<loc>([^<]+)<\/loc>/gu)].map((m) => new URL(m[1] ?? "").pathname);
 }
 
 /**
- * Every page to visit: the sitemap, the account pages (kept out of the sitemap
- * while accounts are closed, but still served) and the 404 page.
+ * Every page to visit: the sitemap, the account pages (the private ones are
+ * kept out of the sitemap, but still served) and the 404 page.
  */
 export const allRoutes = (): string[] => [
   ...new Set([...sitemapRoutes(), ...ACCOUNT_PATHS, NOT_FOUND_PATH]),

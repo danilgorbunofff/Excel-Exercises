@@ -1,0 +1,31 @@
+// Why this exists: the PRO prices for the pricing page, read from Stripe when
+// the site is built, so the page never shows a price Stripe would not charge.
+// shortcut: a price change needs a redeploy; move to an on-demand read if prices change often.
+// Without Stripe keys (local builds, CI, previews without Stripe variables) it
+// returns null and the page says the price shows at checkout.
+import Stripe from "stripe";
+import { formatAmount, PLANS, type PlanKey, perText, priceIdFor } from "./plans.ts";
+
+export interface Price {
+  /** Formatted for display, such as "$9" or "€90". */
+  amount: string;
+  /** "/ month", "/ 6 months", "/ year" or "once". */
+  per: string;
+}
+
+export async function proPrices(): Promise<Record<PlanKey, Price> | null> {
+  const key = process.env["STRIPE_SECRET_KEY"];
+  const ids = PLANS.map((p) => priceIdFor(p.key));
+  if (!key || ids.some((id) => !id)) {
+    console.warn("[pricing] Stripe key or a price id is missing: the page shows no amounts.");
+    return null;
+  }
+  const s = new Stripe(key);
+  const prices = await Promise.all(ids.map((id) => s.prices.retrieve(id ?? "")));
+  return Object.fromEntries(
+    PLANS.map((p, i) => {
+      const price = prices[i] as Stripe.Price;
+      return [p.key, { amount: formatAmount(price), per: perText(price) }];
+    }),
+  ) as Record<PlanKey, Price>;
+}

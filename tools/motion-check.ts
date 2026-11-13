@@ -4,15 +4,15 @@ import { existsSync, readFileSync } from "node:fs";
 import { listFiles } from "./lib/fs.ts";
 import { findUnguardedMotion } from "./lib/motion.ts";
 
-if (!existsSync("dist")) {
+if (!existsSync("dist/client")) {
   console.error("No dist folder. Run `npm run build` first.");
   process.exit(1);
 }
 const sources: { file: string; css: string }[] = [];
-for (const file of listFiles("dist", (n) => n.endsWith(".css"))) {
+for (const file of listFiles("dist/client", (n) => n.endsWith(".css"))) {
   sources.push({ file, css: readFileSync(file, "utf8") });
 }
-for (const file of listFiles("dist", (n) => n.endsWith(".html"))) {
+for (const file of listFiles("dist/client", (n) => n.endsWith(".html"))) {
   const html = readFileSync(file, "utf8");
   for (const m of html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/giu))
     sources.push({ file, css: m[1] ?? "" });

@@ -7,12 +7,12 @@ import { existsSync, readFileSync } from "node:fs";
 import { listFiles } from "./lib/fs.ts";
 import { emittedUrls, isPlaceholderUrl } from "./lib/origin.ts";
 
-if (!existsSync("dist")) {
+if (!existsSync("dist/client")) {
   console.error("No dist folder. Run `npm run build` first.");
   process.exit(1);
 }
 
-const files = listFiles("dist", (n) => /\.(html|xml|txt)$/u.test(n));
+const files = listFiles("dist/client", (n) => /\.(html|xml|txt)$/u.test(n));
 let seen = 0;
 const wrong: string[] = [];
 for (const file of files) {

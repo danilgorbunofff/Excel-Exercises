@@ -8,8 +8,10 @@ import RichText from "./RichText.astro";
 interface Props {
   screen: Screen;
   index: number;
+  /** A PRO exercise: the answer is filled in once the visitor has PRO. */
+  locked?: boolean;
 }
-const { screen, index } = Astro.props;
+const { screen, index, locked = false } = Astro.props;
 ---
 
 <div class="hints" data-hints={index}>
@@ -24,7 +26,7 @@ const { screen, index } = Astro.props;
   </details>
   <details data-hint="3">
     <summary>Show the answer</summary>
-    <p>The answer is <code>{screen.answer}</code>.</p>
+    <p>The answer is <code data-answer={index}>{locked ? "" : screen.answer}</code>.</p>
   </details>
 </div>
 

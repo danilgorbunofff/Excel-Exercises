@@ -1,4 +1,4 @@
-# Excel formula practice
+# Excel Exercises
 
 Short exercises where you write one Excel formula on a real grid and get feedback in the browser.
 

@@ -3,6 +3,7 @@
 // order: Complete, Title and Difficulty, as on Spreadsheet Center. The
 // catalogue and the progress page use it. Each row carries what the
 // catalogue script needs to filter and sort.
+import { isLocked } from "../lib/access.ts";
 import { exercisePath, functionsOf, LEVELS, type Placed } from "../lib/exercises.ts";
 
 interface Props {
@@ -71,7 +72,7 @@ const columns = [
               <th scope="row">
                 <span class="title-line">
                   <a href={exercisePath(p.exercise.slug)}>{p.exercise.title}</a>
-                  {p.exercise.pro && <span class="badge badge-pro">PRO</span>}
+                  {isLocked(p) && <span class="badge badge-pro">PRO</span>}
                 </span>
                 <span class="meta">
                   {fns.length > 0 ? fns.join(", ") : "Cell references"}

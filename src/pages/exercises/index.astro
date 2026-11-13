@@ -159,9 +159,14 @@ const faq = [
             </ul>
             {
               siteConfig.accountsOpen ? (
-                <a class="sync" href={ACCOUNT_NAV.register.href}>
-                  Sign up to keep progress on every device&nbsp;<span aria-hidden="true">→</span>
-                </a>
+                <>
+                  <a class="sync" href={ACCOUNT_NAV.register.href} data-when="out">
+                    Sign up to keep progress on every device&nbsp;<span aria-hidden="true">→</span>
+                  </a>
+                  <a class="sync" href="/progress/" data-when="in" hidden>
+                    Saved to your account. See your progress&nbsp;<span aria-hidden="true">→</span>
+                  </a>
+                </>
               ) : (
                 <a class="sync" href="/progress/">
                   Saved in this browser. See your progress&nbsp;<span aria-hidden="true">→</span>

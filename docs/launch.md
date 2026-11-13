@@ -1,13 +1,15 @@
 # Launch on Vercel
 
-The site is a static Astro build. Vercel serves the `dist` folder and applies
-`vercel.json`: the redirect from the old `/topics/` addresses, the security
-headers and long caching for the hashed files in `/_astro/`.
+The pages are a static Astro build. The `@astrojs/vercel` adapter writes them
+to `dist/client` and turns `src/pages/api/*` (accounts, progress sync, Stripe)
+into one Vercel Function. Vercel applies `vercel.json`: the redirects from the
+old `/topics/` and `/pro/` addresses, the security headers and long caching for
+the hashed files in `/_astro/`.
 
 ## Owner steps before the first deploy
 
 1. **Choose the domain** and set `url` in `site.config.ts` to it, for example
-   `https://formulapractice.com`, with no trailing slash. Canonical links,
+   `https://excelexercises.online`, with no trailing slash. Canonical links,
    share previews, `sitemap.xml` and `robots.txt` are built from it.
    `npm run build && npm run check:origin` must pass. CI runs that check on
    every push to `main`, so main fails until the placeholder is gone.
@@ -19,10 +21,11 @@ headers and long caching for the hashed files in `/_astro/`.
    - Build command: `npm run build && npm run check:csp && npm run check:origin`.
      Vercel deploys `main` without waiting for CI, so these two checks stop a
      build with stale Content-Security-Policy hashes or the placeholder domain.
-   - Output directory: `dist`
+   - Output directory: leave empty. The adapter writes `.vercel/output`, which
+     Vercel uses as it is.
    - Install command: the default (`npm install`), or `npm ci`
    - Node.js version: 24 (Project Settings, Build and Deployment)
-   - No environment variables are needed.
+   - Environment variables: see "Accounts and PRO" below.
 4. **Add the domain** in Project Settings, Domains, and follow Vercel's DNS
    instructions. Add the `www` form too and let Vercel redirect it to the main
    domain.
@@ -30,7 +33,57 @@ headers and long caching for the hashed files in `/_astro/`.
    links to the contact page and its form stays disabled.
 6. **Terms and privacy.** `/terms/` and `/privacy/` were written without a
    lawyer. Have them reviewed before you take payments or open accounts. The
-   privacy page names Vercel as the host and links to its privacy policy.
+   privacy page names Vercel, Supabase and Stripe. The terms do not yet say
+   whether you give refunds: decide, and add it.
+
+## Accounts and PRO
+
+Accounts use Supabase (Auth and Postgres). PRO is a Stripe subscription.
+
+### Environment variables (Vercel, Production and Preview)
+
+| Name                                                                                              | From                                                                                                                                                                           |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`                                  | The Supabase integration sets these. `src/server/env.ts` also accepts the `NEXT_PUBLIC_*`, `SUPABASE_PUBLISHABLE_KEY` and `SUPABASE_SECRET_KEY` names.                         |
+| `STRIPE_SECRET_KEY`                                                                               | Stripe, Developers, API keys. Production gets live keys; add test-mode keys and test price ids to Preview, or previews show no prices and checkout fails.                      |
+| `STRIPE_WEBHOOK_SECRET`                                                                           | The webhook endpoint below.                                                                                                                                                    |
+| `STRIPE_PRICE_MONTHLY`, `STRIPE_PRICE_SEMIANNUAL`, `STRIPE_PRICE_ANNUAL`, `STRIPE_PRICE_LIFETIME` | The price ids (`price_...`) of the PRO product, listed in `src/server/plans.ts`. Checkout reads from Stripe whether each is recurring (a subscription) or one-time (lifetime). |
+
+For local work: `vercel link`, then `vercel env pull .env.local`.
+
+### Supabase
+
+1. Run `supabase/migrations/0001_accounts.sql` once, in the SQL editor or with
+   `supabase db push`. It creates `profiles` and `progress` with row-level
+   security, and a profile for every new user.
+2. Authentication, URL Configuration: Site URL `https://excelexercises.online`.
+   Redirect URLs: `https://excelexercises.online/api/auth/callback/**`,
+   `http://localhost:4321/api/auth/callback/**` and your preview domain.
+3. Authentication, Providers: turn on Google with a Google Cloud OAuth client.
+   Its redirect URI is the one Supabase shows on that page.
+4. Authentication, Emails: the confirmation email must show the code
+   `{{ .Token }}` as well as the link, because `/verify/` asks for the code.
+5. Authentication, SMTP: set your own sender (for example Resend). The built-in
+   sender allows only a few emails an hour.
+
+### Stripe
+
+1. A product "PRO" with recurring prices for 1 month, 6 months and 1 year, and
+   a one-time price for lifetime.
+2. Developers, Webhooks: endpoint `https://excelexercises.online/api/stripe/webhook/`
+   with `checkout.session.completed`, `checkout.session.async_payment_succeeded`
+   and `customer.subscription.created`, `.updated` and `.deleted`. Copy its signing secret to `STRIPE_WEBHOOK_SECRET`.
+3. Settings, Billing, Customer portal: turn it on, and allow cancelling and
+   switching between the three recurring prices.
+4. The pricing page reads the prices at build time. Redeploy after you change
+   a price.
+
+### What is locked
+
+`isLocked` in `src/lib/access.ts`: exercises with `pro: true`, and every
+exercise after `freeCount` in `site.config.ts` (`null` means none by count).
+A locked exercise page is built without its answers and shows a paywall. A
+PRO visitor's browser fetches the answers from `/api/exercises/<slug>/`.
 
 ## Keeping the security policy in step
 
@@ -83,9 +136,17 @@ Replace `https://example.com` with the live domain.
 5. Open the browser console on the home page and on an exercise. There must be
    no Content-Security-Policy errors.
 6. `https://example.com/sitemap.xml` and `https://example.com/robots.txt` use
-   the live domain, and the sitemap has no account pages such as `/login/`.
-7. Paste the home page address into a share preview checker and check that the
+   the live domain, and the sitemap has no private account pages such as
+   `/account/`.
+7. Accounts, in a private window: sign up, confirm with the code, log out, log
+   in, sign in with Google, reset the password. Solve an exercise, log in in a
+   second browser and check that the progress is there.
+8. PRO, with Stripe test keys on a preview: open a PRO exercise and see the
+   paywall, pay with card `4242 4242 4242 4242`, check that `/subscribe/` says
+   PRO is active and the exercise opens. Cancel in the portal and check that
+   the exercise locks again once the period ends.
+9. Paste the home page address into a share preview checker and check that the
    title, description and image show.
-8. Run Lighthouse on the live URL, mobile, in Chrome DevTools or with
-   `npx lighthouse https://example.com/ --view`. Performance should be
-   at least 90 and Accessibility, Best Practices and SEO 100, as in CI.
+10. Run Lighthouse on the live URL, mobile, in Chrome DevTools or with
+    `npx lighthouse https://example.com/ --view`. Performance should be
+    at least 90 and Accessibility, Best Practices and SEO 100, as in CI.

@@ -10,12 +10,12 @@ import { listFiles } from "./lib/fs.ts";
 const CONFIG = "vercel.json";
 const HEADER = "Content-Security-Policy";
 
-if (!existsSync("dist")) {
+if (!existsSync("dist/client")) {
   console.error("No dist folder. Run `npm run build` first.");
   process.exit(1);
 }
 // SVG files are served with the same header, and the favicon has a style element.
-const files = listFiles("dist", (n) => n.endsWith(".html") || n.endsWith(".svg"));
+const files = listFiles("dist/client", (n) => n.endsWith(".html") || n.endsWith(".svg"));
 const hashes = inlineHashes(files.map((f) => readFileSync(f, "utf8")));
 const policy = buildPolicy(hashes);
 

@@ -27,7 +27,7 @@ describe("lintText", () => {
   });
 
   it("allows the copyright sign, which is not an emoji", () => {
-    expect(lintText("© 2026 Formula Practice")).toEqual([]);
+    expect(lintText("© 2026 Excel Exercises")).toEqual([]);
   });
 
   it("matches banned words on word boundaries only", () => {

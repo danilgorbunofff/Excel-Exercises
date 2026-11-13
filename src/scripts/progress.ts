@@ -17,6 +17,8 @@ export interface ProgressEntry {
 export type Progress = Record<string, ProgressEntry>;
 
 export const STORAGE_KEY = "formula-practice:progress:v1";
+/** Fired on document after each record(). */
+export const PROGRESS_EVENT = "formula-practice:progress";
 /** Days from the latest solve until the next review, by the number of reviews so far. */
 export const REVIEW_GAPS = [1, 3, 7, 21, 60] as const;
 
@@ -75,6 +77,8 @@ export function record(
   } catch {
     // Storage is blocked or full: the page still works, progress is not kept.
   }
+  // Signed in, session.ts sends this to the account.
+  globalThis.document?.dispatchEvent(new CustomEvent(PROGRESS_EVENT, { detail: { id, entry } }));
   return entry;
 }
 
@@ -88,6 +92,38 @@ export function dueDate(entry: ProgressEntry): string | null {
 export function isDue(entry: ProgressEntry, today = localDay()): boolean {
   const due = dueDate(entry);
   return due !== null && due <= today;
+}
+
+const RANK: Record<ProgressState, number> = { revealed: 0, helped: 1, solved: 2 };
+
+/**
+ * Joins progress from two places, such as this browser and the account. For
+ * each exercise it keeps the furthest state, the first day, the latest solve
+ * and the most reviews, so merging never loses work.
+ */
+export function mergeProgress(a: Progress, b: Progress): Progress {
+  const out: Progress = { ...a };
+  for (const [id, y] of Object.entries(b)) {
+    const x = out[id];
+    if (!x) {
+      out[id] = y;
+      continue;
+    }
+    const last = [x.last, y.last]
+      .filter((d): d is string => d !== undefined)
+      .sort()
+      .at(-1);
+    const entry: ProgressEntry = {
+      state: RANK[y.state] > RANK[x.state] ? y.state : x.state,
+      date: [x.date, y.date].sort()[0] ?? x.date,
+    };
+    if (last !== undefined) entry.last = last;
+    if (x.reviews !== undefined || y.reviews !== undefined) {
+      entry.reviews = Math.max(x.reviews ?? 0, y.reviews ?? 0);
+    }
+    out[id] = entry;
+  }
+  return out;
 }
 
 export function clearProgress(storage: Storage | undefined = globalThis.localStorage): void {

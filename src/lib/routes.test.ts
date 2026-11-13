@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ACCOUNT_PATHS, hiddenFromSearch, routesFromPageFiles } from "./routes.ts";
+import { ACCOUNT_PATHS, hiddenFromSearch, PRIVATE_PATHS, routesFromPageFiles } from "./routes.ts";
 
 describe("routesFromPageFiles", () => {
   it("maps index files to directory routes and drops 404 and dynamic pages", () => {
@@ -30,8 +30,11 @@ describe("hiddenFromSearch", () => {
     ]);
   });
 
-  it("shows account pages once accounts open", () => {
-    expect(hiddenFromSearch("/login/", true)).toBe(false);
+  it("shows the public account pages once accounts open, never the private ones", () => {
+    for (const path of ["/login/", "/register/", "/forgot-password/"]) {
+      expect(hiddenFromSearch(path, true), path).toBe(false);
+    }
+    for (const path of PRIVATE_PATHS) expect(hiddenFromSearch(path, true), path).toBe(true);
   });
 
   it("never hides other pages, including PRO and pages that only start alike", () => {

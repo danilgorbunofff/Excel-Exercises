@@ -1,8 +1,10 @@
 // Why this exists: the exercise loop end to end, in the built site, on the
 // three browser engines. A wrong answer is shown on the grid and in the
 // formula, Check turns into Next, hints run in order, and the screen fits.
+import { readFileSync } from "node:fs";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
+import { parse } from "yaml";
 import { sitemapRoutes } from "./routes.ts";
 
 const SUM = "/exercises/sum-a-column/";
@@ -194,10 +196,42 @@ test("every exercise in the track has a page", () => {
   expect(exerciseRoutes).toHaveLength(92);
 });
 
+/**
+ * Opens a PRO exercise as a visitor with PRO would see it. The static test
+ * server has no /api/, so the two answers the page asks for are faked here,
+ * from the exercise file.
+ */
+async function openAsPro(page: Page, route: string): Promise<void> {
+  const slug = route.split("/")[2] ?? "";
+  const file = parse(readFileSync(`content/exercises/${slug}.yaml`, "utf8")) as {
+    screens: { answer: string }[];
+  };
+  await page.context().addCookies([{ name: "signed_in", value: "1", url: page.url() }]);
+  await page.route("**/api/me/", (r) =>
+    r.fulfill({
+      json: {
+        email: "pro@example.com",
+        pro: true,
+        proStatus: "active",
+        proUntil: null,
+        news: false,
+        hasPassword: true,
+      },
+    }),
+  );
+  await page.route("**/api/progress/", (r) => r.fulfill({ json: {} }));
+  await page.route(`**/api/exercises/${slug}/`, (r) =>
+    r.fulfill({ json: { answers: file.screens.map((s) => s.answer) } }),
+  );
+  await page.reload();
+  await expect(page.locator("[data-paywall]")).toHaveCount(0);
+}
+
 // One test per exercise, so they run in parallel and a failure names the page.
 for (const route of exerciseRoutes) {
   test(`${route} accepts its own reference answer in the browser`, async ({ page }) => {
     await page.goto(route);
+    if ((await page.locator("[data-locked]").count()) > 0) await openAsPro(page, route);
     const answer = await page.locator('details[data-hint="3"] code').first().textContent();
     await check(page, answer ?? "");
     await expect(status(page)).toContainText("Correct.");

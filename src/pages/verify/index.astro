@@ -1,16 +1,16 @@
 ---
-// Why this exists: confirms an email address with a code. Disabled until
-// accounts open.
+// Why this exists: where sign-up lands. The visitor opens the link in the
+// email, or types its six-digit code here; the form posts to /api/auth/verify/.
 import AuthCard from "../../components/AuthCard.astro";
 import Base from "../../layouts/Base.astro";
 ---
 
 <Base title="Verify your email" description="Confirm your email address with the code we sent." layout="flush">
-  <AuthCard title="Verify your email" lead="Enter the six-digit code from the email we sent you.">
+  <AuthCard title="Verify your email" lead="We sent you an email. Open the link in it, or enter its six-digit code here." action="/api/auth/verify/">
     <label for="email">Email</label>
-    <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
+    <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
     <label for="code">Code</label>
-    <input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" />
+    <input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" required />
     <button class="button button-primary" type="submit">Verify</button>
     <p slot="after" class="switch">No code? Check your spam folder, or <a href="/register/">sign up again</a>.</p>
   </AuthCard>

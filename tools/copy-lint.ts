@@ -5,12 +5,12 @@ import { parse } from "yaml";
 import { type CopyIssue, lintHtml, lintYamlStrings } from "./lib/copy-lint.ts";
 import { listFiles } from "./lib/fs.ts";
 
-if (!existsSync("dist")) {
+if (!existsSync("dist/client")) {
   console.error("No dist folder. Run `npm run build` first.");
   process.exit(1);
 }
 const yamlFiles = listFiles("content", (n) => n.endsWith(".yaml"));
-const htmlFiles = listFiles("dist", (n) => n.endsWith(".html"));
+const htmlFiles = listFiles("dist/client", (n) => n.endsWith(".html"));
 const issues: CopyIssue[] = [
   ...yamlFiles.flatMap((f) => lintYamlStrings(parse(readFileSync(f, "utf8")), f)),
   ...htmlFiles.flatMap((f) => lintHtml(readFileSync(f, "utf8"), f)),

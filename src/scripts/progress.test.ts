@@ -4,6 +4,7 @@ import {
   clearProgress,
   dueDate,
   isDue,
+  mergeProgress,
   readProgress,
   record,
   STORAGE_KEY,
@@ -94,5 +95,47 @@ describe("progress", () => {
     record("a", "solved", s);
     clearProgress(s);
     expect(readProgress(s)).toEqual({});
+  });
+});
+
+describe("mergeProgress", () => {
+  it("keeps entries found in only one place", () => {
+    const a = {
+      x: { state: "solved" as const, date: "2026-01-01", last: "2026-01-01", reviews: 0 },
+    };
+    const b = { y: { state: "revealed" as const, date: "2026-02-01" } };
+    expect(mergeProgress(a, b)).toEqual({ ...a, ...b });
+  });
+
+  it("keeps the furthest state, first day, latest solve and most reviews", () => {
+    const a = { x: { state: "revealed" as const, date: "2026-01-05" } };
+    const b = {
+      x: { state: "helped" as const, date: "2026-01-09", last: "2026-03-01", reviews: 2 },
+    };
+    expect(mergeProgress(a, b).x).toEqual({
+      state: "helped",
+      date: "2026-01-05",
+      last: "2026-03-01",
+      reviews: 2,
+    });
+    const c = {
+      x: { state: "solved" as const, date: "2026-01-02", last: "2026-01-02", reviews: 0 },
+    };
+    expect(mergeProgress(b, c).x).toEqual({
+      state: "solved",
+      date: "2026-01-02",
+      last: "2026-03-01",
+      reviews: 2,
+    });
+  });
+
+  it("gives the same result in either order", () => {
+    const a = {
+      x: { state: "solved" as const, date: "2026-01-02", last: "2026-04-01", reviews: 1 },
+    };
+    const b = {
+      x: { state: "helped" as const, date: "2026-01-01", last: "2026-02-01", reviews: 3 },
+    };
+    expect(mergeProgress(a, b)).toEqual(mergeProgress(b, a));
   });
 });

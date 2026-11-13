@@ -1,13 +1,115 @@
 ---
-// Why this exists: the signed-in dashboard, once accounts open.
+// Why this exists: the signed-in home: who you are, your plan, how far you
+// have got and where to go next. The page is static; profile-page.ts fills it
+// from /api/me and from progress, which session.ts keeps in step with the account.
 import SignedOutPanel from "../../components/SignedOutPanel.astro";
 import Base from "../../layouts/Base.astro";
+import { exercisePath, placedExercises } from "../../lib/exercises.ts";
+
+const placed = await placedExercises();
+const items = placed.map((p) => ({
+  id: p.exercise.id,
+  title: p.exercise.title,
+  href: exercisePath(p.exercise.slug),
+}));
+const json = JSON.stringify(items).replaceAll("<", "\\u003c");
 ---
 
 <Base title="Your profile" description="Your solved exercises and tracks." layout="flush">
-  <SignedOutPanel
-    title="Your profile"
-    lead="Log in to see your solved exercises, finished tracks and practice history on any device."
-    icon="chart"
-  />
+  <div data-when="out">
+    <SignedOutPanel
+      title="Your profile"
+      lead="Log in to see your solved exercises, finished tracks and practice history on any device."
+      icon="chart"
+    />
+  </div>
+
+  <div class="wrap" data-when="in" hidden>
+    <section class="card panel" aria-labelledby="profile-title">
+      <h1 id="profile-title">Your profile</h1>
+      <p class="who"><span data-me-email>Signed in</span> <span class="tag" data-plan hidden>PRO</span></p>
+
+      <dl class="stats">
+        <div><dt>Solved</dt><dd data-stat="solved">0</dd></div>
+        <div><dt>With help</dt><dd data-stat="helped">0</dd></div>
+        <div><dt>Due for review</dt><dd data-stat="due">0</dd></div>
+        <div><dt>Exercises</dt><dd>{items.length}</dd></div>
+      </dl>
+
+      <p data-next>Start with <a href={items[0]?.href}>{items[0]?.title}</a>.</p>
+
+      <div class="actions">
+        <a class="button button-primary" href="/progress/">See my progress</a>
+        <a class="button button-outline" href="/account/">Account settings</a>
+        <a class="button button-outline" href="/pricing/" data-upgrade hidden>Get PRO</a>
+      </div>
+    </section>
+  </div>
+
+  <script type="application/json" data-exercises set:html={json} />
 </Base>
+
+<script>
+  import "../../scripts/profile-page.ts";
+</script>
+
+<style>
+  .wrap {
+    display: grid;
+    place-items: center;
+    padding: var(--space-7) var(--space-4);
+  }
+  .panel {
+    display: grid;
+    gap: var(--space-4);
+    width: 100%;
+    max-width: 40rem;
+    padding: var(--space-6);
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--size-xl);
+    color: var(--heading);
+  }
+  .who {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    color: var(--muted);
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+    margin: 0;
+  }
+  .stats div {
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-m);
+  }
+  dt {
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  dd {
+    margin: 0;
+    font-size: var(--size-xl);
+    font-weight: 700;
+    color: var(--heading);
+  }
+  [data-next] {
+    margin: 0;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  @media (min-width: 40rem) {
+    .stats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

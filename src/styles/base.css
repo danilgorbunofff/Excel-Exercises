@@ -41,6 +41,11 @@
 *::after {
   box-sizing: border-box;
 }
+/* Scripts show and hide parts with the hidden attribute; a class's display must not undo it. */
+[hidden] {
+  /* biome-ignore lint/complexity/noImportantStyles: hidden must beat every display rule */
+  display: none !important;
+}
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;

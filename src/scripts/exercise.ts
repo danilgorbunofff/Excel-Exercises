@@ -299,10 +299,7 @@ function setupScreen(exercise: HTMLElement, page: PageData, index: number, root:
 
 // Each exercise on a page has its own root and data, so a page can hold one
 // as its main content or embed one, as the home and function pages do.
-for (const exercise of document.querySelectorAll<HTMLElement>("[data-exercise]")) {
-  const node = exercise.querySelector("script[data-exercise-data]");
-  if (!node?.textContent) continue;
-  const data = JSON.parse(node.textContent) as PageData;
+function start(exercise: HTMLElement, data: PageData): void {
   for (const root of exercise.querySelectorAll<HTMLElement>("[data-screen]")) {
     setupScreen(exercise, data, Number(root.dataset["screen"]), root);
   }
@@ -315,4 +312,26 @@ for (const exercise of document.querySelectorAll<HTMLElement>("[data-exercise]")
     record(data.id, "revealed");
     showProgress(exercise, data.id);
   });
+}
+
+for (const exercise of document.querySelectorAll<HTMLElement>("[data-exercise]")) {
+  const node = exercise.querySelector("script[data-exercise-data]");
+  if (!node?.textContent) continue;
+  const data = JSON.parse(node.textContent) as PageData;
+  if (exercise.dataset["locked"] === undefined) {
+    start(exercise, data);
+    continue;
+  }
+  // A PRO exercise starts once locked-exercise.ts has fetched its answers.
+  exercise.addEventListener(
+    "exercise-unlock",
+    (e) => {
+      const answers = (e as CustomEvent<string[]>).detail;
+      data.screens.forEach((s, i) => {
+        s.answer = answers[i] ?? "";
+      });
+      start(exercise, data);
+    },
+    { once: true },
+  );
 }

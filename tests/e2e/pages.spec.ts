@@ -127,13 +127,33 @@ test("articles list and open, and end with exercises", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Practise what you read" })).toBeVisible();
 });
 
-test("account and PRO pages explain that accounts are not open yet", async ({ page }) => {
-  for (const path of ["/login/", "/register/", "/pro/"]) {
+test("Log in and Sign up post to the account functions, with Google as well", async ({ page }) => {
+  for (const [path, action] of [
+    ["/login/", "/api/auth/login/"],
+    ["/register/", "/api/auth/register/"],
+  ] as const) {
     await page.goto(path);
-    await expect(page.getByText("Accounts open soon.")).toBeVisible();
-    await expect(page.getByLabel("Email", { exact: true })).toBeDisabled();
+    await expect(page.getByLabel("Email", { exact: true })).toBeEnabled();
+    await expect(page.locator("form[data-auth-form]")).toHaveAttribute("action", action);
+    await expect(page.getByRole("link", { name: "Continue with Google" })).toBeVisible();
   }
+  await page.goto("/login/?error=The+email+or+the+password+is+not+right.&next=/account/");
+  await expect(page.getByRole("alert")).toHaveText("The email or the password is not right.");
+  await expect(page.locator("[data-next-field]")).toHaveValue("/account/");
+});
+
+test("pricing offers PRO and lists the PRO exercises", async ({ page }) => {
+  await page.goto("/pricing/");
+  await expect(page.getByRole("button", { name: "Get PRO" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Find a code" })).toBeVisible();
+});
+
+test("a PRO exercise shows the paywall, not the sheet or the answer", async ({ page }) => {
+  await page.goto("/exercises/find-a-code/");
+  await expect(page.getByRole("heading", { name: "This is a PRO exercise" })).toBeVisible();
+  await expect(page.locator("[data-input]").first()).toBeHidden();
+  await expect(page.getByRole("tab", { name: "Answer" })).toBeHidden();
+  await expect(page.locator("[data-answer]").first()).toBeEmpty();
 });
 
 test("a function page has working contents, a checked date and a live exercise", async ({
@@ -225,7 +245,7 @@ test("every page shares the footer, keeps breadcrumbs honest and has valid struc
     }
   }
   expect(footer).toBe(
-    "Exercises|Learning tracks|Functions|Articles|Formula explainer|Keyboard shortcuts|Resources|Progress|PRO|Terms|Privacy|Contact",
+    "Exercises|Learning tracks|Functions|Articles|Formula explainer|Keyboard shortcuts|Resources|Progress|Pricing|Terms|Privacy|Contact",
   );
 });
 
@@ -235,7 +255,9 @@ test("no internal link leads to a missing page", async ({ request }) => {
     const html = await (await request.get(route)).text();
     for (const m of html.matchAll(/href="(\/[^"#?]*)/gu)) {
       const href = m[1] ?? "";
-      if (seen.has(href) || href.startsWith("/_astro/") || href.startsWith("/fonts/")) continue;
+      // /api/ runs on the host as a function, which the static test server does not have.
+      const skip = ["/_astro/", "/fonts/", "/api/"].some((p) => href.startsWith(p));
+      if (seen.has(href) || skip) continue;
       seen.add(href);
       const res = await request.get(href);
       expect(res.status(), `${href}, linked from ${route}`).toBe(200);
@@ -275,10 +297,9 @@ test("a started track says Continue, and a solved exercise says Review", async (
   await expect(page.getByRole("link", { name: /Continue track/u })).toHaveCount(0);
   await page.goto("/exercises/add-two-cells/");
   await check(page, "=B2+B3");
-  // While accounts are closed the dialog does not ask the visitor to sign up.
+  // Signed out, the dialog offers an account to keep progress on every device.
   const dialog = page.getByRole("dialog", { name: "Exercise completed" });
-  await expect(dialog).toContainText("Your progress is saved in this browser.");
-  await expect(dialog.getByRole("link", { name: "Create an account" })).toHaveCount(0);
+  await expect(dialog.getByRole("link", { name: "Create an account" })).toBeVisible();
   await page.goto("/exercises/tracks/");
   await expect(
     page.getByRole("link", { name: "Continue track: Cells and arithmetic" }),

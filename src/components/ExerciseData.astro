@@ -5,8 +5,11 @@ import { type ExerciseEntry, exerciseData } from "../lib/exercises.ts";
 
 interface Props {
   exercise: ExerciseEntry["data"];
+  /** A PRO exercise: the answers come from /api/exercises/ once the visitor has PRO. */
+  locked?: boolean;
 }
-const json = JSON.stringify(exerciseData(Astro.props.exercise)).replaceAll("<", "\\u003c");
+const { exercise, locked = false } = Astro.props;
+const json = JSON.stringify(exerciseData(exercise, !locked)).replaceAll("<", "\\u003c");
 ---
 
 <script type="application/json" data-exercise-data set:html={json} />

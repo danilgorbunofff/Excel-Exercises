@@ -6,10 +6,12 @@ export const MAIN_NAV = [
   { label: "Articles", href: "/articles/" },
 ] as const;
 
-/** The account links. Accounts are not open yet; the pages say so. */
+/** The account links: signed out, then signed in. */
 export const ACCOUNT_NAV = {
   login: { label: "Log in", href: "/login/" },
   register: { label: "Sign up", href: "/register/" },
+  profile: { label: "Profile", href: "/profile/" },
+  account: { label: "Account", href: "/account/" },
 } as const;
 
 export const FOOTER_NAV = {
@@ -24,7 +26,7 @@ export const FOOTER_NAV = {
     { label: "Progress", href: "/progress/" },
   ],
   support: [
-    { label: "PRO", href: "/pro/" },
+    { label: "Pricing", href: "/pricing/" },
     { label: "Terms", href: "/terms/" },
     { label: "Privacy", href: "/privacy/" },
   ],

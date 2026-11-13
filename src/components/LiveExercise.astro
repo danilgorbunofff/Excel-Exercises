@@ -1,6 +1,7 @@
 ---
 // Why this exists: a working exercise inside another page. The home page runs
 // the first exercise this way, and each function page ends with one.
+import { isLocked } from "../lib/access.ts";
 import { exercisePath, LEVELS, nextAction, type Placed } from "../lib/exercises.ts";
 import ExerciseData from "./ExerciseData.astro";
 import HintLadder from "./HintLadder.astro";
@@ -15,6 +16,12 @@ interface Props {
   intro?: string;
 }
 const { placed, heading, intro } = Astro.props;
+// An embed would put a PRO answer in a free page.
+if (isLocked(placed)) {
+  throw new Error(
+    `${Astro.url.pathname} embeds ${placed.exercise.id}, a PRO exercise. Embed a free one.`,
+  );
+}
 // An embedded sheet shows only its data, without the empty rows around it.
 const { exercise, number, total } = placed;
 const path = exercisePath(exercise.slug);

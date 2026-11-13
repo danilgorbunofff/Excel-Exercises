@@ -3,8 +3,8 @@
 // placeholder until the owner supplies it.
 
 export const siteConfig = {
-  /** TODO(owner): the site name. */
-  name: "Formula Practice",
+  /** The site name. */
+  name: "Excel Exercises",
   /** The production origin, used for canonical URLs and the sitemap. */
   url: "https://excelexercises.online",
   /** Language of the pages. */
@@ -23,5 +23,5 @@ export const siteConfig = {
    * While this is false, the Log in, Sign up and PRO forms are shown but
    * disabled, with a note that progress stays in this browser.
    */
-  accountsOpen: false,
+  accountsOpen: true,
 } as const;

@@ -126,7 +126,8 @@ export function nextAction(placed: Placed, screenIndex: number) {
 }
 
 /** What the exercise script needs. The answer is already on the page, in hint 3. */
-export function exerciseData(exercise: ExerciseEntry["data"]) {
+/** The data the exercise script grades with. A locked exercise leaves the answers out. */
+export function exerciseData(exercise: ExerciseEntry["data"], withAnswers = true) {
   return {
     id: exercise.id,
     screens: exercise.screens.map((s) => ({
@@ -138,7 +139,7 @@ export function exerciseData(exercise: ExerciseEntry["data"]) {
         forbiddenFunctions: s.forbiddenFunctions,
         requireReference: s.requireReference,
       },
-      answer: s.answer,
+      answer: withAnswers ? s.answer : "",
       misses: s.misses,
     })),
   };

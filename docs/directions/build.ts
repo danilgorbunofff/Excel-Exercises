@@ -120,7 +120,7 @@ function page(d: Direction, title: string, kind: "landing" | "exercise", body: s
 <body class="page-${kind} dir-${d.id}">
   <a class="skip" href="#formula">Skip to the formula</a>
   <header class="site">
-    <a class="brand" href="landing.html">Formula Practice</a>
+    <a class="brand" href="landing.html">Excel Exercises</a>
     <nav class="nav-wide" aria-label="Main"><ul>${links}</ul></nav>
     <button class="menu" type="button" commandfor="menu" command="show-modal">Menu</button>
     <dialog id="menu" aria-label="Menu">

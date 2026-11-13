@@ -43,10 +43,16 @@ const menuLinks = [
         }
       </ul>
     </nav>
-    <div class="account">
+    <div class="account" data-when="out">
       <a class="login" href={ACCOUNT_NAV.login.href}>{ACCOUNT_NAV.login.label}</a>
       <a class="button button-primary signup" href={ACCOUNT_NAV.register.href}>
         {ACCOUNT_NAV.register.label}
+      </a>
+    </div>
+    <div class="account" data-when="in" hidden>
+      <a class="login" href={ACCOUNT_NAV.profile.href}>{ACCOUNT_NAV.profile.label}</a>
+      <a class="button button-secondary signup" href={ACCOUNT_NAV.account.href}>
+        {ACCOUNT_NAV.account.label}
       </a>
     </div>
     <div class="menu-wrap">
@@ -72,11 +78,15 @@ const menuLinks = [
         }
       </ul>
     </nav>
-    <div class="menu-account">
+    <div class="menu-account" data-when="out">
       <a class="button button-secondary" href={ACCOUNT_NAV.login.href}>{ACCOUNT_NAV.login.label}</a>
       <a class="button button-primary" href={ACCOUNT_NAV.register.href}>
         {ACCOUNT_NAV.register.label}
       </a>
+    </div>
+    <div class="menu-account" data-when="in" hidden>
+      <a class="button button-secondary" href={ACCOUNT_NAV.profile.href}>{ACCOUNT_NAV.profile.label}</a>
+      <a class="button button-primary" href={ACCOUNT_NAV.account.href}>{ACCOUNT_NAV.account.label}</a>
     </div>
     <button class="button button-secondary close" type="button" commandfor="menu" command="close">
       Close
@@ -85,6 +95,8 @@ const menuLinks = [
 </header>
 
 <script>
+  import "../scripts/session.ts";
+
   // Browsers without button commands get the same behaviour from a click handler.
   if (!("command" in HTMLButtonElement.prototype)) {
     for (const button of document.querySelectorAll<HTMLButtonElement>("button[commandfor]")) {

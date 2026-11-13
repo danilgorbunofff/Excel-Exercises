@@ -1,16 +1,17 @@
 ---
-// Why this exists: sets a new password from a reset link. Disabled until
-// accounts open.
+// Why this exists: sets a new password. The reset link signs the visitor in
+// through /api/auth/callback/ and lands here; the form posts to /api/auth/password/.
 import AuthCard from "../../components/AuthCard.astro";
 import Base from "../../layouts/Base.astro";
 ---
 
 <Base title="Set a new password" description="Choose a new password for your account." layout="flush">
-  <AuthCard title="Reset your password" lead="Choose a new password for your account.">
+  <AuthCard title="Reset your password" lead="Choose a new password for your account." action="/api/auth/password/">
+    <input type="hidden" name="from" value="/reset-password/" />
     <label for="password">New password</label>
-    <input id="password" name="password" type="password" autocomplete="new-password" />
+    <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required />
     <label for="password2">Repeat the new password</label>
-    <input id="password2" name="password2" type="password" autocomplete="new-password" />
+    <input id="password2" name="password2" type="password" autocomplete="new-password" minlength="8" required />
     <button class="button button-primary" type="submit">Save the new password</button>
     <p slot="after" class="switch"><a href="/login/">Back to log in</a></p>
   </AuthCard>

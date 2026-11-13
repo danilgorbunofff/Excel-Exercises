@@ -1,7 +1,7 @@
 // Why this exists: every page must be complete without JavaScript, and its
 // title and metadata must be the same after scripts run.
 import { type Browser, expect, test } from "@playwright/test";
-import { ACCOUNT_PATHS } from "../../src/lib/routes.ts";
+import { PRIVATE_PATHS } from "../../src/lib/routes.ts";
 import { NOT_FOUND_PATH, sitemapRoutes } from "./routes.ts";
 
 async function metadata(browser: Browser, url: string, javaScriptEnabled: boolean) {
@@ -97,11 +97,15 @@ test("the share image and the touch icon are PNGs of the right size", async ({ r
   }
 });
 
-test("account pages are left out of search while accounts are closed", async ({ request }) => {
+test("private account pages are left out of search, Log in and Sign up are listed", async ({
+  request,
+}) => {
   const listed = sitemapRoutes();
-  for (const route of ACCOUNT_PATHS) {
+  for (const route of PRIVATE_PATHS) {
     expect(listed, route).not.toContain(route);
     const html = await (await request.get(route)).text();
     expect(html, route).toContain('<meta name="robots" content="noindex">');
   }
+  for (const route of ["/login/", "/register/", "/pricing/"])
+    expect(listed, route).toContain(route);
 });

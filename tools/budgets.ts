@@ -5,7 +5,7 @@ import { join, relative, sep } from "node:path";
 import { BUDGETS, measurePage } from "./lib/budgets.ts";
 import { listFiles } from "./lib/fs.ts";
 
-const DIST = "dist";
+const DIST = "dist/client";
 if (!existsSync(DIST)) {
   console.error("No dist folder. Run `npm run build` first.");
   process.exit(1);

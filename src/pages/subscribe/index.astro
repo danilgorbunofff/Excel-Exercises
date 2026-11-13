@@ -1,20 +1,51 @@
 ---
-// Why this exists: where a PRO subscription will start. Not open yet.
+// Why this exists: where Stripe Checkout sends the visitor after paying. The
+// webhook can land a few seconds after the visitor does, so the page asks
+// /api/me a few times before it says PRO is active.
 import Base from "../../layouts/Base.astro";
 ---
 
-<Base title="Subscribe" description="PRO subscriptions are not open yet." layout="flush">
+<Base title="Subscribe" description="Your PRO subscription." layout="flush">
   <div class="wrap">
-    <div class="card panel">
-      <h1>Subscriptions open later</h1>
-      <p>PRO is not open yet. Every exercise is free until it is.</p>
+    <div class="card panel" aria-live="polite">
+      <div data-wait>
+        <h1>Thank you</h1>
+        <p>We are switching on PRO for your account. This takes a few seconds.</p>
+      </div>
+      <div data-done hidden>
+        <h1>PRO is active</h1>
+        <p>Every exercise is now open to you.</p>
+      </div>
+      <div data-late hidden>
+        <h1>Almost there</h1>
+        <p>Your payment went through, but PRO is not on your account yet. Reload this page in a minute.</p>
+      </div>
       <div class="actions">
-        <a class="button button-primary" href="/exercises/">Go back to the exercises</a>
-        <a class="button button-outline" href="/pro/">Join the PRO waitlist</a>
+        <a class="button button-primary" href="/exercises/">Go to the exercises</a>
+        <a class="button button-outline" href="/account/">Account and billing</a>
       </div>
     </div>
   </div>
 </Base>
+
+<script>
+  import { loadMe } from "../../scripts/session.ts";
+
+  const show = (which: "wait" | "done" | "late") => {
+    for (const k of ["wait", "done", "late"]) {
+      const el = document.querySelector<HTMLElement>(`[data-${k}]`);
+      if (el) el.hidden = k !== which;
+    }
+  };
+  let tries = 0;
+  async function check(): Promise<void> {
+    const me = tries === 0 ? await loadMe() : await fetch("/api/me/").then((r) => (r.ok ? r.json() : null));
+    if (me?.pro) return show("done");
+    if (++tries >= 10) return show("late");
+    setTimeout(check, 2000);
+  }
+  void check();
+</script>
 
 <style>
   .wrap {

@@ -7,6 +7,7 @@ import Icon from "../../../components/Icon.astro";
 import RichText from "../../../components/RichText.astro";
 import TrackIcon from "../../../components/TrackIcon.astro";
 import Base from "../../../layouts/Base.astro";
+import { isLocked } from "../../../lib/access.ts";
 import {
   exercisePath,
   exercisesForFunction,
@@ -148,7 +149,7 @@ const jsonLd = JSON.stringify({
                   <span class={`badge badge-${p.exercise.level}`}>
                     {LEVELS[p.exercise.level as 1 | 2 | 3]}
                   </span>
-                  {p.exercise.pro && <span class="badge badge-pro">PRO</span>}
+                  {isLocked(p) && <span class="badge badge-pro">PRO</span>}
                   <span class="up-next" data-up-next hidden>
                     Up next
                   </span>

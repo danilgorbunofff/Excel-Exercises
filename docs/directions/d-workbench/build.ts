@@ -155,7 +155,7 @@ function page(state: State): string {
 <body class="state-${state}">
   <a class="skip" href="#formula">Skip to the formula</a>
   <header class="site">
-    <a class="brand" href="/">Formula Practice</a>
+    <a class="brand" href="/">Excel Exercises</a>
     <nav class="nav-wide" aria-label="Main"><ul>${nav}</ul></nav>
     <button class="menu" type="button" commandfor="menu" command="show-modal">Menu</button>
     <dialog id="menu" aria-label="Menu">

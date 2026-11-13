@@ -13,7 +13,7 @@ export default defineConfig({
   reporter: process.env["CI"] ? [["list"], ["html", { open: "never" }]] : "list",
   use: { baseURL: `http://localhost:${PORT}` },
   webServer: {
-    command: `npx astro preview --port ${PORT} --ignore-lock`,
+    command: `node tools/serve-static.ts ${PORT}`,
     url: `http://localhost:${PORT}/`,
     reuseExistingServer: !process.env["CI"],
   },

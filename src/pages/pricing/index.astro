@@ -1,0 +1,206 @@
+---
+// Why this exists: the plans and what each one gives. The PRO form posts to
+// /api/stripe/checkout/, which asks a signed-out visitor to log in first.
+// It works without JavaScript: the plan is a set of radio buttons.
+import { siteConfig } from "../../../site.config.ts";
+import Base from "../../layouts/Base.astro";
+import { isLocked } from "../../lib/access.ts";
+import { exercisePath, LEVELS, placedExercises } from "../../lib/exercises.ts";
+import { PLANS } from "../../server/plans.ts";
+import { proPrices } from "../../server/prices.ts";
+
+const placed = await placedExercises();
+const locked = placed.filter((p) => isLocked(p));
+const free = placed.length - locked.length;
+const prices = await proPrices();
+const proAdds: { title: string; text: string }[] = [
+  {
+    title: `${locked.length} PRO exercises`,
+    text: "Longer tasks built on finance, operations and analyst work, with several formulas per sheet.",
+  },
+  {
+    title: "Advanced tracks as they arrive",
+    text: "Dynamic arrays, dates and text cleaning, in the same step-by-step order as the free tracks.",
+  },
+  {
+    title: "Practice tests, when they open",
+    text: "Timed sets of exercises like the ones employers use, with a summary at the end.",
+  },
+];
+---
+
+<Base
+  title="Pricing"
+  description={`${free} Excel exercises are free. PRO adds ${locked.length} more and every new track.`}
+  layout="wide"
+>
+  <header class="page-head">
+    <h1>Pricing</h1>
+    <p class="lead">
+      {free} exercises are free, for good. PRO unlocks the other {locked.length} and everything new.
+    </p>
+  </header>
+
+  <p class="flash" role="status" data-flash hidden></p>
+
+  <div class="plans">
+    <section class="card plan" aria-labelledby="free-title">
+      <h2 id="free-title">Free</h2>
+      <p class="price"><strong>$0</strong></p>
+      <ul>
+        <li>{free} exercises in {siteConfig.name}'s learning tracks</li>
+        <li>Hints, the formula explainer and every function guide</li>
+        <li>Progress saved to your account, on every device</li>
+      </ul>
+      <a class="button button-outline" href="/register/" data-when="out">Sign up free</a>
+      <a class="button button-outline" href="/exercises/" data-when="in" hidden>Go to the exercises</a>
+    </section>
+
+    <section class="card plan pro" aria-labelledby="pro-title">
+      <h2 id="pro-title"><span class="tag">PRO</span></h2>
+      <form method="post" action="/api/stripe/checkout/">
+        <fieldset>
+          <legend class="visually-hidden">Plan</legend>
+          {
+            PLANS.map((plan, i) => (
+              <label class="period">
+                <input type="radio" name="plan" value={plan.key} checked={i === 0} />
+                <span>{plan.label}</span>
+                {prices && (
+                  <strong>
+                    {prices[plan.key].amount}
+                    <small> {prices[plan.key].per}</small>
+                  </strong>
+                )}
+              </label>
+            ))
+          }
+        </fieldset>
+        {!prices && <p class="small">You see the price before you pay, on Stripe Checkout.</p>}
+        <ul>
+          <li>Everything in Free</li>
+          {proAdds.map((a) => <li><strong>{a.title}.</strong> {a.text}</li>)}
+        </ul>
+        <button class="button button-primary" type="submit">Get PRO</button>
+        <p class="small">
+          Plans renew until you cancel, from your account; PRO stays until the end of the period you
+          paid for. Lifetime is one payment and never renews.
+        </p>
+      </form>
+    </section>
+  </div>
+
+  {
+    locked.length > 0 && (
+      <section class="locked" aria-labelledby="locked-title">
+        <h2 id="locked-title" class="section-title">PRO exercises</h2>
+        <ul class="ruled">
+          {locked.map((p) => (
+            <li>
+              <a href={exercisePath(p.exercise.slug)}>{p.exercise.title}</a>
+              <span class={`level level-${p.exercise.level}`}>{LEVELS[p.exercise.level as 1 | 2 | 3]}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</Base>
+
+<script>
+  import "../../scripts/flash.ts";
+</script>
+
+<style>
+  .plans {
+    display: grid;
+    gap: var(--space-5);
+    padding-bottom: var(--space-6);
+  }
+  .plan {
+    display: grid;
+    align-content: start;
+    gap: var(--space-4);
+    padding: var(--space-6);
+  }
+  .pro {
+    border-color: var(--primary);
+  }
+  h2 {
+    margin: 0;
+    font-size: var(--size-xl);
+    color: var(--heading);
+  }
+  .price {
+    margin: 0;
+    font-size: var(--size-xxl);
+  }
+  ul {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding-left: var(--space-5);
+  }
+  form {
+    display: grid;
+    gap: var(--space-4);
+  }
+  fieldset {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .period {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: var(--target);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    cursor: pointer;
+  }
+  .period:has(input:checked) {
+    border-color: var(--primary);
+    background: var(--chip-bg);
+  }
+  .period strong {
+    margin-left: auto;
+    font-size: var(--size-l);
+  }
+  .period small {
+    font-size: var(--size-s);
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .small {
+    margin: 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .flash {
+    margin: 0 0 var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--miss);
+    border-radius: var(--radius-m);
+    background: var(--miss-tint);
+    font-size: var(--size-s);
+  }
+  .locked {
+    padding-bottom: var(--space-7);
+  }
+  .locked li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+  }
+  @media (min-width: 48rem) {
+    .plans {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

@@ -27,7 +27,20 @@ export const ACCOUNT_PATHS = [
   "/subscribe/",
 ] as const;
 
-/** True for a page that search engines should not list: an account page while accounts are closed. */
+/** Account pages that only make sense for one visitor, so search never lists them. */
+export const PRIVATE_PATHS = [
+  "/account/",
+  "/profile/",
+  "/reset-password/",
+  "/verify/",
+  "/subscribe/",
+] as const satisfies readonly (typeof ACCOUNT_PATHS)[number][];
+
+/**
+ * True for a page that search engines should not list: every account page
+ * while accounts are closed, and the private ones always.
+ */
 export function hiddenFromSearch(path: string, accountsOpen: boolean): boolean {
-  return !accountsOpen && (ACCOUNT_PATHS as readonly string[]).includes(path);
+  const list: readonly string[] = accountsOpen ? PRIVATE_PATHS : ACCOUNT_PATHS;
+  return list.includes(path);
 }

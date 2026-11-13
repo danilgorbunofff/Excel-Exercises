@@ -9,8 +9,8 @@
     },
     {
       "name": "preview-build",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["astro", "preview", "--port", "4399"],
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/serve-static.ts", "4399"],
       "port": 4399
     }
   ]

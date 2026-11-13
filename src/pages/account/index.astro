@@ -1,9 +1,161 @@
 ---
-// Why this exists: account settings, for signed-in visitors once accounts open.
+// Why this exists: account settings: plan and billing, email, password, email
+// preferences, log out and delete. Every form posts to an /api/ function and
+// comes back here with a message. account-page.ts fills in the current values.
 import SignedOutPanel from "../../components/SignedOutPanel.astro";
 import Base from "../../layouts/Base.astro";
 ---
 
 <Base title="Account" description="Your account settings." layout="flush">
-  <SignedOutPanel title="Account settings" lead="Log in to change your email, password and email preferences." />
+  <div data-when="out">
+    <SignedOutPanel title="Account settings" lead="Log in to change your email, password and email preferences." />
+  </div>
+
+  <div class="wrap" data-when="in" hidden>
+    <h1>Account settings</h1>
+    <p class="flash" role="status" data-flash hidden></p>
+
+    <section class="card block" aria-labelledby="plan">
+      <h2 id="plan">Plan and billing</h2>
+      <div data-plan-free>
+        <p>You are on the <strong>Free</strong> plan.</p>
+        <a class="button button-primary" href="/pricing/">Get PRO</a>
+      </div>
+      <div data-plan-pro hidden>
+        <p><span class="tag">PRO</span> <span data-renews>Your PRO plan is active.</span></p>
+        <form method="post" action="/api/stripe/portal/">
+          <button class="button button-outline" type="submit">Manage billing</button>
+        </form>
+        <p class="small">Change your plan, update your card, see invoices or cancel, on Stripe.</p>
+      </div>
+    </section>
+
+    <section class="card block" aria-labelledby="email-title">
+      <h2 id="email-title">Email</h2>
+      <p>Signed in as <strong data-me-email></strong>.</p>
+      <form method="post" action="/api/auth/email/" class="fields">
+        <label for="new-email">New email</label>
+        <input id="new-email" name="email" type="email" autocomplete="email" required />
+        <button class="button button-outline" type="submit">Change email</button>
+      </form>
+    </section>
+
+    <section class="card block" aria-labelledby="password-title" data-password>
+      <h2 id="password-title">Password</h2>
+      <form method="post" action="/api/auth/password/" class="fields">
+        <input type="hidden" name="from" value="/account/" />
+        <label for="password">New password</label>
+        <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required />
+        <label for="password2">Repeat the new password</label>
+        <input id="password2" name="password2" type="password" autocomplete="new-password" minlength="8" required />
+        <button class="button button-outline" type="submit">Save the new password</button>
+      </form>
+    </section>
+
+    <section class="card block" aria-labelledby="news-title">
+      <h2 id="news-title">Email preferences</h2>
+      <form method="post" action="/api/account/news/" class="fields">
+        <label class="check"><input type="checkbox" name="news" data-news /> Send me an email when new exercises arrive</label>
+        <button class="button button-outline" type="submit">Save</button>
+      </form>
+    </section>
+
+    <section class="card block" aria-labelledby="session-title">
+      <h2 id="session-title">Log out</h2>
+      <form method="post" action="/api/auth/logout/">
+        <button class="button button-outline" type="submit">Log out</button>
+      </form>
+    </section>
+
+    <section class="card block danger" aria-labelledby="delete-title">
+      <h2 id="delete-title">Delete account</h2>
+      <p>
+        This deletes your account and the progress saved in it, and cancels PRO. It cannot be undone.
+        Progress in this browser stays.
+      </p>
+      <form method="post" action="/api/account/delete/" class="fields">
+        <label for="confirm">Type DELETE to confirm</label>
+        <input id="confirm" name="confirm" type="text" autocomplete="off" required pattern="[Dd][Ee][Ll][Ee][Tt][Ee]" />
+        <button class="button button-outline" type="submit">Delete my account</button>
+      </form>
+    </section>
+  </div>
 </Base>
+
+<script>
+  import "../../scripts/flash.ts";
+  import "../../scripts/account-page.ts";
+</script>
+
+<style>
+  .wrap {
+    display: grid;
+    gap: var(--space-5);
+    width: 100%;
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: var(--space-7) var(--space-4);
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--size-xl);
+    color: var(--heading);
+  }
+  .block {
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-5);
+  }
+  h2 {
+    margin: 0;
+    font-size: var(--size-l);
+    color: var(--heading);
+  }
+  p {
+    margin: 0;
+  }
+  .small {
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .fields {
+    display: grid;
+    gap: var(--space-2);
+    justify-items: start;
+  }
+  .fields label {
+    font-size: var(--size-s);
+    font-weight: 600;
+  }
+  .fields input:not([type="checkbox"]) {
+    width: 100%;
+    min-height: var(--target);
+    padding: 0 var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+  }
+  .check {
+    display: flex;
+    gap: var(--space-2);
+    align-items: flex-start;
+    font-weight: 400 !important;
+  }
+  .fields .button {
+    margin-top: var(--space-2);
+  }
+  .flash {
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--chip-line);
+    border-radius: var(--radius-m);
+    background: var(--chip-bg);
+    font-size: var(--size-s);
+  }
+  .flash[data-kind="error"] {
+    border-color: var(--miss);
+    background: var(--miss-tint);
+  }
+  .danger {
+    border-color: var(--miss);
+  }
+</style>

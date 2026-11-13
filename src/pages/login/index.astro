@@ -1,12 +1,11 @@
 ---
-// Why this exists: the Log in page. Accounts are not open yet, so the form is
-// shown disabled with a note; see siteConfig.accountsOpen.
+// Why this exists: the Log in page. The form posts to /api/auth/login/.
 import AuthCard from "../../components/AuthCard.astro";
 import Base from "../../layouts/Base.astro";
 ---
 
 <Base title="Log in" description="Log in to sync your Excel practice progress across devices." layout="flush">
-  <AuthCard title="Log in" lead="Welcome back. Log in to sync your progress across devices.">
+  <AuthCard title="Log in" lead="Welcome back. Log in to sync your progress across devices." action="/api/auth/login/" google>
     <label for="email">Email</label>
     <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
     <label for="password">Password</label>

@@ -48,9 +48,9 @@ export function pageItems(): SearchItem[] {
       keywords: "my progress, solved, due for review, history, clear",
     },
     {
-      title: "PRO",
-      url: "/pro/",
-      keywords: "PRO, waitlist, subscribe, paid, pricing, practice tests",
+      title: "Pricing",
+      url: "/pricing/",
+      keywords: "PRO, pricing, plans, subscribe, paid, upgrade, practice tests",
     },
   ].map((p) => ({ ...p, kind: "Page" as const }));
 }

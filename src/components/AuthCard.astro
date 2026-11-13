@@ -1,21 +1,26 @@
 ---
-// Why this exists: the card that holds the Log in, Sign up and waitlist forms.
-// Until accounts open, the fields are disabled and a note says why, so
-// nothing is ever sent.
+// Why this exists: the card that holds the Log in, Sign up and other account
+// forms. Each form posts to an /api/ function, which sends the visitor back
+// with ?error= or ?ok=; the message shows at the top of the card. While
+// accounts are closed, the fields are disabled and a note says why.
 import { siteConfig } from "../../site.config.ts";
 import Logo from "./Logo.astro";
 
 interface Props {
   title: string;
   lead: string;
+  /** The /api/ function the form posts to. */
+  action: string;
   /** h1 on its own page, h2 when the card sits inside another page. */
   level?: 1 | 2;
   /** Overrides the note shown while accounts are closed. */
   note?: string;
   /** Show the form enabled even while accounts are closed. */
   enabled?: boolean;
+  /** Show "Continue with Google" above the form. */
+  google?: boolean;
 }
-const { title, lead, level = 1, note, enabled = false } = Astro.props;
+const { title, lead, action, level = 1, note, enabled = false, google = false } = Astro.props;
 const Heading = level === 1 ? "h1" : "h2";
 const open = siteConfig.accountsOpen || enabled;
 ---
@@ -35,14 +40,30 @@ const open = siteConfig.accountsOpen || enabled;
         </p>
       )
     }
-    <form method="post" action="#" aria-describedby={open ? undefined : "accounts-note"} data-auth-form>
+    <p class="flash" role="status" data-flash hidden></p>
+    {
+      open && google && (
+        <>
+          <a class="button button-secondary google" href="/api/auth/google/" data-next-link>
+            Continue with Google
+          </a>
+          <p class="or">or with your email</p>
+        </>
+      )
+    }
+    <form method="post" action={action} aria-describedby={open ? undefined : "accounts-note"} data-auth-form>
       <fieldset disabled={!open}>
+        <input type="hidden" name="next" value="" data-next-field />
         <slot />
       </fieldset>
     </form>
     <slot name="after" />
   </div>
 </div>
+
+<script>
+  import "../scripts/flash.ts";
+</script>
 
 <style>
   .auth {
@@ -75,6 +96,28 @@ const open = siteConfig.accountsOpen || enabled;
     border-radius: var(--radius-m);
     background: var(--header);
     color: var(--text);
+    font-size: var(--size-s);
+  }
+  .flash {
+    margin: var(--space-5) 0 0;
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-m);
+    border: 1px solid var(--chip-line);
+    background: var(--chip-bg);
+    font-size: var(--size-s);
+  }
+  .flash[data-kind="error"] {
+    border-color: var(--miss);
+    background: var(--miss-tint);
+  }
+  .google {
+    width: 100%;
+    margin-top: var(--space-5);
+  }
+  .or {
+    margin: var(--space-4) 0 0;
+    text-align: center;
+    color: var(--muted);
     font-size: var(--size-s);
   }
   fieldset {

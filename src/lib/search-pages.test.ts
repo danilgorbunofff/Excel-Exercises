@@ -34,7 +34,7 @@ describe("pageItems", () => {
     expect(find("keyboard")).toContain("/excel-shortcuts/");
     expect(find("explainer")).toContain("/formula-explainer/");
     expect(find("resources")).toContain("/resources/");
-    expect(find("pro")).toContain("/pro/");
+    expect(find("pro")).toContain("/pricing/");
     expect(find("progress")).toContain("/progress/");
   });
   it("marks every one as a page", () => {

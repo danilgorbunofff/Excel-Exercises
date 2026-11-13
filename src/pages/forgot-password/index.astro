@@ -1,14 +1,14 @@
 ---
-// Why this exists: asks for the email to send a reset link to. Disabled until
-// accounts open.
+// Why this exists: asks for the email to send a reset link to. Posts to
+// /api/auth/forgot/.
 import AuthCard from "../../components/AuthCard.astro";
 import Base from "../../layouts/Base.astro";
 ---
 
 <Base title="Reset your password" description="Get a link to set a new password." layout="flush">
-  <AuthCard title="Password reset" lead="Enter your email and we will send you a link to set a new password.">
+  <AuthCard title="Password reset" lead="Enter your email and we will send you a link to set a new password." action="/api/auth/forgot/">
     <label for="email">Email</label>
-    <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" />
+    <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
     <button class="button button-primary" type="submit">Send the link</button>
     <p slot="after" class="switch"><a href="/login/">Back to log in</a></p>
   </AuthCard>

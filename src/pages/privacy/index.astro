@@ -10,30 +10,58 @@ const host = siteConfig.host;
 
 <Base
   title="Privacy"
-  description="What this site stores and sends: progress in your browser only, no analytics, no cookies and no third-party requests."
+  description="What this site stores and sends: progress in your browser, an optional account, payments through Stripe, and no analytics or tracking."
 >
   <h1>Privacy</h1>
-  <p>Last updated 11 November 2026.</p>
+  <p>Last updated 13 November 2026.</p>
 
   <h2>What stays in your browser</h2>
   <p>
     Your progress is saved in your browser's local storage, under the name <code>{STORAGE_KEY}</code>.
-    It holds which exercises you solved or opened the answer to, and on which days. It is never sent
-    to the site.
+    It holds which exercises you solved or opened the answer to, and on which days. Without an
+    account it is never sent to the site.
   </p>
   <p>
     To remove it, use <a href="/progress/">Clear my progress</a> on the progress page, or clear this
     site's data in your browser settings.
   </p>
 
+  <h2>If you make an account</h2>
+  <p>An account is optional. Every free exercise works without one. With an account the site keeps:</p>
+  <ul>
+    <li>your email address, and your password in a form that cannot be read back;</li>
+    <li>if you sign in with Google, the email address, name and picture Google shares with the site;</li>
+    <li>a copy of your progress, so it follows you to other devices;</li>
+    <li>whether you want an email when new exercises arrive;</li>
+    <li>whether you have PRO, and until when.</li>
+  </ul>
+  <p>
+    Accounts are stored by <a href="https://supabase.com/privacy">Supabase</a>. You can change your
+    email and password, or delete the account and everything in it, on the
+    <a href="/account/">account page</a>.
+  </p>
+
+  <h2>If you buy PRO</h2>
+  <p>
+    Payments are taken by <a href="https://stripe.com/privacy">Stripe</a>. Your card details go to
+    Stripe and never reach this site. The site keeps your Stripe customer number and the state of
+    your subscription.
+  </p>
+
+  <h2>Cookies</h2>
+  <p>
+    Signed in, the site sets cookies that keep you signed in, and one that tells pages you are
+    signed in. They are needed for the account to work. There are no cookies for analytics or
+    advertising, and none at all if you do not sign in.
+  </p>
+
   <h2>What the site does not do</h2>
   <ul>
-    <li>No accounts and no sign-up.</li>
-    <li>No cookies.</li>
     <li>No analytics, advertising or tracking of any kind.</li>
     <li>
-      No requests to other websites. Fonts and scripts come from this site, and a test checks every
-      page for requests elsewhere.
+      Pages make no requests to other websites. Fonts and scripts come from this site, and a test
+      checks every page for requests elsewhere. Google sign-in and Stripe Checkout are pages on
+      Google's and Stripe's own sites, which you go to when you choose them.
     </li>
     <li>The formulas you type are checked in your browser and are not sent anywhere.</li>
   </ul>

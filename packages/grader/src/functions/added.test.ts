@@ -37,6 +37,7 @@ describe("the new functions are known to the parser", () => {
     "TEXTAFTER",
     "REPLACE",
     "DATEDIF",
+    "HOUR",
     "EDATE",
     "SUBTOTAL",
     "AGGREGATE",
@@ -166,6 +167,22 @@ describe("splitting and replacing text", () => {
     ['=REPLACE("abc",0,1,"x")', "#VALUE!"],
   ])("%s is %s", (f, code) => {
     expect(ev(f)).toBe(E(code as ErrorCode));
+  });
+});
+
+describe("HOUR", () => {
+  it.each([
+    ["=HOUR(0.75)", 18],
+    ["=HOUR(C1+0.5)", 12],
+    ["=HOUR(C1)", 0],
+    ["=HOUR(0.999999)", 23],
+    ["=HOUR(1.25)", 6],
+  ])("%s is %s", (f, value) => {
+    expect(ev(f)).toBe(value);
+  });
+
+  it("rejects a negative serial", () => {
+    expect(ev("=HOUR(-1)")).toBe(E("#NUM!"));
   });
 });
 

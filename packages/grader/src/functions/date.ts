@@ -92,6 +92,17 @@ export const DATES: Record<string, FunctionSpec> = {
       return fail("#NUM!");
     }),
   ),
+  // The time of day is rounded to the nearest millisecond first, as Excel does,
+  // so 0.999999 is hour 23 and a value a hair under a whole day is not hour 24.
+  HOUR: fn(
+    1,
+    1,
+    safe((args) => {
+      const s = serialArg(args[0]);
+      const ms = Math.round((s - Math.floor(s)) * DAY_MS);
+      return Math.floor(ms / 3_600_000) % 24;
+    }),
+  ),
   EOMONTH: fn(
     2,
     2,

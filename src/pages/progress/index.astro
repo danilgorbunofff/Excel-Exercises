@@ -61,7 +61,7 @@ const gaps = `${REVIEW_GAPS.slice(0, -1).join(", ")} and ${REVIEW_GAPS.at(-1)} d
     <p role="status" data-clear-status></p>
   </div>
 
-  <script type="application/json" data-exercises set:html={JSON.stringify(list)} />
+  <script type="application/json" data-exercises set:html={JSON.stringify(list).replaceAll("<", "\\u003c")} />
 </Base>
 
 <script>

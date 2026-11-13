@@ -16,7 +16,9 @@ headers and long caching for the hashed files in `/_astro/`.
    `public/apple-touch-icon.png`, and commit both images.
 3. **Create the Vercel project** from the GitHub repository:
    - Framework preset: Astro
-   - Build command: `npm run build`
+   - Build command: `npm run build && npm run check:csp && npm run check:origin`.
+     Vercel deploys `main` without waiting for CI, so these two checks stop a
+     build with stale Content-Security-Policy hashes or the placeholder domain.
    - Output directory: `dist`
    - Install command: the default (`npm install`), or `npm ci`
    - Node.js version: 24 (Project Settings, Build and Deployment)

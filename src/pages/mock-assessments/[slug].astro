@@ -1,0 +1,555 @@
+---
+// Why this exists: one mock assessment. A fixed set of existing exercise
+// screens, taken one at a time against the clock, with no hints and no
+// verdict until the end. The page is three stages: a cover that says what is
+// inside, the tasks on a workbench like the exercise page, and the result as
+// a report: a summary, every answer with its mark, and a score per function. assessment.ts
+// runs it. Every set except the sample needs PRO.
+import { getCollection } from "astro:content";
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Icon from "../../components/Icon.astro";
+import RichText from "../../components/RichText.astro";
+import Sheet from "../../components/Sheet.astro";
+import Base from "../../layouts/Base.astro";
+import {
+  type AssessmentSet,
+  assessmentPath,
+  coverOf,
+  loadAssessments,
+} from "../../lib/assessments.ts";
+import { exercisePath, LEVELS } from "../../lib/exercises.ts";
+import { functionPages, functionPath } from "../../lib/functions.ts";
+import "../../styles/assessments.css";
+
+export function getStaticPaths() {
+  return loadAssessments().sets.map((set) => ({ params: { slug: set.slug }, props: { set } }));
+}
+
+interface Props {
+  set: AssessmentSet;
+}
+const { set } = Astro.props;
+const byId = new Map((await getCollection("exercises")).map((e) => [e.data.id, e.data]));
+const tasks = set.tasks.map((t) => {
+  const exercise = byId.get(t.exercise);
+  const screen = exercise?.screens[t.screen];
+  if (!exercise || !screen) throw new Error(`${set.slug}: no ${t.exercise} screen ${t.screen}`);
+  return { ...t, exercise, screen };
+});
+const cover = coverOf(set, byId);
+const locked = !set.sample;
+const path = assessmentPath(set.slug);
+const n = tasks.length;
+const levelWord = (l: number) => LEVELS[l as 1 | 2 | 3];
+// The set's level is its hardest task's.
+const level = cover.levels.at(-1) ?? 1;
+// A function links to its lesson, or to the exercises that use it when it has none.
+const lessons = new Map((await functionPages()).map((p) => [p.name, functionPath(p.slug)]));
+const fnHref = (name: string) => lessons.get(name) ?? `/exercises/?fn=${encodeURIComponent(name)}`;
+// What the script grades with, and the answers it shows after Finish.
+// shortcut: the answers of free exercises are in the page during the test (they
+// are public on the exercise pages anyway), so a visitor could look them up and
+// only fool themselves. A PRO exercise's answer stays on the server until then.
+const data = {
+  slug: set.slug,
+  minutes: set.minutes,
+  tasks: tasks.map((t) => ({
+    exercise: t.exercise.id,
+    screen: t.screen,
+    title: t.exercise.title,
+    href: exercisePath(t.exercise.slug),
+    slug: t.exercise.slug,
+    answer: t.exercise.pro ? null : t.screen.answer,
+    spec: {
+      rows: t.screen.rows,
+      answerCell: t.screen.answerCell,
+      expected: t.screen.expected,
+      requiredFunctions: t.screen.requiredFunctions,
+      forbiddenFunctions: t.screen.forbiddenFunctions,
+      requireReference: t.screen.requireReference,
+    },
+    misses: t.screen.misses,
+  })),
+};
+---
+
+<Base
+  title={`${set.title}: mock Excel assessment`}
+  description={`${set.summary} ${n} tasks in ${set.minutes} minutes, marked at the end.`}
+  layout="wide"
+>
+  <div class="assess" data-assessment data-locked={locked ? "" : undefined}>
+    <section class="cover a-page" aria-labelledby="cover-title" data-stage="intro">
+      <Breadcrumbs items={[{ label: "Mock assessments", href: "/mock-assessments/" }]} />
+      <div class="ruled a-card">
+        <div class="a-head">
+          <div>
+            <p class="a-context">
+              Mock assessment
+              {locked ? <span class="tag">PRO</span> : <span class="mark-tag free">Free</span>}
+            </p>
+            <h1 id="cover-title" class="a-title">{set.title}</h1>
+            <p class="a-lead">{set.summary}</p>
+          </div>
+          <div class="start-row" data-start-row>
+            <button class="button button-primary button-l" type="button" data-start disabled>
+              Start: {set.minutes} minutes
+            </button>
+            <label class="untimed">
+              <input type="checkbox" data-untimed />
+              No time limit (the result is marked untimed)
+            </label>
+            <noscript><p class="a-note">The assessment needs JavaScript to keep time and mark your answers.</p></noscript>
+          </div>
+        </div>
+        {
+          locked && (
+            <div class="a-notice" data-paywall>
+              <p data-paywall-text>This assessment is part of PRO. Get PRO to take it and keep your results.</p>
+              <div class="a-actions">
+                <a class="button button-primary" href="/pricing/">See PRO plans</a>
+                <a class="button button-outline" href={`/login/?next=${encodeURIComponent(path)}`} data-when="out">
+                  Log in
+                </a>
+                <a class="button button-outline" href={assessmentPath("sample")}>Try the free sample</a>
+              </div>
+            </div>
+          )
+        }
+        <dl class="a-stats">
+          <div>
+            <dt><Icon name="grid" size={16} class="a-icon" />Tasks</dt>
+            <dd>{n}</dd>
+          </div>
+          <div>
+            <dt><Icon name="clock" size={16} class="a-icon" />Time</dt>
+            <dd>{set.minutes} min</dd>
+          </div>
+          <div>
+            <dt><Icon name="chart" size={16} class="a-icon" />Level</dt>
+            <dd><span class={`level level-${level}`}>{levelWord(level)}</span></dd>
+          </div>
+          <div>
+            <dt><Icon name="eye-off" size={16} class="a-icon" />Hints</dt>
+            <dd>None</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="a-grid">
+        <section class="ruled" aria-labelledby="contents-title">
+          <div class="list-head">
+            <h2 id="contents-title">What is in it</h2>
+          </div>
+          <ol class="a-list">
+            {
+              cover.tasks.map((t, i) => (
+                <li class="a-item mid">
+                  <span class="num">{i + 1}</span>
+                  <p class="fns">
+                    {t.functions.length > 0 ? (
+                      t.functions.map((f) => <a href={fnHref(f)}>{f}</a>)
+                    ) : (
+                      <span class="plain">Cell references and arithmetic</span>
+                    )}
+                  </p>
+                  <span class={`level level-${t.level}`}>{levelWord(t.level)}</span>
+                </li>
+              ))
+            }
+          </ol>
+        </section>
+        <section class="ruled a-side" aria-labelledby="rules-title">
+          <div class="list-head">
+            <h2 id="rules-title">Before you start</h2>
+          </div>
+          <ul class="a-rows">
+            <li>
+              <span class="a-icon"><Icon name="eye-off" size={18} /></span>
+              <p>No hints while you work.</p>
+            </li>
+            <li>
+              <span class="a-icon"><Icon name="reset" size={18} /></span>
+              <p>Go back to any task until you finish.</p>
+            </li>
+            <li>
+              <span class="a-icon"><Icon name="clock" size={18} /></span>
+              <p>When time runs out, it ends. Blank tasks count as missed.</p>
+            </li>
+            <li>
+              <span class="a-icon"><Icon name="check" size={18} /></span>
+              <p>
+                Your practice progress does not change. Signed in, results are kept on the
+                <a href="/mock-assessments/">assessments page</a>.
+              </p>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </section>
+
+    <section class="test" aria-label={`${set.title} assessment`} data-stage="test" hidden>
+      <div class="strip">
+        <p class="strip-title">
+          {set.title}
+          <span class="answered" data-answered>0 of {n} answered</span>
+        </p>
+        <p class="clock" data-clock-box>
+          <span role="timer" aria-label="Time left" data-clock>{set.minutes}:00</span>
+          <span class="left">left</span>
+        </p>
+        <button class="button finish" type="button" data-finish>Finish</button>
+      </div>
+      <p class="visually-hidden" aria-live="polite" data-clock-alert></p>
+      <p class="confirm" role="status" data-confirm></p>
+
+      <nav aria-label="Tasks">
+        <ol class="cells">
+          {
+            tasks.map((_, i) => (
+              <li>
+                <button type="button" data-goto={i} aria-label={`Task ${i + 1}, blank`}>
+                  {i + 1}
+                </button>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+
+      <div class="tasks">
+      {
+        tasks.map((t, i) => (
+          <section class:list={["task", { off: i > 0 }]} data-task={i} aria-labelledby={`t${i + 1}-title`}>
+            <div class="task-text">
+              <h2 id={`t${i + 1}-title`}>
+                Task {i + 1} of {n}
+              </h2>
+              <p class="prompt">
+                <RichText text={t.screen.prompt} />
+              </p>
+              <p class="where">
+                Your answer goes in <strong>{t.screen.answerCell}</strong>.
+              </p>
+              <div class="save-row">
+                <button class="button button-primary" type="submit" form={`t${i + 1}-work-1`}>
+                  {i < n - 1 ? "Save and next" : "Save"}
+                </button>
+                <span class="steps">
+                  {i > 0 && (
+                    <button class="link-button" type="button" data-prev>
+                      Previous
+                    </button>
+                  )}
+                  {i < n - 1 && (
+                    <button class="link-button" type="button" data-next>
+                      Next
+                    </button>
+                  )}
+                </span>
+              </div>
+              <p class="saved" id={`t${i + 1}-verdict-1`} data-saved>
+                Type a formula, then save it. You can change it until you finish.
+              </p>
+            </div>
+            <div class="task-sheet">
+              <Sheet
+                screen={t.screen}
+                index={0}
+                action={path}
+                compact
+                noReset
+                idPrefix={`t${i + 1}-`}
+                label="Sheet1"
+              />
+            </div>
+          </section>
+        ))
+      }
+      </div>
+    </section>
+
+    <section class="result a-page" aria-labelledby="summary-title" data-stage="summary" hidden>
+      <div class="ruled a-card summary">
+        <div class="a-head">
+          <div>
+            <h2 id="summary-title" tabindex="-1">
+              <span class="a-context">{set.title}</span>
+              <span class="a-title" data-score>0 of {n} correct</span>
+            </h2>
+            <p class="a-note" role="status" data-save-note></p>
+          </div>
+          <div class="a-actions">
+            <a class="button button-outline" href="/mock-assessments/">All assessments</a>
+            <button class="button button-primary" type="button" data-again>Take it again</button>
+          </div>
+        </div>
+        <div class="score-bar" aria-hidden="true" data-bar></div>
+        <dl class="a-stats">
+          <div>
+            <dt><span class="swatch correct"></span>Correct</dt>
+            <dd class="correct" data-count="correct">0</dd>
+          </div>
+          <div>
+            <dt><span class="swatch miss"></span>Missed</dt>
+            <dd class="miss" data-count="miss">0</dd>
+          </div>
+          <div>
+            <dt><span class="swatch blank"></span>Blank</dt>
+            <dd data-count="blank">0</dd>
+          </div>
+          <div>
+            <dt><Icon name="clock" size={16} class="a-icon" />Time</dt>
+            <dd data-time></dd>
+          </div>
+          <div data-best-row hidden>
+            <dt>Best before</dt>
+            <dd data-best></dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="a-grid">
+        <section class="ruled answers" aria-labelledby="answers-title">
+          <div class="list-head">
+            <h3 id="answers-title">Your answers</h3>
+          </div>
+          <ol class="a-list" data-results></ol>
+        </section>
+
+        <section class="ruled a-side by-function" aria-labelledby="by-function-title">
+          <div class="list-head">
+            <h3 id="by-function-title">By function</h3>
+          </div>
+          <table>
+            <caption class="visually-hidden">Right answers per function, weakest first</caption>
+            <thead class="visually-hidden">
+              <tr>
+                <th scope="col">Function</th>
+                <th scope="col">Correct</th>
+                <th scope="col">Share right</th>
+                <th scope="col">Practise</th>
+              </tr>
+            </thead>
+            <tbody data-by-function></tbody>
+          </table>
+          <div class="list-head" data-practise-head hidden>
+            <h3 id="practise-title">Practise next</h3>
+          </div>
+          <ul class="a-links" aria-labelledby="practise-title" data-practise hidden></ul>
+        </section>
+      </div>
+    </section>
+
+    <script type="application/json" data-assessment-data set:html={JSON.stringify(data).replaceAll("<", "\\u003c")} />
+  </div>
+</Base>
+
+<script>
+  import "../../scripts/assessment.ts";
+</script>
+
+<style>
+  .assess {
+    padding: var(--space-5) 0 0;
+  }
+  .test p {
+    margin: 0;
+  }
+
+  /* Stage 1: the cover. The card and the rows are in assessments.css. */
+  .start-row {
+    display: grid;
+    gap: var(--space-2);
+    justify-items: start;
+  }
+  [data-locked] [data-start-row] {
+    display: none;
+  }
+  .untimed {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--target);
+    font-size: var(--size-s);
+  }
+  .untimed input {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  /* Stage 2: the workbench. */
+  .test {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .strip {
+    position: sticky;
+    top: 4rem;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4);
+    border-radius: var(--radius-m);
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+  .strip .strip-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-1) var(--space-3);
+    margin-right: auto;
+    font-weight: 700;
+  }
+  .answered {
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+  }
+  .clock {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-1);
+    padding: 0 var(--space-2);
+    border-radius: var(--radius-s);
+    font-variant-numeric: tabular-nums;
+  }
+  .clock [role="timer"] {
+    font-size: var(--size-xl);
+    font-weight: 700;
+  }
+  .clock.warn {
+    background: var(--intermediate-bg);
+    color: var(--intermediate);
+  }
+  .clock.low {
+    background: var(--surface);
+    color: var(--miss);
+  }
+  .finish {
+    margin-left: var(--space-2);
+    border: 0;
+    background: var(--surface);
+    color: var(--correct);
+  }
+  /* Empty live regions stay in the page, so what is written into them is read out. */
+  .confirm:empty {
+    padding: 0;
+    border: 0;
+  }
+  .confirm {
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--miss);
+    border-radius: var(--radius-m);
+    background: var(--miss-tint);
+  }
+
+  /* The task numbers, drawn as a row of cells. Filled means answered; the
+     current task has Excel's selection border. */
+  .cells {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 1px 0 0 1px;
+    list-style: none;
+  }
+  .cells li {
+    margin: -1px 0 0 -1px;
+  }
+  .cells button {
+    position: relative;
+    width: var(--target);
+    height: var(--target);
+    border: 1px solid var(--line);
+    border-radius: 0;
+    background: var(--surface);
+    color: var(--muted);
+    font: inherit;
+    font-size: var(--size-s);
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+  }
+  .cells button.done {
+    background: var(--correct-tint);
+    color: var(--text);
+    font-weight: 600;
+  }
+  .cells button[aria-current="step"] {
+    z-index: 1;
+    box-shadow: inset 0 0 0 2px var(--primary);
+    color: var(--text);
+    font-weight: 700;
+  }
+  .cells button[aria-current="step"]::after {
+    content: "";
+    position: absolute;
+    right: -3px;
+    bottom: -3px;
+    width: 6px;
+    height: 6px;
+    border: 1px solid var(--surface);
+    background: var(--primary);
+  }
+
+  /* Every task sits in the same grid cell, so the stage is as tall as the
+     tallest task and the page does not jump between tasks. The others are
+     invisible, which also keeps them out of the tab order and the reading order. */
+  .tasks {
+    display: grid;
+  }
+  .tasks > .task {
+    grid-area: 1 / 1;
+  }
+  .task.off {
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .task {
+    display: grid;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-m);
+    overflow: hidden;
+  }
+  @media (min-width: 64rem) {
+    .task {
+      grid-template-columns: minmax(18rem, 2fr) minmax(0, 3fr);
+    }
+  }
+  .task-text {
+    display: grid;
+    align-content: start;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    background: var(--surface);
+  }
+  .task-text h2 {
+    margin: 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .prompt {
+    font-size: var(--size-l);
+  }
+  .save-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-5);
+  }
+  .steps {
+    display: flex;
+    gap: var(--space-4);
+  }
+  .saved {
+    color: var(--muted);
+    font-size: var(--size-s);
+  }
+  .task-sheet {
+    padding: var(--space-4);
+    background: var(--panel);
+  }
+</style>

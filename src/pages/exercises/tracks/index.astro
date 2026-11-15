@@ -236,6 +236,7 @@ const how = [
   }
   .cards li {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     min-width: 0;
   }
   .track {
@@ -361,11 +362,11 @@ const how = [
   }
   @media (min-width: 48rem) {
     .cards {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     .cards-3,
     .how-list {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
   @media (min-width: 64rem) {

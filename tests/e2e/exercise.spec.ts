@@ -175,7 +175,9 @@ for (const colorScheme of ["light", "dark"] as const) {
     ["correct", "=SUM(B2:B5)"],
   ] as const) {
     test(`axe: exercise in the ${state} state (${colorScheme})`, async ({ page }) => {
-      await page.emulateMedia({ colorScheme });
+      // Reduced motion turns off the 150 to 180 ms colour fades, so axe reads
+      // the resting colours, not a colour halfway through a transition.
+      await page.emulateMedia({ colorScheme, reducedMotion: "reduce" });
       await page.goto(SUM);
       await check(page, formula);
       await page.getByRole("button", { name: "Show a hint" }).isVisible();

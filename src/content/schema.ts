@@ -99,7 +99,7 @@ export const exerciseSchema = z.object({
   level: z.number().int().min(1).max(3),
   title: sentence,
   topic: kebab,
-  /** Marked PRO in lists and on the page. Nothing is locked: PRO is a waitlist for now. */
+  /** A PRO exercise: built without its answers and locked until the visitor has PRO (isLocked). */
   pro: z.boolean().default(false),
   updated: isoDate,
   /** The date the expected values were last checked in Excel, or null if not yet. */
@@ -135,6 +135,36 @@ export const trackSchema = z.object({
 export type Exercise = z.infer<typeof exerciseSchema>;
 export type Screen = z.infer<typeof screenSchema>;
 export type Track = z.infer<typeof trackSchema>;
+
+/** Mock assessments: fixed sets of existing exercise screens, taken against the clock. */
+export const assessmentsSchema = z.object({
+  sets: z
+    .array(
+      z.object({
+        slug: kebab,
+        title: sentence,
+        summary: sentence,
+        /** The time limit. */
+        minutes: z.number().int().min(1).max(180),
+        /** Free for everyone. Every other set needs PRO. */
+        sample: z.boolean().default(false),
+        /** An exercise id (its first screen), or an id and a 0-based screen. */
+        tasks: z
+          .array(
+            z.union([
+              kebab.transform((exercise) => ({ exercise, screen: 0 })),
+              z.object({ exercise: kebab, screen: z.number().int().min(0) }),
+            ]),
+          )
+          .min(1)
+          .max(30),
+      }),
+    )
+    .min(1),
+});
+
+export type Assessments = z.infer<typeof assessmentsSchema>;
+export type AssessmentSet = Assessments["sets"][number];
 
 /** A function reference page. Worked examples are run through the grader in a test. */
 export const functionSchema = z.object({

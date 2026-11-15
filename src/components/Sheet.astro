@@ -13,8 +13,22 @@ interface Props {
   action: string;
   /** No empty rows and columns around the data, for a sheet inside another page. */
   compact?: boolean;
+  /** Prefix for the element ids, so several sheets can share one page. */
+  idPrefix?: string;
+  /** The heading in the green bar. */
+  label?: string;
+  /** Hide Reset, where the page has no Reset behaviour (the assessment). */
+  noReset?: boolean;
 }
-const { screen, index, action, compact = false } = Astro.props;
+const {
+  screen,
+  index,
+  action,
+  compact = false,
+  idPrefix = "",
+  label = "Exercise",
+  noReset = false,
+} = Astro.props;
 const answer = parseAddress(screen.answerCell);
 const width = screen.rows[0]?.length ?? 0;
 const columns = Array.from({ length: width }, (_, i) => columnLetters(i + 1));
@@ -29,17 +43,17 @@ const padRows = compact
       { length: Math.max(16 - screen.rows.length, 3) },
       (_, i) => screen.rows.length + i + 1,
     );
-const inputId = index === 0 ? "formula" : `formula-${index + 1}`;
-const formId = `work-${index + 1}`;
-const verdictId = `verdict-${index + 1}`;
+const inputId = `${idPrefix}${index === 0 ? "formula" : `formula-${index + 1}`}`;
+const formId = `${idPrefix}work-${index + 1}`;
+const verdictId = `${idPrefix}verdict-${index + 1}`;
 const kind = (v: unknown) =>
   typeof v === "number" ? "num" : typeof v === "boolean" ? "bool" : v === null ? "empty" : "text";
 ---
 
 <div class="sheet">
   <div class="sheet-bar">
-    <h2>Exercise</h2>
-    <button class="reset" type="button" data-reset disabled>Reset</button>
+    <h2>{label}</h2>
+    {!noReset && <button class="reset" type="button" data-reset disabled>Reset</button>}
   </div>
   <form class="formula-row" id={formId} action={action} method="get" data-form>
     <span class="namebox" aria-hidden="true">{screen.answerCell}</span>

@@ -1,0 +1,440 @@
+/* Why this exists: the one look of the mock assessments. The list, the cover of
+   a set and the result share it: a summary card (what this is, what to do,
+   the numbers in a band), then a main card and a side card. assessment.ts and
+   the list page build some rows in the browser, so the rules live here and not
+   in a page's scoped styles. */
+
+.a-page {
+  display: grid;
+  gap: var(--space-5);
+}
+
+/* The summary card: the title on the left, the actions on the right. */
+.a-head {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+}
+@media (min-width: 48rem) {
+  .a-head {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+}
+.a-head h1,
+.a-head h2 {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+}
+.a-context {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--size-s);
+  font-weight: 600;
+  color: var(--muted);
+}
+.a-title {
+  margin: 0;
+  font-size: var(--size-xxl);
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+  color: var(--heading);
+}
+.a-lead {
+  max-width: 40rem;
+  margin: var(--space-2) 0 0;
+  color: var(--muted);
+}
+.a-note {
+  margin: var(--space-2) 0 0;
+  font-size: var(--size-s);
+  color: var(--muted);
+}
+.a-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+@media (max-width: 47.99rem) {
+  .a-actions > .button {
+    flex: 1 1 10rem;
+  }
+}
+/* A notice across the card, such as the PRO lock on a cover. */
+.a-notice {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--rule);
+  border-left: 3px solid var(--pro);
+}
+.a-notice p {
+  margin: 0;
+}
+@media (min-width: 48rem) {
+  .a-notice {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+}
+
+/* The result's bar: one segment per task, in order. The counts in the band
+   under it are its key. */
+.score-bar {
+  display: flex;
+  gap: 3px;
+  height: 0.625rem;
+  margin: 0 var(--space-5) var(--space-5);
+}
+.score-bar span {
+  flex: 1;
+  border-radius: 2px;
+  background: var(--rule);
+}
+.score-bar span.correct,
+.swatch.correct {
+  background: var(--correct);
+}
+.score-bar span.miss,
+.swatch.miss {
+  background: var(--miss);
+}
+.swatch {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 2px;
+  background: var(--rule);
+}
+
+/* The numbers band. Hairlines hold in any wrap: each cell draws its right and
+   bottom edge, and the band clips the ones on its outer edge. */
+.a-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  border-top: 1px solid var(--rule);
+  background: var(--bg);
+  overflow: hidden;
+}
+@media (min-width: 40rem) {
+  .a-stats {
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  }
+}
+.a-stats > div {
+  padding: var(--space-3) var(--space-5);
+  box-shadow:
+    1px 0 0 var(--rule),
+    0 1px 0 var(--rule);
+}
+.a-stats dt {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--size-s);
+  color: var(--muted);
+}
+.a-stats dd {
+  margin: var(--space-1) 0 0;
+  font-size: var(--size-l);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--heading);
+}
+.a-stats dd.correct {
+  color: var(--correct);
+}
+.a-stats dd.miss {
+  color: var(--miss);
+}
+
+/* The main card and the side card. */
+.a-grid {
+  display: grid;
+  gap: var(--space-5);
+  align-items: start;
+}
+@media (min-width: 64rem) {
+  .a-grid {
+    grid-template-columns: minmax(0, 2fr) minmax(16rem, 1fr);
+  }
+}
+.a-grid .list-head :is(h2, h3) {
+  font-size: var(--size-s);
+}
+.a-pad {
+  margin: 0;
+  padding: var(--space-4);
+}
+
+/* The side card: a small table, plain rows of text, and a list of links. */
+.a-links,
+.a-rows {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.a-links[hidden] {
+  display: none;
+}
+.a-rows li {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+}
+.a-rows p {
+  margin: 0;
+}
+.a-links li + li,
+.a-rows li + li {
+  border-top: 1px solid var(--rule);
+}
+.a-links a {
+  display: flex;
+  align-items: center;
+  min-height: var(--target);
+  padding: 0 var(--space-4);
+}
+.a-side table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.a-side td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+.a-side td:not(:first-child) {
+  padding-left: 0;
+}
+.a-side td code {
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+.a-side .score {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.a-side tr.weak .score {
+  color: var(--miss);
+  font-weight: 700;
+}
+.a-side .bar {
+  width: 4rem;
+}
+.a-side .bar > span {
+  background: var(--correct);
+}
+.a-side td a {
+  white-space: nowrap;
+}
+.a-side table + .list-head {
+  border-top: 1px solid var(--rule);
+}
+
+/* A row: a number when the rows are a sequence, the text, and a pill. */
+.a-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.a-list[hidden] {
+  display: none;
+}
+.a-item {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr) auto;
+  gap: var(--space-1) var(--space-3);
+  align-items: start;
+  padding: var(--space-4);
+}
+.a-item.no-num {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+/* One line of text beside the number: centre them on each other. */
+.a-item.mid {
+  align-items: center;
+}
+.a-item + .a-item {
+  border-top: 1px solid var(--rule);
+}
+.a-item .num {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-pill);
+  color: var(--muted);
+  font-size: var(--size-s);
+  font-variant-numeric: tabular-nums;
+}
+.a-item .body {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+.a-item .title {
+  justify-self: start;
+  line-height: 1.75rem;
+  font-weight: 600;
+  color: var(--heading);
+}
+.a-item .line {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: var(--size-s);
+  color: var(--muted);
+}
+.a-item .line code {
+  font-family: var(--font-mono);
+  color: var(--text);
+}
+.a-item .line strong {
+  color: var(--heading);
+  font-variant-numeric: tabular-nums;
+}
+/* Function names as Excel writes them, not as green chips: green means correct. */
+.fns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--size-s);
+  font-weight: 600;
+  color: var(--text);
+}
+.a-item > .fns {
+  min-height: 1.75rem;
+  align-items: center;
+}
+.a-item .fns a {
+  color: inherit;
+  text-decoration-color: var(--line);
+  text-underline-offset: 0.2em;
+}
+.a-item .fns a:hover {
+  color: var(--primary);
+  text-decoration-color: currentColor;
+}
+.a-tags {
+  display: grid;
+  justify-items: end;
+  gap: var(--space-2);
+  margin-top: 0.1875rem;
+}
+.fns .plain {
+  font-family: var(--font-text);
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* The pill on the right: a word on a tint, so it never relies on colour alone. */
+.mark-tag {
+  padding: 0.125rem 0.625rem;
+  border-radius: var(--radius-pill);
+  background: var(--header);
+  color: var(--muted);
+  font-size: var(--size-xs);
+  font-weight: 700;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.mark-tag.correct,
+.mark-tag.free {
+  background: var(--correct-tint);
+  color: var(--correct);
+}
+.mark-tag.miss {
+  background: var(--miss-tint);
+  color: var(--miss);
+}
+.a-item > :is(.mark-tag, .tag, .level) {
+  justify-self: end;
+  margin-top: 0.1875rem;
+}
+.a-item.mid > :is(.mark-tag, .tag, .level) {
+  margin-top: 0;
+}
+
+/* A small icon before a label or a line; the words carry the meaning. */
+.a-icon {
+  flex-shrink: 0;
+  color: var(--muted);
+}
+.a-rows .a-icon {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-m);
+  background: var(--bg);
+  color: var(--primary);
+}
+.a-item .line.with-icon {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* The disclosure under a missed or blank answer. */
+.a-item .toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  justify-self: start;
+  min-height: var(--target);
+  margin: calc(var(--space-2) * -1) 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--primary);
+  font: inherit;
+  font-size: var(--size-s);
+  font-weight: 600;
+  cursor: pointer;
+}
+.a-item .toggle::after {
+  content: "";
+  width: 0.4rem;
+  height: 0.4rem;
+  margin-top: -0.2rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+.a-item .toggle[aria-expanded="true"]::after {
+  margin-top: 0.2rem;
+  transform: rotate(-135deg);
+}
+.a-item .toggle:hover {
+  text-decoration: underline;
+}
+.a-item .why {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+  padding: var(--space-1) 0 var(--space-1) var(--space-4);
+  border-left: 3px solid var(--miss);
+}
+.a-item.blank .why {
+  border-left-color: var(--line);
+}
+.a-item .why[hidden] {
+  display: none;
+}
+.a-item .why p {
+  margin: 0;
+}
+.a-item .why code {
+  font-family: var(--font-mono);
+}

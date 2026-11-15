@@ -245,7 +245,7 @@ test("every page shares the footer, keeps breadcrumbs honest and has valid struc
     }
   }
   expect(footer).toBe(
-    "Exercises|Learning tracks|Functions|Articles|Formula explainer|Keyboard shortcuts|Resources|Progress|Pricing|Terms|Privacy|Contact",
+    "Exercises|Learning tracks|Functions|Articles|Mock assessments|Formula explainer|Keyboard shortcuts|Resources|Progress|Pricing|Terms|Privacy|Contact",
   );
 });
 

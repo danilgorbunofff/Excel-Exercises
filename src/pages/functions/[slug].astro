@@ -136,7 +136,8 @@ const jsonLd = JSON.stringify({
         <span class="returns">Returns: <RichText text={page.returns} /></span>
       </div>
       <h3 id="arguments">Arguments</h3>
-      <div class="table-wrap">
+      <!-- Scrolls sideways on a phone, so it takes focus for keyboard users. -->
+      <div class="table-wrap" tabindex="0" role="region" aria-labelledby="arguments">
         <table class="args" aria-labelledby="arguments">
           <thead>
             <tr>

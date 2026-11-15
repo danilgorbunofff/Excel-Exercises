@@ -347,6 +347,11 @@ const description = `Practise ${functions.length > 0 ? list(functions) : "Excel 
       overflow: auto;
       padding: var(--space-5) var(--space-5) var(--space-5) var(--space-3);
     }
+    /* The verdict stays in view at 1280 by 800; the empty padding rows slide under it. */
+    .exercise .work .status {
+      position: sticky;
+      bottom: 0;
+    }
   }
 </style>
 

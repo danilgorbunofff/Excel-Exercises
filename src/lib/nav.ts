@@ -20,6 +20,7 @@ export const FOOTER_NAV = {
     { label: "Learning tracks", href: "/exercises/tracks/" },
     { label: "Functions", href: "/functions/" },
     { label: "Articles", href: "/articles/" },
+    { label: "Mock assessments", href: "/mock-assessments/" },
     { label: "Formula explainer", href: "/formula-explainer/" },
     { label: "Keyboard shortcuts", href: "/excel-shortcuts/" },
     { label: "Resources", href: "/resources/" },

@@ -1,15 +1,208 @@
 ---
-// Why this exists: timed practice tests, a PRO feature that needs an account.
-import SignedOutPanel from "../../components/SignedOutPanel.astro";
+import { getCollection } from "astro:content";
+// Why this exists: the mock assessments, in the same cards as a set's cover
+// and its result: a summary of what there is, every set with its size, time,
+// functions, level and your best, and your past attempts beside them. The
+// sample is free; the other sets are PRO.
+import Icon from "../../components/Icon.astro";
 import Base from "../../layouts/Base.astro";
+import { assessmentPath, coverOf, loadAssessments } from "../../lib/assessments.ts";
+import { LEVELS } from "../../lib/exercises.ts";
+import { functionPages, functionPath } from "../../lib/functions.ts";
+import { ACCOUNT_NAV } from "../../lib/nav.ts";
+import "../../styles/assessments.css";
+
+const SHOWN = 5;
+const byId = new Map((await getCollection("exercises")).map((e) => [e.data.id, e.data]));
+const levelWord = (l: number) => LEVELS[l as 1 | 2 | 3];
+// A function links to its lesson, or to the exercises that use it when it has none.
+const lessons = new Map((await functionPages()).map((p) => [p.name, functionPath(p.slug)]));
+const fnHref = (name: string) => lessons.get(name) ?? `/exercises/?fn=${encodeURIComponent(name)}`;
+// A set's level is its hardest task's.
+const sets = loadAssessments().sets.map((set) => {
+  const cover = coverOf(set, byId);
+  const level = cover.levels.at(-1) ?? 1;
+  return { ...set, functions: cover.functions, level, levelName: levelWord(level) };
+});
+const titles = Object.fromEntries(sets.map((s) => [s.slug, s.title]));
+const span = (values: number[], unit = "") => {
+  const lo = Math.min(...values);
+  const hi = Math.max(...values);
+  return lo === hi ? `${lo}${unit}` : `${lo} to ${hi}${unit}`;
+};
+const taskSpan = span(sets.map((s) => s.tasks.length));
+const timeSpan = span(
+  sets.map((s) => s.minutes),
+  " min",
+);
 ---
 
-<Base title="Mock assessments" description="Timed Excel practice tests like the ones employers use." layout="flush">
-  <SignedOutPanel
-    title="Mock assessments"
-    lead="Timed sets of exercises like the ones employers use, with a summary at the end. They are part of PRO and need an account."
-    icon="clock"
-  >
-    <a class="arrow-link" href="/pricing/">What PRO adds&nbsp;<span aria-hidden="true">→</span></a>
-  </SignedOutPanel>
+<Base
+  title="Mock Excel assessments"
+  description="Timed sets of Excel tasks like an employer's test, marked at the end with an explanation for every miss. The sample is free."
+  layout="wide"
+>
+  <div class="a-page index">
+    <div class="ruled a-card">
+      <div class="a-head">
+        <div>
+          <h1 class="a-title">Mock assessments</h1>
+          <p class="a-lead">
+            Timed sets of tasks like an employer's Excel test. There are no hints while you work, and
+            every answer is marked when you finish.
+          </p>
+        </div>
+        <div class="a-actions">
+          <a class="button button-outline" href="/pricing/">See PRO plans</a>
+          <a class="button button-primary" href={assessmentPath("sample")}>Try the free sample</a>
+        </div>
+      </div>
+      <dl class="a-stats">
+        <div>
+          <dt><Icon name="file" size={16} class="a-icon" />Assessments</dt>
+          <dd>{sets.length}</dd>
+        </div>
+        <div>
+          <dt><Icon name="check" size={16} class="a-icon" />Free</dt>
+          <dd>{sets.filter((s) => s.sample).length}</dd>
+        </div>
+        <div>
+          <dt><Icon name="grid" size={16} class="a-icon" />Tasks</dt>
+          <dd>{taskSpan}</dd>
+        </div>
+        <div>
+          <dt><Icon name="clock" size={16} class="a-icon" />Time</dt>
+          <dd>{timeSpan}</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="a-grid">
+      <section class="ruled" aria-labelledby="sets-title">
+        <div class="list-head">
+          <h2 id="sets-title">Assessments</h2>
+        </div>
+        <ul class="a-list sets">
+          {
+            sets.map((set) => (
+              <li class="a-item no-num">
+                <div class="body">
+                  <a class="title" href={assessmentPath(set.slug)}>
+                    {set.title}
+                  </a>
+                  <p class="line">{set.summary}</p>
+                  <p class="line with-icon">
+                    <Icon name="clock" size={16} class="a-icon" />
+                    {set.tasks.length} tasks in {set.minutes} minutes.
+                  </p>
+                  <p class="fns">
+                    {set.functions.slice(0, SHOWN).map((f) => <a href={fnHref(f)}>{f}</a>)}
+                    {set.functions.length > SHOWN && (
+                      <span class="plain">and {set.functions.length - SHOWN} more</span>
+                    )}
+                  </p>
+                  <p class="line" data-when="in" hidden>
+                    Your best: <strong data-best={set.slug}>Not taken</strong>
+                  </p>
+                </div>
+                <div class="a-tags">
+                  {set.sample ? <span class="mark-tag free">Free</span> : <span class="tag">PRO</span>}
+                  <span class={`level level-${set.level}`}>{set.levelName}</span>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="ruled a-side" aria-labelledby="history-title">
+        <div class="list-head">
+          <h2 id="history-title">Your attempts</h2>
+        </div>
+        <p class="a-pad" data-when="out">
+          <a href={`${ACCOUNT_NAV.login.href}?next=${encodeURIComponent("/mock-assessments/")}`}>Log in</a> or
+          <a href={ACCOUNT_NAV.register.href}>sign up</a> to keep your results here and see your best for each
+          assessment.
+        </p>
+        <div data-when="in" hidden>
+          <p class="a-pad" data-history-empty>No attempts yet. Your results appear here when you finish an assessment.</p>
+          <ol class="a-list" aria-label="Your latest attempts, newest first" data-history hidden></ol>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script type="application/json" data-titles set:html={JSON.stringify(titles).replaceAll("<", "\\u003c")} />
 </Base>
+
+<script>
+  import { signedIn } from "../../scripts/session.ts";
+
+  interface Row {
+    assessment: string;
+    finished_at: string;
+    started_at: string;
+    score: number;
+    total: number;
+    time_limit_s: number | null;
+  }
+  const list = document.querySelector<HTMLElement>("[data-history]");
+  const empty = document.querySelector<HTMLElement>("[data-history-empty]");
+  const titles = JSON.parse(
+    document.querySelector("script[data-titles]")?.textContent ?? "{}",
+  ) as Record<string, string>;
+
+  /** One attempt: the set, when and how long, and the score as the pill. */
+  const item = (r: Row) => {
+    const li = document.createElement("li");
+    li.className = "a-item no-num";
+    const body = document.createElement("div");
+    body.className = "body";
+    const title = document.createElement("a");
+    title.className = "title";
+    title.href = `/mock-assessments/${encodeURIComponent(r.assessment)}/`;
+    title.textContent = titles[r.assessment] ?? r.assessment;
+    const mins = Math.round((Date.parse(r.finished_at) - Date.parse(r.started_at)) / 60000);
+    const line = document.createElement("p");
+    line.className = "line";
+    line.textContent = `${new Date(r.finished_at).toLocaleDateString()}, ${
+      r.time_limit_s === null ? `${mins} min, untimed` : `${mins} of ${r.time_limit_s / 60} min`
+    }`;
+    body.append(title, line);
+    const score = document.createElement("span");
+    score.className = "mark-tag";
+    score.textContent = `${r.score} of ${r.total}`;
+    li.append(body, score);
+    return li;
+  };
+
+  if (signedIn() && list && empty) {
+    fetch("/api/assessments/", { credentials: "same-origin" })
+      .then((r) => (r.ok ? (r.json() as Promise<Row[]>) : Promise.reject(new Error(String(r.status)))))
+      .then((rows) => {
+        // Best per set: the highest score, then the most recent.
+        const best = new Map<string, Row>();
+        for (const r of rows) {
+          const b = best.get(r.assessment);
+          if (!b || r.score / r.total > b.score / b.total) best.set(r.assessment, r);
+        }
+        for (const [slug, r] of best) {
+          const el = document.querySelector<HTMLElement>(`[data-best="${slug}"]`);
+          if (el) el.textContent = `${r.score} of ${r.total}`;
+        }
+        if (rows.length === 0) return;
+        list.replaceChildren(...rows.map(item));
+        empty.hidden = true;
+        list.hidden = false;
+      })
+      .catch(() => {
+        empty.textContent = "Your attempts could not be loaded. Reload the page to try again.";
+      });
+  }
+</script>
+
+<style>
+  .index {
+    padding-top: var(--space-5);
+  }
+</style>

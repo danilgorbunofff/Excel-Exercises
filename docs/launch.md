@@ -56,6 +56,8 @@ For local work: `vercel link`, then `vercel env pull .env.local`.
 1. Run `supabase/migrations/0001_accounts.sql` once, in the SQL editor or with
    `supabase db push`. It creates `profiles` and `progress` with row-level
    security, and a profile for every new user.
+   Then run `supabase/migrations/0002_assessments.sql` the same way. It creates
+   `assessment_attempts`, where `/api/assessments/` keeps mock assessment results.
 2. Authentication, URL Configuration: Site URL `https://excelexercises.online`.
    Redirect URLs: `https://excelexercises.online/api/auth/callback/**`,
    `http://localhost:4321/api/auth/callback/**` and your preview domain.

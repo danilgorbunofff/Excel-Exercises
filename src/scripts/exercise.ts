@@ -255,6 +255,8 @@ function setupScreen(exercise: HTMLElement, page: PageData, index: number, root:
     resetAll();
     input.focus();
   });
+  // The task says "Click cell B6": as in Excel, that is where typing starts.
+  answerTd?.addEventListener("click", () => input.focus());
 
   // Multi-screen exercises: Next on a screen shows the following one.
   if (next instanceof HTMLButtonElement) {

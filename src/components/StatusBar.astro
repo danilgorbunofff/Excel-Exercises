@@ -5,10 +5,12 @@ interface Props {
   index: number;
   answerCell: string;
   next: { href: string; label: string; isStep: boolean };
+  /** Must match the Sheet's idPrefix. */
+  idPrefix?: string;
 }
-const { index, answerCell, next } = Astro.props;
-const formId = `work-${index + 1}`;
-const verdictId = `verdict-${index + 1}`;
+const { index, answerCell, next, idPrefix = "" } = Astro.props;
+const formId = `${idPrefix}work-${index + 1}`;
+const verdictId = `${idPrefix}verdict-${index + 1}`;
 ---
 
 <div class="status" data-status>

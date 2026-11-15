@@ -1,0 +1,75 @@
+# Feature gaps: excelexercises.com vs. our site
+
+Checked 2026-11-15. Sources: the reference site's `sitemap.xml` (180 URLs), pages opened in a browser,
+the ExcelExercise repo's file tree and README (GitHub API), and this repo's `src/pages/**`, `content/**`
+and `packages/grader`. Only features we saw are listed. "Repo only" means the feature is in the
+ExcelExercise repo but we did not see it on the live site.
+
+## Reference site at a glance
+
+| Section | URLs | Example |
+|---|---|---|
+| Excel practice lessons (`practice.html?lesson=N`) | 86 (85 listed in the lesson sidebar) | `/practice.html?lesson=1` |
+| SQL practice lessons (`sql-practice.html?lesson=N`) | 23 | `/sql-practice.html?lesson=1` |
+| Function and guide articles (`/excel-functions/*.html`, called "Blog") | 42 | `/excel-functions/vlookup.html` |
+| Excel lesson category pages (`*-lessons.html`) | 16 | `/sum-lessons.html` |
+| SQL lesson category pages | 6 | `/sql-join-lessons.html` |
+| Shortcut articles (`/excel-shortcuts/*`) | 2 | `/excel-shortcuts/ribbon-shortcuts.html` |
+| Landing and hub pages | home, `lessons.html` (dashboard), `sql.html`, `certification.html`, `login.html` | |
+
+`robots.txt` returns a 404 page. The flashcard page (`/flashcard-mode.html`) is linked from the nav but
+sends signed-out visitors to the login page.
+
+## Gap table
+
+| # | Gap | Where on the reference site | Our equivalent | Value | Effort | SEO impact | Notes |
+|---|---|---|---|---|---|---|---|
+| 1 | **Certificate of completion, with a public lookup to verify it** | `/certification.html`, "Get a certificate…" on `/lessons.html`; repo: `app/certificate`, `app/verify/[id]`, `app/api/certificate` | None | H | M | H | Missing. Strong reason to finish the track. People share it on LinkedIn, which brings backlinks. Needs accounts, which we already have. |
+| 2 | **Interactive keyboard-shortcut drills** | ~14 lessons (e.g. 2, 4, 8–10, 27–30, 48–51); `/shortcut-lessons.html`, `/cell-shortcut-lessons.html`; repo: `packages/keys`, `app/shortcuts/[slug]` | `/excel-shortcuts` is a static Win/Mac table (`content/shortcuts.yaml`, 58 rows) | H | M–L | M | Missing. Needs key capture and a selection model in `Sheet`. The grader only scores formulas today. |
+| 3 | **Non-formula tasks: pivot tables, table filters, conditional formatting, worksheets, formatting** | Lessons 65–71; `/table-lessons.html`, `/misc-lessons.html`; `/excel-functions/create-drop-down-list.html`, `format-painter-copy-format.html` | None. `RULES` = syntax, required-function, forbidden-function, reference, value (`packages/grader/src/grade.ts:16`) | M | L | M | Missing. Each one is a new interaction and a new grader rule type. Expensive. |
+| 4 | **Projects: multi-step dashboards built on a dataset** | `/lessons.html` "Projects" (Trout, Wine, UFO); repo: `app/learn/projects/[slug]`, `app/datasets/[name]` | `capstone` topic in `content/track.yaml` (one cell per task) | H | L | M | Partial. Most of these are PREMIUM on the reference site, so it's a PRO lever for us too. |
+| 5 | **Interview / employer assessment** | "Excel Interview Assessment" (PREMIUM) on `/lessons.html`; `/excel-functions/indeed-excel-assessment-practice.html` | `/mock-assessments` placeholder: "not open yet" | H | M | M | Partial. A timed set built from existing exercises plus a summary screen reuses everything we have. Already promised under PRO. |
+| 6 | **Exam-prep landing pages (MO-200, MO-201, Indeed)** | `/excel-functions/mo-200-excel-exam-practice.html`, `mo-201-…`, `indeed-…` | None | M | S | H | Missing. High-intent search terms. Each page links into the exercises that match the exam syllabus. |
+| 7 | **Daily leaderboard (points) and streaks** | `/lessons.html`: "Today's high scores", "Today's high streaks", "My streak today"; repo: `app/leaderboard` | None (`streak`, `leaderboard`: 0 hits in `src`) | M | M | L | Missing. Showing names publicly needs display-name opt-in. A personal streak with no public board is the S version. |
+| 8 | **Function / guide article depth** | 42 pages under `/excel-functions/` (syntax, practice, errors, "Continue to practice →") | `content/functions/` 2, `function-index.yaml` 10, `content/articles/` 3, `explainers.yaml` 6 | H | M (content) | H | Partial. Biggest organic-traffic gap. Content work, not code. `functions/[slug].astro` already exists. |
+| 9 | **Exercise coverage of some functions** | Lessons 69 (ODD/EVEN), 23 (XOR), 57 (TODAY), 82–83 (UNIQUE, FILTER), `/array-lessons.html` (SORT) | Grader lacks ODD, EVEN, XOR, UNIQUE, FILTER, SORT. TODAY not found in grader functions | M | S for ODD/EVEN/XOR; L for dynamic arrays (spill) | M | Partial. TODAY needs a frozen clock to grade deterministically. |
+| 10 | **Mastery colours on the lesson list** | `/lessons.html` legend: "Low accuracy", "Needs practice (≥14 days)", "Good (<14 days)" | Spaced review in `src/scripts/progress.ts`, "Due for review" on `/progress` | M | S | – | Partial. We already have the review schedule. Missing: per-exercise accuracy, and the colour on catalogue rows. |
+| 11 | **Flashcard mode** | `/flashcard-mode.html` (login only); repo: `app/flashcards`, `app/api/flashcards` | None | M | S–M | L | Missing. Could be generated from `function-index.yaml` and the exercise `learn` lines. |
+| 12 | **Per-lesson video** | "Watch Video" button on practice pages; YouTube channel in the footer | None | M | L (production) | M | Missing. Costs production effort, not code. |
+| 13 | **Debugging lessons (fix a broken formula)** | Lesson 78 "Debugging SUM Functions" | Article `reading-formula-errors.md` only | M | S–M | L | Partial. Needs a pre-filled wrong formula in the answer cell. That's a small schema addition. |
+| 14 | **SQL track** | `/sql.html`, `/sql-lessons.html`, 23 `sql-practice` lessons, 6 categories | None | M | L | M | Missing. See "Deliberately skip". |
+| 15 | **Daily challenge** | Repo only: `app/daily`, `app/api/daily` | None | M | M | L | Not seen on the live site. |
+| 16 | **Account data export** | Repo only: `app/api/account/export` | `/api/account/delete` only | L | S | – | Missing. Cheap GDPR win next to delete. |
+| 17 | **In-lesson sidebar listing every lesson with status** | `/practice.html` left rail (85 lessons, "IN PROGRESS" tag) | Not found in `src/pages/exercises/[slug].astro` (grep `sidebar\|aside`: 0) | L | S | – | Unverified on our side. Ours may use Next/track links instead. Check visually. |
+
+### Where we do it better
+
+- **Grader feedback and hints**: three-step hint ladder (nudge, rule with range comparison, answer) and a miss message for each rule. The reference practice page shows only "Watch Video" and "Skip Question".
+- **Sign-in**: we offer Google plus email. The reference login page is email + password only.
+- **Pricing**: we have a public `/pricing`. The reference site shows PREMIUM badges but no pricing page in the sitemap.
+- **Search**, the **formula explainer**, the **Win + Mac shortcut reference**, and a **real `robots.txt`** (theirs is a 404).
+- **Topic hubs**: `/exercises/tracks/[slug]` covers their `*-lessons.html` pages. They show "0/9 completed". Check that we show the same count.
+
+## Build next
+
+1. **Certificate + verify page (#1).** Strongest completion motivator. Earns backlinks. Builds only on accounts and progress we already have.
+2. **Mock assessment v1 (#5).** The page is already live and promises it under PRO. A timed run over existing exercises needs no new grader work.
+3. **Exam-prep and function articles (#6, #8).** Highest SEO return per hour. Templates already exist (`functions/[slug]`, `articles/[slug]`).
+4. **Grader: ODD, EVEN, XOR (+ TODAY with a fixed clock) (#9).** Small, closes exercise-coverage gaps.
+5. **Mastery colours + personal streak (#10, #7 without a public board).** Reuses `progress.ts`. Makes the catalogue feel alive without public-name or privacy work.
+
+## Deliberately skip (for now)
+
+- **SQL track (#14).** Different product and audience. Needs an in-browser SQL engine (e.g. sql.js WASM), a second grader and a second content set. Dilutes the Excel focus.
+- **Pivot tables, filters and conditional formatting (#3).** Each is a new interaction model and grader type. Revisit after projects (#4).
+- **Public leaderboard (#7, public part).** Needs moderation and a display-name opt-in, for low learning value. A personal streak gets most of the benefit.
+- **Video (#12).** A production cost, not engineering work. Link to good external videos from `/resources` instead.
+- **Dynamic-array exercises (UNIQUE, FILTER, SORT).** The grader would need spill semantics. Large job; do it after #9's cheap functions.
+
+## Not verified
+
+- Premium project, interview-assessment and flashcard pages need a login, so we only saw their names and badges.
+- We didn't confirm on the live site how shortcut lessons capture keys. #2 is based on lesson titles and the repo's `packages/keys`.
+- `/excel-functions.html` (the blog index) and SQL category pages weren't opened, only counted from the sitemap.
+- Repo-only features (#15, #16) may never have shipped on the reference site.
+- Our exercise-page navigation (#17) wasn't checked in the browser.

@@ -1,0 +1,62 @@
+# Mock assessments. Each set is a fixed list of existing exercises, taken in
+# order against the clock, with no hints and the results at the end. A task is
+# an exercise id (its first screen) or { exercise, screen } for a later screen.
+# The sample set is free for everyone; every other set needs PRO.
+sets:
+  - slug: sample
+    title: Sample assessment
+    summary: Three short tasks to see how a timed assessment works.
+    minutes: 10
+    sample: true
+    tasks:
+      - sum-a-column
+      - count-paid-orders
+      - pass-or-fail
+
+  - slug: office-essentials
+    title: Office essentials
+    summary: The everyday formulas an office job expects, from totals to a first lookup.
+    minutes: 30
+    tasks:
+      - price-after-discount
+      - average-score
+      - largest-sale
+      - count-booked-seats
+      - share-handed-in
+      - sales-bonus
+      - count-orders-by-region
+      - total-for-one-region
+      - round-markup
+      - find-a-price
+
+  - slug: data-analyst
+    title: Data analyst
+    summary: Conditional totals, lookups, ranking, text and dates, as in an analyst screening test.
+    minutes: 40
+    tasks:
+      - countifs-several-conditions
+      - sumifs-two-conditions-at-once
+      - delivery-band
+      - xlookup-with-a-fallback-when-nothing-matches
+      - index-match
+      - median-the-middle-value
+      - rank-a-list-without-sorting-it
+      - textjoin-join-a-range-and-skip-blanks
+      - iferror-catch-the-error-show-your-text
+      - days-and-simple-date-maths
+
+  - slug: finance
+    title: Finance
+    summary: Rounding, weighted totals, subtotals and small models, as in a finance or accounting test.
+    minutes: 40
+    tasks:
+      - roundup-and-rounddown-one-direction-only
+      - mround-and-floor-round-to-a-multiple
+      - sumproduct-multiply-then-add
+      - subtotal-a-sum-over-a-group
+      - total-for-two-conditions
+      - a-commission-sheet-that-updates-itself
+      - a-headcount-and-payroll-summary
+      - budget-versus-actual-with-a-variance-flag
+      - datedif-days-months-or-years-between
+      - capstone-margin

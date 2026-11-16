@@ -1,0 +1,45 @@
+id: shipping-band-by-weight
+slug: shipping-band-by-weight
+level: 2
+tier: 5
+title: Shipping band by weight
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In C2, find the shipping cost for the parcel weight in B2 from the band table. Each band starts at the weight shown.
+    rows:
+      - [Parcel, Kg, Cost, null, From kg, Cost]
+      - [X-1, 7.5, null, null, 0, 3.5]
+      - [null, null, null, null, 2, 5.9]
+      - [null, null, null, null, 5, 8.25]
+      - [null, null, null, null, 10, 12]
+    answerCell: C2
+    expected: 8.25
+    variants:
+      - { set: { B2: 10.28 }, expected: 12 }
+      - { set: { E4: 8 }, expected: 5.9 }
+      - { set: { B2: 1.5 }, expected: 3.5 }
+    answer: "=VLOOKUP(B2,E2:F5,2,TRUE)"
+    hints:
+      nudge: 7.5 kg is not in the table. Find the band it falls in.
+      rule: VLOOKUP with TRUE finds the largest value not above the lookup value, so the band starts must be sorted.
+    misses:
+      value: 7.5 kg falls in the band from 5 kg, which costs 8.25.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=VLOOKUP(B2,E2:F5,2,TRUE)"
+      - "=vlookup(b2,e2:f5,2,true)"
+      - "=VLOOKUP(B2,$E$2:$F$5,2,TRUE)"
+      - "=VLOOKUP(B2,E2:F5,2,1)"
+      - "=VLOOKUP(B2,E2:F5,2)"
+    reject:
+      - formula: =VLOOKUP(B2,E2:F5,2,FALSE)
+        rule: value
+      - formula: =VLOOKUP(B2,E2:F5,1,TRUE)
+        rule: value
+      - formula: =VLOOKUP(B2,E2:F5,2,TRUE
+        rule: syntax
+      - formula: =8.25
+        rule: reference

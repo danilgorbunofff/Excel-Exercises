@@ -4,6 +4,7 @@ title: Look up a value on another sheet or in another file
 description: How to point a lookup at another sheet or workbook, and keep the link working.
 updated: 2026-11-16
 minutes: 4
+topic: lookups
 functions: [XLOOKUP, VLOOKUP]
 exercises: [order-details-from-two-tables, a-lookup-dashboard-from-three-tables, trial-balance-lookup-and-check]
 cover: "Prices!A:B"

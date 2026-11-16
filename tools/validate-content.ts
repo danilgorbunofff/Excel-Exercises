@@ -11,10 +11,14 @@ import { validateContent } from "./lib/validate-content.ts";
 const read = (file: string) => ({ file, data: parse(readFileSync(file, "utf8")) as unknown });
 const exerciseFiles = listFiles("content/exercises", (n) => n.endsWith(".yaml"));
 const functionFiles = listFiles("content/functions", (n) => n.endsWith(".yaml"));
+const dailyFiles = listFiles("content/daily", (n) => n.endsWith(".yaml"));
+const mockFiles = listFiles("content/mocks", (n) => n.endsWith(".yaml"));
 const errors = validateContent(
   exerciseFiles.map(read),
   read("content/track.yaml"),
   functionFiles.map(read),
+  dailyFiles.map(read),
+  mockFiles.map(read),
 );
 
 // The assessment sets name exercises and screens; check they exist.
@@ -32,11 +36,17 @@ if (!assessments.success) {
   const topicOf = new Map(files.map((d) => [String(d.id), String(d.topic)]));
   const order = (read("content/track.yaml").data as { order?: string[] }).order ?? [];
   const numbers = topicNumbers(order, (id) => topicOf.get(id) ?? "");
-  const facts = files.map((d) => ({
-    id: String(d.id),
-    locked: isLocked({ topicNumber: numbers.get(String(d.id)) ?? Number.POSITIVE_INFINITY }),
-    screens: d.screens?.length ?? 0,
-  }));
+  const facts = [
+    ...files.map((d) => ({
+      id: String(d.id),
+      locked: isLocked({ topicNumber: numbers.get(String(d.id)) ?? Number.POSITIVE_INFINITY }),
+      screens: d.screens?.length ?? 0,
+    })),
+    ...mockFiles.map((f) => {
+      const d = read(f).data as { id?: string; screens?: unknown[] };
+      return { id: String(d.id), locked: true, screens: d.screens?.length ?? 0, mock: true };
+    }),
+  ];
   errors.push(
     ...checkAssessments(assessments.data, facts).map((e) => `content/assessments.yaml: ${e}`),
   );
@@ -60,5 +70,5 @@ if (errors.length > 0) {
   process.exit(1);
 }
 console.log(
-  `Content valid: ${exerciseFiles.length} exercise file(s), ${functionFiles.length} function page(s), the track file and the assessment sets.`,
+  `Content valid: ${exerciseFiles.length} exercise file(s), ${dailyFiles.length} daily task(s), ${mockFiles.length} mock task(s), ${functionFiles.length} function page(s), the track file and the assessment sets.`,
 );

@@ -4,7 +4,7 @@ level: 2
 title: "MID: characters from the middle"
 topic: text-search
 updated: 2026-11-11
-checkedInExcel: null
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In C2, read the four digits at the end of the code in B2 with MID.
     rows:

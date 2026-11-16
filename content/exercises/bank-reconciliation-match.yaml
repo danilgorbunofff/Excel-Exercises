@@ -3,8 +3,8 @@ slug: bank-reconciliation-match
 level: 3
 title: Bank reconciliation match
 topic: interview-accounting
-updated: 2026-11-15
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In C6, show Matched when the bank statement has a line with the same reference and the same amount as the ledger line, and Missing when it does not.
     rows:
@@ -16,15 +16,17 @@ screens:
       - [CHQ 2210, 300, null, null, null, null]
     answerCell: C6
     expected: Missing
+    variants:
+      - set: { F4: 300 }
+        expected: "Matched"
     answer: =IF(COUNTIFS($E$2:$E$5,A6,$F$2:$F$5,B6)>0,"Matched","Missing")
-    requiredFunctions: [IF]
     hints:
       nudge: The bank has a CHQ 2210, but check the amount as well as the reference.
       rule: COUNTIFS counts the bank lines where both the reference and the amount match. IF turns a count above 0 into Matched.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: The bank shows CHQ 2210 for 310, but the ledger has 300. The reference matches and the amount does not, so it is Missing.
       syntax: 'Check the brackets, commas and quote marks. The pattern is `=IF(COUNTIFS(refs, ref, amounts, amount)>0, "Matched", "Missing")`.'
-      required-function: The answer is a word, so the count needs an IF around it.
       reference: Compare A6 and B6 with the bank columns E2:E5 and F2:F5.
     accept:
       - =IF(COUNTIFS($E$2:$E$5,A6,$F$2:$F$5,B6)>0,"Matched","Missing")
@@ -32,11 +34,16 @@ screens:
       - =IF(COUNTIFS(E2:E5,A6,F2:F5,B6)=0,"Missing","Matched")
       - =IF(COUNTIFS(F2:F5,B6,E2:E5,A6),"Matched","Missing")
     reject:
-      - { formula: '=IF(COUNTIF(E2:E5,A6)>0,"Matched","Missing")', rule: value }
-      - { formula: '=IF(COUNTIFS(E2:E5,A6,F2:F5,B6)>0,"Missing","Matched")', rule: value }
-      - { formula: '=IF(COUNTIFS(E2:E5,A4,F2:F5,B4)>0,"Matched","Missing")', rule: value }
-      - { formula: "=COUNTIFS(E2:E5,A6,F2:F5,B6)", rule: required-function }
-      - { formula: '=IF(COUNTIFS(E2:E5,A6,F2:F5,B6)>0,"Matched","Missing"', rule: syntax }
+      - formula: =IF(COUNTIF(E2:E5,A6)>0,"Matched","Missing")
+        rule: value
+      - formula: =IF(COUNTIFS(E2:E5,A6,F2:F5,B6)>0,"Missing","Matched")
+        rule: value
+      - formula: =IF(COUNTIFS(E2:E5,A4,F2:F5,B4)>0,"Matched","Missing")
+        rule: value
+      - formula: =COUNTIFS(E2:E5,A6,F2:F5,B6)
+        rule: value
+      - formula: =IF(COUNTIFS(E2:E5,A6,F2:F5,B6)>0,"Matched","Missing"
+        rule: syntax
   - prompt: The match results are now in column C. In D2, total the ledger amounts that are missing from the bank.
     rows:
       - [Ledger ref, Ledger amount, Match, Unmatched total, Bank ref, Bank amount]
@@ -47,11 +54,17 @@ screens:
       - [CHQ 2210, 300, Missing, null, null, null]
     answerCell: D2
     expected: 1060
+    variants:
+      - set: { B5: 1041 }
+        expected: 1341
+      - set: { C2: "Missing" }
+        expected: 1510
     answer: =SUMIF(C2:C6,"Missing",B2:B6)
     hints:
       nudge: Add the ledger amounts only on the rows marked Missing.
       rule: SUMIF tests the match column and adds the ledger amounts beside it.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: CHQ 2209 for 760 and CHQ 2210 for 300 are missing, which is 1060 to explain.
       syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, sum_range)`."
       reference: The match results run down C2:C6 and the ledger amounts down B2:B6.

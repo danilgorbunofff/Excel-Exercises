@@ -1,0 +1,40 @@
+id: tax-rate-band
+slug: tax-rate-band
+level: 2
+title: Tax rate band
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: "In C2, find the tax due: the profit in B2 times the rate of the band it falls in. Each band starts at the profit shown."
+    rows:
+      - [Company, Profit, Tax, null, From, Rate]
+      - [Nova, 84000, null, null, 0, 0.19]
+      - [null, null, null, null, 50000, 0.25]
+      - [null, null, null, null, 250000, 0.3]
+    answerCell: C2
+    expected: 21000
+    variants:
+      - set: { B2: 115080 }
+        expected: 28770
+      - set: { E3: 100001 }
+        expected: 15960
+    answer: "=B2*VLOOKUP(B2,E2:F4,2,TRUE)"
+    hints:
+      nudge: Find the band 84000 falls in, then apply its rate.
+      rule: An approximate match (TRUE) finds the largest band start not above the profit.
+    misses:
+      value: 84000 is in the band from 50000, at 25 per cent, so the tax is 21000.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=B2*VLOOKUP(B2,E2:F4,2,TRUE)"
+      - "=b2*vlookup(b2,e2:f4,2,true)"
+      - "=VLOOKUP(B2,E2:F4,2,TRUE)*B2"
+      - "=B2*XLOOKUP(B2,E2:E4,F2:F4,,-1)"
+      - "=B2*INDEX(F2:F4,MATCH(B2,E2:E4,1))"
+    reject:
+      - { formula: "=B2*VLOOKUP(B2,E2:F4,2,FALSE)", rule: value }
+      - { formula: "=B2*0.25", rule: reference }
+      - { formula: "=B2*VLOOKUP(B2,E2:F4,2,TRUE", rule: syntax }
+      - { formula: "=21000", rule: reference }

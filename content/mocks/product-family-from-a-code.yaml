@@ -1,0 +1,31 @@
+id: product-family-from-a-code
+slug: product-family-from-a-code
+level: 2
+title: Product family from a code
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: "In B2, take the product family from the code in A2: the text before the first dash."
+    rows:
+      - [Code, Family]
+      - [GARDEN-1042-L, null]
+    answerCell: B2
+    expected: GARDEN
+    answer: '=LEFT(A2,FIND("-",A2)-1)'
+    hints:
+      nudge: Find where the first dash is, and take the characters before it.
+      rule: FIND gives the position of the dash. LEFT takes that many characters, minus one for the dash.
+    misses:
+      value: The family is GARDEN.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - '=LEFT(A2,FIND("-",A2)-1)'
+      - '=left(a2,find("-",a2)-1)'
+      - '=TEXTBEFORE(A2,"-")'
+      - '=LEFT(A2,SEARCH("-",A2)-1)'
+    reject:
+      - { formula: '=LEFT(A2,FIND("-",A2))', rule: value }
+      - { formula: "=LEFT(A2,5)", rule: value }
+      - { formula: '=LEFT(A2,FIND("-",A2)-1', rule: syntax }
+      - { formula: '="GARDEN"', rule: reference }

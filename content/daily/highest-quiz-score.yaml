@@ -1,0 +1,45 @@
+id: highest-quiz-score
+slug: highest-quiz-score
+level: 1
+tier: 1
+title: Highest quiz score
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B8, show the highest score in the quiz.
+    rows:
+      - [Player, Score]
+      - [Ama, 34]
+      - [Ben, 41]
+      - [Cleo, 38]
+      - [Dan, 45]
+      - [Eve, 29]
+      - [Finn, 40]
+      - [Top score, null]
+    answerCell: B8
+    expected: 45
+    variants:
+      - { set: { B2: 47 }, expected: 47 }
+      - { set: { B7: 47 }, expected: 47 }
+    answer: "=MAX(B2:B7)"
+    hints:
+      nudge: Find the biggest number among the scores.
+      rule: MAX returns the largest number in a range.
+    misses:
+      value: The top score is 45.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=MAX(B2:B7)"
+      - "=max(b2:b7)"
+      - "=MAX(B7,B2:B6)"
+    reject:
+      - formula: =MIN(B2:B7)
+        rule: value
+      - formula: =MAX(B2:B4)
+        rule: value
+      - formula: =MAX(B2:B7
+        rule: syntax
+      - formula: =45
+        rule: reference

@@ -19,7 +19,9 @@ export function wildcardRegExp(pattern: string): RegExp {
   for (let i = 0; i < pattern.length; i++) {
     const ch = pattern[i] as string;
     if (ch === "~" && i + 1 < pattern.length && "*?~".includes(pattern[i + 1] as string)) {
-      src += `\\${pattern[++i]}`;
+      // \~ is not a valid escape in a "u" pattern, so a literal tilde goes in bare.
+      const next = pattern[++i] as string;
+      src += next === "~" ? "~" : `\\${next}`;
     } else if (ch === "*") src += "[\\s\\S]*";
     else if (ch === "?") src += "[\\s\\S]";
     else src += ch.replace(/[.*+?^${}()|[\]\\/]/gu, "\\$&");
@@ -40,7 +42,9 @@ export function criteriaMatcher(criteria: Scalar): (cell: Scalar) => boolean {
         : typeof c === "string" && parseNumericText(c) === criteria;
   }
   if (typeof criteria === "boolean") return (c) => c === criteria;
-  const raw = criteria ?? "";
+  // An empty criteria cell counts cells equal to 0, as Excel does: COUNTIF(A2:A9,A8) with A8 empty.
+  if (criteria === null) return criteriaMatcher(0);
+  const raw = criteria;
   const m = /^(<=|>=|<>|=|<|>)?([\s\S]*)$/u.exec(raw) as RegExpExecArray;
   const op = (m[1] ?? "=") as Op;
   const rest = m[2] ?? "";
@@ -120,7 +124,32 @@ const pairsFrom = (args: Arg[], offset: number): [RangeValue, Scalar][] => {
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
 const mean = (xs: number[]) => (xs.length ? sum(xs) / xs.length : fail("#DIV/0!"));
 
+/** The numbers MAXIFS and MINIFS choose from: the target cells where every pair matches. */
+function targetsIfs(args: Arg[]): number[] {
+  if (args.length % 2 === 0) return fail("#VALUE!");
+  const target = range(args[0]);
+  const pairs = pairsFrom(args, 1);
+  if (pairs.some(([r]) => !sameShape(r, target))) return fail("#VALUE!");
+  return pick(target, matches(pairs));
+}
+
 export const CRITERIA: Record<string, FunctionSpec> = {
+  MAXIFS: fn(
+    3,
+    255,
+    safe((args) => {
+      const xs = targetsIfs(args);
+      return xs.length ? Math.max(...xs) : 0;
+    }),
+  ),
+  MINIFS: fn(
+    3,
+    255,
+    safe((args) => {
+      const xs = targetsIfs(args);
+      return xs.length ? Math.min(...xs) : 0;
+    }),
+  ),
   COUNTIF: fn(
     2,
     2,

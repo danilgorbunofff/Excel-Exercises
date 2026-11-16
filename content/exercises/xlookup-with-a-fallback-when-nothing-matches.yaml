@@ -3,8 +3,8 @@ slug: xlookup-with-a-fallback-when-nothing-matches
 level: 2
 title: XLOOKUP with a fallback when nothing matches
 topic: lookups
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B6, look up the price of the SKU in B5, and return "not stocked" when the list has no such SKU.
     rows:
@@ -26,12 +26,12 @@ screens:
       syntax: "Check the brackets, commas and quote marks. XLOOKUP follows the pattern `=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])`."
       required-function: "Four arguments here. The fourth only matters when nothing matches, and the three-argument form would show `#N/A`."
       reference: Search for the SKU in B5, so asking about another one is a single edit.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =XLOOKUP(B5,A2:A4,B2:B4,"not stocked")
       - =xlookup(b5,a2:a4,b2:b4,"not stocked")
       - =XLOOKUP($B$5,$A$2:$A$4,$B$2:$B$4,"not stocked")
       - =XLOOKUP(B5,A2:A4,B2:B4,"not stocked",0)
-      - =XLOOKUP(B5,A2:A4,B2:B4,"not stocked")&""
       - =XLOOKUP(B5,A2:A4,B2:B4,"not stocked",0,1)
     reject:
       - { formula: '=XLOOKUP(B5,A2:A4,B2:B4,"not stocked"', rule: syntax }
@@ -39,6 +39,9 @@ screens:
       - { formula: "=XLOOKUP(B5,A2:A4,B2:B4)", rule: value }
       - { formula: '=XLOOKUP(B5,A2:A4,B2:B4,"Not stocked")', rule: value }
       - { formula: '=XLOOKUP(B5,A2:A5,B2:B4,"not stocked")', rule: value }
+      - { formula: '=XLOOKUP(B5,A2:A4,B2:B4,"not stocked")&""', rule: fragile }
+    variants:
+      - { set: { B5: TX-101 }, expected: 19.99 }
 notes:
   summary: "The fourth argument of XLOOKUP sets what to return when nothing matches. Without it a missing value gives `#N/A`, which says less than a short message."
   syntax: XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])

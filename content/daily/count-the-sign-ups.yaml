@@ -1,0 +1,46 @@
+id: count-the-sign-ups
+slug: count-the-sign-ups
+level: 1
+tier: 2
+title: Count the sign-ups
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B10, count how many people have signed up. Empty rows are free places.
+    rows:
+      - [Place, Name]
+      - [1, Ola]
+      - [2, null]
+      - [3, Raj]
+      - [4, Sam]
+      - [5, null]
+      - [6, Tia]
+      - [7, Uma]
+      - [8, Vic]
+      - [Signed up, null]
+    answerCell: B10
+    expected: 6
+    answer: "=COUNTA(B2:B9)"
+    hints:
+      nudge: Count the cells in the Name column that are not empty.
+      rule: COUNTA counts every cell that holds something, text included. COUNT counts numbers only.
+    misses:
+      value: 6 of the eight places have a name.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=COUNTA(B2:B9)"
+      - "=counta(b2:b9)"
+      - "=COUNTA(B9,B2:B8)"
+    reject:
+      - formula: =COUNT(B2:B9)
+        rule: value
+      - formula: =COUNTA(A2:A9)
+        rule: value
+      - formula: =COUNTA(B2:B9
+        rule: syntax
+      - formula: =6
+        rule: reference
+    variants:
+      - { set: { B3: Wes }, expected: 7 }

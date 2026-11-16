@@ -1,0 +1,51 @@
+id: north-sales-in-march
+slug: north-sales-in-march
+level: 2
+tier: 4
+title: North sales in March
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In G2, add up the North region's sales in March.
+    rows:
+      - [Region, Month, Sales, null, null, null, null]
+      - [North, Feb, 300, null, North, Mar, null]
+      - [North, Mar, 420, null, null, null, null]
+      - [South, Mar, 380, null, null, null, null]
+      - [North, Mar, 260, null, null, null, null]
+      - [East, Mar, 190, null, null, null, null]
+      - [North, Apr, 510, null, null, null, null]
+      - [South, Feb, 240, null, null, null, null]
+      - [North, Mar, 175, null, null, null, null]
+      - [East, Feb, 330, null, null, null, null]
+      - [South, Apr, 280, null, null, null, null]
+    answerCell: G2
+    expected: 855
+    variants:
+      - set: { C3: 575 }
+        expected: 1010
+      - set: { A3: South }
+        expected: 435
+    answer: "=SUMIFS(C2:C11,A2:A11,E2,B2:B11,F2)"
+    hints:
+      nudge: "Two conditions: the region and the month."
+      rule: SUMIFS(range to add, range1, criteria1, range2, criteria2). The range to add comes first.
+    misses:
+      value: Three North rows are in March, and they add up to 855.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=SUMIFS(C2:C11,A2:A11,E2,B2:B11,F2)"
+      - "=sumifs(c2:c11,a2:a11,e2,b2:b11,f2)"
+      - '=SUMIFS(C2:C11,A2:A11,"North",B2:B11,"Mar")'
+      - "=SUMIFS(C2:C11,B2:B11,F2,A2:A11,E2)"
+    reject:
+      - formula: =SUMIF(A2:A11,E2,C2:C11)
+        rule: value
+      - formula: =SUMIFS(C2:C11,A2:A11,E2)
+        rule: value
+      - formula: =SUMIFS(C2:C11,A2:A11,E2,B2:B11,F2
+        rule: syntax
+      - formula: =855
+        rule: reference

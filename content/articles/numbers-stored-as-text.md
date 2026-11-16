@@ -4,6 +4,7 @@ title: "Numbers stored as text: how to spot and fix them"
 description: Why some numbers are left out of totals and lookups, and five ways to turn them back into numbers.
 updated: 2026-11-16
 minutes: 4
+topic: text
 functions: [VALUE, NUMBERVALUE, ISNUMBER, ISTEXT, SUM]
 exercises: [clean-up-an-imported-list, isblank-isnumber-istext, clean-a-product-code-then-look-it-up]
 cover: "'1001"

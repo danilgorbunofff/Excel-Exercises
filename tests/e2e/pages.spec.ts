@@ -20,7 +20,7 @@ test("the home page runs the first exercise and leads to the second", async ({ p
     "/exercises/subtract-costs/",
   );
   await expect(
-    page.getByText("40 of the 112 exercises, the hints and the function pages are free."),
+    page.getByText("46 of the 128 exercises, the hints and the function pages are free."),
   ).toBeVisible();
 });
 
@@ -32,9 +32,9 @@ test("one order everywhere: the catalogue and every Next link follow the track",
   const order = await page
     .locator("tbody th a")
     .evaluateAll((as) => as.map((a) => a.getAttribute("href")));
-  expect(order).toHaveLength(112);
+  expect(order).toHaveLength(128);
   expect(order[0]).toBe("/exercises/add-two-cells/");
-  expect(order.at(-1)).toBe("/exercises/clean-a-product-code-then-look-it-up/");
+  expect(order.at(-1)).toBe("/exercises/top-three-customers-share/");
   const numbers = await page
     .locator("tbody tr[data-row]")
     .evaluateAll((rows) => rows.map((r) => r.getAttribute("data-order")));
@@ -54,7 +54,7 @@ test("the catalogue filters from a search, including one sent from the 404 page"
   await page.getByRole("button", { name: "Search" }).click();
   await expect(page).toHaveURL(/\/exercises\/\?q=vlookup$/u);
   await expect(page.locator("tbody tr:not([hidden])")).toHaveCount(9);
-  await expect(page.getByText("Showing 9 of 112 exercises.")).toBeVisible();
+  await expect(page.getByText("Showing 9 of 128 exercises.")).toBeVisible();
   await page.getByLabel("Find an exercise").fill("zzzz");
   await expect(page.getByText("No exercise matches.")).toBeVisible();
 });
@@ -98,11 +98,11 @@ test("the catalogue sorts by title and filters by difficulty and track", async (
   const titles = await page.locator("tbody th a").allTextContents();
   expect(titles).toEqual([...titles].sort((a, b) => a.localeCompare(b, "en")));
   await page.getByLabel("Difficulty").selectOption("3");
-  await expect(page.locator("tbody tr:not([hidden])")).toHaveCount(47);
+  await expect(page.locator("tbody tr:not([hidden])")).toHaveCount(33);
   await page.getByLabel("Difficulty").selectOption("");
   await page.getByLabel("Track", { exact: true }).selectOption("logic");
   await expect(page.locator("tbody tr:not([hidden])")).toHaveCount(10);
-  await expect(page.getByText("Showing 10 of 112 exercises.")).toBeVisible();
+  await expect(page.getByText("Showing 10 of 128 exercises.")).toBeVisible();
 });
 
 test("the header search suggests pages and the search page lists matches", async ({ page }) => {
@@ -204,13 +204,12 @@ test("the progress page shows what is next, what is due, and clears", async ({ p
   // Exercise 3 needs PRO, so a free visitor continues with the next free one.
   await expect(page.locator("[data-next]")).toHaveText("Continue: Add up a column");
   await expect(page.locator("[data-next]")).toHaveAttribute("href", "/exercises/sum-a-column/");
-  await expect(page.locator('[data-stat="solved"]')).toHaveText("2 of 112");
+  await expect(page.locator('[data-stat="solved"]')).toHaveText("2 of 128");
   await expect(page.locator('[data-stat="own"]')).toHaveText("1");
   await expect(page.locator('[data-stat="helped"]')).toHaveText("1");
   await expect(page.locator('[data-stat="due"]')).toHaveText("1");
-  await expect(page.locator("[data-due] a")).toHaveText(["Add two cells"]);
   await expect(page.locator("[data-summary]")).toHaveText(
-    "You have solved 2 of 112, 1 of them with help.",
+    "You have solved 2 of 128, 1 of them with help.",
   );
   await expect(page.locator('[data-status-for="subtract-costs"]')).toHaveText("Solved with help");
 
@@ -221,8 +220,7 @@ test("the progress page shows what is next, what is due, and clears", async ({ p
   await page.getByRole("button", { name: "Yes, clear it" }).click();
   await expect(page.getByText("Your progress is cleared.")).toBeVisible();
   await expect(page.locator("[data-summary]")).toHaveText("You have not solved an exercise yet.");
-  await expect(page.locator("[data-due]")).toBeHidden();
-  await expect(page.locator('[data-stat="solved"]')).toHaveText("0 of 112");
+  await expect(page.locator('[data-stat="solved"]')).toHaveText("0 of 128");
   await expect(page.locator("[data-next]")).toHaveText("Start: Add two cells");
   await page.reload();
   await expect(page.locator("[data-summary]")).toHaveText("You have not solved an exercise yet.");
@@ -293,7 +291,7 @@ test("a function link lists only the exercises that use that function", async ({
     "Free delivery when either test passes",
     "AND, OR and NOT: combining tests",
   ]);
-  await expect(page.getByText("Showing 2 of 112 exercises.")).toBeVisible();
+  await expect(page.getByText("Showing 2 of 128 exercises.")).toBeVisible();
 });
 
 test("search finds formula walkthroughs and tool pages", async ({ page }) => {
@@ -315,8 +313,8 @@ test("the tracks page has three groups, the last for interviews", async ({ page 
     "Prepare for a job interview",
   ]);
   const interview = page.getByRole("region", { name: "Prepare for a job interview" });
-  await expect(interview.locator("article.track")).toHaveCount(4);
-  await expect(interview.getByText("2 free, 3 with PRO")).toHaveCount(4);
+  await expect(interview.locator("article.track")).toHaveCount(6);
+  await expect(interview.getByText("2 free, 3 with PRO")).toHaveCount(6);
   await expect(
     interview.getByRole("link", { name: "Start track: Accounting interview" }),
   ).toHaveAttribute("href", "/exercises/tracks/interview-accounting/");
@@ -340,7 +338,7 @@ test("an interview track lists its exercises, locks and mock assessment", async 
   );
   await page.goto("/exercises/");
   const list = page.getByRole("region", { name: "Practice for job interviews" });
-  await expect(list.locator(".pick")).toHaveCount(4);
+  await expect(list.locator(".pick")).toHaveCount(6);
 });
 
 test("a started track says Continue, and a solved exercise says Review", async ({ page }) => {
@@ -355,7 +353,7 @@ test("a started track says Continue, and a solved exercise says Review", async (
   await expect(
     page.getByRole("link", { name: "Continue track: Cells and arithmetic" }),
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: /Start track/u })).toHaveCount(19);
+  await expect(page.getByRole("link", { name: /Start track/u })).toHaveCount(22);
   await page.goto("/exercises/tracks/references/");
   await expect(page.getByRole("link", { name: "Review: Add two cells" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Start: Subtract the costs" })).toBeVisible();

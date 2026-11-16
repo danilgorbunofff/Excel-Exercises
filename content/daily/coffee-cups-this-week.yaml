@@ -1,0 +1,42 @@
+id: coffee-cups-this-week
+slug: coffee-cups-this-week
+level: 1
+tier: 1
+title: Cups of coffee this week
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B7, add up the cups of coffee sold from Monday to Friday.
+    rows:
+      - [Day, Cups]
+      - [Mon, 12]
+      - [Tue, 15]
+      - [Wed, 9]
+      - [Thu, 14]
+      - [Fri, 11]
+      - [Total, null]
+    answerCell: B7
+    expected: 61
+    variants:
+      - set: { B2: 16 }
+        expected: 65
+    answer: "=SUM(B2:B6)"
+    hints:
+      nudge: Add the five days of the week.
+      rule: SUM adds every number in a range. Write the range as its first cell, a colon and its last cell.
+    misses:
+      value: The five days add up to 61.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=SUM(B2:B6)"
+      - "=sum(b2:b6)"
+      - "=SUM(B6,B2:B5)"
+    reject:
+      - formula: =SUM(B2:B5)
+        rule: value
+      - formula: =SUM(B2:B6
+        rule: syntax
+      - formula: =61
+        rule: reference

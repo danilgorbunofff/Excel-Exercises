@@ -4,6 +4,7 @@ title: How to look up a value to the left
 description: VLOOKUP can only return columns to the right of the one it searches. Here are the two clean ways around that.
 updated: 2026-11-16
 minutes: 3
+topic: lookups
 functions: [VLOOKUP, XLOOKUP, INDEX, MATCH]
 exercises: [index-match, find-a-code, find-a-price]
 cover: "A <- D"

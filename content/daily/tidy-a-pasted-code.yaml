@@ -1,0 +1,35 @@
+id: tidy-a-pasted-code
+slug: tidy-a-pasted-code
+level: 2
+tier: 4
+title: Tidy a pasted code
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: "In B2, tidy the pasted code in A2: no spaces at either end, and all in capitals."
+    rows:
+      - [Pasted, Tidy]
+      - ["  lon-2231 ", null]
+    answerCell: B2
+    expected: LON-2231
+    answer: "=UPPER(TRIM(A2))"
+    hints:
+      nudge: "Two fixes: remove the spaces, then change the case."
+      rule: TRIM removes spaces at the ends. UPPER turns text into capitals. One can go inside the other.
+    misses:
+      value: The tidy code is LON-2231.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=UPPER(TRIM(A2))"
+      - "=upper(trim(a2))"
+      - "=TRIM(UPPER(A2))"
+    reject:
+      - formula: =UPPER(A2)
+        rule: value
+      - formula: =PROPER(TRIM(A2))
+        rule: value
+      - formula: =UPPER(TRIM(A2)
+        rule: syntax
+      - formula: ="LON-2231"
+        rule: reference

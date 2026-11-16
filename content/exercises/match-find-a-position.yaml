@@ -3,8 +3,8 @@ slug: match-find-a-position
 level: 2
 title: "MATCH: find a value's position"
 topic: index-match
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B7, find the position of the month in B6 within A2:A5, counting the first row as 1.
     rows:
@@ -27,6 +27,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. MATCH follows the pattern `=MATCH(lookup_value, lookup_array, [match_type])`."
       required-function: MATCH hands back a count of cells, 3. The units in B4 are INDEX's job.
       reference: Take the month from B6. Typing Mar into the formula means April needs an edit to the formula, not the sheet.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =MATCH(B6,A2:A5,0)
       - =match(b6,a2:a5,0)
@@ -40,6 +41,8 @@ screens:
       - { formula: "=MATCH(B6,A2:A5,1)", rule: value }
       - { formula: "=MATCH(B6,A2:A5,0)+1", rule: value }
       - { formula: "=MATCH(B6,A2:A3,0)", rule: value }
+    variants:
+      - { set: { B6: Apr }, expected: 4 }
 notes:
   summary: "MATCH returns the position of a value within a range, counting the first cell as 1. With a match type of 0 it looks for an exact match."
   syntax: MATCH(lookup_value, lookup_array, [match_type])

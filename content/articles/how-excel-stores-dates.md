@@ -4,6 +4,7 @@ title: How Excel stores dates and times
 description: A date is a whole number and a time is a fraction. Knowing this explains most date problems.
 updated: 2026-11-16
 minutes: 4
+topic: dates
 functions: [DATE, DATEVALUE, TODAY, NOW, YEAR, MONTH, DAY, INT]
 exercises: [date-build-a-date-from-parts, days-and-simple-date-maths, datedif-days-months-or-years-between]
 cover: "46342"

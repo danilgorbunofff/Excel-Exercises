@@ -1,0 +1,41 @@
+id: over-budget-check
+slug: over-budget-check
+level: 1
+tier: 2
+title: Over budget check
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In D2, show Over when the actual spend is more than the budget, and OK when it is not.
+    rows:
+      - [Project, Budget, Actual, Check]
+      - [Website, 500, 540, null]
+    answerCell: D2
+    expected: Over
+    variants:
+      - { set: { C2: 405 }, expected: OK }
+      - { set: { B2: 685 }, expected: OK }
+      - { set: { C2: 500 }, expected: OK }
+    answer: '=IF(C2>B2,"Over","OK")'
+    hints:
+      nudge: Compare the actual spend with the budget.
+      rule: IF(test, value if true, value if false). The test here is actual greater than budget.
+    misses:
+      value: 540 is more than 500, so the cell should say Over.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - '=IF(C2>B2,"Over","OK")'
+      - '=if(c2>b2,"Over","OK")'
+      - '=IF(B2<C2,"Over","OK")'
+      - '=IF(C2<=B2,"OK","Over")'
+    reject:
+      - formula: =IF(C2<B2,"Over","OK")
+        rule: value
+      - formula: =IF(C2>B2,"OK","Over")
+        rule: value
+      - formula: =IF(C2>B2,"Over","OK"
+        rule: syntax
+      - formula: ="Over"
+        rule: reference

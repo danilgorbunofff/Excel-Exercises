@@ -3,8 +3,8 @@ slug: mround-and-floor-round-to-a-multiple
 level: 2
 title: "MROUND and FLOOR: round to a multiple"
 topic: rounding
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: Round each pallet's unit count to the nearest five and put the first one in C2.
     rows:
@@ -54,6 +54,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. FLOOR follows the pattern `=FLOOR(number, significance)`."
       required-function: Only whole packs ship, so drop the part pack instead of rounding to the nearest one.
       reference: Read units and pack size from B2 and C2, so the second order is calculated the same way.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =FLOOR(B2,C2)
       - =floor(b2,c2)
@@ -69,6 +70,8 @@ screens:
       - { formula: "=FLOOR(B2,C2-2)", rule: value }
       - { formula: "=FLOOR(B2,C2)/0", rule: value }
       - { formula: =FLOOR(B2 C2), rule: syntax }
+    variants:
+      - { set: { C2: 13 }, expected: 39 }
 notes:
   summary: "MROUND rounds a number to the nearest multiple you name. FLOOR always rounds down to a multiple, so it keeps only what fills whole units."
   syntax: MROUND(number, multiple) and =FLOOR(number, significance)

@@ -4,7 +4,7 @@ level: 2
 title: "TEXTJOIN: join a range and skip blanks"
 topic: text-change
 updated: 2026-11-11
-checkedInExcel: null
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B7, join the departments in B2:B6 into one line, separated by a comma and a space, skipping the blanks.
     rows:

@@ -1,0 +1,42 @@
+id: rank-of-one-rep
+slug: rank-of-one-rep
+level: 2
+tier: 5
+title: Rank of one rep
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In C4, show where Cyd ranks on sales, with 1 for the highest.
+    rows:
+      - [Rep, Sales, Rank]
+      - [Ash, 5400, null]
+      - [Bea, 7200, null]
+      - [Cyd, 6100, null]
+      - [Dom, 6600, null]
+      - [Eva, 4800, null]
+      - [Fox, 6900, null]
+    answerCell: C4
+    expected: 4
+    variants:
+      - { set: { B4: 8357 }, expected: 1 }
+      - { set: { B4: 4800 }, expected: 5 }
+    answer: "=RANK(B4,B2:B7)"
+    requiredFunctions: [RANK]
+    hints:
+      nudge: Compare Cyd's sales with the whole list.
+      rule: RANK(value, range) counts from the highest unless the third argument is 1.
+    misses:
+      value: Three reps sold more than Cyd, so Cyd ranks 4.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task needs RANK.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=RANK(B4,B2:B7)"
+      - "=rank(b4,b2:b7)"
+      - "=RANK(B4,$B$2:$B$7)"
+      - "=RANK(B4,B2:B7,0)"
+    reject:
+      - { formula: "=RANK(B4,B2:B7,1)", rule: value }
+      - { formula: "=RANK(B3,B2:B7)", rule: value }
+      - { formula: "=RANK(B4,B2:B7", rule: syntax }
+      - { formula: "=4", rule: required-function }

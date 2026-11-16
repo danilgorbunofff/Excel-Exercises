@@ -4,6 +4,7 @@ title: "Approximate or exact match: why VLOOKUP returns the wrong row"
 description: Why leaving out the last argument of VLOOKUP gives wrong answers, and when an approximate match is right.
 updated: 2026-11-16
 minutes: 4
+topic: lookups
 functions: [VLOOKUP, XLOOKUP, MATCH]
 exercises: [delivery-band, find-an-extension, vlookup-and-xlookup-on-the-same-table]
 cover: "TRUE/FALSE"

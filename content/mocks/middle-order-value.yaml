@@ -1,0 +1,44 @@
+id: middle-order-value
+slug: middle-order-value
+level: 2
+title: Middle order value
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B12, find the middle order value, so one very large order does not pull it up.
+    rows:
+      - [Order, Value]
+      - [O1, 45]
+      - [O2, 62]
+      - [O3, 38]
+      - [O4, 2400]
+      - [O5, 51]
+      - [O6, 70]
+      - [O7, 48]
+      - [O8, 55]
+      - [O9, 66]
+      - [O10, 40]
+      - [Middle, null]
+    answerCell: B12
+    expected: 53
+    variants:
+      - set: { B2: 62 }
+        expected: 58.5
+    answer: "=MEDIAN(B2:B11)"
+    hints:
+      nudge: "Not the average: the value in the middle once the orders are in order."
+      rule: MEDIAN returns the middle value. With an even count it averages the two middle values.
+    misses:
+      value: The two middle values are 51 and 55, so the middle value is 53.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=MEDIAN(B2:B11)"
+      - "=median(b2:b11)"
+      - "=MEDIAN(B2:B6,B7:B11)"
+    reject:
+      - { formula: "=AVERAGE(B2:B11)", rule: value }
+      - { formula: "=MEDIAN(B2:B10)", rule: value }
+      - { formula: "=MEDIAN(B2:B11", rule: syntax }
+      - { formula: "=53", rule: reference }

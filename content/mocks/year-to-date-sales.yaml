@@ -1,0 +1,47 @@
+id: year-to-date-sales
+slug: year-to-date-sales
+level: 3
+title: Year-to-date sales
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In E2, add up the sales from month 1 up to and including the month number in D2.
+    rows:
+      - [Month, Sales, null, To month, YTD]
+      - [1, 42000, null, 5, null]
+      - [2, 38500, null, null, null]
+      - [3, 45200, null, null, null]
+      - [4, 47800, null, null, null]
+      - [5, 51300, null, null, null]
+      - [6, 49900, null, null, null]
+      - [7, 53400, null, null, null]
+      - [8, 50800, null, null, null]
+      - [9, 48600, null, null, null]
+      - [10, 52100, null, null, null]
+      - [11, 55700, null, null, null]
+      - [12, 61200, null, null, null]
+    answerCell: E2
+    expected: 224800
+    variants:
+      - { set: { A4: 6 }, expected: 179600 }
+      - { set: { D2: 8 }, expected: 378900 }
+      - { set: { A13: 1 }, expected: 286000 }
+    answer: '=SUMIF(A2:A13,"<="&D2,B2:B13)'
+    hints:
+      nudge: Add the months whose number is not above the month in D2.
+      rule: 'Join the comparison to the cell: "<="&D2 means up to and including that month.'
+    misses:
+      value: Months 1 to 5 add up to 224800.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=SUMIF(A2:A13,"<="&D2,B2:B13)'
+      - '=sumif(a2:a13,"<="&d2,b2:b13)'
+      - "=SUMPRODUCT((A2:A13<=D2)*B2:B13)"
+      - '=SUMIFS(B2:B13,A2:A13,"<="&D2)'
+    reject:
+      - { formula: "=SUM(B2:B6)", rule: fragile }
+      - { formula: '=SUMIF(A2:A13,"<"&D2,B2:B13)', rule: value }
+      - { formula: '=SUMIF(A2:A13,"<="&D2,B2:B13', rule: syntax }
+      - { formula: "=224800", rule: reference }

@@ -32,6 +32,49 @@ test("a wrong range is outlined on the grid and marked in the formula", async ({
   await expect(page.locator("[data-mirror] mark.read")).toHaveText("B2:B4");
 });
 
+test("a spilled result fills the cells below and clears on reset", async ({ page }) => {
+  // The exercise has two screens; the first one is on show.
+  await page.goto("/exercises/filter-the-rows-that-match/");
+  await check(page, '=FILTER(C2:C19,B2:B19="North")');
+  await expect(status(page)).toContainText("Correct. The result fills F2:F7.");
+  await expect(cell(page, "F2").first()).toHaveText("Ana");
+  await expect(cell(page, "F7").first()).toHaveText("Kim");
+  await expect(cell(page, "F7").first()).toHaveClass(/\bspilled-correct\b/u);
+  await page.screenshot({ path: "test-results/spill.png" });
+  await page.keyboard.press("Escape");
+  await page.getByRole("button", { name: "Reset" }).click();
+  await expect(cell(page, "F7").first()).toHaveText("");
+  await expect(cell(page, "F7").first()).not.toHaveClass(/\bspilled\b/u);
+});
+
+test("a formula tied to the visible data is marked as breaking when the data changes", async ({
+  page,
+}) => {
+  await page.goto("/exercises/ifna-catch-only-a-missing-match/");
+  // Right for this sheet, but it looks up A9 (the code that is missing today) in the wrong way.
+  await check(page, '=IFNA(VLOOKUP(A9,A2:B7,2,FALSE),"not on the list")');
+  await expect(status(page)).toContainText("Breaks when the data changes in B9.");
+  await expect(status(page)).toContainText("Right for this data, but not when the data changes.");
+});
+
+test("a multi-screen exercise moves to each next screen once one is solved", async ({ page }) => {
+  await page.goto("/exercises/len-left-and-right-count-and-cut/");
+  const answers = ["=LEN(A2)", "=LEFT(A2,3)", "=RIGHT(A2,7)"];
+  for (const [i, answer] of answers.entries()) {
+    const screen = page.locator(`[data-screen="${i}"]`);
+    await expect(screen).toBeVisible();
+    await screen.locator("[data-input]").fill(answer);
+    await screen.locator("[data-input]").press("Enter");
+    await expect(screen.locator("[data-status]")).toContainText("Correct.");
+    if (i < answers.length - 1) {
+      await page.keyboard.press("Escape");
+      await screen.getByRole("button", { name: /^Next/u }).click();
+      await expect(page.locator(`[data-screen="${i + 1}"]`)).toBeVisible();
+      await expect(screen).toBeHidden();
+    }
+  }
+});
+
 test("a syntax error marks the part of the formula it is about", async ({ page }) => {
   await page.goto(SUM);
   await check(page, "=SUM(B2:B5");
@@ -195,7 +238,7 @@ const exerciseRoutes = sitemapRoutes().filter(
 );
 
 test("every exercise in the track has a page", () => {
-  expect(exerciseRoutes).toHaveLength(112);
+  expect(exerciseRoutes).toHaveLength(128);
 });
 
 /**
@@ -242,9 +285,9 @@ for (const route of exerciseRoutes) {
 }
 
 test("the last exercise leads to all exercises", async ({ page }) => {
-  const last = "/exercises/clean-a-product-code-then-look-it-up/";
+  const last = "/exercises/top-three-customers-share/";
   const { screens } = parse(
-    readFileSync("content/exercises/clean-a-product-code-then-look-it-up.yaml", "utf8"),
+    readFileSync("content/exercises/top-three-customers-share.yaml", "utf8"),
   ) as { screens: { answer: string }[] };
   await page.goto(last);
   await openAsPro(page, last);

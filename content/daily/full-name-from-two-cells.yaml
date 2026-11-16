@@ -1,0 +1,31 @@
+id: full-name-from-two-cells
+slug: full-name-from-two-cells
+level: 2
+tier: 3
+title: Full name from two cells
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In C2, join the first name and the last name with a space between them.
+    rows:
+      - [First, Last, Full name]
+      - [Maria, Lopez, null]
+    answerCell: C2
+    expected: Maria Lopez
+    answer: '=A2&" "&B2'
+    hints:
+      nudge: Join the first name, a space and the last name.
+      rule: 'The & operator joins text. A space is text too, so it goes in quotes: " ".'
+    misses:
+      value: The full name reads Maria Lopez, with one space.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - '=A2&" "&B2'
+      - '=a2&" "&b2'
+      - '=CONCAT(A2," ",B2)'
+      - '=TEXTJOIN(" ",TRUE,A2:B2)'
+      - '=CONCATENATE(A2," ",B2)'
+    reject:
+      - { formula: "=A2&B2", rule: value }
+      - { formula: '=B2&" "&A2', rule: value }
+      - { formula: '="Maria Lopez"', rule: reference }

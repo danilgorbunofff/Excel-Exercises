@@ -1,0 +1,45 @@
+id: average-sale-without-zeros
+slug: average-sale-without-zeros
+level: 2
+title: Average sale without the zeros
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B12, find the average daily sales, leaving out the days the shop was shut, which show 0.
+    rows:
+      - [Day, Sales]
+      - [D1, 420]
+      - [D2, 0]
+      - [D3, 385]
+      - [D4, 510]
+      - [D5, 0]
+      - [D6, 465]
+      - [D7, 390]
+      - [D8, 0]
+      - [D9, 455]
+      - [D10, 475]
+      - [Average, null]
+    answerCell: B12
+    expected: 442.857142857
+    variants:
+      - set: { B2: 575 }
+        expected: 465
+    answer: '=AVERAGEIF(B2:B11,"<>0")'
+    hints:
+      nudge: Average only the days whose sales are not 0.
+      rule: 'A criteria such as "<>0" means not equal to 0.'
+    misses:
+      value: The seven open days average 442.857142857.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=AVERAGEIF(B2:B11,"<>0")'
+      - '=averageif(b2:b11,"<>0")'
+      - '=AVERAGEIF(B2:B11,">0")'
+      - '=SUM(B2:B11)/COUNTIF(B2:B11,">0")'
+    reject:
+      - { formula: "=AVERAGE(B2:B11)", rule: value }
+      - { formula: '=AVERAGEIF(B2:B11,"=0")', rule: value }
+      - { formula: '=AVERAGEIF(B2:B11,"<>0"', rule: syntax }
+      - { formula: "=442.857142857", rule: reference }

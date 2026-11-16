@@ -1,10 +1,10 @@
 id: aggregate-a-total-that-can-skip
 slug: aggregate-a-total-that-can-skip
-level: 3
+level: 2
 title: "AGGREGATE: a total that says what to ignore"
 topic: subtotals
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In D5, add the prices up so that a broken cell in the range would not stop the total.
     rows:
@@ -15,12 +15,16 @@ screens:
       - [Price total, null, null, null]
     answerCell: D5
     expected: 35
+    variants:
+      - set: { B2: 14 }
+        expected: 39
     answer: =AGGREGATE(9,6,B2:B4)
     requiredFunctions: [AGGREGATE]
     hints:
       nudge: One function takes a function number and an options number that can skip cells holding errors.
       rule: AGGREGATE takes a function number, an options number, then the range. Function 9 adds, and option 6 skips cells that hold errors.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Ten plus five plus twenty is 35.
       syntax: "Check the brackets, commas and quote marks. AGGREGATE follows the pattern `=AGGREGATE(function_num, options, ref1, [ref2], ...)`."
       required-function: Three arguments, and only AGGREGATE carries the options number that skips a broken cell.
@@ -48,12 +52,16 @@ screens:
       - [Average price, null, null, null]
     answerCell: D5
     expected: 11.7
+    variants:
+      - { set: { B2: 14 }, expected: 13 }
+      - { set: { B2: 6 }, expected: 10.3 }
     answer: =ROUND(AGGREGATE(1,6,B2:B4),1)
     requiredFunctions: [AGGREGATE]
     hints:
       nudge: Change the function number to the one that averages, then round the result.
       rule: AGGREGATE uses the same function numbers as SUBTOTAL, so 1 averages and 9 adds. ROUND with 1 as its second argument keeps one decimal place.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: 35 divided by 3 is 11.666..., which rounds to 11.7.
       syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
       required-function: An average over a range that may hold a broken cell needs AGGREGATE, with 1 as its function number.

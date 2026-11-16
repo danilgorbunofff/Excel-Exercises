@@ -7,6 +7,7 @@ sales | =SUM(446) | reference | The formula uses no cells. Point at the data, so
 sales | =B2+B3+B4+B5 | required-function | This exercise asks for SUM, and the formula does not use it.
 sales | =SUMIF(B2:B5,">0")+SUM(B1) | forbidden-function [1-6] | This exercise asks you to solve it without SUMIF.
 sales | =SUMM(B2:B5) | syntax [1-5] | Excel has no function called SUMM.
+sales | =SUM(B2:B5)+CONVERT(0,"m","km") | syntax [12-19] | This practice sheet cannot run CONVERT yet, so it cannot check this formula. Try another way to get the same result.
 sales | =SUM(B2:B5 | syntax [4-5] | Add ) to close SUM(.
 sales | =SUM(B2:B5)) | syntax [11-12] | There is one ) too many.
 sales | =SUM B2:B5 | syntax [1-4] | SUM needs brackets, such as SUM(B2:B5).
@@ -14,7 +15,7 @@ sales | SUM(B2:B5) | syntax [0-1] | Start the formula with =.
 sales | = | syntax [0-1] | The formula is empty after =.
 sales | =SUM(B2;B5) | syntax [7-8] | Use commas between arguments, not semicolons.
 sales | =SUM(B2:B5)/0 | value | B6 shows `#DIV/0!`: the formula divides by zero or by an empty cell.
-sales | =SUM(B2:B5)+B2:B3 | value | B6 shows `#VALUE!`: a value has the wrong type, such as text where a number belongs.
+sales | =SUM(B2:B5)+B2:B3 | value | The formula returns several cells, but B6 holds one value.
 sales | =SUM(B2:B5)&"" | value | B6 shows the text `"446"`, but this exercise expects a number.
 sales | =SUM(B2:B5)*total | syntax [12-17] | Excel reads total as a name. If you mean text, put it in quotes: `"total"`.
 sales | =ROUND(SUM(B2:B5)) | syntax [1-6] | ROUND needs 2 arguments.

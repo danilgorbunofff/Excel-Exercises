@@ -1,0 +1,41 @@
+id: average-basket-size
+slug: average-basket-size
+level: 1
+title: Average basket size
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B8, find the average number of items per basket.
+    rows:
+      - [Basket, Items]
+      - [K1, 24]
+      - [K2, 31]
+      - [K3, 18]
+      - [K4, 27]
+      - [K5, 35]
+      - [K6, 21]
+      - [Average, null]
+    answerCell: B8
+    expected: 26
+    variants:
+      - set: { B2: 33 }
+        expected: 27.5
+    answer: "=AVERAGE(B2:B7)"
+    hints:
+      nudge: Average all six baskets.
+      rule: AVERAGE adds the numbers and divides by how many there are.
+    misses:
+      value: 156 items over 6 baskets is 26.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=AVERAGE(B2:B7)"
+      - "=average(b2:b7)"
+      - "=SUM(B2:B7)/COUNT(B2:B7)"
+      - "=SUM(B2:B7)/6"
+    reject:
+      - { formula: "=AVERAGE(B2:B6)", rule: value }
+      - { formula: "=SUM(B2:B7)", rule: value }
+      - { formula: "=AVERAGE(B2:B7", rule: syntax }
+      - { formula: "=26", rule: reference }

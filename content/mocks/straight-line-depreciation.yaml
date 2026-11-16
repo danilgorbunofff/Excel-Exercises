@@ -1,0 +1,35 @@
+id: straight-line-depreciation
+slug: straight-line-depreciation
+level: 2
+title: Straight-line depreciation
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: "In B5, work out the yearly depreciation: cost minus residual value, spread evenly over the useful life in years."
+    rows:
+      - [Asset, Van]
+      - [Cost, 32000]
+      - [Residual, 5000]
+      - [Life (years), 6]
+      - [Per year, null]
+    answerCell: B5
+    expected: 4500
+    variants:
+      - set: { B2: 43840 }
+        expected: 6473.33333333
+    answer: "=(B2-B3)/B4"
+    hints:
+      nudge: What is lost over the life is cost minus residual. Share it over the years.
+      rule: Subtract first, in brackets, then divide by the years.
+    misses:
+      value: 27000 over 6 years is 4500 a year.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=(B2-B3)/B4"
+      - "=(b2-b3)/b4"
+      - "=B2/B4-B3/B4"
+    reject:
+      - { formula: "=B2/B4", rule: value }
+      - { formula: "=B2-B3/B4", rule: value }
+      - { formula: "=4500", rule: reference }

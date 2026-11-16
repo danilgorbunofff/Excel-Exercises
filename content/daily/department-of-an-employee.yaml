@@ -1,0 +1,45 @@
+id: department-of-an-employee
+slug: department-of-an-employee
+level: 2
+tier: 4
+title: Department of an employee
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, show the department of the employee whose ID is in E2.
+    rows:
+      - [ID, Name, Dept, null, null, null]
+      - [1043, Rae, Sales, null, 1078, null]
+      - [1051, Sol, Finance, null, null, null]
+      - [1066, Tom, IT, null, null, null]
+      - [1078, Uri, HR, null, null, null]
+      - [1082, Viv, Sales, null, null, null]
+      - [1095, Wes, IT, null, null, null]
+    answerCell: F2
+    expected: HR
+    variants:
+      - { set: { C5: Sales }, expected: Sales }
+      - { set: { A2: 1078 }, expected: Sales }
+      - { set: { E2: 3, A7: 3 }, expected: IT }
+    answer: "=VLOOKUP(E2,A2:C7,3,FALSE)"
+    hints:
+      nudge: Look the ID up in the first column and return the third column.
+      rule: VLOOKUP(value, table, column number, FALSE). FALSE asks for an exact match.
+    misses:
+      value: ID 1078 is in the HR department.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - =VLOOKUP(E2,A2:C7,3,FALSE)
+      - =vlookup(e2,a2:c7,3,false)
+      - =VLOOKUP(E2,$A$2:$C$7,3,FALSE)
+      - =VLOOKUP(E2,A2:C7,3,0)
+      - =XLOOKUP(E2,A2:A7,C2:C7)
+    reject:
+      - formula: =VLOOKUP(E2,A2:C7,2,FALSE)
+        rule: value
+      - formula: =VLOOKUP(E2,A2:C7,3,FALSE
+        rule: syntax
+      - formula: ="HR"
+        rule: reference

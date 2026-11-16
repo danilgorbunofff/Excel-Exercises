@@ -14,6 +14,7 @@ export const RULE_LABELS: Record<Rule, (cell: string) => string> = {
   "forbidden-function": (cell) => `Function not allowed in ${cell}.`,
   reference: (cell) => `Cell reference problem in ${cell}.`,
   value: (cell) => `Wrong result in ${cell}.`,
+  fragile: (cell) => `Breaks when the data changes in ${cell}.`,
 };
 
 export interface VerdictView {

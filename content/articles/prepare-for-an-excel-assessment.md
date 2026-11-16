@@ -4,6 +4,7 @@ title: How to prepare for an Excel assessment in two weeks
 description: A day-by-day plan that covers the functions tests ask for most, with practice every day.
 updated: 2026-11-16
 minutes: 4
+topic: interviews
 functions: [XLOOKUP, SUMIFS, COUNTIFS, IF, IFERROR, TRIM]
 exercises: [logical-functions-summary, lookup-functions-summary, sum-functions-summary, error-handling-summary]
 cover: "14 days"

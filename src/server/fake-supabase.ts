@@ -41,6 +41,10 @@ export function fakeClient(handler: Handler, log: Query[] = []) {
         q.filters[col] = val;
         return chain;
       },
+      in: (col: string, vals: unknown[]) => {
+        q.filters[col] = vals;
+        return chain;
+      },
       is: (col: string, val: unknown) => {
         q.filters[col] = val;
         return chain;

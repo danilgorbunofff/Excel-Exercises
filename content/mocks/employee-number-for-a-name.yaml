@@ -1,0 +1,40 @@
+id: employee-number-for-a-name
+slug: employee-number-for-a-name
+level: 2
+title: Employee number for a name
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, return the employee number of the person in E2. The numbers are to the left of the names.
+    rows:
+      - [Number, Name, null, null, null, null]
+      - [4401, Ines, null, null, Kofi, null]
+      - [4402, Jude, null, null, null, null]
+      - [4403, Kofi, null, null, null, null]
+      - [4404, Lena, null, null, null, null]
+      - [4405, Milo, null, null, null, null]
+    answerCell: F2
+    expected: 4403
+    variants:
+      - { set: { A4: 6032 }, expected: 6032 }
+      - { set: { B2: Kofi }, expected: 4401 }
+      - { set: { E2: Milo }, expected: 4405 }
+    answer: "=INDEX(A2:A6,MATCH(E2,B2:B6,0))"
+    hints:
+      nudge: Find the row of the name, then read the number on that row.
+      rule: MATCH gives the position of the name. INDEX returns the number at that position.
+    misses:
+      value: Kofi's number is 4403.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=INDEX(A2:A6,MATCH(E2,B2:B6,0))"
+      - "=index(a2:a6,match(e2,b2:b6,0))"
+      - "=XLOOKUP(E2,B2:B6,A2:A6)"
+      - "=INDEX($A$2:$A$6,MATCH(E2,$B$2:$B$6,0))"
+    reject:
+      - { formula: "=INDEX(B2:B6,MATCH(E2,B2:B6,0))", rule: value }
+      - { formula: "=MATCH(E2,B2:B6,0)", rule: value }
+      - { formula: "=INDEX(A2:A6,MATCH(E2,B2:B6,0)", rule: syntax }
+      - { formula: "=4403", rule: reference }

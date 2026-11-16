@@ -4,6 +4,7 @@ title: "Why VLOOKUP returns #N/A, and how to fix it"
 description: Why a lookup finds no match when the value looks like it is there, and the fix for each cause.
 updated: 2026-11-16
 minutes: 5
+topic: lookups
 functions: [VLOOKUP, XLOOKUP, TRIM, IFNA, VALUE]
 exercises: [ifna-catch-only-a-missing-match, clean-a-product-code-then-look-it-up, find-an-extension]
 cover: "#N/A?"

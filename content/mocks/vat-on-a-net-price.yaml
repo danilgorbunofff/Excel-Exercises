@@ -1,0 +1,34 @@
+id: vat-on-a-net-price
+slug: vat-on-a-net-price
+level: 1
+title: VAT on a net price
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B4, work out the VAT on the net price, at the rate in B3.
+    rows:
+      - [Item, Chair]
+      - [Net, 145]
+      - [VAT rate, 0.2]
+      - [VAT, null]
+    answerCell: B4
+    expected: 29
+    variants:
+      - set: { B2: 199 }
+        expected: 39.8
+    answer: "=B2*B3"
+    hints:
+      nudge: The tax alone, not the price with tax.
+      rule: The VAT is the net price times the rate.
+    misses:
+      value: 20 per cent of 145 is 29.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=B2*B3"
+      - "=b2*b3"
+      - "=B3*B2"
+    reject:
+      - { formula: "=B2*(1+B3)", rule: value }
+      - { formula: "=B2+B3", rule: value }
+      - { formula: "=29", rule: reference }

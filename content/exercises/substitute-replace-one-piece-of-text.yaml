@@ -4,7 +4,7 @@ level: 2
 title: "SUBSTITUTE: replace one piece of text"
 topic: text-change
 updated: 2026-11-11
-checkedInExcel: null
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B2, replace every hyphen in the booking reference in A2 with a slash.
     rows:

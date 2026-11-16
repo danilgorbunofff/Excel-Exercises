@@ -3,8 +3,8 @@ slug: vlookup-and-xlookup-on-the-same-table
 level: 2
 title: VLOOKUP and XLOOKUP on the same table
 topic: lookups
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B7, return the unit price for the SKU typed in B6 using the table A1:C5.
     rows:
@@ -27,6 +27,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. VLOOKUP follows the pattern `=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])`."
       required-function: VLOOKUP is this screen's function; XLOOKUP gets the next one.
       reference: Take the SKU from B6, so another product is one cell away.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =VLOOKUP(B6,A2:C5,3,FALSE)
       - =vlookup(b6,a2:c5,3,false)
@@ -39,6 +40,9 @@ screens:
       - { formula: "=VLOOKUP(B6,A2:C5,2,FALSE)", rule: value }
       - { formula: "=XLOOKUP(B6,A2:A5,C2:C5)", rule: required-function }
       - { formula: "=VLOOKUP(B6,A2:B4,3,FALSE)", rule: value }
+    variants:
+      - { set: { A2: CX-330 }, expected: 2.4 }
+      - { set: { B6: EX-500 }, expected: 9.6 }
   - prompt: "In B7, return the same unit price with XLOOKUP instead: the SKU in B6, the SKU column, the price column."
     rows:
       - [SKU, Product, Unit price]

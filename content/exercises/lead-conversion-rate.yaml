@@ -1,0 +1,47 @@
+id: lead-conversion-rate
+slug: lead-conversion-rate
+level: 2
+title: Lead conversion rate
+topic: interview-sales
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In D2, show the share of leads that became sales, as a percentage rounded to one decimal place. Use ROUND.
+    rows:
+      - [Campaign, Leads, Sales, "Conversion %"]
+      - [Spring email, 1840, 97, null]
+    answerCell: D2
+    expected: 5.3
+    variants:
+      - set: { C2: 133 }
+        expected: 7.2
+      - set: { B2: 2521 }
+        expected: 3.8
+    answer: "=ROUND(C2/B2*100,1)"
+    requiredFunctions: [ROUND]
+    hints:
+      nudge: Sales divided by leads, as a percentage.
+      rule: Conversion is sales divided by leads, times 100, rounded to one place.
+    misses:
+      value: 97 of 1840 leads is 5.3 per cent.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task needs ROUND.
+      reference: Point at the leads in B2 and the sales in C2, so the rate follows the data.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=ROUND(C2/B2*100,1)"
+      - "=round(c2/b2*100,1)"
+      - "=ROUND(100*C2/B2,1)"
+    reject:
+      - { formula: "=ROUND(B2/C2*100,1)", rule: value }
+      - { formula: "=C2/B2*100", rule: required-function }
+      - { formula: "=ROUND(C2/B2*100,1", rule: syntax }
+      - { formula: "=5.3", rule: required-function }
+notes:
+  summary: A conversion rate is the share of leads that turned into sales.
+  syntax: "ROUND(sales / leads * 100, 1)"
+  example: "`=ROUND(97/1840*100,1)` gives 5.3."
+  commonErrors:
+    - Dividing leads by sales gives a number far above 100.
+    - Forgetting * 100 leaves a decimal such as 0.053.
+    - Rounding before multiplying by 100 loses the precision.

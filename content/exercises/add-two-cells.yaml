@@ -4,7 +4,7 @@ level: 1
 title: Add two cells
 topic: references
 updated: 2026-11-11
-checkedInExcel: null
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B4, add the price in B2 and the delivery charge in B3.
     rows:

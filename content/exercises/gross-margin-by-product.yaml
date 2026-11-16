@@ -3,7 +3,7 @@ slug: gross-margin-by-product
 level: 2
 title: Gross margin by product
 topic: interview-finance-analyst
-updated: 2026-11-15
+updated: 2026-11-16
 checkedInExcel: null
 screens:
   - prompt: In D2, work out the gross margin on desk lamps as a share of revenue.
@@ -37,7 +37,7 @@ screens:
       - { formula: "=B2-C2/B2", rule: value }
       - { formula: "=(12500-7500)/12500", rule: reference }
       - { formula: "=(B2-C2/B2", rule: syntax }
-  - prompt: "The margins are now in column D. The target is thirty per cent. In E2, count the products below target."
+  - prompt: "The margins are now in column D. The target is thirty per cent. In E2, count the products below target. Use COUNTIF."
     rows:
       - [Product, Revenue, Cost of sales, Margin, Below target]
       - [Desk lamp, 12500, 7500, 0.4, null]

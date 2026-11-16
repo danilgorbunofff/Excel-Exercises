@@ -1,0 +1,52 @@
+id: best-return-on-ad-spend
+slug: best-return-on-ad-spend
+level: 3
+title: Best return on ad spend
+topic: interview-sales
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In E2, name the campaign that earned the most revenue for each unit of money spent.
+    rows:
+      - [Campaign, Spend, Revenue, null, null]
+      - [Search, 4200, 16800, null, null]
+      - [Social, 3100, 9920, null, null]
+      - [Email, 900, 5850, null, null]
+      - [Video, 5600, 14560, null, null]
+      - [Print, 1500, 3150, null, null]
+      - [Radio, 2800, 7840, null, null]
+      - [Display, 2000, 6600, null, null]
+    answerCell: E2
+    expected: Email
+    variants:
+      - { set: { A4: Search }, expected: Search }
+      - { set: { C2: 33601 }, expected: Search }
+      - { set: { C8: 16800 }, expected: Display }
+    answer: "=INDEX(A2:A8,MATCH(MAX(C2:C8/B2:B8),C2:C8/B2:B8,0))"
+    hints:
+      nudge: The biggest revenue is not the answer. Compare revenue divided by spend for every campaign.
+      rule: Divide the revenue range by the spend range to get a return per row, find the largest, then return the campaign on that row.
+    misses:
+      value: Email returns 6.5 for every unit spent, more than any other campaign.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=INDEX(A2:A8,MATCH(MAX(C2:C8/B2:B8),C2:C8/B2:B8,0))"
+      - "=index(a2:a8,match(max(c2:c8/b2:b8),c2:c8/b2:b8,0))"
+      - "=XLOOKUP(MAX(C2:C8/B2:B8),C2:C8/B2:B8,A2:A8)"
+      - "=LET(r,C2:C8/B2:B8,INDEX(A2:A8,MATCH(MAX(r),r,0)))"
+      - "=TAKE(SORTBY(A2:A8,C2:C8/B2:B8,-1),1)"
+    reject:
+      - { formula: "=INDEX(A2:A8,MATCH(MAX(C2:C8),C2:C8,0))", rule: value }
+      - { formula: "=INDEX(A2:A8,MATCH(MIN(B2:B8),B2:B8,0))", rule: fragile }
+      - { formula: "=INDEX(A2:A8,MATCH(MAX(C2:C8/B2:B8),C2:C8/B2:B8,0)", rule: syntax }
+      - { formula: '="Email"', rule: reference }
+notes:
+  summary: Return on ad spend is revenue divided by spend. Dividing two ranges gives the return for every row at once, so MAX and MATCH can find the best.
+  syntax: "INDEX(names, MATCH(MAX(revenue/spend), revenue/spend, 0))"
+  example: "`=MAX(C2:C8/B2:B8)` gives the best return in the list."
+  commonErrors:
+    - The campaign with the most revenue is not always the best return.
+    - The campaign with the smallest spend is not always the best return either.
+    - MATCH needs 0 as its last argument for an exact match.

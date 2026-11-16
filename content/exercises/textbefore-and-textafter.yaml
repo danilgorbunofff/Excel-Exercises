@@ -1,10 +1,10 @@
 id: textbefore-and-textafter
 slug: textbefore-and-textafter
-level: 3
+level: 2
 title: "TEXTBEFORE and TEXTAFTER: split on a delimiter"
 topic: text-search
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B2, read the three letters before the hyphen in the order code in A2.
     rows:

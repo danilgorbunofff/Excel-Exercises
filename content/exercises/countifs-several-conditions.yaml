@@ -1,10 +1,10 @@
 id: countifs-several-conditions
 slug: countifs-several-conditions
-level: 3
+level: 2
 title: "COUNTIFS: several conditions"
 topic: conditions
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In D9, count the North orders that are still open with one function taking two conditions.
     rows:

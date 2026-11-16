@@ -1,0 +1,40 @@
+id: late-fee-on-an-invoice
+slug: late-fee-on-an-invoice
+level: 3
+tier: 6
+title: Late fee on an invoice
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: "In D2, work out the late fee: the invoice amount times the fee rate for the days overdue, rounded to two decimal places."
+    rows:
+      - [Invoice, Days late, Amount, Fee, null, From day, Rate]
+      - [V-19, 38, 2450, null, null, 0, 0]
+      - [null, null, null, null, null, 15, 0.01]
+      - [null, null, null, null, null, 30, 0.025]
+      - [null, null, null, null, null, 60, 0.04]
+    answerCell: D2
+    expected: 61.25
+    variants:
+      - { set: { C2: 3357 }, expected: 83.93 }
+      - { set: { B2: 77 }, expected: 98 }
+      - { set: { B2: 2 }, expected: 0 }
+    answer: "=ROUND(C2*VLOOKUP(B2,F2:G5,2,TRUE),2)"
+    hints:
+      nudge: Find which band 38 days falls in, then apply its rate to the amount.
+      rule: An approximate VLOOKUP (TRUE) finds the band a number falls in. Multiply the amount by that rate, then round.
+    misses:
+      value: 38 days is in the band from day 30, at 2.5 per cent, so the fee is 61.25.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=ROUND(C2*VLOOKUP(B2,F2:G5,2,TRUE),2)"
+      - "=round(c2*vlookup(b2,f2:g5,2,true),2)"
+      - "=ROUND(VLOOKUP(B2,$F$2:$G$5,2,TRUE)*C2,2)"
+      - "=ROUND(C2*INDEX(G2:G5,MATCH(B2,F2:F5,1)),2)"
+    reject:
+      - { formula: "=ROUND(C2*0.025,2)", rule: reference }
+      - { formula: "=ROUND(C2*VLOOKUP(B2,F2:G5,2,FALSE),2)", rule: value }
+      - { formula: "=ROUND(C2*VLOOKUP(B2,F2:G5,2,TRUE),2", rule: syntax }
+      - { formula: "=61.25", rule: reference }

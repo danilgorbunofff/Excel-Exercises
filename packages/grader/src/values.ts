@@ -40,6 +40,16 @@ export function isRange(v: Value): v is RangeValue {
   return typeof v === "object" && v !== null && (v as RangeValue).kind === "range";
 }
 
+/** A computed array, such as FILTER's result. It has no place on the sheet. */
+export const array = (rows: Scalar[][]): RangeValue => ({
+  kind: "range",
+  origin: { col: 0, row: 0 },
+  rows,
+});
+
+/** Any value as rows of cells: a single value is one row of one cell. */
+export const rowsOf = (v: Value): Scalar[][] => (isRange(v) ? v.rows : [[v]]);
+
 /** A single value from a range: a one-cell range gives its cell, larger ones #VALUE!. */
 export function toScalar(v: Value): Scalar {
   if (!isRange(v)) return v;
@@ -128,5 +138,44 @@ export function compare(
   }
   const p = Number(x);
   const q = Number(y);
-  return p < q ? -1 : p > q ? 1 : 0;
+  // Excel compares numbers to 15 significant digits, so 0.1+0.2=0.3 is TRUE.
+  if (p === q || Number(p.toPrecision(15)) === Number(q.toPrecision(15))) return 0;
+  return p < q ? -1 : 1;
+}
+
+/**
+ * Cell (i, j) of rows stretched to a larger size: a single row or column
+ * repeats; past the end of a longer side the cell is #N/A, as in Excel.
+ */
+export function cellAt(rows: Scalar[][], i: number, j: number): Scalar {
+  const h = rows.length;
+  const w = rows[0]?.length ?? 0;
+  const r = h === 1 ? 0 : i;
+  const c = w === 1 ? 0 : j;
+  return r < h && c < w ? (rows[r]?.[c] ?? null) : errorValue("#N/A");
+}
+
+/** Applies f to a value, or to each cell of an array. */
+export function lift1(v: Value, f: (s: Scalar) => Scalar): Value {
+  if (!isRange(v)) return f(v);
+  return array(v.rows.map((row) => row.map(f)));
+}
+
+/**
+ * Applies f cell by cell, as Excel does for =A2:A5*B2:B5. A single row or
+ * column stretches to fit the other side; cells beyond a shorter side are #N/A.
+ */
+export function lift2(a: Value, b: Value, f: (x: Scalar, y: Scalar) => Scalar): Value {
+  if (!isRange(a) && !isRange(b)) return f(a, b);
+  const ra = isRange(a) ? a.rows : [[a]];
+  const rb = isRange(b) ? b.rows : [[b]];
+  const ha = ra.length;
+  const hb = rb.length;
+  const wa = ra[0]?.length ?? 0;
+  const wb = rb[0]?.length ?? 0;
+  return array(
+    Array.from({ length: Math.max(ha, hb) }, (_, i) =>
+      Array.from({ length: Math.max(wa, wb) }, (_, j) => f(cellAt(ra, i, j), cellAt(rb, i, j))),
+    ),
+  );
 }

@@ -4,6 +4,7 @@ title: How to audit a formula you inherited
 description: Step through a long formula you did not write, find what it reads, and spot the parts most likely to be wrong.
 updated: 2026-11-16
 minutes: 4
+topic: habits
 functions: [FORMULATEXT, ISFORMULA, IFERROR]
 exercises: [formula-audit-fix-five-broken-sheets, debug-a-total-that-skips-a-row, error-handling-summary]
 cover: "F2 + F9"

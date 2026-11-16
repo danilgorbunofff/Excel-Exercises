@@ -4,6 +4,7 @@ title: "Split text: TEXTSPLIT, TEXTBEFORE or LEFT and MID"
 description: Break one cell into parts with a formula, in current Excel and in older versions.
 updated: 2026-11-16
 minutes: 4
+topic: text
 functions: [TEXTSPLIT, TEXTBEFORE, TEXTAFTER, LEFT, MID, RIGHT, FIND, LEN]
 exercises: [textbefore-and-textafter, left-find-prefix, mid-characters-from-the-middle, len-left-and-right-count-and-cut]
 cover: "=TEXTSPLIT"

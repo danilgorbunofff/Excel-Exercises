@@ -1,0 +1,37 @@
+id: savings-after-compound-growth
+slug: savings-after-compound-growth
+level: 2
+title: Savings after compound growth
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B5, work out the balance after the number of years in B4, growing by the yearly rate in B3 each year, rounded to two decimal places.
+    rows:
+      - [Account, ISA]
+      - [Start, 10000]
+      - [Rate, 0.04]
+      - [Years, 5]
+      - [Balance, null]
+    answerCell: B5
+    expected: 12166.53
+    variants:
+      - set: { B2: 13700 }
+        expected: 16668.14
+    answer: "=ROUND(B2*(1+B3)^B4,2)"
+    hints:
+      nudge: Each year multiplies the balance by 1 plus the rate.
+      rule: Compound growth is start times (1 + rate) to the power of the years. ^ raises to a power.
+    misses:
+      value: 10000 grown by 4 per cent for 5 years is 12166.53.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=ROUND(B2*(1+B3)^B4,2)"
+      - "=round(b2*(1+b3)^b4,2)"
+      - "=ROUND((1+B3)^B4*B2,2)"
+    reject:
+      - { formula: "=ROUND(B2*(1+B3*B4),2)", rule: value }
+      - { formula: "=ROUND(B2*B3^B4,2)", rule: value }
+      - { formula: "=ROUND(B2*(1+B3)^B4,2", rule: syntax }
+      - { formula: "=12166.53", rule: reference }

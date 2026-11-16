@@ -31,6 +31,25 @@ function awayToParity(n: number, parity: 0 | 1): number {
 }
 
 export const MATH: Record<string, FunctionSpec> = {
+  SQRT: fn(
+    1,
+    1,
+    safe((args) => {
+      const x = num(args[0]);
+      return x < 0 ? fail("#NUM!") : Math.sqrt(x);
+    }),
+  ),
+  POWER: fn(
+    2,
+    2,
+    safe((args) => {
+      const x = num(args[0]);
+      const y = num(args[1]);
+      if (x === 0 && y === 0) return fail("#NUM!");
+      const r = x ** y;
+      return Number.isFinite(r) ? r : fail(x === 0 ? "#DIV/0!" : "#NUM!");
+    }),
+  ),
   SUM: fn(
     1,
     255,

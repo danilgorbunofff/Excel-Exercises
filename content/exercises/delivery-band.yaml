@@ -3,10 +3,10 @@ slug: delivery-band
 level: 2
 title: Find a delivery band
 topic: lookups
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: Delivery cost depends on weight bands. In B8, find the cost for the parcel weight in B7.
+  - prompt: Delivery cost depends on weight bands. In B8, find the cost for the parcel weight in B7. Use VLOOKUP.
     rows:
       - [From kg, Cost]
       - [0, 4.5]
@@ -28,6 +28,7 @@ screens:
       required-function: Use VLOOKUP, which can find the band a weight falls in.
       reference: Point at the weight in B7, so the cost updates when the weight changes.
       value: Check the last two arguments. The cost is in column 2, and TRUE finds the band a weight falls in when the exact weight is not listed.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =VLOOKUP(B7,A2:B5,2,TRUE)
       - =VLOOKUP(B7,A2:B5,2)
@@ -38,6 +39,9 @@ screens:
       - { formula: "=VLOOKUP(6.4,A2:B5,2,TRUE)", rule: reference }
       - { formula: "=VLOOKUP(B7,A2:B5,2,FALSE)", rule: value }
       - { formula: "=VLOOKUP(B7,A2:B5,1,TRUE)", rule: value }
+    variants:
+      - { set: { B7: 11 }, expected: 18 }
+      - { set: { B7: 1.5 }, expected: 4.5 }
 notes:
   summary: With TRUE or no last argument, VLOOKUP finds the band a value falls in. The first column must be sorted in ascending order.
   syntax: VLOOKUP(lookup_value, table_array, col_index_num, TRUE)

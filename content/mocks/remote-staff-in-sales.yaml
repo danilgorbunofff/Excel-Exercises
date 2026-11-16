@@ -1,0 +1,45 @@
+id: remote-staff-in-sales
+slug: remote-staff-in-sales
+level: 2
+title: Remote staff in Sales
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In E2, count the people who work in Sales and work Remote.
+    rows:
+      - [Name, Dept, Mode, null, null]
+      - [Ari, Sales, Remote, null, null]
+      - [Bel, IT, Remote, null, null]
+      - [Cyn, Sales, Office, null, null]
+      - [Dax, Sales, Remote, null, null]
+      - [Eve, HR, Office, null, null]
+      - [Fox, Sales, Hybrid, null, null]
+      - [Gus, IT, Office, null, null]
+      - [Hex, Sales, Remote, null, null]
+      - [Ida, HR, Remote, null, null]
+    answerCell: E2
+    expected: 3
+    variants:
+      - set: { B2: IT }
+        expected: 2
+      - set: { C2: Office }
+        expected: 2
+    answer: '=COUNTIFS(B2:B10,"Sales",C2:C10,"Remote")'
+    hints:
+      nudge: Both conditions must hold on the same row.
+      rule: COUNTIFS counts the rows that match every range and criteria pair.
+    misses:
+      value: "3 people are in Sales and Remote: Ari, Dax and Hex."
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=COUNTIFS(B2:B10,"Sales",C2:C10,"Remote")'
+      - '=countifs(b2:b10,"Sales",c2:c10,"Remote")'
+      - '=COUNTIFS(C2:C10,"Remote",B2:B10,"Sales")'
+      - '=SUMPRODUCT((B2:B10="Sales")*(C2:C10="Remote"))'
+    reject:
+      - { formula: '=COUNTIF(B2:B10,"Sales")', rule: value }
+      - { formula: '=COUNTIF(C2:C10,"Remote")', rule: value }
+      - { formula: '=COUNTIFS(B2:B10,"Sales",C2:C10,"Remote"', rule: syntax }
+      - { formula: "=3", rule: reference }

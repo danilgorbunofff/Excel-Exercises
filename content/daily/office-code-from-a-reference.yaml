@@ -1,0 +1,35 @@
+id: office-code-from-a-reference
+slug: office-code-from-a-reference
+level: 2
+tier: 3
+title: Office code from a reference
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B2, take the three-letter office code from the start of the reference in A2.
+    rows:
+      - [Reference, Office]
+      - [LON-2231, null]
+    answerCell: B2
+    expected: LON
+    answer: "=LEFT(A2,3)"
+    hints:
+      nudge: The code is the first three characters.
+      rule: LEFT(text, n) returns the first n characters of the text.
+    misses:
+      value: The first three characters are LON.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=LEFT(A2,3)"
+      - "=left(a2,3)"
+      - '=LEFT(A2,3)&""'
+    reject:
+      - formula: =RIGHT(A2,3)
+        rule: value
+      - formula: =LEFT(A2,4)
+        rule: value
+      - formula: =LEFT(A2,3
+        rule: syntax
+      - formula: ="LON"
+        rule: reference

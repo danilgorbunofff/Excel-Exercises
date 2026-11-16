@@ -1,0 +1,45 @@
+id: count-free-seats
+slug: count-free-seats
+level: 1
+tier: 2
+title: Count the free seats
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B9, count the seats that nobody has booked yet.
+    rows:
+      - [Seat, Booked by]
+      - [A1, Kim]
+      - [A2, null]
+      - [A3, Leo]
+      - [A4, null]
+      - [A5, null]
+      - [A6, Mia]
+      - [A7, Ned]
+      - [Free, null]
+    answerCell: B9
+    expected: 3
+    answer: "=COUNTBLANK(B2:B8)"
+    hints:
+      nudge: Count the empty cells in the Booked by column.
+      rule: COUNTBLANK counts the empty cells in a range.
+    misses:
+      value: 3 seats have no name next to them.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=COUNTBLANK(B2:B8)"
+      - "=countblank(b2:b8)"
+      - "=COUNTBLANK($B$2:$B$8)"
+    reject:
+      - formula: =COUNTA(B2:B8)
+        rule: value
+      - formula: =COUNTBLANK(B2:B5)
+        rule: value
+      - formula: =COUNTBLANK(B2:B8
+        rule: syntax
+      - formula: =3
+        rule: reference
+    variants:
+      - { set: { B2: null, B8: null }, expected: 5 }

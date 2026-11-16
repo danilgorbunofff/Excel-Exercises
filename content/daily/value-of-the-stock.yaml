@@ -1,0 +1,48 @@
+id: value-of-the-stock
+slug: value-of-the-stock
+level: 2
+tier: 5
+title: Value of the stock
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: "In C8, work out the total value of the stock: each quantity times its unit cost, all added up."
+    rows:
+      - [Item, Qty, Unit cost]
+      - [Bolt, 120, 0.35]
+      - [Nut, 200, 0.2]
+      - [Washer, 150, 0.1]
+      - [Screw, 300, 0.15]
+      - [Hinge, 40, 2.5]
+      - [Bracket, 25, 3.2]
+      - [Value, null, null]
+    answerCell: C8
+    expected: 322
+    variants:
+      - set: { B2: 164 }
+        expected: 337.4
+      - set: { C2: 0.48 }
+        expected: 337.6
+    answer: "=SUMPRODUCT(B2:B7,C2:C7)"
+    hints:
+      nudge: Multiply each row's quantity by its cost, then add the results.
+      rule: SUMPRODUCT multiplies the matching cells of two ranges and adds up the products.
+    misses:
+      value: The rows are worth 322 in total.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=SUMPRODUCT(B2:B7,C2:C7)"
+      - "=sumproduct(b2:b7,c2:c7)"
+      - "=SUMPRODUCT(C2:C7,B2:B7)"
+      - "=SUMPRODUCT(B2:B7*C2:C7)"
+    reject:
+      - formula: =SUM(B2:B7)*SUM(C2:C7)
+        rule: value
+      - formula: =SUMPRODUCT(B2:B6,C2:C6)
+        rule: value
+      - formula: =SUMPRODUCT(B2:B7,C2:C7
+        rule: syntax
+      - formula: =322
+        rule: reference

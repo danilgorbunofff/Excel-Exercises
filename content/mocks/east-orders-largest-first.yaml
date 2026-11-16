@@ -1,0 +1,66 @@
+id: east-orders-largest-first
+slug: east-orders-largest-first
+level: 3
+title: East orders, largest first
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, list the order numbers from the East region, from the largest order to the smallest.
+    rows:
+      - [Order, Region, Value, null, null, null]
+      - [3001, East, 420, null, null, null]
+      - [3002, North, 610, null, null, null]
+      - [3003, East, 980, null, null, null]
+      - [3004, West, 150, null, null, null]
+      - [3005, East, 230, null, null, null]
+      - [3006, North, 1200, null, null, null]
+      - [3007, east, 760, null, null, null]
+      - [3008, West, 540, null, null, null]
+      - [3009, East, 1310, null, null, null]
+      - [3010, North, 85, null, null, null]
+      - [3011, East, 395, null, null, null]
+      - [3012, West, 640, null, null, null]
+    answerCell: F2
+    expected:
+      - [3009]
+      - [3003]
+      - [3007]
+      - [3001]
+      - [3011]
+      - [3005]
+    variants:
+      - set: { A2: 4111 }
+        expected:
+          - [3009]
+          - [3003]
+          - [3007]
+          - [4111]
+          - [3011]
+          - [3005]
+      - set: { B2: North }
+        expected:
+          - [3009]
+          - [3003]
+          - [3007]
+          - [3011]
+          - [3005]
+    answer: '=SORTBY(FILTER(A2:A13,B2:B13="East"),FILTER(C2:C13,B2:B13="East"),-1)'
+    hints:
+      nudge: Keep the East rows, whatever their case, then order them by value.
+      rule: FILTER the rows first, then sort them by the value column with -1 for largest first.
+    misses:
+      value: The East orders by value are 3009, 3003, 3007, 3001, 3011 and 3005.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=SORTBY(FILTER(A2:A13,B2:B13="East"),FILTER(C2:C13,B2:B13="East"),-1)'
+      - '=sortby(filter(a2:a13,b2:b13="East"),filter(c2:c13,b2:b13="East"),-1)'
+      - '=CHOOSECOLS(SORT(FILTER(A2:C13,B2:B13="East"),3,-1),1)'
+      - '=TAKE(SORT(FILTER(CHOOSECOLS(A2:C13,1,3),B2:B13="East"),2,-1),,1)'
+    reject:
+      - { formula: '=FILTER(A2:A13,B2:B13="East")', rule: value }
+      - { formula: '=SORT(FILTER(A2:A13,B2:B13="East"),1,-1)', rule: value }
+      - {
+          formula: '=SORTBY(FILTER(A2:A13,B2:B13="East"),FILTER(C2:C13,B2:B13="East"),-1',
+          rule: syntax,
+        }

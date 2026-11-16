@@ -1,0 +1,45 @@
+id: biggest-order-share
+slug: biggest-order-share
+level: 3
+tier: 6
+title: Biggest order's share
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, show the biggest single order as a percentage of all orders, rounded to one decimal place.
+    rows:
+      - [Order, Amount, null, null, null, null]
+      - [601, 840, null, null, null, null]
+      - [602, 1250, null, null, null, null]
+      - [603, 460, null, null, null, null]
+      - [604, 2310, null, null, null, null]
+      - [605, 975, null, null, null, null]
+      - [606, 610, null, null, null, null]
+      - [607, 1480, null, null, null, null]
+      - [608, 390, null, null, null, null]
+      - [609, 1105, null, null, null, null]
+      - [610, 720, null, null, null, null]
+    answerCell: F2
+    expected: 22.8
+    variants:
+      - { set: { B2: 1151 }, expected: 22.1 }
+      - { set: { B2: 2310, B5: 1250 }, expected: 21.9 }
+    answer: "=ROUND(MAX(B2:B11)/SUM(B2:B11)*100,1)"
+    hints:
+      nudge: Find the biggest order and the total, then divide.
+      rule: Divide the largest value by the sum, times 100 for a percentage, then round to one place.
+    misses:
+      value: 2310 of 10140 is 22.8 per cent.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=ROUND(MAX(B2:B11)/SUM(B2:B11)*100,1)"
+      - "=round(max(b2:b11)/sum(b2:b11)*100,1)"
+      - "=ROUND(100*MAX(B2:B11)/SUM(B2:B11),1)"
+      - "=ROUND(LARGE(B2:B11,1)/SUM(B2:B11)*100,1)"
+    reject:
+      - { formula: "=ROUND(MAX(B2:B11)/SUM(B2:B10)*100,1)", rule: value }
+      - { formula: "=ROUND(MAX(B2:B11)/SUM(B2:B11),1)", rule: value }
+      - { formula: "=ROUND(MAX(B2:B11)/SUM(B2:B11)*100,1", rule: syntax }
+      - { formula: "=22.8", rule: reference }

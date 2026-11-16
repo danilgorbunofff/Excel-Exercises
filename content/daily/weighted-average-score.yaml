@@ -1,0 +1,43 @@
+id: weighted-average-score
+slug: weighted-average-score
+level: 3
+tier: 7
+title: Weighted average score
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In C8, work out the weighted average score, rounded to one decimal place. A module with no weight yet does not count.
+    rows:
+      - [Module, Score, Weight]
+      - [Excel, 82, 30]
+      - [Access, 74, 20]
+      - [Stats, 91, null]
+      - [Finance, 68, 25]
+      - [Writing, 88, 25]
+      - [Project, 95, null]
+      - [Weighted, null, null]
+    answerCell: C8
+    expected: 78.4
+    variants:
+      - { set: { B2: 112 }, expected: 87.4 }
+      - { set: { C2: 41 }, expected: 78.8 }
+      - { set: { C2: 25 }, expected: 78.2 }
+    answer: "=ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUM(C2:C7),1)"
+    hints:
+      nudge: Each score counts by its weight. Divide by the total weight, not by how many modules there are.
+      rule: A weighted average is SUMPRODUCT(scores, weights) divided by SUM(weights). A blank weight multiplies to 0, so it drops out.
+    misses:
+      value: The four weighted modules give 7840 points over a weight of 100, which is 78.4.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUM(C2:C7),1)"
+      - "=round(sumproduct(b2:b7,c2:c7)/sum(c2:c7),1)"
+      - "=ROUND(SUMPRODUCT(C2:C7,B2:B7)/SUM(C2:C7),1)"
+      - "=ROUND(SUM(B2:B7*C2:C7)/SUM(C2:C7),1)"
+    reject:
+      - { formula: "=ROUND(AVERAGE(B2:B7),1)", rule: value }
+      - { formula: "=ROUND(SUMPRODUCT(B2:B7,C2:C7)/COUNT(C2:C7),1)", rule: value }
+      - { formula: "=ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUM(C2:C7),1", rule: syntax }
+      - { formula: "=78.4", rule: reference }

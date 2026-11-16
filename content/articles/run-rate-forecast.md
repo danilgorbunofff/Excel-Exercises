@@ -4,6 +4,7 @@ title: Full year forecast from the run rate
 description: Three ways to project a full year from the months you have, and when each one misleads.
 updated: 2026-11-16
 minutes: 4
+topic: finance
 functions: [SUM, COUNT, AVERAGE]
 exercises: [full-year-forecast-from-the-run-rate, quarter-forecast-against-budget, year-on-year-revenue-growth]
 cover: "YTD/9*12"

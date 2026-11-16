@@ -1,0 +1,40 @@
+id: tidy-a-pasted-name
+slug: tidy-a-pasted-name
+level: 2
+title: Tidy a pasted name
+topic: interview-admin
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: "A name was pasted with extra spaces and odd capitals. In B2, tidy it: single spaces only, and a capital at the start of each word. Use TRIM and PROPER."
+    rows:
+      - [Pasted, Tidy]
+      - ["  jane   SMITH ", null]
+    answerCell: B2
+    expected: Jane Smith
+    answer: "=PROPER(TRIM(A2))"
+    requiredFunctions: [TRIM, PROPER]
+    hints:
+      nudge: "Two fixes: the spaces, then the capitals."
+      rule: TRIM removes spaces at the ends and turns runs of spaces into one. PROPER capitalises the first letter of each word.
+    misses:
+      value: The tidy name reads Jane Smith.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task needs TRIM and PROPER.
+    accept:
+      - "=PROPER(TRIM(A2))"
+      - "=proper(trim(a2))"
+      - "=TRIM(PROPER(A2))"
+    reject:
+      - { formula: "=PROPER(A2)", rule: required-function }
+      - { formula: "=UPPER(TRIM(A2))", rule: required-function }
+      - { formula: "=PROPER(TRIM(A2)", rule: syntax }
+      - { formula: '="Jane Smith"', rule: required-function }
+notes:
+  summary: Names pasted from forms and emails often carry stray spaces and odd capitals. TRIM and PROPER together give a clean, consistent name.
+  syntax: "PROPER(TRIM(text))"
+  example: '`=PROPER(TRIM("  ann   LEE"))` gives Ann Lee.'
+  commonErrors:
+    - TRIM alone leaves the capitals as they were.
+    - UPPER turns every letter into a capital, where PROPER changes only the first of each word.
+    - PROPER also capitalises after an apostrophe, so check names such as O'Neil.

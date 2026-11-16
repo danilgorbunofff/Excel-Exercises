@@ -5,13 +5,18 @@
 import type { Address } from "./address.ts";
 import { errorValue, isError } from "./errors.ts";
 import { FUNCTIONS } from "./functions/index.ts";
+import { LIFTED } from "./functions/lifted.ts";
 import type { Grid } from "./grid.ts";
 import { type Node, parse } from "./parse.ts";
 import { expandRange } from "./range.ts";
 import {
   type Arg,
+  array,
+  cellAt,
   compare,
   isRange,
+  lift1,
+  lift2,
   type RangeValue,
   type Scalar,
   toNumber,
@@ -40,8 +45,14 @@ export function evaluate(node: Node, grid: Grid, options: EvaluateOptions = {}):
     };
   };
 
-  /** A value in a single-value position. Ranges must be one cell; blanks stay blank, so "a"&blank is "a". */
-  const scalarOf = (n: Node): Scalar => toScalar(run(n));
+  /** Names that LET has bound, keyed in upper case. */
+  const names = new Map<string, Value>();
+
+  /** A value for an operator: one cell stays a value, a larger range or array is lifted cell by cell. */
+  const operand = (n: Node): Value => {
+    const v = run(n);
+    return isRange(v) && !(v.rows.length === 1 && v.rows[0]?.length === 1) ? v : toScalar(v);
+  };
 
   const run = (n: Node): Value => {
     switch (n.type) {
@@ -51,39 +62,100 @@ export function evaluate(node: Node, grid: Grid, options: EvaluateOptions = {}):
         return n.value;
       case "error":
         return errorValue(n.code);
+      case "array":
+        return array(n.rows.map((r) => [...r]));
       case "empty":
         return null;
       case "name":
-        return errorValue("#NAME?");
+        return names.get(n.name.toUpperCase()) ?? errorValue("#NAME?");
       case "ref":
-        return cell(n.address);
+        // LET may bind a name that looks like a cell, such as a1; Excel then reads the name.
+        return names.get(n.text.toUpperCase()) ?? cell(n.address);
       case "range":
         return rangeOf(n);
       case "call": {
+        if (n.name === "LET") return letOf(n.args);
         const impl = FUNCTIONS[n.name];
         if (!impl) return errorValue("#NAME?");
         // A single cell passed to a function behaves like a one-cell range, so
         // SUM(A1) skips text in A1 while SUM("x") is #VALUE!, as in Excel.
-        const args: Arg[] = n.args.map((a) => ({
+        const argOf = (a: Node, value?: Value): Arg => ({
           empty: a.type === "empty",
           get: () =>
-            a.type === "ref"
-              ? { kind: "range", origin: a.address, rows: [[cell(a.address)]] }
-              : run(a),
-        }));
-        return impl.run(args, options);
+            value !== undefined
+              ? value
+              : a.type === "ref"
+                ? { kind: "range", origin: a.address, rows: [[cell(a.address)]] }
+                : run(a),
+        });
+        // Arguments Excel takes one value at a time: a range there runs the
+        // function once per cell, and the results spill.
+        const many = new Map<number, Scalar[][]>();
+        const once = new Map<number, Value>();
+        for (const i of LIFTED[n.name]?.(n.args.length) ?? []) {
+          const a = n.args[i];
+          if (!a || a.type === "empty" || a.type === "ref") continue;
+          const v = run(a);
+          if (isRange(v) && v.rows.length * (v.rows[0]?.length ?? 0) > 1) many.set(i, v.rows);
+          else once.set(i, v);
+        }
+        if (many.size === 0)
+          return impl.run(
+            n.args.map((a, i) => argOf(a, once.get(i))),
+            options,
+          );
+        const blocks = [...many.values()];
+        const h = Math.max(...blocks.map((b) => b.length));
+        const w = Math.max(...blocks.map((b) => b[0]?.length ?? 0));
+        return array(
+          Array.from({ length: h }, (_, r) =>
+            Array.from({ length: w }, (_, c) => {
+              const args = n.args.map((a, i) => {
+                const rows = many.get(i);
+                return argOf(a, rows ? cellAt(rows, r, c) : once.get(i));
+              });
+              return toScalar(impl.run(args, options));
+            }),
+          ),
+        );
       }
-      case "unary": {
-        const v = toNumber(scalarOf(n.operand));
-        if (isError(v)) return v;
-        return n.op === "-" ? -v : v;
-      }
-      case "percent": {
-        const v = toNumber(scalarOf(n.operand));
-        return isError(v) ? v : v / 100;
-      }
+      case "unary":
+        return lift1(operand(n.operand), (s) => {
+          const v = toNumber(s);
+          if (isError(v)) return v;
+          return n.op === "-" ? -v : v;
+        });
+      case "percent":
+        return lift1(operand(n.operand), (s) => {
+          const v = toNumber(s);
+          return isError(v) ? v : v / 100;
+        });
       case "binary":
-        return binary(n.op, scalarOf(n.left), scalarOf(n.right));
+        return lift2(operand(n.left), operand(n.right), (a, b) => binary(n.op, a, b));
+    }
+  };
+
+  /** LET(name1, value1, [name2, value2, ...], calculation). Each value can use the names before it. */
+  const letOf = (args: Node[]): Value => {
+    if (args.length < 3 || args.length % 2 === 0) return errorValue("#VALUE!");
+    const saved = new Map(names);
+    try {
+      for (let i = 0; i + 1 < args.length; i += 2) {
+        const name = args[i];
+        const value = args[i + 1];
+        const key =
+          name?.type === "name"
+            ? name.name
+            : name?.type === "ref" && !name.text.includes("$")
+              ? name.text
+              : null;
+        if (key === null || !value) return errorValue("#VALUE!");
+        names.set(key.toUpperCase(), run(value));
+      }
+      return run(args[args.length - 1] as Node);
+    } finally {
+      names.clear();
+      for (const [k, v] of saved) names.set(k, v);
     }
   };
 

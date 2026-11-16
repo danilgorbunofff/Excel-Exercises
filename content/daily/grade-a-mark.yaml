@@ -1,0 +1,41 @@
+id: grade-a-mark
+slug: grade-a-mark
+level: 2
+tier: 4
+title: Grade a mark
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: "In C2, give the grade: A for 80 or more, B for 65 or more, otherwise C."
+    rows:
+      - [Student, Mark, Grade]
+      - [Noor, 85, null]
+    answerCell: C2
+    expected: A
+    variants:
+      - { set: { B2: 64 }, expected: C }
+      - { set: { B2: 65 }, expected: B }
+      - { set: { B2: 79 }, expected: B }
+      - { set: { B2: 80 }, expected: A }
+    answer: '=IF(B2>=80,"A",IF(B2>=65,"B","C"))'
+    hints:
+      nudge: Test the highest band first, then the next one.
+      rule: A second IF can go in the false part of the first. Test from the top band down, or a lower band catches everything.
+    misses:
+      value: 85 is 80 or more, so the grade is A.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - '=IF(B2>=80,"A",IF(B2>=65,"B","C"))'
+      - '=if(b2>=80,"A",if(b2>=65,"B","C"))'
+      - '=IF(B2<65,"C",IF(B2<80,"B","A"))'
+    reject:
+      - formula: =IF(B2>=65,"B",IF(B2>=80,"A","C"))
+        rule: value
+      - formula: =IF(B2>=90,"A",IF(B2>=65,"B","C"))
+        rule: value
+      - formula: =IF(B2>=80,"A",IF(B2>=65,"B","C")
+        rule: syntax
+      - formula: ="A"
+        rule: reference

@@ -1,0 +1,42 @@
+id: weighted-unit-cost
+slug: weighted-unit-cost
+level: 3
+title: Weighted unit cost
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In C8, work out the average cost per unit across all the batches, weighted by how many units each batch holds, rounded to two decimal places.
+    rows:
+      - [Batch, Units, Unit cost]
+      - [B1, 1200, 3.4]
+      - [B2, 800, 3.65]
+      - [B3, 2500, 3.1]
+      - [B4, 400, 4.2]
+      - [B5, 1600, 3.25]
+      - [B6, 900, 3.55]
+      - [Average, null, null]
+    answerCell: C8
+    expected: 3.35
+    variants:
+      - set: { B2: 1644 }
+        expected: 3.36
+      - set: { C2: 4.66 }
+        expected: 3.56
+    answer: "=ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUM(B2:B7),2)"
+    hints:
+      nudge: A big batch counts for more. Divide the total cost by the total units.
+      rule: Total cost is SUMPRODUCT(units, unit costs). Divide it by SUM(units).
+    misses:
+      value: The batches cost 24825 for 7400 units, which is 3.35 a unit.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUM(B2:B7),2)"
+      - "=round(sumproduct(b2:b7,c2:c7)/sum(b2:b7),2)"
+      - "=ROUND(SUM(B2:B7*C2:C7)/SUM(B2:B7),2)"
+    reject:
+      - { formula: "=ROUND(AVERAGE(C2:C7),2)", rule: value }
+      - { formula: "=ROUND(SUMPRODUCT(B2:B7,C2:C7)/COUNT(B2:B7),2)", rule: value }
+      - { formula: "=ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUM(B2:B7),2", rule: syntax }
+      - { formula: "=3.35", rule: reference }

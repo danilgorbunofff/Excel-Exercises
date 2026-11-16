@@ -17,9 +17,17 @@ import {
   assessmentPath,
   coverOf,
   loadAssessments,
+  skillsOf,
 } from "../../lib/assessments.ts";
-import { exercisePath, LEVELS, placedExercises } from "../../lib/exercises.ts";
+import {
+  exerciseData,
+  exercisePath,
+  exercisesForFunction,
+  LEVELS,
+  placedExercises,
+} from "../../lib/exercises.ts";
 import { functionPages, functionPath } from "../../lib/functions.ts";
+import type { TaskData } from "../../scripts/assessment-score.ts";
 import "../../styles/assessments.css";
 
 export function getStaticPaths() {
@@ -30,15 +38,27 @@ interface Props {
   set: AssessmentSet;
 }
 const { set } = Astro.props;
-const byId = new Map((await getCollection("exercises")).map((e) => [e.data.id, e.data]));
-const lockedIds = new Set(
-  (await placedExercises()).filter((p) => isLocked(p)).map((p) => p.exercise.id),
+const mockIds = new Set((await getCollection("mocks")).map((e) => e.data.id));
+const byId = new Map(
+  [...(await getCollection("exercises")), ...(await getCollection("mocks"))].map((e) => [
+    e.data.id,
+    e.data,
+  ]),
 );
+// Held-out mock tasks are always locked: their answers stay on the server until Finish.
+const lockedIds = new Set([
+  ...(await placedExercises()).filter((p) => isLocked(p)).map((p) => p.exercise.id),
+  ...mockIds,
+]);
 const tasks = set.tasks.map((t) => {
   const exercise = byId.get(t.exercise);
   const screen = exercise?.screens[t.screen];
-  if (!exercise || !screen) throw new Error(`${set.slug}: no ${t.exercise} screen ${t.screen}`);
-  return { ...t, exercise, screen };
+  // The same spec the server marks with (assessment-specs.ts), so the two scores agree.
+  const spec = exercise && exerciseData(exercise, false).screens[t.screen]?.spec;
+  if (!exercise || !screen || !spec)
+    throw new Error(`${set.slug}: no ${t.exercise} screen ${t.screen}`);
+  // index is the screen's place in the exercise; screen is its content, which stays out of the page.
+  return { exercise, index: t.screen, screen, spec };
 });
 const cover = coverOf(set, byId);
 const locked = !set.sample;
@@ -61,19 +81,18 @@ const data = {
   sample: set.sample,
   tasks: tasks.map((t) => ({
     exercise: t.exercise.id,
-    screen: t.screen,
+    screen: t.index satisfies TaskData["screen"],
     title: t.exercise.title,
-    href: exercisePath(t.exercise.slug),
+    // A mock task has no page; its link practises the skill it tests.
+    href: !mockIds.has(t.exercise.id)
+      ? exercisePath(t.exercise.slug)
+      : skillsOf(t.screen)[0]
+        ? exercisesForFunction(skillsOf(t.screen)[0] ?? "")
+        : "/exercises/",
+    skills: skillsOf(t.screen),
     slug: t.exercise.slug,
     answer: lockedIds.has(t.exercise.id) ? null : t.screen.answer,
-    spec: {
-      rows: t.screen.rows,
-      answerCell: t.screen.answerCell,
-      expected: t.screen.expected,
-      requiredFunctions: t.screen.requiredFunctions,
-      forbiddenFunctions: t.screen.forbiddenFunctions,
-      requireReference: t.screen.requireReference,
-    },
+    spec: t.spec,
     misses: t.screen.misses,
   })),
 };
@@ -153,7 +172,10 @@ const data = {
                 <li class="a-item mid">
                   <span class="num">{i + 1}</span>
                   <p class="fns">
-                    {t.functions.length > 0 ? (
+                    {/* A held-out task shows its title only: its functions would give away the approach. */}
+                    {mockIds.has(tasks[i]?.exercise.id ?? "") ? (
+                      <span class="plain">{tasks[i]?.exercise.title}</span>
+                    ) : t.functions.length > 0 ? (
                       t.functions.map((f) => <a href={fnHref(f)}>{f}</a>)
                     ) : (
                       <span class="plain">Cell references and arithmetic</span>
@@ -319,11 +341,11 @@ const data = {
             <div class="a-notice">
               <p>
                 That was the short sample. The full sets are timed like an employer's test:{" "}
+                {/* Names only: the task count and time of each are on its own cover. */}
                 {fullSets.map((s, i) => (
                   <>
-                    {i > 0 && ", "}
-                    <a href={assessmentPath(s.slug)}>{s.title}</a> ({s.tasks.length} tasks,{" "}
-                    {s.minutes} minutes)
+                    {i > 0 && (i === fullSets.length - 1 ? " and " : ", ")}
+                    <a href={assessmentPath(s.slug)}>{s.title}</a>
                   </>
                 ))}
                 . They come with PRO, with a certificate for each one you pass.{" "}

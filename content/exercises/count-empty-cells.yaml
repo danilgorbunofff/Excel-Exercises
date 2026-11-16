@@ -3,10 +3,10 @@ slug: count-empty-cells
 level: 1
 title: Count the empty cells
 topic: counting
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: Some tasks have no owner yet. In B8, count the tasks that have no owner.
+  - prompt: Some tasks have no owner yet. In B8, count the tasks that have no owner. Use COUNTBLANK.
     rows:
       - [Task, Owner]
       - [Order stock, Kim]
@@ -28,6 +28,7 @@ screens:
       required-function: Use COUNTBLANK, which counts the empty cells.
       reference: Point at the owners in B2 to B7, not at B8.
       value: Check that the range covers every task, from B2 to B7.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =COUNTBLANK(B2:B7)
       - =countblank(b2:b7)
@@ -37,6 +38,8 @@ screens:
       - { formula: "=COUNTBLANK(B2:B8)", rule: reference }
       - { formula: "=COUNTBLANK(B2:B6)", rule: value }
       - { formula: "=COUNTBLANK(A2:A7)", rule: value }
+    variants:
+      - { set: { B2: null }, expected: 4 }
 notes:
   summary: COUNTBLANK counts the empty cells in a range. A cell with a formula that returns empty text also counts.
   syntax: COUNTBLANK(range)

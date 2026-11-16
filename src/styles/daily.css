@@ -92,6 +92,30 @@ a.d-cell:focus-visible {
   font-weight: 700;
   color: var(--on-primary);
 }
+/* This week's ladder: seven days at every width, each with its step. */
+@media (min-width: 64rem) {
+  .d-strip.d-week {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}
+.d-week-title {
+  margin: var(--space-3) 0 var(--space-2);
+  font-size: var(--size-s);
+  font-weight: 600;
+  color: var(--muted);
+}
+.d-tier {
+  padding: 0.125rem 0;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  font-size: var(--size-xs);
+  text-align: center;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.d-day.is-future .d-cell {
+  color: var(--muted);
+}
 .d-cell[aria-current="page"] .d-num {
   text-decoration: underline;
   text-decoration-thickness: 2px;

@@ -3,10 +3,10 @@ slug: sales-bonus
 level: 2
 title: Work out a sales bonus
 topic: logic
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: Reps with sales over 10000 earn a bonus of 5% of their sales. Other reps earn 0. In C2, work out the bonus.
+  - prompt: Reps with sales over 10000 earn a bonus of 5% of their sales. Other reps earn 0. In C2, work out the bonus. Use IF.
     rows:
       - [Rep, Sales, Bonus]
       - [Mo, 12400, null]
@@ -22,6 +22,7 @@ screens:
       required-function: Use IF, so the bonus is 0 when the sales are 10000 or less.
       reference: Point at the sales in B2, so the bonus changes when the sales do.
       value: When the test is true, IF should return the sales times 5%, not the rate alone.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =IF(B2>10000,B2*5%,0)
       - =IF(B2>10000,B2*0.05,0)
@@ -32,6 +33,9 @@ screens:
       - { formula: "=B2*0.05", rule: required-function }
       - { formula: "=IF(B2>10000,12400*0.05,0)", rule: reference }
       - { formula: "=IF(B2>10000,0.05,0)", rule: value }
+    variants:
+      - { set: { B2: 10000 }, expected: 0 }
+      - { set: { B2: 10001 }, expected: 500.05 }
 notes:
   summary: IF can return the result of a calculation. A percent sign after a number divides it by 100.
   syntax: IF(logical_test, value_if_true, [value_if_false])

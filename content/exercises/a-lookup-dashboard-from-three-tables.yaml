@@ -3,8 +3,8 @@ slug: a-lookup-dashboard-from-three-tables
 level: 3
 title: Lookup dashboard from three tables
 topic: capstone
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In D2, read the sales figure of the rep named in F2.
     rows:
@@ -15,15 +15,19 @@ screens:
       - [Di, East, 600, null, null, null, null]
     answerCell: D2
     expected: 600
+    variants:
+      - set: { C5: 822 }
+        expected: 822
+      - set: { A2: "Di" }
+        expected: 1200
     answer: =INDEX(C2:C5,MATCH(F2,A2:A5,0))
-    requiredFunctions: [INDEX, MATCH]
     hints:
       nudge: Find the position of the name in the rep column, then read the sales figure at that position.
       rule: MATCH with 0 as its last argument returns the position of an exact match in a range. INDEX returns the value at a given position in another range.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Di is the fourth rep, and the fourth sales figure is 600.
       syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
-      required-function: The answer is read from the sales column at a position.
       reference: The typed name is in F2.
     accept:
       - =INDEX(C2:C5,MATCH(F2,A2:A5,0))
@@ -32,13 +36,18 @@ screens:
       - =INDEX(C$2:C$5,MATCH(F$2,A$2:A$5,0))
       - =INDEX( C2:C5 , MATCH( F2 , A2:A5 , 0 ) )
       - =INDEX(C2:C5,MATCH(F2,A2:A5,0))+0
+      - =VLOOKUP(F2,A2:C5,3,FALSE)
     reject:
-      - { formula: "=VLOOKUP(F2,A2:C5,3,FALSE)", rule: required-function }
-      - { formula: "=INDEX(C2:C5,4)", rule: required-function }
-      - { formula: "=INDEX(B2:B5,MATCH(F2,A2:A5,0))", rule: value }
-      - { formula: "=INDEX(C2:C5,MATCH(F2,A2:A5,0))+1", rule: value }
-      - { formula: "=INDEX(C2:C5,MATCH(F2,B2:B5,0))", rule: value }
-      - { formula: "=INDEX C2:C5,MATCH(F2,A2:A5,0)", rule: syntax }
+      - formula: =INDEX(C2:C5,4)
+        rule: fragile
+      - formula: =INDEX(B2:B5,MATCH(F2,A2:A5,0))
+        rule: value
+      - formula: =INDEX(C2:C5,MATCH(F2,A2:A5,0))+1
+        rule: value
+      - formula: =INDEX(C2:C5,MATCH(F2,B2:B5,0))
+        rule: value
+      - formula: =INDEX C2:C5,MATCH(F2,A2:A5,0)
+        rule: syntax
   - prompt: In D2, report the target of the region the rep named in F2 belongs to.
     rows:
       - [Rep, Region, Sales, Answer, null, Region, Target]
@@ -50,15 +59,18 @@ screens:
       - [null, null, null, null, null, Di, null]
     answerCell: D2
     expected: 2000
+    variants:
+      - { set: { G4: 2740 }, expected: 2740 }
+      - { set: { B5: North }, expected: 5000 }
+      - { set: { A2: Di }, expected: 5000 }
     answer: =INDEX(G2:G4,MATCH(INDEX(B2:B5,MATCH(F7,A2:A5,0)),F2:F4,0))
-    requiredFunctions: [INDEX, MATCH]
     hints:
       nudge: Find the rep's region first, then use that region to find the target.
       rule: An INDEX and MATCH pair can sit inside another one. The inner pair returns the region, and the outer MATCH finds that region in the target table.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Di is in East, and the East target is 2000.
       syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
-      required-function: "Two columns are read by position: the region, then the target."
       reference: The typed name is in F7, below the rep list.
     accept:
       - =INDEX(G2:G4,MATCH(INDEX(B2:B5,MATCH(F7,A2:A5,0)),F2:F4,0))
@@ -68,13 +80,20 @@ screens:
       - =INDEX( G2:G4 , MATCH( INDEX( B2:B5 , MATCH( F7 , A2:A5 , 0 ) ) , F2:F4 , 0 ) )
       - =INDEX(G2:G4,MATCH(INDEX(B2:B5,MATCH(F7,A2:A5,0)),F2:F4,0))+0
     reject:
-      - { formula: "=INDEX(G2:G4,MATCH(F7,F2:F4,0))", rule: value }
-      - { formula: "=INDEX(G2:G4,MATCH(INDEX(B2:B5,MATCH(F7,A2:A5,0)),F2:F4,0))+1", rule: value }
-      - { formula: "=INDEX(F2:F4,MATCH(INDEX(B2:B5,MATCH(F7,A2:A5,0)),F2:F4,0))", rule: value }
-      - { formula: "=INDEX(G2:G4,1)", rule: required-function }
-      - { formula: "=MATCH(F7,A2:A5,0)", rule: required-function }
-      - { formula: "=INDEX(G2:G4,MATCH(INDEX(B2:B5,MATCH(F7,A2:A5,0)),F2:F4,0))/0", rule: value }
-      - { formula: "=INDEX G2:G4,MATCH(INDEX(B2:B5,MATCH(F7,A2:A5,0)),F2:F4,0)", rule: syntax }
+      - formula: =INDEX(G2:G4,MATCH(F7,F2:F4,0))
+        rule: value
+      - formula: =INDEX(G2:G4,MATCH(INDEX(B2:B5,MATCH(F7,A2:A5,0)),F2:F4,0))+1
+        rule: value
+      - formula: =INDEX(F2:F4,MATCH(INDEX(B2:B5,MATCH(F7,A2:A5,0)),F2:F4,0))
+        rule: value
+      - formula: =INDEX(G2:G4,1)
+        rule: value
+      - formula: =MATCH(F7,A2:A5,0)
+        rule: value
+      - formula: =INDEX(G2:G4,MATCH(INDEX(B2:B5,MATCH(F7,A2:A5,0)),F2:F4,0))/0
+        rule: value
+      - formula: =INDEX G2:G4,MATCH(INDEX(B2:B5,MATCH(F7,A2:A5,0)),F2:F4,0)
+        rule: syntax
 notes:
   summary: INDEX reads a value at a position in a range, and MATCH supplies that position by finding a key in another range. Together they look up a value without counting columns.
   syntax: INDEX(answer,MATCH(name,names,0)) looks up anything; nest the inner INDEX for three tables

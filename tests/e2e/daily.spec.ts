@@ -1,43 +1,25 @@
-// Why this exists: the daily exercise end to end in the built site. A solve
+// Why this exists: the daily exercise end to end in the built site. The week
+// climbs from the easiest task on Monday to the hardest on Sunday, a solve
 // counts toward the streak on its day, a missed day resets it quietly, an
-// earlier day is practice only, a signed-in solve is posted once, a PRO
-// exercise is never the daily, and the page works from the keyboard alone.
+// earlier day is practice only, a signed-in solve is posted once, and the page
+// works from the keyboard alone.
 import { readdirSync, readFileSync } from "node:fs";
 import { expect, type Page, test } from "@playwright/test";
 import { parse } from "yaml";
-import { topicNumbers } from "../../src/lib/access.ts";
-import { DAILY_START, dailyPool, pickFor } from "../../src/lib/daily.ts";
+import { LADDER_START, ladderPool, pickFor } from "../../src/lib/daily.ts";
 import { addDays } from "../../src/scripts/progress.ts";
 
-interface ExerciseFile {
+interface DailyFile {
   id: string;
   slug: string;
-  topic: string;
+  tier: number;
+  level: number;
   screens: { answer: string }[];
 }
-const files = readdirSync("content/exercises").map(
-  (f) => parse(readFileSync(`content/exercises/${f}`, "utf8")) as ExerciseFile,
+const files = readdirSync("content/daily").map(
+  (f) => parse(readFileSync(`content/daily/${f}`, "utf8")) as DailyFile,
 );
-const order = (parse(readFileSync("content/track.yaml", "utf8")) as { order: string[] }).order;
-const topicOf = new Map(files.map((e) => [e.id, e.topic]));
-const numbers = topicNumbers(order, (id) => topicOf.get(id) ?? "");
-const pool = dailyPool(
-  files.map((e) => ({
-    exercise: { id: e.id, slug: e.slug },
-    topicNumber: numbers.get(e.id) ?? 0,
-  })),
-);
-
-// The static test server has no Supabase, so the answers API is answered here
-// as the live one answers on a Saturday: with the PRO daily's answers.
-test.beforeEach(async ({ page }) => {
-  await page.route("**/api/exercises/*/**", (r) => {
-    const slug = new URL(r.request().url()).pathname.split("/")[3];
-    r.fulfill({
-      json: { answers: files.find((e) => e.slug === slug)?.screens.map((s) => s.answer) },
-    });
-  });
-});
+const pool = ladderPool(files);
 
 /** Noon local time, so no time zone puts the day on either side of midnight. */
 const setDay = (page: Page, day: string) => page.clock.setFixedTime(new Date(`${day}T12:00:00`));
@@ -49,7 +31,6 @@ const exerciseData = async (page: Page) =>
 /** Types each screen's answer and checks it, as a visitor would. */
 async function solve(page: Page) {
   await expect(page.locator("[data-task-slot]")).toBeVisible();
-  // A Saturday's PRO daily has no answers in the page; they come from the file.
   const { id } = await exerciseData(page);
   const screens = files.find((e) => e.id === id)?.screens ?? [];
   for (const [i, s] of screens.entries()) {
@@ -100,22 +81,23 @@ test("a signed-out solve counts today and stays after a reload", async ({ page }
 });
 
 test("a missed day resets the streak and keeps the best", async ({ page }) => {
-  await setDay(page, "2026-11-20");
+  await setDay(page, "2026-11-17");
   await page.goto("/daily/");
   await solve(page);
-  await setDay(page, "2026-11-21");
+  await setDay(page, "2026-11-18");
   await page.reload();
   await solve(page);
   await expect(stat(page, "current")).toHaveText("2 days");
-  // The 22nd is missed.
-  await setDay(page, "2026-11-23");
+  // The 19th is missed.
+  await setDay(page, "2026-11-20");
   await page.reload();
   await expect(page.locator("[data-state]")).toHaveText("Not solved yet today.");
   await expect(stat(page, "current")).toHaveText("0 days");
   await expect(stat(page, "best")).toHaveText("2 days");
-  const solved = page.locator(".d-day.is-solved");
-  await expect(solved).toHaveCount(2);
-  await expect(page.getByRole("link", { name: "Sunday 22 November, not solved" })).toBeVisible();
+  await expect(page.locator(".d-day.is-solved")).toHaveCount(2);
+  await expect(
+    page.getByRole("link", { name: "Thursday 19 November, medium, not solved" }),
+  ).toBeVisible();
   await solve(page);
   await expect(stat(page, "current")).toHaveText("1 day");
   await expect(stat(page, "best")).toHaveText("2 days");
@@ -124,7 +106,7 @@ test("a missed day resets the streak and keeps the best", async ({ page }) => {
 test("an earlier day can be played but does not count", async ({ page }) => {
   await setDay(page, "2026-11-20");
   await page.goto("/daily/");
-  await page.getByRole("link", { name: "Thursday 19 November, not solved" }).click();
+  await page.getByRole("link", { name: "Thursday 19 November, medium, not solved" }).click();
   await expect(page).toHaveURL(/\?day=2026-11-19$/u);
   await expect(page.locator("[data-live-heading]")).toHaveText(
     "The exercise for Thursday 19 November",
@@ -175,51 +157,44 @@ test("the account's days are merged into this browser on sign in", async ({ page
   await expect(stat(page, "today")).toHaveText("Not yet");
 });
 
-test("a PRO exercise is the daily on Saturdays only", async ({ page }) => {
-  const proIds = pool.filter((e) => e.pro).map((e) => e.id);
-  expect(proIds.length).toBeGreaterThan(0);
+test("the week climbs from Monday's easiest task to Sunday's hardest", async ({ page }) => {
   await page.goto("/daily/");
   const pagePool = JSON.parse(
     (await page.locator("script[data-daily-pool]").textContent()) ?? "[]",
-  ) as { id: string }[];
+  ) as unknown;
   expect(pagePool).toEqual(pool);
-  for (let i = 0; i < 14; i++) {
-    const day = addDays(DAILY_START, i);
+  const levels: number[] = [];
+  for (let i = 0; i < 7; i++) {
+    const day = addDays(LADDER_START, i);
     await setDay(page, day);
     await page.reload();
     await expect(page.locator("[data-task-slot]")).toBeVisible();
     const { id } = await exerciseData(page);
+    const task = files.find((f) => f.id === id);
     expect(id).toBe(pickFor(day, pool)?.id);
-    expect(proIds.includes(id)).toBe(new Date(`${day}T00:00:00Z`).getUTCDay() === 6);
+    expect(task?.tier).toBe(i + 1);
+    levels.push(task?.level ?? 0);
   }
+  expect(levels).toEqual([...levels].sort());
+  // On Sunday the whole week is on the strip, each day with its step.
+  await expect(page.locator(".d-tier")).toHaveText([
+    "Warm-up",
+    "Easy",
+    "Steady",
+    "Medium",
+    "Tricky",
+    "Hard",
+    "Hardest",
+  ]);
 });
 
-test("Saturday's PRO daily opens with the answers the API gives", async ({ page }) => {
-  const day = "2026-11-21";
-  const pick = pickFor(day, pool);
-  expect(pick?.pro).toBe(true);
-  await page.route(`**/api/exercises/${pick?.slug}/**`, (r) =>
-    r.fulfill({ json: { answers: ["=1"] } }),
-  );
-  await setDay(page, day);
+test("days still to come this week cannot be opened", async ({ page }) => {
+  await setDay(page, "2026-11-18");
   await page.goto("/daily/");
-  const exercise = page.locator("[data-task-slot] [data-exercise]");
-  await expect(exercise).not.toHaveAttribute("data-locked");
-  await expect(page.locator("[data-live-heading]")).toHaveText(
-    "Today's exercise: a PRO one, free today",
-  );
-});
-
-test("a past Saturday's PRO daily asks for PRO when the API says no", async ({ page }) => {
-  const day = "2026-11-21";
-  const pick = pickFor(day, pool);
-  await page.route(`**/api/exercises/${pick?.slug}/**`, (r) =>
-    r.fulfill({ status: 401, json: { error: "signed out" } }),
-  );
-  await setDay(page, "2026-11-23");
-  await page.goto(`/daily/?day=${day}`);
-  await expect(page.locator(".pro-note")).toContainText("Get PRO");
-  await expect(page.locator("[data-task-slot] [data-exercise]")).toHaveAttribute("data-locked");
+  await expect(page.locator(".d-day")).toHaveCount(7);
+  await expect(page.locator(".d-day.is-future a")).toHaveCount(0);
+  await expect(page.locator(".d-day.is-future")).toHaveCount(4);
+  await expect(page.locator(".d-day.is-today")).toContainText("Steady");
 });
 
 test("the daily works from the keyboard alone", async ({ page, browserName }) => {

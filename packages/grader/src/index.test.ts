@@ -19,6 +19,7 @@ describe("grader package", () => {
       "forbidden-function",
       "reference",
       "value",
+      "fragile",
     ]);
   });
 

@@ -1,0 +1,37 @@
+id: variance-needs-review
+slug: variance-needs-review
+level: 3
+title: Variance needs review
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In D2, show Review when actual spend is more than 10 per cent away from budget in either direction, otherwise OK.
+    rows:
+      - [Cost centre, Budget, Actual, Check]
+      - [Marketing, 40000, 35200, null]
+    answerCell: D2
+    expected: Review
+    variants:
+      - { set: { C2: 38000 }, expected: OK }
+      - { set: { B2: 36000 }, expected: OK }
+      - { set: { C2: 44000 }, expected: OK }
+      - { set: { C2: 44400 }, expected: Review }
+    answer: '=IF(ABS(C2-B2)/B2>0.1,"Review","OK")'
+    hints:
+      nudge: Under budget by too much needs review too. Look at the size of the gap, whatever its sign.
+      rule: ABS drops the sign of the difference. Divide by the budget and compare with 0.1.
+    misses:
+      value: Actual is 12 per cent under budget, so the cell should say Review.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=IF(ABS(C2-B2)/B2>0.1,"Review","OK")'
+      - '=if(abs(c2-b2)/b2>0.1,"Review","OK")'
+      - '=IF(OR(C2>B2*1.1,C2<B2*0.9),"Review","OK")'
+      - '=IF(ABS(C2/B2-1)>0.1,"Review","OK")'
+    reject:
+      - { formula: '=IF((C2-B2)/B2>0.1,"Review","OK")', rule: value }
+      - { formula: '=IF(ABS(C2-B2)>0.1,"OK","Review")', rule: value }
+      - { formula: '=IF(ABS(C2-B2)/B2>0.1,"Review","OK"', rule: syntax }
+      - { formula: '="Review"', rule: reference }

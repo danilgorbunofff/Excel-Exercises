@@ -1,6 +1,7 @@
 // Why this exists: collects every function implementation by its Excel name.
 // The parser and evaluator read it through registry.ts.
 import type { FunctionSpec } from "../values.ts";
+import { ARRAYS } from "./arrays.ts";
 import { CRITERIA } from "./criteria.ts";
 import { DATES } from "./date.ts";
 import { INFO } from "./info.ts";
@@ -19,4 +20,5 @@ export const FUNCTIONS: Record<string, FunctionSpec> = {
   ...DATES,
   ...INFO,
   ...STATS,
+  ...ARRAYS,
 };

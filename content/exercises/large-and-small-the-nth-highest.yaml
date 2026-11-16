@@ -3,8 +3,8 @@ slug: large-and-small-the-nth-highest
 level: 2
 title: "LARGE and SMALL: the nth highest"
 topic: statistics
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: Put the second-slowest time in the team into C2, keeping the list unsorted.
     rows:
@@ -26,6 +26,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. LARGE follows the pattern `=LARGE(array, k)`."
       required-function: MAX gives the top time only. The second one needs a function that counts in from the top.
       reference: Point at the column of times instead of listing them inside the formula.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =LARGE(B2:B6,2)
       - =large(b2:b6,2)
@@ -41,6 +42,8 @@ screens:
       - { formula: "=LARGE(B2:B6,1)", rule: value }
       - { formula: "=LARGE(B2:B6,2)/0", rule: value }
       - { formula: =LARGE(B2:B6 2), rule: syntax }
+    variants:
+      - { set: { B6: 61 }, expected: 61 }
   - prompt: Put the second-cheapest quote into C2 without re-sorting the table.
     rows:
       - [Quote, Cost, Second cheapest]
@@ -61,6 +64,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. SMALL follows the pattern `=SMALL(array, k)`."
       required-function: MIN returns the cheapest quote and stops there. The next one up needs SMALL.
       reference: Read the quotes from B2:B6, so the numbers live in one place.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =SMALL(B2:B6,2)
       - =small(b2:b6,2)
@@ -75,6 +79,8 @@ screens:
       - { formula: "=SMALL(B2:B6,4)", rule: value }
       - { formula: "=SMALL(B2:B6,2)/0", rule: value }
       - { formula: =SMALL(B2:B6 2), rule: syntax }
+    variants:
+      - { set: { B2: 2, B6: 2 }, expected: 2 }
 notes:
   summary: LARGE returns the value at a given position counted from the top of the list, and SMALL counts the same way from the bottom. The second argument is a rank, so 1 is the highest and 2 the one after it.
   syntax: LARGE(range, n) and =SMALL(range, n)

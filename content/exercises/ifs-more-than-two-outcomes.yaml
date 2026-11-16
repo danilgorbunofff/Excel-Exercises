@@ -1,10 +1,10 @@
 id: ifs-more-than-two-outcomes
 slug: ifs-more-than-two-outcomes
-level: 3
+level: 2
 title: "IFS: more than two outcomes"
 topic: logic
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: "In B6, band Ben's score: 90 and above is A, 80 and above B, 70 and above C, otherwise D."
     rows:
@@ -26,6 +26,7 @@ screens:
       syntax: "=IFS(test 1, result 1, test 2, result 2, ..., TRUE, fallback): the pairs are read top to bottom."
       required-function: Nested IFs would work, but this exercise wants the function built for several outcomes.
       reference: Band the score in B3 rather than typing 78.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =IFS(B3>=90,"A",B3>=80,"B",B3>=70,"C",TRUE,"D")
       - =ifs(b3>=90,"A",b3>=80,"B",b3>=70,"C",true,"D")
@@ -40,6 +41,13 @@ screens:
       - { formula: '=IFS(B4>=90,"A",B4>=80,"B",B4>=70,"C",TRUE,"D")', rule: value }
       - { formula: '=IFS(B3>=90,"A",B3>=80,"B",B3>=70,"C",TRUE,"D")/0', rule: value }
       - { formula: '=IFS(B3>=90 "A",B3>=80,"B")', rule: syntax }
+    variants:
+      - { set: { B3: 69 }, expected: D }
+      - { set: { B3: 90 }, expected: A }
+      - { set: { B3: 80 }, expected: B }
+      - { set: { B3: 89 }, expected: B }
+      - { set: { B3: 70 }, expected: C }
+      - { set: { B3: 79 }, expected: C }
   - prompt: "In B6, label Cleo: 90 and above is Merit, 80 and above Pass, anything lower is Resit."
     rows:
       - [Name, Score]
@@ -60,6 +68,7 @@ screens:
       syntax: "=IFS(test 1, result 1, test 2, result 2, TRUE, fallback): three outcomes need two tests."
       required-function: Merit and Pass are two tests, and Resit is the fallback that catches everything lower.
       reference: Label Cleo's score from B4.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =IFS(B4>=90,"Merit",B4>=80,"Pass",TRUE,"Resit")
       - =ifs(b4>=90,"Merit",b4>=80,"Pass",true,"Resit")
@@ -74,6 +83,11 @@ screens:
       - { formula: '=IFS(B2>=90,"Merit",B2>=80,"Pass",TRUE,"Resit")', rule: value }
       - { formula: '=IFS(B4>=90,"Merit",B4>=80,"Pass",TRUE,"Resit")/0', rule: value }
       - { formula: '=IFS(B4>=90,"Merit" B4>=80,"Pass")', rule: syntax }
+    variants:
+      - { set: { B4: 90 }, expected: Merit }
+      - { set: { B4: 79 }, expected: Resit }
+      - { set: { B4: 80 }, expected: Pass }
+      - { set: { B4: 89 }, expected: Pass }
 notes:
   summary: IFS takes pairs of test and result and returns the result of the first test that is TRUE. A final pair whose test is TRUE acts as the fallback.
   syntax: IFS(test1, result1, test2, result2, ..., TRUE, fallback)

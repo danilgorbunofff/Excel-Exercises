@@ -1,0 +1,43 @@
+id: best-quarter-for-a-product
+slug: best-quarter-for-a-product
+level: 3
+tier: 7
+title: Best quarter for a product
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In H2, name the quarter in which the product in G2 sold the most.
+    rows:
+      - [Product, Q1, Q2, Q3, Q4, null, Product, Best]
+      - [Kettle, 140, 162, 155, 210, null, Blender, null]
+      - [Toaster, 98, 125, 121, 110, null, null, null]
+      - [Blender, 75, 118, 92, 101, null, null, null]
+      - [Mixer, 60, 64, 88, 71, null, null, null]
+    answerCell: H2
+    expected: Q2
+    variants:
+      - { set: { B4: 151 }, expected: Q1 }
+      - { set: { C4: 88 }, expected: Q4 }
+      - { set: { G2: Mixer }, expected: Q3 }
+    answer: "=INDEX(B1:E1,MATCH(MAX(INDEX(B2:E5,MATCH(G2,A2:A5,0),0)),INDEX(B2:E5,MATCH(G2,A2:A5,0),0),0))"
+    hints:
+      nudge: Get the product's row of four quarters, find its largest number, then read the header above it.
+      rule: XLOOKUP can return a whole row. MATCH finds where the row's MAX sits, and INDEX reads the header at that position. LET keeps the row in one name.
+    misses:
+      value: Blender's best quarter is Q2, with 118.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=INDEX(B1:E1,MATCH(MAX(INDEX(B2:E5,MATCH(G2,A2:A5,0),0)),INDEX(B2:E5,MATCH(G2,A2:A5,0),0),0))"
+      - "=index(b1:e1,match(max(index(b2:e5,match(g2,a2:a5,0),0)),index(b2:e5,match(g2,a2:a5,0),0),0))"
+      - "=LET(r,XLOOKUP(G2,A2:A5,B2:E5),INDEX(B1:E1,MATCH(MAX(r),r,0)))"
+      - "=LET(r,XLOOKUP(G2,A2:A5,B2:E5),XLOOKUP(MAX(r),r,B1:E1))"
+    reject:
+      - { formula: "=INDEX(B1:E1,MATCH(MAX(B2:E5),B4:E4,0))", rule: value }
+      - { formula: "=INDEX(B1:E1,2)", rule: fragile }
+      - {
+          formula: "=INDEX(B1:E1,MATCH(MAX(INDEX(B2:E5,MATCH(G2,A2:A5,0),0)),INDEX(B2:E5,MATCH(G2,A2:A5,0),0),0)",
+          rule: syntax,
+        }
+      - { formula: '="Q2"', rule: reference }

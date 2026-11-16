@@ -1,0 +1,31 @@
+id: month-from-a-batch-code
+slug: month-from-a-batch-code
+level: 2
+title: Month from a batch code
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B2, take the two-digit month from the batch code in A2, which reads year, month and line.
+    rows:
+      - [Batch, Month]
+      - ["2026-03-L7", null]
+    answerCell: B2
+    expected: "03"
+    answer: "=MID(A2,6,2)"
+    hints:
+      nudge: The month sits between the two dashes.
+      rule: MID(text, start, length) takes characters from the middle. The month starts at character 6.
+    misses:
+      value: The month is 03.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=MID(A2,6,2)"
+      - "=mid(a2,6,2)"
+      - '=TEXTBEFORE(TEXTAFTER(A2,"-"),"-")'
+      - '=MID(A2,FIND("-",A2)+1,2)'
+    reject:
+      - { formula: "=MID(A2,5,2)", rule: value }
+      - { formula: "=LEFT(A2,4)", rule: value }
+      - { formula: "=MID(A2,6,2", rule: syntax }
+      - { formula: '="03"', rule: reference }

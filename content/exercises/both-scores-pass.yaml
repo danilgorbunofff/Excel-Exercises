@@ -3,8 +3,8 @@ slug: both-scores-pass
 level: 2
 title: Check that both scores pass
 topic: logic
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: A candidate passes when both scores are at least 60. In D2, show TRUE if Lee passed and FALSE if not.
     rows:
@@ -22,6 +22,7 @@ screens:
       required-function: Use AND, which checks that both scores pass.
       reference: Point at the scores in B2 and C2.
       value: Check both tests. Each score must be at least 60.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =AND(B2>=60,C2>=60)
       - =AND(C2>=60,B2>=60)
@@ -32,6 +33,10 @@ screens:
       - { formula: "=AND(72>=60,58>=60)", rule: reference }
       - { formula: "=AND(B2>=60)", rule: value }
       - { formula: "=AND(B2>=60,C2>=50)", rule: value }
+    variants:
+      - { set: { B2: 60, C2: 60 }, expected: true }
+      - { set: { B2: 59, C2: 60 }, expected: false }
+      - { set: { C2: 59 }, expected: false }
 notes:
   summary: AND returns TRUE when all its tests are true, and FALSE when any one is false.
   syntax: AND(logical1, [logical2], ...)

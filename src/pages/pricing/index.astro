@@ -51,7 +51,7 @@ const DEFAULT = "annual";
 const freeHas = [
   `${free} exercises: the first ${perTrack} of every learning track`,
   "Hints and an instant check on every answer",
-  "The daily exercise, with a PRO one free every Saturday",
+  "The daily exercise, from easy on Monday to hard on Sunday",
   "The sample mock assessment",
   "Function guides, the formula explainer and articles",
   "Progress saved on every device",
@@ -114,7 +114,7 @@ const faq = [
   },
   {
     q: "Which exercises are free?",
-    a: `The first ${perTrack} exercises of every learning track, with their hints and answers, and the daily exercise. Every Saturday the daily exercise is a PRO one, free for that day.`,
+    a: `The first ${perTrack} exercises of every learning track, with their hints and answers, and the daily exercise, which climbs from easy on Monday to hard on Sunday.`,
   },
   {
     q: "How do I pay?",
@@ -163,7 +163,7 @@ const faq = [
         <p class="tagline">Everything you need to learn the basics.</p>
         <div>
           <p class="price"><strong>$0</strong><span>forever</span></p>
-          <p class="note">No card needed</p>
+          <p class="price-note">No card needed</p>
         </div>
         <a class="button button-outline" href="/register/" data-when="out">Sign up free</a>
         <a class="button button-outline" href="/exercises/" data-when="in" hidden>Go to the exercises</a>
@@ -198,7 +198,7 @@ const faq = [
                 <strong>{p.price}</strong>
                 <span>{p.per}</span>
               </p>
-              <p class="note">{p.note}</p>
+              <p class="price-note">{p.note}</p>
             </div>
           ))
         }
@@ -474,7 +474,7 @@ const faq = [
   .price span {
     color: var(--muted);
   }
-  .note {
+  .price-note {
     min-height: 1.5em;
     margin: var(--space-1) 0 0;
     font-size: var(--size-s);

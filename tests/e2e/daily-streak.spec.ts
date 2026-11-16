@@ -1,30 +1,21 @@
 // Why this exists: the daily streak outside /daily/. The account page shows
-// it joined with the account's days, the home page shows one quiet line only
-// when there is a streak (and nothing moves when it does), and days solved
-// signed out reach the account once, from the first page after sign-in.
+// it joined with the account's days, and days solved signed out reach the
+// account once, from the first page after sign-in.
 import { readdirSync, readFileSync } from "node:fs";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
 import { parse } from "yaml";
-import { topicNumbers } from "../../src/lib/access.ts";
-import { dailyPool, pickFor } from "../../src/lib/daily.ts";
+import { ladderPool, pickFor } from "../../src/lib/daily.ts";
 
-const files = readdirSync("content/exercises").map(
-  (f) =>
-    parse(readFileSync(`content/exercises/${f}`, "utf8")) as {
-      id: string;
-      slug: string;
-      topic: string;
-    },
-);
-const order = (parse(readFileSync("content/track.yaml", "utf8")) as { order: string[] }).order;
-const topicOf = new Map(files.map((e) => [e.id, e.topic]));
-const numbers = topicNumbers(order, (id) => topicOf.get(id) ?? "");
-const pool = dailyPool(
-  files.map((e) => ({
-    exercise: { id: e.id, slug: e.slug },
-    topicNumber: numbers.get(e.id) ?? 0,
-  })),
+const pool = ladderPool(
+  readdirSync("content/daily").map(
+    (f) =>
+      parse(readFileSync(`content/daily/${f}`, "utf8")) as {
+        id: string;
+        slug: string;
+        tier: number;
+      },
+  ),
 );
 const solve = (day: string) => ({ day, exercise: pickFor(day, pool)?.id ?? "" });
 const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"];
@@ -128,40 +119,3 @@ test("days solved signed out reach the account from the first page after sign-in
   await page.waitForLoadState("networkidle");
   expect(posts).toHaveLength(1);
 });
-
-for (const width of [375, 1280]) {
-  test(`the home line shows a streak only when there is one, without moving the page (${width})`, async ({
-    page,
-  }) => {
-    await page.setViewportSize({ width, height: 900 });
-    await setDay(page, TODAY);
-    await page.goto("/");
-    const line = page.locator("[data-home-streak]");
-    const boxes = () =>
-      page.evaluate(() =>
-        [".hero-try", ".stats", ".hero-actions"].map((s) => {
-          const r = document.querySelector(s)?.getBoundingClientRect();
-          return r ? [r.top, r.left, r.width, r.height] : null;
-        }),
-      );
-    await expect(line).toBeHidden();
-    await expect(page.locator(".hero-daily")).toHaveText("New every day: the daily exercise.");
-    const before = await boxes();
-
-    // A missed day before today: no current streak, so still nothing.
-    await seed(page, ["2026-11-17", "2026-11-18"]);
-    await page.reload();
-    await expect(line).toBeHidden();
-
-    await seed(page, ["2026-11-18", "2026-11-19", TODAY]);
-    await page.reload();
-    await expect(line).toHaveText("Your streak: 3 days.");
-    expect(await boxes()).toEqual(before);
-    // The line sits in the gap above the exercise, never over it.
-    const lineBox = await line.boundingBox();
-    const tryBox = await page.locator(".hero-try").boundingBox();
-    if (width < 900 && lineBox && tryBox)
-      expect(lineBox.y + lineBox.height).toBeLessThanOrEqual(tryBox.y);
-    await axe(page, "[data-home-streak]");
-  });
-}

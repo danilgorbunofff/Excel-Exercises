@@ -1,0 +1,35 @@
+id: cost-of-the-tickets
+slug: cost-of-the-tickets
+level: 1
+title: Cost of the tickets
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: "In B4, work out the cost of the tickets: the number of tickets times the price of one."
+    rows:
+      - [Show, Matinee]
+      - [Tickets, 4]
+      - [Price, 12.5]
+      - [Cost, null]
+    answerCell: B4
+    expected: 50
+    variants:
+      - set: { B2: 7 }
+        expected: 87.5
+    answer: "=B2*B3"
+    hints:
+      nudge: Multiply the number of tickets by the price.
+      rule: Use * to multiply two cells.
+    misses:
+      value: 4 tickets at 12.5 cost 50.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=B2*B3"
+      - "=b2*b3"
+      - "=B3*B2"
+      - "=PRODUCT(B2:B3)"
+    reject:
+      - { formula: "=B2+B3", rule: value }
+      - { formula: "=B3/B2", rule: value }
+      - { formula: "=50", rule: reference }

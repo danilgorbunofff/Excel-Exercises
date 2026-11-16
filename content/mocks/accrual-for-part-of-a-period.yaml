@@ -1,0 +1,38 @@
+id: accrual-for-part-of-a-period
+slug: accrual-for-part-of-a-period
+level: 2
+title: Accrual for part of a period
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B5, accrue the share of the quarterly fee for the days used so far, rounded to two decimal places.
+    rows:
+      - [Contract, Cleaning]
+      - [Quarter fee, 4550]
+      - [Days used, 38]
+      - [Days in quarter, 91]
+      - [Accrual, null]
+    answerCell: B5
+    expected: 1900
+    variants:
+      - { set: { B2: 6234 }, expected: 2603.21 }
+      - { set: { B2: 4557 }, expected: 1902.92 }
+    answer: "=ROUND(B2*B3/B4,2)"
+    hints:
+      nudge: The fee per day, times the days used.
+      rule: Fee times days used, divided by days in the period.
+    misses:
+      value: 38 of 91 days of 4550 is 1900.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=ROUND(B2*B3/B4,2)"
+      - "=round(b2*b3/b4,2)"
+      - "=ROUND(B2/B4*B3,2)"
+      - "=ROUND(B3/B4*B2,2)"
+    reject:
+      - { formula: "=ROUND(B2*B4/B3,2)", rule: value }
+      - { formula: "=ROUND(B2/B3,2)", rule: value }
+      - { formula: "=ROUND(B2*B3/B4,2", rule: syntax }
+      - { formula: "=1900", rule: reference }

@@ -2,7 +2,7 @@
 // and the rules for an attempt. The pages, the API and the content validator
 // share it, so a set cannot pass one and fail another.
 import { readFileSync } from "node:fs";
-import { type GradeSpec, grade } from "@practice/grader";
+import { type GradeSpec, grade, parse as parseFormula, walkAst } from "@practice/grader";
 import { parse } from "yaml";
 import { type AssessmentSet, type Assessments, assessmentsSchema } from "../content/schema.ts";
 
@@ -23,6 +23,27 @@ export interface ExerciseFacts {
   /** Needs PRO (isLocked). */
   locked: boolean;
   screens: number;
+  /** A held-out task from content/mocks/, used only in a timed set. */
+  mock?: boolean;
+}
+
+/**
+ * The skills a task tests, for the cover and the score per function: its
+ * required functions, or else the functions in its reference answer. Mock
+ * tasks require none, so their answer names them.
+ */
+export function skillsOf(screen: {
+  requiredFunctions: readonly string[];
+  answer: string;
+}): string[] {
+  if (screen.requiredFunctions.length > 0) return [...screen.requiredFunctions];
+  const parsed = parseFormula(screen.answer);
+  if (!parsed.ok) return [];
+  const names: string[] = [];
+  walkAst(parsed.ast, (n) => {
+    if (n.type === "call" && !names.includes(n.name)) names.push(n.name);
+  });
+  return names;
 }
 
 /** Problems with the sets, one line each. Empty means valid. */
@@ -30,6 +51,7 @@ export function checkAssessments(data: Assessments, exercises: readonly Exercise
   const byId = new Map(exercises.map((e) => [e.id, e]));
   const problems: string[] = [];
   const slugs = new Set<string>();
+  const usedMocks = new Set<string>();
   for (const set of data.sets) {
     if (slugs.has(set.slug)) problems.push(`${set.slug}: the slug is used twice`);
     slugs.add(set.slug);
@@ -42,11 +64,21 @@ export function checkAssessments(data: Assessments, exercises: readonly Exercise
         problems.push(`${set.slug}: "${task.exercise}" has no screen ${task.screen}`);
       else if (set.sample && ex.locked)
         problems.push(`${set.slug}: the free sample uses PRO exercise "${task.exercise}"`);
+      else if (!set.sample && !ex.mock)
+        problems.push(
+          `${set.slug}: "${task.exercise}" is a practice exercise; a timed set uses held-out mock tasks`,
+        );
+      else if (ex.mock && usedMocks.has(task.exercise))
+        problems.push(`${set.slug}: mock task "${task.exercise}" is already in another set`);
+      if (ex?.mock) usedMocks.add(task.exercise);
       if (seen.has(key)) problems.push(`${set.slug}: "${key}" appears twice`);
       seen.add(key);
     }
   }
   if (!data.sets.some((s) => s.sample)) problems.push("there is no free sample set");
+  for (const ex of exercises) {
+    if (ex.mock && !usedMocks.has(ex.id)) problems.push(`mock task "${ex.id}" is in no set`);
+  }
   return problems;
 }
 
@@ -144,7 +176,7 @@ export function cleanAttempt(
 /** What the cover of a set needs about each exercise. */
 export interface CoverFacts {
   level: number;
-  screens: readonly { requiredFunctions: readonly string[] }[];
+  screens: readonly { requiredFunctions: readonly string[]; answer: string }[];
 }
 
 /** What a set covers: each task's functions and level, and the set's totals. */
@@ -152,7 +184,7 @@ export function coverOf(set: AssessmentSet, byId: ReadonlyMap<string, CoverFacts
   const tasks = set.tasks.map((t) => {
     const ex = byId.get(t.exercise);
     return {
-      functions: [...(ex?.screens[t.screen]?.requiredFunctions ?? [])],
+      functions: ((screen) => (screen ? skillsOf(screen) : []))(ex?.screens[t.screen]),
       level: ex?.level ?? 1,
     };
   });

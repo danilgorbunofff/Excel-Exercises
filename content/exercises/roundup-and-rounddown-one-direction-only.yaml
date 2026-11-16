@@ -4,7 +4,7 @@ level: 2
 title: "ROUNDUP and ROUNDDOWN: one direction only"
 topic: rounding
 updated: 2026-11-11
-checkedInExcel: null
+checkedInExcel: 2026-11-16
 screens:
   - prompt: "In B6, work out the crates needed: twelve units to a crate, and a part crate still ships."
     rows:

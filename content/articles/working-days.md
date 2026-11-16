@@ -4,6 +4,7 @@ title: Working days with NETWORKDAYS and WORKDAY
 description: Count business days between dates, find a date some working days ahead, and handle holidays and odd weekends.
 updated: 2026-11-16
 minutes: 3
+topic: dates
 functions: [NETWORKDAYS, WORKDAY, NETWORKDAYS.INTL, WORKDAY.INTL]
 exercises: [days-overdue-on-open-invoices, days-and-simple-date-maths, month-end-accrual-for-part-of-a-month]
 cover: "Mon-Fri"

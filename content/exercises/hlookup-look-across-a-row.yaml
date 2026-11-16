@@ -4,7 +4,7 @@ level: 2
 title: "HLOOKUP: look across a row"
 topic: lookups
 updated: 2026-11-11
-checkedInExcel: null
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B5, look up the month in B4 across the top row of B1:D3 and write that month's price.
     rows:

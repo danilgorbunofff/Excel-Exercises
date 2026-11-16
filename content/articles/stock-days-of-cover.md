@@ -4,6 +4,7 @@ title: Stock days of cover and reorder flags
 description: Work out how long stock will last, when to reorder and how much to order, with one row per product.
 updated: 2026-11-16
 minutes: 4
+topic: finance
 functions: [IF, IFERROR, MAX, ROUNDUP, SUMIFS]
 exercises: [stock-days-of-cover-and-reorder-flag, an-inventory-reorder-report, sumif-a-sum-range-on-another-column]
 cover: "Days cover"

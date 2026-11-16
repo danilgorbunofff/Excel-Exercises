@@ -1,0 +1,38 @@
+id: gross-margin-percent
+slug: gross-margin-percent
+level: 2
+title: Gross margin percent
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B5, work out the gross margin as a percentage of revenue, rounded to one decimal place.
+    rows:
+      - [Line, Q2]
+      - [Revenue, 184500]
+      - [Cost of sales, 121770]
+      - [null, null]
+      - ["Margin %", null]
+    answerCell: B5
+    expected: 34
+    variants:
+      - set: { B2: 252765 }
+        expected: 51.8
+    answer: "=ROUND((B2-B3)/B2*100,1)"
+    hints:
+      nudge: Margin is the profit divided by the revenue, not by the cost.
+      rule: (revenue minus cost) divided by revenue, times 100, rounded to one place.
+    misses:
+      value: 62730 of 184500 is 34 per cent.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=ROUND((B2-B3)/B2*100,1)"
+      - "=round((b2-b3)/b2*100,1)"
+      - "=ROUND((1-B3/B2)*100,1)"
+      - "=ROUND(100*(B2-B3)/B2,1)"
+    reject:
+      - { formula: "=ROUND((B2-B3)/B3*100,1)", rule: value }
+      - { formula: "=ROUND(B2-B3,1)", rule: value }
+      - { formula: "=ROUND((B2-B3)/B2*100,1", rule: syntax }
+      - { formula: "=34", rule: reference }

@@ -4,6 +4,7 @@ title: Mixed references and the F4 habit
 description: Lock only the row or only the column, so one formula fills a whole grid correctly.
 updated: 2026-11-16
 minutes: 3
+topic: habits
 functions: [SUM, SUMIFS]
 exercises: [multiply-price-by-quantity, running-total-down-a-column, sum-across-several-blocks]
 cover: "=$A2*B$1"

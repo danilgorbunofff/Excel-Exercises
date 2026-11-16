@@ -1,0 +1,34 @@
+id: share-of-budget-spent
+slug: share-of-budget-spent
+level: 1
+title: Share of budget spent
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B4, show how much of the budget has been spent, as a decimal.
+    rows:
+      - [Team, Design]
+      - [Budget, 4800]
+      - [Spent, 3600]
+      - [Share, null]
+    answerCell: B4
+    expected: 0.75
+    variants:
+      - set: { B3: 4932 }
+        expected: 1.0275
+    answer: "=B3/B2"
+    hints:
+      nudge: Divide what was spent by the budget.
+      rule: A share is the part divided by the whole.
+    misses:
+      value: 3600 of 4800 is 0.75.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=B3/B2"
+      - "=b3/b2"
+      - "=B3*(1/B2)"
+    reject:
+      - { formula: "=B2/B3", rule: value }
+      - { formula: "=B2-B3", rule: value }
+      - { formula: "=0.75", rule: reference }

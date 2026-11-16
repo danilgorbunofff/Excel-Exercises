@@ -4,6 +4,7 @@ title: "Gross margin and markup: the formulas and the difference"
 description: Two ways to state profit on a sale, how to convert between them, and how to total margin across products.
 updated: 2026-11-16
 minutes: 4
+topic: finance
 functions: [SUMIFS, SUMPRODUCT, IFERROR, ROUND]
 exercises: [gross-margin-by-product, capstone-margin, price-after-discount]
 cover: "40% / 67%"

@@ -4,6 +4,7 @@ title: "Join text: TEXTJOIN, CONCAT and &"
 description: Put text from several cells into one, with spaces, separators and formatted numbers.
 updated: 2026-11-16
 minutes: 3
+topic: text
 functions: [TEXTJOIN, CONCAT, CONCATENATE, TEXT]
 exercises: [concat-and-the-operator, textjoin-join-a-range-and-skip-blanks, upper-lower-and-proper]
 cover: "=A2&\" \"&B2"

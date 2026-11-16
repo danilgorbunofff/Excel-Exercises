@@ -4,6 +4,7 @@ title: "SUMIFS or SUMPRODUCT: which one to use"
 description: Both add up the rows that pass a test. Here is when each one fits.
 updated: 2026-11-16
 minutes: 4
+topic: sums
 functions: [SUMIFS, SUMPRODUCT, SUMIF]
 exercises: [sumifs-two-conditions-at-once, sumproduct-multiply-then-add, total-for-two-conditions]
 cover: "=SUMIFS"

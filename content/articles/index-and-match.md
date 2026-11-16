@@ -4,6 +4,7 @@ title: "INDEX and MATCH: the lookup that works in every version"
 description: How the pair splits a lookup into finding the row and fetching the value.
 updated: 2026-11-16
 minutes: 5
+topic: lookups
 functions: [INDEX, MATCH, VLOOKUP, XLOOKUP]
 exercises: [match-find-a-position, index-a-value-at-a-row-and-column, index-match, find-a-code]
 cover: "INDEX+MATCH"

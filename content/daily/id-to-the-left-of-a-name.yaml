@@ -1,0 +1,43 @@
+id: id-to-the-left-of-a-name
+slug: id-to-the-left-of-a-name
+level: 2
+tier: 4
+title: ID to the left of a name
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, return the staff ID of the person named in E2. The IDs are to the left of the names.
+    rows:
+      - [ID, Name, null, null, null, null]
+      - [S-01, Hana, null, null, Joel, null]
+      - [S-02, Ivo, null, null, null, null]
+      - [S-03, Joel, null, null, null, null]
+      - [S-04, Kira, null, null, null, null]
+      - [S-05, Liam, null, null, null, null]
+    answerCell: F2
+    expected: S-03
+    variants:
+      - { set: { A4: S-01 }, expected: S-01 }
+      - { set: { B2: Joel }, expected: S-01 }
+      - { set: { E2: Liam }, expected: S-05 }
+    answer: "=INDEX(A2:A6,MATCH(E2,B2:B6,0))"
+    hints:
+      nudge: Find the row of the name, then read the ID on that row.
+      rule: MATCH(value, range, 0) gives the position. INDEX(range, position) returns the cell at that position.
+    misses:
+      value: Joel's ID is S-03.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - =INDEX(A2:A6,MATCH(E2,B2:B6,0))
+      - =index(a2:a6,match(e2,b2:b6,0))
+      - =INDEX($A$2:$A$6,MATCH(E2,$B$2:$B$6,0))
+      - =XLOOKUP(E2,B2:B6,A2:A6)
+    reject:
+      - formula: =INDEX(B2:B6,MATCH(E2,B2:B6,0))
+        rule: value
+      - formula: =INDEX(A2:A6,MATCH(E2,B2:B6,0)
+        rule: syntax
+      - formula: ="S-03"
+        rule: reference

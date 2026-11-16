@@ -4,6 +4,7 @@ title: XLOOKUP explained, argument by argument
 description: What each of the six XLOOKUP arguments does, with a worked example for each one you will use.
 updated: 2026-11-16
 minutes: 5
+topic: lookups
 functions: [XLOOKUP, IFNA]
 exercises: [find-a-price, xlookup-with-a-fallback-when-nothing-matches, xlookup-search-from-the-bottom]
 cover: "=XLOOKUP"

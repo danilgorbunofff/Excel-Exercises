@@ -1,0 +1,44 @@
+id: list-the-attendees
+slug: list-the-attendees
+level: 2
+tier: 4
+title: List the attendees
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B2, join the names of everyone who came, separated by a comma and a space, skipping the empty rows.
+    rows:
+      - [Name, Attendees]
+      - [Ada, null]
+      - [null, null]
+      - [Bram, null]
+      - [Cora, null]
+      - [null, null]
+      - [Dina, null]
+    answerCell: B2
+    expected: "Ada, Bram, Cora, Dina"
+    variants:
+      - set: { A2: Bram }
+        expected: "Bram, Bram, Cora, Dina"
+    answer: '=TEXTJOIN(", ",TRUE,A2:A7)'
+    hints:
+      nudge: Join a range with a separator, and skip the blanks.
+      rule: TEXTJOIN(separator, ignore_empty, range). TRUE as the second argument skips empty cells.
+    misses:
+      value: The list should read Ada, Bram, Cora, Dina.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - '=TEXTJOIN(", ",TRUE,A2:A7)'
+      - '=textjoin(", ",true,a2:a7)'
+      - '=TEXTJOIN(", ",1,A2:A7)'
+    reject:
+      - formula: =TEXTJOIN(", ",FALSE,A2:A7)
+        rule: value
+      - formula: =TEXTJOIN(",",TRUE,A2:A7)
+        rule: value
+      - formula: =TEXTJOIN(", ",TRUE,A2:A7
+        rule: syntax
+      - formula: ="Ada, Bram, Cora, Dina"
+        rule: reference

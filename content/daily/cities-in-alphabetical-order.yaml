@@ -1,0 +1,51 @@
+id: cities-in-alphabetical-order
+slug: cities-in-alphabetical-order
+level: 3
+tier: 7
+title: Cities in alphabetical order
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In E2, list each city once, from A to Z.
+    rows:
+      - [Order, City, Amount, null, null]
+      - [901, Oslo, 120, null, null]
+      - [902, Lima, 340, null, null]
+      - [903, Kyiv, 85, null, null]
+      - [904, Oslo, 210, null, null]
+      - [905, Doha, 460, null, null]
+      - [906, lima, 95, null, null]
+      - [907, Bern, 300, null, null]
+      - [908, Kyiv, 150, null, null]
+      - [909, Rome, 275, null, null]
+      - [910, Bern, 60, null, null]
+      - [911, Doha, 180, null, null]
+      - [912, Oslo, 410, null, null]
+    answerCell: E2
+    expected:
+      - [Bern]
+      - [Doha]
+      - [Kyiv]
+      - [Lima]
+      - [Oslo]
+      - [Rome]
+    variants:
+      - { set: { B2: lima }, expected: [[Bern], [Doha], [Kyiv], [lima], [Oslo], [Rome]] }
+      - { set: { B2: lima, B5: Lima }, expected: [[Bern], [Doha], [Kyiv], [lima], [Oslo], [Rome]] }
+    answer: "=SORT(UNIQUE(B2:B13))"
+    hints:
+      nudge: "Two steps: each city once, then in order."
+      rule: UNIQUE removes the repeats, ignoring case, and SORT puts the list in order. One goes inside the other.
+    misses:
+      value: The list should read Bern, Doha, Kyiv, Lima, Oslo, Rome.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=SORT(UNIQUE(B2:B13))"
+      - "=sort(unique(b2:b13))"
+      - "=UNIQUE(SORT(B2:B13))"
+      - "=SORT(UNIQUE($B$2:$B$13))"
+    reject:
+      - { formula: "=UNIQUE(B2:B13)", rule: value }
+      - { formula: "=SORT(UNIQUE(B2:B13),1,-1)", rule: value }
+      - { formula: "=SORT(UNIQUE(B2:B13)", rule: syntax }

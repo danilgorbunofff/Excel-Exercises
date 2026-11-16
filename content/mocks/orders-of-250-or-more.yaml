@@ -1,0 +1,45 @@
+id: orders-of-250-or-more
+slug: orders-of-250-or-more
+level: 2
+title: Orders of 250 or more
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B12, count the orders worth 250 or more.
+    rows:
+      - [Order, Value]
+      - [S1, 120]
+      - [S2, 250]
+      - [S3, 310]
+      - [S4, 90]
+      - [S5, 480]
+      - [S6, 249]
+      - [S7, 260]
+      - [S8, 75]
+      - [S9, 505]
+      - [S10, 140]
+      - ["250 or more", null]
+    answerCell: B12
+    expected: 5
+    variants:
+      - { set: { B3: 187 }, expected: 4 }
+      - { set: { B2: 250, B11: 250 }, expected: 7 }
+    answer: '=COUNTIF(B2:B11,">=250")'
+    hints:
+      nudge: Count the values that are at least 250. Exactly 250 counts.
+      rule: 'COUNTIF with ">=250" counts values of 250 and above.'
+    misses:
+      value: 5 orders are worth 250 or more, S2 at exactly 250 included.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=COUNTIF(B2:B11,">=250")'
+      - '=countif(b2:b11,">=250")'
+      - '=COUNTIFS(B2:B11,">=250")'
+      - "=SUMPRODUCT(--(B2:B11>=250))"
+    reject:
+      - { formula: '=COUNTIF(B2:B11,">250")', rule: value }
+      - { formula: '=COUNTIF(B2:B11,">=300")', rule: value }
+      - { formula: '=COUNTIF(B2:B11,">=250"', rule: syntax }
+      - { formula: "=5", rule: reference }

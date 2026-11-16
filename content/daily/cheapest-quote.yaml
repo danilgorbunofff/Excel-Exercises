@@ -1,0 +1,44 @@
+id: cheapest-quote
+slug: cheapest-quote
+level: 1
+tier: 1
+title: Cheapest quote
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B7, show the cheapest of the builders' quotes.
+    rows:
+      - [Builder, Quote]
+      - [Hart, 4200]
+      - [Lowe, 3850]
+      - [Mace, 4475]
+      - [Nash, 3990]
+      - [Orr, 4100]
+      - [Cheapest, null]
+    answerCell: B7
+    expected: 3850
+    variants:
+      - { set: { B2: 3150 }, expected: 3150 }
+      - { set: { B6: 2050 }, expected: 2050 }
+    answer: "=MIN(B2:B6)"
+    hints:
+      nudge: Find the smallest number among the quotes.
+      rule: MIN returns the smallest number in a range.
+    misses:
+      value: The cheapest quote is 3850.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=MIN(B2:B6)"
+      - "=min(b2:b6)"
+      - "=MIN(B6,B2:B5)"
+    reject:
+      - formula: =MAX(B2:B6)
+        rule: value
+      - formula: =MIN(B4:B6)
+        rule: value
+      - formula: =MIN(B2:B6
+        rule: syntax
+      - formula: =3850
+        rule: reference

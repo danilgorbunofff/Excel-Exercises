@@ -53,10 +53,17 @@ const clockText = (ms: number) => {
   return `${Math.floor(s / 60)}:${pad(s % 60)}`;
 };
 
+/**
+ * Settles once the finished attempt is saved (or saving failed). A held-out
+ * task's answer is given only after its set is saved, so the review waits.
+ */
+let attemptSaved: Promise<unknown> = Promise.resolve();
+
 /** The answer line of a review row. A PRO exercise's answer is asked for only now. */
 async function answerLine(task: TaskData): Promise<HTMLParagraphElement> {
   let answer = task.answer;
   if (answer === null) {
+    await attemptSaved;
     try {
       const res = await fetch(`/api/exercises/${encodeURIComponent(task.slug)}/`, {
         credentials: "same-origin",
@@ -299,6 +306,8 @@ function run(root: HTMLElement, data: SetData) {
   const render = () => {
     if (!state?.finishedAt) return;
     const results = scoreAttempt(state.formulas, data.tasks);
+    // Saving starts first: the review rows below wait for it before asking for answers.
+    attemptSaved = report(results);
     const marks = results.map((r) => (r.correct ? "correct" : r.formula ? "miss" : "blank"));
     const count = (m: string) => marks.filter((x) => x === m).length;
     const score = q<HTMLElement>("[data-score]");
@@ -348,7 +357,6 @@ function run(root: HTMLElement, data: SetData) {
       list.hidden = head.hidden = missed.length === 0;
     }
     show("summary");
-    void report(results);
   };
 
   interface Past {

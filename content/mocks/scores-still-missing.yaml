@@ -1,0 +1,42 @@
+id: scores-still-missing
+slug: scores-still-missing
+level: 1
+title: Scores still missing
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B10, count the students who have no score entered yet.
+    rows:
+      - [Student, Score]
+      - [Abe, 72]
+      - [Bia, null]
+      - [Cal, 65]
+      - [Dot, null]
+      - [Eda, 88]
+      - [Fin, 59]
+      - [Gia, null]
+      - [Hal, 91]
+      - [Missing, null]
+    answerCell: B10
+    expected: 3
+    answer: "=COUNTBLANK(B2:B9)"
+    hints:
+      nudge: Count the empty cells in the Score column.
+      rule: COUNTBLANK counts the empty cells in a range.
+    misses:
+      value: 3 students have no score yet.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=COUNTBLANK(B2:B9)"
+      - "=countblank(b2:b9)"
+      - "=ROWS(B2:B9)-COUNT(B2:B9)"
+    reject:
+      - { formula: "=COUNT(B2:B9)", rule: value }
+      - { formula: "=COUNTBLANK(B2:B6)", rule: value }
+      - { formula: "=COUNTBLANK(B2:B9", rule: syntax }
+      - { formula: "=3", rule: reference }
+    variants:
+      - { set: { B2: null }, expected: 4 }
+      - { set: { B9: null }, expected: 4 }

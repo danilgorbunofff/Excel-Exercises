@@ -1,0 +1,50 @@
+id: open-high-priority-tickets
+slug: open-high-priority-tickets
+level: 2
+tier: 4
+title: Open high-priority tickets
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In E2, count the tickets that are both Open and High priority.
+    rows:
+      - [Ticket, Status, Priority, null, null]
+      - [T1, Open, High, null, null]
+      - [T2, Closed, High, null, null]
+      - [T3, Open, Low, null, null]
+      - [T4, Open, High, null, null]
+      - [T5, Open, Medium, null, null]
+      - [T6, Closed, Low, null, null]
+      - [T7, Open, High, null, null]
+      - [T8, Closed, High, null, null]
+      - [T9, Open, Low, null, null]
+      - [T10, Open, High, null, null]
+    answerCell: E2
+    expected: 4
+    variants:
+      - set: { B2: Closed }
+        expected: 3
+      - set: { C2: Low }
+        expected: 3
+    answer: '=COUNTIFS(B2:B11,"Open",C2:C11,"High")'
+    hints:
+      nudge: Count rows that pass two tests at once.
+      rule: COUNTIFS takes pairs of range and criteria and counts the rows that match every pair.
+    misses:
+      value: 4 tickets are Open and High at the same time.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - '=COUNTIFS(B2:B11,"Open",C2:C11,"High")'
+      - '=countifs(b2:b11,"Open",c2:c11,"High")'
+      - '=COUNTIFS(C2:C11,"High",B2:B11,"Open")'
+    reject:
+      - formula: =COUNTIF(B2:B11,"Open")
+        rule: value
+      - formula: =COUNTIFS(B2:B11,"Open",C2:C11,"Low")
+        rule: value
+      - formula: =COUNTIFS(B2:B11,"Open",C2:C11,"High"
+        rule: syntax
+      - formula: =4
+        rule: reference

@@ -3,8 +3,8 @@ slug: two-way-index-match
 level: 2
 title: Two-way INDEX MATCH
 topic: index-match
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B7, read the units for the region in B5 and the quarter in B6 from the grid B2:D4.
     rows:
@@ -27,6 +27,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
       required-function: INDEX needs both numbers. With only the row it reads along the first column of B2:D4 and ignores the quarter.
       reference: Read the region from B5 and the quarter from B6 so the sheet drives the answer.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =INDEX(B2:D4,MATCH(B5,A2:A4,0),MATCH(B6,B1:D1,0))
       - =index(b2:d4,match(b5,a2:a4,0),match(b6,b1:d1,0))
@@ -40,6 +41,9 @@ screens:
       - { formula: "=MATCH(B5,A2:A4,0)", rule: required-function }
       - { formula: "=INDEX(B2:D4,MATCH(B5,A2:A4,0),MATCH(B6,B2:D2,0))", rule: value }
       - { formula: "=INDEX(B2:D4,MATCH(B5,A2:A4,0),MATCH(B6,B1:D1,0)-1)", rule: value }
+    variants:
+      - { set: { B5: West }, expected: 115 }
+      - { set: { A2: South }, expected: 160 }
 notes:
   summary: INDEX can take a row number and a column number to read one cell from a grid. Two MATCH calls supply them, one searching the row labels and one the column headers.
   syntax: INDEX(grid, row, column)

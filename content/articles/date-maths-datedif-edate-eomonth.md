@@ -4,6 +4,7 @@ title: Date maths with DATEDIF, EDATE and EOMONTH
 description: Work out ages, tenures, due dates and month ends without counting days by hand.
 updated: 2026-11-16
 minutes: 4
+topic: dates
 functions: [DATEDIF, EDATE, EOMONTH, DAYS, YEARFRAC, TODAY]
 exercises: [datedif-days-months-or-years-between, days-and-simple-date-maths, days-overdue-on-open-invoices]
 cover: "=EOMONTH"

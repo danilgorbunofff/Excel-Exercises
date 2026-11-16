@@ -131,6 +131,33 @@ describe("validateContent", () => {
     ]);
   });
 
+  it("holds level 3 to the rubric: no required function, and changed data", () => {
+    const hard = exercise("a");
+    hard.data.level = 3;
+    const errors = validateContent([hard, exercise("b")], track);
+    expect(errors).toEqual([
+      "a.yaml: screens.0.requiredFunctions: a level-3 screen requires no function; the learner chooses, and any right formula passes",
+      "a.yaml: screens: a level-3 exercise needs variants or a spilled answer on at least one screen",
+    ]);
+    const s = hard.data.screens[0] as Record<string, unknown>;
+    s["requiredFunctions"] = [];
+    s["prompt"] = "Add up the sales.";
+    s["variants"] = [{ set: { B2: 5 }, expected: 7 }];
+    s["misses"] = { ...(s["misses"] as object), fragile: "Point at the cells." };
+    expect(validateContent([hard, exercise("b")], track)).toEqual([]);
+  });
+
+  it("needs a required function named in the prompt or the title", () => {
+    const quiet = exercise("a");
+    (quiet.data.screens[0] as { prompt: string }).prompt = "In B6, total the sales.";
+    (quiet.data as { title: string }).title = "Total the sales";
+    expect(validateContent([quiet, exercise("b")], track)).toEqual([
+      "a.yaml: screens.0.requiredFunctions: SUM is required but neither the prompt nor the title names it",
+    ]);
+    (quiet.data as { title: string }).title = "SUM: total the sales";
+    expect(validateContent([quiet, exercise("b")], track)).toEqual([]);
+  });
+
   it("reports a topic with no exercises", () => {
     const errors = validateContent([exercise("a"), exercise("b")], {
       ...track,

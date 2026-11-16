@@ -1,0 +1,36 @@
+id: late-or-on-time
+slug: late-or-on-time
+level: 1
+title: Late or on time
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In D2, show Late when the delivery day is after the due day, otherwise On time.
+    rows:
+      - [Order, Due day, Delivered day, Status]
+      - [N-31, 12, 14, null]
+    answerCell: D2
+    expected: Late
+    variants:
+      - { set: { C2: 10 }, expected: On time }
+      - { set: { B2: 16 }, expected: On time }
+      - { set: { C2: 19, B2: 19 }, expected: On time }
+    answer: '=IF(C2>B2,"Late","On time")'
+    hints:
+      nudge: Compare the delivered day with the due day.
+      rule: IF(test, value if true, value if false). The test is delivered day greater than due day.
+    misses:
+      value: Day 14 is after day 12, so the order is Late.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=IF(C2>B2,"Late","On time")'
+      - '=if(c2>b2,"Late","On time")'
+      - '=IF(B2<C2,"Late","On time")'
+      - '=IF(C2<=B2,"On time","Late")'
+    reject:
+      - { formula: '=IF(C2<B2,"Late","On time")', rule: value }
+      - { formula: '=IF(C2>B2,"On time","Late")', rule: value }
+      - { formula: '=IF(C2>B2,"Late","On time"', rule: syntax }
+      - { formula: '="Late"', rule: reference }

@@ -1,0 +1,40 @@
+id: delivery-charge
+slug: delivery-charge
+level: 1
+tier: 2
+title: Delivery charge
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In C2, charge 4.99 for delivery, or nothing when the order is 60 or more.
+    rows:
+      - [Order, Value, Delivery]
+      - [W-77, 45, null]
+    answerCell: C2
+    expected: 4.99
+    variants:
+      - { set: { B2: 62 }, expected: 0 }
+      - { set: { B2: 60 }, expected: 0 }
+      - { set: { B2: 59 }, expected: 4.99 }
+    answer: "=IF(B2>=60,0,4.99)"
+    hints:
+      nudge: Check whether the order reaches 60.
+      rule: IF returns its second argument when the test is true and its third when it is false.
+    misses:
+      value: 45 is under 60, so delivery costs 4.99.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=IF(B2>=60,0,4.99)"
+      - "=if(b2>=60,0,4.99)"
+      - "=IF(B2<60,4.99,0)"
+    reject:
+      - formula: =IF(B2>60,4.99,0)
+        rule: value
+      - formula: =IF(B2>=60,4.99,0)
+        rule: value
+      - formula: =IF(B2>=60,0,4.99
+        rule: syntax
+      - formula: =4.99
+        rule: reference

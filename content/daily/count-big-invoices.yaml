@@ -1,0 +1,47 @@
+id: count-big-invoices
+slug: count-big-invoices
+level: 2
+tier: 3
+title: Count the big invoices
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B10, count the invoices over 1,000.
+    rows:
+      - [Invoice, Amount]
+      - [I-1, 850]
+      - [I-2, 1200]
+      - [I-3, 1000]
+      - [I-4, 2300]
+      - [I-5, 640]
+      - [I-6, 1750]
+      - [I-7, 990]
+      - [I-8, 1010]
+      - ["Over 1,000", null]
+    answerCell: B10
+    expected: 4
+    variants:
+      - set: { B2: 1165 }
+        expected: 5
+    answer: '=COUNTIF(B2:B9,">1000")'
+    hints:
+      nudge: Count the amounts greater than 1000. Exactly 1000 is not over.
+      rule: 'A criteria such as ">1000" goes in quotes, with the comparison before the number.'
+    misses:
+      value: 4 invoices are over 1,000. I-3 is exactly 1,000, so it does not count.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - '=COUNTIF(B2:B9,">1000")'
+      - '=countif(b2:b9,">1000")'
+      - '=COUNTIF($B$2:$B$9,">1000")'
+    reject:
+      - formula: =COUNTIF(B2:B9,">=1000")
+        rule: value
+      - formula: =COUNTIF(B2:B9,"<1000")
+        rule: value
+      - formula: =COUNTIF(B2:B9,">1000"
+        rule: syntax
+      - formula: =4
+        rule: reference

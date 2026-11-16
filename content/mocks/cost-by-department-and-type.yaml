@@ -1,0 +1,46 @@
+id: cost-by-department-and-type
+slug: cost-by-department-and-type
+level: 2
+title: Cost by department and type
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In H2, add up the costs of the department in F2 and the cost type in G2.
+    rows:
+      - [Dept, Type, Cost, null, null, Dept, Type, Total]
+      - [Sales, Travel, 1200, null, null, Sales, Software, null]
+      - [IT, Software, 4800, null, null, null, null, null]
+      - [Sales, Software, 950, null, null, null, null, null]
+      - [HR, Travel, 300, null, null, null, null, null]
+      - [Sales, Software, 1450, null, null, null, null, null]
+      - [IT, Travel, 600, null, null, null, null, null]
+      - [Sales, Travel, 780, null, null, null, null, null]
+      - [HR, Software, 520, null, null, null, null, null]
+      - [Sales, Software, 310, null, null, null, null, null]
+      - [IT, Software, 2200, null, null, null, null, null]
+    answerCell: H2
+    expected: 2710
+    variants:
+      - set: { C4: 1302 }
+        expected: 3062
+      - set: { A3: Sales }
+        expected: 7510
+    answer: "=SUMIFS(C2:C11,A2:A11,F2,B2:B11,G2)"
+    hints:
+      nudge: "Two conditions: the department and the type."
+      rule: SUMIFS takes the range to add first, then pairs of range and criteria.
+    misses:
+      value: Sales software costs add up to 2710.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=SUMIFS(C2:C11,A2:A11,F2,B2:B11,G2)"
+      - "=sumifs(c2:c11,a2:a11,f2,b2:b11,g2)"
+      - "=SUMIFS(C2:C11,B2:B11,G2,A2:A11,F2)"
+      - "=SUMPRODUCT((A2:A11=F2)*(B2:B11=G2)*C2:C11)"
+    reject:
+      - { formula: "=SUMIF(A2:A11,F2,C2:C11)", rule: value }
+      - { formula: "=SUMIF(B2:B11,G2,C2:C11)", rule: value }
+      - { formula: "=SUMIFS(C2:C11,A2:A11,F2,B2:B11,G2", rule: syntax }
+      - { formula: "=2710", rule: reference }

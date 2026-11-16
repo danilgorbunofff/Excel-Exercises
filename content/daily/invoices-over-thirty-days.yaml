@@ -1,0 +1,60 @@
+id: invoices-over-thirty-days
+slug: invoices-over-thirty-days
+level: 3
+tier: 6
+title: Invoices over 30 days
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, list the invoices that are more than 30 days overdue, in the order they appear.
+    rows:
+      - [Invoice, Client, Days, null, null, null]
+      - [V-01, Ark, 12, null, null, null]
+      - [V-02, Bay, 45, null, null, null]
+      - [V-03, Cot, 31, null, null, null]
+      - [V-04, Ark, 30, null, null, null]
+      - [V-05, Dew, 8, null, null, null]
+      - [V-06, Bay, 62, null, null, null]
+      - [V-07, Elk, 19, null, null, null]
+      - [V-08, Cot, 90, null, null, null]
+      - [V-09, Dew, 27, null, null, null]
+      - [V-10, Elk, 33, null, null, null]
+      - [V-11, Ark, 5, null, null, null]
+    answerCell: F2
+    expected:
+      - [V-02]
+      - [V-03]
+      - [V-06]
+      - [V-08]
+      - [V-10]
+    variants:
+      - set: { A3: V-01 }
+        expected:
+          - [V-01]
+          - [V-03]
+          - [V-06]
+          - [V-08]
+          - [V-10]
+      - set: { C4: 23 }
+        expected:
+          - [V-02]
+          - [V-06]
+          - [V-08]
+          - [V-10]
+    answer: "=FILTER(A2:A12,C2:C12>30)"
+    hints:
+      nudge: Keep the invoice numbers whose days are over 30. Exactly 30 is not over.
+      rule: FILTER(what to return, test) returns every row where the test is TRUE, spilling down from the cell.
+    misses:
+      value: "Five invoices are over 30 days: V-02, V-03, V-06, V-08 and V-10."
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=FILTER(A2:A12,C2:C12>30)"
+      - "=filter(a2:a12,c2:c12>30)"
+      - "=FILTER($A$2:$A$12,$C$2:$C$12>30)"
+      - '=FILTER(A2:A12,C2:C12>30,"none")'
+    reject:
+      - { formula: "=FILTER(A2:A12,C2:C12>=30)", rule: value }
+      - { formula: "=FILTER(B2:B12,C2:C12>30)", rule: value }
+      - { formula: "=FILTER(A2:A12,C2:C12>30", rule: syntax }

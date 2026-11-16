@@ -4,7 +4,7 @@ level: 2
 title: SUM across several blocks
 topic: totals
 updated: 2026-11-11
-checkedInExcel: null
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B4, total both quarters, which sit in two blocks with an empty column between them.
     rows:
@@ -75,7 +75,7 @@ screens:
       - { formula: =SUM(B2:D4, rule: syntax }
 notes:
   summary: SUM takes as many arguments as you need, and each one can be its own block. A comma between ranges adds them all in one call.
-  syntax: SUM(range1, range2, ...) across separate blocks, or =SUM(B2:D4) across one rectangle
+  syntax: SUM(range1, range2, ...) across separate blocks, or =SUM(A1:C3) across one rectangle
   example: "`=SUM(A1:A2,C1:C2)` with 1 and 2 in A1:A2 and 3 and 4 in C1:C2 gives 10."
   commonErrors:
     - A cell in a hand-written chain holds text. SUM over a whole range would have stepped over it.

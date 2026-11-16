@@ -4,7 +4,7 @@ level: 2
 title: "INDEX: a value at a row and column"
 topic: index-match
 updated: 2026-11-11
-checkedInExcel: null
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B7, read the units at the row in B5 and the column in B6, counting from the first product and from Q1.
     rows:

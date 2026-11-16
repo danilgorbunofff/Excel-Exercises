@@ -1,0 +1,141 @@
+id: filter-the-rows-that-match
+slug: filter-the-rows-that-match
+level: 3
+title: FILTER the rows that match
+topic: dynamic-arrays
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, list every rep with an order in the North region, in the order the orders appear.
+    rows:
+      - [Order, Region, Rep, Amount, null, null, null, null, null]
+      - [1001, North, Ana, 820, null, null, null, null, null]
+      - [1002, South, Bo, 450, null, null, null, null, null]
+      - [1003, East, Cy, 1300, null, null, null, null, null]
+      - [1004, north, Di, 610, null, null, null, null, null]
+      - [1005, South, Ed, 1250, null, null, null, null, null]
+      - [1006, West, Fay, 300, null, null, null, null, null]
+      - [1007, North, Ana, 1500, null, null, null, null, null]
+      - [1008, East, Gus, 220, null, null, null, null, null]
+      - [1009, South, Bo, 980, null, null, null, null, null]
+      - [1010, North, Hal, 470, null, null, null, null, null]
+      - [1011, West, Ivy, 1100, null, null, null, null, null]
+      - [1012, South, Jo, 760, null, null, null, null, null]
+      - [1013, East, Cy, 540, null, null, null, null, null]
+      - [1014, North, Di, 90, null, null, null, null, null]
+      - [1015, South, Ed, 1600, null, null, null, null, null]
+      - [1016, West, Fay, 700, null, null, null, null, null]
+      - [1017, north, Kim, 1050, null, null, null, null, null]
+      - [1018, East, Gus, 380, null, null, null, null, null]
+    answerCell: F2
+    expected:
+      - [Ana]
+      - [Di]
+      - [Ana]
+      - [Hal]
+      - [Di]
+      - [Kim]
+    variants:
+      - set: { B3: North }
+        expected:
+          - [Ana]
+          - [Bo]
+          - [Di]
+          - [Ana]
+          - [Hal]
+          - [Di]
+          - [Kim]
+      - set: { B9: north }
+        expected:
+          - [Ana]
+          - [Di]
+          - [Ana]
+          - [Gus]
+          - [Hal]
+          - [Di]
+          - [Kim]
+    answer: '=FILTER(C2:C19,B2:B19="North")'
+    hints:
+      nudge: Keep the Rep cells whose Region is North. The list should grow and shrink with the data.
+      rule: FILTER takes the cells to return and a test with one result per row. Rows where the test is TRUE spill down from the formula's cell. Text compares without case, so north counts as North.
+    misses:
+      value: Six orders are in the North region, two of them typed as north, and their reps are Ana, Di, Ana, Hal, Di and Kim.
+      syntax: "Check the brackets and quotes. The pattern is `=FILTER(array, include)`."
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=FILTER(C2:C19,B2:B19="North")'
+      - '=filter(c2:c19,b2:b19="north")'
+      - '=FILTER($C$2:$C$19,$B$2:$B$19="North")'
+      - '=FILTER(C2:C19,B2:B19="North","")'
+      - '=FILTER(C2:C19,B2:B19="NORTH")'
+    reject:
+      - formula: =FILTER(C2:C19,B2:B19="South")
+        rule: value
+      - formula: =FILTER(B2:B19,B2:B19="North")
+        rule: value
+      - formula: =FILTER(C2:C19,B2:B19="North"
+        rule: syntax
+      - formula: =INDEX(C2:C19,1)
+        rule: value
+  - prompt: In F2, list the order numbers from the North region worth 800 or more.
+    rows:
+      - [Order, Region, Rep, Amount, null, null, null, null, null]
+      - [1001, North, Ana, 820, null, null, null, null, null]
+      - [1002, South, Bo, 450, null, null, null, null, null]
+      - [1003, East, Cy, 1300, null, null, null, null, null]
+      - [1004, north, Di, 610, null, null, null, null, null]
+      - [1005, South, Ed, 1250, null, null, null, null, null]
+      - [1006, West, Fay, 300, null, null, null, null, null]
+      - [1007, North, Ana, 1500, null, null, null, null, null]
+      - [1008, East, Gus, 220, null, null, null, null, null]
+      - [1009, South, Bo, 980, null, null, null, null, null]
+      - [1010, North, Hal, 470, null, null, null, null, null]
+      - [1011, West, Ivy, 1100, null, null, null, null, null]
+      - [1012, South, Jo, 760, null, null, null, null, null]
+      - [1013, East, Cy, 540, null, null, null, null, null]
+      - [1014, North, Di, 90, null, null, null, null, null]
+      - [1015, South, Ed, 1600, null, null, null, null, null]
+      - [1016, West, Fay, 700, null, null, null, null, null]
+      - [1017, north, Kim, 1050, null, null, null, null, null]
+      - [1018, East, Gus, 380, null, null, null, null, null]
+    answerCell: F2
+    expected:
+      - [1001]
+      - [1007]
+      - [1017]
+    variants:
+      - { set: { D11: 900 }, expected: [[1001], [1007], [1010], [1017]] }
+      - { set: { B12: North }, expected: [[1001], [1007], [1011], [1017]] }
+      - { set: { D5: 800 }, expected: [[1001], [1004], [1007], [1017]] }
+      - { set: { D2: 799 }, expected: [[1007], [1017]] }
+    answer: '=FILTER(A2:A19,(B2:B19="North")*(D2:D19>=800))'
+    hints:
+      nudge: "Both tests must hold on the same row: the region, and the amount."
+      rule: "Multiply two tests to mean AND: TRUE*TRUE is 1 and anything with FALSE is 0. Add them to mean OR. Put each test in brackets."
+    misses:
+      value: "Three North orders reach 800: 1001, 1007 and 1017."
+      syntax: "Put each test in its own brackets and multiply them: `(test1)*(test2)`."
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=FILTER(A2:A19,(B2:B19="North")*(D2:D19>=800))'
+      - '=FILTER(A2:A19,(D2:D19>=800)*(B2:B19="North"))'
+      - '=filter(a2:a19,(b2:b19="north")*(d2:d19>=800))'
+      - '=FILTER($A$2:$A$19,($B$2:$B$19="North")*($D$2:$D$19>=800))'
+      - '=FILTER(A2:A19,IF(B2:B19="North",D2:D19>=800,FALSE))'
+    reject:
+      - formula: =FILTER(A2:A19,(B2:B19="North")+(D2:D19>=800))
+        rule: value
+      - formula: =FILTER(A2:A19,(B2:B19="North")*(D2:D19<800))
+        rule: value
+      - formula: =FILTER(A2:A19,B2:B19="North")
+        rule: value
+      - formula: =FILTER(A2:A19,(B2:B19="North")*(D2:D19>=800)
+        rule: syntax
+notes:
+  summary: FILTER returns every row of a range that passes a test. The result spills down from the formula's cell and resizes when the data changes.
+  syntax: "FILTER(array, include, [if_empty])"
+  example: '`=FILTER(C2:C19,B2:B19="North")` lists the reps of every North order.'
+  commonErrors:
+    - '`#CALC!` means nothing passed the test. Give FILTER a third argument, such as "none", to show instead.'
+    - "`#SPILL!` means a cell in the way holds data. Clear the cells below and to the right."
+    - The test and the array must have the same number of rows.

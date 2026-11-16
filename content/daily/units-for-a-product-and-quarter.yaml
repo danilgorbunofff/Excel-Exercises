@@ -1,0 +1,40 @@
+id: units-for-a-product-and-quarter
+slug: units-for-a-product-and-quarter
+level: 3
+tier: 6
+title: Units for a product and quarter
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In I2, return the units sold for the product in G2 in the quarter in H2.
+    rows:
+      - [Product, Q1, Q2, Q3, Q4, null, Product, Quarter, Units]
+      - [Kettle, 140, 162, 155, 210, null, Toaster, Q3, null]
+      - [Toaster, 98, 105, 121, 180, null, null, null, null]
+      - [Blender, 75, 88, 92, 130, null, null, null, null]
+      - [Mixer, 60, 64, 70, 95, null, null, null, null]
+    answerCell: I2
+    expected: 121
+    variants:
+      - { set: { D3: 166 }, expected: 166 }
+      - { set: { A2: Toaster }, expected: 155 }
+      - { set: { G2: Mixer }, expected: 70 }
+    answer: "=INDEX(B2:E5,MATCH(G2,A2:A5,0),MATCH(H2,B1:E1,0))"
+    hints:
+      nudge: Find the product's row and the quarter's column, then read where they cross.
+      rule: INDEX(table, row, column) reads one cell. MATCH can find the row from the product and the column from the quarter.
+    misses:
+      value: Toaster in Q3 sold 121.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=INDEX(B2:E5,MATCH(G2,A2:A5,0),MATCH(H2,B1:E1,0))"
+      - "=index(b2:e5,match(g2,a2:a5,0),match(h2,b1:e1,0))"
+      - "=XLOOKUP(G2,A2:A5,XLOOKUP(H2,B1:E1,B2:E5))"
+      - "=VLOOKUP(G2,A2:E5,MATCH(H2,A1:E1,0),FALSE)"
+    reject:
+      - { formula: "=INDEX(B2:E5,MATCH(G2,A2:A5,0),MATCH(H2,A1:E1,0))", rule: value }
+      - { formula: "=INDEX(B2:E5,MATCH(H2,B1:E1,0),MATCH(G2,A2:A5,0))", rule: value }
+      - { formula: "=INDEX(B2:E5,MATCH(G2,A2:A5,0),MATCH(H2,B1:E1,0)", rule: syntax }
+      - { formula: "=121", rule: reference }

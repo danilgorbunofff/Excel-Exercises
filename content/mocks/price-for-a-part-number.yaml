@@ -1,0 +1,41 @@
+id: price-for-a-part-number
+slug: price-for-a-part-number
+level: 2
+title: Price for a part number
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, show the price of the part number in E2.
+    rows:
+      - [Part, Name, Price, null, null, null]
+      - [P-110, Hinge, 3.2, null, P-140, null]
+      - [P-120, Latch, 5.75, null, null, null]
+      - [P-130, Bolt, 0.4, null, null, null]
+      - [P-140, Bracket, 7.9, null, null, null]
+      - [P-150, Handle, 11.5, null, null, null]
+    answerCell: F2
+    expected: 7.9
+    variants:
+      - set: { A2: P-140 }
+        expected: 3.2
+      - set: { C5: 10.82 }
+        expected: 10.82
+    answer: "=XLOOKUP(E2,A2:A6,C2:C6)"
+    hints:
+      nudge: Find the part number, then return the price on its row.
+      rule: An exact lookup finds the value in one column and returns the matching value from another.
+    misses:
+      value: P-140 costs 7.9.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=XLOOKUP(E2,A2:A6,C2:C6)"
+      - "=xlookup(e2,a2:a6,c2:c6)"
+      - "=VLOOKUP(E2,A2:C6,3,FALSE)"
+      - "=INDEX(C2:C6,MATCH(E2,A2:A6,0))"
+    reject:
+      - { formula: "=VLOOKUP(E2,A2:C6,2,FALSE)", rule: value }
+      - { formula: "=XLOOKUP(E2,A2:A6,B2:B6)", rule: value }
+      - { formula: "=XLOOKUP(E2,A2:A6,C2:C6", rule: syntax }
+      - { formula: "=7.9", rule: reference }

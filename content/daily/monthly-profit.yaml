@@ -1,0 +1,36 @@
+id: monthly-profit
+slug: monthly-profit
+level: 1
+tier: 1
+title: Monthly profit
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: "In B4, work out the profit: income minus costs."
+    rows:
+      - [Month, June]
+      - [Income, 1250]
+      - [Costs, 830]
+      - [Profit, null]
+    answerCell: B4
+    expected: 420
+    variants:
+      - set: { B2: 1713 }
+        expected: 883
+    answer: "=B2-B3"
+    hints:
+      nudge: Take the costs away from the income.
+      rule: Use a minus sign between two cells. The cell you take away from comes first.
+    misses:
+      value: 1250 minus 830 is 420.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=B2-B3"
+      - "=b2-b3"
+      - "=-B3+B2"
+      - "=B2+-B3"
+    reject:
+      - { formula: "=B3-B2", rule: value }
+      - { formula: "=B2+B3", rule: value }
+      - { formula: "=420", rule: reference }

@@ -1,0 +1,43 @@
+id: online-sales-total
+slug: online-sales-total
+level: 2
+title: Online sales total
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, add up the sales made through the channel named in E2.
+    rows:
+      - [Sale, Channel, Amount, null, null, null]
+      - [A1, Online, 180, null, Online, null]
+      - [A2, Store, 240, null, null, null]
+      - [A3, Online, 95, null, null, null]
+      - [A4, Phone, 60, null, null, null]
+      - [A5, Online, 310, null, null, null]
+      - [A6, Store, 130, null, null, null]
+      - [A7, Online, 75, null, null, null]
+      - [A8, Phone, 220, null, null, null]
+    answerCell: F2
+    expected: 660
+    variants:
+      - { set: { B2: Store }, expected: 480 }
+      - { set: { C2: 247 }, expected: 727 }
+      - { set: { B9: Online }, expected: 880 }
+    answer: "=SUMIF(B2:B9,E2,C2:C9)"
+    hints:
+      nudge: Add the amounts only on rows for that channel.
+      rule: SUMIF(range to test, criteria, range to add).
+    misses:
+      value: The four Online sales add up to 660.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=SUMIF(B2:B9,E2,C2:C9)"
+      - "=sumif(b2:b9,e2,c2:c9)"
+      - "=SUMIFS(C2:C9,B2:B9,E2)"
+      - '=SUMIF(B2:B9,"Online",C2:C9)'
+    reject:
+      - { formula: "=SUM(C2:C9)", rule: value }
+      - { formula: "=SUMIF(B2:B9,E2,B2:B9)", rule: value }
+      - { formula: "=SUMIF(B2:B9,E2,C2:C9", rule: syntax }
+      - { formula: "=660", rule: reference }

@@ -1,0 +1,38 @@
+id: manager-or-unknown
+slug: manager-or-unknown
+level: 2
+title: Manager or Unknown
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, show the manager of the team in E2, or Unknown when the team is not on the list.
+    rows:
+      - [Team, Manager, null, null, null, null]
+      - [Alpha, Rosa, null, null, Delta, null]
+      - [Beta, Sami, null, null, null, null]
+      - [Gamma, Tara, null, null, null, null]
+      - [Omega, Uwe, null, null, null, null]
+    answerCell: F2
+    expected: Unknown
+    answer: '=IFERROR(XLOOKUP(E2,A2:A5,B2:B5),"Unknown")'
+    hints:
+      nudge: Look the team up, and catch the case where it is not there.
+      rule: IFERROR, or XLOOKUP's fourth argument, shows your own text when there is no match.
+    misses:
+      value: Delta is not on the list, so the cell should say Unknown.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=IFERROR(XLOOKUP(E2,A2:A5,B2:B5),"Unknown")'
+      - '=iferror(xlookup(e2,a2:a5,b2:b5),"Unknown")'
+      - '=XLOOKUP(E2,A2:A5,B2:B5,"Unknown")'
+      - '=IFERROR(VLOOKUP(E2,A2:B5,2,FALSE),"Unknown")'
+      - '=IFNA(XLOOKUP(E2,A2:A5,B2:B5),"Unknown")'
+    reject:
+      - { formula: "=XLOOKUP(E2,A2:A5,B2:B5)", rule: value }
+      - { formula: '=IFERROR(XLOOKUP(E2,A2:A5,B2:B5),"Not known")', rule: value }
+      - { formula: '=IFERROR(XLOOKUP(E2,A2:A5,B2:B5),"Unknown"', rule: syntax }
+      - { formula: '="Unknown"', rule: reference }
+    variants:
+      - { set: { E2: Alpha }, expected: Rosa }

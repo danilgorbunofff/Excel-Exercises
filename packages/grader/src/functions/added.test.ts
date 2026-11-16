@@ -83,6 +83,8 @@ describe("ranking", () => {
     ["=MODE(B1:B5)", 5],
     ["=MODE(1,1,2,2)", 1],
     ["=MODE(2,2,1,1)", 2],
+    // Excel 16.109: a tie goes to the value seen first, not the one that reaches the count first.
+    ["=MODE(5,3,7,3,5)", 5],
   ])("%s is %j", (f, v) => {
     expect(ev(f)).toBe(v);
   });

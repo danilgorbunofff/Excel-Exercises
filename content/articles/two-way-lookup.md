@@ -4,6 +4,7 @@ title: "Two-way lookup: find a value by row and column"
 description: Return the value where a row label and a column heading meet.
 updated: 2026-11-16
 minutes: 4
+topic: lookups
 functions: [INDEX, MATCH, XLOOKUP, VLOOKUP]
 exercises: [two-way-index-match, two-way-lookup-with-vlookup-and-match, index-and-match-summary]
 cover: "B2:F9"

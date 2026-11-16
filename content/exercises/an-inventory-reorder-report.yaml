@@ -3,8 +3,8 @@ slug: an-inventory-reorder-report
 level: 3
 title: An inventory reorder report
 topic: models
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In D2, report how many bolts to order, never a negative number.
     rows:
@@ -15,15 +15,24 @@ screens:
       - [screw, 9, 15, null]
     answerCell: D2
     expected: 6
+    variants:
+      - set:
+          C2: 14
+        expected: 10
+      - set:
+          B2: 7
+        expected: 3
+      - set:
+          B2: 12
+        expected: 0
     answer: =MAX(0,C2-B2)
-    requiredFunctions: [MAX]
     hints:
       nudge: Work out the shortfall, then stop it from going below zero.
       rule: MAX returns the largest of its arguments. With 0 beside a subtraction, it returns the result when it is positive and 0 when it is negative.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Ten to reorder less four in stock leaves six.
       syntax: "Check the brackets, commas and quote marks. MAX follows the pattern `=MAX(number1, [number2], ...)`."
-      required-function: The order quantity has to stop at zero on an over-stocked row.
       reference: Stock on hand is in B2 and the reorder point is in C2.
     accept:
       - =MAX(0,C2-B2)
@@ -33,13 +42,20 @@ screens:
       - =MAX( 0 , C2 - B2 )
       - =MAX(0,C2-B2)+0
     reject:
-      - { formula: =C2-B2, rule: required-function }
-      - { formula: "=MAX(0,B2-C2)", rule: value }
-      - { formula: "=MAX(0,C2-B2)+1", rule: value }
-      - { formula: "=MAX(0,C2-B2)+2", rule: reference }
-      - { formula: "=MAX(0,C3-B3)", rule: value }
-      - { formula: "=MAX(0,C2-B2)/0", rule: value }
-      - { formula: "=MAX 0,C2-B2", rule: syntax }
+      - formula: =MAX(0,B2-C2)
+        rule: value
+      - formula: =MAX(0,C2-B2)+1
+        rule: value
+      - formula: =MAX(0,C2-B2)+2
+        rule: reference
+      - formula: =MAX(0,C3-B3)
+        rule: value
+      - formula: =MAX(0,C2-B2)/0
+        rule: value
+      - formula: =MAX 0,C2-B2
+        rule: syntax
+      - formula: =C2-B2
+        rule: fragile
   - prompt: In D2, report how far total stock on hand falls short of the total of the reorder points, never below zero.
     rows:
       - [Item, On hand, Reorder at, Answer]
@@ -49,15 +65,24 @@ screens:
       - [screw, 9, 15, null]
     answerCell: D2
     expected: 12
+    variants:
+      - set:
+          C2: 14
+        expected: 16
+      - set:
+          B2: 7
+        expected: 9
+      - set:
+          B2: 30
+        expected: 0
     answer: =MAX(0,SUM(C2:C5)-SUM(B2:B5))
-    requiredFunctions: [MAX, SUM]
     hints:
       nudge: Compare the total of the reorder points with the total on hand, and keep the zero floor.
       rule: SUM adds a column, and MAX with 0 as one argument floors the difference of two totals at zero.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: 39 to reorder against 27 in stock leaves 12.
       syntax: "Check the brackets, commas and quote marks. MAX follows the pattern `=MAX(number1, [number2], ...)`."
-      required-function: The sheet can be ahead of its reorder points, so the net needs a floor.
       reference: The stock column runs B2:B5.
     accept:
       - =MAX(0,SUM(C2:C5)-SUM(B2:B5))
@@ -67,14 +92,22 @@ screens:
       - =MAX( 0 , SUM(C2:C5) - SUM(B2:B5) )
       - =MAX(0,SUM(C2:C5)-SUM(B2:B5))+0
     reject:
-      - { formula: =SUM(C2:C5)-SUM(B2:B5), rule: required-function }
-      - { formula: "=MAX(0,SUM(B2:B5)-SUM(C2:C5))", rule: value }
-      - { formula: "=MAX(0,SUM(C2:C5)-SUM(B2:B4))", rule: value }
-      - { formula: "=MAX(0,SUM(C2:C4)-SUM(B2:B5))", rule: value }
-      - { formula: "=MAX(0,SUM(C2:C5)-SUM(B3:B5))", rule: value }
-      - { formula: "=MAX(0,C2-B2)", rule: required-function }
-      - { formula: "=MAX(0,SUM(C2:C5)-SUM(B2:B5))/0", rule: value }
-      - { formula: "=MAX 0,SUM(C2:C5)-SUM(B2:B5)", rule: syntax }
+      - formula: =MAX(0,SUM(B2:B5)-SUM(C2:C5))
+        rule: value
+      - formula: =MAX(0,SUM(C2:C5)-SUM(B2:B4))
+        rule: value
+      - formula: =MAX(0,SUM(C2:C4)-SUM(B2:B5))
+        rule: value
+      - formula: =MAX(0,SUM(C2:C5)-SUM(B3:B5))
+        rule: value
+      - formula: =MAX(0,C2-B2)
+        rule: value
+      - formula: =MAX(0,SUM(C2:C5)-SUM(B2:B5))/0
+        rule: value
+      - formula: =MAX 0,SUM(C2:C5)-SUM(B2:B5)
+        rule: syntax
+      - formula: =SUM(C2:C5)-SUM(B2:B5)
+        rule: fragile
 notes:
   summary: MAX returns the largest number it is given, so MAX with 0 and a shortfall returns the shortfall when it is positive and 0 otherwise. An order quantity built this way never goes negative.
   syntax: MAX(0,reorder_at-on_hand) floors a shortfall at zero; MAX(0,a-b) over totals nets it out

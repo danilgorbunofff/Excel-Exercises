@@ -4,6 +4,7 @@ title: 25 Excel interview questions, with answers
 description: The questions that come up most in interviews for analyst, finance and operations roles, with short answers.
 updated: 2026-11-16
 minutes: 8
+topic: interviews
 functions: [XLOOKUP, VLOOKUP, INDEX, MATCH, SUMIFS, COUNTIFS, IF, IFERROR, IFNA]
 exercises: [lookup-functions-summary, sumifs-two-conditions-at-once, formula-audit-fix-five-broken-sheets, index-match]
 cover: "Q1 to Q25"

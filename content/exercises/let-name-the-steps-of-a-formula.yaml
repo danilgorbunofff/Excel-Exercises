@@ -1,0 +1,65 @@
+id: let-name-the-steps-of-a-formula
+slug: let-name-the-steps-of-a-formula
+level: 3
+title: "LET: name the steps of a formula"
+topic: dynamic-arrays
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, show the North region's share of all sales as a percentage, rounded to one decimal place. Name the North total and the overall total inside the formula.
+    rows:
+      - [Order, Region, Rep, Amount, null, null, null, null, null]
+      - [1001, North, Ana, 820, null, null, null, null, null]
+      - [1002, South, Bo, 450, null, null, null, null, null]
+      - [1003, East, Cy, 1300, null, null, null, null, null]
+      - [1004, north, Di, 610, null, null, null, null, null]
+      - [1005, South, Ed, 1250, null, null, null, null, null]
+      - [1006, West, Fay, 300, null, null, null, null, null]
+      - [1007, North, Ana, 1500, null, null, null, null, null]
+      - [1008, East, Gus, 220, null, null, null, null, null]
+      - [1009, South, Bo, 980, null, null, null, null, null]
+      - [1010, North, Hal, 470, null, null, null, null, null]
+      - [1011, West, Ivy, 1100, null, null, null, null, null]
+      - [1012, South, Jo, 760, null, null, null, null, null]
+      - [1013, East, Cy, 540, null, null, null, null, null]
+      - [1014, North, Di, 90, null, null, null, null, null]
+      - [1015, South, Ed, 1600, null, null, null, null, null]
+      - [1016, West, Fay, 700, null, null, null, null, null]
+      - [1017, north, Kim, 1050, null, null, null, null, null]
+      - [1018, East, Gus, 380, null, null, null, null, null]
+    answerCell: F2
+    expected: 32.2
+    variants:
+      - { set: { D2: 2820 }, expected: 40.6 }
+      - { set: { B3: North }, expected: 35.3 }
+      - { set: { B19: North }, expected: 34.8 }
+    answer: '=LET(north,SUMIF(B2:B19,"North",D2:D19),total,SUM(D2:D19),ROUND(north/total*100,1))'
+    hints:
+      nudge: Work out two totals and give each a name, then use the names to make the percentage.
+      rule: LET(name1, value1, name2, value2, result) works out each value once and lets the last argument use the names. SUMIF ignores case, so north rows count.
+    misses:
+      value: North sales are 4,540 of 14,120 in all, which is 32.2 per cent.
+      syntax: "LET takes pairs of name and value, then the result: `=LET(a,1,b,2,a+b)`."
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LET(north,SUMIF(B2:B19,"North",D2:D19),total,SUM(D2:D19),ROUND(north/total*100,1))
+      - =LET(total,SUM(D2:D19),north,SUMIF(B2:B19,"North",D2:D19),ROUND(100*north/total,1))
+      - =let(n,sumif(b2:b19,"north",d2:d19),t,sum(d2:d19),round(n/t*100,1))
+      - =LET(n,SUMIFS(D2:D19,B2:B19,"North"),t,SUM(D2:D19),share,n/t,ROUND(share*100,1))
+      - =LET(north,SUMIF($B$2:$B$19,"North",$D$2:$D$19),total,SUM($D$2:$D$19),ROUND(north/total*100,1))
+      - =ROUND(SUMIF(B2:B19,"North",D2:D19)/SUM(D2:D19)*100,1)
+    reject:
+      - formula: =LET(north,SUMIF(B2:B19,"North",D2:D19),total,SUM(D2:D19),north/total)
+        rule: value
+      - formula: =LET(north,SUMIF(B2:B19,"North",D2:D19),total,SUM(D2:D19),ROUND(total/north*100,1))
+        rule: value
+      - formula: =LET(north,SUMIF(B2:B19,"North",D2:D19),ROUND(north/total*100,1))
+        rule: syntax
+notes:
+  summary: LET gives a name to a step of a formula. The step is worked out once, and the formula reads like a list of steps.
+  syntax: "LET(name1, value1, [name2, value2, ...], calculation)"
+  example: "`=LET(t,SUM(D2:D19),D2/t)` names the total t and divides by it."
+  commonErrors:
+    - Every name needs a value after it, and the last argument is the result.
+    - A name cannot look like a cell address, so tax1 is not allowed.
+    - "A name used before it is defined gives `#NAME?`."

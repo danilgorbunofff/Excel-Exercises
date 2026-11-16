@@ -3,8 +3,8 @@ slug: count-functions-summary
 level: 3
 title: Count functions summary
 topic: counting
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B10, count only the rows whose unit value is a number.
     rows:
@@ -20,15 +20,17 @@ screens:
       - [Rows with a number, null]
     answerCell: B10
     expected: 6
+    variants:
+      - set: { B6: 9 }
+        expected: 7
     answer: =COUNT(B2:B9)
-    requiredFunctions: [COUNT]
     hints:
       nudge: Pick the count function that ignores text and blanks.
       rule: COUNT counts cells that hold numbers and skips text and empty cells. COUNTA counts every cell that is not empty, text included.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Six rows hold a number. One cell is blank, one holds n/a, and neither is a number.
       syntax: "Check the brackets, commas and quote marks. COUNT follows the pattern `=COUNT(value1, [value2], ...)`."
-      required-function: COUNT counts numbers. COUNTA counts anything that is not empty.
       reference: Pass the units column from the grid rather than a typed list of quantities.
     accept:
       - =COUNT(B2:B9)
@@ -38,13 +40,20 @@ screens:
       - =COUNT(B2:B9)*1
       - =COUNT(B$2:B$9)
     reject:
-      - { formula: =COUNTA(B2:B9), rule: required-function }
-      - { formula: =COUNTA(A2:A9), rule: required-function }
-      - { formula: =COUNT(A2:A9), rule: value }
-      - { formula: =COUNT(B3:B9), rule: value }
-      - { formula: =COUNT(B2:B9)/0, rule: value }
-      - { formula: =COUNT B2:B9, rule: syntax }
-      - { formula: =COUNT(B2:B9)+1, rule: value }
+      - formula: =COUNTA(B2:B9)
+        rule: value
+      - formula: =COUNTA(A2:A9)
+        rule: value
+      - formula: =COUNT(A2:A9)
+        rule: value
+      - formula: =COUNT(B3:B9)
+        rule: value
+      - formula: =COUNT(B2:B9)/0
+        rule: value
+      - formula: =COUNT B2:B9
+        rule: syntax
+      - formula: =COUNT(B2:B9)+1
+        rule: value
   - prompt: In B10, count the rows that have an item but no numeric unit value.
     rows:
       - [Item, Units]
@@ -59,15 +68,17 @@ screens:
       - [Rows without one, null]
     answerCell: B10
     expected: 2
+    variants:
+      - set: { B6: 9 }
+        expected: 1
     answer: =COUNTA(A2:A9)-COUNT(B2:B9)
-    requiredFunctions: [COUNTA, COUNT]
     hints:
       nudge: Count every row with an item, then take away the rows that have a number.
       rule: COUNTA counts cells that are not empty, so it counts rows by their item name. COUNT counts only numbers, so the difference is the rows without one.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Eight items and six numbers leave two rows without a quantity.
       syntax: "Check the brackets, commas and quote marks. COUNTA follows the pattern `=COUNTA(value1, [value2], ...)`."
-      required-function: COUNTA counts rows rather than values, which is how the item column is read.
       reference: Start both ranges on row 2 so the header never enters either count.
     accept:
       - =COUNTA(A2:A9)-COUNT(B2:B9)
@@ -77,12 +88,18 @@ screens:
       - =COUNTA(A2:A9)-COUNT(B2:B9)*1
       - =COUNTA(A$2:A$9)-COUNT(B$2:B$9)
     reject:
-      - { formula: =COUNT(B2:B9), rule: required-function }
-      - { formula: =COUNTA(A2:A9), rule: required-function }
-      - { formula: =COUNTA(B2:B9)-COUNT(B2:B9), rule: value }
-      - { formula: =COUNTA(A2:A9)-COUNT(A2:A9), rule: value }
-      - { formula: =COUNTA(A2:A9)-COUNT(B2:B9)/0, rule: value }
-      - { formula: =COUNTA(A2:A9)-COUNT(B2:B9, rule: syntax }
+      - formula: =COUNT(B2:B9)
+        rule: value
+      - formula: =COUNTA(A2:A9)
+        rule: value
+      - formula: =COUNTA(B2:B9)-COUNT(B2:B9)
+        rule: value
+      - formula: =COUNTA(A2:A9)-COUNT(A2:A9)
+        rule: value
+      - formula: =COUNTA(A2:A9)-COUNT(B2:B9)/0
+        rule: value
+      - formula: =COUNTA(A2:A9)-COUNT(B2:B9
+        rule: syntax
 notes:
   summary: COUNT counts the cells that hold numbers and passes over text and blanks. COUNTA counts every cell that is not empty.
   syntax: COUNT(range) counts numbers; =COUNTA(range) counts anything not empty

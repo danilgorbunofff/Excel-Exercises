@@ -1,0 +1,40 @@
+id: longest-training-run
+slug: longest-training-run
+level: 1
+title: Longest training run
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B7, show the longest run of the week in kilometres.
+    rows:
+      - [Run, Km]
+      - [Mon, 5.2]
+      - [Wed, 8.4]
+      - [Thu, 3.1]
+      - [Sat, 10.5]
+      - [Sun, 6.7]
+      - [Longest, null]
+    answerCell: B7
+    expected: 10.5
+    variants:
+      - { set: { B3: 11.51 }, expected: 11.51 }
+      - { set: { B6: 13.4 }, expected: 13.4 }
+      - { set: { B2: 8.7, B5: 5.2 }, expected: 8.7 }
+    answer: "=MAX(B2:B6)"
+    hints:
+      nudge: Find the biggest distance.
+      rule: MAX returns the largest number in a range.
+    misses:
+      value: The longest run was 10.5 km.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=MAX(B2:B6)"
+      - "=max(b2:b6)"
+      - "=LARGE(B2:B6,1)"
+    reject:
+      - { formula: "=MIN(B2:B6)", rule: value }
+      - { formula: "=MAX(B2:B4)", rule: value }
+      - { formula: "=MAX(B2:B6", rule: syntax }
+      - { formula: "=10.5", rule: reference }

@@ -3,10 +3,10 @@ slug: on-time-rate-for-one-carrier
 level: 2
 title: On time rate for one carrier
 topic: interview-data-analyst
-updated: 2026-11-15
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In D2, work out the share of Northway shipments that arrived on time.
+  - prompt: In D2, work out the share of Northway shipments that arrived on time. Use COUNTIFS.
     rows:
       - [Shipment, Carrier, Status, Answer]
       - [SH-801, Northway, On time, null]
@@ -28,6 +28,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. COUNTIFS follows the pattern `=COUNTIFS(range1, criteria1, range2, criteria2)`."
       required-function: The top of the share has two conditions, carrier and status, which needs COUNTIFS.
       reference: The carriers run down B2:B8 and the statuses down C2:C8.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =COUNTIFS(B2:B8,"Northway",C2:C8,"On time")/COUNTIF(B2:B8,"Northway")
       - =countifs(b2:b8,"northway",c2:c8,"on time")/countif(b2:b8,"northway")
@@ -45,7 +46,9 @@ screens:
           formula: '=COUNTIFS(B2:B8,"Northway",C2:C8,"On time"/COUNTIF(B2:B8,"Northway")',
           rule: syntax,
         }
-  - prompt: In D2, show the same rate for Fastlane, rounded to two decimal places.
+    variants:
+      - { set: { B8: Northway }, expected: 0.8 }
+  - prompt: In D2, show the same rate for Fastlane, rounded to two decimal places. Use COUNTIFS and ROUND.
     rows:
       - [Shipment, Carrier, Status, Answer]
       - [SH-801, Northway, On time, null]
@@ -67,6 +70,7 @@ screens:
       syntax: "Check the brackets and commas. ROUND follows the pattern `=ROUND(number, num_digits)`."
       required-function: Two thirds runs to a long tail of digits, so the share needs ROUND around a COUNTIFS.
       reference: The carriers run down B2:B8 and the statuses down C2:C8.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =ROUND(COUNTIFS(B2:B8,"Fastlane",C2:C8,"On time")/COUNTIF(B2:B8,"Fastlane"),2)
       - =round(countifs(b2:b8,"fastlane",c2:c8,"on time")/countif(b2:b8,"fastlane"),2)
@@ -92,6 +96,8 @@ screens:
           formula: '=ROUND(COUNTIFS(B2:B8,"Fastlane",C2:C8,"On time")/COUNTIF(B2:B8,"Fastlane"),2',
           rule: syntax,
         }
+    variants:
+      - { set: { B2: Fastlane }, expected: 0.75 }
 notes:
   summary: An on time rate is the on time shipments for one carrier over all of that carrier's shipments. Both counts must be for the same carrier.
   syntax: COUNTIFS(carriers,name,statuses,"On time")/COUNTIF(carriers,name)

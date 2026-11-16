@@ -4,6 +4,7 @@ title: Relative and absolute references
 description: Why a copied formula changes its cell addresses, and how a dollar sign keeps one fixed.
 updated: 2026-11-11
 minutes: 4
+topic: habits
 functions: []
 exercises: [add-two-cells, multiply-price-by-quantity, price-after-discount]
 cover: "$A$1"

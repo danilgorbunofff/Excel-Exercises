@@ -1,12 +1,12 @@
 id: total-for-two-conditions
 slug: total-for-two-conditions
-level: 3
+level: 2
 title: Total for two conditions
 topic: conditions
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In C8, add up the units of Pens sold in the North region.
+  - prompt: In C8, add up the units of Pens sold in the North region. Use SUMIFS.
     rows:
       - [Region, Product, Units]
       - [North, Pens, 40]

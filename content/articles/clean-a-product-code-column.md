@@ -4,6 +4,7 @@ title: Clean a product code column, step by step
 description: Turn messy codes from several systems into one format that lookups can match.
 updated: 2026-11-16
 minutes: 4
+topic: text
 functions: [TRIM, UPPER, SUBSTITUTE, RIGHT, LEN, XLOOKUP, COUNTIF]
 exercises: [clean-a-product-code-then-look-it-up, upper-lower-and-proper, clean-up-an-imported-list]
 cover: "ab-12 > AB12"

@@ -1,0 +1,40 @@
+id: address-on-one-line
+slug: address-on-one-line
+level: 2
+title: Address on one line
+topic: interview-admin
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In E2, join the address parts in A2:D2 into one line, separated by a comma and a space, skipping any part that is empty. Use TEXTJOIN.
+    rows:
+      - [Line 1, Line 2, Town, Postcode, Address]
+      - ["12 Mill Lane", null, Hebden, HX7 8AB, null]
+    answerCell: E2
+    expected: "12 Mill Lane, Hebden, HX7 8AB"
+    answer: '=TEXTJOIN(", ",TRUE,A2:D2)'
+    requiredFunctions: [TEXTJOIN]
+    hints:
+      nudge: Join a range with a separator, and leave out the empty part.
+      rule: TEXTJOIN(separator, ignore_empty, range). TRUE as the second argument skips empty cells, so no double comma appears.
+    misses:
+      value: The address reads 12 Mill Lane, Hebden, HX7 8AB.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task needs TEXTJOIN.
+    accept:
+      - '=TEXTJOIN(", ",TRUE,A2:D2)'
+      - '=textjoin(", ",true,a2:d2)'
+      - '=TEXTJOIN(", ",1,A2:D2)'
+    reject:
+      - { formula: '=TEXTJOIN(", ",FALSE,A2:D2)', rule: value }
+      - { formula: '=A2&", "&B2&", "&C2&", "&D2', rule: required-function }
+      - { formula: '=TEXTJOIN(", ",TRUE,A2:D2', rule: syntax }
+      - { formula: '="12 Mill Lane, Hebden, HX7 8AB"', rule: required-function }
+notes:
+  summary: TEXTJOIN joins a range of text with a separator and can skip empty cells, which keeps an address free of double commas.
+  syntax: 'TEXTJOIN(", ", TRUE, range)'
+  example: '`=TEXTJOIN(" ",TRUE,A2:C2)` joins a first, middle and last name with spaces, and skips a missing middle name.'
+  commonErrors:
+    - FALSE as the second argument keeps the empty part and leaves two commas in a row.
+    - Joining with & needs a separator between every pair of cells.
+    - The separator goes in quotes, space included.

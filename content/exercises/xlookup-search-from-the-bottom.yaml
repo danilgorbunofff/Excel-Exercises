@@ -1,10 +1,10 @@
 id: xlookup-search-from-the-bottom
 slug: xlookup-search-from-the-bottom
-level: 3
+level: 2
 title: "XLOOKUP: search from the bottom"
 topic: lookups
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B7, return the most recent price logged for the SKU in A7, which the log records twice.
     rows:
@@ -28,6 +28,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. XLOOKUP follows the pattern `=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])`."
       required-function: "Six arguments: the key, the keys, the prices, the text for a miss, the match mode, and the search direction."
       reference: Point at A7 rather than typing the SKU, so the row above and the row below behave the same.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =XLOOKUP(A7,A2:A6,B2:B6,,0,-1)
       - =xlookup(a7,a2:a6,b2:b6,,0,-1)
@@ -36,7 +37,6 @@ screens:
       - =XLOOKUP(A7,A2:A6,B2:B6,0,0,-1)
       - =XLOOKUP( A7 , A2:A6 , B2:B6 , , 0 , -1 )
       - =XLOOKUP(A7,A1:A6,B1:B6,,0,-1)
-      - =XLOOKUP(A7,A2:A5,B2:B5,,0,-1)
     reject:
       - { formula: "=XLOOKUP(A7,A2:A6,B2:B6,,0,-1", rule: syntax }
       - { formula: "=VLOOKUP(A7,A2:B6,2,FALSE)", rule: required-function }
@@ -45,6 +45,9 @@ screens:
       - { formula: "=XLOOKUP(A7,A2:A6,B2:B6,,0,1)", rule: value }
       - { formula: "=XLOOKUP(A7,C2:C6,B2:B6,,0,-1)", rule: value }
       - { formula: "=XLOOKUP(A7,A2:A6,B2:B5,,0,-1)", rule: value }
+      - { formula: "=XLOOKUP(A7,A2:A5,B2:B5,,0,-1)", rule: fragile }
+    variants:
+      - { set: { A7: TX-102 }, expected: 16.25 }
   - prompt: In B8, do the same for the SKU in A8, whose two entries are the second and the last in the log.
     rows:
       - [SKU, Price]

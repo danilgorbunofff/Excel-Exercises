@@ -3,8 +3,8 @@ slug: a-headcount-and-payroll-summary
 level: 3
 title: A headcount and payroll summary
 topic: models
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In D2, total the payroll the whole sheet implies.
     rows:
@@ -15,15 +15,19 @@ screens:
       - [Ops, 1, 52000, null]
     answerCell: D2
     expected: 345000
+    variants:
+      - set: { B2: 6 }
+        expected: 480000
+      - set: { C2: 45017 }
+        expected: 345051
     answer: =SUMPRODUCT(B2:B5,C2:C5)
-    requiredFunctions: [SUMPRODUCT]
     hints:
       nudge: Each row's payroll is heads times salary, and one function multiplies and adds in one step.
       rule: SUMPRODUCT multiplies ranges of the same size row by row and adds the products.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: 135000 + 76000 + 82000 + 52000 comes to 345000.
       syntax: "Check the brackets, commas and quote marks. SUMPRODUCT follows the pattern `=SUMPRODUCT(array1, [array2], ...)`."
-      required-function: Each row is headcount times salary, and the products are added.
       reference: The headcount column is B2:B5.
     accept:
       - =SUMPRODUCT(B2:B5,C2:C5)
@@ -33,13 +37,20 @@ screens:
       - =SUMPRODUCT( B2:B5 , C2:C5 )
       - =SUMPRODUCT(B2:B5,C2:C5)+0
     reject:
-      - { formula: =SUM(B2:B5), rule: required-function }
-      - { formula: =SUM(B2:B5)*SUM(C2:C5), rule: required-function }
-      - { formula: "=SUMPRODUCT(B2:B4,C2:C4)", rule: value }
-      - { formula: "=SUMPRODUCT(B2:B5,C3:C6)", rule: value }
-      - { formula: "=SUMPRODUCT(B2:B5,C2:C5)/0", rule: value }
-      - { formula: "=SUMPRODUCT(B3:B5,C3:C5)", rule: value }
-      - { formula: "=SUMPRODUCT B2:B5,C2:C5", rule: syntax }
+      - formula: =SUM(B2:B5)
+        rule: value
+      - formula: =SUM(B2:B5)*SUM(C2:C5)
+        rule: value
+      - formula: =SUMPRODUCT(B2:B4,C2:C4)
+        rule: value
+      - formula: =SUMPRODUCT(B2:B5,C3:C6)
+        rule: value
+      - formula: =SUMPRODUCT(B2:B5,C2:C5)/0
+        rule: value
+      - formula: =SUMPRODUCT(B3:B5,C3:C5)
+        rule: value
+      - formula: =SUMPRODUCT B2:B5,C2:C5
+        rule: syntax
   - prompt: In D2, work out the payroll cost of one head, rounded to a whole number.
     rows:
       - [Team, Heads, Salary, Answer]
@@ -49,15 +60,18 @@ screens:
       - [Ops, 1, 52000, null]
     answerCell: D2
     expected: 43125
+    variants:
+      - { set: { B2: 6 }, expected: 43636 }
+      - { set: { C2: 45017 }, expected: 43131 }
+      - { set: { B3: 3 }, expected: 42556 }
     answer: =ROUND(SUMPRODUCT(B2:B5,C2:C5)/SUM(B2:B5),0)
-    requiredFunctions: [SUMPRODUCT, SUM]
     hints:
       nudge: Divide the whole payroll by the number of heads, not by the number of rows.
       rule: The cost per head is the payroll total divided by the sum of the headcounts. ROUND with 0 as its second argument gives a whole number.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: 345000 divided by eight heads comes to 43125.
       syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
-      required-function: The numerator is the payroll total from the first screen.
       reference: Read the heads from B2:B5 in both halves.
     accept:
       - =ROUND(SUMPRODUCT(B2:B5,C2:C5)/SUM(B2:B5),0)
@@ -66,13 +80,20 @@ screens:
       - =ROUND(SUMPRODUCT(B$2:B$5,C$2:C$5)/SUM(B$2:B$5),0)
       - =ROUND( SUMPRODUCT(B2:B5, C2:C5) / SUM(B2:B5) , 0 )
     reject:
-      - { formula: =AVERAGE(C2:C5), rule: required-function }
-      - { formula: "=ROUND(SUMPRODUCT(B2:B5,C2:C5)/COUNT(B2:B5),0)", rule: required-function }
-      - { formula: "=ROUND(SUMPRODUCT(B2:B5,C2:C5)/SUM(C2:C4),0)", rule: value }
-      - { formula: "=ROUND(SUMPRODUCT(B2:B5,C2:C5)/SUM(B2:B4),0)", rule: value }
-      - { formula: "=ROUND(SUMPRODUCT(B3:B5,C3:C5)/SUM(B3:B5),0)", rule: value }
-      - { formula: "=ROUND(SUMPRODUCT(B2:B5,C2:C5)/SUM(B2:B5)/0,0)", rule: value }
-      - { formula: "=ROUND SUMPRODUCT(B2:B5,C2:C5)/SUM(B2:B5),0", rule: syntax }
+      - formula: =AVERAGE(C2:C5)
+        rule: value
+      - formula: =ROUND(SUMPRODUCT(B2:B5,C2:C5)/COUNT(B2:B5),0)
+        rule: value
+      - formula: =ROUND(SUMPRODUCT(B2:B5,C2:C5)/SUM(C2:C4),0)
+        rule: value
+      - formula: =ROUND(SUMPRODUCT(B2:B5,C2:C5)/SUM(B2:B4),0)
+        rule: value
+      - formula: =ROUND(SUMPRODUCT(B3:B5,C3:C5)/SUM(B3:B5),0)
+        rule: value
+      - formula: =ROUND(SUMPRODUCT(B2:B5,C2:C5)/SUM(B2:B5)/0,0)
+        rule: value
+      - formula: =ROUND SUMPRODUCT(B2:B5,C2:C5)/SUM(B2:B5),0
+        rule: syntax
 notes:
   summary: SUMPRODUCT multiplies two ranges row by row, then adds the products, so heads times salary on each row gives the whole payroll. Dividing by the total headcount gives the cost per head.
   syntax: SUMPRODUCT(heads,salaries) totals a payroll; divide by SUM(heads) for the cost per head

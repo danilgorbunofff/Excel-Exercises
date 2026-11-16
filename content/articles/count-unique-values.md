@@ -4,6 +4,7 @@ title: How to count unique values
 description: Count how many different values a column holds, in current Excel and in older versions.
 updated: 2026-11-16
 minutes: 3
+topic: sums
 functions: [UNIQUE, COUNTA, FILTER, SUMPRODUCT, COUNTIF]
 exercises: [count-functions-summary, count-orders-by-region, sumproduct-multiply-then-add]
 cover: "=UNIQUE"

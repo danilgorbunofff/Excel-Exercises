@@ -1,0 +1,54 @@
+id: count-bookings-for-a-room
+slug: count-bookings-for-a-room
+level: 2
+title: Count bookings for a room
+topic: interview-admin
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, count the bookings for the room named in E2. Use COUNTIF.
+    rows:
+      - [Date, Room, Booked by, null, null, null]
+      - [Mon, Oak, Ali, null, Elm, null]
+      - [Mon, Elm, Bea, null, null, null]
+      - [Tue, Oak, Cid, null, null, null]
+      - [Tue, Elm, Dee, null, null, null]
+      - [Wed, Ash, Eli, null, null, null]
+      - [Wed, Elm, Fay, null, null, null]
+      - [Thu, Oak, Gus, null, null, null]
+      - [Thu, Elm, Hal, null, null, null]
+      - [Fri, Ash, Ivy, null, null, null]
+      - [Fri, Elm, Jon, null, null, null]
+    answerCell: F2
+    expected: 5
+    variants:
+      - set: { B2: Elm }
+        expected: 6
+    answer: "=COUNTIF(B2:B11,E2)"
+    requiredFunctions: [COUNTIF]
+    hints:
+      nudge: Count the rows whose room matches E2.
+      rule: COUNTIF(range, criteria) counts the cells that match. Pointing at E2 lets the room change.
+    misses:
+      value: Elm was booked 5 times.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task needs COUNTIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=COUNTIF(B2:B11,E2)"
+      - "=countif(b2:b11,e2)"
+      - '=COUNTIF(B2:B11,"Elm")'
+      - "=COUNTIF($B$2:$B$11,E2)"
+    reject:
+      - { formula: "=COUNTA(B2:B11)", rule: required-function }
+      - { formula: "=COUNTIF(A2:A11,E2)", rule: value }
+      - { formula: "=COUNTIF(B2:B11,E2", rule: syntax }
+      - { formula: "=5", rule: required-function }
+notes:
+  summary: COUNTIF counts the rows that match one value, such as the bookings for one room.
+  syntax: "COUNTIF(range, criteria)"
+  example: '`=COUNTIF(B2:B11,"Oak")` counts the Oak bookings.'
+  commonErrors:
+    - Counting the whole column with COUNTA counts every booking, not one room's.
+    - Testing the wrong column, such as the day, finds no matches.
+    - A room typed with a trailing space does not match.

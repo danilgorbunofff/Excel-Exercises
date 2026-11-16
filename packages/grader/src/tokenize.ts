@@ -5,6 +5,7 @@ import { parseAddress } from "./address.ts";
 
 export type TokenKind =
   | "number"
+  | "array"
   | "string"
   | "bool"
   | "error"
@@ -25,6 +26,8 @@ export interface Token {
   end: number;
   /** The text inside the quotes, for strings. */
   value?: string;
+  /** The rows of an array constant such as {1,2;3,4}. */
+  rows?: (number | string | boolean)[][];
 }
 
 export interface SyntaxProblem {
@@ -49,6 +52,32 @@ const fail = (message: string, start: number, end = start + 1): TokenizeResult =
   error: { message, start, end },
 });
 
+/** The rows of an array constant's inside, such as 1,2;3,4, or null if it is not one. */
+function arrayConstant(inside: string): (number | string | boolean)[][] | null {
+  const rows: (number | string | boolean)[][] = [];
+  const item =
+    /^\s*(?:(-?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?)|"((?:[^"]|"")*)"|(TRUE|FALSE))\s*/iu;
+  let rest = inside;
+  let row: (number | string | boolean)[] = [];
+  for (;;) {
+    const m = item.exec(rest);
+    if (!m) return null;
+    if (m[1] !== undefined) row.push(Number(m[1]));
+    else if (m[2] !== undefined) row.push(m[2].replaceAll('""', '"'));
+    else row.push((m[3] ?? "").toUpperCase() === "TRUE");
+    rest = rest.slice(m[0].length);
+    if (rest === "") break;
+    const sep = rest[0];
+    rest = rest.slice(1);
+    if (sep === ";") {
+      rows.push(row);
+      row = [];
+    } else if (sep !== ",") return null;
+  }
+  rows.push(row);
+  return rows.every((r) => r.length === rows[0]?.length) ? rows : null;
+}
+
 export function tokenize(formula: string): TokenizeResult {
   if (!formula.startsWith("=")) return fail("Start the formula with =.", 0);
   if (formula.slice(1).trim() === "")
@@ -68,6 +97,30 @@ export function tokenize(formula: string): TokenizeResult {
       i++;
       continue;
     }
+    // Excel shows @ (implicit intersection) in some formulas it opens; typed in, it changes nothing here.
+    const prev = tokens.at(-1);
+    if (ch === "@" && (!prev || ["op", "lparen", "comma"].includes(prev.kind))) {
+      i++;
+      continue;
+    }
+    if (ch === "{") {
+      const end = formula.indexOf("}", i);
+      if (end < 0) return fail("Add } to close the list of values.", i, formula.length);
+      const rows = arrayConstant(formula.slice(i + 1, end));
+      if (!rows)
+        return fail(
+          "A list in { } holds only numbers, text in quotes, TRUE or FALSE, with commas between columns and semicolons between rows.",
+          i,
+          end + 1,
+        );
+      push("array", formula.slice(i, end + 1), { rows });
+      continue;
+    }
+    if (ch === "\u2212" || ch === "\u2013")
+      return fail(
+        "Type the minus sign with the - key. This character looks like one but is not.",
+        i,
+      );
     if (CURLY.test(ch))
       return fail("Use straight quotes in formulas. Your keyboard typed curly ones.", i);
     if (ch === ";") return fail("Use commas between arguments, not semicolons.", i);

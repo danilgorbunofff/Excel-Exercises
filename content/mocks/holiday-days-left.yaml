@@ -1,0 +1,39 @@
+id: holiday-days-left
+slug: holiday-days-left
+level: 1
+title: Holiday days left
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: "In B7, work out how many holiday days are left: the allowance minus every day taken so far."
+    rows:
+      - [Item, Days]
+      - [Allowance, 25]
+      - [Taken Jan, 2]
+      - [Taken Mar, 5]
+      - [Taken May, 1]
+      - [Taken Jul, 7]
+      - [Left, null]
+    answerCell: B7
+    expected: 10
+    variants:
+      - set: { B2: 34 }
+        expected: 19
+    answer: "=B2-SUM(B3:B6)"
+    hints:
+      nudge: Take the total of the days taken away from the allowance.
+      rule: Add the days taken with SUM, then subtract that from the allowance.
+    misses:
+      value: 25 minus 15 days taken leaves 10.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=B2-SUM(B3:B6)"
+      - "=b2-sum(b3:b6)"
+      - "=B2-B3-B4-B5-B6"
+    reject:
+      - { formula: "=SUM(B2:B6)", rule: value }
+      - { formula: "=B2-SUM(B3:B5)", rule: value }
+      - { formula: "=B2-SUM(B3:B6", rule: syntax }
+      - { formula: "=10", rule: reference }

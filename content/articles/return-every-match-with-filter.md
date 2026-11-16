@@ -4,6 +4,7 @@ title: Return every match with FILTER
 description: Lookups stop at the first match. FILTER returns all of the matching rows, and updates when the data changes.
 updated: 2026-11-16
 minutes: 4
+topic: lookups
 functions: [FILTER, SORT, TEXTJOIN, XLOOKUP, COUNTIF]
 exercises: [count-orders-by-region, xlookup-search-from-the-bottom, lookup-functions-summary]
 cover: "=FILTER()"

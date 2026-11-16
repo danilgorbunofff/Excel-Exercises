@@ -3,10 +3,10 @@ slug: count-orders-by-region
 level: 1
 title: Count orders from one region
 topic: conditions
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B8, count the orders from the North region.
+  - prompt: In B8, count the orders from the North region. Use COUNTIF.
     rows:
       - [Order, Region]
       - [1001, North]

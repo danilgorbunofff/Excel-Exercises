@@ -10,6 +10,7 @@ import {
   gradeAttempt,
   loadAssessments,
   type SpecFor,
+  skillsOf,
 } from "./assessments.ts";
 
 const facts = [
@@ -176,15 +177,18 @@ describe("coverOf", () => {
       },
     ]).sets[0];
     const byId = new Map([
-      ["a", { level: 1, screens: [{ requiredFunctions: ["SUM"] }] }],
+      ["a", { level: 1, screens: [{ requiredFunctions: ["SUM"], answer: "=SUM(B2:B5)" }] }],
       [
         "b",
         {
           level: 3,
-          screens: [{ requiredFunctions: [] }, { requiredFunctions: ["VLOOKUP", "SUM"] }],
+          screens: [
+            { requiredFunctions: [], answer: "=B2" },
+            { requiredFunctions: ["VLOOKUP", "SUM"], answer: "=SUM(VLOOKUP(E2,A2:C5,3,FALSE))" },
+          ],
         },
       ],
-      ["a2", { level: 1, screens: [{ requiredFunctions: [] }] }],
+      ["a2", { level: 1, screens: [{ requiredFunctions: [], answer: "=B2*B3" }] }],
     ]);
     const cover = set && coverOf(set, byId);
     expect(cover?.tasks).toEqual([
@@ -194,5 +198,51 @@ describe("coverOf", () => {
     ]);
     expect(cover?.functions).toEqual(["SUM", "VLOOKUP"]);
     expect(cover?.levels).toEqual([1, 3]);
+  });
+});
+
+describe("skillsOf", () => {
+  it("uses the required functions, or else the functions in the answer", () => {
+    expect(skillsOf({ requiredFunctions: ["SUMIF"], answer: "=SUMIF(A2:A9,E2,C2:C9)" })).toEqual([
+      "SUMIF",
+    ]);
+    expect(
+      skillsOf({ requiredFunctions: [], answer: "=ROUND(SUMIFS(C2:C9,A2:A9,E2)/SUM(C2:C9),2)" }),
+    ).toEqual(["ROUND", "SUMIFS", "SUM"]);
+    expect(skillsOf({ requiredFunctions: [], answer: "=B2-B3" })).toEqual([]);
+  });
+});
+
+describe("checkAssessments and mock tasks", () => {
+  const facts = [
+    { id: "free", locked: false, screens: 1 },
+    { id: "practice", locked: true, screens: 1 },
+    { id: "m1", locked: true, screens: 1, mock: true },
+    { id: "m2", locked: true, screens: 1, mock: true },
+  ];
+  const set = (slug: string, tasks: string[], sample = false) => ({
+    slug,
+    title: "Set",
+    summary: "A set.",
+    minutes: 10,
+    sample,
+    tasks: tasks.map((exercise) => ({ exercise, screen: 0 })),
+  });
+  it("needs held-out tasks in timed sets, each in one set, and every one used", () => {
+    expect(
+      checkAssessments({ sets: [set("s", ["free"], true), set("a", ["m1", "m2"])] }, facts),
+    ).toEqual([]);
+    expect(
+      checkAssessments({ sets: [set("s", ["free"], true), set("a", ["m1", "practice"])] }, facts),
+    ).toEqual([
+      'a: "practice" is a practice exercise; a timed set uses held-out mock tasks',
+      'mock task "m2" is in no set',
+    ]);
+    expect(
+      checkAssessments(
+        { sets: [set("s", ["free"], true), set("a", ["m1", "m2"]), set("b", ["m2"])] },
+        facts,
+      ),
+    ).toEqual(['b: mock task "m2" is already in another set']);
   });
 });

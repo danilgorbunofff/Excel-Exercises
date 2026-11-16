@@ -3,10 +3,10 @@ slug: average-functions-summary
 level: 2
 title: Average functions summary
 topic: statistics
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: Put the average of the two slowest (highest) times into C2, taking the values from the unsorted column.
+  - prompt: Put the average of the two slowest (highest) times into C2, taking the values from the unsorted column. Use LARGE.
     rows:
       - [Swimmer, Seconds, Slowest-two average]
       - [Ada, 58, null]
@@ -26,6 +26,7 @@ screens:
       syntax: "Check the brackets and operators. Every opening bracket needs a closing one."
       required-function: LARGE returns one position at a time, so ask it twice and average the pair.
       reference: Both calls point at B2:B6, so no time is typed into the formula.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =(LARGE(B2:B6,1)+LARGE(B2:B6,2))/2
       - =(large(b2:b6,1)+large(b2:b6,2))/2
@@ -41,7 +42,10 @@ screens:
       - { formula: "=(LARGE(B2:B6,2)+LARGE(B2:B6,3))/2", rule: value }
       - { formula: "=(LARGE(B2:B6,1)+LARGE(B2:B6,2))/0", rule: value }
       - { formula: =LARGE(B2:B6 1), rule: syntax }
-  - prompt: Put the place the middle time earns into C2, so the row shows where the median sits.
+    variants:
+      - { set: { B6: 69 }, expected: 65 }
+      - { set: { B2: 65 }, expected: 63 }
+  - prompt: Put the place the middle time earns into C2, so the row shows where the median sits. Use RANK.
     rows:
       - [Swimmer, Seconds, Median's place]
       - [Ada, 58, null]
@@ -61,6 +65,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. RANK follows the pattern `=RANK(number, ref, [order])`."
       required-function: Once MEDIAN returns 57, RANK turns that 57 into third place.
       reference: Both functions read B2:B6, so the comparison stays inside the team.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =RANK(MEDIAN(B2:B6),B2:B6)
       - =rank(median(b2:b6),b2:b6)
@@ -76,6 +81,8 @@ screens:
       - { formula: "=RANK(MEDIAN(B2:B6),B2:B6", rule: syntax }
       - { formula: "=RANK(MEDIAN(B3:B6),B3:B6)", rule: value }
       - { formula: "=RANK(MEDIAN(B2:B6),B2:B6)*2", rule: value }
+    variants:
+      - { set: { B2: 61, B6: 69 }, expected: 2 }
 notes:
   summary: "Some summaries need two functions joined together. Add two LARGE results to average the top two values, or put MEDIAN inside RANK to find the middle value's place."
   syntax: RANK(MEDIAN(range), range) and =(LARGE(range,1)+LARGE(range,2))/2

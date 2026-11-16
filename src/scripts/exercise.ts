@@ -2,7 +2,15 @@
 // Enter or Check, outlines what the formula read on the grid and in the
 // formula text, shows the verdict, turns Check into Next once the answer is
 // right, and runs the hint ladder. The page is complete without it.
-import { type GradeSpec, grade, type Rule, type Verdict } from "@practice/grader";
+import {
+  columnLetters,
+  formatValue,
+  type GradeSpec,
+  grade,
+  parseAddress,
+  type Rule,
+  type Verdict,
+} from "@practice/grader";
 import type { Segment } from "../lib/rich-text.ts";
 import { readProgress, record } from "./progress.ts";
 import { signedIn } from "./session.ts";
@@ -136,8 +144,16 @@ function setupScreen(exercise: HTMLElement, page: PageData, index: number, root:
     mirror.scrollLeft = input.scrollLeft;
   };
 
+  // Cells a spilled result filled. They are empty in the data, so clearing restores them.
+  let spilled: HTMLTableCellElement[] = [];
   const clearGrid = () => {
     for (const td of cells.values()) td.classList.remove(...OUTLINE);
+    for (const td of spilled) {
+      td.classList.remove("spilled", "spilled-correct", "spilled-miss", ...VALUE_KINDS);
+      td.classList.add("empty");
+      td.textContent = "";
+    }
+    spilled = [];
     if (answerTd) {
       answerTd.classList.remove("answer-miss", "answer-correct", ...VALUE_KINDS);
       answerTd.classList.add("empty");
@@ -202,6 +218,25 @@ function setupScreen(exercise: HTMLElement, page: PageData, index: number, root:
         kindOf(verdict.value),
         verdict.correct ? "answer-correct" : "answer-miss",
       );
+    }
+    // A result that spills fills the cells below and to the right, as in Excel.
+    const origin = parseAddress(spec.answerCell);
+    if (origin && verdict.spill) {
+      verdict.spill.forEach((row, i) => {
+        row.forEach((value, j) => {
+          if (i === 0 && j === 0) return;
+          const td = cells.get(`${columnLetters(origin.col + j)}${origin.row + i}`);
+          if (!td) return;
+          td.textContent = formatValue(value);
+          td.classList.remove("empty");
+          td.classList.add(
+            "spilled",
+            kindOf(value),
+            verdict.correct ? "spilled-correct" : "spilled-miss",
+          );
+          spilled.push(td);
+        });
+      });
     }
 
     // The formula text: mark each reference, and the part the verdict is about.

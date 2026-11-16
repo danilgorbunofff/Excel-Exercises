@@ -4,6 +4,7 @@ title: How to learn Excel formulas faster
 description: Why watching tutorials feels productive but fades fast, and the practice habits that make formulas stick.
 updated: 2026-11-16
 minutes: 4
+topic: habits
 functions: [SUM, IF, XLOOKUP]
 exercises: [add-two-cells, sum-a-column, pass-or-fail]
 cover: "Try > read"

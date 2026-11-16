@@ -27,8 +27,6 @@ const node = document.querySelector("script[data-exercises]");
 const items: Item[] = node?.textContent ? JSON.parse(node.textContent) : [];
 const q = <T extends HTMLElement>(selector: string) => document.querySelector<T>(selector);
 const next = q<HTMLAnchorElement>("[data-next]");
-const dueList = q<HTMLElement>("[data-due]");
-const dueEmpty = q<HTMLElement>("[data-due-empty]");
 const summary = q<HTMLElement>("[data-summary]");
 // The server-rendered first exercise, which is also the page with no progress.
 const start = next ? { href: next.getAttribute("href") ?? "", text: next.textContent ?? "" } : null;
@@ -36,13 +34,6 @@ const start = next ? { href: next.getAttribute("href") ?? "", text: next.textCon
 const stat = (key: string, value: string) => {
   const el = q(`[data-stat="${key}"]`);
   if (el) el.textContent = value;
-};
-
-const link = (item: Item) => {
-  const a = document.createElement("a");
-  a.href = item.href;
-  a.textContent = item.title;
-  return a;
 };
 
 function paint(): void {
@@ -82,24 +73,9 @@ function paint(): void {
       next.href = "/pricing/";
       next.textContent = "Get PRO for the next exercises";
     } else {
-      next.href = "#due-title";
+      next.href = "#all";
       next.textContent = "Every exercise solved";
     }
-  }
-
-  if (dueList && dueEmpty) {
-    dueList.replaceChildren(
-      ...due.map((i) => {
-        const li = document.createElement("li");
-        li.append(link(i));
-        return li;
-      }),
-    );
-    dueList.hidden = due.length === 0;
-    dueEmpty.textContent =
-      due.length === 0
-        ? "Nothing is due."
-        : `${due.length} ${due.length === 1 ? "exercise is" : "exercises are"} due. Solve ${due.length === 1 ? "it" : "them"} again to space out the next review.`;
   }
 
   if (summary) {

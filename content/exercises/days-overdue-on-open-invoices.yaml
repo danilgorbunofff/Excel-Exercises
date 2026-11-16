@@ -3,8 +3,8 @@ slug: days-overdue-on-open-invoices
 level: 2
 title: Days overdue on open invoices
 topic: interview-accounting
-updated: 2026-11-15
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: The dates are serial numbers and the report date is in D2. In E4, work out how many days INV-1043 is overdue, showing 0 when it is not yet due.
     rows:
@@ -23,6 +23,7 @@ screens:
       value: INV-1043 is due 14 days after the report date, so it is not overdue and shows 0.
       syntax: "Check the brackets and commas. MAX follows the pattern `=MAX(number1, number2)`."
       reference: Point at the report date in D2 and the due date in B4 rather than typing the serials.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =MAX(0,$D$2-B4)
       - =max(0,$d$2-b4)
@@ -37,6 +38,8 @@ screens:
       - { formula: "=MIN(0,$D$2-B4)", rule: value }
       - { formula: "=MAX(0,46112-B4)", rule: reference }
       - { formula: "=MAX(0,$D$2-B4", rule: syntax }
+    variants:
+      - { set: { D2: 46142 }, expected: 16 }
   - prompt: The days overdue are now in column E. In F2, total the amount on invoices more than 30 days overdue.
     rows:
       - [Invoice, Due date, Amount, Report date, Days overdue, Over 30 days]
@@ -54,6 +57,7 @@ screens:
       value: INV-1041, INV-1042 and INV-1044 are over 30 days late. Their amounts make 1250, 880 and 640, which is 2770.
       syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, sum_range)`."
       reference: The days run down E2:E5 and the amounts down C2:C5.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =SUMIF(E2:E5,">30",C2:C5)
       - =sumif(e2:e5,">30",c2:c5)
@@ -66,6 +70,8 @@ screens:
       - { formula: '=SUMIF(E2:E5,">30")', rule: value }
       - { formula: '=SUMIF(C2:C5,">30",E2:E5)', rule: value }
       - { formula: '=SUMIF(E2:E5,">30",C2:C5', rule: syntax }
+    variants:
+      - { set: { E2: 30 }, expected: 1520 }
 notes:
   summary: Days overdue is the report date minus the due date, floored at zero. A fixed report date in a cell keeps the sheet stable, where TODAY would change it every day.
   syntax: MAX(0,report_date-due_date), then SUMIF(days,">30",amounts)

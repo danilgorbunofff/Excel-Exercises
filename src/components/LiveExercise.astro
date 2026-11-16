@@ -2,6 +2,7 @@
 // Why this exists: a working exercise inside another page. The home page runs
 // the first exercise this way, and each function page ends with one.
 import { isLocked } from "../lib/access.ts";
+import { TIER_NAMES } from "../lib/daily.ts";
 import { exercisePath, LEVELS, nextAction, type Placed } from "../lib/exercises.ts";
 import ExerciseData from "./ExerciseData.astro";
 import HintLadder from "./HintLadder.astro";
@@ -16,11 +17,12 @@ interface Props {
   intro?: string;
   /** Left for the page's own script to start, as the daily page does. */
   defer?: boolean;
+  /** A daily-only task: no page of its own, and its number is its step of the week. */
+  daily?: boolean;
 }
-const { placed, heading, intro, defer = false } = Astro.props;
-// An embed would put a PRO answer in a free page. Only the daily page (defer)
-// shows a PRO exercise, built without its answers; daily.ts fetches them.
-const locked = isLocked(placed);
+const { placed, heading, intro, defer = false, daily = false } = Astro.props;
+// An embed would put a PRO answer in a free page. Daily tasks are always free.
+const locked = !daily && isLocked(placed);
 if (locked && !defer) {
   throw new Error(
     `${Astro.url.pathname} embeds ${placed.exercise.id}, a PRO exercise. Embed a free one.`,
@@ -57,11 +59,20 @@ const path = exercisePath(exercise.slug);
       </div>
     ))
   }
-  <p class="meta">
-    Exercise {number} of {total}, {LEVELS[exercise.level as 1 | 2 | 3].toLowerCase()}.
-    <span data-progress hidden></span>
-    <a href={path}>Open it on its own page</a> for notes on the function.
-  </p>
+  {
+    daily ? (
+      <p class="meta">
+        {TIER_NAMES[number]}: step {number} of {total} this week.
+        <span data-progress hidden></span>
+      </p>
+    ) : (
+      <p class="meta">
+        Exercise {number} of {total}, {LEVELS[exercise.level as 1 | 2 | 3].toLowerCase()}.
+        <span data-progress hidden></span>
+        <a href={path}>Open it on its own page</a> for notes on the function.
+      </p>
+    )
+  }
   <h3>Hints</h3>
   {exercise.screens.map((s, i) => <HintLadder screen={s} index={i} locked={locked} />)}
   <ExerciseData exercise={exercise} locked={locked} />

@@ -3,10 +3,10 @@ slug: wildcards-in-text-criteria
 level: 2
 title: Wildcards in text criteria
 topic: text-search
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In D2, count the North rows with a wildcard criterion.
+  - prompt: In D2, count the North rows with a wildcard criterion. Use COUNTIF.
     rows:
       - [Code, Region, Amount, Answer]
       - [AN-1042, North, 120, null]
@@ -42,7 +42,7 @@ screens:
       - { formula: '=COUNTIF(C2:C5,">100")', rule: value }
       - { formula: '=COUNTIF(B2:B5,"Nor*")/0', rule: value }
       - { formula: '=COUNTIF B2:B5,"Nor*"', rule: syntax }
-  - prompt: In D2, add the amounts of every code that fits the two-letter pattern with a wildcard.
+  - prompt: In D2, add the amounts of every code that fits the two-letter pattern with a wildcard. Use SUMIF.
     rows:
       - [Code, Region, Amount, Answer]
       - [AN-1042, North, 120, null]

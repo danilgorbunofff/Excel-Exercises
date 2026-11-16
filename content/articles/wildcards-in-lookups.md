@@ -4,6 +4,7 @@ title: Wildcards in lookups
 description: How to find a value when you know only part of it, in VLOOKUP, XLOOKUP, MATCH and COUNTIF.
 updated: 2026-11-16
 minutes: 4
+topic: lookups
 functions: [VLOOKUP, XLOOKUP, MATCH, COUNTIF, SUMIF]
 exercises: [vlookup-with-a-wildcard, wildcards-in-text-criteria, countif-with-wildcards]
 cover: "B-2??"

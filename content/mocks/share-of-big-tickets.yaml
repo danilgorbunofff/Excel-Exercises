@@ -1,0 +1,45 @@
+id: share-of-big-tickets
+slug: share-of-big-tickets
+level: 2
+title: Share of big tickets
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B12, show the share of tickets that took more than 48 hours to close, as a percentage rounded to one decimal place.
+    rows:
+      - [Ticket, Hours]
+      - [T1, 12]
+      - [T2, 60]
+      - [T3, 30]
+      - [T4, 49]
+      - [T5, 48]
+      - [T6, 72]
+      - [T7, 8]
+      - [T8, 96]
+      - [T9, 20]
+      - [T10, 55]
+      - [Over 48h, null]
+    answerCell: B12
+    expected: 50
+    variants:
+      - { set: { B3: 45 }, expected: 40 }
+      - { set: { B2: 60 }, expected: 60 }
+    answer: '=ROUND(COUNTIF(B2:B11,">48")/COUNT(B2:B11)*100,1)'
+    hints:
+      nudge: Count the tickets over 48 hours, then divide by all tickets. Exactly 48 is not over.
+      rule: 'COUNTIF with ">48" counts the slow ones; COUNT counts them all.'
+    misses:
+      value: 5 of 10 tickets took more than 48 hours, which is 50 per cent.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=ROUND(COUNTIF(B2:B11,">48")/COUNT(B2:B11)*100,1)'
+      - '=round(countif(b2:b11,">48")/count(b2:b11)*100,1)'
+      - '=ROUND(100*COUNTIF(B2:B11,">48")/COUNT(B2:B11),1)'
+      - '=ROUND(COUNTIF(B2:B11,">48")/ROWS(B2:B11)*100,1)'
+    reject:
+      - { formula: '=ROUND(COUNTIF(B2:B11,">=48")/COUNT(B2:B11)*100,1)', rule: value }
+      - { formula: '=COUNTIF(B2:B11,">48")', rule: value }
+      - { formula: '=ROUND(COUNTIF(B2:B11,">48")/COUNT(B2:B11)*100,1', rule: syntax }
+      - { formula: "=50", rule: reference }

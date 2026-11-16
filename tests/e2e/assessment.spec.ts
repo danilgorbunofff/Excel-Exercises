@@ -1,7 +1,7 @@
 // Why this exists: the mock assessment end to end in the built site. Nothing is
 // marked until Finish, the clock ends the attempt, a reload keeps it, PRO sets
 // stay locked without PRO, and a signed-in result is posted once.
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { expect, type Page, test } from "@playwright/test";
 import { parse } from "yaml";
 
@@ -16,12 +16,14 @@ interface SetFile {
   }[];
 }
 const sets = (parse(readFileSync("content/assessments.yaml", "utf8")) as SetFile).sets;
-/** The reference answer of each task in a set, from the exercise files. */
+/** The reference answer of each task in a set, from the exercise or mock task files. */
 function answersOf(slug: string): string[] {
   const set = sets.find((s) => s.slug === slug);
   return (set?.tasks ?? []).map((t) => {
     const { exercise, screen } = typeof t === "string" ? { exercise: t, screen: 0 } : t;
-    const file = parse(readFileSync(`content/exercises/${exercise}.yaml`, "utf8")) as {
+    const mock = `content/mocks/${exercise}.yaml`;
+    const path = existsSync(mock) ? mock : `content/exercises/${exercise}.yaml`;
+    const file = parse(readFileSync(path, "utf8")) as {
       screens: { answer: string }[];
     };
     return file.screens[screen]?.answer ?? "";
@@ -89,6 +91,15 @@ test("the sample is marked only at the end, with every miss explained", async ({
   await expect(page.locator("[data-by-function] a")).toHaveCount(2);
   await expect(page.locator("[data-save-note]")).toContainText("Not saved");
   expect(posts).toEqual([]);
+});
+
+test("a timed set's cover names each task, not the functions it needs", async ({ page }) => {
+  await page.goto("/mock-assessments/data-analyst/");
+  const items = page.locator(".a-list .a-item .fns");
+  await expect(items.nth(2)).toHaveText("Best-selling product");
+  await expect(page.locator(".a-list .a-item .fns a")).toHaveCount(0);
+  await page.goto(SAMPLE);
+  await expect(page.locator(".a-list .a-item .fns a").first()).toHaveText("SUM");
 });
 
 test("a reload keeps the answers and the clock", async ({ page }) => {
@@ -178,6 +189,58 @@ test("a PRO account takes a PRO set and the result is saved once", async ({ page
   expect(bodies[0]).not.toHaveProperty("results");
 });
 
+test("a PRO set's page holds none of its answers", async ({ request }) => {
+  for (const set of sets.filter((s) => s.slug !== "sample")) {
+    const html = await (await request.get(`/mock-assessments/${set.slug}/`)).text();
+    for (const answer of answersOf(set.slug)) {
+      const forms = [answer, JSON.stringify(answer).slice(1, -1).replaceAll("<", "\\u003c")];
+      for (const form of forms) expect(html, `${set.slug}: ${answer}`).not.toContain(form);
+    }
+    expect(html).not.toContain('"accept":');
+  }
+});
+
+test("after Finish, the review shows each PRO answer fetched from the server", async ({ page }) => {
+  await page.goto(PRO_SET);
+  await signIn(page, true);
+  await page.route("**/api/assessments/", (r) =>
+    r.request().method() === "GET"
+      ? r.fulfill({ json: [] })
+      : r.fulfill({
+          status: 201,
+          json: { saved: true, id: "11111111-2222-4333-8444-555555555555", score: 0, total: 10 },
+        }),
+  );
+  const fetched: string[] = [];
+  await page.route("**/api/exercises/*/", (r) => {
+    const slug = new URL(r.request().url()).pathname.split("/").at(-2) ?? "";
+    fetched.push(slug);
+    const mock = `content/mocks/${slug}.yaml`;
+    const file = parse(
+      readFileSync(existsSync(mock) ? mock : `content/exercises/${slug}.yaml`, "utf8"),
+    ) as {
+      screens: { answer: string }[];
+    };
+    return r.fulfill({ json: { answers: file.screens.map((s) => s.answer) } });
+  });
+  await page.reload();
+  await page.getByRole("button", { name: /^Start: \d+ minutes$/u }).click();
+  const answers = answersOf("office-essentials");
+  for (const i of answers.keys()) {
+    await input(page, i + 1).fill("=1");
+    await input(page, i + 1).press("Enter");
+  }
+  // Nothing is asked for until the attempt ends.
+  expect(fetched).toEqual([]);
+  await page.getByRole("button", { name: "Finish" }).click();
+  for (const [i, answer] of answers.entries()) {
+    const row = page.locator(`#answer-${i + 1}`);
+    // The first miss opens by itself; the others open on their button.
+    if (i > 0) await row.getByRole("button", { name: /Why it was missed/u }).click();
+    await expect(row).toContainText(`Answer: ${answer}`);
+  }
+});
+
 test("the assessment works from the keyboard alone", async ({ page }) => {
   await page.goto(SAMPLE);
   await page.getByRole("button", { name: /^Start: \d+ minutes$/u }).focus();
@@ -230,11 +293,18 @@ test("a blank task shows its answer when opened", async ({ page }) => {
 test("the index lists the assessments, and Your best only when signed in", async ({ page }) => {
   await page.goto("/mock-assessments/");
   const rows = page.locator(".sets > li");
-  await expect(rows).toHaveCount(4);
-  for (const name of ["Sample assessment", "Office essentials", "Data analyst", "Finance"])
+  await expect(rows).toHaveCount(6);
+  for (const name of [
+    "Sample assessment",
+    "Beginner",
+    "Intermediate",
+    "Office essentials",
+    "Data analyst",
+    "Finance",
+  ])
     await expect(page.getByRole("link", { name })).toBeVisible();
   await expect(page.getByRole("figure")).toHaveCount(0);
-  await expect(page.getByText("Your best:")).toHaveCount(4);
+  await expect(page.getByText("Your best:")).toHaveCount(6);
   for (const best of await page.getByText("Your best:").all()) await expect(best).toBeHidden();
 });
 

@@ -1,0 +1,37 @@
+id: pallets-needed
+slug: pallets-needed
+level: 2
+title: Pallets needed
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In D2, work out how many pallets are needed for all the boxes. A part-full pallet still counts.
+    rows:
+      - [Shipment, Boxes, Per pallet, Pallets]
+      - [SH-4, 1730, 48, null]
+    answerCell: D2
+    expected: 37
+    variants:
+      - set: { B2: 2370 }
+        expected: 50
+      - set: { C2: 66 }
+        expected: 27
+    answer: "=ROUNDUP(B2/C2,0)"
+    hints:
+      nudge: Divide the boxes by the pallet size, then round up.
+      rule: ROUNDUP(number, 0) always goes up to the next whole number.
+    misses:
+      value: 1730 boxes need 36.04 pallets, so 37.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=ROUNDUP(B2/C2,0)"
+      - "=roundup(b2/c2,0)"
+      - "=CEILING(B2/C2,1)"
+      - "=-INT(-B2/C2)"
+    reject:
+      - { formula: "=ROUND(B2/C2,0)", rule: value }
+      - { formula: "=ROUNDDOWN(B2/C2,0)", rule: value }
+      - { formula: "=ROUNDUP(B2/C2,0", rule: syntax }
+      - { formula: "=37", rule: reference }

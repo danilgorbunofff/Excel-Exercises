@@ -3,10 +3,10 @@ slug: lookup-functions-summary
 level: 2
 title: Lookup functions summary
 topic: lookups
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B7, return the product name for the SKU in B6, even though the name column sits left of the key.
+  - prompt: In B7, return the product name for the SKU in B6, even though the name column sits left of the key. Use XLOOKUP.
     rows:
       - [Product, SKU, On hand]
       - [Bracket, BX-210, 240]

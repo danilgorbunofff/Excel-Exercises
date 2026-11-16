@@ -1,0 +1,46 @@
+id: weekday-and-weekend-hours
+slug: weekday-and-weekend-hours
+level: 1
+tier: 2
+title: Weekday and weekend hours
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In C6, add up all the hours worked, on weekdays and at weekends.
+    rows:
+      - [Name, Weekday, Weekend]
+      - [Abi, 32, 6]
+      - [Bo, 28, 8]
+      - [Cal, 35, 0]
+      - [Dee, 30, 5]
+      - [Total, null, null]
+    answerCell: C6
+    expected: 144
+    variants:
+      - set: { B2: 44 }
+        expected: 156
+      - set: { C2: 9 }
+        expected: 147
+    answer: "=SUM(B2:C5)"
+    hints:
+      nudge: One range can cover both columns.
+      rule: "A range such as B2:C5 is a block: every cell from B2 across and down to C5."
+    misses:
+      value: All the hours add up to 144.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=SUM(B2:C5)"
+      - "=sum(b2:c5)"
+      - "=SUM(B2:B5,C2:C5)"
+      - "=SUM(B2:B5)+SUM(C2:C5)"
+    reject:
+      - formula: =SUM(B2:B5)
+        rule: value
+      - formula: =SUM(C2:C5)
+        rule: value
+      - formula: =SUM(B2:C5
+        rule: syntax
+      - formula: =144
+        rule: reference

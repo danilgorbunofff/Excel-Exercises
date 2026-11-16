@@ -4,6 +4,7 @@ title: COUNTIF and COUNTIFS with text, numbers, dates and blanks
 description: How to write the condition for each kind of value, and the cases that count wrong.
 updated: 2026-11-16
 minutes: 4
+topic: sums
 functions: [COUNTIF, COUNTIFS, COUNTBLANK, COUNTA]
 exercises: [count-paid-orders, countifs-several-conditions, count-over-a-limit, count-empty-cells]
 cover: "=COUNTIFS"

@@ -4,6 +4,7 @@ title: Rank, top N and percentile
 description: Find where a value stands in a list, pull the top five, and handle ties.
 updated: 2026-11-16
 minutes: 4
+topic: sums
 functions: [RANK.EQ, LARGE, SMALL, PERCENTILE.INC, PERCENTRANK.INC, SORT, TAKE, COUNTIF]
 exercises: [rank-a-list-without-sorting-it, large-and-small-the-nth-highest, median-the-middle-value]
 cover: "=RANK.EQ"

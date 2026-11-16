@@ -56,7 +56,7 @@ function asFormula(p: Element): Element | null {
   const kids = p.children.filter((c) => !isBlank(c));
   const [only] = kids;
   if (kids.length !== 1 || only?.type !== "element" || only.tagName !== "code") return null;
-  return el("div", { className: ["formula"] }, [
+  return el("div", { className: ["formula-line"] }, [
     el("span", { className: ["fx"], ariaHidden: "true" }, [{ type: "text", value: "fx" }]),
     only,
     el("button", { type: "button", className: ["copy"], ariaLabel: "Copy formula", dataCopy: "" }, [
@@ -73,7 +73,7 @@ function badgeStep(h: Element): void {
   if (!m) return;
   h.properties.className = ["step"];
   h.children = [
-    el("span", { className: ["badge"] }, [{ type: "text", value: m[1] ?? "" }]),
+    el("span", { className: ["step-num"] }, [{ type: "text", value: m[1] ?? "" }]),
     el("span", { className: ["visually-hidden"] }, [{ type: "text", value: m[2] ?? "" }]),
     // "Step 1: fix the date" reads as "[Step 1] Fix the date".
     { type: "text", value: capitalise(first.value.slice(m[0].length)) },

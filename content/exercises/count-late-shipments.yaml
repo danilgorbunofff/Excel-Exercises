@@ -3,10 +3,10 @@ slug: count-late-shipments
 level: 2
 title: Count late shipments
 topic: interview-data-analyst
-updated: 2026-11-15
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: Column D holds shipped minus promised, in days. In E2, count the orders that shipped late.
+  - prompt: Column D holds shipped minus promised, in days. In E2, count the orders that shipped late. Use COUNTIF.
     rows:
       - [Order, Promised, Shipped, Days late, Answer]
       - [SO-301, 46020, 46020, 0, null]
@@ -27,6 +27,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. COUNTIF follows the pattern `=COUNTIF(range, criteria)`."
       required-function: COUNT counts every number, early and on time included. COUNTIF counts only the late ones.
       reference: The days late run down D2:D7.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =COUNTIF(D2:D7,">0")
       - =countif(d2:d7,">0")
@@ -38,7 +39,9 @@ screens:
       - { formula: '=COUNTIF(C2:C7,">0")', rule: value }
       - { formula: "=COUNT(D2:D7)", rule: required-function }
       - { formula: '=COUNTIF(D2:D7,">0"', rule: syntax }
-  - prompt: In E2, show the share of all orders that shipped late.
+    variants:
+      - { set: { D2: 3 }, expected: 4 }
+  - prompt: In E2, show the share of all orders that shipped late. Use COUNTIF.
     rows:
       - [Order, Promised, Shipped, Days late, Answer]
       - [SO-301, 46020, 46020, 0, null]
@@ -59,6 +62,7 @@ screens:
       syntax: Check the brackets. COUNTIF and the count below it each need their own pair.
       required-function: Let COUNTIF count the late orders, so the share updates when the data changes.
       reference: Point at the data rather than typing the counts.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =COUNTIF(D2:D7,">0")/COUNTA(A2:A7)
       - =countif(d2:d7,">0")/counta(a2:a7)
@@ -70,7 +74,9 @@ screens:
       - { formula: '=COUNTIF(D2:D7,">0")/SUM(D2:D7)', rule: value }
       - { formula: '=COUNTIF(D2:D7,">0")/COUNTA(A1:A7)', rule: value }
       - { formula: '=COUNTIF(D2:D7,">0"/COUNTA(A2:A7)', rule: syntax }
-  - prompt: In E2, work out the average days late, counting only the orders that were late.
+    variants:
+      - { set: { D2: 3 }, expected: 0.6666666666666666 }
+  - prompt: In E2, work out the average days late, counting only the orders that were late. Use AVERAGEIF.
     rows:
       - [Order, Promised, Shipped, Days late, Answer]
       - [SO-301, 46020, 46020, 0, null]
@@ -91,6 +97,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. AVERAGEIF follows the pattern `=AVERAGEIF(range, criteria)`."
       required-function: A plain AVERAGE pulls in the on time and early orders, which drags the figure down.
       reference: The days late run down D2:D7.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =AVERAGEIF(D2:D7,">0")
       - =averageif(d2:d7,">0")
@@ -102,6 +109,8 @@ screens:
       - { formula: '=AVERAGEIF(D2:D7,"<0")', rule: value }
       - { formula: '=AVERAGEIF(C2:C7,">0")', rule: value }
       - { formula: '=AVERAGEIF(D2:D7,">0"', rule: syntax }
+    variants:
+      - { set: { D2: 3 }, expected: 3.75 }
 notes:
   summary: Late shipments are counted from a days late column, where above zero is late, zero is on time and below zero is early. The count, the share and the average lateness are the usual first questions.
   syntax: COUNTIF(days,">0"), COUNTIF(days,">0")/COUNTA(orders), AVERAGEIF(days,">0")

@@ -1,0 +1,36 @@
+id: mileage-claim
+slug: mileage-claim
+level: 2
+title: Mileage claim
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: "In B4, work out the mileage claim: miles times the rate per mile, rounded to two decimal places."
+    rows:
+      - [Trip, Leeds]
+      - [Miles, 137]
+      - [Rate, 0.45]
+      - [Claim, null]
+    answerCell: B4
+    expected: 61.65
+    variants:
+      - set: { B2: 188 }
+        expected: 84.6
+    answer: "=ROUND(B2*B3,2)"
+    hints:
+      nudge: Multiply, then round to pence.
+      rule: ROUND(number, 2) keeps two decimal places.
+    misses:
+      value: 137 miles at 0.45 is 61.65.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=ROUND(B2*B3,2)"
+      - "=round(b2*b3,2)"
+      - "=ROUND(B3*B2,2)"
+    reject:
+      - { formula: "=ROUND(B2*B3,0)", rule: value }
+      - { formula: "=ROUND(B2+B3,2)", rule: value }
+      - { formula: "=ROUND(B2*B3,2", rule: syntax }
+      - { formula: "=61.65", rule: reference }

@@ -32,6 +32,9 @@ groups:
   - slug: dates
     title: Work with dates
     summary: Build dates and count the days, months or years between them.
+  - slug: arrays
+    title: Return a whole list
+    summary: Filter, de-duplicate and sort a table in one formula, and name its steps.
 functions:
   - name: SUM
     group: summarise
@@ -333,3 +336,33 @@ functions:
     category: Date and time
     summary: Counts whole days, months or years between two dates.
     syntax: =DATEDIF(start_date, end_date, unit)
+  - name: FILTER
+    group: arrays
+    category: Lookup and reference
+    summary: Returns the rows of a range that pass a test.
+    syntax: =FILTER(array, include, [if_empty])
+  - name: UNIQUE
+    group: arrays
+    category: Lookup and reference
+    summary: Returns each distinct value of a range once.
+    syntax: =UNIQUE(array, [by_col], [exactly_once])
+  - name: SORT
+    group: arrays
+    category: Lookup and reference
+    summary: Sorts the rows of a range by one of its columns.
+    syntax: =SORT(array, [sort_index], [sort_order], [by_col])
+  - name: SORTBY
+    group: arrays
+    category: Lookup and reference
+    summary: Sorts a range by the values in another range.
+    syntax: =SORTBY(array, by_array1, [sort_order1], ...)
+  - name: TAKE
+    group: arrays
+    category: Lookup and reference
+    summary: Keeps the first or last rows or columns of a range.
+    syntax: =TAKE(array, rows, [columns])
+  - name: LET
+    group: arrays
+    category: Logical
+    summary: Names the steps of a formula so each is worked out once.
+    syntax: =LET(name1, value1, [name2, value2, ...], calculation)

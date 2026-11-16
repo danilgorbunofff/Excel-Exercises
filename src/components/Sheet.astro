@@ -328,6 +328,16 @@ const kind = (v: unknown) =>
     background: var(--correct-tint);
     box-shadow: inset 0 0 0 2px var(--correct);
   }
+  /* Cells a spilled result filled, as FILTER or SORT fills them in Excel. */
+  td:global(.spilled) {
+    box-shadow: inset 0 0 0 1px var(--primary);
+  }
+  td:global(.spilled-correct) {
+    background: var(--correct-tint);
+  }
+  td:global(.spilled-miss) {
+    background: var(--miss-tint);
+  }
   .pad-head {
     background: var(--header);
     color: var(--muted);

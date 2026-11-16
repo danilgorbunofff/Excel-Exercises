@@ -3,10 +3,10 @@ slug: department-cost-roll-up
 level: 2
 title: Department cost roll up
 topic: interview-fpa
-updated: 2026-11-15
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In D2, total the software cost for the Marketing department.
+  - prompt: In D2, total the software cost for the Marketing department. Use SUMIFS.
     rows:
       - [Department, Cost type, Amount, Answer]
       - [Marketing, Salaries, 18000, null]
@@ -39,7 +39,7 @@ screens:
       - { formula: '=SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Salaries")', rule: value }
       - { formula: "=2400+900", rule: required-function }
       - { formula: '=SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Software"', rule: syntax }
-  - prompt: In D2, show the share of Marketing's total cost that is salaries, rounded to two decimal places.
+  - prompt: In D2, show the share of Marketing's total cost that is salaries, rounded to two decimal places. Use SUMIFS and ROUND.
     rows:
       - [Department, Cost type, Amount, Answer]
       - [Marketing, Salaries, 18000, null]
@@ -60,6 +60,7 @@ screens:
       syntax: "Check the brackets and commas. ROUND follows the pattern `=ROUND(number, num_digits)`."
       required-function: Both totals come from SUMIFS, and the share is rounded with ROUND.
       reference: The amounts run down C2:C7.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =ROUND(SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Salaries")/SUMIFS(C2:C7,A2:A7,"Marketing"),2)
       - =round(sumifs(c2:c7,a2:a7,"marketing",b2:b7,"salaries")/sumifs(c2:c7,a2:a7,"marketing"),2)
@@ -85,6 +86,8 @@ screens:
           formula: '=ROUND(SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Salaries")/SUMIFS(C2:C7,A2:A7,"Marketing"),2',
           rule: syntax,
         }
+    variants:
+      - { set: { B5: Salaries }, expected: 0.85 }
 notes:
   summary: A roll up totals the lines that share a department and a cost type. Planning teams build these to see where the money goes before they set next year's budget.
   syntax: SUMIFS(amounts,departments,"Marketing",types,"Software")

@@ -3,8 +3,8 @@ slug: index-and-match-summary
 level: 2
 title: INDEX and MATCH summary
 topic: index-match
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B6, return the commission rate for the units in B5 from the band table.
     rows:
@@ -26,6 +26,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
       required-function: INDEX turns the position into the rate sitting on that row of B2:B4.
       reference: Take the units from B5 so a new figure changes the rate without an edit to the formula.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =INDEX(B2:B4,MATCH(B5,A2:A4,1))
       - =index(b2:b4,match(b5,a2:a4,1))
@@ -39,6 +40,8 @@ screens:
       - { formula: "=INDEX(B2:B4,MATCH(B5,A2:A4,0))", rule: value }
       - { formula: "=INDEX(B2:B4,MATCH(B5,A2:A4,1)+1)", rule: value }
       - { formula: "=INDEX(B2:B4,MATCH(B5,A2:A4,1))/0", rule: reference }
+    variants:
+      - { set: { B5: 206 }, expected: 0.06 }
 notes:
   summary: MATCH with 1 as its last argument finds the band a value falls into, in a column of band starts sorted ascending. INDEX then returns the value on that row.
   syntax: INDEX(rates, MATCH(units, bands, 1))

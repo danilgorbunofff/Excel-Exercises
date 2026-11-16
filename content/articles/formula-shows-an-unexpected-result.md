@@ -4,6 +4,7 @@ title: Why a formula shows a result you did not expect
 description: The quiet causes of wrong results, from calculation mode to tiny decimal differences, and how to check each one.
 updated: 2026-11-16
 minutes: 4
+topic: habits
 functions: [ROUND, ISTEXT, SUBTOTAL, SUM]
 exercises: [debug-a-total-that-skips-a-row, formula-audit-fix-five-broken-sheets, true-and-false-what-a-comparison-returns]
 cover: "=0.1+0.2"

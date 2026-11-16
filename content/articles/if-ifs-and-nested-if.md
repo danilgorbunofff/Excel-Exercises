@@ -4,6 +4,7 @@ title: "IF, IFS and nested IF: when to stop nesting"
 description: How to write a decision with two or more outcomes, and when a lookup table is the better tool.
 updated: 2026-11-16
 minutes: 4
+topic: logic
 functions: [IF, IFS, SWITCH, XLOOKUP]
 exercises: [pass-or-fail, ifs-more-than-two-outcomes, switch-match-a-list-of-values, sales-bonus]
 cover: "=IFS("

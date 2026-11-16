@@ -1,0 +1,51 @@
+id: margin-for-one-region
+slug: margin-for-one-region
+level: 3
+tier: 7
+title: Margin for one region
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In G2, work out the gross margin of the region in F2 as a percentage, rounded to one decimal place.
+    rows:
+      - [Region, Revenue, Cost, null, null, Region, "Margin %"]
+      - [West, 1800, 1260, null, null, West, null]
+      - [East, 2400, 1650, null, null, null, null]
+      - [West, 950, 700, null, null, null, null]
+      - [North, 1300, 910, null, null, null, null]
+      - [West, 2100, 1380, null, null, null, null]
+      - [East, 600, 480, null, null, null, null]
+      - [North, 1750, 1190, null, null, null, null]
+      - [West, 1150, 905, null, null, null, null]
+    answerCell: G2
+    expected: 29.3
+    variants:
+      - set: { A2: East }
+        expected: 28.9
+      - set: { B2: 2466 }
+        expected: 36.3
+    answer: "=LET(rev,SUMIF(A2:A9,F2,B2:B9),cost,SUMIF(A2:A9,F2,C2:C9),ROUND((rev-cost)/rev*100,1))"
+    hints:
+      nudge: Total the region's revenue and cost first. Margin is the profit divided by the revenue.
+      rule: Gross margin is (revenue minus cost) divided by revenue. LET can name the two totals so each is worked out once.
+    misses:
+      value: West's revenue is 6000 and its cost 4245, so the margin is 29.3 per cent.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=LET(rev,SUMIF(A2:A9,F2,B2:B9),cost,SUMIF(A2:A9,F2,C2:C9),ROUND((rev-cost)/rev*100,1))"
+      - "=let(rev,sumif(a2:a9,f2,b2:b9),cost,sumif(a2:a9,f2,c2:c9),round((rev-cost)/rev*100,1))"
+      - "=ROUND((SUMIF(A2:A9,F2,B2:B9)-SUMIF(A2:A9,F2,C2:C9))/SUMIF(A2:A9,F2,B2:B9)*100,1)"
+      - "=ROUND((1-SUMIF(A2:A9,F2,C2:C9)/SUMIF(A2:A9,F2,B2:B9))*100,1)"
+    reject:
+      - { formula: "=ROUND((SUM(B2:B9)-SUM(C2:C9))/SUM(B2:B9)*100,1)", rule: value }
+      - {
+          formula: "=LET(rev,SUMIF(A2:A9,F2,B2:B9),cost,SUMIF(A2:A9,F2,C2:C9),ROUND((rev-cost)/cost*100,1))",
+          rule: value,
+        }
+      - {
+          formula: "=LET(rev,SUMIF(A2:A9,F2,B2:B9),cost,SUMIF(A2:A9,F2,C2:C9),ROUND((rev-cost)/rev*100,1)",
+          rule: syntax,
+        }
+      - { formula: "=29.3", rule: reference }

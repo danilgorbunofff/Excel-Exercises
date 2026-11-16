@@ -1,36 +1,28 @@
 // Why this exists: hands the answers of a PRO exercise to a visitor with PRO,
-// or to anyone on the Saturday it is the daily exercise (?day=YYYY-MM-DD).
-// The static page leaves them out; see locked-exercise.ts and daily.ts.
+// and those of a held-out mock task to one with PRO who has finished a set that
+// holds it. The static pages leave them out; see locked-exercise.ts, and
+// assessment.ts, which asks only once the attempt is saved.
+
+import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
 import { hasPro, isLocked } from "../../../lib/access.ts";
-import { dailyPool, isDay, isProDay, pickFor } from "../../../lib/daily.ts";
+import { loadAssessments } from "../../../lib/assessments.ts";
 import { placedExercises } from "../../../lib/exercises.ts";
-import { addDays } from "../../../scripts/progress.ts";
 import { json } from "../../../server/http.ts";
 import { currentUser } from "../../../server/supabase.ts";
 
 export const prerender = false;
 
-/** True when the slug is the PRO daily of `day`, and `day` is today somewhere on Earth. */
-function openAsDaily(
-  day: string | null,
-  slug: string,
-  placed: Parameters<typeof dailyPool>[0],
-): boolean {
-  if (!isDay(day) || !isProDay(day)) return false;
-  const todayUtc = new Date().toISOString().slice(0, 10);
-  if (day < addDays(todayUtc, -1) || day > addDays(todayUtc, 1)) return false;
-  return pickFor(day, dailyPool(placed))?.slug === slug;
-}
-
 export const GET: APIRoute = async (ctx) => {
   const all = await placedExercises();
   const slug = ctx.params["slug"] ?? "";
   const placed = all.find((p) => p.exercise.slug === slug);
-  if (!placed) return json({ error: "not found" }, 404);
-  const answers = placed.exercise.screens.map((s) => s.answer);
-  if (!isLocked(placed)) return json({ answers });
-  if (openAsDaily(ctx.url.searchParams.get("day"), slug, all)) return json({ answers });
+  const mock = placed
+    ? undefined
+    : (await getCollection("mocks")).find((e) => e.data.slug === slug);
+  if (!placed && !mock) return json({ error: "not found" }, 404);
+  const answers = (placed?.exercise ?? mock?.data)?.screens.map((s) => s.answer) ?? [];
+  if (placed && !isLocked(placed)) return json({ answers });
 
   const { supabase, user } = await currentUser(ctx);
   if (!user) return json({ error: "signed out" }, 401);
@@ -40,5 +32,19 @@ export const GET: APIRoute = async (ctx) => {
     .eq("id", user.id)
     .maybeSingle();
   if (!hasPro(profile)) return json({ error: "PRO needed" }, 403);
+  if (mock) {
+    // A held-out task's answers come only after a set that holds it is finished
+    // and saved, so a timed attempt cannot read them while it runs.
+    const sets = loadAssessments()
+      .sets.filter((s) => s.tasks.some((t) => t.exercise === mock.data.id))
+      .map((s) => s.slug);
+    const { data: done } = await supabase
+      .from("assessment_attempts")
+      .select("id")
+      .eq("user_id", user.id)
+      .in("assessment", sets)
+      .limit(1);
+    if (!done?.length) return json({ error: "finish the assessment first" }, 403);
+  }
   return json({ answers });
 };

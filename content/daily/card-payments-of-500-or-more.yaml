@@ -1,0 +1,61 @@
+id: card-payments-of-500-or-more
+slug: card-payments-of-500-or-more
+level: 3
+tier: 7
+title: Card payments of 500 or more
+updated: 2026-11-16
+checkedInExcel: null
+screens:
+  - prompt: In F2, list the payment numbers paid by Card for 500 or more. Some amounts came in as text.
+    rows:
+      - [Payment, Method, Amount, null, null, null]
+      - [Q-01, Card, 720, null, null, null]
+      - [Q-02, Cash, 940, null, null, null]
+      - [Q-03, Card, "480", null, null, null]
+      - [Q-04, Card, "1,050", null, null, null]
+      - [Q-05, Transfer, 600, null, null, null]
+      - [Q-06, Card, 499, null, null, null]
+      - [Q-07, Card, "500", null, null, null]
+      - [Q-08, Cash, 120, null, null, null]
+      - [Q-09, Card, 830, null, null, null]
+      - [Q-10, Transfer, "2,400", null, null, null]
+      - [Q-11, Card, 60, null, null, null]
+      - [Q-12, Card, 515, null, null, null]
+    answerCell: F2
+    expected:
+      - [Q-01]
+      - [Q-04]
+      - [Q-07]
+      - [Q-09]
+      - [Q-12]
+    variants:
+      - set: { A2: Q-02 }
+        expected:
+          - [Q-02]
+          - [Q-04]
+          - [Q-07]
+          - [Q-09]
+          - [Q-12]
+      - set: { B2: Cash }
+        expected:
+          - [Q-04]
+          - [Q-07]
+          - [Q-09]
+          - [Q-12]
+    answer: '=FILTER(A2:A13,(B2:B13="Card")*(--C2:C13>=500))'
+    hints:
+      nudge: Two tests on each row, and the amounts must be real numbers before you compare them.
+      rule: Multiply two tests for AND. Text ranks above every number, so turn the amounts into numbers with -- before the test.
+    misses:
+      value: "Five Card payments reach 500: Q-01, Q-04, Q-07, Q-09 and Q-12. Q-03 is text for 480, so it is not one of them."
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=FILTER(A2:A13,(B2:B13="Card")*(--C2:C13>=500))'
+      - '=filter(a2:a13,(b2:b13="Card")*(--c2:c13>=500))'
+      - '=FILTER(A2:A13,(--C2:C13>=500)*(B2:B13="Card"))'
+      - '=FILTER(A2:A13,(B2:B13="Card")*(C2:C13*1>=500))'
+    reject:
+      - { formula: '=FILTER(A2:A13,(B2:B13="Card")*(C2:C13>=500))', rule: value }
+      - { formula: '=FILTER(A2:A13,(B2:B13="Card")+(--C2:C13>=500))', rule: value }
+      - { formula: '=FILTER(A2:A13,(B2:B13="Card")*(--C2:C13>=500)', rule: syntax }

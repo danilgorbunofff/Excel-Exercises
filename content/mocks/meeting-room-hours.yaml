@@ -1,0 +1,39 @@
+id: meeting-room-hours
+slug: meeting-room-hours
+level: 1
+title: Meeting room hours
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B6, add up the hours the meeting rooms were booked this week.
+    rows:
+      - [Room, Hours]
+      - [Oak, 14]
+      - [Elm, 9]
+      - [Ash, 17]
+      - [Fir, 6]
+      - [Total, null]
+    answerCell: B6
+    expected: 46
+    variants:
+      - set: { B2: 19 }
+        expected: 51
+    answer: "=SUM(B2:B5)"
+    hints:
+      nudge: Add the hours of all four rooms.
+      rule: SUM adds every number in a range, written as first cell, colon, last cell.
+    misses:
+      value: The four rooms add up to 46 hours.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=SUM(B2:B5)"
+      - "=sum(b2:b5)"
+      - "=B2+B3+B4+B5"
+      - "=SUM(B2:B3,B4:B5)"
+    reject:
+      - { formula: "=SUM(B2:B4)", rule: value }
+      - { formula: "=SUM(B3:B5)", rule: value }
+      - { formula: "=SUM(B2:B5", rule: syntax }
+      - { formula: "=46", rule: reference }

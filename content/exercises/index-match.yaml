@@ -1,10 +1,10 @@
 id: index-match
 slug: index-match
-level: 3
+level: 2
 title: "INDEX + MATCH: lookup either way"
 topic: index-match
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In E3, return the salary for the ID in D3 with INDEX and MATCH instead of VLOOKUP.
     rows:
@@ -16,12 +16,17 @@ screens:
       - [E-105, Eli, 49500, null, null]
     answerCell: E3
     expected: 88000
+    variants:
+      - { set: { C4: 120560 }, expected: 120560 }
+      - { set: { A2: E-103 }, expected: 61500 }
+      - { set: { D3: E-105 }, expected: 49500 }
     answer: =INDEX(C2:C6,MATCH(D3,A2:A6,0))
     requiredFunctions: [INDEX, MATCH]
     hints:
       nudge: "Let MATCH find which row the ID is on, then let INDEX read the salary from that row."
       rule: "MATCH with a match type of 0 returns the position of a value in the search column. INDEX then returns the item at that position in the return column."
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: 88000 is Cy's salary, on row 4 of the sheet and third in C2:C6. Check which column INDEX reads and which one MATCH searches.
       syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
       required-function: INDEX needs the salaries in C2:C6 and a row number. On its own it has no way to know which row you want.

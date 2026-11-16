@@ -1,0 +1,46 @@
+id: total-with-text-amounts
+slug: total-with-text-amounts
+level: 3
+tier: 6
+title: Total with text amounts
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B10, add up every payment. Some came in from a bank file as text.
+    rows:
+      - [Payment, Amount]
+      - [P-1, 120]
+      - [P-2, "85"]
+      - [P-3, 240]
+      - [P-4, "310"]
+      - [P-5, 95]
+      - [P-6, 60]
+      - [P-7, "45"]
+      - [P-8, 150]
+      - [Total, null]
+    answerCell: B10
+    expected: 1105
+    variants:
+      - set: { B2: 164 }
+        expected: 1149
+    answer: "=SUMPRODUCT(--B2:B9)"
+    hints:
+      nudge: Three of the amounts sit to the left in their cells. SUM skips them.
+      rule: SUM ignores numbers stored as text. Turn the whole range into numbers first with -- or *1, then add.
+    misses:
+      value: With the text amounts counted, the payments add up to 1105. SUM alone gives 665.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=SUMPRODUCT(--B2:B9)"
+      - "=sumproduct(--b2:b9)"
+      - "=SUM(B2:B9*1)"
+      - "=SUMPRODUCT(B2:B9*1)"
+      - "=SUM(--B2:B9)"
+      - "=SUM(B2:B9+0)"
+    reject:
+      - { formula: "=SUM(B2:B9)", rule: value }
+      - { formula: "=SUMPRODUCT(--B2:B8)", rule: value }
+      - { formula: "=SUMPRODUCT(--B2:B9", rule: syntax }
+      - { formula: "=1105", rule: reference }

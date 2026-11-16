@@ -19,19 +19,19 @@ const run = (children: Root["children"]) => {
 describe("shapeArticle", () => {
   it("turns a paragraph that is one formula into a formula bar", () => {
     const html = run([e("p", [e("code", [t("=SUM(A1:A3)")])])]);
-    expect(html).toContain('<div class="formula">');
+    expect(html).toContain('<div class="formula-line">');
     expect(html).toContain("<code>=SUM(A1:A3)</code>");
     expect(html).toContain('aria-label="Copy formula"');
   });
 
   it("leaves code inside a sentence alone", () => {
     const html = run([e("p", [t("Use "), e("code", [t("=A1")]), t(" here.")])]);
-    expect(html).not.toContain("formula");
+    expect(html).not.toContain("formula-line");
   });
 
   it("puts a numbered heading's number in a badge and keeps its text", () => {
     const html = run([e("h2", [t("Step 2: days overdue")])]);
-    expect(html).toContain('<span class="badge">Step 2</span>');
+    expect(html).toContain('<span class="step-num">Step 2</span>');
     expect(html.replace(/<[^>]+>/g, "")).toBe("Step 2: Days overdue");
   });
 

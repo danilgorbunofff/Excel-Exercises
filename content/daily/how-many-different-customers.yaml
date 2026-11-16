@@ -1,0 +1,46 @@
+id: how-many-different-customers
+slug: how-many-different-customers
+level: 3
+tier: 6
+title: How many different customers
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In E2, count how many different customers placed orders.
+    rows:
+      - [Order, Customer, Amount, null, null]
+      - [501, Acme, 230, null, null]
+      - [502, Brio, 180, null, null]
+      - [503, Acme, 95, null, null]
+      - [504, Cobb, 410, null, null]
+      - [505, Dart, 120, null, null]
+      - [506, brio, 300, null, null]
+      - [507, Elm, 75, null, null]
+      - [508, Cobb, 260, null, null]
+      - [509, Acme, 140, null, null]
+      - [510, Fern, 330, null, null]
+      - [511, Dart, 215, null, null]
+      - [512, Gale, 90, null, null]
+    answerCell: E2
+    expected: 7
+    variants:
+      - { set: { B8: Acme }, expected: 6 }
+      - { set: { B2: Elm, B8: Acme }, expected: 7 }
+    answer: "=COUNTA(UNIQUE(B2:B13))"
+    hints:
+      nudge: Make a list with each customer once, then count it. Brio and brio are the same customer.
+      rule: UNIQUE returns each value once, ignoring case. COUNTA or ROWS counts the list it returns.
+    misses:
+      value: "There are 7 different customers: Acme, Brio, Cobb, Dart, Elm, Fern and Gale."
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=COUNTA(UNIQUE(B2:B13))"
+      - "=counta(unique(b2:b13))"
+      - "=ROWS(UNIQUE(B2:B13))"
+    reject:
+      - { formula: "=COUNTA(B2:B13)", rule: value }
+      - { formula: "=COUNTA(UNIQUE(B2:B13,FALSE,TRUE))", rule: value }
+      - { formula: "=COUNTA(UNIQUE(B2:B13)", rule: syntax }
+      - { formula: "=7", rule: reference }

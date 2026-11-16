@@ -3,8 +3,9 @@
 // days, after checking each one is real, not in the future and holds that
 // day's exercise. The browser merges before it sends.
 import type { APIRoute } from "astro";
-import { cleanDailySolves, dailyPool } from "../../lib/daily.ts";
-import { placedExercises } from "../../lib/exercises.ts";
+import { cleanDailySolves, ladderPool } from "../../lib/daily.ts";
+import { LEGACY_POOL } from "../../lib/daily-legacy.ts";
+import { dailyTasks } from "../../lib/exercises.ts";
 import { json } from "../../server/http.ts";
 import { currentUser } from "../../server/supabase.ts";
 
@@ -36,7 +37,12 @@ export const POST: APIRoute = async (ctx) => {
     // Not JSON: cleanDailySolves rejects it below.
   }
   const todayUtc = new Date().toISOString().slice(0, 10);
-  const solves = cleanDailySolves(body, dailyPool(await placedExercises()), todayUtc);
+  const pools = {
+    ladder: ladderPool((await dailyTasks()).map((t) => ({ ...t.exercise, tier: t.tier }))),
+    // Frozen: the live track pool has changed since the legacy pick ran.
+    legacy: LEGACY_POOL,
+  };
+  const solves = cleanDailySolves(body, pools, todayUtc);
   if (!solves) return json({ error: "not valid daily solves" }, 400);
   // A day already saved, from this or another device, is left as it is.
   const { error } = await supabase.from("daily_solves").upsert(

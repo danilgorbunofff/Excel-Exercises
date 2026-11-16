@@ -1,0 +1,35 @@
+id: pass-or-resit
+slug: pass-or-resit
+level: 1
+title: Pass or resit
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In C2, show Pass when the score reaches the pass mark in E2, otherwise Resit.
+    rows:
+      - [Name, Score, Result, null, Pass mark]
+      - [Ola, 58, null, null, 60]
+    answerCell: C2
+    expected: Resit
+    variants:
+      - { set: { B2: 79 }, expected: Pass }
+      - { set: { E2: 45 }, expected: Pass }
+      - { set: { B2: 60 }, expected: Pass }
+    answer: '=IF(B2>=E2,"Pass","Resit")'
+    hints:
+      nudge: Compare the score with the pass mark cell.
+      rule: IF(test, if true, if false). Point at the pass mark, so it can change.
+    misses:
+      value: 58 is under the pass mark of 60, so the result is Resit.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=IF(B2>=E2,"Pass","Resit")'
+      - '=if(b2>=e2,"Pass","Resit")'
+      - '=IF(B2<E2,"Resit","Pass")'
+    reject:
+      - { formula: '=IF(B2>E2,"Resit","Pass")', rule: value }
+      - { formula: '=IF(B2>=50,"Pass","Resit")', rule: value }
+      - { formula: '=IF(B2>=E2,"Pass","Resit"', rule: syntax }
+      - { formula: '="Resit"', rule: reference }

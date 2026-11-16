@@ -1,0 +1,40 @@
+id: average-customer-rating
+slug: average-customer-rating
+level: 1
+title: Average customer rating
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B8, find the average customer rating, rounded to one decimal place.
+    rows:
+      - [Review, Stars]
+      - [R1, 4]
+      - [R2, 5]
+      - [R3, 3]
+      - [R4, 4]
+      - [R5, 5]
+      - [R6, 4]
+      - [Average, null]
+    answerCell: B8
+    expected: 4.2
+    variants:
+      - { set: { B2: 7 }, expected: 4.7 }
+      - { set: { B2: 5 }, expected: 4.3 }
+    answer: "=ROUND(AVERAGE(B2:B7),1)"
+    hints:
+      nudge: Take the average, then round it.
+      rule: Put AVERAGE inside ROUND. The last argument of ROUND is the number of decimal places.
+    misses:
+      value: The ratings average 4.1667, which rounds to 4.2.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=ROUND(AVERAGE(B2:B7),1)"
+      - "=round(average(b2:b7),1)"
+      - "=ROUND(SUM(B2:B7)/COUNT(B2:B7),1)"
+    reject:
+      - { formula: "=AVERAGE(B2:B7)", rule: value }
+      - { formula: "=ROUND(AVERAGE(B2:B7),0)", rule: value }
+      - { formula: "=ROUND(AVERAGE(B2:B7),1", rule: syntax }
+      - { formula: "=4.2", rule: reference }

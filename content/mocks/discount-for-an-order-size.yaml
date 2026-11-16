@@ -1,0 +1,40 @@
+id: discount-for-an-order-size
+slug: discount-for-an-order-size
+level: 2
+title: Discount for an order size
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In C2, find the discount rate for the quantity in B2 from the band table. Each band starts at the quantity shown.
+    rows:
+      - [Order, Qty, Discount, null, From qty, Rate]
+      - [Q-7, 140, null, null, 0, 0]
+      - [null, null, null, null, 50, 0.05]
+      - [null, null, null, null, 100, 0.08]
+      - [null, null, null, null, 250, 0.12]
+    answerCell: C2
+    expected: 0.08
+    variants:
+      - { set: { B2: 281 }, expected: 0.12 }
+      - { set: { E4: 201 }, expected: 0.05 }
+      - { set: { B2: 2 }, expected: 0 }
+    answer: "=VLOOKUP(B2,E2:F5,2,TRUE)"
+    hints:
+      nudge: 140 is not in the table. Find the band it falls in.
+      rule: An approximate match (TRUE) finds the largest band start that is not above the quantity.
+    misses:
+      value: 140 falls in the band from 100, so the rate is 0.08.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=VLOOKUP(B2,E2:F5,2,TRUE)"
+      - "=vlookup(b2,e2:f5,2,true)"
+      - "=VLOOKUP(B2,E2:F5,2)"
+      - "=INDEX(F2:F5,MATCH(B2,E2:E5,1))"
+      - "=XLOOKUP(B2,E2:E5,F2:F5,,-1)"
+    reject:
+      - { formula: "=VLOOKUP(B2,E2:F5,2,FALSE)", rule: value }
+      - { formula: "=VLOOKUP(B2,E2:F5,1,TRUE)", rule: value }
+      - { formula: "=VLOOKUP(B2,E2:F5,2,TRUE", rule: syntax }
+      - { formula: "=0.08", rule: reference }

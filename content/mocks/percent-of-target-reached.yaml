@@ -1,0 +1,36 @@
+id: percent-of-target-reached
+slug: percent-of-target-reached
+level: 2
+title: Percent of target reached
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In D2, show how much of the target has been reached, as a whole percentage such as 85.
+    rows:
+      - [Rep, Sales, Target, Reached]
+      - [Kim, 41300, 48000, null]
+    answerCell: D2
+    expected: 86
+    variants:
+      - set: { B2: 56581 }
+        expected: 118
+      - set: { C2: 65760 }
+        expected: 63
+    answer: "=ROUND(B2/C2*100,0)"
+    hints:
+      nudge: Divide the sales by the target, then make it a whole percentage.
+      rule: Sales divided by target, times 100, rounded to no decimal places.
+    misses:
+      value: 41300 of 48000 is 86 per cent.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=ROUND(B2/C2*100,0)"
+      - "=round(b2/c2*100,0)"
+      - "=ROUND(100*B2/C2,0)"
+    reject:
+      - { formula: "=ROUND(C2/B2*100,0)", rule: value }
+      - { formula: "=ROUND(B2/C2,0)", rule: value }
+      - { formula: "=ROUND(B2/C2*100,0", rule: syntax }
+      - { formula: "=86", rule: reference }

@@ -1,12 +1,12 @@
 id: a-monthly-close-checklist-in-formulas
 slug: a-monthly-close-checklist-in-formulas
-level: 3
+level: 2
 title: A monthly close checklist in formulas
 topic: models
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In C2, flag the first reconciliation ready when its variance is zero and check otherwise.
+  - prompt: In C2, flag the first reconciliation ready when its variance is zero and check otherwise. Use IF.
     rows:
       - [Check, Variance, Status]
       - [bank, 0, null]
@@ -39,7 +39,7 @@ screens:
       - { formula: '=IF(B3=0,"ready","check")', rule: value }
       - { formula: '=IF(B2/0=0,"ready","check")', rule: reference }
       - { formula: '=IF B2=0,"ready","check"', rule: syntax }
-  - prompt: In C2, count the reconciliations whose variance is not zero. The count goes in the Status column.
+  - prompt: In C2, count the reconciliations whose variance is not zero. The count goes in the Status column. Use COUNTIF.
     rows:
       - [Check, Variance, Status]
       - [bank, 0, null]
@@ -58,6 +58,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. COUNTIF follows the pattern `=COUNTIF(range, criteria)`."
       required-function: Counting rows that meet a condition is what COUNTIF does.
       reference: The variances run down B2:B5.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =COUNTIF(B2:B5,"<>0")
       - =countif(b2:b5,"<>0")
@@ -73,6 +74,8 @@ screens:
       - { formula: '=COUNTIF(C2:C5,"<>0")', rule: reference }
       - { formula: '=COUNTIF(B2:B5,"<>0")/0', rule: reference }
       - { formula: '=COUNTIF B2:B5,"<>0"', rule: syntax }
+    variants:
+      - { set: { B2: 12.5, B5: 12.5 }, expected: 4 }
 notes:
   summary: IF tests a condition and returns one value when it is true and another when it is false, so a checklist row can answer in words. COUNTIF counts how many rows meet a condition.
   syntax: IF(variance=0,"ready","check") flags one check; =COUNTIF(range,"<>0") counts the rest

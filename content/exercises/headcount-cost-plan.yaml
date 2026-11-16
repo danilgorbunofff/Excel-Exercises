@@ -3,8 +3,8 @@ slug: headcount-cost-plan
 level: 3
 title: Headcount cost plan
 topic: interview-fpa
-updated: 2026-11-15
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In E2, total the planned cost of every role, heads times cost per head.
     rows:
@@ -16,15 +16,19 @@ screens:
       - [Sales, Junior, 3, 30000, null]
     answerCell: E2
     expected: 908000
+    variants:
+      - set: { C2: 9 }
+        expected: 1004000
+      - set: { D2: 32017 }
+        expected: 908102
     answer: =SUMPRODUCT(C2:C6,D2:D6)
-    requiredFunctions: [SUMPRODUCT]
     hints:
       nudge: Each row costs its heads times its cost per head. Add those five costs together in one step.
       rule: SUMPRODUCT multiplies the two ranges row by row and adds the results.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: The five rows cost 192000, 96000, 180000, 350000 and 90000, which is 908000.
       syntax: "Check the brackets and commas. SUMPRODUCT follows the pattern `=SUMPRODUCT(array1, array2)`."
-      required-function: Total heads times total cost is not the same as adding each row's cost. SUMPRODUCT does it row by row.
       reference: The heads run down C2:C6 and the costs down D2:D6.
     accept:
       - =SUMPRODUCT(C2:C6,D2:D6)
@@ -32,11 +36,16 @@ screens:
       - =SUMPRODUCT(D2:D6,C2:C6)
       - =SUMPRODUCT($C$2:$C$6,$D$2:$D$6)
     reject:
-      - { formula: "=SUM(C2:C6)*SUM(D2:D6)", rule: required-function }
-      - { formula: "=SUMPRODUCT(C2:C5,D2:D5)", rule: value }
-      - { formula: "=SUMPRODUCT(C2:C6)", rule: value }
-      - { formula: "=SUMPRODUCT(D2:D6)", rule: value }
-      - { formula: "=SUMPRODUCT(C2:C6,D2:D6", rule: syntax }
+      - formula: =SUM(C2:C6)*SUM(D2:D6)
+        rule: value
+      - formula: =SUMPRODUCT(C2:C5,D2:D5)
+        rule: value
+      - formula: =SUMPRODUCT(C2:C6)
+        rule: value
+      - formula: =SUMPRODUCT(D2:D6)
+        rule: value
+      - formula: =SUMPRODUCT(C2:C6,D2:D6
+        rule: syntax
   - prompt: In E2, count the senior heads across all teams.
     rows:
       - [Team, Grade, Heads, Cost per head, Answer]
@@ -47,11 +56,17 @@ screens:
       - [Sales, Junior, 3, 30000, null]
     answerCell: E2
     expected: 7
+    variants:
+      - set: { C3: 5 }
+        expected: 10
+      - set: { B2: "Senior" }
+        expected: 13
     answer: =SUMIFS(C2:C6,B2:B6,"Senior")
     hints:
       nudge: Each row holds several heads, so add the heads on the senior rows rather than counting the rows.
       rule: SUMIFS or SUMIF adds the heads where the grade is Senior. COUNTIF would count rows, not people.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Support has 2 senior heads and Engineering has 5, which makes 7.
       syntax: Check the brackets, commas and quote marks around Senior.
       reference: The heads run down C2:C6 and the grades down B2:B6.
@@ -77,26 +92,35 @@ screens:
       - [Sales, Junior, 3, 30000, null]
     answerCell: E2
     expected: 45400
+    variants:
+      - set: { C2: 9 }
+        expected: 43652.173913
+      - set: { D2: 32017 }
+        expected: 45405.1
     answer: =SUMPRODUCT(C2:C6,D2:D6)/SUM(C2:C6)
-    requiredFunctions: [SUMPRODUCT]
     hints:
       nudge: Take the total cost of the plan and share it over the total number of heads.
       rule: SUMPRODUCT gives the total cost. SUM of the heads gives the number of people. The first divided by the second is the weighted average.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: The plan costs 908000 for 20 heads, which is 45400 a head.
       syntax: Check the brackets. SUMPRODUCT and SUM each need their own pair.
-      required-function: A plain average of the five costs ignores how many heads each row has.
       reference: The heads run down C2:C6 and the costs down D2:D6.
     accept:
       - =SUMPRODUCT(C2:C6,D2:D6)/SUM(C2:C6)
       - =sumproduct(c2:c6,d2:d6)/sum(c2:c6)
       - =SUMPRODUCT($C$2:$C$6,$D$2:$D$6)/SUM($C$2:$C$6)
     reject:
-      - { formula: "=AVERAGE(D2:D6)", rule: required-function }
-      - { formula: "=SUMPRODUCT(C2:C6,D2:D6)/COUNT(C2:C6)", rule: value }
-      - { formula: "=SUMPRODUCT(C2:C6,D2:D6)/SUM(D2:D6)", rule: value }
-      - { formula: "=SUMPRODUCT(C2:C6,D2:D6)", rule: value }
-      - { formula: "=SUMPRODUCT(C2:C6,D2:D6/SUM(C2:C6)", rule: syntax }
+      - formula: =AVERAGE(D2:D6)
+        rule: value
+      - formula: =SUMPRODUCT(C2:C6,D2:D6)/COUNT(C2:C6)
+        rule: value
+      - formula: =SUMPRODUCT(C2:C6,D2:D6)/SUM(D2:D6)
+        rule: value
+      - formula: =SUMPRODUCT(C2:C6,D2:D6)
+        rule: value
+      - formula: =SUMPRODUCT(C2:C6,D2:D6/SUM(C2:C6)
+        rule: syntax
 notes:
   summary: A headcount plan multiplies people by what each costs. The total, the heads by grade and the average cost per head are the first three numbers a planning interview asks for.
   syntax: SUMPRODUCT(heads,cost_per_head), SUMIFS(heads,grades,"Senior")

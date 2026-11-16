@@ -4,6 +4,7 @@ title: Look up a value with more than one condition
 description: Three ways to find the row where two or more columns match at once.
 updated: 2026-11-16
 minutes: 4
+topic: lookups
 functions: [XLOOKUP, INDEX, MATCH, SUMIFS]
 exercises: [sumifs-two-conditions-at-once, total-for-two-conditions, a-lookup-dashboard-from-three-tables]
 cover: "(A)*(B)"

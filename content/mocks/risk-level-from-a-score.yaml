@@ -1,0 +1,38 @@
+id: risk-level-from-a-score
+slug: risk-level-from-a-score
+level: 2
+title: Risk level from a score
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In C2, show High for a score of 75 or more, Medium for 50 or more, otherwise Low.
+    rows:
+      - [Account, Score, Risk]
+      - [AC-9, 81, null]
+    answerCell: C2
+    expected: High
+    variants:
+      - { set: { B2: 61 }, expected: Medium }
+      - { set: { B2: 49 }, expected: Low }
+      - { set: { B2: 50 }, expected: Medium }
+      - { set: { B2: 74 }, expected: Medium }
+      - { set: { B2: 75 }, expected: High }
+    answer: '=IF(B2>=75,"High",IF(B2>=50,"Medium","Low"))'
+    hints:
+      nudge: Test the top band first, then the next one.
+      rule: Nest a second IF in the false part of the first. Test from the highest band down.
+    misses:
+      value: 81 is 75 or more, so the risk is High.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=IF(B2>=75,"High",IF(B2>=50,"Medium","Low"))'
+      - '=if(b2>=75,"High",if(b2>=50,"Medium","Low"))'
+      - '=IFS(B2>=75,"High",B2>=50,"Medium",TRUE,"Low")'
+      - '=IF(B2<50,"Low",IF(B2<75,"Medium","High"))'
+    reject:
+      - { formula: '=IF(B2>=50,"Medium",IF(B2>=75,"High","Low"))', rule: value }
+      - { formula: '=IF(B2>75,"Low","High")', rule: value }
+      - { formula: '=IF(B2>=75,"High",IF(B2>=50,"Medium","Low")', rule: syntax }
+      - { formula: '="High"', rule: reference }

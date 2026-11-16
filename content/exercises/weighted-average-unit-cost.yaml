@@ -3,10 +3,10 @@ slug: weighted-average-unit-cost
 level: 2
 title: Weighted average unit cost
 topic: interview-finance-analyst
-updated: 2026-11-15
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: Three batches were bought at different prices. In D2, work out the average cost of one unit across all the units bought.
+  - prompt: Three batches were bought at different prices. In D2, work out the average cost of one unit across all the units bought. Use SUMPRODUCT.
     rows:
       - [Batch, Units, Unit cost, Average]
       - [Batch 1, 200, 4.5, null]

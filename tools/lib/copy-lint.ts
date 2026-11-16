@@ -226,6 +226,7 @@ const NON_PROSE_KEYS = new Set([
   "formula",
   "rows",
   "expected",
+  "variants",
   "answerCell",
   "id",
   "slug",

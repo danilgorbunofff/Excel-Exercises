@@ -42,9 +42,14 @@ describe("text functions", () => {
     ['=LEFT("a",-1)', "#VALUE!"],
     ['=MID("a",0,1)', "#VALUE!"],
     ['=VALUE("abc")', "#VALUE!"],
-    ["=CONCATENATE(A1:A2)", "#VALUE!"],
   ])("%s is %s", (f, code) => {
     expect(ev(f)).toBe(errorValue(code as ErrorCode));
+  });
+
+  // Checked in Excel 365: CONCATENATE takes one value per argument, so a range
+  // there runs it once per cell and spills, where CONCAT joins the range.
+  it("=CONCATENATE(A1:A2) spills one result per cell", () => {
+    expect(ev("=CONCATENATE(A1:A2)")).toMatchObject({ rows: [["  Ann   Lee "], ["SKU-1042"]] });
   });
 });
 

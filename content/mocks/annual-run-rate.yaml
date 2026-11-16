@@ -1,0 +1,39 @@
+id: annual-run-rate
+slug: annual-run-rate
+level: 2
+title: Annual run rate
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B6, project a full year from the average of the last three months, rounded to a whole number.
+    rows:
+      - [Month, Revenue]
+      - [Jul, 81200]
+      - [Aug, 79400]
+      - [Sep, 84600]
+      - [null, null]
+      - [Run rate, null]
+    answerCell: B6
+    expected: 980800
+    variants:
+      - set: { B2: 111244 }
+        expected: 1100976
+    answer: "=ROUND(AVERAGE(B2:B4)*12,0)"
+    hints:
+      nudge: Average the three months, then scale up to twelve.
+      rule: A run rate is the average month times 12.
+    misses:
+      value: The three months average 81733.33, which is 980800 a year.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=ROUND(AVERAGE(B2:B4)*12,0)"
+      - "=round(average(b2:b4)*12,0)"
+      - "=ROUND(SUM(B2:B4)/3*12,0)"
+      - "=ROUND(SUM(B2:B4)*4,0)"
+    reject:
+      - { formula: "=ROUND(SUM(B2:B4)*12,0)", rule: value }
+      - { formula: "=ROUND(AVERAGE(B2:B4),0)", rule: value }
+      - { formula: "=ROUND(AVERAGE(B2:B4)*12,0", rule: syntax }
+      - { formula: "=980800", rule: reference }

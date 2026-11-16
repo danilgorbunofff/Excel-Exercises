@@ -3,8 +3,8 @@ slug: rank-a-list-without-sorting-it
 level: 2
 title: Rank a list without sorting it
 topic: statistics
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: Put Ada's place in the team into C2 using the default order, without sorting the sheet.
     rows:
@@ -26,6 +26,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. RANK follows the pattern `=RANK(number, ref, [order])`."
       required-function: Counting the numbers larger than 58 gives the place by hand. RANK does that count against the range.
       reference: The second argument is the range B2:B6, so every swimmer is in the comparison.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =RANK(B2,B2:B6)
       - =rank(b2,b2:b6)
@@ -40,6 +41,8 @@ screens:
       - { formula: "=RANK(B3,B3:B5,1)", rule: value }
       - { formula: "=RANK(B2,B2:B6)/0", rule: value }
       - { formula: =RANK(B2 B2:B6), rule: syntax }
+    variants:
+      - { set: { B2: 29 }, expected: 5 }
   - prompt: Flip the order argument so the smallest time takes place 1, and put Ada's place in C2.
     rows:
       - [Swimmer, Seconds, Place (fastest first)]

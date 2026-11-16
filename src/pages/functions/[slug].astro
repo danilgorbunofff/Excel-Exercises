@@ -9,6 +9,7 @@ import FormulaExplainer from "../../components/FormulaExplainer.astro";
 import LiveExercise from "../../components/LiveExercise.astro";
 import RichText from "../../components/RichText.astro";
 import Base from "../../layouts/Base.astro";
+import { skillsOf } from "../../lib/assessments.ts";
 import {
   exercisePath,
   exercisesForFunction,
@@ -39,7 +40,7 @@ export async function getStaticPaths() {
         exercise,
         linked: Object.fromEntries(linked),
         using: placed.filter((p) =>
-          p.exercise.screens.some((s) => s.requiredFunctions.includes(page.name)),
+          p.exercise.screens.some((s) => skillsOf(s).includes(page.name)),
         ),
       },
     };

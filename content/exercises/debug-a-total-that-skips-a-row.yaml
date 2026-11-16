@@ -1,12 +1,12 @@
 id: debug-a-total-that-skips-a-row
 slug: debug-a-total-that-skips-a-row
-level: 3
+level: 2
 title: Debug a total that skips a row
 topic: totals
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B8, total every store's sales even though one cell in the column holds text.
+  - prompt: In B8, total every store's sales even though one cell in the column holds text. Use SUM.
     rows:
       - [Store, Sales]
       - [Brooklyn, 320]
@@ -42,7 +42,7 @@ screens:
       - { formula: =SUM(B3:B7), rule: value }
       - { formula: =SUM(B2:B7)/0, rule: value }
       - { formula: =SUM(B2:B7, rule: syntax }
-  - prompt: In B7, total January to April without counting the Q1 subtotal row above it.
+  - prompt: In B7, total January to April without counting the Q1 subtotal row above it. Use SUM.
     rows:
       - [Month, Amount]
       - [Jan, 320]

@@ -4,6 +4,7 @@ title: Fiscal year and quarter formulas
 description: Label each date with its financial year and quarter when the year does not start in January.
 updated: 2026-11-16
 minutes: 3
+topic: dates
 functions: [YEAR, MONTH, EDATE, ROUNDUP, EOMONTH]
 exercises: [quarter-forecast-against-budget, year-to-date-actual-against-budget, year-on-year-revenue-growth]
 cover: "FY27 Q2"

@@ -1,0 +1,36 @@
+id: growth-on-last-year
+slug: growth-on-last-year
+level: 1
+tier: 2
+title: Growth on last year
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In D2, work out the growth from last year to this year as a decimal.
+    rows:
+      - [Shop, Last year, This year, Growth]
+      - [Leeds, 400, 460, null]
+    answerCell: D2
+    expected: 0.15
+    variants:
+      - set: { C2: 630 }
+        expected: 0.575
+      - set: { B2: 548 }
+        expected: -0.160583941606
+    answer: "=(C2-B2)/B2"
+    hints:
+      nudge: Find the change, then divide it by last year's figure.
+      rule: Growth is (new minus old) divided by old. Brackets make the subtraction happen first.
+    misses:
+      value: Sales rose by 60 on 400, which is 0.15.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=(C2-B2)/B2"
+      - "=(c2-b2)/b2"
+      - "=C2/B2-1"
+      - "=(C2-B2)/B2*1"
+    reject:
+      - { formula: "=C2-B2/B2", rule: value }
+      - { formula: "=(C2-B2)/C2", rule: value }
+      - { formula: "=0.15", rule: reference }

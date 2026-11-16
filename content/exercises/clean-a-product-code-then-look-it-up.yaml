@@ -3,8 +3,8 @@ slug: clean-a-product-code-then-look-it-up
 level: 3
 title: Clean a product code, then look it up
 topic: interview-data-analyst
-updated: 2026-11-15
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: The imported codes have stray spaces and mixed case. In B2, clean the code in A2 so it has no spaces at either end and is all capitals.
     rows:
@@ -14,15 +14,17 @@ screens:
       - ["Ef-3301  ", null]
     answerCell: B2
     expected: AB-1027
+    variants:
+      - set: { A2: "cd-2210" }
+        expected: "CD-2210"
     answer: =UPPER(TRIM(A2))
-    requiredFunctions: [TRIM, UPPER]
     hints:
       nudge: Two jobs, one inside the other. Strip the spaces, then change the case.
       rule: TRIM removes spaces at the start and end. UPPER turns every letter into a capital. Either can go inside the other.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Without its spaces and in capitals, the code reads AB-1027.
       syntax: Check the brackets. Each function needs its own pair, one inside the other.
-      required-function: The code needs both TRIM for the spaces and UPPER for the case.
       reference: Point at the imported code in A2.
     accept:
       - =UPPER(TRIM(A2))
@@ -30,11 +32,16 @@ screens:
       - =TRIM(UPPER(A2))
       - =UPPER(TRIM($A2))
     reject:
-      - { formula: "=TRIM(A2)", rule: required-function }
-      - { formula: "=UPPER(A2)", rule: required-function }
-      - { formula: "=LOWER(TRIM(A2))", rule: required-function }
-      - { formula: "=UPPER(TRIM(A3))", rule: value }
-      - { formula: "=UPPER(TRIM(A2)", rule: syntax }
+      - formula: =TRIM(A2)
+        rule: value
+      - formula: =UPPER(A2)
+        rule: value
+      - formula: =LOWER(TRIM(A2))
+        rule: value
+      - formula: =UPPER(TRIM(A3))
+        rule: value
+      - formula: =UPPER(TRIM(A2)
+        rule: syntax
   - prompt: The price list is in D and E. In B2, look up the price for the imported code in A2.
     rows:
       - [Imported code, Price, null, Code, List price]
@@ -43,15 +50,19 @@ screens:
       - ["Ef-3301  ", null, null, EF-3301, 15]
     answerCell: B2
     expected: 12.4
+    variants:
+      - set: { E2: 16.99 }
+        expected: 16.99
+      - set: { A2: "cd-2210" }
+        expected: 8.75
     answer: =XLOOKUP(TRIM(A2),$D$2:$D$4,$E$2:$E$4)
-    requiredFunctions: [TRIM]
     hints:
       nudge: The lookup fails on the raw code because of its spaces. Clean it inside the lookup.
       rule: XLOOKUP ignores the case of letters, but not spaces. TRIM inside XLOOKUP looks up the clean code.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: The clean code AB-1027 is on the first row of the price list, at 12.4.
       syntax: "Check the brackets and commas. The pattern is `=XLOOKUP(TRIM(code), codes, prices)`."
-      required-function: The spaces stop the match, so the code needs TRIM before it is looked up.
       reference: Look up A2 in D2:D4 and return from E2:E4.
     accept:
       - =XLOOKUP(TRIM(A2),$D$2:$D$4,$E$2:$E$4)
@@ -60,11 +71,16 @@ screens:
       - =VLOOKUP(TRIM(A2),$D$2:$E$4,2,FALSE)
       - =INDEX($E$2:$E$4,MATCH(TRIM(A2),$D$2:$D$4,0))
     reject:
-      - { formula: "=XLOOKUP(A2,D2:D4,E2:E4)", rule: required-function }
-      - { formula: "=XLOOKUP(TRIM(A2),D2:D4,D2:D4)", rule: value }
-      - { formula: "=XLOOKUP(TRIM(A3),D2:D4,E2:E4)", rule: value }
-      - { formula: "=VLOOKUP(TRIM(A2),D2:E4,1,FALSE)", rule: value }
-      - { formula: "=XLOOKUP(TRIM(A2),D2:D4,E2:E4", rule: syntax }
+      - formula: =XLOOKUP(A2,D2:D4,E2:E4)
+        rule: value
+      - formula: =XLOOKUP(TRIM(A2),D2:D4,D2:D4)
+        rule: value
+      - formula: =XLOOKUP(TRIM(A3),D2:D4,E2:E4)
+        rule: value
+      - formula: =VLOOKUP(TRIM(A2),D2:E4,1,FALSE)
+        rule: value
+      - formula: =XLOOKUP(TRIM(A2),D2:D4,E2:E4
+        rule: syntax
 notes:
   summary: Imported data often carries stray spaces and mixed case. Cleaning the key first is what makes a lookup across two systems find its match.
   syntax: UPPER(TRIM(code)), XLOOKUP(TRIM(code),codes,prices)

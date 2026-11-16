@@ -3,10 +3,10 @@ slug: largest-sale
 level: 1
 title: Find the largest sale
 topic: totals
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B7, find the largest sale.
+  - prompt: In B7, find the largest sale. Use MAX.
     rows:
       - [Rep, Sale]
       - [Ivy, 1250]
@@ -27,6 +27,7 @@ screens:
       required-function: Use MAX, so the result stays right when a sale changes.
       reference: Point at the sales in B2 to B6 rather than typing them.
       value: Check that the range includes every sale, down to B6.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =MAX(B2:B6)
       - =max(B2:B6)
@@ -37,6 +38,8 @@ screens:
       - { formula: "=MAX(1250,980,860,1175,1430)", rule: reference }
       - { formula: "=MAX(B2:B7)", rule: reference }
       - { formula: "=MAX(B2:B5)", rule: value }
+    variants:
+      - { set: { B2: 1713 }, expected: 1713 }
 notes:
   summary: MAX returns the largest number in its arguments. It skips text and empty cells in a range.
   syntax: MAX(number1, [number2], ...)

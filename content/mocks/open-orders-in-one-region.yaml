@@ -1,0 +1,46 @@
+id: open-orders-in-one-region
+slug: open-orders-in-one-region
+level: 2
+title: Open orders in one region
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In G2, count the orders from the region in F2 that are still Open.
+    rows:
+      - [Order, Region, Status, null, null, null, null]
+      - [R1, North, Open, null, null, West, null]
+      - [R2, West, Closed, null, null, null, null]
+      - [R3, West, Open, null, null, null, null]
+      - [R4, North, Closed, null, null, null, null]
+      - [R5, West, Open, null, null, null, null]
+      - [R6, East, Open, null, null, null, null]
+      - [R7, West, Open, null, null, null, null]
+      - [R8, West, Closed, null, null, null, null]
+      - [R9, North, Open, null, null, null, null]
+      - [R10, West, Open, null, null, null, null]
+    answerCell: G2
+    expected: 4
+    variants:
+      - set: { B2: West }
+        expected: 5
+      - set: { C3: Open }
+        expected: 5
+    answer: '=COUNTIFS(B2:B11,F2,C2:C11,"Open")'
+    hints:
+      nudge: "Two conditions on each row: the region and the status."
+      rule: COUNTIFS counts the rows that match every range and criteria pair.
+    misses:
+      value: 4 West orders are Open.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=COUNTIFS(B2:B11,F2,C2:C11,"Open")'
+      - '=countifs(b2:b11,f2,c2:c11,"Open")'
+      - '=COUNTIFS(C2:C11,"Open",B2:B11,F2)'
+      - '=SUMPRODUCT((B2:B11=F2)*(C2:C11="Open"))'
+    reject:
+      - { formula: '=COUNTIF(C2:C11,"Open")', rule: value }
+      - { formula: "=COUNTIF(B2:B11,F2)", rule: value }
+      - { formula: '=COUNTIFS(B2:B11,F2,C2:C11,"Open"', rule: syntax }
+      - { formula: "=4", rule: reference }

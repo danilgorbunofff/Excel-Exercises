@@ -4,6 +4,7 @@ title: "Excel for finance interviews: 10 formulas to know"
 description: The functions finance, FP&A and accounting interviews test most, with the trap in each one.
 updated: 2026-11-16
 minutes: 5
+topic: interviews
 functions: [SUMIFS, XLOOKUP, INDEX, MATCH, IF, IFERROR, SUMPRODUCT, EOMONTH, ROUND, NPV, XNPV, IRR, XIRR, PMT]
 exercises: [variance-to-budget-by-cost-centre, year-on-year-revenue-growth, weighted-average-unit-cost]
 cover: "=XNPV"

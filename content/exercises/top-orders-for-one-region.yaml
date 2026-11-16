@@ -1,0 +1,76 @@
+id: top-orders-for-one-region
+slug: top-orders-for-one-region
+level: 3
+title: Top orders for one region
+topic: dynamic-arrays
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, show the rep and amount of the three largest East orders, largest first.
+    rows:
+      - [Order, Region, Rep, Amount, null, null, null, null, null]
+      - [1001, North, Ana, 820, null, null, null, null, null]
+      - [1002, South, Bo, 450, null, null, null, null, null]
+      - [1003, East, Cy, 1300, null, null, null, null, null]
+      - [1004, north, Di, 610, null, null, null, null, null]
+      - [1005, South, Ed, 1250, null, null, null, null, null]
+      - [1006, West, Fay, 300, null, null, null, null, null]
+      - [1007, North, Ana, 1500, null, null, null, null, null]
+      - [1008, East, Gus, 220, null, null, null, null, null]
+      - [1009, South, Bo, 980, null, null, null, null, null]
+      - [1010, North, Hal, 470, null, null, null, null, null]
+      - [1011, West, Ivy, 1100, null, null, null, null, null]
+      - [1012, South, Jo, 760, null, null, null, null, null]
+      - [1013, East, Cy, 540, null, null, null, null, null]
+      - [1014, North, Di, 90, null, null, null, null, null]
+      - [1015, South, Ed, 1600, null, null, null, null, null]
+      - [1016, West, Fay, 700, null, null, null, null, null]
+      - [1017, north, Kim, 1050, null, null, null, null, null]
+      - [1018, East, Gus, 380, null, null, null, null, null]
+    answerCell: F2
+    expected:
+      - [Cy, 1300]
+      - [Cy, 540]
+      - [Gus, 380]
+    variants:
+      - set: { D9: 1400 }
+        expected:
+          - [Gus, 1400]
+          - [Cy, 1300]
+          - [Cy, 540]
+      - set: { B11: East }
+        expected:
+          - [Cy, 1300]
+          - [Cy, 540]
+          - [Hal, 470]
+    answer: '=TAKE(SORT(FILTER(C2:D19,B2:B19="East"),2,-1),3)'
+    hints:
+      nudge: "Three steps: keep the East rows, order them by amount, keep the top three."
+      rule: "Nest the steps from the inside out: FILTER the rows, SORT the result by its second column with -1, then TAKE the first three rows."
+    misses:
+      value: The largest East orders are Cy for 1300, Cy for 540 and Gus for 380.
+      syntax: "Build it from the inside: `FILTER(...)`, then `SORT(that,2,-1)`, then `TAKE(that,3)`."
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=TAKE(SORT(FILTER(C2:D19,B2:B19="East"),2,-1),3)'
+      - '=TAKE(SORTBY(FILTER(C2:D19,B2:B19="East"),FILTER(D2:D19,B2:B19="East"),-1),3)'
+      - '=take(sort(filter(c2:d19,b2:b19="east"),2,-1),3)'
+      - '=TAKE(SORT(FILTER($C$2:$D$19,$B$2:$B$19="East"),2,-1),3)'
+      - '=FILTER(TAKE(SORT(FILTER(C2:D19,B2:B19="East"),2,-1),3),SEQUENCE(3)>0)'
+    reject:
+      - formula: =TAKE(SORT(FILTER(C2:D19,B2:B19="East"),2,1),3)
+        rule: value
+      - formula: =TAKE(FILTER(C2:D19,B2:B19="East"),3)
+        rule: value
+      - formula: =SORT(FILTER(C2:D19,B2:B19="East"),2,-1)
+        rule: value
+      - formula: =TAKE(SORT(C2:D19,2,-1),3)
+        rule: value
+notes:
+  summary: "Dynamic-array functions nest: the result of one is the input of the next. Filter first, then sort, then take the top rows."
+  syntax: "TAKE(SORT(FILTER(array, include), sort_index, -1), rows)"
+  example: '`=TAKE(SORT(FILTER(A2:B9,C2:C9="Paid"),2,-1),5)` lists the five largest paid invoices.'
+  commonErrors:
+    - Taking the top rows before sorting returns the first rows, not the largest.
+    - The sort column counts within the filtered array, so the amount is column 2 of C:D.
+    - If fewer rows pass the filter than TAKE asks for, TAKE returns the rows there are.

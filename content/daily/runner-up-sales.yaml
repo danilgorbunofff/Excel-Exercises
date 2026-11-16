@@ -1,0 +1,47 @@
+id: runner-up-sales
+slug: runner-up-sales
+level: 2
+tier: 5
+title: Runner-up sales
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B10, show the second highest sales figure.
+    rows:
+      - [Rep, Sales]
+      - [Ash, 5400]
+      - [Bea, 7200]
+      - [Cyd, 6100]
+      - [Dom, 7200]
+      - [Eva, 4800]
+      - [Fox, 6900]
+      - [Gil, 5300]
+      - [Hal, 6050]
+      - [Second, null]
+    answerCell: B10
+    expected: 7200
+    variants:
+      - { set: { B3: 5400 }, expected: 6900 }
+      - { set: { B2: 7398, B9: 8289 }, expected: 7398 }
+    answer: "=LARGE(B2:B9,2)"
+    hints:
+      nudge: Two reps share the top figure. Count each copy.
+      rule: LARGE(range, k) returns the k-th largest value. Ties count as separate values.
+    misses:
+      value: Two reps sold 7200, so the second highest is also 7200.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=LARGE(B2:B9,2)"
+      - "=large(b2:b9,2)"
+      - "=LARGE($B$2:$B$9,2)"
+    reject:
+      - formula: =MAX(B2:B9)
+        rule: fragile
+      - formula: =SMALL(B2:B9,2)
+        rule: value
+      - formula: =LARGE(B2:B9,2
+        rule: syntax
+      - formula: =7200
+        rule: reference

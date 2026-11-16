@@ -4,6 +4,7 @@ title: "Named ranges and Excel tables: when they help"
 description: How names and tables make formulas easier to read and keep working when data grows.
 updated: 2026-11-16
 minutes: 4
+topic: habits
 functions: [SUMIFS, XLOOKUP, SUM]
 exercises: [a-sales-summary-end-to-end, a-commission-sheet-that-updates-itself, sum-a-column]
 cover: "Tbl[Amount]"

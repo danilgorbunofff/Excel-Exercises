@@ -1,31 +1,124 @@
 ---
-// Why this exists: the article index, as a grid of cards with drawn covers.
-// Short reads on ideas the exercises use, then a way on to the exercises.
+// Why this exists: the article index. Articles are grouped by topic, with a
+// sticky side card to search them or show one topic, then a way on to the
+// exercises. Without a script the topic list still jumps to each group.
 import ArticleCard from "../../components/articles/ArticleCard.astro";
+import Icon, { type IconName } from "../../components/Icon.astro";
+import { ARTICLE_TOPICS, type ArticleTopic } from "../../content/schema.ts";
 import Base from "../../layouts/Base.astro";
 import { allArticles } from "../../lib/articles.ts";
 
 const articles = await allArticles();
+
+const TOPIC_INFO: Record<ArticleTopic, { icon: IconName; blurb: string }> = {
+  lookups: { icon: "lookup", blurb: "Find a value in a table, and fix a lookup that fails." },
+  sums: { icon: "sigma", blurb: "Totals, counts and averages with conditions." },
+  logic: { icon: "branch", blurb: "IF and its relatives, and what error values mean." },
+  text: { icon: "text", blurb: "Clean, split and join text so it matches." },
+  dates: { icon: "calendar", blurb: "Date maths, working days and financial periods." },
+  finance: { icon: "chart", blurb: "Month-end and reporting tasks, built step by step." },
+  interviews: {
+    icon: "briefcase",
+    blurb: "What Excel tests and interviews ask, and how to prepare.",
+  },
+  habits: { icon: "bolt", blurb: "Ways of working that keep a sheet right and quick to build." },
+};
+
+const groups = (Object.keys(ARTICLE_TOPICS) as ArticleTopic[])
+  .map((key) => ({
+    key,
+    label: ARTICLE_TOPICS[key],
+    ...TOPIC_INFO[key],
+    items: articles.filter((a) => a.data.topic === key),
+  }))
+  .filter((g) => g.items.length > 0);
+
+// What the search box matches: title, summary and function names, in lower case.
+const haystack = (a: (typeof articles)[number]) =>
+  [a.data.title, a.data.description, ...a.data.functions].join(" ").toLowerCase();
 ---
 
 <Base
   title="Articles"
-  description="Short articles on Excel formulas: references, lookups and errors, each with exercises to practise."
+  description="Short articles on Excel formulas: lookups, sums, text, dates, finance tasks and interviews, each with exercises to practise."
   layout="wide"
 >
   <header class="page-head">
     <h1>Excel articles</h1>
     <p class="lead">Short reads on the ideas behind the formulas. Each ends with exercises to try.</p>
   </header>
-  <ul class="grid">
-    {
-      articles.map((a, i) => (
-        <li>
-          <ArticleCard article={a} index={i} />
-        </li>
-      ))
-    }
-  </ul>
+
+  <div class="layout">
+    <aside class="side">
+      <nav class="card filter" aria-label="Article topics" data-article-filter>
+        <div class="search" data-article-search hidden>
+          <label class="label" for="article-q">Find an article</label>
+          <div class="field">
+            <Icon name="lookup" size={18} />
+            <input
+              id="article-q"
+              type="search"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Title or function"
+            />
+          </div>
+        </div>
+        <p class="label">Topics</p>
+        <ul class="topics">
+          <li>
+            <a href="#articles" data-topic-link="" aria-current="true">
+              <Icon name="grid" size={18} />
+              <span class="name">All articles</span>
+              <span class="n">{articles.length}</span>
+            </a>
+          </li>
+          {
+            groups.map((g) => (
+              <li>
+                <a href={`#topic-${g.key}`} data-topic-link={g.key}>
+                  <Icon name={g.icon} size={18} />
+                  <span class="name">{g.label}</span>
+                  <span class="n">{g.items.length}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="count" role="status" data-article-count></p>
+      </nav>
+    </aside>
+
+    <div class="main" id="articles">
+      {
+        groups.map((g) => (
+          <section class="group" id={`topic-${g.key}`} data-group={g.key} aria-labelledby={`h-${g.key}`}>
+            <header class="group-head">
+              <span class="group-icon" aria-hidden="true">
+                <Icon name={g.icon} size={20} />
+              </span>
+              <div>
+                <h2 id={`h-${g.key}`}>{g.label}</h2>
+                <p>{g.blurb}</p>
+              </div>
+            </header>
+            <ul class="grid">
+              {g.items.map((a) => (
+                <li data-search={haystack(a)}>
+                  <ArticleCard article={a} index={articles.indexOf(a)} level="h3" showTopic={false} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+      <div class="card empty" data-article-empty hidden>
+        <p>No article matches that. Try another word, or look in all topics.</p>
+        <button class="button button-secondary" type="button" data-article-clear>Clear search</button>
+      </div>
+    </div>
+  </div>
+
   <section class="card next" aria-labelledby="next">
     <h2 id="next">Read enough?</h2>
     <p>The exercises put these ideas to work on a real sheet, one formula at a time.</p>
@@ -33,14 +126,249 @@ const articles = await allArticles();
   </section>
 </Base>
 
+<script>
+  // Show one topic or all, and narrow by search words. The choice is kept in
+  // the address (?topic=dates&q=sum), so a filtered list can be shared.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>("[data-topic-link]")];
+  const groups = [...document.querySelectorAll<HTMLElement>("[data-group]")];
+  const search = document.querySelector<HTMLElement>("[data-article-search]");
+  const input = document.querySelector<HTMLInputElement>("#article-q");
+  const count = document.querySelector("[data-article-count]");
+  const empty = document.querySelector<HTMLElement>("[data-article-empty]");
+  const list = document.querySelector<HTMLElement>("#articles");
+
+  if (search && input && list) {
+    search.hidden = false;
+    const params = new URLSearchParams(location.search);
+    const asked = params.get("topic") ?? "";
+    let topic = groups.some((g) => g.dataset.group === asked) ? asked : "";
+    input.value = params.get("q") ?? "";
+
+    const apply = () => {
+      const words = input.value.toLowerCase().split(/\s+/).filter(Boolean);
+      let shown = 0;
+      for (const group of groups) {
+        let inGroup = 0;
+        const inTopic = !topic || group.dataset.group === topic;
+        for (const li of group.querySelectorAll<HTMLElement>("li[data-search]")) {
+          const text = li.dataset.search ?? "";
+          const ok = inTopic && words.every((w) => text.includes(w));
+          li.hidden = !ok;
+          if (ok) inGroup++;
+        }
+        group.hidden = inGroup === 0;
+        shown += inGroup;
+      }
+      for (const a of links) {
+        if (a.dataset.topicLink === topic) a.setAttribute("aria-current", "true");
+        else a.removeAttribute("aria-current");
+      }
+      if (count) count.textContent = `Showing ${shown} ${shown === 1 ? "article" : "articles"}`;
+      if (empty) empty.hidden = shown > 0;
+      const next = new URLSearchParams();
+      if (topic) next.set("topic", topic);
+      if (input.value.trim()) next.set("q", input.value.trim());
+      const query = next.toString();
+      history.replaceState(null, "", query ? `?${query}` : location.pathname);
+    };
+
+    for (const a of links) {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        topic = a.dataset.topicLink ?? "";
+        apply();
+        // Bring the top of the list into view if the reader has scrolled past it.
+        if (list.getBoundingClientRect().top < 0) list.scrollIntoView({ block: "start" });
+      });
+    }
+    input.addEventListener("input", apply);
+    document.querySelector("[data-article-clear]")?.addEventListener("click", () => {
+      input.value = "";
+      topic = "";
+      apply();
+      input.focus();
+    });
+    apply();
+  }
+</script>
+
 <style>
+  .layout {
+    display: grid;
+    gap: var(--space-6);
+  }
+  .side {
+    min-width: 0;
+  }
+  .filter {
+    display: grid;
+    gap: var(--space-2);
+    padding: var(--space-4);
+  }
+  .label {
+    margin: 0;
+    font-size: var(--size-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .search {
+    display: grid;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+  .search[hidden] {
+    display: none;
+  }
+  .field {
+    position: relative;
+  }
+  .field :global(.icon) {
+    position: absolute;
+    top: 50%;
+    left: var(--space-3);
+    translate: 0 -50%;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .field input {
+    width: 100%;
+    min-height: var(--target);
+    padding: 0 var(--space-3) 0 calc(var(--space-3) + 1.75rem);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-m);
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+  }
+  .topics {
+    display: flex;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+  }
+  .topics a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 2.5rem;
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-m);
+    color: var(--text);
+    font-size: var(--size-s);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .topics a :global(.icon) {
+    flex: none;
+    color: var(--muted);
+  }
+  .topics a:hover {
+    background: var(--bg);
+    color: var(--heading);
+  }
+  .topics a[aria-current] {
+    background: var(--correct-tint);
+    color: var(--correct);
+    font-weight: 600;
+  }
+  .topics a[aria-current] :global(.icon) {
+    color: inherit;
+  }
+  .name {
+    flex: 1;
+  }
+  .n {
+    font-size: var(--size-xs);
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .topics a[aria-current] .n {
+    color: inherit;
+  }
+  .count {
+    margin: var(--space-2) 0 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .count:empty {
+    display: none;
+  }
+
+  .main {
+    display: grid;
+    gap: var(--space-7);
+    align-content: start;
+    min-width: 0;
+    scroll-margin-top: 5rem;
+  }
+  .group {
+    scroll-margin-top: 5rem;
+  }
+  .group[hidden] {
+    display: none;
+  }
+  .group-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--rule);
+  }
+  .group-icon {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-m);
+    background: var(--correct-tint);
+    color: var(--correct);
+  }
+  .group-head h2 {
+    margin: 0;
+    font-size: var(--size-l);
+    color: var(--heading);
+  }
+  .group-head p {
+    margin: 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
   .grid {
     display: grid;
-    gap: var(--space-5);
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: var(--space-4);
     margin: 0;
     padding: 0;
     list-style: none;
   }
+  .grid > li[hidden] {
+    display: none;
+  }
+  /* Shallower covers on the index, so more titles fit on screen. */
+  .grid :global(.cover) {
+    aspect-ratio: 5 / 2;
+  }
+  .empty {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    text-align: center;
+  }
+  .empty[hidden] {
+    display: none;
+  }
+  .empty p {
+    margin: 0;
+    color: var(--muted);
+  }
+
   .next {
     display: grid;
     justify-items: center;
@@ -59,14 +387,19 @@ const articles = await allArticles();
     margin: 0 0 var(--space-2);
     color: var(--muted);
   }
-  @media (min-width: 40rem) {
-    .grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
+
   @media (min-width: 64rem) {
-    .grid {
-      grid-template-columns: repeat(3, 1fr);
+    .layout {
+      grid-template-columns: 16rem minmax(0, 1fr);
+      gap: var(--space-7);
+    }
+    .filter {
+      position: sticky;
+      top: 5rem;
+    }
+    .topics {
+      flex-direction: column;
+      overflow: visible;
     }
   }
 </style>

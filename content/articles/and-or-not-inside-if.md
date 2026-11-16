@@ -4,6 +4,7 @@ title: AND, OR and NOT inside IF
 description: How to test two or more conditions at once, with worked examples you can copy.
 updated: 2026-11-16
 minutes: 3
+topic: logic
 functions: [AND, OR, NOT, IF]
 exercises: [and-or-not-combining-tests, both-scores-pass, free-delivery]
 cover: "AND/OR/NOT"

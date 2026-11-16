@@ -1,0 +1,39 @@
+id: lowest-supplier-bid
+slug: lowest-supplier-bid
+level: 1
+title: Lowest supplier bid
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B7, show the lowest of the supplier bids.
+    rows:
+      - [Supplier, Bid]
+      - [Acta, 1250]
+      - [Brix, 1190]
+      - [Cove, 1320]
+      - [Dune, 1175]
+      - [Edge, 1240]
+      - [Lowest, null]
+    answerCell: B7
+    expected: 1175
+    variants:
+      - { set: { B2: 937 }, expected: 937 }
+      - { set: { B6: 620 }, expected: 620 }
+    answer: "=MIN(B2:B6)"
+    hints:
+      nudge: Find the smallest bid.
+      rule: MIN returns the smallest number in a range.
+    misses:
+      value: The lowest bid is 1175.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=MIN(B2:B6)"
+      - "=min(b2:b6)"
+      - "=SMALL(B2:B6,1)"
+    reject:
+      - { formula: "=MAX(B2:B6)", rule: value }
+      - { formula: "=MIN(B2:B4)", rule: value }
+      - { formula: "=MIN(B2:B6", rule: syntax }
+      - { formula: "=1175", rule: reference }

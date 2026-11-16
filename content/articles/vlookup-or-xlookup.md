@@ -4,6 +4,7 @@ title: VLOOKUP or XLOOKUP
 description: Both find a value in a table. Here is how they differ, and which one to reach for.
 updated: 2026-11-11
 minutes: 5
+topic: lookups
 functions: [VLOOKUP, XLOOKUP, INDEX, MATCH]
 exercises: [find-a-price, find-an-extension, delivery-band]
 cover: "=XLOOKUP()"

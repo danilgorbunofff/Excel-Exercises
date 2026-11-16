@@ -3,10 +3,10 @@ slug: count-booked-seats
 level: 1
 title: Count the booked seats
 topic: counting
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: Each booked seat has a name next to it. In B8, count how many seats are booked.
+  - prompt: Each booked seat has a name next to it. In B8, count how many seats are booked. Use COUNTA.
     rows:
       - [Seat, Name]
       - [1, Ana]

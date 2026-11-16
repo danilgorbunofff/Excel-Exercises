@@ -13,6 +13,8 @@ export interface TaskData {
   slug: string;
   /** The reference answer, or null for a PRO exercise (fetched after Finish). */
   answer: string | null;
+  /** The functions the task tests, for the score per function (skillsOf). */
+  skills: string[];
 }
 
 /** Marks every task. A blank formula is a miss with no rule. */
@@ -33,18 +35,17 @@ export interface FunctionScore {
 
 /**
  * Right answers per function, weakest first. A task counts once for each
- * function it requires; a task that requires none counts under "References".
+ * function it tests; a task that tests none counts under "References".
  */
 export function byFunction(
   results: readonly {
     correct: boolean;
-    task: { spec: { requiredFunctions: readonly string[] } };
+    task: { skills: readonly string[] };
   }[],
 ): FunctionScore[] {
   const scores = new Map<string, FunctionScore>();
   for (const r of results) {
-    const names =
-      r.task.spec.requiredFunctions.length > 0 ? r.task.spec.requiredFunctions : ["References"];
+    const names = r.task.skills.length > 0 ? r.task.skills : ["References"];
     for (const name of names) {
       const s = scores.get(name) ?? { name, correct: 0, total: 0 };
       s.total += 1;

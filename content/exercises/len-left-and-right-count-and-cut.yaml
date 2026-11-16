@@ -4,7 +4,7 @@ level: 1
 title: "LEN, LEFT and RIGHT: count and cut"
 topic: text-search
 updated: 2026-11-11
-checkedInExcel: null
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B2, count how many characters the code in A2 has, spaces included.
     rows:

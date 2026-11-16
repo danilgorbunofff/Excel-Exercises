@@ -673,3 +673,152 @@ select {
   font-size: var(--size-s);
   color: var(--muted);
 }
+
+/* A formula on its own line, drawn like Excel's formula bar: an fx label,
+   the formula, and on articles a copy button. Articles and exercises share it. */
+.formula-line {
+  display: flex;
+  align-items: stretch;
+  margin: var(--space-4) 0;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-m);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.formula-line .fx {
+  display: grid;
+  place-items: center;
+  padding: 0 var(--space-3);
+  border-right: 1px solid var(--rule);
+  background: var(--header);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--size-s);
+  font-style: italic;
+  font-weight: 600;
+}
+.formula-line code {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: 0;
+  background: none;
+  color: var(--heading);
+  overflow-x: auto;
+  white-space: pre;
+}
+.formula-line .copy {
+  display: grid;
+  place-items: center;
+  width: var(--target);
+  border: 0;
+  border-left: 1px solid var(--rule);
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+}
+.formula-line .copy:hover {
+  background: var(--bg);
+  color: var(--heading);
+}
+.formula-line .copy[data-done] {
+  color: var(--correct);
+}
+
+/* A boxed note with an icon in its heading: blue for tips, green for checks,
+   red for mistakes. */
+.note {
+  --note: var(--read);
+  --note-tint: var(--read-tint);
+  margin: var(--space-6) 0;
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid color-mix(in srgb, var(--note) 30%, transparent);
+  border-left: 4px solid var(--note);
+  border-radius: var(--radius-l);
+  background: var(--note-tint);
+}
+.note-warn {
+  --note: var(--miss);
+  --note-tint: var(--miss-tint);
+}
+.note-check {
+  --note: var(--correct);
+  --note-tint: var(--correct-tint);
+}
+.note > :is(h2, h3) {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-2);
+  font-size: var(--size-l);
+  color: var(--heading);
+}
+.note > :is(h2, h3) .icon {
+  flex: none;
+  color: var(--note);
+}
+.note > :last-child {
+  margin-bottom: 0;
+}
+.note li::marker {
+  color: var(--note);
+}
+
+/* "Step 2: ..." and "3. ..." headings in articles: the number sits in a pill. */
+h2.step {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+h2 .step-num {
+  flex: none;
+  padding: 0.125rem 0.625rem;
+  border-radius: var(--radius-pill);
+  background: var(--correct-tint);
+  color: var(--correct);
+  font-size: var(--size-s);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* A numbered list of steps. The number sits in a green circle beside the
+   text; the text itself stays one line box, so bold words keep their spacing. */
+.step-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+/* The step's line height, fixed in px on the step so the smaller number font
+   does not change it. */
+@property --step-line {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 24px;
+}
+.step-list > * {
+  --step-line: 1lh;
+  position: relative;
+  padding-left: 2.25rem;
+  counter-increment: step;
+}
+.step-list > *::before {
+  content: counter(step);
+  position: absolute;
+  /* Centre the circle on the first line of text, whatever its line height. */
+  top: calc((var(--step-line) - 1.5rem) / 2);
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--correct-tint);
+  color: var(--correct);
+  font-size: var(--size-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}

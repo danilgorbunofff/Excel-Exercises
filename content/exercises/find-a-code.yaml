@@ -1,10 +1,10 @@
 id: find-a-code
 slug: find-a-code
-level: 3
+level: 2
 title: Find a code with INDEX and MATCH
 topic: lookups
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: The codes are to the left of the items, so VLOOKUP cannot return them. In B9, use INDEX and MATCH to find the code of the item in B8.
     rows:
@@ -19,12 +19,17 @@ screens:
       - [Code, null, null]
     answerCell: B9
     expected: S-03
+    variants:
+      - { set: { A4: S-01 }, expected: S-01 }
+      - { set: { B8: Kettle }, expected: S-01 }
+      - { set: { B8: Grill }, expected: S-05 }
     answer: =INDEX(A2:A6,MATCH(B8,B2:B6,0))
     requiredFunctions: [INDEX, MATCH]
     hints:
       nudge: MATCH finds the position of the item. INDEX returns the value at that position.
       rule: MATCH takes what to find, the range to search, then 0 for an exact match. INDEX takes a range and a position in it.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       syntax: Check that both functions close their brackets. MATCH sits inside INDEX.
       required-function: Use MATCH to find the row and INDEX to return the code.
       reference: Point at the codes in A2 to A6 and the items in B2 to B6, not at B9.

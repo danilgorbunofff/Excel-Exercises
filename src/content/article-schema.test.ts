@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { articleSchema } from "./schema.ts";
 
-const base = { title: "T", description: "D", updated: "2026-11-11", minutes: 4 };
+const base = { title: "T", description: "D", updated: "2026-11-11", minutes: 4, topic: "lookups" };
 
 describe("article cover", () => {
   it("is optional", () => {
@@ -14,5 +14,15 @@ describe("article cover", () => {
     expect(articleSchema.safeParse({ ...base, cover: "=VLOOKUP(A2,D2:F20,3,FALSE)" }).success).toBe(
       false,
     );
+  });
+});
+
+describe("article topic", () => {
+  it("is required", () => {
+    const { topic: _, ...noTopic } = base;
+    expect(articleSchema.safeParse(noTopic).success).toBe(false);
+  });
+  it("must be one of the index topics", () => {
+    expect(articleSchema.safeParse({ ...base, topic: "misc" }).success).toBe(false);
   });
 });

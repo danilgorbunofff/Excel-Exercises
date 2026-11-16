@@ -1,7 +1,8 @@
-# Mock assessments. Each set is a fixed list of existing exercises, taken in
-# order against the clock, with no hints and the results at the end. A task is
-# an exercise id (its first screen) or { exercise, screen } for a later screen.
-# The sample set is free for everyone; every other set needs PRO.
+# Mock assessments, taken in order against the clock, with no hints and the
+# results at the end. The free sample uses practice exercises. Every other set
+# needs PRO and uses held-out tasks from content/mocks/, which appear nowhere
+# else, so a certificate tests work the learner has not practised. A task is an
+# id (its first screen) or { exercise, screen } for a later screen.
 sets:
   - slug: sample
     title: Sample assessment
@@ -13,50 +14,82 @@ sets:
       - count-paid-orders
       - pass-or-fail
 
+  - slug: beginner
+    title: Beginner
+    summary: Totals, averages, counts, a first IF and simple percentages, for a first Excel test.
+    minutes: 25
+    tasks:
+      - meeting-room-hours
+      - average-basket-size
+      - longest-training-run
+      - lowest-supplier-bid
+      - forms-returned
+      - scores-still-missing
+      - cost-of-the-tickets
+      - share-of-budget-spent
+      - late-or-on-time
+      - average-customer-rating
+
+  - slug: intermediate
+    title: Intermediate
+    summary: Conditional counts and totals, lookups with a fallback, bands and text, as in a general Excel test.
+    minutes: 35
+    tasks:
+      - orders-of-250-or-more
+      - online-sales-total
+      - remote-staff-in-sales
+      - price-for-a-part-number
+      - manager-or-unknown
+      - employee-number-for-a-name
+      - discount-for-an-order-size
+      - risk-level-from-a-score
+      - product-family-from-a-code
+      - pallets-needed
+
   - slug: office-essentials
     title: Office essentials
     summary: The everyday formulas an office job expects, from totals to a first lookup.
     minutes: 30
     tasks:
-      - price-after-discount
-      - average-score
-      - largest-sale
-      - count-booked-seats
-      - share-handed-in
-      - sales-bonus
-      - count-orders-by-region
-      - total-for-one-region
-      - round-markup
-      - find-a-price
+      - invoice-total-from-lines
+      - average-call-time
+      - vat-on-a-net-price
+      - count-completed-tasks
+      - spend-for-one-department
+      - holiday-days-left
+      - pass-or-resit
+      - phone-extension-for-a-name
+      - mileage-claim
+      - percent-of-target-reached
 
   - slug: data-analyst
     title: Data analyst
-    summary: Conditional totals, lookups, ranking, text and dates, as in an analyst screening test.
+    summary: Conditional counts, lookups, ranking, text and dynamic arrays, as in an analyst screening test.
     minutes: 40
     tasks:
-      - countifs-several-conditions
-      - sumifs-two-conditions-at-once
-      - delivery-band
-      - xlookup-with-a-fallback-when-nothing-matches
-      - index-match
-      - median-the-middle-value
-      - rank-a-list-without-sorting-it
-      - textjoin-join-a-range-and-skip-blanks
-      - iferror-catch-the-error-show-your-text
-      - days-and-simple-date-maths
+      - open-orders-in-one-region
+      - average-sale-without-zeros
+      - best-selling-product
+      - middle-order-value
+      - month-from-a-batch-code
+      - region-or-not-listed
+      - active-customers-count
+      - east-orders-largest-first
+      - share-of-big-tickets
+      - rank-of-one-store
 
   - slug: finance
     title: Finance
-    summary: Rounding, weighted totals, subtotals and small models, as in a finance or accounting test.
+    summary: Margins, run rates, variances, tax bands and weighted costs, as in a finance or accounting test.
     minutes: 40
     tasks:
-      - roundup-and-rounddown-one-direction-only
-      - mround-and-floor-round-to-a-multiple
-      - sumproduct-multiply-then-add
-      - subtotal-a-sum-over-a-group
-      - total-for-two-conditions
-      - a-commission-sheet-that-updates-itself
-      - a-headcount-and-payroll-summary
-      - budget-versus-actual-with-a-variance-flag
-      - datedif-days-months-or-years-between
-      - capstone-margin
+      - gross-margin-percent
+      - year-to-date-sales
+      - annual-run-rate
+      - variance-needs-review
+      - straight-line-depreciation
+      - weighted-unit-cost
+      - tax-rate-band
+      - cost-by-department-and-type
+      - accrual-for-part-of-a-period
+      - savings-after-compound-growth

@@ -1,0 +1,51 @@
+id: months-well-over-budget
+slug: months-well-over-budget
+level: 3
+tier: 7
+title: Months well over budget
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In D14, count the months where spending was more than 10 per cent over budget.
+    rows:
+      - [Month, Budget, Actual, null]
+      - [Jan, 4000, 4300, null]
+      - [Feb, 4000, 4450, null]
+      - [Mar, 4500, 4900, null]
+      - [Apr, 4500, 5000, null]
+      - [May, 5000, 5400, null]
+      - [Jun, 5000, 5600, null]
+      - [Jul, 5000, 4800, null]
+      - [Aug, 4800, 5300, null]
+      - [Sep, 4800, 5280, null]
+      - [Oct, 5200, 5900, null]
+      - [Nov, 5200, 5100, null]
+      - [Dec, 6000, 6650, null]
+      - [null, null, Months, null]
+    answerCell: D14
+    expected: 6
+    variants:
+      - set: { C2: 5891 }
+        expected: 7
+      - set: { B2: 3000 }
+        expected: 7
+    answer: "=SUMPRODUCT(--(C2:C13>B2:B13*1.1))"
+    hints:
+      nudge: Compare each month with its own budget times 1.1. Exactly 10 per cent over is not more than 10 per cent.
+      rule: A row-by-row test gives TRUE or FALSE per month. -- turns them into 1 and 0, and SUMPRODUCT adds them.
+    misses:
+      value: 6 months were more than 10 per cent over. September was exactly 10 per cent over, so it does not count.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=SUMPRODUCT(--(C2:C13>B2:B13*1.1))"
+      - "=sumproduct(--(c2:c13>b2:b13*1.1))"
+      - "=SUMPRODUCT((C2:C13>B2:B13*1.1)*1)"
+      - "=SUM(--(C2:C13/B2:B13>1.1))"
+      - "=SUMPRODUCT(--(C2:C13-B2:B13>B2:B13*0.1))"
+    reject:
+      - { formula: "=SUMPRODUCT(--(C2:C13>B2:B13))", rule: value }
+      - { formula: "=SUMPRODUCT(--(C2:C13>=B2:B13*1.1))", rule: value }
+      - { formula: "=SUMPRODUCT(--(C2:C13>B2:B13*1.1)", rule: syntax }
+      - { formula: "=6", rule: reference }

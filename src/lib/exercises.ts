@@ -6,6 +6,7 @@ import { type CollectionEntry, getCollection } from "astro:content";
 import { readFileSync } from "node:fs";
 import { parse } from "yaml";
 import { type Track, trackSchema } from "../content/schema.ts";
+import { skillsOf } from "./assessments.ts";
 
 export type ExerciseEntry = CollectionEntry<"exercises">;
 
@@ -49,6 +50,35 @@ export async function placedExercises(): Promise<Placed[]> {
       next: ordered[i + 1] ?? null,
     };
   });
+}
+
+/**
+ * The daily-only tasks from content/daily/, shaped like a placed exercise so
+ * the workbench can show them. number is the step of the week, total is 7.
+ * They are not in the track, so no list, search or sitemap includes them.
+ */
+export async function dailyTasks(): Promise<(Placed & { tier: number })[]> {
+  const topic = {
+    slug: "daily",
+    title: "Daily exercise",
+    summary: "",
+    group: "skill" as const,
+    learn: [],
+  };
+  return (await getCollection("daily")).map(({ data }) => ({
+    exercise: {
+      ...data,
+      topic: "daily",
+      notes: { summary: "", syntax: "", example: "", commonErrors: [] },
+    },
+    tier: data.tier,
+    number: data.tier,
+    total: 7,
+    topic,
+    topicNumber: 1,
+    topicTotal: 1,
+    next: null,
+  }));
 }
 
 export const LEVELS = { 1: "Beginner", 2: "Intermediate", 3: "Advanced" } as const;
@@ -127,7 +157,10 @@ export function nextAction(placed: Placed, screenIndex: number) {
 
 /** What the exercise script needs. The answer is already on the page, in hint 3. */
 /** The data the exercise script grades with. A locked exercise leaves the answers out. */
-export function exerciseData(exercise: ExerciseEntry["data"], withAnswers = true) {
+export function exerciseData(
+  exercise: Pick<ExerciseEntry["data"], "id" | "screens">,
+  withAnswers = true,
+) {
   return {
     id: exercise.id,
     screens: exercise.screens.map((s) => ({
@@ -138,6 +171,7 @@ export function exerciseData(exercise: ExerciseEntry["data"], withAnswers = true
         requiredFunctions: s.requiredFunctions,
         forbiddenFunctions: s.forbiddenFunctions,
         requireReference: s.requireReference,
+        ...(s.variants ? { variants: s.variants } : {}),
       },
       answer: withAnswers ? s.answer : "",
       misses: s.misses,
@@ -149,6 +183,7 @@ export function exerciseData(exercise: ExerciseEntry["data"], withAnswers = true
 export const listWords = (items: readonly string[]) =>
   items.length <= 1 ? items.join("") : `${items.slice(0, -1).join(", ")} and ${items.at(-1)}`;
 
+/** The functions an exercise practises: each screen's required ones, or else those of its answer. */
 export const functionsOf = (exercise: ExerciseEntry["data"]) => [
-  ...new Set(exercise.screens.flatMap((s) => s.requiredFunctions)),
+  ...new Set(exercise.screens.flatMap((s) => skillsOf(s))),
 ];

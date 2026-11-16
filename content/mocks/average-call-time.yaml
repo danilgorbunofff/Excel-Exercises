@@ -1,0 +1,42 @@
+id: average-call-time
+slug: average-call-time
+level: 1
+title: Average call time
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B10, find the average call length in minutes. Calls with no time logged do not count.
+    rows:
+      - [Call, Minutes]
+      - [C1, 6]
+      - [C2, null]
+      - [C3, 11]
+      - [C4, 4]
+      - [C5, 9]
+      - [C6, null]
+      - [C7, 7]
+      - [C8, 5]
+      - [Average, null]
+    answerCell: B10
+    expected: 7
+    variants:
+      - set: { B2: 9 }
+        expected: 7.5
+    answer: "=AVERAGE(B2:B9)"
+    hints:
+      nudge: Average only the calls that have a number.
+      rule: AVERAGE skips empty cells, so it divides by the calls that have a time.
+    misses:
+      value: Six calls have a time, and they average 7 minutes.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=AVERAGE(B2:B9)"
+      - "=average(b2:b9)"
+      - "=SUM(B2:B9)/COUNT(B2:B9)"
+    reject:
+      - { formula: "=SUM(B2:B9)/8", rule: value }
+      - { formula: "=SUM(B2:B9)/ROWS(B2:B9)", rule: value }
+      - { formula: "=AVERAGE(B2:B9", rule: syntax }
+      - { formula: "=7", rule: reference }

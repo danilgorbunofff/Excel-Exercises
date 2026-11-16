@@ -1,0 +1,39 @@
+id: price-to-the-nearest-five-pence
+slug: price-to-the-nearest-five-pence
+level: 2
+tier: 5
+title: Price to the nearest 5p
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In C2, round the price in B2 to the nearest 0.05.
+    rows:
+      - [Item, Price, Rounded]
+      - [Soap, 3.47, null]
+    answerCell: C2
+    expected: 3.45
+    variants:
+      - set: { B2: 4.75 }
+        expected: 4.75
+    answer: "=MROUND(B2,0.05)"
+    hints:
+      nudge: Round to a step of 0.05, not to a number of decimals.
+      rule: MROUND(number, multiple) rounds to the nearest multiple.
+    misses:
+      value: 3.47 is nearest to 3.45.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=MROUND(B2,0.05)"
+      - "=mround(b2,0.05)"
+      - "=MROUND(B2,5/100)"
+    reject:
+      - formula: =ROUND(B2,1)
+        rule: value
+      - formula: =MROUND(B2,0.5)
+        rule: value
+      - formula: =MROUND(B2,0.05
+        rule: syntax
+      - formula: =3.45
+        rule: reference

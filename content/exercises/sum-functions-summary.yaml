@@ -1,10 +1,10 @@
 id: sum-functions-summary
 slug: sum-functions-summary
-level: 3
+level: 2
 title: Sum functions summary
 topic: conditions
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B7, total everything sold, and then be ready for the question that follows.
     rows:
@@ -17,12 +17,16 @@ screens:
       - [Everything, null]
     answerCell: B7
     expected: 1450
+    variants:
+      - set: { B2: 438 }
+        expected: 1568
     answer: =SUM(B2:B6)
     requiredFunctions: [SUM]
     hints:
       nudge: One function adds the whole amount column.
       rule: SUM adds every number in a range and skips text and empty cells. Point it at the column rather than typing the numbers.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: 320 + 250 + 180 + 300 + 400 is 1450.
       syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
       required-function: Every number in the column, added by one function.
@@ -52,12 +56,18 @@ screens:
       - [Outside North, null, null]
     answerCell: C7
     expected: 550
+    variants:
+      - set: { C3: 343 }
+        expected: 643
+      - set: { A2: "South" }
+        expected: 870
     answer: =SUM(C2:C6)-SUMIF(A2:A6,"North",C2:C6)
     requiredFunctions: [SUM, SUMIF]
     hints:
       nudge: Take the total of every row, then subtract the total of the North rows.
       rule: SUM gives the whole column and SUMIF gives the rows that meet one condition. Subtracting one from the other leaves the rows that do not match.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: 1450 in total minus 900 of North sales leaves 550.
       syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
       required-function: The total of the column is a SUM; the part to remove is not.

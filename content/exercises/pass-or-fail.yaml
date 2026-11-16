@@ -3,8 +3,8 @@ slug: pass-or-fail
 level: 1
 title: Pass or fail
 topic: logic
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: The pass mark is 50. In C2, show Pass if the score is at least 50, and Fail if it is not.
     rows:
@@ -22,6 +22,7 @@ screens:
       required-function: Use IF, so the result changes when the score changes.
       reference: Point at the score in B2, so the result changes when the score does.
       value: Check the order. The result for a true test comes first, and the text must match Pass exactly.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - '=IF(B2>=50,"Pass","Fail")'
       - '=IF(B2<50,"Fail","Pass")'
@@ -32,6 +33,9 @@ screens:
       - { formula: '=IF(64>=50,"Pass","Fail")', rule: reference }
       - { formula: '=IF(B2>=50,"Fail","Pass")', rule: value }
       - { formula: '=IF(B2>=50,"pass","fail")', rule: value }
+    variants:
+      - { set: { B2: 49 }, expected: Fail }
+      - { set: { B2: 50 }, expected: Pass }
 notes:
   summary: IF returns one value when a test is true and another when it is false.
   syntax: IF(logical_test, value_if_true, [value_if_false])

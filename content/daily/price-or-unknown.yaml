@@ -1,0 +1,43 @@
+id: price-or-unknown
+slug: price-or-unknown
+level: 2
+tier: 4
+title: Price or Unknown
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, show the price of the product in E2, or Unknown when it is not on the list.
+    rows:
+      - [Product, Price, null, null, null, null]
+      - [Mug, 6.5, null, null, Vase, null]
+      - [Bowl, 9, null, null, null, null]
+      - [Plate, 7.25, null, null, null, null]
+      - [Jug, 12, null, null, null, null]
+      - [Cup, 4.75, null, null, null, null]
+    answerCell: F2
+    expected: Unknown
+    answer: '=IFERROR(XLOOKUP(E2,A2:A6,B2:B6),"Unknown")'
+    hints:
+      nudge: Look the product up, and catch the error when it is missing.
+      rule: "IFERROR(formula, fallback) shows the fallback when the formula gives an error such as #N/A."
+    misses:
+      value: Vase is not on the list, so the cell should say Unknown.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=IFERROR(XLOOKUP(E2,A2:A6,B2:B6),"Unknown")'
+      - '=iferror(xlookup(e2,a2:a6,b2:b6),"Unknown")'
+      - '=IFERROR(VLOOKUP(E2,A2:B6,2,FALSE),"Unknown")'
+      - '=IFERROR(INDEX(B2:B6,MATCH(E2,A2:A6,0)),"Unknown")'
+    reject:
+      - formula: =XLOOKUP(E2,A2:A6,B2:B6)
+        rule: value
+      - formula: =IFERROR(XLOOKUP(E2,A2:A6,B2:B6),"unknown ")
+        rule: value
+      - formula: =IFERROR(XLOOKUP(E2,A2:A6,B2:B6),"Unknown"
+        rule: syntax
+      - formula: ="Unknown"
+        rule: reference
+    variants:
+      - { set: { E2: Mug }, expected: 6.5 }

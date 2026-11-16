@@ -1,0 +1,46 @@
+id: sales-in-a-reps-region
+slug: sales-in-a-reps-region
+level: 3
+tier: 6
+title: Sales in a rep's region
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In H2, add up all the sales in the region of the rep named in G2.
+    rows:
+      - [Region, Sales, null, Rep, Region, null, Rep, Region sales]
+      - [North, 420, null, Ines, South, null, Ines, null]
+      - [South, 310, null, Jon, North, null, null, null]
+      - [East, 275, null, Kai, East, null, null, null]
+      - [South, 190, null, Lou, South, null, null, null]
+      - [North, 360, null, null, null, null, null, null]
+      - [South, 455, null, null, null, null, null, null]
+      - [East, 120, null, null, null, null, null, null]
+      - [North, 205, null, null, null, null, null, null]
+      - [South, 330, null, null, null, null, null, null]
+      - [East, 410, null, null, null, null, null, null]
+    answerCell: H2
+    expected: 1285
+    variants:
+      - { set: { A2: South }, expected: 1705 }
+      - { set: { E2: North }, expected: 985 }
+      - { set: { A11: South }, expected: 1695 }
+    answer: "=SUMIF(A2:A11,XLOOKUP(G2,D2:D5,E2:E5),B2:B11)"
+    hints:
+      nudge: "Two steps: find the rep's region, then add the sales for that region."
+      rule: "A lookup can feed another function: put it where SUMIF expects its criteria."
+    misses:
+      value: Ines works in South, and the South rows add up to 1285.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=SUMIF(A2:A11,XLOOKUP(G2,D2:D5,E2:E5),B2:B11)"
+      - "=sumif(a2:a11,xlookup(g2,d2:d5,e2:e5),b2:b11)"
+      - "=SUMIFS(B2:B11,A2:A11,VLOOKUP(G2,D2:E5,2,FALSE))"
+      - "=SUMIF(A2:A11,INDEX(E2:E5,MATCH(G2,D2:D5,0)),B2:B11)"
+    reject:
+      - { formula: '=SUMIF(A2:A11,"South",B2:B11)', rule: fragile }
+      - { formula: "=SUMIF(A2:A11,G2,B2:B11)", rule: value }
+      - { formula: "=SUMIF(A2:A11,XLOOKUP(G2,D2:D5,E2:E5),B2:B11", rule: syntax }
+      - { formula: "=1285", rule: reference }

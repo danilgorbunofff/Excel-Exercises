@@ -3,10 +3,10 @@ slug: add-only-the-positives
 level: 2
 title: Add only the positives
 topic: conditions
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B7, add up the months that went up and leave the drops alone.
+  - prompt: In B7, add up the months that went up and leave the drops alone. Use SUMIF.
     rows:
       - [Month, Change]
       - [Jan, 12]
@@ -41,7 +41,7 @@ screens:
       - { formula: '=SUMIF(B3:B6,">0")', rule: value }
       - { formula: '=SUMIF(B2:B6,">0")/0', rule: value }
       - { formula: =SUMIF(B2:B6 ">0"), rule: syntax }
-  - prompt: In B7, report the size of the losses as a positive number.
+  - prompt: In B7, report the size of the losses as a positive number. Use SUMIF.
     rows:
       - [Week, Variance]
       - [W-1, -4]
@@ -62,6 +62,7 @@ screens:
       syntax: "Check the brackets and operators. Every opening bracket needs a closing one."
       required-function: Add only the negative weeks, and let SUMIF do the adding.
       reference: Read the variances from the grid so the filter applies to real cells.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =-SUMIF(B2:B6,"<0")
       - =-sumif(b2:b6,"<0")
@@ -76,6 +77,8 @@ screens:
       - { formula: '=SUMIF(B3:B6,"<0")', rule: value }
       - { formula: '=-SUMIF(B2:B6,"<0")/0', rule: value }
       - { formula: =-SUMIF(B2:B6 "<0"), rule: syntax }
+    variants:
+      - { set: { B6: -4 }, expected: 19 }
 notes:
   summary: 'SUMIF splits a column of changes by sign: ">0" adds the gains and "<0" adds the drops. A minus in front turns the total of the drops into a positive size.'
   syntax: SUMIF(range, ">0") and =-SUMIF(range, "<0")

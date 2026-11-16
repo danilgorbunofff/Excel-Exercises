@@ -1,0 +1,41 @@
+id: boxes-needed
+slug: boxes-needed
+level: 2
+tier: 5
+title: Boxes needed
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In D2, work out how many boxes are needed to pack every item. A part-full box still counts.
+    rows:
+      - [Order, Items, Per box, Boxes]
+      - [O-12, 53, 12, null]
+    answerCell: D2
+    expected: 5
+    variants:
+      - set: { B2: 73 }
+        expected: 7
+      - set: { C2: 16 }
+        expected: 4
+    answer: "=ROUNDUP(B2/C2,0)"
+    hints:
+      nudge: Divide the items by the box size, then round up.
+      rule: ROUNDUP(number, 0) always rounds up to the next whole number, even from .1.
+    misses:
+      value: 53 items need 4.42 boxes, so 5 boxes.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=ROUNDUP(B2/C2,0)"
+      - "=roundup(b2/c2,0)"
+      - "=ROUNDUP(B2/C2,0)*1"
+    reject:
+      - formula: =ROUND(B2/C2,0)
+        rule: value
+      - formula: =ROUNDUP(C2/B2,0)
+        rule: value
+      - formula: =ROUNDUP(B2/C2,0
+        rule: syntax
+      - formula: =5
+        rule: reference

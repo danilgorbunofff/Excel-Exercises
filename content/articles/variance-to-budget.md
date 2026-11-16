@@ -4,6 +4,7 @@ title: "Variance to budget: the formulas finance teams use"
 description: Work out the variance in money and percent, show whether it is good or bad, and flag the lines worth explaining.
 updated: 2026-11-16
 minutes: 4
+topic: finance
 functions: [IF, ABS, AND, IFERROR, SUMIFS]
 exercises: [variance-to-budget-by-cost-centre, budget-versus-actual-with-a-variance-flag, year-to-date-actual-against-budget]
 cover: "=B2-C2"

@@ -1,10 +1,10 @@
 id: aggregate-functions-summary
 slug: aggregate-functions-summary
-level: 3
+level: 2
 title: Totals that multiply, skip and reconcile
 topic: subtotals
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In D5, total the Line column with SUBTOTAL.
     rows:
@@ -15,12 +15,16 @@ screens:
       - [Line total, null, null, null]
     answerCell: D5
     expected: 100
+    variants:
+      - set: { D2: 27 }
+        expected: 107
     answer: =SUBTOTAL(9,D2:D4)
     requiredFunctions: [SUBTOTAL]
     hints:
       nudge: SUBTOTAL needs a number in front of the range to say which calculation to run.
       rule: SUBTOTAL takes a function number, then the range. 9 adds the values and leaves out rows hidden by a filter.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Twenty plus twenty plus sixty is 100.
       syntax: "Check the brackets, commas and quote marks. SUBTOTAL follows the pattern `=SUBTOTAL(function_num, ref1, [ref2], ...)`."
       required-function: The total under a table that may be filtered is a SUBTOTAL, with 9 for SUM.
@@ -39,7 +43,7 @@ screens:
       - { formula: "=SUBTOTAL(9,D3:D4)", rule: value }
       - { formula: "=SUBTOTAL(9,D2:D4)/0", rule: value }
       - { formula: "=SUBTOTAL 9,D2:D4", rule: syntax }
-  - prompt: In D5, divide the price-times-quantity total by the line total and round it to one decimal place.
+  - prompt: In D5, divide the price-times-quantity total by the line total and round it to one decimal place. Use SUMPRODUCT and SUBTOTAL.
     rows:
       - [Item, Price, Qty, Line]
       - [pen, 10, 2, 20]
@@ -48,12 +52,17 @@ screens:
       - [Line total, null, null, null]
     answerCell: D5
     expected: 1
+    variants:
+      - { set: { B2: 14 }, expected: 1.1 }
+      - { set: { C2: 5 }, expected: 1.3 }
+      - { set: { B2: 1 }, expected: 0.8 }
     answer: =ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUBTOTAL(9,D2:D4),1)
     requiredFunctions: [SUMPRODUCT, SUBTOTAL]
     hints:
       nudge: Build the price times quantity total with one function, the line total with another, then divide.
       rule: SUMPRODUCT multiplies two ranges row by row and adds the products. SUBTOTAL with 9 adds a column, and ROUND with 1 keeps one decimal place.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: 100 divided by 100 is 1, so the two routes agree.
       syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
       required-function: The numerator is price times quantity across the rows, which is what SUMPRODUCT does.

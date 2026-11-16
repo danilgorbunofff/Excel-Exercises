@@ -4,6 +4,7 @@ title: Excel mistakes that cost money, and how to catch them
 description: The errors behind most wrong reports, from short ranges to hidden typed numbers, and a check for each.
 updated: 2026-11-16
 minutes: 5
+topic: habits
 functions: [SUM, ROUND, VLOOKUP, IFERROR, COUNTIF]
 exercises: [debug-a-total-that-skips-a-row, formula-audit-fix-five-broken-sheets, a-monthly-close-checklist-in-formulas]
 cover: "=SUM(B2:B9)"

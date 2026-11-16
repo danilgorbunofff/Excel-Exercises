@@ -1,0 +1,45 @@
+id: stock-for-a-code
+slug: stock-for-a-code
+level: 2
+tier: 3
+title: Stock for a code
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, show how many are in stock for the product code in E2.
+    rows:
+      - [Code, Stock, null, null, null, null]
+      - [K-10, 42, null, null, K-40, null]
+      - [K-20, 0, null, null, null, null]
+      - [K-30, 17, null, null, null, null]
+      - [K-40, 63, null, null, null, null]
+      - [K-50, 8, null, null, null, null]
+      - [K-60, 25, null, null, null, null]
+    answerCell: F2
+    expected: 63
+    variants:
+      - set: { A2: K-40 }
+        expected: 42
+      - set: { B5: 86 }
+        expected: 86
+    answer: "=XLOOKUP(E2,A2:A7,B2:B7)"
+    hints:
+      nudge: Find the code in the Code column and return the stock beside it.
+      rule: XLOOKUP(what to find, where to find it, what to return). The two ranges must be the same size.
+    misses:
+      value: K-40 has 63 in stock.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - =XLOOKUP(E2,A2:A7,B2:B7)
+      - =xlookup(e2,a2:a7,b2:b7)
+      - =XLOOKUP(E2,$A$2:$A$7,$B$2:$B$7)
+      - =VLOOKUP(E2,A2:B7,2,FALSE)
+    reject:
+      - formula: =XLOOKUP(E2,A2:A7,A2:A7)
+        rule: value
+      - formula: =XLOOKUP(E2,A2:A7,B2:B7
+        rule: syntax
+      - formula: =63
+        rule: reference

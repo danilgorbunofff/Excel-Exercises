@@ -3,8 +3,8 @@ slug: sumif-a-sum-range-on-another-column
 level: 2
 title: "SUMIF: a sum range on another column"
 topic: conditions
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In C7, total the North bonus from column C, testing the region in column A.
     rows:
@@ -63,6 +63,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, [sum_range])`."
       required-function: A plain SUM adds every score; filtering them is the whole question here.
       reference: Test the scores in the grid rather than a list of numbers typed into the formula.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =SUMIF(B2:B6,">40")
       - =sumif(b2:b6,">40")
@@ -77,6 +78,8 @@ screens:
       - { formula: '=SUMIF(B2:B6,">=40")', rule: value }
       - { formula: '=SUMIF(B2:B6,">40")/0', rule: value }
       - { formula: =SUMIF(B2:B6 ">40"), rule: syntax }
+    variants:
+      - { set: { B2: 52 }, expected: 151 }
 notes:
   summary: SUMIF adds the rows that meet one condition, and its optional third argument is the range to add. Leave it out and SUMIF adds the cells it tested.
   syntax: SUMIF(criteria_range, condition, [sum_range])

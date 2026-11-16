@@ -3,9 +3,12 @@
 import { errorValue, isError } from "../errors.ts";
 import {
   type Arg,
+  array,
+  cellAt,
   compare,
   type FunctionSpec,
   isRange,
+  rowsOf,
   type Scalar,
   toBool,
   toScalar,
@@ -54,7 +57,25 @@ export const LOGIC: Record<string, FunctionSpec> = {
   IF: fn(
     2,
     3,
-    safe((args) => (bool(args[0], false) ? branch(args[1], false) : branch(args[2], false))),
+    safe((args) => {
+      const test = args[0]?.get() ?? null;
+      if (!isRange(test) || (test.rows.length === 1 && test.rows[0]?.length === 1))
+        return bool(args[0], false) ? branch(args[1], false) : branch(args[2], false);
+      // An array test, as in SUM(IF(A2:A9="North",B2:B9)): each cell picks its own branch.
+      const yes = rowsOf(branch(args[1], false));
+      const no = rowsOf(branch(args[2], false));
+      const h = Math.max(test.rows.length, yes.length, no.length);
+      const w = Math.max(test.rows[0]?.length ?? 0, yes[0]?.length ?? 0, no[0]?.length ?? 0);
+      return array(
+        Array.from({ length: h }, (_, i) =>
+          Array.from({ length: w }, (_, j) => {
+            const t = toBool(cellAt(test.rows, i, j));
+            if (isError(t)) return t;
+            return cellAt(t ? yes : no, i, j);
+          }),
+        ),
+      );
+    }),
   ),
   AND: fn(
     1,

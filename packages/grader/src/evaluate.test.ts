@@ -44,7 +44,6 @@ describe("evaluate: errors", () => {
     ["=total", "#NAME?"],
     ["=NOSUCH(1)", "#NAME?"],
     ["=#N/A+1", "#N/A"],
-    ["=B2:B3+1", "#VALUE!"],
   ])("%s is %s", (f, code) => {
     expect(ev(f)).toBe(E(code as Parameters<typeof errorValue>[0]));
   });

@@ -192,6 +192,27 @@ describe("grade: rules in their fixed order", () => {
     expect(g("=VLOOKUP(A3,A2:B3,2,FALSE)", spec)).toMatchObject({ correct: true });
   });
 
+  it("4. a fallback value is the task's choice, not data", () => {
+    const spec: GradeSpec = {
+      rows: [
+        ["Amount", "Days", "Over 30"],
+        [1250, 60, null],
+        [2400, 0, null],
+      ],
+      answerCell: "C2",
+      expected: 1250,
+      requiredFunctions: [],
+      forbiddenFunctions: [],
+      requireReference: true,
+    };
+    for (const f of [
+      "=SUM(FILTER(A2:A3,B2:B3>30,0))",
+      '=IFERROR(SUMIF(B2:B3,">30",A2:A3),0)',
+      '=IFNA(SUMIF(B2:B3,">30",A2:A3),0)',
+    ])
+      expect(g(f, spec), f).toMatchObject({ correct: true });
+  });
+
   it("4. a number compared with a cell is a threshold, not data", () => {
     const scores: GradeSpec = {
       rows: [
@@ -211,6 +232,8 @@ describe("grade: rules in their fixed order", () => {
     expect(g('=IF(COUNTIF(B2:B3,">0")=1,"Pass","Fail")', scores)).toMatchObject({
       correct: true,
     });
+    // A LET name stands for the cells it was given.
+    expect(g('=LET(s,B2,IF(s>=70,"Pass","Fail"))', scores)).toMatchObject({ correct: true });
     // Typed numbers outside a comparison are still data.
     expect(g('=IF(B2+70>=140,"Pass","Fail")', scores).rule).toBe("reference");
     expect(g('=IF(70>=70,"Pass","Fail")', scores).rule).toBe("reference");
@@ -260,7 +283,7 @@ describe("grade: value messages", () => {
 
   it("explains a range where one value belongs", () => {
     expect(g("=SUM(B2:B5)+B2:B3").message).toBe(
-      "B6 shows `#VALUE!`: a value has the wrong type, such as text where a number belongs.",
+      "The formula returns several cells, but B6 holds one value.",
     );
     const spec = { ...sales, requiredFunctions: [], requireReference: false };
     expect(g("=B2:B5", spec).message).toBe(

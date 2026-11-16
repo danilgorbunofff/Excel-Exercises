@@ -18,17 +18,16 @@ function nth(arg: Arg | undefined, k: Arg | undefined, order: 1 | -1): number {
 }
 
 function mode(args: Arg[]): number {
+  // A Map keeps first-seen order, so a tie goes to the value seen first, as in Excel.
   const counts = new Map<number, number>();
+  for (const x of numbersFrom(args)) counts.set(x, (counts.get(x) ?? 0) + 1);
   let best: number | null = null;
   let bestCount = 1;
-  for (const x of numbersFrom(args)) {
-    const n = (counts.get(x) ?? 0) + 1;
-    counts.set(x, n);
+  for (const [x, n] of counts)
     if (n > bestCount) {
       best = x;
       bestCount = n;
     }
-  }
   return best ?? fail("#N/A");
 }
 

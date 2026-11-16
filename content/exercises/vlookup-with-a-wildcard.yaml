@@ -1,10 +1,10 @@
 id: vlookup-with-a-wildcard
 slug: vlookup-with-a-wildcard
-level: 3
+level: 2
 title: VLOOKUP with a wildcard
 topic: lookups
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B7, look up the lead time of the first Northwind supplier in A1:C6, using the partial name in A7 with a wildcard.
     rows:
@@ -27,6 +27,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. VLOOKUP follows the pattern `=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])`."
       required-function: INDEX and MATCH could answer too, but the point here is what a wildcard does inside VLOOKUP's first argument.
       reference: Build the pattern from A7. A typed "Northwind*" is right today and dead tomorrow.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =VLOOKUP(A7&"*",A1:C6,3,FALSE)
       - =vlookup(a7&"*",a1:c6,3,false)
@@ -47,6 +48,8 @@ screens:
       - { formula: '=VLOOKUP(A7&"*",A1:C6,4,FALSE)', rule: value }
       - { formula: '=VLOOKUP(A7&"?",A1:C6,3,FALSE)', rule: value }
       - { formula: '=INDEX(C1:C6,MATCH(A7&"*",A1:A6,0))', rule: required-function }
+    variants:
+      - { set: { A7: Northwind Sea }, expected: 26 }
 notes:
   summary: "A wildcard turns the lookup value into a pattern. In an exact-match VLOOKUP, a partial name followed by a star finds the first entry that starts with it."
   syntax: VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])

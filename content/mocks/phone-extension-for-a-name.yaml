@@ -1,0 +1,42 @@
+id: phone-extension-for-a-name
+slug: phone-extension-for-a-name
+level: 2
+title: Phone extension for a name
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, show the phone extension of the person named in E2.
+    rows:
+      - [Name, Team, Ext, null, null, null]
+      - [Ana, Sales, 2210, null, Dev, null]
+      - [Ben, IT, 2315, null, null, null]
+      - [Cat, HR, 2120, null, null, null]
+      - [Dev, Sales, 2244, null, null, null]
+      - [Eli, Ops, 2408, null, null, null]
+      - [Fay, IT, 2333, null, null, null]
+    answerCell: F2
+    expected: 2244
+    variants:
+      - set: { A2: Dev }
+        expected: 2210
+      - set: { C5: 3074 }
+        expected: 3074
+    answer: "=XLOOKUP(E2,A2:A7,C2:C7)"
+    hints:
+      nudge: Find the name, then return the extension on the same row.
+      rule: A lookup finds a value in one column and returns the matching value from another.
+    misses:
+      value: Dev's extension is 2244.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=XLOOKUP(E2,A2:A7,C2:C7)"
+      - "=xlookup(e2,a2:a7,c2:c7)"
+      - "=VLOOKUP(E2,A2:C7,3,FALSE)"
+      - "=INDEX(C2:C7,MATCH(E2,A2:A7,0))"
+    reject:
+      - { formula: "=VLOOKUP(E2,A2:C7,2,FALSE)", rule: value }
+      - { formula: "=XLOOKUP(E2,A2:A7,A2:A7)", rule: value }
+      - { formula: "=XLOOKUP(E2,A2:A7,C2:C7", rule: syntax }
+      - { formula: "=2244", rule: reference }

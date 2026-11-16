@@ -1,0 +1,48 @@
+id: count-late-deliveries
+slug: count-late-deliveries
+level: 2
+tier: 3
+title: Count late deliveries
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In D10, count the deliveries marked Late.
+    rows:
+      - [Run, Driver, Status, null]
+      - [R1, Ali, On time, null]
+      - [R2, Bea, Late, null]
+      - [R3, Ali, On time, null]
+      - [R4, Cid, Late, null]
+      - [R5, Bea, On time, null]
+      - [R6, Cid, Late, null]
+      - [R7, Ali, Late, null]
+      - [R8, Bea, Late, null]
+      - [null, null, Late runs, null]
+    answerCell: D10
+    expected: 5
+    variants:
+      - set: { C2: Late }
+        expected: 6
+    answer: '=COUNTIF(C2:C9,"Late")'
+    hints:
+      nudge: Count the cells in the Status column that say Late.
+      rule: COUNTIF(range, criteria) counts the cells in the range that match. Text criteria go in quotes.
+    misses:
+      value: 5 runs are marked Late.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - '=COUNTIF(C2:C9,"Late")'
+      - '=countif(c2:c9,"Late")'
+      - '=COUNTIF(C2:C9,"late")'
+      - '=COUNTIF($C$2:$C$9,"Late")'
+    reject:
+      - formula: =COUNTIF(C2:C9,"On time")
+        rule: value
+      - formula: =COUNTA(C2:C9)
+        rule: value
+      - formula: =COUNTIF(C2:C9,"Late"
+        rule: syntax
+      - formula: =5
+        rule: reference

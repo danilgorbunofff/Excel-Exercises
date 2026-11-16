@@ -3,10 +3,10 @@ slug: quarter-forecast-against-budget
 level: 2
 title: Quarter forecast against budget
 topic: interview-fpa
-updated: 2026-11-15
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In E2, show the second quarter forecast minus the second quarter budget.
+  - prompt: In E2, show the second quarter forecast minus the second quarter budget. Use SUMIFS.
     rows:
       - [Month, Quarter, Forecast, Budget, Answer]
       - [Jan, Q1, 30500, 30000, null]
@@ -38,7 +38,7 @@ screens:
       - { formula: '=SUMIFS(C2:C7,B2:B7,"Q2")', rule: value }
       - { formula: "=SUM(C5:C7)-SUM(D5:D7)", rule: required-function }
       - { formula: '=SUMIFS(C2:C7,B2:B7,"Q2")-SUMIFS(D2:D7,B2:B7,"Q2"', rule: syntax }
-  - prompt: In E2, show Over when the second quarter forecast is above its budget and Under when it is not.
+  - prompt: In E2, show Over when the second quarter forecast is above its budget and Under when it is not. Use IF and SUMIFS.
     rows:
       - [Month, Quarter, Forecast, Budget, Answer]
       - [Jan, Q1, 30500, 30000, null]
@@ -59,6 +59,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, value_if_false)`."
       required-function: The test compares two SUMIFS totals inside an IF.
       reference: The quarters run down B2:B7.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =IF(SUMIFS(C2:C7,B2:B7,"Q2")>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under")
       - =if(sumifs(c2:c7,b2:b7,"q2")>sumifs(d2:d7,b2:b7,"q2"),"Over","Under")
@@ -82,6 +83,9 @@ screens:
           formula: '=IF(SUMIFS(C2:C7,B2:B7,"Q2")>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under"',
           rule: syntax,
         }
+    variants:
+      - { set: { C5: 34500 }, expected: Over }
+      - { set: { C5: 33000 }, expected: Under }
 notes:
   summary: Quarter totals come from monthly rows tagged with their quarter. One SUMIFS per side keeps the comparison right when months are added or sorted.
   syntax: SUMIFS(forecast,quarters,"Q2")-SUMIFS(budget,quarters,"Q2")

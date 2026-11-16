@@ -3,8 +3,8 @@ slug: date-build-a-date-from-parts
 level: 2
 title: "DATE: build a date from parts"
 topic: dates
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: Column E wants the raised date as a real date number built from the year, month and day in B2:D2, so start with INV-2001 in E2.
     rows:
@@ -24,6 +24,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. DATE follows the pattern `=DATE(year, month, day)`."
       required-function: All three parts belong in one call; splitting them across two DATE calls adds two serials together.
       reference: Read the year, month and day from row 2, so the formula fills down to the other invoices.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =DATE(B2,C2,D2)
       - =date(b2,c2,d2)
@@ -38,6 +39,8 @@ screens:
       - { formula: "=DATE(B2,C2,D3)", rule: value }
       - { formula: "=DATE(B2,C2,D2)/0", rule: value }
       - { formula: "=DATE(B2,C2,D2", rule: syntax }
+    variants:
+      - { set: { B2: 2031 }, expected: 47908 }
   - prompt: "In B3, build the first day of the month after the statement month in B2, in 2024: March means 1 April 2024."
     rows:
       - [Item, Value]

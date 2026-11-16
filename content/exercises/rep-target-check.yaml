@@ -1,0 +1,46 @@
+id: rep-target-check
+slug: rep-target-check
+level: 2
+title: Rep target check
+topic: interview-sales
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In D2, show On target when the rep's sales reach the target, otherwise Below. Use IF.
+    rows:
+      - [Rep, Target, Sales, Check]
+      - [Nia, 52000, 50850, null]
+    answerCell: D2
+    expected: Below
+    variants:
+      - { set: { C2: 69665 }, expected: On target }
+      - { set: { B2: 39000 }, expected: On target }
+      - { set: { C2: 52000 }, expected: On target }
+    answer: '=IF(C2>=B2,"On target","Below")'
+    requiredFunctions: [IF]
+    hints:
+      nudge: Compare the sales with the target. Reaching it exactly counts.
+      rule: IF(test, value if true, value if false). The test is sales greater than or equal to target.
+    misses:
+      value: 50850 is short of 52000, so the cell should say Below.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task needs IF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=IF(C2>=B2,"On target","Below")'
+      - '=if(c2>=b2,"On target","Below")'
+      - '=IF(C2<B2,"Below","On target")'
+      - '=IF(B2<=C2,"On target","Below")'
+    reject:
+      - { formula: '=IF(C2<=B2,"On target","Below")', rule: value }
+      - { formula: '=IF(C2>=B2,"Below","On target")', rule: value }
+      - { formula: '=IF(C2>=B2,"On target","Below"', rule: syntax }
+      - { formula: '="Below"', rule: required-function }
+notes:
+  summary: IF turns a comparison into a label, such as whether a rep reached target.
+  syntax: 'IF(sales >= target, "On target", "Below")'
+  example: '`=IF(C2>=B2,"On target","Below")` labels one rep.'
+  commonErrors:
+    - Using > instead of >= marks a rep exactly on target as Below.
+    - Swapping the two labels reverses every answer.
+    - Text labels must be in quotes.

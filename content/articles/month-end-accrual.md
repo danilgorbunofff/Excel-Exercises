@@ -4,6 +4,7 @@ title: Month end accrual for part of a month
 description: Accrue a cost for only the days a service ran in the month, with formulas that handle start and end dates.
 updated: 2026-11-16
 minutes: 4
+topic: finance
 functions: [MIN, MAX, EOMONTH, DAY, ROUND, NETWORKDAYS]
 exercises: [month-end-accrual-for-part-of-a-month, a-monthly-close-checklist-in-formulas, days-and-simple-date-maths]
 cover: "17/30 days"

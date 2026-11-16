@@ -9,6 +9,7 @@ import CompletionDialog from "../../components/CompletionDialog.astro";
 import ExerciseData from "../../components/ExerciseData.astro";
 import ExerciseTimer from "../../components/ExerciseTimer.astro";
 import HintLadder from "../../components/HintLadder.astro";
+import Icon from "../../components/Icon.astro";
 import RichText from "../../components/RichText.astro";
 import Sheet from "../../components/Sheet.astro";
 import SplitDivider from "../../components/SplitDivider.astro";
@@ -17,7 +18,6 @@ import Base from "../../layouts/Base.astro";
 import { isLocked } from "../../lib/access.ts";
 import {
   exercisePath,
-  exercisesForFunction,
   functionsOf,
   LEVELS,
   listWords as list,
@@ -27,7 +27,6 @@ import {
   stepsFor,
   topicPath,
 } from "../../lib/exercises.ts";
-import { functionPages, functionPath } from "../../lib/functions.ts";
 
 export async function getStaticPaths() {
   const all = await placedExercises();
@@ -48,8 +47,6 @@ interface Props {
   more: Placed[];
 }
 const { placed, more } = Astro.props;
-const pages = new Map((await functionPages()).map((p) => [p.name, functionPath(p.slug)]));
-const fnHref = (name: string) => pages.get(name) ?? exercisesForFunction(name);
 const { exercise, topic } = placed;
 const locked = isLocked(placed);
 const proCount = (await placedExercises()).filter((p) => isLocked(p)).length;
@@ -59,13 +56,6 @@ const first = screens[0];
 if (!first) throw new Error(`${exercise.id} has no screens`);
 
 const functions = functionsOf(exercise);
-const checks = [
-  first.requiredFunctions.length > 0 && `use ${list(first.requiredFunctions)}`,
-  first.forbiddenFunctions.length > 0 && `not use ${list(first.forbiddenFunctions)}`,
-  first.requireReference && "point at the cells rather than typed numbers",
-  `give the right result in ${first.answerCell}`,
-].filter((c): c is string => typeof c === "string");
-
 const description = `Practise ${functions.length > 0 ? list(functions) : "Excel formulas"} on a real grid. ${first.prompt}`;
 ---
 
@@ -148,7 +138,7 @@ const description = `Practise ${functions.length > 0 ? list(functions) : "Excel 
     <h2>Your task</h2>
     {
       screens.map((s, i) => (
-        <ol class="todo" data-prompt={i} hidden={i > 0}>
+        <ol class="todo step-list" data-prompt={i} hidden={i > 0}>
           {stepsFor(s).map((line) => (
             <li>
               <RichText text={line} />
@@ -159,57 +149,49 @@ const description = `Practise ${functions.length > 0 ? list(functions) : "Excel 
     }
     <p class="progress" data-progress hidden></p>
 
-    <h2>What this exercise checks</h2>
-    <p>Your formula must {list(checks)}.</p>
-    <p class="count">
-      Formulas use English function names and commas between arguments, as Excel for Microsoft 365
-      does in English.
-    </p>
+    <section class="note note-hints" aria-labelledby="hints">
+      <h2 id="hints"><Icon name="hint" size={18} />Stuck?</h2>
+      <p class="count">The last hint shows the answer, and the exercise counts as solved with help.</p>
+      {screens.map((s, i) => <HintLadder screen={s} index={i} locked={locked} />)}
+    </section>
 
-    <h2 id="hints">Stuck?</h2>
-    <p>
-      Open the hints in order. The last one shows the answer and marks the exercise as solved with
-      help.
-    </p>
-    {screens.map((s, i) => <HintLadder screen={s} index={i} locked={locked} />)}
-
-    {
-      functions.length > 0 && (
-        <>
-          <h2>Related functions</h2>
-          <ul class="chips">
-            {functions.map((f) => (
-              <li>
-                <a class="chip" href={fnHref(f)}>
-                  {f}
-                </a>
-              </li>
-            ))}
+    {/* Background on the function stays folded, so the task and its hints come first. */}
+    <details class="learn">
+      <summary>
+        <Icon name="book" size={18} />
+        <span>About {functions.length > 0 ? list(functions) : "this formula"}</span>
+        <Icon name="chevron-down" size={18} class="chev" />
+      </summary>
+      <div class="learn-body">
+        <p><RichText text={notes.summary} /></p>
+        <div class="formula-line">
+          <span class="fx" aria-hidden="true">fx</span>
+          <code>{notes.syntax}</code>
+        </div>
+        <p><RichText text={notes.example} /></p>
+        <section class="note note-warn" aria-labelledby="errors">
+          <h3 id="errors"><Icon name="warn" size={18} />What goes wrong</h3>
+          <ul class="errors">
+            {
+              notes.commonErrors.map((e) => (
+                <li>
+                  <RichText text={e} />
+                </li>
+              ))
+            }
           </ul>
-        </>
-      )
-    }
-
-    <h2>About {functions.length > 0 ? list(functions) : "this formula"}</h2>
-    <p><RichText text={notes.summary} /></p>
-    <pre><code>{notes.syntax}</code></pre>
-    <p><RichText text={notes.example} /></p>
-    <h3>What goes wrong</h3>
-    <ul class="errors">
-      {
-        notes.commonErrors.map((e) => (
-          <li>
-            <RichText text={e} />
-          </li>
-        ))
-      }
-    </ul>
+        </section>
+      </div>
+    </details>
 
     <h2>More exercises</h2>
     <ul class="more">
       {
         more.map((p) => (
           <li>
+            <span class="go" aria-hidden="true">
+              <Icon name="play" size={14} />
+            </span>
             <a href={exercisePath(p.exercise.slug)}>{p.exercise.title}</a>
             <span class={`level level-${p.exercise.level}`}>
               {LEVELS[p.exercise.level as 1 | 2 | 3]}
@@ -233,7 +215,10 @@ const description = `Practise ${functions.length > 0 ? list(functions) : "Excel 
           <p>
             In <strong>{s.answerCell}</strong>, type:
           </p>
-          <pre><code data-answer={i}>{locked ? "" : s.answer}</code></pre>
+          <div class="formula-line">
+            <span class="fx" aria-hidden="true">fx</span>
+            <code data-answer={i}>{locked ? "" : s.answer}</code>
+          </div>
           <p>
             <RichText text={s.hints.rule} />
           </p>
@@ -273,7 +258,7 @@ const description = `Practise ${functions.length > 0 ? list(functions) : "Excel 
   }
   [data-locked] [data-tabs],
   [data-locked] .hints,
-  [data-locked] #hints,
+  [data-locked] .note-hints,
   [data-locked] .answer-panel {
     display: none !important;
   }
@@ -397,6 +382,11 @@ const description = `Practise ${functions.length > 0 ? list(functions) : "Excel 
     border-bottom: 1px solid var(--rule);
     background: var(--surface);
   }
+  /* After .tabs-row, so it wins: with the tabs hidden, the timer stays on the
+     right, where it is once the exercise is open. */
+  [data-locked] .tabs-row {
+    justify-content: flex-end;
+  }
   .tabs {
     display: flex;
     gap: var(--space-5);
@@ -424,16 +414,12 @@ const description = `Practise ${functions.length > 0 ? list(functions) : "Excel 
   }
   .todo {
     margin: 0 0 var(--space-3);
-    padding-left: var(--space-5);
   }
   .todo li {
     margin-bottom: var(--space-2);
   }
   .todo[hidden] {
     display: none;
-  }
-  .chips {
-    margin-bottom: var(--space-3);
   }
   .more {
     display: grid;
@@ -445,14 +431,74 @@ const description = `Practise ${functions.length > 0 ? list(functions) : "Excel 
   .more li {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: var(--space-3);
     padding: var(--space-2) 0;
     border-bottom: 1px solid var(--rule);
   }
   .more a {
+    flex: 1;
     font-weight: 500;
   }
+  .go {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--correct-tint);
+    color: var(--correct);
+  }
+  .details .note {
+    margin: var(--space-5) 0;
+  }
+  .details .note > :is(h2, h3) {
+    margin-top: 0;
+    font-size: var(--size-l);
+  }
+  .details .note .count {
+    margin: 0 0 var(--space-3);
+  }
+  .details .note .count:last-child {
+    margin-bottom: 0;
+  }
+  .learn {
+    margin: var(--space-5) 0;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+  }
+  .learn > summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 3rem;
+    padding: 0 var(--space-4);
+    font-weight: 600;
+    color: var(--heading);
+    cursor: pointer;
+    list-style: none;
+  }
+  .learn > summary::-webkit-details-marker {
+    display: none;
+  }
+  .learn > summary :global(.icon) {
+    flex: none;
+    color: var(--muted);
+  }
+  .learn > summary :global(.chev) {
+    margin-left: auto;
+  }
+  .learn[open] > summary :global(.chev) {
+    rotate: 180deg;
+  }
+  .learn-body {
+    padding: 0 var(--space-4) var(--space-4);
+  }
+  .learn-body .note {
+    margin: var(--space-4) 0;
+  }
+
   .back {
     margin-top: var(--space-5);
   }

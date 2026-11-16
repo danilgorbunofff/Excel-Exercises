@@ -11,7 +11,7 @@ let cache: Map<string, GradeSpec[]> | null = null;
 
 export async function loadSpecs(): Promise<SpecFor> {
   cache ??= new Map(
-    (await getCollection("exercises")).map((e) => [
+    [...(await getCollection("exercises")), ...(await getCollection("mocks"))].map((e) => [
       e.data.id,
       exerciseData(e.data).screens.map((s) => s.spec),
     ]),

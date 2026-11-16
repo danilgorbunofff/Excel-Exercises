@@ -1,15 +1,15 @@
 ---
 // Why this exists: the daily page picks its exercise from the visitor's date,
 // which a static page cannot know at build time. Each exercise is built here as
-// a bare workbench; daily.ts fetches the day's one and puts it in the page. A
-// PRO one (a Saturday's) is built without its answers, which daily.ts fetches
-// from /api/exercises/. These pages are not linked and stay out of the sitemap.
+// a bare workbench; daily.ts fetches the day's one and puts it in the page.
+// The tasks are daily-only, from content/daily/. These pages are not linked
+// and stay out of the sitemap.
 import { siteConfig } from "../../../../site.config.ts";
 import LiveExercise from "../../../components/LiveExercise.astro";
-import { type Placed, placedExercises } from "../../../lib/exercises.ts";
+import { dailyTasks, type Placed } from "../../../lib/exercises.ts";
 
 export async function getStaticPaths() {
-  return (await placedExercises()).map((p) => ({
+  return (await dailyTasks()).map((p) => ({
     params: { slug: p.exercise.slug },
     props: { placed: p },
   }));
@@ -28,6 +28,6 @@ const { placed } = Astro.props;
     <title>{placed.exercise.title}</title>
   </head>
   <body>
-    <LiveExercise placed={placed} heading="Today's exercise" defer />
+    <LiveExercise placed={placed} heading="Today's exercise" defer daily />
   </body>
 </html>

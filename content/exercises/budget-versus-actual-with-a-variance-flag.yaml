@@ -3,8 +3,8 @@ slug: budget-versus-actual-with-a-variance-flag
 level: 3
 title: Budget versus actual with a variance flag
 topic: capstone
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In D2, report the actual-vs-budget variance of the first line as a share of its budget, to three decimal places.
     rows:
@@ -15,15 +15,18 @@ screens:
       - [travel, 800, 950, null]
     answerCell: D2
     expected: 0.05
+    variants:
+      - { set: { C2: 2877 }, expected: 0.439 }
+      - { set: { B2: 2740 }, expected: -0.234 }
+      - { set: { B2: 2007 }, expected: 0.046 }
     answer: =ROUND((C2-B2)/B2,3)
-    requiredFunctions: [ROUND]
     hints:
       nudge: Take the difference between actual and budget, then divide it by the budget.
       rule: A variance as a share is actual minus budget, divided by budget. ROUND with 3 as its second argument keeps three decimal places.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: A hundred over two thousand is five per cent, or 0.05.
       syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
-      required-function: The raw ratio runs to a long tail of digits, so it is rounded for reporting.
       reference: The budget is in B2 and the actual in C2, on the same row.
     accept:
       - =ROUND((C2-B2)/B2,3)
@@ -33,13 +36,20 @@ screens:
       - =ROUND( ( C2 - B2 ) / B2 , 3 )
       - =ROUND((C2-B2)/B2,3)+0
     reject:
-      - { formula: =C2-B2, rule: required-function }
-      - { formula: "=ROUND(C2-B2,3)", rule: value }
-      - { formula: "=ROUND((B2-C2)/B2,3)", rule: value }
-      - { formula: "=ROUND((C2-B2)/C2,3)", rule: value }
-      - { formula: "=ROUND((C3-B3)/B3,3)", rule: value }
-      - { formula: "=ROUND((C2-B2)/0,3)", rule: value }
-      - { formula: "=ROUND (C2-B2)/B2,3", rule: syntax }
+      - formula: =C2-B2
+        rule: value
+      - formula: =ROUND(C2-B2,3)
+        rule: value
+      - formula: =ROUND((B2-C2)/B2,3)
+        rule: value
+      - formula: =ROUND((C2-B2)/C2,3)
+        rule: value
+      - formula: =ROUND((C3-B3)/B3,3)
+        rule: value
+      - formula: =ROUND((C2-B2)/0,3)
+        rule: value
+      - formula: =ROUND (C2-B2)/B2,3
+        rule: syntax
   - prompt: In D2, flag the first line review when its variance is more than ten per cent in either direction and ok otherwise.
     rows:
       - [Line, Budget, Actual, Answer]
@@ -49,15 +59,20 @@ screens:
       - [travel, 800, 950, null]
     answerCell: D2
     expected: ok
+    variants:
+      - { set: { C2: 2877 }, expected: review }
+      - { set: { B2: 2740 }, expected: review }
+      - { set: { C2: 300, B2: 800 }, expected: review }
+      - { set: { C2: 2200 }, expected: ok }
+      - { set: { C2: 2220 }, expected: review }
     answer: =IF(ABS(C2-B2)/B2>0.1,"review","ok")
-    requiredFunctions: [IF, ABS]
     hints:
       nudge: Make the variance positive whichever way it goes, then compare it with ten per cent.
       rule: ABS returns a number without its sign, so an overspend and an underspend of the same size compare alike. IF then returns one word when the test is true and another when it is false.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Five per cent is inside ten, so the first line reads ok.
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
-      required-function: One branch for a line worth review and one for a line that is fine.
       reference: The budget is B2 and the actual C2, not the answer column.
     accept:
       - =IF(ABS(C2-B2)/B2>0.1,"review","ok")
@@ -67,12 +82,18 @@ screens:
       - =IF( ABS( C2 - B2 ) / B2 > 0.1 , "review" , "ok" )
       - =IF(ABS(C2-B2)/B2>0.1,"review","ok")&""
     reject:
-      - { formula: ="ok", rule: required-function }
-      - { formula: '=IF(C2>B2,"review","ok")', rule: required-function }
-      - { formula: '=IF(ABS(C2-B2)/B2>0.1,"ok","review")', rule: value }
-      - { formula: '=IF(ABS(C2-B2)>0.1,"review","ok")', rule: value }
-      - { formula: '=IF(ABS(C2-B2)/0>0.1,"review","ok")', rule: value }
-      - { formula: '=IF ABS(C2-B2)/B2>0.1,"review","ok"', rule: syntax }
+      - formula: ="ok"
+        rule: reference
+      - formula: =IF(C2>B2,"review","ok")
+        rule: value
+      - formula: =IF(ABS(C2-B2)/B2>0.1,"ok","review")
+        rule: value
+      - formula: =IF(ABS(C2-B2)>0.1,"review","ok")
+        rule: value
+      - formula: =IF(ABS(C2-B2)/0>0.1,"review","ok")
+        rule: value
+      - formula: =IF ABS(C2-B2)/B2>0.1,"review","ok"
+        rule: syntax
 notes:
   summary: Dividing a variance by its budget turns an amount into a share of what was planned, so one threshold fits every line. ABS drops the sign, so overspends and underspends are flagged alike.
   syntax: ROUND((actual-budget)/budget,3) sizes the variance; ABS lets one threshold catch both directions

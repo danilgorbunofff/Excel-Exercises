@@ -8,15 +8,31 @@ import { grade } from "@practice/grader";
 import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
 import { lintText } from "../../tools/lib/copy-lint.ts";
-import { exerciseSchema } from "./schema.ts";
+import { dailySchema, exerciseSchema, mockSchema } from "./schema.ts";
 
 const dir = "content/exercises";
-const exercises = readdirSync(dir)
-  .filter((f) => f.endsWith(".yaml"))
-  .map((f) => ({
-    file: f,
-    exercise: exerciseSchema.parse(parse(readFileSync(`${dir}/${f}`, "utf8"))),
-  }));
+const exercises = [
+  ...readdirSync(dir)
+    .filter((f) => f.endsWith(".yaml"))
+    .map((f) => ({
+      file: f,
+      exercise: exerciseSchema.parse(parse(readFileSync(`${dir}/${f}`, "utf8"))),
+    })),
+  // Daily-only tasks, labelled daily/ so their verdict lines stand apart.
+  ...readdirSync("content/daily")
+    .filter((f) => f.endsWith(".yaml"))
+    .map((f) => ({
+      file: `daily/${f}`,
+      exercise: dailySchema.parse(parse(readFileSync(`content/daily/${f}`, "utf8"))),
+    })),
+  // Held-out mock assessment tasks, labelled mocks/.
+  ...readdirSync("content/mocks")
+    .filter((f) => f.endsWith(".yaml"))
+    .map((f) => ({
+      file: `mocks/${f}`,
+      exercise: mockSchema.parse(parse(readFileSync(`content/mocks/${f}`, "utf8"))),
+    })),
+];
 
 const specOf = (screen: (typeof exercises)[number]["exercise"]["screens"][number]) => ({
   rows: screen.rows,
@@ -25,6 +41,7 @@ const specOf = (screen: (typeof exercises)[number]["exercise"]["screens"][number
   requiredFunctions: screen.requiredFunctions,
   forbiddenFunctions: screen.forbiddenFunctions,
   requireReference: screen.requireReference,
+  ...(screen.variants ? { variants: screen.variants } : {}),
 });
 
 describe("exercise fixtures", () => {

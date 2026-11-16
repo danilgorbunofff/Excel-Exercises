@@ -4,6 +4,7 @@ title: Ageing buckets for receivables
 description: Sort open invoices into bands by days overdue, then total each band and check it against the ledger.
 updated: 2026-11-16
 minutes: 4
+topic: dates
 functions: [XLOOKUP, SUMIFS, COUNTIFS, MAX, IFS]
 exercises: [ageing-buckets-for-receivables, days-overdue-on-open-invoices, delivery-band]
 cover: "0-30 31-60"

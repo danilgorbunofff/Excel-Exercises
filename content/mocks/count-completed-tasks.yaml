@@ -1,0 +1,43 @@
+id: count-completed-tasks
+slug: count-completed-tasks
+level: 1
+title: Count completed tasks
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In D10, count the tasks with the status Done.
+    rows:
+      - [Task, Owner, Status, null]
+      - [T1, Ali, Done, null]
+      - [T2, Bea, Open, null]
+      - [T3, Ali, Done, null]
+      - [T4, Cid, Blocked, null]
+      - [T5, Bea, Done, null]
+      - [T6, Cid, Open, null]
+      - [T7, Ali, Done, null]
+      - [T8, Bea, Open, null]
+      - [null, null, Done, null]
+    answerCell: D10
+    expected: 4
+    variants:
+      - { set: { C2: Open }, expected: 3 }
+      - { set: { C9: Done }, expected: 5 }
+    answer: '=COUNTIF(C2:C9,"Done")'
+    hints:
+      nudge: Count the cells in the Status column that say Done.
+      rule: COUNTIF counts the cells in a range that match a value.
+    misses:
+      value: 4 tasks are Done.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=COUNTIF(C2:C9,"Done")'
+      - '=countif(c2:c9,"Done")'
+      - "=COUNTIF(C2:C9,C10)"
+      - '=COUNTIFS(C2:C9,"Done")'
+    reject:
+      - { formula: "=COUNTA(C2:C9)", rule: value }
+      - { formula: '=COUNTIF(C2:C9,"Open")', rule: value }
+      - { formula: '=COUNTIF(C2:C9,"Done"', rule: syntax }
+      - { formula: "=4", rule: reference }

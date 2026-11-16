@@ -4,7 +4,7 @@ level: 2
 title: Find a price with XLOOKUP
 topic: lookups
 updated: 2026-11-11
-checkedInExcel: null
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B9, find the price of the product whose code is in B8.
     rows:

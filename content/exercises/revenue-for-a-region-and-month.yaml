@@ -1,0 +1,56 @@
+id: revenue-for-a-region-and-month
+slug: revenue-for-a-region-and-month
+level: 2
+title: Revenue for a region and month
+topic: interview-sales
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In H2, add up the revenue for the region in F2 in the month in G2. Use SUMIFS.
+    rows:
+      - [Region, Month, Revenue, null, null, Region, Month, Revenue]
+      - [North, Jan, 12400, null, null, South, Feb, null]
+      - [South, Jan, 9800, null, null, null, null, null]
+      - [South, Feb, 11250, null, null, null, null, null]
+      - [North, Feb, 13100, null, null, null, null, null]
+      - [West, Feb, 7600, null, null, null, null, null]
+      - [South, Feb, 4300, null, null, null, null, null]
+      - [North, Mar, 14800, null, null, null, null, null]
+      - [South, Mar, 10900, null, null, null, null, null]
+      - [West, Jan, 6900, null, null, null, null, null]
+      - [South, Feb, 2750, null, null, null, null, null]
+    answerCell: H2
+    expected: 18300
+    variants:
+      - set: { C4: 15413 }
+        expected: 22463
+      - set: { A4: North }
+        expected: 7050
+    answer: "=SUMIFS(C2:C11,A2:A11,F2,B2:B11,G2)"
+    requiredFunctions: [SUMIFS]
+    hints:
+      nudge: "Two conditions: the region and the month."
+      rule: SUMIFS(range to add, range1, criteria1, range2, criteria2). The range to add comes first.
+    misses:
+      value: Three South rows are in February, and they add up to 18300.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task needs SUMIFS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=SUMIFS(C2:C11,A2:A11,F2,B2:B11,G2)"
+      - "=sumifs(c2:c11,a2:a11,f2,b2:b11,g2)"
+      - "=SUMIFS(C2:C11,B2:B11,G2,A2:A11,F2)"
+      - "=SUMIFS($C$2:$C$11,$A$2:$A$11,F2,$B$2:$B$11,G2)"
+    reject:
+      - { formula: "=SUMIF(A2:A11,F2,C2:C11)", rule: required-function }
+      - { formula: "=SUMIFS(C2:C11,A2:A11,F2)", rule: value }
+      - { formula: "=SUMIFS(C2:C11,A2:A11,F2,B2:B11,G2", rule: syntax }
+      - { formula: "=18300", rule: required-function }
+notes:
+  summary: SUMIFS adds the rows that match several conditions, such as one region in one month.
+  syntax: "SUMIFS(sum_range, criteria_range1, criteria1, criteria_range2, criteria2)"
+  example: '`=SUMIFS(C2:C11,A2:A11,"North",B2:B11,"Jan")` gives North in January.'
+  commonErrors:
+    - SUMIF takes one condition, so it adds every month for the region.
+    - In SUMIFS the range to add comes first, unlike SUMIF.
+    - Every range must have the same number of rows.

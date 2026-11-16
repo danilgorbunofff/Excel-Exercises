@@ -1,0 +1,48 @@
+id: average-for-one-team
+slug: average-for-one-team
+level: 2
+tier: 3
+title: Average for one team
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, find the average score of the Blue team.
+    rows:
+      - [Player, Team, Score, null, null, null]
+      - [Ann, Blue, 72, null, Blue, null]
+      - [Bob, Red, 65, null, null, null]
+      - [Cat, Blue, 88, null, null, null]
+      - [Dev, Red, 70, null, null, null]
+      - [Eli, Blue, 79, null, null, null]
+      - [Fay, Red, 91, null, null, null]
+      - [Gus, Blue, 81, null, null, null]
+    answerCell: F2
+    expected: 80
+    variants:
+      - set: { B2: Red }
+        expected: 82.6666666667
+      - set: { C2: 99 }
+        expected: 86.75
+    answer: "=AVERAGEIF(B2:B8,E2,C2:C8)"
+    hints:
+      nudge: Average the scores only on the Blue rows.
+      rule: AVERAGEIF(range to test, criteria, range to average) works like SUMIF, but averages.
+    misses:
+      value: The four Blue players average 80.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=AVERAGEIF(B2:B8,E2,C2:C8)"
+      - "=averageif(b2:b8,e2,c2:c8)"
+      - '=AVERAGEIF(B2:B8,"Blue",C2:C8)'
+      - "=AVERAGEIF($B$2:$B$8,E2,$C$2:$C$8)"
+    reject:
+      - formula: =AVERAGE(C2:C8)
+        rule: value
+      - formula: =AVERAGEIF(B2:B8,"Red",C2:C8)
+        rule: value
+      - formula: =AVERAGEIF(B2:B8,E2,C2:C8
+        rule: syntax
+      - formula: =80
+        rule: reference

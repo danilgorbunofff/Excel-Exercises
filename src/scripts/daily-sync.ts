@@ -6,9 +6,6 @@ import { type DailySolve, mergeDaily } from "../lib/daily.ts";
 import { type DailyDays, readDaily, writeDaily } from "./daily-store.ts";
 import { loadMe, signedIn } from "./session.ts";
 
-/** Fired on document once the account's days are in this browser. */
-export const DAILY_SYNCED_EVENT = "formula-practice:daily-synced";
-
 export interface DailySync {
   days: DailyDays;
   /** Days the account has (or has been sent), so none is sent twice. */
@@ -38,7 +35,6 @@ async function run(): Promise<DailySync> {
     const { days, missing } = mergeDaily(readDaily(), rows);
     const sync: DailySync = { days, server: new Set(rows.map((r) => r.day)), joined: true };
     writeDaily(days);
-    document.dispatchEvent(new Event(DAILY_SYNCED_EVENT));
     if (missing.length > 0) void postDaily(missing, sync);
     return sync;
   } catch {

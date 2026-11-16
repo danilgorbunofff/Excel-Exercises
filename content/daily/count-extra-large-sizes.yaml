@@ -1,0 +1,48 @@
+id: count-extra-large-sizes
+slug: count-extra-large-sizes
+level: 2
+tier: 5
+title: Count extra large sizes
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B11, count the product codes that end in -XL.
+    rows:
+      - [Code, null]
+      - [TS-S, null]
+      - [TS-XL, null]
+      - [HD-M, null]
+      - [HD-XL, null]
+      - [TS-L, null]
+      - [JK-XL, null]
+      - [JK-XXL, null]
+      - [HD-S, null]
+      - [TS-XL, null]
+      - [Ends in -XL, null]
+    answerCell: B11
+    expected: 4
+    variants:
+      - set: { A2: TS-XL }
+        expected: 5
+    answer: '=COUNTIF(A2:A10,"*-XL")'
+    hints:
+      nudge: Match any text that ends with -XL. Watch out for -XXL.
+      rule: 'In COUNTIF criteria, * stands for any characters. "*-XL" matches text that ends in -XL.'
+    misses:
+      value: 4 codes end in -XL. JK-XXL ends in -XXL, so it does not count.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - '=COUNTIF(A2:A10,"*-XL")'
+      - '=countif(a2:a10,"*-XL")'
+      - '=COUNTIF(A2:A10,"*-xl")'
+    reject:
+      - formula: =COUNTIF(A2:A10,"*XL")
+        rule: value
+      - formula: =COUNTIF(A2:A10,"-XL")
+        rule: value
+      - formula: =COUNTIF(A2:A10,"*-XL"
+        rule: syntax
+      - formula: =4
+        rule: reference

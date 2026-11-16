@@ -4,6 +4,7 @@ title: The Excel shortcuts that save the most time
 description: The Windows shortcuts worth learning first, grouped by what you are doing.
 updated: 2026-11-16
 minutes: 3
+topic: habits
 functions: [SUM]
 exercises: [sum-a-column, running-total-down-a-column, multiply-price-by-quantity]
 cover: "Ctrl+Shift"

@@ -1,0 +1,37 @@
+id: forms-returned
+slug: forms-returned
+level: 1
+title: Forms returned
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B9, count the forms that have come back. An empty row means the form is not back yet.
+    rows:
+      - [Form, Returned by]
+      - [F1, Lea]
+      - [F2, null]
+      - [F3, Max]
+      - [F4, Ned]
+      - [F5, null]
+      - [F6, Ora]
+      - [F7, Pia]
+      - [Returned, null]
+    answerCell: B9
+    expected: 5
+    answer: "=COUNTA(B2:B8)"
+    hints:
+      nudge: Count the cells in the Returned by column that are not empty.
+      rule: COUNTA counts every cell that holds something, names included.
+    misses:
+      value: 5 of the seven forms have a name next to them.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=COUNTA(B2:B8)"
+      - "=counta(b2:b8)"
+      - "=ROWS(B2:B8)-COUNTBLANK(B2:B8)"
+    reject:
+      - { formula: "=COUNT(B2:B8)", rule: value }
+      - { formula: "=COUNTA(A2:A8)", rule: value }
+      - { formula: "=COUNTA(B2:B8", rule: syntax }
+      - { formula: "=5", rule: reference }

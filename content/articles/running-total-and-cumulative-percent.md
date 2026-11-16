@@ -4,6 +4,7 @@ title: Running total and cumulative percent
 description: Add a total that grows row by row, and show how much of the whole each row has reached.
 updated: 2026-11-16
 minutes: 3
+topic: sums
 functions: [SUM, SCAN, LAMBDA, SORT]
 exercises: [running-total-down-a-column, share-handed-in, top-customer-share-of-revenue]
 cover: "=SUM($B$2:B2"

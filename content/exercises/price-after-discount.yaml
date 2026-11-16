@@ -4,7 +4,7 @@ level: 2
 title: Price after a discount
 topic: references
 updated: 2026-11-11
-checkedInExcel: null
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In D2, work out the sale price. The discount in C2 is a fraction, so 0.25 means 25% off.
     rows:

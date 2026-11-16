@@ -1,6 +1,7 @@
 // Why this exists: turns tokens into a tree that follows Excel's operator
 // precedence. Every node keeps its start and end in the formula text, so the
 // interface can mark exactly what a formula reads.
+
 import { type CellAddress, columnIndex, parseAddress } from "./address.ts";
 import type { ErrorCode } from "./errors.ts";
 import { isKnownFunction } from "./functions/registry.ts";
@@ -22,6 +23,7 @@ export interface Bound {
 export type Node =
   | (Span & { type: "number"; value: number })
   | (Span & { type: "string"; value: string })
+  | (Span & { type: "array"; rows: (number | string | boolean)[][] })
   | (Span & { type: "bool"; value: boolean })
   | (Span & { type: "error"; code: ErrorCode })
   | (Span & { type: "ref"; text: string; address: CellAddress })
@@ -145,6 +147,8 @@ export function parse(formula: string): ParseResult {
         return { type: "number", value: Number(tok.text), start: tok.start, end: tok.end };
       case "string":
         return { type: "string", value: tok.value ?? "", start: tok.start, end: tok.end };
+      case "array":
+        return { type: "array", rows: tok.rows ?? [], start: tok.start, end: tok.end };
       case "bool":
         return {
           type: "bool",
@@ -197,7 +201,10 @@ export function parse(formula: string): ParseResult {
       case "name": {
         const open = peek();
         if (open?.kind !== "lparen") {
-          if (isKnownFunction(tok.text))
+          // SUM B2:B5: a function name followed by a value lacks its brackets. A bare
+          // name otherwise may be one LET binds, as in LET(n, ...); grade.ts checks it.
+          const VALUES = ["ref", "number", "string", "array", "bool", "columns", "rows", "name"];
+          if (isKnownFunction(tok.text) && (!open || VALUES.includes(open.kind)))
             fail(
               `${tok.text.toUpperCase()} needs brackets, such as ${tok.text.toUpperCase()}(B2:B5).`,
               tok,

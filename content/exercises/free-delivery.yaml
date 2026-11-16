@@ -3,8 +3,8 @@ slug: free-delivery
 level: 2
 title: Free delivery when either test passes
 topic: logic
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: Delivery is free when the order is over 50 or the customer is a member. In D2, show TRUE if Ola gets free delivery.
     rows:
@@ -22,6 +22,7 @@ screens:
       required-function: Use OR, since either test is enough.
       reference: Point at the order in B2 and the member column in C2.
       value: Check each test. The order is in B2 and the member answer is in C2.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - '=OR(B2>50,C2="Yes")'
       - '=OR(C2="yes",B2>50)'
@@ -31,6 +32,9 @@ screens:
       - { formula: '=AND(B2>50,C2="Yes")', rule: required-function }
       - { formula: '=OR(38>50,C2="Yes")', rule: reference }
       - { formula: '=OR(B2>50,C2="No")', rule: value }
+    variants:
+      - { set: { B2: 50, C2: No }, expected: false }
+      - { set: { B2: 51, C2: No }, expected: true }
 notes:
   summary: OR returns TRUE when any of its tests is true, and FALSE only when all are false. Text comparisons ignore case.
   syntax: OR(logical1, [logical2], ...)

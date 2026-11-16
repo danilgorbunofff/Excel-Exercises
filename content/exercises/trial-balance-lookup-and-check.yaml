@@ -3,8 +3,8 @@ slug: trial-balance-lookup-and-check
 level: 3
 title: Trial balance lookup and check
 topic: interview-accounting
-updated: 2026-11-15
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: The chart of accounts is in F and G. In D2, show the account name for the code in A2.
     rows:
@@ -16,11 +16,15 @@ screens:
       - [1000, 28400, 0, null, null, 1000, Bank]
     answerCell: D2
     expected: Sales
+    variants:
+      - { set: { G4: Trade debtors }, expected: Trade debtors }
+      - { set: { A2: 1200 }, expected: Trade debtors }
     answer: =XLOOKUP(A2,$F$2:$F$6,$G$2:$G$6)
     hints:
       nudge: Find the code from A2 in the chart code column, then read the name beside it.
       rule: XLOOKUP takes the value to find, the column to search and the column to return. Lock the chart ranges so the formula fills down.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Code 4000 sits on the third row of the chart, beside Sales.
       syntax: "Check the brackets and commas. XLOOKUP follows the pattern `=XLOOKUP(lookup_value, lookup_array, return_array)`."
       reference: Look up A2 in F2:F6 and return from G2:G6.
@@ -45,15 +49,18 @@ screens:
       - [1000, 28400, 0, null]
     answerCell: D2
     expected: Balanced
+    variants:
+      - { set: { B2: 3 }, expected: Check }
+      - { set: { C2: 117820 }, expected: Check }
+      - { set: { C6: 86000 }, expected: Check }
     answer: =IF(SUM(B2:B6)=SUM(C2:C6),"Balanced","Check")
-    requiredFunctions: [IF, SUM]
     hints:
       nudge: Total each column, then compare the two totals inside an IF.
       rule: IF returns its second argument when the test is true and its third when it is false. The test is the debit total equals the credit total.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Debits are 24500, 51300 and 28400, which is 104200. Credits are 86000 and 18200, also 104200, so the balance holds.
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, value_if_false)`."
-      required-function: The answer is a word, so the comparison of the two SUM totals sits inside an IF.
       reference: The debits run down B2:B6 and the credits down C2:C6.
     accept:
       - =IF(SUM(B2:B6)=SUM(C2:C6),"Balanced","Check")
@@ -61,11 +68,16 @@ screens:
       - =IF(SUM(B2:B6)<>SUM(C2:C6),"Check","Balanced")
       - =IF(SUM(B2:B6)-SUM(C2:C6)=0,"Balanced","Check")
     reject:
-      - { formula: '=IF(SUM(B2:B5)=SUM(C2:C6),"Balanced","Check")', rule: value }
-      - { formula: '=IF(SUM(B2:B6)<>SUM(C2:C6),"Balanced","Check")', rule: value }
-      - { formula: '=IF(SUM(B2:B6)=SUM(C2:C6),"Check","Balanced")', rule: value }
-      - { formula: "=SUM(B2:B6)-SUM(C2:C6)", rule: required-function }
-      - { formula: '=IF(SUM(B2:B6)=SUM(C2:C6),"Balanced","Check"', rule: syntax }
+      - formula: =IF(SUM(B2:B5)=SUM(C2:C6),"Balanced","Check")
+        rule: value
+      - formula: =IF(SUM(B2:B6)<>SUM(C2:C6),"Balanced","Check")
+        rule: value
+      - formula: =IF(SUM(B2:B6)=SUM(C2:C6),"Check","Balanced")
+        rule: value
+      - formula: =SUM(B2:B6)-SUM(C2:C6)
+        rule: value
+      - formula: =IF(SUM(B2:B6)=SUM(C2:C6),"Balanced","Check"
+        rule: syntax
 notes:
   summary: A trial balance lists every account with its debit or credit. The names come from the chart of accounts, and the two columns must add up to the same total.
   syntax: XLOOKUP(code,chart_codes,chart_names) and IF(SUM(debits)=SUM(credits),"Balanced","Check")

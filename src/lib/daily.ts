@@ -1,24 +1,79 @@
 // Why this exists: the daily exercise and the personal streak. The page, the
 // API and the tests share it, so the browser and the server always agree on
 // which exercise belongs to a day and on what a valid solve looks like.
+//
+// Since LADDER_START the daily is a weekly ladder: Monday is the easiest task
+// and Sunday the hardest, drawn from content/daily/ (tasks that appear nowhere
+// else). Before it, a hash picked a track exercise; those days stay valid.
 import { addDays } from "../scripts/progress.ts";
 import { isLocked } from "./access.ts";
+import { FIRST_PICKS } from "./daily-legacy.ts";
 
 /** The first day with a daily exercise. Older days are not accepted. */
 export const DAILY_START = "2026-11-01";
+/** The Monday the weekly ladder began. Earlier days used the legacy pick. */
+export const LADDER_START = "2026-11-16";
 /** How many days the strip shows. */
 export const STRIP_DAYS = 14;
+/** What each step of the week is called, Monday (1) to Sunday (7). */
+export const TIER_NAMES = [
+  "",
+  "Warm-up",
+  "Easy",
+  "Steady",
+  "Medium",
+  "Tricky",
+  "Hard",
+  "Hardest",
+] as const;
 const MAX_SOLVES = 400;
 const DAY = /^\d{4}-\d{2}-\d{2}$/u;
 
+/** A daily-only task and its step of the week: 1 is Monday, 7 is Sunday. */
+export interface DailyEntry {
+  id: string;
+  slug: string;
+  tier: number;
+}
+
+/** The daily tasks, sorted by id. */
+export const ladderPool = (tasks: readonly { id: string; slug: string; tier: number }[]) =>
+  tasks
+    .map(({ id, slug, tier }) => ({ id, slug, tier }))
+    .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+
+const dayNumber = (day: string) => Date.parse(`${day}T00:00:00Z`) / 86_400_000;
+
+/** The step of the week for a day: Monday 1 to Sunday 7. */
+export const tierOf = (day: string): number =>
+  ((new Date(`${day}T00:00:00Z`).getUTCDay() + 6) % 7) + 1;
+
+/** The Monday of the week a day is in. */
+export const mondayOf = (day: string): string => addDays(day, 1 - tierOf(day));
+
+/**
+ * The daily task for a day on the ladder: that weekday's step, and within the
+ * step the next task each week, so no task repeats until the step's list is
+ * used up. Null before LADDER_START or for an empty step.
+ */
+export function pickFor(day: string, pool: readonly DailyEntry[]): DailyEntry | null {
+  if (day < LADDER_START) return null;
+  const tier = tierOf(day);
+  const step = pool.filter((e) => e.tier === tier);
+  if (step.length === 0) return null;
+  const week = Math.floor((dayNumber(day) - dayNumber(LADDER_START)) / 7);
+  return step[week % step.length] ?? null;
+}
+
+/** A track exercise in the legacy pick, which ran before LADDER_START. */
 export interface PoolEntry {
   id: string;
   slug: string;
-  /** A PRO exercise. It is the daily only on a Saturday, open to everyone that day. */
+  /** A PRO exercise. The legacy pick used one on Saturdays. */
   pro: boolean;
 }
 
-/** Every exercise, sorted by id, with whether it needs PRO. */
+/** Every track exercise, sorted by id, with whether it needs PRO: the legacy pool. */
 export function dailyPool(
   placed: readonly { exercise: { id: string; slug: string }; topicNumber: number }[],
 ): PoolEntry[] {
@@ -27,8 +82,8 @@ export function dailyPool(
     .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 }
 
-/** True when the day (YYYY-MM-DD) is a Saturday, the day a PRO exercise is the daily. */
-export const isProDay = (day: string): boolean => new Date(`${day}T00:00:00Z`).getUTCDay() === 6;
+/** True when the day (YYYY-MM-DD) is a Saturday, when the legacy pick used a PRO exercise. */
+const isProDay = (day: string): boolean => new Date(`${day}T00:00:00Z`).getUTCDay() === 6;
 
 /**
  * FNV-1a, 32 bit, then the MurmurHash3 finaliser so the last characters (the
@@ -49,11 +104,11 @@ function hash(text: string): number {
 }
 
 /**
- * The exercise for a day: a PRO one on a Saturday, a free one on other days.
- * Each exercise scores hash(day:id) and the highest wins, so adding or
- * removing one exercise only changes the days it wins.
+ * The legacy pick, before the ladder: a PRO exercise on a Saturday, a free one
+ * on other days. Each exercise scores hash(day:id) and the highest wins. Kept
+ * so solves saved under it stay valid.
  */
-export function pickFor(day: string, pool: readonly PoolEntry[]): PoolEntry | null {
+export function legacyPickFor(day: string, pool: readonly PoolEntry[]): PoolEntry | null {
   const pro = isProDay(day);
   let best: PoolEntry | null = null;
   let bestScore = -1;
@@ -108,6 +163,18 @@ export function stripDays(
   });
 }
 
+/** This week's ladder, Monday to Sunday, with each day's step and whether it has come yet. */
+export function weekDays(
+  days: ReadonlySet<string>,
+  today: string,
+): { day: string; tier: number; solved: boolean; today: boolean; future: boolean }[] {
+  const monday = mondayOf(today);
+  return Array.from({ length: 7 }, (_, i) => {
+    const day = addDays(monday, i);
+    return { day, tier: i + 1, solved: days.has(day), today: day === today, future: day > today };
+  });
+}
+
 export interface DailySolve {
   day: string;
   exercise: string;
@@ -125,7 +192,7 @@ export interface DailySolve {
  */
 export function cleanDailySolves(
   body: unknown,
-  pool: readonly PoolEntry[],
+  pools: { ladder: readonly DailyEntry[]; legacy: readonly PoolEntry[] },
   todayUtc: string,
 ): DailySolve[] | null {
   if (!Array.isArray(body) || body.length === 0 || body.length > MAX_SOLVES) return null;
@@ -136,7 +203,15 @@ export function cleanDailySolves(
     const r = (raw ?? {}) as Record<string, unknown>;
     const day = r["day"];
     if (!isDay(day) || day < DAILY_START || day > latest || seen.has(day)) continue;
-    if (r["exercise"] !== pickFor(day, pool)?.id) continue;
+    // A day solved under the legacy pick stays valid, even one after the
+    // ladder began but before the site switched to it.
+    const exercise = r["exercise"];
+    if (
+      exercise !== pickFor(day, pools.ladder)?.id &&
+      exercise !== legacyPickFor(day, pools.legacy)?.id &&
+      exercise !== FIRST_PICKS[day]
+    )
+      continue;
     seen.add(day);
     out.push({ day, exercise: r["exercise"] as string });
   }

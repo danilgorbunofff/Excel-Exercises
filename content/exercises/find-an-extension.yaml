@@ -3,8 +3,8 @@ slug: find-an-extension
 level: 2
 title: Find an extension with VLOOKUP
 topic: lookups
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B9, find the phone extension of the person whose ID is in B8. Use an exact match.
     rows:
@@ -29,6 +29,7 @@ screens:
       required-function: Use VLOOKUP, which this exercise practises.
       reference: Point at the ID in B8, so the result updates when the ID changes.
       value: Count the columns from the left edge of the table. The extension is in the 4th column of A to D.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =VLOOKUP(B8,A2:D6,4,FALSE)
       - =VLOOKUP(B8,A2:D6,4,0)
@@ -39,6 +40,9 @@ screens:
       - { formula: "=VLOOKUP(1043,A2:D6,4,FALSE)", rule: reference }
       - { formula: "=VLOOKUP(B8,A2:D6,3,FALSE)", rule: value }
       - { formula: "=VLOOKUP(B8,B2:D6,4,FALSE)", rule: value }
+    variants:
+      - { set: { A2: 1043 }, expected: 214 }
+      - { set: { B8: 4, A6: 4 }, expected: 311 }
 notes:
   summary: VLOOKUP finds a value in the first column of a table and returns a value from a column to its right.
   syntax: VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])

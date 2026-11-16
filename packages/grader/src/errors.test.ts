@@ -4,12 +4,14 @@ import { ERROR_CODES, errorValue, isError } from "./errors.ts";
 describe("error values", () => {
   it("covers the Excel error codes", () => {
     expect(ERROR_CODES).toEqual([
+      "#CALC!",
       "#DIV/0!",
       "#N/A",
       "#NAME?",
       "#NULL!",
       "#NUM!",
       "#REF!",
+      "#SPILL!",
       "#VALUE!",
     ]);
   });

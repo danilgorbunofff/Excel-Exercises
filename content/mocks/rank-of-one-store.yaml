@@ -1,0 +1,42 @@
+id: rank-of-one-store
+slug: rank-of-one-store
+level: 2
+title: Rank of one store
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In C5, show where the Leeds store ranks on sales, with 1 for the best.
+    rows:
+      - [Store, Sales, Rank]
+      - [York, 81000, null]
+      - [Hull, 64500, null]
+      - [Bath, 92300, null]
+      - [Leeds, 85000, null]
+      - [Ely, 58200, null]
+      - [Kent, 88900, null]
+      - [Wells, 70400, null]
+    answerCell: C5
+    expected: 3
+    variants:
+      - { set: { B5: 116450 }, expected: 1 }
+      - { set: { B5: 64500 }, expected: 5 }
+    answer: "=RANK(B5,B2:B8)"
+    hints:
+      nudge: Compare Leeds with every store. The highest sales rank 1.
+      rule: RANK counts from the highest unless its third argument is 1.
+    misses:
+      value: Bath and Kent sold more than Leeds, so Leeds ranks 3.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=RANK(B5,B2:B8)"
+      - "=rank(b5,b2:b8)"
+      - "=RANK(B5,$B$2:$B$8)"
+      - "=RANK(B5,B2:B8,0)"
+      - '=COUNTIF(B2:B8,">"&B5)+1'
+    reject:
+      - { formula: "=RANK(B5,B2:B8,1)", rule: value }
+      - { formula: "=RANK(B4,B2:B8)", rule: value }
+      - { formula: "=RANK(B5,B2:B8", rule: syntax }
+      - { formula: "=3", rule: reference }

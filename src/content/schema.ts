@@ -22,6 +22,12 @@ const isoDate = z.preprocess(
 );
 const cellValue = z.union([z.string(), z.number(), z.boolean(), z.null()]);
 const sentence = z.string().min(1);
+const expectedSchema = z.union([
+  z.string(),
+  z.number(),
+  z.boolean(),
+  z.array(z.array(cellValue).min(1)).min(1),
+]);
 
 /** Grader rules, in the fixed order they are checked. The grader owns the list. */
 export const ruleSchema = z.enum(RULES);
@@ -33,7 +39,16 @@ export const screenSchema = z
     rows: z.array(z.array(cellValue).min(1)).min(1),
     /** The cell the learner writes in. It must be inside the grid and empty. */
     answerCell: cellRef,
-    expected: z.union([z.string(), z.number(), z.boolean()]),
+    /** One value, or for a formula that spills (FILTER, SORT...), every cell it fills from answerCell. */
+    expected: expectedSchema,
+    /**
+     * The same sheet with some cells changed, and the result then. A formula
+     * that is right here but wrong on a variant fails as "fragile".
+     */
+    variants: z
+      .array(z.object({ set: z.record(cellRef, cellValue), expected: expectedSchema }))
+      .min(1)
+      .optional(),
     /** The reference answer, shown at hint step 3, which marks the exercise "solved with help". */
     answer: z.string().startsWith("="),
     requiredFunctions: z.array(functionName).default([]),
@@ -52,6 +67,7 @@ export const screenSchema = z
       "forbidden-function": sentence.optional(),
       reference: sentence.optional(),
       value: sentence,
+      fragile: sentence.optional(),
     }),
     accept: z.array(z.string().startsWith("=")).min(1),
     reject: z.array(z.object({ formula: z.string(), rule: ruleSchema })).min(1),
@@ -72,6 +88,64 @@ export const screenSchema = z
       ctx.addIssue({ code: "custom", path: ["answerCell"], message: "is outside the grid" });
     } else if (at && s.rows[at.row - 1]?.[at.col - 1] !== null) {
       ctx.addIssue({ code: "custom", path: ["answerCell"], message: "must be an empty cell" });
+    }
+    // A spilled result fills a block from the answer cell: it must fit the grid and find it empty.
+    const blocks = [s.expected, ...(s.variants ?? []).map((v) => v.expected)];
+    const taken = new Set<string>();
+    blocks.forEach((block, b) => {
+      if (!Array.isArray(block) || !at) return;
+      const path = b === 0 ? ["expected"] : ["variants", b - 1, "expected"];
+      if (block.some((r) => r.length !== block[0]?.length)) {
+        ctx.addIssue({
+          code: "custom",
+          path,
+          message: "every row of a spilled result needs the same width",
+        });
+      }
+      block.forEach((r, i) => {
+        r.forEach((_, j) => {
+          const row = at.row + i;
+          const col = at.col + j;
+          taken.add(`${col}:${row}`);
+          if (row > s.rows.length || col > width) {
+            ctx.addIssue({
+              code: "custom",
+              path,
+              message: "the spilled result runs past the grid",
+            });
+          } else if ((i > 0 || j > 0) && s.rows[row - 1]?.[col - 1] !== null) {
+            ctx.addIssue({ code: "custom", path, message: "the spilled result needs empty cells" });
+          }
+        });
+      });
+    });
+    (s.variants ?? []).forEach((v, i) => {
+      for (const address of Object.keys(v.set)) {
+        const cell = parseAddress(address);
+        if (!cell || cell.row > s.rows.length || cell.col > width) {
+          ctx.addIssue({
+            code: "custom",
+            path: ["variants", i, "set", address],
+            message: "is outside the grid",
+          });
+        } else if (
+          (at && cell.row === at.row && cell.col === at.col) ||
+          taken.has(`${cell.col}:${cell.row}`)
+        ) {
+          ctx.addIssue({
+            code: "custom",
+            path: ["variants", i, "set", address],
+            message: "is where the answer goes",
+          });
+        }
+      }
+    });
+    if (s.variants && !s.misses.fragile) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["misses", "fragile"],
+        message: "add misses.fragile, shown when a formula fails on a variant",
+      });
     }
     for (const name of s.requiredFunctions) {
       if (s.forbiddenFunctions.includes(name)) {
@@ -111,6 +185,20 @@ export const exerciseSchema = z.object({
     commonErrors: z.array(sentence).min(1),
   }),
 });
+
+/**
+ * A daily-only task, in content/daily/. It appears on /daily/ and nowhere else.
+ * tier is its step of the week: 1 for Monday, the easiest, to 7 for Sunday.
+ */
+export const dailySchema = exerciseSchema.omit({ topic: true, notes: true }).extend({
+  tier: z.number().int().min(1).max(7),
+});
+
+/**
+ * A held-out task for the timed mock assessments, in content/mocks/. It has no
+ * page of its own and no required function: the prompt is the whole brief.
+ */
+export const mockSchema = exerciseSchema.omit({ topic: true, notes: true });
 
 export const trackSchema = z.object({
   topics: z
@@ -243,6 +331,20 @@ export const functionIndexSchema = z
 
 export type FunctionIndex = z.infer<typeof functionIndexSchema>;
 
+/** Article topics, in the order the article index shows its filter. */
+export const ARTICLE_TOPICS = {
+  lookups: "Lookups",
+  sums: "Sums and counts",
+  logic: "Logic and errors",
+  text: "Text and cleanup",
+  dates: "Dates",
+  finance: "Finance tasks",
+  interviews: "Interviews and tests",
+  habits: "Working habits",
+} as const;
+export type ArticleTopic = keyof typeof ARTICLE_TOPICS;
+const articleTopic = z.enum(Object.keys(ARTICLE_TOPICS) as [ArticleTopic, ...ArticleTopic[]]);
+
 /** An article: Markdown with this front matter. */
 export const articleSchema = z.object({
   title: sentence,
@@ -250,6 +352,8 @@ export const articleSchema = z.object({
   updated: isoDate,
   /** Reading time in minutes. */
   minutes: z.number().int().min(1),
+  /** Which filter on the article index the article falls under. */
+  topic: articleTopic,
   /** Functions the article covers, linked as chips. */
   functions: z.array(excelName).default([]),
   /** Exercise ids to practise after reading. */

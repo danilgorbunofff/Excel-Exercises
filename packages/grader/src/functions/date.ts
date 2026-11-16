@@ -1,7 +1,7 @@
 // Why this exists: dates as Excel serial numbers in the 1900 date system.
 // Serial 1 is 1 January 1900. Excel also counts 29 February 1900, a day that
 // never existed, as serial 60; this module keeps that quirk so results match.
-import type { FunctionSpec } from "../values.ts";
+import { type FunctionSpec, isRange } from "../values.ts";
 import { fail, fn, num, safe, text } from "./helpers.ts";
 
 const DAY_MS = 86_400_000;
@@ -54,6 +54,26 @@ function datedif(start: number, end: number, unit: string): number {
 }
 
 export const DATES: Record<string, FunctionSpec> = {
+  // Weekdays from start to end, both counted, less any holidays; negative when end is earlier.
+  NETWORKDAYS: fn(
+    2,
+    3,
+    safe((args) => {
+      const a = Math.trunc(num(args[0]));
+      const b = Math.trunc(num(args[1]));
+      const off = new Set<number>();
+      if (args[2] && !args[2].empty) {
+        const h = args[2].get();
+        for (const c of isRange(h) ? h.rows.flat() : [h])
+          if (typeof c === "number") off.add(Math.trunc(c));
+      }
+      const [lo, hi] = a <= b ? [a, b] : [b, a];
+      let n = 0;
+      // Serial 1 is a Sunday in Excel's 1900 system, so serial % 7 is 0 on Saturday and 1 on Sunday.
+      for (let d = lo; d <= hi; d++) if (d % 7 > 1 && !off.has(d)) n++;
+      return a <= b ? n : -n;
+    }),
+  ),
   // Volatile in Excel; here the date comes from EvaluateOptions.today so a grade can be repeated.
   TODAY: fn(0, 0, (_args, options) => {
     const d = options?.today ?? new Date();
@@ -94,6 +114,8 @@ export const DATES: Record<string, FunctionSpec> = {
       if (type === 1) return sunday1;
       if (type === 2) return ((sunday1 + 5) % 7) + 1;
       if (type === 3) return (sunday1 + 5) % 7;
+      // 11 to 17: the week starts on Monday (11) through Sunday (17), numbered 1 to 7.
+      if (type >= 11 && type <= 17) return ((sunday1 - ((type - 10) % 7) - 1 + 7) % 7) + 1;
       return fail("#NUM!");
     }),
   ),

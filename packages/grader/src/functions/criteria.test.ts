@@ -52,6 +52,16 @@ describe("criteria", () => {
     expect(wildcardRegExp("a*b").test("xAb")).toBe(false);
     expect(wildcardRegExp("1.5").test("125")).toBe(false);
   });
+
+  // Excel: ~~ is a literal tilde, ~* and ~? a literal star and question mark.
+  it("escapes with a tilde, including a tilde itself, without throwing", () => {
+    expect(wildcardRegExp("*~~*").test("E~6")).toBe(true);
+    expect(wildcardRegExp("*~~*").test("E6")).toBe(false);
+    expect(wildcardRegExp("C~*4").test("C*4")).toBe(true);
+    expect(wildcardRegExp("C~*4").test("CX4")).toBe(false);
+    expect(wildcardRegExp("D~?5").test("D?5")).toBe(true);
+    expect(ev('=COUNTIF(C2:C7,"A~*")')).toBe(1);
+  });
 });
 
 describe("SUMIF and AVERAGEIF", () => {

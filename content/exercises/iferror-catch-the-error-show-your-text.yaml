@@ -3,8 +3,8 @@ slug: iferror-catch-the-error-show-your-text
 level: 2
 title: "IFERROR: catch the error, show your text"
 topic: errors
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: The SKU to find is in A4, below the price list in A2:B3. In B5, look up its price, and show "no price" if the lookup fails.
     rows:
@@ -25,13 +25,13 @@ screens:
       syntax: "Two arguments with a comma between: =IFERROR(what might fail, what to show instead)."
       required-function: "The lookup on its own returns `#N/A` in B5. IFERROR wraps that call and supplies the words."
       reference: Ask for the code held in A4, so a different SKU changes the answer.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =IFERROR(VLOOKUP(A4,A2:B3,2,FALSE),"no price")
       - =iferror(vlookup(a4,a2:b3,2,false),"no price")
       - =IFERROR(VLOOKUP($A$4,$A$2:$B$3,2,FALSE),"no price")
       - =IFERROR(XLOOKUP(A4,A2:A3,B2:B3),"no price")
       - =IFERROR(INDEX(B2:B3,MATCH(A4,A2:A3,0)),"no price")
-      - =IFERROR(VLOOKUP(A4,A2:B3,2,FALSE),"no price")&""
     reject:
       - { formula: '=IFERROR(VLOOKUP(A4,A2:B3,2,FALSE),"no price"', rule: syntax }
       - { formula: "=VLOOKUP(A4,A2:B3,2,FALSE)", rule: required-function }
@@ -39,6 +39,9 @@ screens:
       - { formula: '=IFERROR(A4,"no price")', rule: value }
       - { formula: '=IFERROR(VLOOKUP(A4,A2:B3,2,FALSE),"missing")', rule: value }
       - { formula: '=IFERROR(VLOOKUP(A4,A2:B3,2,FALSE),"no price")+1', rule: value }
+      - { formula: '=IFERROR(VLOOKUP(A4,A2:B3,2,FALSE),"no price")&""', rule: fragile }
+    variants:
+      - { set: { A4: TX-101 }, expected: 19.99 }
 notes:
   summary: "IFERROR takes two arguments: the calculation that might fail, and what to show when it does. Anything that goes wrong inside the first argument is replaced by the second."
   syntax: IFERROR(value, value_if_error)

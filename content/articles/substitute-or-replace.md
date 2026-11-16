@@ -4,6 +4,7 @@ title: "SUBSTITUTE or REPLACE: changing part of a text"
 description: One swaps text you can name, the other swaps text at a position. Here is when to use each.
 updated: 2026-11-16
 minutes: 3
+topic: text
 functions: [SUBSTITUTE, REPLACE, FIND, SEARCH, LEN]
 exercises: [substitute-replace-one-piece-of-text, clean-up-an-imported-list, text-search-summary]
 cover: "=SUBSTITUTE"

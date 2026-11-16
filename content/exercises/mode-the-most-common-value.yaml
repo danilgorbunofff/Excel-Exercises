@@ -3,8 +3,8 @@ slug: mode-the-most-common-value
 level: 2
 title: "MODE: the most common value"
 topic: statistics
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: Put the ticket size that occurs most often into C2.
     rows:
@@ -27,6 +27,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. MODE follows the pattern `=MODE(number1, [number2], ...)`."
       required-function: "Neither the middle nor the biggest value answers this: the frequent one does."
       reference: Read the tickets from B2:B7 so a new ticket joins the answer on its own.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =MODE(B2:B7)
       - =mode(b2:b7)
@@ -40,6 +41,8 @@ screens:
       - { formula: =MODE(B2:B7)*2, rule: value }
       - { formula: =MODE(B2:B7)/0, rule: value }
       - { formula: =MODE(B2:B7, rule: syntax }
+    variants:
+      - { set: { B2: 10 }, expected: 5 }
   - prompt: Put the most common box count into C2, and notice it is not the middle of the list.
     rows:
       - [Store, Boxes, Most common]
@@ -62,6 +65,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. MODE follows the pattern `=MODE(number1, [number2], ...)`."
       required-function: MODE counts repeats, so it can return 2 while the median of the same column sits at 4.
       reference: Read the stores from B2:B8 instead of listing the counts.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =MODE(B2:B8)
       - =mode(b2:b8)
@@ -75,6 +79,8 @@ screens:
       - { formula: =MODE(B2:B8)/0, rule: value }
       - { formula: =MODE(B2:B8, rule: syntax }
       - { formula: =MODE(B2:B8)-1, rule: value }
+    variants:
+      - { set: { B2: 3 }, expected: 9 }
 notes:
   summary: MODE looks for the value that occurs most often and gives back one of the values on the sheet, not a figure built from them. That makes it the summary for numbers that are really categories, such as shoe sizes and pack counts.
   syntax: MODE(range)

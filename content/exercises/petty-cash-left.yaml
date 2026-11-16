@@ -1,0 +1,52 @@
+id: petty-cash-left
+slug: petty-cash-left
+level: 1
+title: Petty cash left
+topic: interview-admin
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: "In B9, work out the petty cash left: the opening float in B2 minus all the expenses below it. Use SUM."
+    rows:
+      - [Item, Amount]
+      - [Float, 200]
+      - [Stamps, 18.4]
+      - [Milk, 6.75]
+      - [Taxi, 22.5]
+      - [Batteries, 9.99]
+      - [Flowers, 25]
+      - [Parking, 8.5]
+      - [Left, null]
+    answerCell: B9
+    expected: 108.86
+    variants:
+      - set: { B2: 274 }
+        expected: 182.86
+    answer: "=B2-SUM(B3:B8)"
+    requiredFunctions: [SUM]
+    hints:
+      nudge: Add the expenses up, then take them away from the float.
+      rule: SUM the expenses, then subtract that total from the opening float.
+    misses:
+      value: 200 minus 91.14 of expenses leaves 108.86.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task needs SUM.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=B2-SUM(B3:B8)"
+      - "=b2-sum(b3:b8)"
+      - "=B2-SUM(B3:B8)+0"
+      - "=-SUM(B3:B8)+B2"
+    reject:
+      - { formula: "=SUM(B2:B8)", rule: value }
+      - { formula: "=B2-SUM(B3:B7)", rule: value }
+      - { formula: "=B2-SUM(B3:B8", rule: syntax }
+      - { formula: "=108.86", rule: required-function }
+notes:
+  summary: A running balance is a starting amount minus the total of what was spent.
+  syntax: "start - SUM(expenses)"
+  example: "`=B2-SUM(B3:B8)` takes all the expenses away from the float."
+  commonErrors:
+    - Adding the float to the expenses gives a bigger number, not what is left.
+    - Missing the last expense row leaves too much in the box.
+    - Subtracting each cell by hand is easy to get wrong when rows are added.

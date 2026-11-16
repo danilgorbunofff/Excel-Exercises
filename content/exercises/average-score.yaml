@@ -4,7 +4,7 @@ level: 1
 title: Average score
 topic: totals
 updated: 2026-11-11
-checkedInExcel: null
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B7, work out the average score. Chen missed the test, so B4 is empty and should not count.
     rows:

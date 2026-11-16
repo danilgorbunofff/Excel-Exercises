@@ -7,11 +7,17 @@ import {
   DAILY_START,
   dailyPool,
   isDay,
-  isProDay,
+  LADDER_START,
+  ladderPool,
+  legacyPickFor,
   mergeDaily,
+  mondayOf,
   pickFor,
   stripDays,
+  tierOf,
+  weekDays,
 } from "./daily.ts";
+import { FIRST_PICKS, LEGACY_POOL } from "./daily-legacy.ts";
 
 // 9 tracks of 10: the first 2 of each are free, so 18 free and 72 PRO.
 const placed = Array.from({ length: 90 }, (_, i) => ({
@@ -24,7 +30,7 @@ const daysFrom = (start: string, n: number) =>
   Array.from({ length: n }, (_, i) => addDays(start, i));
 const set = (...days: string[]) => new Set(days);
 
-describe("dailyPool and pickFor", () => {
+describe("dailyPool and legacyPickFor, the pick before the ladder", () => {
   it("keeps every exercise, marks the PRO ones and sorts by id", () => {
     expect(pool).toHaveLength(90);
     expect(proIds.size).toBe(72);
@@ -34,26 +40,20 @@ describe("dailyPool and pickFor", () => {
   it("gives the same exercise for the same day, whatever the pool order", () => {
     const reversed = [...pool].reverse();
     for (const day of daysFrom("2026-11-01", 50)) {
-      expect(pickFor(day, pool)).toEqual(pickFor(day, reversed));
+      expect(legacyPickFor(day, pool)).toEqual(legacyPickFor(day, reversed));
     }
   });
 
   it("picks a PRO exercise on Saturdays only, over three years", () => {
     for (const day of daysFrom("2026-11-01", 3 * 366)) {
-      const pick = pickFor(day, pool);
+      const pick = legacyPickFor(day, pool);
       expect(pick).not.toBeNull();
-      expect(proIds.has(pick?.id ?? "")).toBe(isProDay(day));
+      expect(proIds.has(pick?.id ?? "")).toBe(new Date(`${day}T00:00:00Z`).getUTCDay() === 6);
     }
   });
 
-  it("knows Saturday from the date alone", () => {
-    expect(isProDay("2026-11-21")).toBe(true);
-    expect(isProDay("2026-11-20")).toBe(false);
-    expect(isProDay("2026-11-22")).toBe(false);
-  });
-
   it("spreads the days over many exercises", () => {
-    const picks = daysFrom("2026-11-01", 365).map((d) => pickFor(d, pool)?.id ?? "");
+    const picks = daysFrom("2026-11-01", 365).map((d) => legacyPickFor(d, pool)?.id ?? "");
     expect(new Set(picks.filter((id) => !proIds.has(id))).size).toBe(18);
     expect(new Set(picks.filter((id) => proIds.has(id))).size).toBeGreaterThan(30);
   });
@@ -61,14 +61,71 @@ describe("dailyPool and pickFor", () => {
   it("changes few days when one exercise is added", () => {
     const bigger = [...pool, { id: "ex-new", slug: "ex-new", pro: false }];
     const days = daysFrom("2026-11-01", 1000);
-    const changed = days.filter((d) => pickFor(d, pool)?.id !== pickFor(d, bigger)?.id);
+    const changed = days.filter((d) => legacyPickFor(d, pool)?.id !== legacyPickFor(d, bigger)?.id);
     // Only the days the new exercise wins can change.
-    expect(changed.every((d) => pickFor(d, bigger)?.id === "ex-new")).toBe(true);
+    expect(changed.every((d) => legacyPickFor(d, bigger)?.id === "ex-new")).toBe(true);
     expect(changed.length / days.length).toBeLessThan(0.05);
   });
 
   it("returns null for an empty pool", () => {
-    expect(pickFor("2026-11-15", [])).toBeNull();
+    expect(legacyPickFor("2026-11-15", [])).toBeNull();
+  });
+});
+
+// 8 tasks for each step of the week, ids out of order on purpose.
+const ladder = ladderPool(
+  Array.from({ length: 56 }, (_, i) => ({
+    id: `d-${String(55 - i).padStart(2, "0")}`,
+    slug: `d-${55 - i}`,
+    tier: ((55 - i) % 7) + 1,
+  })),
+);
+
+describe("the weekly ladder", () => {
+  it("numbers the days Monday 1 to Sunday 7", () => {
+    expect(LADDER_START).toBe("2026-11-16");
+    expect(tierOf("2026-11-16")).toBe(1);
+    expect(tierOf("2026-11-20")).toBe(5);
+    expect(tierOf("2026-11-22")).toBe(7);
+    expect(tierOf("2026-11-23")).toBe(1);
+    expect(mondayOf("2026-11-22")).toBe("2026-11-16");
+    expect(mondayOf("2026-11-16")).toBe("2026-11-16");
+  });
+
+  it("picks the task for the day's step, the same whatever the pool order", () => {
+    for (const day of daysFrom(LADDER_START, 400)) {
+      const pick = pickFor(day, ladder);
+      expect(pick?.tier).toBe(tierOf(day));
+      expect(pickFor(day, ladderPool([...ladder].reverse()))).toEqual(pick);
+    }
+  });
+
+  it("repeats no task in a step until the step's list is used up", () => {
+    for (let t = 0; t < 7; t++) {
+      const sameWeekday = Array.from({ length: 16 }, (_, w) => addDays(LADDER_START, t + 7 * w));
+      const ids = sameWeekday.map((d) => pickFor(d, ladder)?.id);
+      expect(new Set(ids.slice(0, 8)).size).toBe(8);
+      expect(ids.slice(8)).toEqual(ids.slice(0, 8));
+    }
+  });
+
+  it("has no pick before the ladder began or for an empty step", () => {
+    expect(pickFor(addDays(LADDER_START, -1), ladder)).toBeNull();
+    expect(
+      pickFor(
+        LADDER_START,
+        ladder.filter((e) => e.tier !== 1),
+      ),
+    ).toBeNull();
+  });
+
+  it("lists this week Monday to Sunday, marking today and the days to come", () => {
+    const week = weekDays(set("2026-11-16", "2026-11-18"), "2026-11-18");
+    expect(week.map((d) => d.day)).toEqual(daysFrom("2026-11-16", 7));
+    expect(week.map((d) => d.tier)).toEqual([1, 2, 3, 4, 5, 6, 7]);
+    expect(week.map((d) => d.solved)).toEqual([true, false, true, false, false, false, false]);
+    expect(week.filter((d) => d.today).map((d) => d.day)).toEqual(["2026-11-18"]);
+    expect(week.filter((d) => d.future)).toHaveLength(4);
   });
 });
 
@@ -127,45 +184,74 @@ describe("isDay", () => {
 });
 
 describe("cleanDailySolves", () => {
-  const today = "2026-11-15";
-  const solve = (day: string) => ({ day, exercise: pickFor(day, pool)?.id });
+  const today = "2026-11-20";
+  const pools = { ladder, legacy: pool };
+  const solve = (day: string) => ({
+    day,
+    exercise: (day < LADDER_START ? legacyPickFor(day, pool) : pickFor(day, ladder))?.id,
+  });
 
   it("keeps valid solves and drops repeats of a day", () => {
     expect(
-      cleanDailySolves([solve(today), solve("2026-11-14"), solve(today)], pool, today),
-    ).toEqual([solve(today), solve("2026-11-14")]);
+      cleanDailySolves([solve(today), solve("2026-11-19"), solve(today)], pools, today),
+    ).toEqual([solve(today), solve("2026-11-19")]);
+  });
+
+  it("keeps a day solved under the legacy pick, before or after the ladder began", () => {
+    expect(cleanDailySolves([solve("2026-11-14")], pools, today)).toEqual([solve("2026-11-14")]);
+    const late = { day: "2026-11-17", exercise: legacyPickFor("2026-11-17", pool)?.id };
+    expect(cleanDailySolves([late], pools, today)).toEqual([late]);
+  });
+
+  it("keeps solves saved under every deployed build's legacy pick, whatever the content now", () => {
+    const frozen = { ladder, legacy: LEGACY_POOL };
+    // 777eddd onward: the frozen pool gives the picks that build gave.
+    for (const [day, exercise] of [
+      ["2026-11-12", "average-score"],
+      ["2026-11-16", "count-booked-seats"],
+      ["2026-11-21", "share-handed-in"],
+    ] as const) {
+      expect(legacyPickFor(day, LEGACY_POOL)?.id).toBe(exercise);
+      expect(cleanDailySolves([{ day, exercise }], frozen, today)).toEqual([{ day, exercise }]);
+    }
+    // 02c646c, the first build, picked from free exercises only.
+    const first = { day: "2026-11-16", exercise: "aggregate-functions-summary" };
+    expect(FIRST_PICKS[first.day]).toBe(first.exercise);
+    expect(cleanDailySolves([first], frozen, today)).toEqual([first]);
+    expect(
+      cleanDailySolves([{ day: "2026-11-16", exercise: "find-a-code" }], frozen, today),
+    ).toBeNull();
   });
 
   it("accepts tomorrow in UTC, for time zones ahead of it", () => {
-    expect(cleanDailySolves([solve("2026-11-16")], pool, today)).not.toBeNull();
+    expect(cleanDailySolves([solve("2026-11-21")], pools, today)).not.toBeNull();
   });
 
   it("rejects days after tomorrow, before the start, or not real", () => {
-    expect(cleanDailySolves([solve("2026-11-17")], pool, today)).toBeNull();
-    expect(cleanDailySolves([solve(addDays(DAILY_START, -1))], pool, today)).toBeNull();
-    expect(cleanDailySolves([{ day: "2026-02-30", exercise: "ex-00" }], pool, today)).toBeNull();
+    expect(cleanDailySolves([solve("2026-11-22")], pools, today)).toBeNull();
+    expect(
+      cleanDailySolves([{ day: addDays(DAILY_START, -1), exercise: "ex-00" }], pools, today),
+    ).toBeNull();
+    expect(cleanDailySolves([{ day: "2026-02-30", exercise: "ex-00" }], pools, today)).toBeNull();
   });
 
   it("rejects an exercise that is not the day's pick", () => {
-    const wrong = pool.find((e) => e.id !== pickFor(today, pool)?.id)?.id;
-    expect(cleanDailySolves([{ day: today, exercise: wrong }], pool, today)).toBeNull();
+    const wrong = ladder.find((e) => e.id !== pickFor(today, ladder)?.id)?.id;
+    expect(cleanDailySolves([{ day: today, exercise: wrong }], pools, today)).toBeNull();
   });
 
   it("rejects bodies that are not a short list", () => {
-    expect(cleanDailySolves(null, pool, today)).toBeNull();
-    expect(cleanDailySolves({ day: today }, pool, today)).toBeNull();
-    expect(cleanDailySolves([], pool, today)).toBeNull();
-    expect(cleanDailySolves(Array(401).fill(solve(today)), pool, today)).toBeNull();
+    expect(cleanDailySolves(null, pools, today)).toBeNull();
+    expect(cleanDailySolves({ day: today }, pools, today)).toBeNull();
+    expect(cleanDailySolves([], pools, today)).toBeNull();
+    expect(cleanDailySolves(Array(401).fill(solve(today)), pools, today)).toBeNull();
   });
-});
 
-describe("cleanDailySolves with a mixed batch", () => {
-  it("keeps the good days and drops the bad ones", () => {
-    const today = "2026-11-15";
-    const good = { day: "2026-11-14", exercise: pickFor("2026-11-14", pool)?.id };
-    const stale = { day: "2026-11-13", exercise: "no-longer-in-the-pool" };
-    const future = { day: "2026-11-20", exercise: pickFor("2026-11-20", pool)?.id };
-    expect(cleanDailySolves([stale, good, future, "x"], pool, today)).toEqual([good]);
+  it("keeps the good days in a mixed batch and drops the bad ones", () => {
+    const good = solve("2026-11-19");
+    const stale = { day: "2026-11-18", exercise: "no-longer-in-the-pool" };
+    const future = solve("2026-11-25");
+    expect(cleanDailySolves([stale, good, future, "x"], pools, today)).toEqual([good]);
   });
 });
 

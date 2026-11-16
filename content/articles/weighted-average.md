@@ -4,6 +4,7 @@ title: Weighted average in Excel
 description: When a plain average gives the wrong answer, and the one formula that fixes it.
 updated: 2026-11-16
 minutes: 3
+topic: sums
 functions: [SUMPRODUCT, SUM, AVERAGE, SUMIFS]
 exercises: [weighted-average-unit-cost, sumproduct-multiply-then-add, average-score]
 cover: "=SUMPRODUCT"

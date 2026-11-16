@@ -4,7 +4,7 @@ level: 1
 title: Count the paid orders
 topic: counting
 updated: 2026-11-11
-checkedInExcel: null
+checkedInExcel: 2026-11-16
 screens:
   - prompt: Unpaid orders show the word pending instead of an amount. In B8, count the paid orders.
     rows:

@@ -129,6 +129,15 @@ topics:
       - Pick a total or a count by its code
       - Total a range while skipping errors
       - Check one total against another
+  - slug: dynamic-arrays
+    title: FILTER, UNIQUE, SORT and LET
+    summary: Return a whole list at once, sort it, and name the steps of a long formula.
+    group: skill
+    learn:
+      - Keep the rows that pass one or two tests with FILTER
+      - List each value once with UNIQUE and count the list
+      - Sort a report and keep the top rows
+      - Name the steps of a formula with LET
   - slug: models
     title: Small working sheets
     summary: Commission, payroll, stock and a month end checklist, each built from formulas.
@@ -187,6 +196,26 @@ topics:
       - Pull a value from a second table by its key
       - Work out an on time rate for one carrier
       - Clean a code before you look it up
+  - slug: interview-admin
+    title: Office and admin assistant interview
+    summary: Tidy names, room bookings, a colleague's extension, addresses and petty cash, as in an office skills test.
+    group: interview
+    assessment: beginner
+    learn:
+      - Tidy a pasted name with TRIM and PROPER
+      - Count the bookings for one room
+      - Look up a colleague's extension
+      - Join an address and keep track of petty cash
+  - slug: interview-sales
+    title: Sales and marketing analyst interview
+    summary: Conversion, targets, return on ad spend, customer concentration and revenue by region and month.
+    group: interview
+    assessment: intermediate
+    learn:
+      - Work out a conversion rate
+      - Check a rep against target
+      - Find the campaign with the best return on spend
+      - Measure how much revenue the top customers bring
 order:
   # Cells and arithmetic
   - add-two-cells
@@ -284,6 +313,13 @@ order:
   - subtotal-a-sum-over-a-group
   - aggregate-a-total-that-can-skip
   - aggregate-functions-summary
+  # FILTER, UNIQUE, SORT and LET
+  - filter-the-rows-that-match
+  - unique-list-each-value-once
+  - sort-a-report-and-take-the-top
+  - filter-amounts-stored-as-text
+  - let-name-the-steps-of-a-formula
+  - top-orders-for-one-region
   # Small working sheets
   - a-commission-sheet-that-updates-itself
   - a-headcount-and-payroll-summary
@@ -320,3 +356,15 @@ order:
   - on-time-rate-for-one-carrier
   - stock-days-of-cover-and-reorder-flag
   - clean-a-product-code-then-look-it-up
+  # Office and admin assistant interview
+  - petty-cash-left
+  - tidy-a-pasted-name
+  - count-bookings-for-a-room
+  - extension-for-a-colleague
+  - address-on-one-line
+  # Sales and marketing analyst interview
+  - lead-conversion-rate
+  - rep-target-check
+  - revenue-for-a-region-and-month
+  - best-return-on-ad-spend
+  - top-three-customers-share

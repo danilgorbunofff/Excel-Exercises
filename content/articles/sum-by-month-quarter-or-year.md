@@ -4,6 +4,7 @@ title: Sum by month, quarter or year
 description: Three ways to total dated rows by period, from date limits in SUMIFS to a helper column.
 updated: 2026-11-16
 minutes: 4
+topic: sums
 functions: [SUMIFS, EOMONTH, DATE, SUMPRODUCT, MONTH, YEAR]
 exercises: [year-to-date-actual-against-budget, quarter-forecast-against-budget, sumifs-two-conditions-at-once]
 cover: "Q1 Q2 Q3 Q4"

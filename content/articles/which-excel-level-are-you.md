@@ -4,6 +4,7 @@ title: "Which Excel level are you: beginner, intermediate or advanced"
 description: What each level can do, so you can describe your skills and know what to learn next.
 updated: 2026-11-16
 minutes: 4
+topic: interviews
 functions: [SUM, IF, SUMIFS, XLOOKUP, INDEX, MATCH, FILTER, LET]
 exercises: [sum-a-column, sumifs-two-conditions-at-once, a-sales-summary-end-to-end]
 cover: "1 / 2 / 3"

@@ -3,8 +3,8 @@ slug: days-and-simple-date-maths
 level: 2
 title: DAYS and simple date maths
 topic: dates
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: Both dates are serials. In D2, put the number of days from the escalation's From date to its To date.
     rows:
@@ -23,6 +23,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. DAYS follows the pattern `=DAYS(end_date, start_date)`."
       required-function: Name DAYS rather than subtracting by hand, so the sheet says which date is the end.
       reference: Pass C2 and B2, so the second milestone fills down from the same pattern.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =DAYS(C2,B2)
       - =days(c2,b2)
@@ -37,6 +38,8 @@ screens:
       - { formula: "=DAYS(B2,C2)", rule: value }
       - { formula: "=DAYS(C2,B2)/0", rule: value }
       - { formula: "=DAYS(C2,B2", rule: syntax }
+    variants:
+      - { set: { C2: 45373 }, expected: 21 }
   - prompt: Give the audit's length in weeks in D2, building the division on the days between the two dates.
     rows:
       - [Project, Start, End, Weeks]

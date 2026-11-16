@@ -3,10 +3,10 @@ slug: true-and-false-what-a-comparison-returns
 level: 2
 title: "TRUE and FALSE: what a comparison returns"
 topic: logic
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B9, answer TRUE when the total units are over 100.
+  - prompt: In B9, answer TRUE when the total units are over 100. Use SUM.
     rows:
       - [Item, Units]
       - [Bolt, 18]
@@ -29,6 +29,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
       required-function: The question is about the total, so the six units have to be added inside the formula.
       reference: Add the cells in B2:B7 rather than typing 150.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =SUM(B2:B7)>100
       - =sum(b2:b7)>100
@@ -41,6 +42,9 @@ screens:
       - { formula: ="TRUE", rule: required-function }
       - { formula: =SUM(B2:B7)>100/0, rule: value }
       - { formula: =SUM B2:B7>100, rule: syntax }
+    variants:
+      - { set: { B5: 10, B7: 1, B8: 100 }, expected: false }
+      - { set: { B5: 10, B7: 2, B8: 101 }, expected: true }
   - prompt: In B9, answer TRUE when the average units are at least 20.
     rows:
       - [Item, Units]
@@ -64,6 +68,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. AVERAGE follows the pattern `=AVERAGE(number1, [number2], ...)`."
       required-function: The question asks about the average, so a total of 150 would answer a different one.
       reference: Average the units column of the grid.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =AVERAGE(B2:B7)>=20
       - =average(b2:b7)>=20
@@ -77,6 +82,11 @@ screens:
       - { formula: =AVERAGE(B2:B7)>=20/0, rule: value }
       - { formula: '=IF(AVERAGE(B2:B7)>=20,"TRUE","FALSE")', rule: value }
       - { formula: =AVERAGE B2:B7>=20, rule: syntax }
+    variants:
+      - { set: { B3: 11, B5: 15 }, expected: true }
+      - { set: { B5: 15, B7: 16 }, expected: true }
+      - { set: { B5: 6, B7: 19, B8: 114 }, expected: false }
+      - { set: { B2: 10, B5: 10, B7: 19, B8: 110 }, expected: false }
 notes:
   summary: A comparison such as `=A1>100` is a formula in its own right and returns TRUE or FALSE. IF, AND and conditional formatting all read that logical value directly.
   syntax: SUM(B2:B7)>100 returns TRUE or FALSE; it is the comparison, not a word

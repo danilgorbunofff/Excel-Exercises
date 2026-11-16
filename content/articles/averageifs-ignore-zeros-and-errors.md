@@ -4,6 +4,7 @@ title: AVERAGEIFS, and how to ignore zeros and errors
 description: Average only the rows you mean, and keep zeros, blanks and errors out of the result.
 updated: 2026-11-16
 minutes: 3
+topic: sums
 functions: [AVERAGEIFS, AVERAGEIF, AVERAGE, AGGREGATE, IFERROR]
 exercises: [average-score, average-functions-summary, aggregate-a-total-that-can-skip]
 cover: "=AVERAGEIFS"

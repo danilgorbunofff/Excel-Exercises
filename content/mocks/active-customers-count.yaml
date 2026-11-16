@@ -1,0 +1,47 @@
+id: active-customers-count
+slug: active-customers-count
+level: 3
+title: Active customers
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In E2, count how many different customers have at least one Active contract.
+    rows:
+      - [Contract, Customer, Status, null, null]
+      - [K1, Arco, Active, null, null]
+      - [K2, Bolt, Ended, null, null]
+      - [K3, Arco, Active, null, null]
+      - [K4, Crux, Active, null, null]
+      - [K5, Delt, Ended, null, null]
+      - [K6, Bolt, Active, null, null]
+      - [K7, Echo, Ended, null, null]
+      - [K8, Crux, Active, null, null]
+      - [K9, Fino, Active, null, null]
+      - [K10, Delt, Ended, null, null]
+      - [K11, Arco, Ended, null, null]
+      - [K12, Gala, Ended, null, null]
+    answerCell: E2
+    expected: 4
+    variants:
+      - set: { B2: Delt }
+        expected: 5
+      - set: { C6: Active }
+        expected: 5
+    answer: '=COUNTA(UNIQUE(FILTER(B2:B13,C2:C13="Active")))'
+    hints:
+      nudge: Keep the Active rows, list each customer once, then count the list.
+      rule: FILTER keeps the matching rows, UNIQUE removes repeats, and COUNTA counts what is left.
+    misses:
+      value: "4 customers are Active: Arco, Crux, Bolt and Fino."
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=COUNTA(UNIQUE(FILTER(B2:B13,C2:C13="Active")))'
+      - '=counta(unique(filter(b2:b13,c2:c13="Active")))'
+      - '=ROWS(UNIQUE(FILTER(B2:B13,C2:C13="Active")))'
+    reject:
+      - { formula: '=COUNTIF(C2:C13,"Active")', rule: value }
+      - { formula: "=COUNTA(UNIQUE(B2:B13))", rule: value }
+      - { formula: '=COUNTA(UNIQUE(FILTER(B2:B13,C2:C13="Active"))', rule: syntax }
+      - { formula: "=4", rule: reference }

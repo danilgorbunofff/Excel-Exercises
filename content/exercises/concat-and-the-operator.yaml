@@ -4,7 +4,7 @@ level: 2
 title: CONCAT and the & operator
 topic: text-change
 updated: 2026-11-11
-checkedInExcel: null
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B4, join the first name in A2 and the last name in B2 with a single space between them.
     rows:

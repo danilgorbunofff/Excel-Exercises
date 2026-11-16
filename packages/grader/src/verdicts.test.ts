@@ -61,6 +61,7 @@ const CORPUS: [string, GradeSpec, string[]][] = [
       "=B2+B3+B4+B5",
       '=SUMIF(B2:B5,">0")+SUM(B1)',
       "=SUMM(B2:B5)",
+      '=SUM(B2:B5)+CONVERT(0,"m","km")',
       "=SUM(B2:B5",
       "=SUM(B2:B5))",
       "=SUM B2:B5",

@@ -4,6 +4,7 @@ title: Bank reconciliation in Excel
 description: Match the bank statement to the cash book with formulas, find what is left over, and prove the balances agree.
 updated: 2026-11-16
 minutes: 5
+topic: finance
 functions: [COUNTIFS, SUMIFS, XLOOKUP, ROUND, IF]
 exercises: [bank-reconciliation-match, a-monthly-close-checklist-in-formulas, countifs-several-conditions]
 cover: "Bank = Book"

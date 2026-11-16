@@ -1,0 +1,38 @@
+id: count-priced-orders
+slug: count-priced-orders
+level: 1
+tier: 1
+title: Count the priced orders
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B8, count the orders that already have a price. Pending ones have no number yet.
+    rows:
+      - [Order, Price]
+      - [A-101, 25]
+      - [A-102, pending]
+      - [A-103, 40]
+      - [A-104, 15]
+      - [A-105, pending]
+      - [A-106, 32]
+      - [Priced, null]
+    answerCell: B8
+    expected: 4
+    answer: "=COUNT(B2:B7)"
+    requiredFunctions: [COUNT]
+    hints:
+      nudge: Count only the cells that hold a number.
+      rule: COUNT counts cells with numbers and skips text such as pending.
+    misses:
+      value: 4 of the orders have a number in the Price column.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task needs COUNT.
+    accept:
+      - "=COUNT(B2:B7)"
+      - "=count(b2:b7)"
+      - "=COUNT(B7,B2:B6)"
+    reject:
+      - { formula: "=COUNTA(B2:B7)", rule: required-function }
+      - { formula: "=COUNT(B2:B6)", rule: value }
+      - { formula: "=COUNT(B2:B7", rule: syntax }
+      - { formula: "=4", rule: required-function }

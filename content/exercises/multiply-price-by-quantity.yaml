@@ -4,7 +4,7 @@ level: 1
 title: Multiply price by quantity
 topic: references
 updated: 2026-11-11
-checkedInExcel: null
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In D2, work out the line total, which is the price times the quantity.
     rows:

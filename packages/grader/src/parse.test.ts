@@ -13,6 +13,8 @@ const show = (n: Node): string => {
       return String(n.value);
     case "string":
       return JSON.stringify(n.value);
+    case "array":
+      return `{${n.rows.map((r) => r.map((v) => JSON.stringify(v)).join(",")).join(";")}}`;
     case "bool":
       return n.value ? "TRUE" : "FALSE";
     case "error":

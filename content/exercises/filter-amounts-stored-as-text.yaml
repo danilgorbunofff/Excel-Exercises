@@ -1,0 +1,85 @@
+id: filter-amounts-stored-as-text
+slug: filter-amounts-stored-as-text
+level: 3
+title: Filter amounts stored as text
+topic: dynamic-arrays
+updated: 2026-11-16
+checkedInExcel: null
+screens:
+  - prompt: In F2, list the order numbers worth more than 1,000. Some amounts came in from an import as text.
+    rows:
+      - [Order, Region, Rep, Amount, null, null, null, null, null]
+      - [1001, North, Ana, 820, null, null, null, null, null]
+      - [1002, South, Bo, 450, null, null, null, null, null]
+      - [1003, East, Cy, "1300", null, null, null, null, null]
+      - [1004, north, Di, 610, null, null, null, null, null]
+      - [1005, South, Ed, 1250, null, null, null, null, null]
+      - [1006, West, Fay, 300, null, null, null, null, null]
+      - [1007, North, Ana, 1500, null, null, null, null, null]
+      - [1008, East, Gus, 220, null, null, null, null, null]
+      - [1009, South, Bo, "980", null, null, null, null, null]
+      - [1010, North, Hal, 470, null, null, null, null, null]
+      - [1011, West, Ivy, "1,100", null, null, null, null, null]
+      - [1012, South, Jo, 760, null, null, null, null, null]
+      - [1013, East, Cy, 540, null, null, null, null, null]
+      - [1014, North, Di, 90, null, null, null, null, null]
+      - [1015, South, Ed, 1600, null, null, null, null, null]
+      - [1016, West, Fay, 700, null, null, null, null, null]
+      - [1017, north, Kim, 1050, null, null, null, null, null]
+      - [1018, East, Gus, 380, null, null, null, null, null]
+    answerCell: F2
+    expected:
+      - [1003]
+      - [1005]
+      - [1007]
+      - [1011]
+      - [1015]
+      - [1017]
+    variants:
+      - set: { D2: "1800" }
+        expected:
+          - [1001]
+          - [1003]
+          - [1005]
+          - [1007]
+          - [1011]
+          - [1015]
+          - [1017]
+      - set: { D6: 900 }
+        expected:
+          - [1003]
+          - [1007]
+          - [1011]
+          - [1015]
+          - [1017]
+    answer: "=FILTER(A2:A19,--D2:D19>1000)"
+    hints:
+      nudge: Look at how the amounts in D4, D10 and D12 sit in their cells. A test on them may not do what it seems.
+      rule: 'Excel ranks any text above any number, so "980">1000 is TRUE. Turn the column into numbers first: two minus signs, as in `--D2:D19`, or `D2:D19*1`.'
+    misses:
+      value: "Six orders are over 1,000: 1003, 1005, 1007, 1011, 1015 and 1017. Order 1009 for 980 is text, and it is not over 1,000."
+      syntax: "Write the conversion before the test: `--D2:D19>1000`."
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=FILTER(A2:A19,--D2:D19>1000)"
+      - "=FILTER(A2:A19,D2:D19*1>1000)"
+      - "=FILTER(A2:A19,(D2:D19+0)>1000)"
+      - "=filter(a2:a19,--d2:d19>1000)"
+      - "=FILTER($A$2:$A$19,--$D$2:$D$19>1000)"
+    reject:
+      - formula: =FILTER(A2:A19,D2:D19>1000)
+        rule: value
+      - formula: =FILTER(A2:A19,--D2:D19>=980)
+        rule: value
+      - formula: =FILTER(A2:A19,--D2:D19>1000
+        rule: syntax
+      - formula: =A4
+        rule: value
+notes:
+  summary: A number stored as text looks right but compares as text, and Excel ranks text above every number. Convert the column inside the formula before testing it.
+  syntax: "FILTER(array, --range>limit)"
+  example: '`=--"980"` gives the number 980, so `--D2:D19>1000` tests real numbers.'
+  commonErrors:
+    - A text amount passes every greater-than test, so the list holds rows that should not be there.
+    - VALUE also converts text, but -- or *1 works on the whole column at once.
+    - A blank cell becomes 0, which is fine for a greater-than test.

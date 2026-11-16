@@ -1,6 +1,7 @@
 ---
 // Why this exists: one free exercise a day, the same for everyone on the same
-// date, and a personal streak of days solved. The date is the visitor's own,
+// date, and a personal streak of days solved. The week is a ladder: Monday's
+// task is the easiest and Sunday's the hardest. The date is the visitor's own,
 // so daily.ts picks the exercise in the browser and fetches its workbench
 // from /daily/task/. The build day's pick is rendered here, hidden: it brings
 // the workbench styles and saves a fetch on the day it matches.
@@ -8,23 +9,23 @@ import Icon from "../../components/Icon.astro";
 import LiveExercise from "../../components/LiveExercise.astro";
 import PracticeTabs from "../../components/PracticeTabs.astro";
 import Base from "../../layouts/Base.astro";
-import { dailyPool, pickFor, STRIP_DAYS } from "../../lib/daily.ts";
-import { placedExercises } from "../../lib/exercises.ts";
+import { ladderPool, pickFor } from "../../lib/daily.ts";
+import { dailyTasks } from "../../lib/exercises.ts";
 import "../../styles/assessments.css";
 import "../../styles/daily.css";
 
-const placed = await placedExercises();
-const pool = dailyPool(placed);
+const tasks = await dailyTasks();
+const pool = ladderPool(tasks.map((t) => ({ ...t.exercise, tier: t.tier })));
 const buildDay = new Date().toISOString().slice(0, 10);
 const buildPick = pickFor(buildDay, pool);
-const shown = placed.find((p) => p.exercise.id === buildPick?.id);
-if (!shown) throw new Error("The daily pool is empty: every exercise is PRO.");
+const shown = tasks.find((t) => t.exercise.id === buildPick?.id) ?? tasks[0];
+if (!shown) throw new Error("content/daily/ has no tasks.");
 const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
 ---
 
 <Base
   title="Daily exercise"
-  description="One free Excel exercise a day, the same for everyone. Solve it on a real grid and keep a personal streak of days in a row."
+  description="One free Excel exercise a day, from an easy one on Monday to the hardest on Sunday. Solve it on a real grid and keep a streak of days in a row."
   layout="wide"
 >
   <PracticeTabs />
@@ -38,7 +39,7 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
           <p class="a-context" data-date>Today</p>
           <h1 id="daily-title" class="a-title">Daily exercise</h1>
           <p class="a-lead" role="status" data-state>
-            One free exercise a day, the same for everyone.
+            One free exercise a day, easiest on Monday and hardest on Sunday.
           </p>
         </div>
       </div>
@@ -57,14 +58,14 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
         </div>
       </dl>
       <div class="d-strip-wrap">
-        <h2 class="visually-hidden" id="strip-title">The last {STRIP_DAYS} days</h2>
-        <ol class="d-strip" aria-labelledby="strip-title" data-strip></ol>
+        <h2 class="d-week-title" id="strip-title">This week</h2>
+        <ol class="d-strip d-week" aria-labelledby="strip-title" data-strip data-week></ol>
       </div>
     </section>
 
     <div class="a-grid">
       <div class="d-task" data-task-slot hidden>
-        <LiveExercise placed={shown} heading="Today's exercise" defer />
+        <LiveExercise placed={shown} heading="Today's exercise" defer daily />
       </div>
       <noscript>
         <p class="ruled d-noscript">
@@ -82,24 +83,20 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
         <ul class="a-rows">
           <li>
             <span class="a-icon"><Icon name="grid" size={18} /></span>
-            <p>One free exercise a day, the same for everyone. A new one starts at midnight on your clock.</p>
+            <p>A new exercise every day, the same for everyone.</p>
+          </li>
+          <li>
+            <span class="a-icon"><Icon name="chart" size={18} /></span>
+            <p>Monday is the easiest. Each day is a step harder, up to Sunday. Monday starts again.</p>
           </li>
           <li>
             <span class="a-icon"><Icon name="check" size={18} /></span>
-            <p>Solve it on the day to add that day to your streak. Hints are fine.</p>
-          </li>
-          <li>
-            <span class="a-icon"><Icon name="reset" size={18} /></span>
-            <p>Miss a day and the streak starts again. Your best streak stays.</p>
-          </li>
-          <li>
-            <span class="a-icon"><Icon name="clock" size={18} /></span>
-            <p>Open an earlier day from the strip to practise it. Earlier days do not change your streak.</p>
+            <p>Solve it on the day to keep your streak.</p>
           </li>
           <li>
             <span class="a-icon"><Icon name="user" size={18} /></span>
-            <p data-when="out">Your streak is saved in this browser.</p>
-            <p data-when="in" hidden>Your streak is saved to your account.</p>
+            <p data-when="out">Saved in this browser.</p>
+            <p data-when="in" hidden>Saved to your account.</p>
           </li>
         </ul>
       </section>

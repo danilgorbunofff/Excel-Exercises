@@ -2,6 +2,7 @@
 // Why this exists: one article as a card: its cover, title, summary and
 // reading time. The article index and the "More articles" block use it, so
 // both look the same. The whole card is one link, through its title.
+import { ARTICLE_TOPICS } from "../../content/schema.ts";
 import { type ArticleEntry, articlePath } from "../../lib/articles.ts";
 import ArticleCover from "./ArticleCover.astro";
 
@@ -11,14 +12,17 @@ interface Props {
   index: number;
   /** The heading level that fits the page outline. */
   level?: "h2" | "h3";
+  /** Show the topic above the title. Off where the cards already sit under a topic heading. */
+  showTopic?: boolean;
 }
-const { article, index, level: Heading = "h2" } = Astro.props;
-const { title, description, minutes, functions, cover } = article.data;
+const { article, index, level: Heading = "h2", showTopic = true } = Astro.props;
+const { title, description, minutes, functions, cover, topic } = article.data;
 ---
 
 <article class="card article-card">
   <ArticleCover text={cover ?? functions[0] ?? "fx"} tone={index} />
   <div class="body">
+    {showTopic && <p class="topic">{ARTICLE_TOPICS[topic]}</p>}
     <Heading class="title">
       <a href={articlePath(article.id)}>{title}</a>
     </Heading>
@@ -48,6 +52,14 @@ const { title, description, minutes, functions, cover } = article.data;
     flex-direction: column;
     gap: var(--space-2);
     padding: var(--space-5);
+  }
+  .topic {
+    margin: 0;
+    font-size: var(--size-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--correct);
   }
   .title {
     margin: 0;

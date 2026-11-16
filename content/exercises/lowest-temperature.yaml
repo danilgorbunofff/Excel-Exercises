@@ -3,10 +3,10 @@ slug: lowest-temperature
 level: 1
 title: Find the lowest temperature
 topic: totals
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: Column B shows each night's lowest temperature in degrees Celsius. In B7, find the lowest of the week.
+  - prompt: Column B shows each night's lowest temperature in degrees Celsius. In B7, find the lowest of the week. Use MIN.
     rows:
       - [Night, Low]
       - [Mon, -2]
@@ -27,6 +27,7 @@ screens:
       required-function: Use MIN, which finds the smallest value in a range.
       reference: Point at the temperatures in B2 to B6 rather than typing them.
       value: Check that the range covers every night, from B2 to B6.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =MIN(B2:B6)
       - =MIN(B6,B5,B4,B3,B2)
@@ -35,6 +36,9 @@ screens:
       - { formula: "=MAX(B2:B6)", rule: required-function }
       - { formula: "=MIN(-2,1,-5,0,3)", rule: reference }
       - { formula: "=MIN(B2:B3)", rule: value }
+    variants:
+      - { set: { B2: -9 }, expected: -9 }
+      - { set: { B4: -2, B6: -4 }, expected: -4 }
 notes:
   summary: MIN returns the smallest number in its arguments. It skips text and empty cells in a range.
   syntax: MIN(number1, [number2], ...)

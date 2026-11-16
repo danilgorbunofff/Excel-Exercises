@@ -3,10 +3,10 @@ slug: two-way-lookup-with-vlookup-and-match
 level: 3
 title: Two-way lookup with VLOOKUP and MATCH
 topic: lookups
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In C6, return the units for the product in A6 and the quarter in B6. Use VLOOKUP, and let MATCH find the column.
+  - prompt: In C6, return the units for the product in A6 in the quarter named in B6.
     rows:
       - [Product, Q1, Q2]
       - [Gizmo, 120, 140]
@@ -16,15 +16,19 @@ screens:
       - [Widget, Q2, null]
     answerCell: C6
     expected: 110
+    variants:
+      - { set: { C3: 151 }, expected: 151 }
+      - { set: { A6: Gizmo }, expected: 140 }
+      - { set: { B6: Q1 }, expected: 90 }
+      - { set: { A6: Flange }, expected: 165 }
     answer: =VLOOKUP(A6,A1:C5,MATCH(B6,A1:C1,0),FALSE)
-    requiredFunctions: [VLOOKUP, MATCH]
     hints:
       nudge: "Let one function find the quarter's column, then hand that number to VLOOKUP."
       rule: "MATCH returns a value's position in a range. When it searches the header row of the same table, that position is the column number VLOOKUP needs."
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Both positions count from the Product column. MATCH returns 3 for Q2, and VLOOKUP counts 3 columns into A1:C5.
       syntax: "Check the brackets, commas and quote marks. VLOOKUP follows the pattern `=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])`."
-      required-function: VLOOKUP does the fetching. It needs the product, the table, and the number MATCH hands it.
       reference: Point MATCH at B6. A typed "Q2" answers this one question only.
     accept:
       - =VLOOKUP(A6,A1:C5,MATCH(B6,A1:C1,0),FALSE)
@@ -35,16 +39,24 @@ screens:
       - =VLOOKUP( A6 , A1:C5 , MATCH( B6 , A1:C1 , 0 ) , FALSE )
       - =VLOOKUP(A6,A1:C5,MATCH(B6,A1:C1,FALSE),FALSE)
       - =VLOOKUP(A6,A2:C5,MATCH(B6,A1:C1,0),FALSE)
+      - =INDEX(B2:C5,MATCH(A6,A2:A5,0),MATCH(B6,B1:C1,0))
     reject:
-      - { formula: "=VLOOKUP(A6,A1:C5,MATCH(B6,A1:C1,0),FALSE", rule: syntax }
-      - { formula: "=INDEX(B2:C5,MATCH(A6,A2:A5,0),MATCH(B6,B1:C1,0))", rule: required-function }
-      - { formula: "=VLOOKUP(A6,A1:C5,3,FALSE)", rule: required-function }
-      - { formula: "=VLOOKUP(A6,A1:C5,MATCH(B6,B1:C1,0),FALSE)", rule: value }
-      - { formula: "=VLOOKUP(A6,A1:C5,MATCH(B6,A1:C1,0),TRUE)", rule: value }
-      - { formula: '=VLOOKUP(A6&"x",A1:C5,MATCH(B6,A1:C1,0),FALSE)', rule: value }
-      - { formula: '=VLOOKUP(A6,A1:C5,MATCH(B6,A1:C1,0)&"x",FALSE)', rule: value }
-      - { formula: '=VLOOKUP(A6,A1:C5,MATCH(B6,A1:C1,0),"no")', rule: value }
-      - { formula: "=VLOOKUP(A6,A1:C5,MATCH(B6,A1:C1,0)+5,FALSE)", rule: value }
+      - formula: =VLOOKUP(A6,A1:C5,MATCH(B6,A1:C1,0),FALSE
+        rule: syntax
+      - formula: =VLOOKUP(A6,A1:C5,MATCH(B6,B1:C1,0),FALSE)
+        rule: value
+      - formula: =VLOOKUP(A6,A1:C5,MATCH(B6,A1:C1,0),TRUE)
+        rule: value
+      - formula: =VLOOKUP(A6&"x",A1:C5,MATCH(B6,A1:C1,0),FALSE)
+        rule: value
+      - formula: =VLOOKUP(A6,A1:C5,MATCH(B6,A1:C1,0)&"x",FALSE)
+        rule: value
+      - formula: =VLOOKUP(A6,A1:C5,MATCH(B6,A1:C1,0),"no")
+        rule: value
+      - formula: =VLOOKUP(A6,A1:C5,MATCH(B6,A1:C1,0)+5,FALSE)
+        rule: value
+      - formula: =VLOOKUP(A6,A1:C5,3,FALSE)
+        rule: fragile
 notes:
   summary: "MATCH finds a header's position in the top row of a table. VLOOKUP uses that position as its column number, so one formula looks up by row and by column."
   syntax: VLOOKUP(product, table, MATCH(quarter, header_row, 0), FALSE)

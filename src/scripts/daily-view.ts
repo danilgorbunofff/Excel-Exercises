@@ -1,7 +1,14 @@
 // Why this exists: draws the daily streak wherever it shows: the numbers and
 // the strip of recent days on /daily/ and on the account page. The streak
 // itself is counted in lib/daily.ts; this only puts it on the page.
-import { bestStreak, currentStreak, DAILY_START, stripDays } from "../lib/daily.ts";
+import {
+  bestStreak,
+  currentStreak,
+  LADDER_START,
+  stripDays,
+  TIER_NAMES,
+  weekDays,
+} from "../lib/daily.ts";
 import type { DailyDays } from "./daily-store.ts";
 import { localDay } from "./progress.ts";
 
@@ -19,7 +26,9 @@ export const dayCount = (n: number) => `${n} ${n === 1 ? "day" : "days"}`;
 
 /**
  * Fills [data-current], [data-best] and [data-strip] inside root from the
- * solved days. shown: the day /daily/ is showing, marked in the strip.
+ * solved days. shown: the day /daily/ is showing, marked in the strip. A strip
+ * with data-week shows this week's ladder, Monday to Sunday; otherwise the
+ * last days.
  */
 export function renderStreak(root: Element, days: DailyDays, shown?: string): void {
   const set = new Set(Object.keys(days));
@@ -31,8 +40,12 @@ export function renderStreak(root: Element, days: DailyDays, shown?: string): vo
   const strip = root.querySelector("[data-strip]");
   const icon = root.querySelector<HTMLTemplateElement>("template[data-check-icon]");
   if (!strip) return;
+  const week = strip.hasAttribute("data-week");
+  const shownDays = week
+    ? weekDays(set, now)
+    : stripDays(set, now).map((d) => ({ ...d, tier: 0, future: false }));
   strip.replaceChildren(
-    ...stripDays(set, now).map((d) => {
+    ...shownDays.map((d) => {
       const li = document.createElement("li");
       li.className = "d-day";
       li.classList.toggle("is-solved", d.solved);
@@ -41,8 +54,10 @@ export function renderStreak(root: Element, days: DailyDays, shown?: string): vo
       head.className = "d-head";
       head.setAttribute("aria-hidden", "true");
       head.textContent = weekdayLetter(d.day);
-      const label = `${longDate(d.day)}${d.today ? ", today" : ""}, ${d.solved ? "solved" : "not solved"}`;
-      const playable = d.day >= DAILY_START;
+      const step = d.tier ? `, ${TIER_NAMES[d.tier]?.toLowerCase()}` : "";
+      const state = d.future ? "to come" : d.solved ? "solved" : "not solved";
+      const label = `${longDate(d.day)}${d.today ? ", today" : ""}${step}, ${state}`;
+      const playable = d.day >= LADDER_START && !d.future;
       const cell = document.createElement(playable ? "a" : "span");
       cell.className = "d-cell";
       if (cell instanceof HTMLAnchorElement) {
@@ -59,6 +74,14 @@ export function renderStreak(root: Element, days: DailyDays, shown?: string): vo
       cell.append(text, num);
       if (d.solved && icon) cell.append(icon.content.cloneNode(true));
       li.append(head, cell);
+      if (d.tier) {
+        li.classList.toggle("is-future", d.future);
+        const tier = document.createElement("span");
+        tier.className = "d-tier";
+        tier.setAttribute("aria-hidden", "true");
+        tier.textContent = TIER_NAMES[d.tier] ?? "";
+        li.append(tier);
+      }
       return li;
     }),
   );

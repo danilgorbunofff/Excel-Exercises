@@ -4,6 +4,7 @@ title: TRIM, CLEAN and hidden spaces
 description: Why two cells that look the same do not match, and how to find and remove what you cannot see.
 updated: 2026-11-16
 minutes: 4
+topic: text
 functions: [TRIM, CLEAN, SUBSTITUTE, LEN, CODE, EXACT]
 exercises: [clean-up-an-imported-list, clean-a-product-code-then-look-it-up, substitute-replace-one-piece-of-text]
 cover: "=TRIM(A2)"

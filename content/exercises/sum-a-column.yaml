@@ -3,10 +3,10 @@ slug: sum-a-column
 level: 1
 title: Add up a column
 topic: totals
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B6, add up the sales in B2 to B5.
+  - prompt: In B6, add up the sales in B2 to B5. Use SUM.
     rows:
       - [Month, Sales]
       - [Jan, 120]

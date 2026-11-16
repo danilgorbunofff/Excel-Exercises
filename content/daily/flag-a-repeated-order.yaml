@@ -1,0 +1,44 @@
+id: flag-a-repeated-order
+slug: flag-a-repeated-order
+level: 3
+tier: 6
+title: Flag a repeated order
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In C5, show Duplicate when the order number in A5 appears more than once in the list, otherwise Unique.
+    rows:
+      - [Order, Amount, Check]
+      - [7001, 250, null]
+      - [7002, 180, null]
+      - [7003, 410, null]
+      - [7002, 180, null]
+      - [7004, 95, null]
+      - [7005, 330, null]
+      - [7006, 120, null]
+      - [7003, 410, null]
+    answerCell: C5
+    expected: Duplicate
+    variants:
+      - { set: { A3: 9593 }, expected: Unique }
+      - { set: { A5: 7001 }, expected: Duplicate }
+      - { set: { A3: 7001, A9: 7002 }, expected: Duplicate }
+    answer: '=IF(COUNTIF(A2:A9,A5)>1,"Duplicate","Unique")'
+    hints:
+      nudge: Count how many times A5's order number appears in the whole column.
+      rule: COUNTIF(column, value) counts the copies. More than 1 means the value repeats.
+    misses:
+      value: 7002 appears twice, so the cell should say Duplicate.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - '=IF(COUNTIF(A2:A9,A5)>1,"Duplicate","Unique")'
+      - '=if(countif(a2:a9,a5)>1,"Duplicate","Unique")'
+      - '=IF(COUNTIF($A$2:$A$9,A5)>1,"Duplicate","Unique")'
+      - '=IF(COUNTIF(A2:A9,A5)=1,"Unique","Duplicate")'
+    reject:
+      - { formula: '=IF(COUNTIF(A2:A9,A5)>2,"Duplicate","Unique")', rule: value }
+      - { formula: '=IF(COUNTIF(A2:A4,A5)>1,"Duplicate","Unique")', rule: value }
+      - { formula: '=IF(COUNTIF(A2:A9,A5)>1,"Duplicate","Unique"', rule: syntax }
+      - { formula: '="Duplicate"', rule: reference }

@@ -2,12 +2,14 @@
 // objects, so they cannot be confused with text that happens to look the same.
 
 export const ERROR_CODES = [
+  "#CALC!",
   "#DIV/0!",
   "#N/A",
   "#NAME?",
   "#NULL!",
   "#NUM!",
   "#REF!",
+  "#SPILL!",
   "#VALUE!",
 ] as const;
 export type ErrorCode = (typeof ERROR_CODES)[number];

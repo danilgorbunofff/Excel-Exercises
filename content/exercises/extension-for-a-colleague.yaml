@@ -1,0 +1,51 @@
+id: extension-for-a-colleague
+slug: extension-for-a-colleague
+level: 2
+title: Extension for a colleague
+topic: interview-admin
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In F2, show the phone extension of the colleague named in E2. Use XLOOKUP.
+    rows:
+      - [Name, Office, Ext, null, null, null]
+      - [Asha, Leeds, 3104, null, Femi, null]
+      - [Bryn, York, 3211, null, null, null]
+      - [Cleo, Leeds, 3187, null, null, null]
+      - [Dara, Hull, 3320, null, null, null]
+      - [Femi, York, 3245, null, null, null]
+      - [Gwen, Hull, 3352, null, null, null]
+    answerCell: F2
+    expected: 3245
+    variants:
+      - set: { A2: Femi }
+        expected: 3104
+      - set: { C6: 4446 }
+        expected: 4446
+    answer: "=XLOOKUP(E2,A2:A7,C2:C7)"
+    requiredFunctions: [XLOOKUP]
+    hints:
+      nudge: Find the name, then return the extension on the same row.
+      rule: XLOOKUP(what to find, where to look, what to return). The two ranges must be the same size.
+    misses:
+      value: Femi's extension is 3245.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task needs XLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=XLOOKUP(E2,A2:A7,C2:C7)"
+      - "=xlookup(e2,a2:a7,c2:c7)"
+      - "=XLOOKUP(E2,$A$2:$A$7,$C$2:$C$7)"
+    reject:
+      - { formula: "=VLOOKUP(E2,A2:C7,3,FALSE)", rule: required-function }
+      - { formula: "=XLOOKUP(E2,A2:A7,B2:B7)", rule: value }
+      - { formula: "=XLOOKUP(E2,A2:A7,C2:C7", rule: syntax }
+      - { formula: "=3245", rule: required-function }
+notes:
+  summary: XLOOKUP finds a value in one column and returns the matching value from another, such as a colleague's extension.
+  syntax: "XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])"
+  example: '`=XLOOKUP("Cleo",A2:A7,B2:B7)` returns the office Cleo works in, Leeds.'
+  commonErrors:
+    - Returning the wrong column gives the office instead of the extension.
+    - "A name spelt differently from the list gives #N/A."
+    - The lookup and return ranges must have the same number of rows.

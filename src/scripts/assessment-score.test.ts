@@ -24,6 +24,7 @@ const task: TaskData = {
   misses: {},
   slug: "sum-a-column",
   answer: "=SUM(B2:B5)",
+  skills: ["SUM"],
 };
 
 describe("scoreAttempt", () => {
@@ -45,7 +46,7 @@ describe("scoreAttempt", () => {
 describe("byFunction", () => {
   const withFns = (fns: string[], correct: boolean) => ({
     correct,
-    task: { spec: { requiredFunctions: fns } },
+    task: { skills: fns },
   });
   it("counts each function, weakest first, and puts no-function tasks under References", () => {
     expect(

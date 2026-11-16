@@ -43,11 +43,16 @@ import Icon from "./Icon.astro";
   .toggle:hover {
     color: var(--text);
   }
+  /* Block-level boxes, so the icon is not lifted by the text baseline. */
+  .on,
+  .off {
+    display: grid;
+  }
   .off,
   .timer.is-hidden .on {
     display: none;
   }
   .timer.is-hidden .off {
-    display: inline;
+    display: grid;
   }
 </style>

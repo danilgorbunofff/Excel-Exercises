@@ -4,6 +4,7 @@ title: How to read a formula error
 description: What the common error values in a cell mean, and the first thing to check for each.
 updated: 2026-11-11
 minutes: 4
+topic: logic
 functions: [IF, VLOOKUP, XLOOKUP]
 exercises: [sum-a-column, find-a-price, pass-or-fail]
 cover: "#N/A"

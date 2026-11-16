@@ -3,8 +3,8 @@ slug: stock-days-of-cover-and-reorder-flag
 level: 2
 title: Stock days of cover and reorder flag
 topic: interview-data-analyst
-updated: 2026-11-15
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In E2, work out how many whole days the pallet wrap on hand will last at its daily use.
     rows:
@@ -35,7 +35,7 @@ screens:
       - { formula: "=ROUNDDOWN(C2/B2,0)", rule: value }
       - { formula: "=ROUNDDOWN(350/24,0)", rule: reference }
       - { formula: "=ROUNDDOWN(B2/C2,0", rule: syntax }
-  - prompt: In E3, show Reorder when the label rolls will run out before a new delivery could arrive, and OK when they will not.
+  - prompt: In E3, show Reorder when the label rolls will run out before a new delivery could arrive, and OK when they will not. Use IF.
     rows:
       - [Item, On hand, Daily use, Lead time days, Flag]
       - [Pallet wrap, 350, 24, 10, null]
@@ -53,6 +53,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, value_if_false)`."
       required-function: The answer is one of two words, so the comparison sits inside an IF.
       reference: Use the label roll row, B3, C3 and D3.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =IF(B3/C3<D3,"Reorder","OK")
       - =if(b3/c3<d3,"Reorder","OK")
@@ -66,6 +67,9 @@ screens:
       - { formula: '=IF(B2/C2<D2,"Reorder","OK")', rule: value }
       - { formula: "=B3/C3<D3", rule: required-function }
       - { formula: '=IF(B3/C3<D3,"Reorder","OK"', rule: syntax }
+    variants:
+      - { set: { B3: 123 }, expected: OK }
+      - { set: { B3: 105 }, expected: OK }
 notes:
   summary: Days of cover is how long stock lasts at the current rate of use. When it is shorter than the time a delivery takes, the item must be ordered now.
   syntax: ROUNDDOWN(on_hand/daily_use,0), IF(on_hand/daily_use<lead_time,"Reorder","OK")

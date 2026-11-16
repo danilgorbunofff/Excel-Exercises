@@ -3,8 +3,8 @@ slug: full-year-forecast-from-the-run-rate
 level: 2
 title: Full year forecast from the run rate
 topic: interview-fpa
-updated: 2026-11-15
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: Five months have closed. In D2, forecast the full year as the actual to date plus the average month for each month left.
     rows:
@@ -24,6 +24,7 @@ screens:
       value: The five months add up to 255000, an average of 51000. Seven more months at 51000 is 357000, so the year is 612000.
       syntax: Check the brackets. The months left, 12 minus C2, need their own pair.
       reference: Point at the actuals in B2:B6 and the months closed in C2.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =SUM(B2:B6)+AVERAGE(B2:B6)*(12-C2)
       - =sum(b2:b6)+average(b2:b6)*(12-c2)
@@ -37,6 +38,8 @@ screens:
       - { formula: "=SUM(B2:B6)+AVERAGE(B2:B6)*12-C2", rule: value }
       - { formula: "=51000*12", rule: reference }
       - { formula: "=SUM(B2:B6)+AVERAGE(B2:B6)*(12-C2", rule: syntax }
+    variants:
+      - { set: { B2: 48500 }, expected: 603600 }
   - prompt: The finance lead wants the run rate from the last three months only. In D2, forecast the year the same way, using the average of months 3 to 5.
     rows:
       - [Month, Actual, Months closed, Forecast]

@@ -1,0 +1,43 @@
+id: average-temperature
+slug: average-temperature
+level: 1
+tier: 1
+title: Average temperature
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In B9, find the average temperature for the week.
+    rows:
+      - [Day, Temp]
+      - [Mon, 18]
+      - [Tue, 21]
+      - [Wed, 19]
+      - [Thu, 22]
+      - [Fri, 20]
+      - [Sat, 24]
+      - [Sun, 16]
+      - [Average, null]
+    answerCell: B9
+    expected: 20
+    variants:
+      - set: { B2: 25 }
+        expected: 21
+    answer: "=AVERAGE(B2:B8)"
+    requiredFunctions: [AVERAGE]
+    hints:
+      nudge: Average all seven days, Monday to Sunday.
+      rule: AVERAGE adds the numbers in a range and divides by how many there are.
+    misses:
+      value: The seven temperatures average 20.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task needs AVERAGE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=AVERAGE(B2:B8)"
+      - "=average(b2:b8)"
+      - "=AVERAGE(B2:B4,B5:B8)"
+    reject:
+      - { formula: "=AVERAGE(B2:B7)", rule: value }
+      - { formula: "=SUM(B2:B8)", rule: required-function }
+      - { formula: "=AVERAGE(B2:B8", rule: syntax }
+      - { formula: "=20", rule: required-function }

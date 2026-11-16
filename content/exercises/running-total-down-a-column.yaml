@@ -1,12 +1,12 @@
 id: running-total-down-a-column
 slug: running-total-down-a-column
-level: 3
+level: 2
 title: Running total down a column
 topic: totals
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In C2, start a running total with a formula that fills down the column unchanged.
+  - prompt: In C2, start a running total with a formula that fills down the column unchanged. Use SUM.
     rows:
       - [Day, Units, Running]
       - [Mon, 12, null]
@@ -38,7 +38,7 @@ screens:
       - { formula: =SUM(B3:B3), rule: value }
       - { formula: =SUM(B$2:B2)/0, rule: value }
       - { formula: =SUM(B$2 B2), rule: syntax }
-  - prompt: "In C4, give Wednesday's running total: the same formula, filled down two rows."
+  - prompt: "In C4, give Wednesday's running total: the same formula, filled down two rows. Use SUM."
     rows:
       - [Day, Units, Running]
       - [Mon, 12, null]

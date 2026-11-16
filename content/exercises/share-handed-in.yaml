@@ -3,10 +3,10 @@ slug: share-handed-in
 level: 2
 title: Share of essays handed in
 topic: counting
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: Each essay that was handed in has a mark. In B10, work out the share of students who handed one in, as a fraction such as 0.5.
+  - prompt: Each essay that was handed in has a mark. In B10, work out the share of students who handed one in, as a fraction such as 0.5. Use COUNT and COUNTA.
     rows:
       - [Student, Mark]
       - [Ana, 14]

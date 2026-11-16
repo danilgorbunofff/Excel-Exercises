@@ -1,0 +1,51 @@
+id: best-selling-product
+slug: best-selling-product
+level: 3
+title: Best-selling product
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In E2, name the product with the most units sold.
+    rows:
+      - [Product, Units, null, null, null]
+      - [Lamp, 340, null, null, null]
+      - [Desk, 210, null, null, null]
+      - [Chair, 515, null, null, null]
+      - [Shelf, 180, null, null, null]
+      - [Rug, 295, null, null, null]
+      - [Mirror, 430, null, null, null]
+      - [Stool, 260, null, null, null]
+      - [Table, 375, null, null, null]
+      - [Vase, 120, null, null, null]
+      - [Clock, 205, null, null, null]
+      - [Bench, 150, null, null, null]
+      - [Frame, 330, null, null, null]
+      - [Sofa, 90, null, null, null]
+      - [Cushion, 480, null, null, null]
+      - [Bin, 140, null, null, null]
+    answerCell: E2
+    expected: Chair
+    variants:
+      - set: { A4: Lamp }
+        expected: Lamp
+      - set: { B2: 681 }
+        expected: Lamp
+    answer: "=INDEX(A2:A16,MATCH(MAX(B2:B16),B2:B16,0))"
+    hints:
+      nudge: Find the largest number of units, then the product on that row.
+      rule: MAX finds the top figure, MATCH its position, and INDEX reads the product at that position.
+    misses:
+      value: Chair sold the most units, 515.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=INDEX(A2:A16,MATCH(MAX(B2:B16),B2:B16,0))"
+      - "=index(a2:a16,match(max(b2:b16),b2:b16,0))"
+      - "=XLOOKUP(MAX(B2:B16),B2:B16,A2:A16)"
+      - "=TAKE(SORTBY(A2:A16,B2:B16,-1),1)"
+    reject:
+      - { formula: "=MAX(B2:B16)", rule: value }
+      - { formula: "=INDEX(A2:A16,MATCH(MIN(B2:B16),B2:B16,0))", rule: value }
+      - { formula: "=INDEX(A2:A16,MATCH(MAX(B2:B16),B2:B16,0)", rule: syntax }
+      - { formula: '="Chair"', rule: reference }

@@ -3,10 +3,10 @@ slug: text-search-summary
 level: 2
 title: Text search summary
 topic: text-search
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In D2, read the four digits that follow the hyphen in the code in A2.
+  - prompt: In D2, read the four digits that follow the hyphen in the code in A2. Use MID and FIND.
     rows:
       - [Code, Region, Amount, Answer]
       - [AN-1042, North, 120, null]
@@ -25,6 +25,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. MID follows the pattern `=MID(text, start_num, num_chars)`."
       required-function: The digits are a slice of the code, so MID reads them.
       reference: The code is in A2.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =MID(A2,FIND("-",A2)+1,4)
       - =mid(a2,find("-",a2)+1,4)
@@ -41,7 +42,9 @@ screens:
       - { formula: '=MID(A3,FIND("-",A3)+1,4)', rule: value }
       - { formula: '=MID(A2,FIND("_",A2)+1,4)', rule: value }
       - { formula: '=MID A2,FIND("-",A2)+1,4', rule: syntax }
-  - prompt: In D2, round the average of the North amounts to one decimal place.
+    variants:
+      - { set: { A2: ANZ-1042 }, expected: "1042" }
+  - prompt: In D2, round the average of the North amounts to one decimal place. Use AVERAGEIFS.
     rows:
       - [Code, Region, Amount, Answer]
       - [AN-1042, North, 120, null]
@@ -56,10 +59,11 @@ screens:
       nudge: Average only the rows whose region starts with N, then round the result.
       rule: AVERAGEIFS takes the range to average first, then a criteria range and its criterion, which can hold a wildcard. ROUND with 1 as its second argument keeps one decimal place.
     misses:
-      value: 380 across three rows is 126.66, which rounds to 126.7.
+      value: 380 across three rows is 126.666..., which rounds to 126.7.
       syntax: ROUND wraps the average, so the pattern sits inside the AVERAGEIFS call and the digits come last.
       required-function: "A conditional average is AVERAGEIFS' job: the amounts first, the condition second."
       reference: The amounts to average are in C2:C5.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =ROUND(AVERAGEIFS(C2:C5,B2:B5,"N*"),1)
       - =round(averageifs(c2:c5,b2:b5,"n*"),1)
@@ -76,6 +80,8 @@ screens:
       - { formula: '=ROUND(AVERAGEIFS(C2:C5,B2:B5,"N*")/0,1)', rule: value }
       - { formula: '=ROUND(AVERAGEIFS(B2:B5,B2:B5,"N*"),1)', rule: value }
       - { formula: '=ROUND AVERAGEIFS(C2:C5,B2:B5,"N*"),1', rule: syntax }
+    variants:
+      - { set: { C2: 80 }, expected: 113.3 }
 notes:
   summary: FIND gives the position of a separator, so MID can start reading just after it. In COUNTIF, SUMIF and AVERAGEIFS criteria, a star matches any run of characters.
   syntax: MID(text,FIND("-",text)+1,4) finds the separator then slices after it; criteria take patterns

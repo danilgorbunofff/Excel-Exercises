@@ -67,6 +67,7 @@ Capture screenshots with the existing tooling where it already covers the case (
 ## What to check on every page
 
 ### 1. Parity with the reference (where chosen)
+
 - Information architecture and section order versus the matching page in section 5 of the study.
 - Page background, panel white, 1 px hairlines, content widths (1280 page, 768/896 reading, 448 forms).
 - Header: logo, search, nav, auth actions; phone menu behaviour versus `phone-menu-open.jpg`.
@@ -74,6 +75,7 @@ Capture screenshots with the existing tooling where it already covers the case (
 - Exercise screen: 40/60 two-pane desktop layout, draggable and keyboard-operable divider, stacked on phone, answer cell marked before and after.
 
 ### 2. Visual design
+
 - Tokens only: no hard-coded colours, sizes or radii outside `tokens.css`. Grep for stray hex, `px` font sizes, magic margins.
 - Type scale, line length (45 to 75 characters for prose), heading hierarchy, tabular figures in cells, monospace for formulas and references.
 - 4 px spacing grid, consistent radii (4, 6, pill), no shadows except the permitted dialog.
@@ -81,6 +83,7 @@ Capture screenshots with the existing tooling where it already covers the case (
 - Imagery, icons, empty areas, alignment, optical balance, orphan words, widows, overflow, clipped focus rings.
 
 ### 3. UX and flow
+
 - First 5 seconds: can a new visitor tell what this is and start an exercise without scrolling or signing up?
 - Primary path: land, pick exercise, solve, get explained feedback, go next. Count clicks and decision points; compare with the reference flow (`flow-01` to `flow-11`).
 - Wrong-answer feedback explains the miss (the reference stays silent; we must not). Hints reveal one at a time and cost nothing hidden.
@@ -91,6 +94,7 @@ Capture screenshots with the existing tooling where it already covers the case (
 - Microcopy: plain, specific, consistent verbs, no fabricated numbers, no promises the product does not keep. Run `npm run lint:copy`.
 
 ### 4. Accessibility (WCAG 2.2 A and AA)
+
 - axe on every page and state; manually confirm what axe cannot see.
 - Contrast for every text and UI pair in both themes (our target: 4.5:1 text, 3:1 UI and focus). Compare with `docs/design/contrast.md`.
 - Keyboard: skip link, logical tab order, visible focus on every control, no trap (the reference traps focus in the grid; we must not), Escape closes dialogs and returns focus to the trigger, arrow keys on divider and tabs.
@@ -100,15 +104,18 @@ Capture screenshots with the existing tooling where it already covers the case (
 - Zoom and reflow: no horizontal scroll at 320 px or 400% zoom, no clipped text at 200% text size.
 
 ### 5. Responsive behaviour
+
 - Breakpoint transitions at 375/768/1024/1280, not just the endpoints. Look for jumps, cramped tables, tap targets under 24 px, sticky elements covering content, keyboard covering inputs on phone.
 - The exercise page on a phone: instructions first, grid reachable, verdict visible without hunting; compare with the reference's 1,260 px gap before the grid.
 - Tables (catalogue, shortcuts, arguments) have a deliberate small-screen form.
 
 ### 6. Performance as it is felt
+
 - Largest contentful paint, layout shift, interaction latency per page; fonts load without a visible jump (fallbacks in `font-fallbacks.css`); JS budget (70 kB) holds (`npm run budgets`); no render-blocking third-party requests.
 - Perceived speed: skeletons or instant content, no empty grid flash.
 
 ### 7. Trust, SEO and share surface
+
 - Titles, descriptions, canonical, Open Graph and Twitter images, JSON-LD (BreadcrumbList, FAQPage where used), `robots.txt`, sitemap, 404 returns status 404.
 - Legal pages readable, consistent with what the product does with data. No cookie banner needed only if no cookies are set: verify in the browser.
 

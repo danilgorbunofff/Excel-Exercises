@@ -3,8 +3,8 @@ slug: variance-to-budget-by-cost-centre
 level: 3
 title: Variance to budget by cost centre
 topic: interview-finance-analyst
-updated: 2026-11-15
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: Spend lines are in A and B, and the budget for each cost centre is in D and E. In F2, show Sales actual spend minus its budget.
     rows:
@@ -17,15 +17,19 @@ screens:
       - [HR, 900, null, null, null, null]
     answerCell: F2
     expected: 500
+    variants:
+      - set: { B2: 5754 }
+        expected: 2054
+      - set: { E2: 12330 }
+        expected: -2830
     answer: =SUMIFS(B2:B7,A2:A7,D2)-E2
-    requiredFunctions: [SUMIFS]
     hints:
       nudge: Add up the Sales spend lines first, then take the Sales budget away.
       rule: SUMIFS adds the spend where the cost centre matches D2. Subtract the budget in E2 after it, so overspends come out positive.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Sales spent 4200 and 5300, which is 9500. Against a budget of 9000 that is 500 over.
       syntax: "Check the brackets and commas. SUMIFS follows the pattern `=SUMIFS(sum_range, criteria_range1, criteria1, ...)`."
-      required-function: Only the Sales lines count, so the spend needs SUMIFS with a condition.
       reference: Point at the budget in E2 rather than typing it, so a new budget flows through.
     accept:
       - =SUMIFS(B2:B7,A2:A7,D2)-E2
@@ -34,12 +38,18 @@ screens:
       - =SUMIFS($B$2:$B$7,$A$2:$A$7,$D2)-$E2
       - =-(E2-SUMIFS(B2:B7,A2:A7,D2))
     reject:
-      - { formula: "=E2-SUMIFS(B2:B7,A2:A7,D2)", rule: value }
-      - { formula: "=SUMIFS(B2:B7,A2:A7,D2)", rule: value }
-      - { formula: "=SUMIFS(B2:B7,A2:A7,D3)-E2", rule: value }
-      - { formula: "=SUM(B2:B7)-E2", rule: required-function }
-      - { formula: "=SUMIFS(B2:B7,A2:A7,D2)-9000", rule: reference }
-      - { formula: "=SUMIFS(B2:B7,A2:A7,D2-E2", rule: syntax }
+      - formula: =E2-SUMIFS(B2:B7,A2:A7,D2)
+        rule: value
+      - formula: =SUMIFS(B2:B7,A2:A7,D2)
+        rule: value
+      - formula: =SUMIFS(B2:B7,A2:A7,D3)-E2
+        rule: value
+      - formula: =SUM(B2:B7)-E2
+        rule: value
+      - formula: =SUMIFS(B2:B7,A2:A7,D2)-9000
+        rule: reference
+      - formula: =SUMIFS(B2:B7,A2:A7,D2-E2
+        rule: syntax
   - prompt: In F3, show the IT variance as a share of the IT budget, rounded to three decimal places.
     rows:
       - [Cost centre, Spend, null, Centre, Budget, Variance]
@@ -51,15 +61,19 @@ screens:
       - [HR, 900, null, null, null, null]
     answerCell: F3
     expected: -0.05
+    variants:
+      - set: { B3: 4247 }
+        expected: 0.141
+      - set: { E3: 8220 }
+        expected: -0.307
     answer: =ROUND((SUMIFS(B2:B7,A2:A7,D3)-E3)/E3,3)
-    requiredFunctions: [SUMIFS, ROUND]
     hints:
       nudge: Work out the IT variance as before, then divide it by the IT budget and round.
       rule: A variance share is the variance divided by the budget. ROUND with 3 as its second argument keeps three decimal places.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: IT spent 5700 against 6000, which is 300 under. 300 is 0.05 of the budget, so the share is minus 0.05.
       syntax: "Check the brackets and commas. ROUND follows the pattern `=ROUND(number, num_digits)`."
-      required-function: The IT spend needs SUMIFS, and the share is rounded with ROUND for reporting.
       reference: The IT budget is in E3, on the same row as the IT label in D3.
     accept:
       - =ROUND((SUMIFS(B2:B7,A2:A7,D3)-E3)/E3,3)
@@ -68,12 +82,18 @@ screens:
       - =ROUND(SUMIFS(B2:B7,A2:A7,D3)/E3-1,3)
       - =ROUND((SUMIFS($B$2:$B$7,$A$2:$A$7,$D3)-$E3)/$E3,3)
     reject:
-      - { formula: "=ROUND((SUMIFS(B2:B7,A2:A7,D3)-E3)/SUMIFS(B2:B7,A2:A7,D3),3)", rule: value }
-      - { formula: "=ROUND(SUMIFS(B2:B7,A2:A7,D3)-E3,3)", rule: value }
-      - { formula: "=ROUND((E3-SUMIFS(B2:B7,A2:A7,D3))/E3,3)", rule: value }
-      - { formula: "=ROUND((SUMIFS(B2:B7,A2:A7,D2)-E2)/E2,3)", rule: value }
-      - { formula: "=(SUMIFS(B2:B7,A2:A7,D3)-E3)/E3", rule: required-function }
-      - { formula: "=ROUND((SUMIFS(B2:B7,A2:A7,D3)-E3)/E3,3", rule: syntax }
+      - formula: =ROUND((SUMIFS(B2:B7,A2:A7,D3)-E3)/SUMIFS(B2:B7,A2:A7,D3),3)
+        rule: value
+      - formula: =ROUND(SUMIFS(B2:B7,A2:A7,D3)-E3,3)
+        rule: value
+      - formula: =ROUND((E3-SUMIFS(B2:B7,A2:A7,D3))/E3,3)
+        rule: value
+      - formula: =ROUND((SUMIFS(B2:B7,A2:A7,D2)-E2)/E2,3)
+        rule: value
+      - formula: =(SUMIFS(B2:B7,A2:A7,D3)-E3)/E3
+        rule: fragile
+      - formula: =ROUND((SUMIFS(B2:B7,A2:A7,D3)-E3)/E3,3
+        rule: syntax
 notes:
   summary: A variance by cost centre adds up the actual lines with SUMIFS, then compares them with the budget. Dividing by the budget turns the amount into a share that can be compared across centres.
   syntax: SUMIFS(spend,centres,centre)-budget, then ROUND(variance/budget,3)

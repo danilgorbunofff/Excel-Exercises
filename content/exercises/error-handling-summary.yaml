@@ -3,8 +3,8 @@ slug: error-handling-summary
 level: 3
 title: "Error handling: which net catches what"
 topic: errors
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B9, price the code in A8 and say no match when any part of the lookup fails.
     rows:
@@ -19,15 +19,17 @@ screens:
       - [Any failure, null]
     answerCell: B9
     expected: no match
+    variants:
+      - { set: { A8: A-1 }, expected: 10 }
+      - { set: { A7: Q-9 }, expected: 32 }
     answer: =IFERROR(VLOOKUP(A8,A2:B7,2,FALSE),"no match")
-    requiredFunctions: [IFERROR, VLOOKUP]
     hints:
       nudge: The prompt wants any failure caught, not only a missing match.
       rule: "IFERROR replaces every kind of error with its second argument. IFNA replaces only `#N/A`."
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Q-9 is not on the list, so the lookup fails and the net prints no match.
       syntax: "=IFERROR(value, value_if_error): the second argument is the net."
-      required-function: The prompt wants any failure to become no match, and that takes the wider net.
       reference: Read the code from A8 so the answer follows the cell.
     accept:
       - =IFERROR(VLOOKUP(A8,A2:B7,2,FALSE),"no match")
@@ -37,11 +39,16 @@ screens:
       - =IFERROR(VLOOKUP(A$8,A2:B7,2,FALSE),"no match")
       - =IFERROR(VLOOKUP($A$8,A2:B7,2,FALSE),"no match")
     reject:
-      - { formula: '=IFERROR(VLOOKUP(A8,A2:B7,1,FALSE),"other")', rule: value }
-      - { formula: '=IFNA(VLOOKUP(A8,A2:B7,3,FALSE),"no match")', rule: required-function }
-      - { formula: '=IFERROR(1/0,"no match")', rule: required-function }
-      - { formula: '=IFERROR(VLOOKUP(A8,A2:B7,2,FALSE),"no match")/0', rule: value }
-      - { formula: '=IFERROR(VLOOKUP(A8 A2:B7,2,FALSE),"no match")', rule: syntax }
+      - formula: =IFERROR(VLOOKUP(A8,A2:B7,1,FALSE),"other")
+        rule: value
+      - formula: =IFNA(VLOOKUP(A8,A2:B7,3,FALSE),"no match")
+        rule: value
+      - formula: =IFERROR(1/0,"no match")
+        rule: reference
+      - formula: =IFERROR(VLOOKUP(A8,A2:B7,2,FALSE),"no match")/0
+        rule: value
+      - formula: =IFERROR(VLOOKUP(A8 A2:B7,2,FALSE),"no match")
+        rule: syntax
   - prompt: In D8, divide the price on row 4 by its units and say no units when the division fails.
     rows:
       - [Code, Price, Units, Answer]
@@ -54,15 +61,17 @@ screens:
       - [Note, null, null, null]
     answerCell: D8
     expected: no units
+    variants:
+      - set: { C4: 6 }
+        expected: 5
     answer: =IFERROR(B4/C4,"no units")
-    requiredFunctions: [IFERROR]
     hints:
       nudge: Dividing by an empty cell gives an error that IFNA does not catch.
       rule: "Dividing by zero or by an empty cell gives `#DIV/0!`. IFERROR catches it and shows the fallback, while IFNA lets it through."
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Row 4 is C-3 at 30 with no units recorded, so the division fails and the answer is no units.
       syntax: "Check the brackets, commas and quote marks. IFERROR follows the pattern `=IFERROR(value, value_if_error)`."
-      required-function: "C4 is empty, so the division raises `#DIV/0!`, and the net is what turns that into words."
       reference: Divide the price in B4 by the units in C4, both read from the grid.
     accept:
       - =IFERROR(B4/C4,"no units")
@@ -72,12 +81,18 @@ screens:
       - =IFERROR( B4 / C4 , "no units" )
       - =IFERROR(($B4)/($C4),"no units")
     reject:
-      - { formula: '=IFNA(B4/C4,"no units")', rule: required-function }
-      - { formula: '=IFERROR(B4/C5,"no units")', rule: value }
-      - { formula: '=IFERROR(B3/C3,"no units")', rule: value }
-      - { formula: '=IFERROR(B4/C4,"none")', rule: value }
-      - { formula: '=IFERROR(B4/C4,"no units")/0', rule: value }
-      - { formula: '=IFERROR B4/C4,"no units"', rule: syntax }
+      - formula: =IFNA(B4/C4,"no units")
+        rule: value
+      - formula: =IFERROR(B4/C5,"no units")
+        rule: value
+      - formula: =IFERROR(B3/C3,"no units")
+        rule: value
+      - formula: =IFERROR(B4/C4,"none")
+        rule: value
+      - formula: =IFERROR(B4/C4,"no units")/0
+        rule: value
+      - formula: =IFERROR B4/C4,"no units"
+        rule: syntax
 notes:
   summary: "IFERROR returns its second argument whenever the first one fails, whatever the reason. IFNA returns the second argument only for `#N/A`."
   syntax: "IFERROR(value, fallback) catches everything; =IFNA(value, fallback) catches only #N/A"

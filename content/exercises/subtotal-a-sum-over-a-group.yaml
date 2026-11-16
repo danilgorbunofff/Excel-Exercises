@@ -1,10 +1,10 @@
 id: subtotal-a-sum-over-a-group
 slug: subtotal-a-sum-over-a-group
-level: 3
+level: 2
 title: "SUBTOTAL: one function number, six answers"
 topic: subtotals
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In D5, add up the prices with SUBTOTAL rather than SUM.
     rows:
@@ -58,6 +58,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. SUBTOTAL follows the pattern `=SUBTOTAL(function_num, ref1, [ref2], ...)`."
       required-function: "MAX is not called by name here: the number in front of the range selects it."
       reference: The prices live in B2:B4.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =SUBTOTAL(4,B2:B4)
       - =subtotal(4,b2:b4)
@@ -73,6 +74,8 @@ screens:
       - { formula: "=SUBTOTAL(4,C2:C4)", rule: value }
       - { formula: =SUBTOTAL(4 B2:B4), rule: syntax }
       - { formula: "=SUBTOTAL(4,B2:B4)/0", rule: value }
+    variants:
+      - { set: { B4: 5 }, expected: 10 }
 notes:
   summary: SUBTOTAL takes a function number and a range. The number picks the calculation, such as 9 to add, 1 to average and 4 for the largest, and rows hidden by a filter are left out.
   syntax: SUBTOTAL(function-number, range) with 9 (or 109) for SUM, 4 for MAX, 5 for MIN, 2 for COUNT

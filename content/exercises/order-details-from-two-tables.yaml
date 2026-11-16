@@ -1,10 +1,10 @@
 id: order-details-from-two-tables
 slug: order-details-from-two-tables
-level: 3
+level: 2
 title: Order details from two tables
 topic: interview-data-analyst
-updated: 2026-11-15
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: The customer table is in E to G. In C2, show the region of the customer on the first order.
     rows:
@@ -23,6 +23,7 @@ screens:
       value: C-104 is Stanton Vets, whose region is East.
       syntax: "Check the brackets and commas. XLOOKUP follows the pattern `=XLOOKUP(lookup_value, lookup_array, return_array)`."
       reference: Look up B2 in E2:E5 and return from G2:G5.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =XLOOKUP(B2,$E$2:$E$5,$G$2:$G$5)
       - =xlookup(b2,e2:e5,g2:g5)
@@ -34,6 +35,8 @@ screens:
       - { formula: "=XLOOKUP(B2,F2:F5,G2:G5)", rule: value }
       - { formula: "=XLOOKUP(B3,E2:E5,G2:G5)", rule: value }
       - { formula: "=XLOOKUP(B2,E2:E5,G2:G5", rule: syntax }
+    variants:
+      - { set: { B2: C-102 }, expected: West }
   - prompt: The price list is in F and G. In D2, work out the value of the first order, units times the unit price of its product.
     rows:
       - [Order, Product, Units, Value, null, Product, Unit price]

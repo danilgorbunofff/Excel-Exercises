@@ -4,6 +4,7 @@ title: "Excel skills tests: what employers actually ask"
 description: The usual formats of a pre-hire Excel test, the tasks that come up, and how they are marked.
 updated: 2026-11-16
 minutes: 5
+topic: interviews
 functions: [XLOOKUP, SUMIFS, COUNTIFS, IF, IFERROR]
 exercises: [a-sales-summary-end-to-end, formula-audit-fix-five-broken-sheets, a-lookup-dashboard-from-three-tables]
 cover: "45:00"

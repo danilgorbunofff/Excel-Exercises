@@ -1,0 +1,49 @@
+id: bonus-pool-for-reps-on-target
+slug: bonus-pool-for-reps-on-target
+level: 3
+tier: 7
+title: Bonus pool for reps on target
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: "In D14, work out the bonus pool: 5 per cent of the sales of every rep who reached their own target, rounded to two decimal places."
+    rows:
+      - [Rep, Target, Sales, null]
+      - [Ada, 5000, 5400, null]
+      - [Ben, 6000, 5750, null]
+      - [Cas, 4500, 4500, null]
+      - [Dot, 7000, 8120, null]
+      - [Eli, 5500, 5100, null]
+      - [Fay, 6500, 6900, null]
+      - [Gil, 4000, 3600, null]
+      - [Hui, 5000, 6230, null]
+      - [Ivy, 6000, 5990, null]
+      - [Jun, 4800, 5010, null]
+      - [Kit, 5200, 4300, null]
+      - [Lev, 7500, 7600, null]
+      - [null, null, Pool, null]
+    answerCell: D14
+    expected: 2188
+    variants:
+      - { set: { C2: 7398 }, expected: 2287.9 }
+      - { set: { B2: 6850 }, expected: 1918 }
+      - { set: { C2: 5407 }, expected: 2188.35 }
+    answer: "=ROUND(SUMPRODUCT((C2:C13>=B2:B13)*C2:C13)*0.05,2)"
+    hints:
+      nudge: Each rep has a different target, so compare row by row. Reaching the target exactly counts.
+      rule: A test on two ranges, such as C2:C13>=B2:B13, gives TRUE or FALSE per row. Multiply it by the sales to keep only the reps on target, then add.
+    misses:
+      value: Seven reps reached their target, with sales of 43760, so the pool is 2188.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=ROUND(SUMPRODUCT((C2:C13>=B2:B13)*C2:C13)*0.05,2)"
+      - "=round(sumproduct((c2:c13>=b2:b13)*c2:c13)*0.05,2)"
+      - "=ROUND(SUM(IF(C2:C13>=B2:B13,C2:C13,0))*0.05,2)"
+      - "=ROUND(0.05*SUMPRODUCT(--(C2:C13>=B2:B13),C2:C13),2)"
+    reject:
+      - { formula: "=ROUND(SUMPRODUCT((C2:C13>B2:B13)*C2:C13)*0.05,2)", rule: value }
+      - { formula: "=ROUND(SUM(C2:C13)*0.05,2)", rule: value }
+      - { formula: "=ROUND(SUMPRODUCT((C2:C13>=B2:B13)*C2:C13)*0.05,2", rule: syntax }
+      - { formula: "=2188", rule: reference }

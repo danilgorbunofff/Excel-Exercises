@@ -4,6 +4,7 @@ title: Build a trial balance check
 description: Prove that debits equal credits, every account is mapped, and the report lines add back to the ledger.
 updated: 2026-11-16
 minutes: 4
+topic: finance
 functions: [SUM, ROUND, SUMIFS, XLOOKUP, COUNTIF, IF]
 exercises: [trial-balance-lookup-and-check, a-monthly-close-checklist-in-formulas, department-cost-roll-up]
 cover: "Dr = Cr"

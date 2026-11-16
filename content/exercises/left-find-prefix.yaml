@@ -3,10 +3,10 @@ slug: left-find-prefix
 level: 3
 title: "LEFT + FIND: pull out a prefix"
 topic: text-search
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B6, extract the three-letter prefix from the reference in B2 (everything before the first dash).
+  - prompt: "In B6, extract the prefix from the reference in B2: everything before the first dash. Prefixes are not all the same length."
     rows:
       - [Order, Reference, Customer]
       - [SO-1, ORD-2024-0917, Ana]
@@ -16,15 +16,21 @@ screens:
       - [Prefix for SO-1, null, null]
     answerCell: B6
     expected: ORD
+    variants:
+      - set:
+          B2: INV-2024-0612
+        expected: INV
+      - set:
+          B2: PO-2024-0101
+        expected: PO
     answer: =LEFT(B2,FIND("-",B2)-1)
-    requiredFunctions: [LEFT, FIND]
     hints:
       nudge: FIND tells you where the first dash is, and the prefix ends one character before it.
       rule: FIND returns the position of the first match inside the text. LEFT keeps a number of characters from the start, so take 1 off the position to leave the dash out.
     misses:
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: FIND returns 4, the dash position, so LEFT needs 3 characters. One more keeps the dash.
       syntax: "Check the brackets, commas and quote marks. LEFT follows the pattern `=LEFT(text, [num_chars])`."
-      required-function: LEFT works from the first character and needs a count of how many to keep.
       reference: Read B2; the other references are there for comparison.
     accept:
       - =LEFT(B2,FIND("-",B2)-1)
@@ -33,17 +39,26 @@ screens:
       - =LEFT(B2,FIND("-",B2)-1)&""
       - =LEFT(B2,FIND("-",B2)+0-1)
       - =LEFT(B$2,FIND("-",B$2)-1)
+      - =MID(B2,1,FIND("-",B2)-1)
     reject:
-      - { formula: '=LEFT(B2,FIND("-",B2))', rule: value }
-      - { formula: '=LEFT(B2,FIND("-",B2)-2)', rule: value }
-      - { formula: "=RIGHT(B2,4)", rule: required-function }
-      - { formula: '=MID(B2,1,FIND("-",B2)-1)', rule: required-function }
-      - { formula: "=LEFT(B2,3)", rule: required-function }
-      - { formula: =LEFT(B2), rule: required-function }
-      - { formula: ="ORD", rule: required-function }
-      - { formula: '=LEFT(B6,FIND("-",B6)-1)', rule: reference }
-      - { formula: '=LEFT(B2,FIND(".",B2)-1)', rule: value }
-      - { formula: '=LEFT(B2,FIND("-",B2)-1', rule: syntax }
+      - formula: =LEFT(B2,FIND("-",B2))
+        rule: value
+      - formula: =LEFT(B2,FIND("-",B2)-2)
+        rule: value
+      - formula: =RIGHT(B2,4)
+        rule: value
+      - formula: =LEFT(B2)
+        rule: value
+      - formula: ="ORD"
+        rule: reference
+      - formula: =LEFT(B6,FIND("-",B6)-1)
+        rule: reference
+      - formula: =LEFT(B2,FIND(".",B2)-1)
+        rule: value
+      - formula: =LEFT(B2,FIND("-",B2)-1
+        rule: syntax
+      - formula: =LEFT(B2,3)
+        rule: fragile
 notes:
   summary: FIND reports where a character sits inside a string, and LEFT takes a given number of characters from the start. Joined, they cut a prefix of any length off a code.
   syntax: LEFT(text, FIND(delimiter, text) - 1)

@@ -1,0 +1,34 @@
+id: share-of-total-sales
+slug: share-of-total-sales
+level: 1
+tier: 2
+title: Share of total sales
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: In C2, show North's sales as a share of the total in B6, as a decimal.
+    rows:
+      - [Region, Sales, Share]
+      - [North, 120, null]
+      - [South, 150, null]
+      - [East, 95, null]
+      - [West, 135, null]
+      - [Total, 500, null]
+    answerCell: C2
+    expected: 0.24
+    answer: "=B2/B6"
+    hints:
+      nudge: Divide North's sales by the total.
+      rule: A share is the part divided by the whole.
+    misses:
+      value: 120 out of 500 is 0.24.
+      reference: Point at the cells, so the result follows the data when it changes.
+    accept:
+      - "=B2/B6"
+      - "=b2/b6"
+      - "=B2/SUM(B2:B5)"
+      - "=B2/$B$6"
+    reject:
+      - { formula: "=B6/B2", rule: value }
+      - { formula: "=B2/B5", rule: value }
+      - { formula: "=0.24", rule: reference }

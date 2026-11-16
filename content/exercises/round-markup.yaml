@@ -3,10 +3,10 @@ slug: round-markup
 level: 2
 title: "ROUND: money to two decimals"
 topic: rounding
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B6, total the three costs, add 8% markup, and round the result to 2 decimals.
+  - prompt: In B6, total the three costs, add 8% markup, and round the result to 2 decimals. Use SUM.
     rows:
       - [Item, Cost]
       - [Hosting, 1500.24]
@@ -26,6 +26,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
       required-function: The number is 4450.3992 and the answer wants two decimals, so ROUND needs both arguments.
       reference: Point at B2:B4, so a changed cost changes the total.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =ROUND(SUM(B2:B4)*1.08,2)
       - =round(sum($B$2:$B$4)*1.08,2)
@@ -44,6 +45,8 @@ screens:
       - { formula: "=ROUND(SUM(B2:B4)/1.08,2)", rule: value }
       - { formula: "=ROUND(SUM(B2:B4)*1.08,2)/0", rule: value }
       - { formula: "=ROUND(SUM(B2:B4)*1.08,2", rule: syntax }
+    variants:
+      - { set: { B2: 1120.5 }, expected: 4040.28 }
 notes:
   summary: ROUND takes a number and the count of decimals to keep. Round the finished result once rather than each step along the way.
   syntax: ROUND(number, num_digits)

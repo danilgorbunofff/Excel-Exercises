@@ -1,10 +1,10 @@
 id: isblank-isnumber-istext
 slug: isblank-isnumber-istext
-level: 3
+level: 2
 title: "ISBLANK, ISNUMBER, ISTEXT: reading a cell's type"
 topic: logic
-updated: 2026-11-11
-checkedInExcel: null
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
 screens:
   - prompt: In B8, answer TRUE when A3 is empty.
     rows:

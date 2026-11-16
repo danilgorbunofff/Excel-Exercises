@@ -1,0 +1,43 @@
+id: invoice-total-from-lines
+slug: invoice-total-from-lines
+level: 2
+title: Invoice total from its lines
+updated: 2026-11-16
+checkedInExcel: 2026-11-16
+screens:
+  - prompt: "In C8, total the invoice: each line's quantity times its unit price, all added up."
+    rows:
+      - [Item, Qty, Unit price]
+      - [Paper, 10, 4.5]
+      - [Pens, 24, 0.8]
+      - [Folders, 15, 1.2]
+      - [Toner, 2, 38]
+      - [Labels, 6, 3.25]
+      - [Clips, 8, 0.6]
+      - [Total, null, null]
+    answerCell: C8
+    expected: 182.5
+    variants:
+      - set: { B2: 14 }
+        expected: 200.5
+      - set: { C2: 6.17 }
+        expected: 199.2
+    answer: "=SUMPRODUCT(B2:B7,C2:C7)"
+    hints:
+      nudge: Each line is quantity times price. Then add the lines.
+      rule: SUMPRODUCT multiplies two ranges row by row and adds the products.
+    misses:
+      value: The six lines come to 182.5.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - "=SUMPRODUCT(B2:B7,C2:C7)"
+      - "=sumproduct(b2:b7,c2:c7)"
+      - "=SUM(B2:B7*C2:C7)"
+      - "=B2*C2+B3*C3+B4*C4+B5*C5+B6*C6+B7*C7"
+    reject:
+      - { formula: "=SUM(B2:B7)*SUM(C2:C7)", rule: value }
+      - { formula: "=SUM(C2:C7)", rule: value }
+      - { formula: "=SUMPRODUCT(B2:B7,C2:C7", rule: syntax }
+      - { formula: "=182.5", rule: reference }

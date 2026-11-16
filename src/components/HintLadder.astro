@@ -3,6 +3,7 @@
 // rule and compares the formula's ranges with the answer's, step 3 shows the
 // answer and marks the exercise as solved with help.
 import type { Screen } from "../content/schema.ts";
+import Icon from "./Icon.astro";
 import RichText from "./RichText.astro";
 
 interface Props {
@@ -16,48 +17,71 @@ const { screen, index, locked = false } = Astro.props;
 
 <div class="hints" data-hints={index}>
   <details data-hint="1">
-    <summary>Hint 1</summary>
+    <summary><Icon name="hint" size={18} />Hint 1<Icon name="chevron-down" size={18} class="chev" /></summary>
     <p><RichText text={screen.hints.nudge} /></p>
   </details>
   <details data-hint="2">
-    <summary>Hint 2</summary>
+    <summary><Icon name="hint" size={18} />Hint 2<Icon name="chevron-down" size={18} class="chev" /></summary>
     <p><RichText text={screen.hints.rule} /></p>
     <p data-compare hidden></p>
   </details>
   <details data-hint="3">
-    <summary>Show the answer</summary>
+    <summary><Icon name="eye" size={18} />Show the answer<Icon name="chevron-down" size={18} class="chev" /></summary>
     <p>The answer is <code data-answer={index}>{locked ? "" : screen.answer}</code>.</p>
   </details>
 </div>
 
 <style>
-  details {
-    border-bottom: 1px solid var(--rule);
+  .hints {
+    display: grid;
+    gap: var(--space-2);
   }
-  details:first-child {
-    border-top: 1px solid var(--rule);
+  details {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-m);
+    background: var(--surface);
   }
   summary {
     display: flex;
     align-items: center;
+    gap: var(--space-2);
     min-height: var(--target);
+    padding: 0 var(--space-3);
+    border-radius: inherit;
     font-weight: 600;
+    color: var(--heading);
     cursor: pointer;
+    list-style: none;
   }
-  summary::before {
-    content: "+" / "";
-    display: inline-block;
-    width: 1.25rem;
-    font-family: var(--font-mono);
+  summary :global(.icon) {
+    flex: none;
     color: var(--muted);
   }
-  details[open] > summary::before {
-    content: "-" / "";
+  summary :global(.chev) {
+    margin-left: auto;
+  }
+  summary:hover {
+    background: var(--bg);
+  }
+  details[open] > summary :global(.icon:first-child) {
+    color: var(--read);
+  }
+  details[open] > summary :global(.chev) {
+    rotate: 180deg;
   }
   summary::-webkit-details-marker {
     display: none;
   }
   p {
-    margin: 0 0 var(--space-3);
+    margin: 0;
+    padding: 0 var(--space-3) var(--space-3) calc(var(--space-3) + 18px + var(--space-2));
+  }
+  p + p {
+    padding-top: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    summary :global(.chev) {
+      transition: rotate 200ms var(--ease);
+    }
   }
 </style>

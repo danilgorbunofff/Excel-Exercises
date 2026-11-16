@@ -1,0 +1,96 @@
+id: department-cost-roll-up
+slug: department-cost-roll-up
+level: 2
+title: Department cost roll up
+topic: interview-fpa
+pro: true
+updated: 2026-11-15
+checkedInExcel: null
+screens:
+  - prompt: In D2, total the software cost for the Marketing department.
+    rows:
+      - [Department, Cost type, Amount, Answer]
+      - [Marketing, Salaries, 18000, null]
+      - [Marketing, Software, 2400, null]
+      - [Finance, Salaries, 22000, null]
+      - [Marketing, Travel, 1300, null]
+      - [Finance, Software, 3100, null]
+      - [Marketing, Software, 900, null]
+    answerCell: D2
+    expected: 3300
+    answer: =SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Software")
+    requiredFunctions: [SUMIFS]
+    hints:
+      nudge: A row counts only when the department is Marketing and the cost type is Software.
+      rule: SUMIFS takes the range to add first, then a pair of range and condition for each test. Every test must pass for a row to count.
+    misses:
+      value: Marketing has two software lines, 2400 and 900, which make 3300.
+      syntax: "Check the brackets, commas and quote marks. SUMIFS follows the pattern `=SUMIFS(sum_range, criteria_range1, criteria1, criteria_range2, criteria2)`."
+      required-function: Two conditions at once need SUMIFS. SUMIF takes only one.
+      reference: Point at the amounts in C2:C7 rather than typing them.
+    accept:
+      - =SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Software")
+      - =sumifs(c2:c7,a2:a7,"marketing",b2:b7,"software")
+      - =SUMIFS(C2:C7,B2:B7,"Software",A2:A7,"Marketing")
+      - =SUMIFS($C$2:$C$7,$A$2:$A$7,"Marketing",$B$2:$B$7,"Software")
+    reject:
+      - { formula: '=SUMIF(B2:B7,"Software",C2:C7)', rule: required-function }
+      - { formula: '=SUMIFS(C2:C7,A2:A7,"Marketing")', rule: value }
+      - { formula: '=SUMIFS(C2:C7,B2:B7,"Software")', rule: value }
+      - { formula: '=SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Salaries")', rule: value }
+      - { formula: "=2400+900", rule: required-function }
+      - { formula: '=SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Software"', rule: syntax }
+  - prompt: In D2, show the share of Marketing's total cost that is salaries, rounded to two decimal places.
+    rows:
+      - [Department, Cost type, Amount, Answer]
+      - [Marketing, Salaries, 18000, null]
+      - [Marketing, Software, 2400, null]
+      - [Finance, Salaries, 22000, null]
+      - [Marketing, Travel, 1300, null]
+      - [Finance, Software, 3100, null]
+      - [Marketing, Software, 900, null]
+    answerCell: D2
+    expected: 0.8
+    answer: =ROUND(SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Salaries")/SUMIFS(C2:C7,A2:A7,"Marketing"),2)
+    requiredFunctions: [SUMIFS, ROUND]
+    hints:
+      nudge: Divide Marketing salaries by everything Marketing spends, then round.
+      rule: The top of the share has two conditions and the bottom has one. ROUND with 2 keeps two decimal places.
+    misses:
+      value: Marketing salaries are 18000 out of 22600, which rounds to 0.8.
+      syntax: "Check the brackets and commas. ROUND follows the pattern `=ROUND(number, num_digits)`."
+      required-function: Both totals come from SUMIFS, and the share is rounded with ROUND.
+      reference: The amounts run down C2:C7.
+    accept:
+      - =ROUND(SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Salaries")/SUMIFS(C2:C7,A2:A7,"Marketing"),2)
+      - =round(sumifs(c2:c7,a2:a7,"marketing",b2:b7,"salaries")/sumifs(c2:c7,a2:a7,"marketing"),2)
+      - =ROUND(SUMIFS($C$2:$C$7,$A$2:$A$7,"Marketing",$B$2:$B$7,"Salaries")/SUMIFS($C$2:$C$7,$A$2:$A$7,"Marketing"),2)
+    reject:
+      - {
+          formula: '=ROUND(SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Salaries")/SUM(C2:C7),2)',
+          rule: value,
+        }
+      - {
+          formula: '=ROUND(SUMIFS(C2:C7,B2:B7,"Salaries")/SUMIFS(C2:C7,A2:A7,"Marketing"),2)',
+          rule: value,
+        }
+      - {
+          formula: '=SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Salaries")/SUMIFS(C2:C7,A2:A7,"Marketing")',
+          rule: required-function,
+        }
+      - {
+          formula: '=ROUND(SUMIFS(C2:C7,A2:A7,"Marketing")/SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Salaries"),2)',
+          rule: value,
+        }
+      - {
+          formula: '=ROUND(SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Salaries")/SUMIFS(C2:C7,A2:A7,"Marketing"),2',
+          rule: syntax,
+        }
+notes:
+  summary: A roll up totals the lines that share a department and a cost type. Planning teams build these to see where the money goes before they set next year's budget.
+  syntax: SUMIFS(amounts,departments,"Marketing",types,"Software")
+  example: '`=SUMIFS(C1:C4,A1:A4,"IT",B1:B4,"Travel")` adds the IT travel lines only.'
+  commonErrors:
+    - SUMIF takes one condition, so a second test needs SUMIFS.
+    - Putting the range to add last is the SUMIF order, not the SUMIFS order.
+    - Dividing by the whole column instead of the department total gives a share of the company.

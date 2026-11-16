@@ -1,0 +1,74 @@
+id: order-details-from-two-tables
+slug: order-details-from-two-tables
+level: 3
+title: Order details from two tables
+topic: interview-data-analyst
+pro: true
+updated: 2026-11-15
+checkedInExcel: null
+screens:
+  - prompt: The customer table is in E to G. In C2, show the region of the customer on the first order.
+    rows:
+      - [Order, Customer ID, Region, null, Customer ID, Customer, Region]
+      - [SO-5521, C-104, null, null, C-101, Pellow Garden Centre, North]
+      - [SO-5522, C-102, null, null, C-102, Quill Stationers, West]
+      - [SO-5523, C-101, null, null, C-103, Rookwood Gym, South]
+      - [SO-5524, C-104, null, null, C-104, Stanton Vets, East]
+    answerCell: C2
+    expected: East
+    answer: =XLOOKUP(B2,$E$2:$E$5,$G$2:$G$5)
+    hints:
+      nudge: Find the customer ID from B2 in the customer table, then read the region on that row.
+      rule: XLOOKUP takes the value to find, the column to search and the column to return. The return column here is the region, not the name.
+    misses:
+      value: C-104 is Stanton Vets, whose region is East.
+      syntax: "Check the brackets and commas. XLOOKUP follows the pattern `=XLOOKUP(lookup_value, lookup_array, return_array)`."
+      reference: Look up B2 in E2:E5 and return from G2:G5.
+    accept:
+      - =XLOOKUP(B2,$E$2:$E$5,$G$2:$G$5)
+      - =xlookup(b2,e2:e5,g2:g5)
+      - =VLOOKUP(B2,$E$2:$G$5,3,FALSE)
+      - =INDEX($G$2:$G$5,MATCH(B2,$E$2:$E$5,0))
+    reject:
+      - { formula: "=XLOOKUP(B2,E2:E5,F2:F5)", rule: value }
+      - { formula: "=VLOOKUP(B2,E2:G5,2,FALSE)", rule: value }
+      - { formula: "=XLOOKUP(B2,F2:F5,G2:G5)", rule: value }
+      - { formula: "=XLOOKUP(B3,E2:E5,G2:G5)", rule: value }
+      - { formula: "=XLOOKUP(B2,E2:E5,G2:G5", rule: syntax }
+  - prompt: The price list is in F and G. In D2, work out the value of the first order, units times the unit price of its product.
+    rows:
+      - [Order, Product, Units, Value, null, Product, Unit price]
+      - [SO-5521, Binder, 40, null, null, Pen pack, 3.5]
+      - [SO-5522, Paper box, 12, null, null, Binder, 4.25]
+      - [SO-5523, Pen pack, 60, null, null, Paper box, 22]
+    answerCell: D2
+    expected: 170
+    answer: =C2*XLOOKUP(B2,$F$2:$F$4,$G$2:$G$4)
+    hints:
+      nudge: Look up the price of the product in B2, then multiply it by the units.
+      rule: XLOOKUP returns the unit price, and that result can be used in arithmetic like any number.
+    misses:
+      value: A binder costs 4.25, and 40 of them come to 170.
+      syntax: "Check the brackets and commas. The pattern is `=units*XLOOKUP(product, products, prices)`."
+      reference: Look up the price rather than typing it, so a new price flows through.
+    accept:
+      - =C2*XLOOKUP(B2,$F$2:$F$4,$G$2:$G$4)
+      - =c2*xlookup(b2,f2:f4,g2:g4)
+      - =XLOOKUP(B2,F2:F4,G2:G4)*C2
+      - =C2*VLOOKUP(B2,$F$2:$G$4,2,FALSE)
+      - =C2*INDEX($G$2:$G$4,MATCH(B2,$F$2:$F$4,0))
+    reject:
+      - { formula: "=XLOOKUP(B2,F2:F4,G2:G4)", rule: value }
+      - { formula: "=C2*XLOOKUP(B3,F2:F4,G2:G4)", rule: value }
+      - { formula: "=C2+XLOOKUP(B2,F2:F4,G2:G4)", rule: value }
+      - { formula: "=C2*XLOOKUP(B2,F2:F4,F2:F4)", rule: value }
+      - { formula: "=C2*4.25", rule: reference }
+      - { formula: "=C2*XLOOKUP(B2,F2:F4,G2:G4", rule: syntax }
+notes:
+  summary: Order data rarely holds everything you need. A lookup by key pulls the region or price from a second table, so each fact is stored once.
+  syntax: XLOOKUP(key,key_column,return_column), units*XLOOKUP(product,products,prices)
+  example: '`=XLOOKUP("C-2",A1:A3,C1:C3)` returns the value in column C on the row where A holds C-2.'
+  commonErrors:
+    - Returning the name column instead of the region answers the wrong question.
+    - VLOOKUP counts columns from the left of its table, so 2 returns the name, not the region.
+    - Typing the price breaks the value when the price list changes.

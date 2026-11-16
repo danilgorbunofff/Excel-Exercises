@@ -3,6 +3,7 @@
 // Once per browser session it also merges this browser's progress with the
 // account's, and after that it sends each new solve as it happens.
 import type { Me } from "../pages/api/me.ts";
+import { syncDaily } from "./daily-sync.ts";
 import {
   mergeProgress,
   PROGRESS_EVENT,
@@ -12,6 +13,7 @@ import {
 } from "./progress.ts";
 
 const SYNCED_KEY = "formula-practice:synced";
+const DAILY_SYNCED_KEY = "formula-practice:daily-synced";
 /** Fired on document when progress from the account has been merged into this browser. */
 export const SYNCED_EVENT = "formula-practice:synced";
 
@@ -57,6 +59,18 @@ async function syncOnce(): Promise<void> {
   }
 }
 
+// The daily streak too: once per browser session, from whatever page comes
+// first after sign-in, so days solved signed out reach the account. A page
+// that shows the streak (daily, account) joins again on its own.
+async function syncDailyOnce(): Promise<void> {
+  try {
+    if (sessionStorage.getItem(DAILY_SYNCED_KEY)) return;
+    if ((await syncDaily()).joined) sessionStorage.setItem(DAILY_SYNCED_KEY, "1");
+  } catch {
+    // Storage blocked: the next page tries again.
+  }
+}
+
 // The cookie answers at once, so the header does not flash the wrong buttons.
 showState(signedIn());
 if (signedIn()) {
@@ -66,6 +80,7 @@ if (signedIn()) {
     for (const el of document.querySelectorAll<HTMLElement>("[data-me-email]"))
       el.textContent = me.email;
     void syncOnce();
+    void syncDailyOnce();
   });
   document.addEventListener(PROGRESS_EVENT, (e) => {
     const { id, entry } = (e as CustomEvent).detail as { id: string; entry: Progress[string] };
@@ -74,6 +89,7 @@ if (signedIn()) {
 } else {
   try {
     sessionStorage.removeItem(SYNCED_KEY);
+    sessionStorage.removeItem(DAILY_SYNCED_KEY);
   } catch {
     // Storage blocked: nothing to clear.
   }

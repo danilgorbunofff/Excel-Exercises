@@ -1,0 +1,76 @@
+id: days-overdue-on-open-invoices
+slug: days-overdue-on-open-invoices
+level: 2
+title: Days overdue on open invoices
+topic: interview-accounting
+updated: 2026-11-15
+checkedInExcel: null
+screens:
+  - prompt: The dates are serial numbers and the report date is in D2. In E4, work out how many days INV-1043 is overdue, showing 0 when it is not yet due.
+    rows:
+      - [Invoice, Due date, Amount, Report date, Days overdue]
+      - [INV-1041, 46052, 1250, 46112, null]
+      - [INV-1042, 46081, 880, null, null]
+      - [INV-1043, 46126, 2400, null, null]
+      - [INV-1044, 46022, 640, null, null]
+    answerCell: E4
+    expected: 0
+    answer: =MAX(0,$D$2-B4)
+    hints:
+      nudge: Take the due date away from the report date. A result below zero means the invoice is not late yet.
+      rule: MAX returns the larger of its arguments, so MAX of 0 and the difference never drops below 0. Lock D2 with dollar signs so the formula can be filled down.
+    misses:
+      value: INV-1043 is due 14 days after the report date, so it is not overdue and shows 0.
+      syntax: "Check the brackets and commas. MAX follows the pattern `=MAX(number1, number2)`."
+      reference: Point at the report date in D2 and the due date in B4 rather than typing the serials.
+    accept:
+      - =MAX(0,$D$2-B4)
+      - =max(0,$d$2-b4)
+      - =MAX($D$2-B4,0)
+      - =MAX(0,D2-B4)
+      - =IF($D$2>B4,$D$2-B4,0)
+      - =MAX(0,DAYS($D$2,B4))
+    reject:
+      - { formula: "=$D$2-B4", rule: value }
+      - { formula: "=B4-$D$2", rule: value }
+      - { formula: "=MAX(0,B4-$D$2)", rule: value }
+      - { formula: "=MIN(0,$D$2-B4)", rule: value }
+      - { formula: "=MAX(0,46112-B4)", rule: reference }
+      - { formula: "=MAX(0,$D$2-B4", rule: syntax }
+  - prompt: The days overdue are now in column E. In F2, total the amount on invoices more than 30 days overdue.
+    rows:
+      - [Invoice, Due date, Amount, Report date, Days overdue, Over 30 days]
+      - [INV-1041, 46052, 1250, 46112, 60, null]
+      - [INV-1042, 46081, 880, null, 31, null]
+      - [INV-1043, 46126, 2400, null, 0, null]
+      - [INV-1044, 46022, 640, null, 90, null]
+    answerCell: F2
+    expected: 2770
+    answer: =SUMIF(E2:E5,">30",C2:C5)
+    hints:
+      nudge: Add the amounts only on the rows where the days overdue are above 30.
+      rule: SUMIF tests one range and adds another. The test goes first, then the condition in quotes, then the range to add.
+    misses:
+      value: INV-1041, INV-1042 and INV-1044 are over 30 days late. Their amounts make 1250, 880 and 640, which is 2770.
+      syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, sum_range)`."
+      reference: The days run down E2:E5 and the amounts down C2:C5.
+    accept:
+      - =SUMIF(E2:E5,">30",C2:C5)
+      - =sumif(e2:e5,">30",c2:c5)
+      - =SUMIFS(C2:C5,E2:E5,">30")
+      - =SUMIF($E$2:$E$5,">30",$C$2:$C$5)
+    reject:
+      - { formula: "=SUM(C2:C5)", rule: value }
+      - { formula: '=SUMIF(E2:E5,">60",C2:C5)', rule: value }
+      - { formula: '=COUNTIF(E2:E5,">30")', rule: value }
+      - { formula: '=SUMIF(E2:E5,">30")', rule: value }
+      - { formula: '=SUMIF(C2:C5,">30",E2:E5)', rule: value }
+      - { formula: '=SUMIF(E2:E5,">30",C2:C5', rule: syntax }
+notes:
+  summary: Days overdue is the report date minus the due date, floored at zero. A fixed report date in a cell keeps the sheet stable, where TODAY would change it every day.
+  syntax: MAX(0,report_date-due_date), then SUMIF(days,">30",amounts)
+  example: "`=MAX(0,A1-B1)` with 45000 in A1 and 45010 in B1 gives 0, because the invoice is not due yet."
+  commonErrors:
+    - Due date minus report date flips the sign, so late invoices come out negative.
+    - Without MAX, invoices not yet due show a negative number of days.
+    - SUMIF without its third range adds the days, not the amounts.

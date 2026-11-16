@@ -2,12 +2,16 @@
 // Why this exists: the dark band at the end of every page, with what the site
 // is and the links to every section.
 import { siteConfig } from "../../site.config.ts";
-import { FOOTER_NAV } from "../lib/nav.ts";
+import { NAV_GROUPS, SUPPORT_NAV } from "../lib/nav.ts";
 
 const contact = {
   label: "Contact",
   href: siteConfig.contactEmail ? `mailto:${siteConfig.contactEmail}` : "/contact/",
 };
+const columns = [
+  ...NAV_GROUPS.map((g) => ({ heading: g.label, links: g.items })),
+  { heading: "Support", links: [...SUPPORT_NAV, contact] },
+];
 const year = new Date().getFullYear();
 ---
 
@@ -21,30 +25,20 @@ const year = new Date().getFullYear();
       </p>
     </div>
     <nav aria-label="Footer">
-      <div>
-        <h2>Learn</h2>
-        <ul>
-          {
-            FOOTER_NAV.learn.map((l) => (
-              <li>
-                <a href={l.href}>{l.label}</a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-      <div>
-        <h2>Support</h2>
-        <ul>
-          {
-            [...FOOTER_NAV.support, contact].map((l) => (
-              <li>
-                <a href={l.href}>{l.label}</a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
+      {
+        columns.map((c) => (
+          <div>
+            <h2>{c.heading}</h2>
+            <ul>
+              {c.links.map((l) => (
+                <li>
+                  <a href={l.href}>{l.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
     </nav>
   </div>
   <p class="legal">© {year} {siteConfig.name}. Excel is a trademark of Microsoft. This site is not affiliated with Microsoft.</p>
@@ -75,7 +69,8 @@ const year = new Date().getFullYear();
   }
   nav {
     display: flex;
-    gap: var(--space-7);
+    flex-wrap: wrap;
+    gap: var(--space-5) var(--space-7);
   }
   h2 {
     margin: 0 0 var(--space-2);

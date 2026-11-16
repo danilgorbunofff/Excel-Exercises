@@ -1,0 +1,68 @@
+---
+// Why this exists: a row of links across the top of the Practice pages, so a
+// visitor moves from the exercises to the tracks, the daily exercise or a mock
+// assessment in one click. The list comes from nav.ts, like the header.
+import { currentHref, PRACTICE_NAV } from "../lib/nav.ts";
+
+const path = Astro.url.pathname;
+const here = currentHref(PRACTICE_NAV, path);
+---
+
+<nav class="practice-tabs" aria-label="Practice">
+  <ul>
+    {
+      PRACTICE_NAV.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            aria-current={item.href === path ? "page" : item.href === here ? "true" : undefined}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .practice-tabs {
+    margin-top: var(--space-4);
+    border-bottom: 1px solid var(--rule);
+  }
+  /* Phones scroll the row sideways inside itself; the page never scrolls. The
+     cut-off last tab shows there is more, so the scrollbar stays hidden. */
+  ul {
+    display: flex;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--target);
+    padding: 0 var(--space-3);
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    font-size: var(--size-s);
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  a:hover {
+    color: var(--text);
+    border-bottom-color: var(--line);
+  }
+  a[aria-current] {
+    color: var(--text);
+    font-weight: 600;
+    border-bottom-color: var(--tab-active);
+  }
+  a:focus-visible {
+    outline-offset: -2px;
+  }
+</style>

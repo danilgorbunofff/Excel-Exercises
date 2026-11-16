@@ -2,6 +2,7 @@
 // turning one type into another (text to number, blank to zero and so on).
 import type { Address } from "./address.ts";
 import { type ErrorValue, errorValue, isError } from "./errors.ts";
+import type { EvaluateOptions } from "./evaluate.ts";
 
 /** A single cell value. null is an empty cell. */
 export type Scalar = number | string | boolean | null | ErrorValue;
@@ -23,7 +24,8 @@ export interface Arg {
   empty: boolean;
 }
 
-export type FunctionImpl = (args: Arg[]) => Value;
+/** `options` reaches the few functions that read outside the sheet, such as TODAY. */
+export type FunctionImpl = (args: Arg[], options?: EvaluateOptions) => Value;
 
 /** A function the grader knows: how many arguments it takes, and what it does. */
 export interface FunctionSpec {

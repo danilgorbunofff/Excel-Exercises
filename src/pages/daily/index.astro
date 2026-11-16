@@ -1,0 +1,112 @@
+---
+// Why this exists: one free exercise a day, the same for everyone on the same
+// date, and a personal streak of days solved. The date is the visitor's own,
+// so daily.ts picks the exercise in the browser and fetches its workbench
+// from /daily/task/. The build day's pick is rendered here, hidden: it brings
+// the workbench styles and saves a fetch on the day it matches.
+import Icon from "../../components/Icon.astro";
+import LiveExercise from "../../components/LiveExercise.astro";
+import PracticeTabs from "../../components/PracticeTabs.astro";
+import Base from "../../layouts/Base.astro";
+import { dailyPool, pickFor, STRIP_DAYS } from "../../lib/daily.ts";
+import { placedExercises } from "../../lib/exercises.ts";
+import "../../styles/assessments.css";
+import "../../styles/daily.css";
+
+const placed = await placedExercises();
+const pool = dailyPool(placed);
+const buildDay = new Date().toISOString().slice(0, 10);
+const buildPick = pickFor(buildDay, pool);
+const shown = placed.find((p) => p.exercise.id === buildPick?.id);
+if (!shown) throw new Error("The daily pool is empty: every exercise is PRO.");
+const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
+---
+
+<Base
+  title="Daily exercise"
+  description="One free Excel exercise a day, the same for everyone. Solve it on a real grid and keep a personal streak of days in a row."
+  layout="wide"
+>
+  <PracticeTabs />
+  <div class="a-page daily" data-daily>
+    <script type="application/json" data-daily-pool set:html={poolJson} />
+    <template data-check-icon><Icon name="check" size={16} /></template>
+
+    <section class="ruled a-card" aria-labelledby="daily-title">
+      <div class="a-head">
+        <div>
+          <p class="a-context" data-date>Today</p>
+          <h1 id="daily-title" class="a-title">Daily exercise</h1>
+          <p class="a-lead" role="status" data-state>
+            One free exercise a day, the same for everyone.
+          </p>
+        </div>
+      </div>
+      <dl class="a-stats">
+        <div>
+          <dt><Icon name="check" size={16} class="a-icon" />Today</dt>
+          <dd data-today>Not yet</dd>
+        </div>
+        <div>
+          <dt><Icon name="chart" size={16} class="a-icon" />Current streak</dt>
+          <dd data-current>0 days</dd>
+        </div>
+        <div>
+          <dt><Icon name="clock" size={16} class="a-icon" />Best streak</dt>
+          <dd data-best>0 days</dd>
+        </div>
+      </dl>
+      <div class="d-strip-wrap">
+        <h2 class="visually-hidden" id="strip-title">The last {STRIP_DAYS} days</h2>
+        <ol class="d-strip" aria-labelledby="strip-title" data-strip></ol>
+      </div>
+    </section>
+
+    <div class="a-grid">
+      <div class="d-task" data-task-slot hidden>
+        <LiveExercise placed={shown} heading="Today's exercise" defer />
+      </div>
+      <noscript>
+        <p class="ruled d-noscript">
+          The daily exercise is picked from your date, so it needs JavaScript. Every exercise also
+          works on its own page: <a href="/exercises/">see all exercises</a>.
+        </p>
+      </noscript>
+      <p class="ruled d-noscript" role="alert" data-task-error hidden>
+        The exercise did not load. Reload the page, or <a href="/exercises/">pick one from the list</a>.
+      </p>
+      <section class="ruled a-side" aria-labelledby="rules-title">
+        <div class="list-head">
+          <h2 id="rules-title">How it works</h2>
+        </div>
+        <ul class="a-rows">
+          <li>
+            <span class="a-icon"><Icon name="grid" size={18} /></span>
+            <p>One free exercise a day, the same for everyone. A new one starts at midnight on your clock.</p>
+          </li>
+          <li>
+            <span class="a-icon"><Icon name="check" size={18} /></span>
+            <p>Solve it on the day to add that day to your streak. Hints are fine.</p>
+          </li>
+          <li>
+            <span class="a-icon"><Icon name="reset" size={18} /></span>
+            <p>Miss a day and the streak starts again. Your best streak stays.</p>
+          </li>
+          <li>
+            <span class="a-icon"><Icon name="clock" size={18} /></span>
+            <p>Open an earlier day from the strip to practise it. Earlier days do not change your streak.</p>
+          </li>
+          <li>
+            <span class="a-icon"><Icon name="user" size={18} /></span>
+            <p data-when="out">Your streak is saved in this browser.</p>
+            <p data-when="in" hidden>Your streak is saved to your account.</p>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</Base>
+
+<script>
+  import "../../scripts/daily.ts";
+</script>

@@ -316,13 +316,14 @@ function start(exercise: HTMLElement, data: PageData): void {
   });
 }
 
-for (const exercise of document.querySelectorAll<HTMLElement>("[data-exercise]")) {
+/** Starts one exercise. The daily page calls it for an exercise it adds later. */
+export function mountExercise(exercise: HTMLElement): void {
   const node = exercise.querySelector("script[data-exercise-data]");
-  if (!node?.textContent) continue;
+  if (!node?.textContent) return;
   const data = JSON.parse(node.textContent) as PageData;
   if (exercise.dataset["locked"] === undefined) {
     start(exercise, data);
-    continue;
+    return;
   }
   // A PRO exercise starts once locked-exercise.ts has fetched its answers.
   exercise.addEventListener(
@@ -336,4 +337,11 @@ for (const exercise of document.querySelectorAll<HTMLElement>("[data-exercise]")
     },
     { once: true },
   );
+}
+
+// The daily page starts its exercise itself, once it knows the visitor's date.
+for (const exercise of document.querySelectorAll<HTMLElement>(
+  "[data-exercise]:not([data-defer])",
+)) {
+  mountExercise(exercise);
 }

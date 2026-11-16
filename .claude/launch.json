@@ -12,6 +12,24 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["tools/serve-static.ts", "4399"],
       "port": 4399
+    },
+    {
+      "name": "daily-preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/serve-static.ts", "4398"],
+      "port": 4398
+    },
+    {
+      "name": "cert-preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/serve-static.ts", "4396", "--ssr"],
+      "port": 4396
+    },
+    {
+      "name": "nav-preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/serve-static.ts", "4395"],
+      "port": 4395
     }
   ]
 }

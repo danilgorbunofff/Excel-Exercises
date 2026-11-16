@@ -1,10 +1,12 @@
 // Why this exists: serves the built pages for the end-to-end tests. The Vercel
 // adapter has no `astro preview`, and the tests only need the static pages,
-// not the /api/* functions.
-// Usage: node tools/serve-static.ts <port>
+// not the /api/* functions. With --ssr, the server-rendered certificate pages
+// are rendered by the built function against fixed fixtures (tools/lib/ssr.ts).
+// Usage: node tools/serve-static.ts <port> [--ssr]
 import { readFileSync, statSync } from "node:fs";
 import { createServer } from "node:http";
 import { extname, join, normalize } from "node:path";
+import { isSsrPath, ssrHandler } from "./lib/ssr.ts";
 
 const ROOT = "dist/client";
 const TYPES: Record<string, string> = {
@@ -32,12 +34,20 @@ function fileFor(urlPath: string): string | null {
   return null;
 }
 
-createServer((req, res) => {
+const SSR = process.argv.includes("--ssr");
+
+createServer(async (req, res) => {
   const url = new URL(req.url ?? "/", "http://localhost");
   const p = url.pathname;
   // Same rule as the host: pages end in a slash.
   if (!p.endsWith("/") && extname(p) === "") {
     res.writeHead(308, { Location: `${p}/${url.search}` }).end();
+    return;
+  }
+  if (SSR && isSsrPath(p)) {
+    const page = await (await ssrHandler()).fetch(new Request(`http://localhost${p}`));
+    res.writeHead(page.status, Object.fromEntries(page.headers));
+    res.end(await page.text());
     return;
   }
   const file = fileFor(p);

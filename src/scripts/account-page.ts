@@ -1,5 +1,9 @@
 // Why this exists: fills account settings with the current plan, renewal date
-// and email preference, and hides the password form for Google-only accounts.
+// and email preference, hides the password form for Google-only accounts, and
+// shows the daily streak, joined with the account's days, and the certificates.
+import { renderCertificates } from "./certificates-view.ts";
+import { syncDaily } from "./daily-sync.ts";
+import { renderStreak } from "./daily-view.ts";
 import { loadMe } from "./session.ts";
 
 const $ = <T extends HTMLElement>(s: string) => document.querySelector<T>(s);
@@ -24,4 +28,9 @@ void loadMe().then((me) => {
   if (news) news.checked = me.news;
   const password = $("[data-password]");
   if (password) password.hidden = !me.hasPassword;
+  const certs = $("[data-certs]");
+  if (certs) void renderCertificates(certs, me.pro);
 });
+
+const streak = $("[data-streak]");
+if (streak) void syncDaily().then(({ days }) => renderStreak(streak, days));

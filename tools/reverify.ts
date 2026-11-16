@@ -29,6 +29,7 @@ const SIGNED: Account[] = ["out", "free", "pro"];
 const PAGES: [string, string, Account[]][] = [
   ["home", "/", ["out"]],
   ["exercises", "/exercises/", SIGNED],
+  ["daily", "/daily/", SIGNED],
   ["tracks", "/exercises/tracks/", ["out"]],
   ["track-totals", "/exercises/tracks/totals/", ["out"]],
   ["track-capstone", "/exercises/tracks/capstone/", ["out"]],
@@ -112,11 +113,46 @@ async function signIn(context: BrowserContext, account: Account) {
   await context.route("**/api/progress/", (r) =>
     r.fulfill({ json: r.request().method() === "GET" ? sampleProgress() : { ok: true } }),
   );
+  await context.route("**/api/daily/", (r) =>
+    r.request().method() === "GET"
+      ? r.fulfill({ json: sampleDaily() })
+      : r.fulfill({ status: 201, json: { saved: 1 } }),
+  );
+  await context.route("**/api/certificates/", (r) =>
+    r.fulfill({
+      json:
+        account === "pro"
+          ? [
+              {
+                id: "ValidCertificate000001",
+                name: "Ada Lovelace",
+                assessment: "office-essentials",
+                assessment_title: "Office essentials",
+                score: 9,
+                total: 10,
+                time_limit_s: 1800,
+                issued_at: "2026-11-15T10:21:00.000Z",
+                revoked_at: null,
+              },
+            ]
+          : [],
+    }),
+  );
   await context.route("**/api/exercises/**", (r) =>
     account === "pro"
       ? r.fulfill({ json: { answers: proAnswers } })
       : r.fulfill({ status: 403, json: { error: "PRO needed" } }),
   );
+}
+
+/** A three-day streak ending today, with a gap before it, for the account card. */
+function sampleDaily() {
+  const day = (back: number) => {
+    const d = new Date();
+    d.setDate(d.getDate() - back);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  };
+  return [0, 1, 2, 4, 5].map((b) => ({ day: day(b), exercise: "sample" }));
 }
 
 async function waitForServer(url: string) {

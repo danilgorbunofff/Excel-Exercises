@@ -195,7 +195,7 @@ const exerciseRoutes = sitemapRoutes().filter(
 );
 
 test("every exercise in the track has a page", () => {
-  expect(exerciseRoutes).toHaveLength(92);
+  expect(exerciseRoutes).toHaveLength(112);
 });
 
 /**

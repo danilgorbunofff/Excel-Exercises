@@ -32,6 +32,18 @@ if (!assessments.success) {
   errors.push(
     ...checkAssessments(assessments.data, facts).map((e) => `content/assessments.yaml: ${e}`),
   );
+  // A track may link a mock assessment; the set must exist.
+  const sets = new Set(assessments.data.sets.map((s) => s.slug));
+  const topics =
+    (read("content/track.yaml").data as { topics?: { slug: string; assessment?: string }[] })
+      .topics ?? [];
+  for (const t of topics) {
+    if (t.assessment && !sets.has(t.assessment)) {
+      errors.push(
+        `content/track.yaml: topic "${t.slug}" links unknown assessment "${t.assessment}"`,
+      );
+    }
+  }
 }
 
 if (errors.length > 0) {

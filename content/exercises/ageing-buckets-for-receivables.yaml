@@ -1,0 +1,78 @@
+id: ageing-buckets-for-receivables
+slug: ageing-buckets-for-receivables
+level: 3
+title: Ageing buckets for receivables
+topic: interview-accounting
+pro: true
+updated: 2026-11-15
+checkedInExcel: null
+screens:
+  - prompt: The bands start at the day in column F. In D2, show which band Arden Ltd falls in.
+    rows:
+      - [Customer, Days overdue, Balance, Band, null, From day, Band name]
+      - [Arden Ltd, 47, 3200, null, null, 0, Up to 30]
+      - [Bexley Supplies, 12, 1800, null, null, 31, 31 to 60]
+      - [Corwen Print, 95, 950, null, null, 61, 61 to 90]
+      - [Dunmore Labs, 64, 2700, null, null, 91, Over 90]
+      - [Elmstead Farm, 30, 1100, null, null, null, null]
+    answerCell: D2
+    expected: 31 to 60
+    answer: =XLOOKUP(B2,$F$2:$F$5,$G$2:$G$5,,-1)
+    hints:
+      nudge: 47 is not in the From day column, so you want the band that starts at the nearest day below it.
+      rule: XLOOKUP with -1 as its match mode falls back to the next smaller value. VLOOKUP with TRUE does the same on a sorted table.
+    misses:
+      value: 47 falls between 31 and 61, so Arden Ltd is in the 31 to 60 band.
+      syntax: "Check the brackets and commas. The pattern is `=XLOOKUP(lookup, lookup_array, return_array, , -1)`, with an empty fourth argument."
+      reference: Look up B2 in the From day column F2:F5 and return from G2:G5.
+    accept:
+      - =XLOOKUP(B2,$F$2:$F$5,$G$2:$G$5,,-1)
+      - =xlookup(b2,f2:f5,g2:g5,,-1)
+      - =VLOOKUP(B2,$F$2:$G$5,2,TRUE)
+      - =VLOOKUP(B2,F2:G5,2)
+      - =INDEX($G$2:$G$5,MATCH(B2,$F$2:$F$5,1))
+    reject:
+      - { formula: "=XLOOKUP(B2,F2:F5,G2:G5)", rule: value }
+      - { formula: "=VLOOKUP(B2,F2:G5,2,FALSE)", rule: value }
+      - { formula: "=XLOOKUP(B2,F2:F5,G2:G5,,1)", rule: value }
+      - { formula: "=VLOOKUP(B3,F2:G5,2,TRUE)", rule: value }
+      - { formula: "=VLOOKUP(B2,F2:G5,1,TRUE)", rule: value }
+      - { formula: "=XLOOKUP(B2,F2:F5,G2:G5,,-1", rule: syntax }
+  - prompt: In D2, total the balances that are more than 60 days overdue.
+    rows:
+      - [Customer, Days overdue, Balance, Over 60 days]
+      - [Arden Ltd, 47, 3200, null]
+      - [Bexley Supplies, 12, 1800, null]
+      - [Corwen Print, 95, 950, null]
+      - [Dunmore Labs, 64, 2700, null]
+      - [Elmstead Farm, 30, 1100, null]
+    answerCell: D2
+    expected: 3650
+    answer: =SUMIF(B2:B6,">60",C2:C6)
+    hints:
+      nudge: Add the balances only where the days overdue are above 60.
+      rule: SUMIF tests the days and adds the balances. The comparison goes in quotes in front of the number.
+    misses:
+      value: Corwen Print and Dunmore Labs are over 60 days. Their balances of 950 and 2700 make 3650.
+      syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, sum_range)`."
+      reference: The days run down B2:B6 and the balances down C2:C6.
+    accept:
+      - =SUMIF(B2:B6,">60",C2:C6)
+      - =sumif(b2:b6,">60",c2:c6)
+      - =SUMIFS(C2:C6,B2:B6,">60")
+      - =SUMIF($B$2:$B$6,">60",$C$2:$C$6)
+    reject:
+      - { formula: '=SUMIF(B2:B6,">90",C2:C6)', rule: value }
+      - { formula: '=SUMIF(B2:B6,">30",C2:C6)', rule: value }
+      - { formula: '=COUNTIF(B2:B6,">60")', rule: value }
+      - { formula: "=SUM(C2:C6)", rule: value }
+      - { formula: "=950+2700", rule: reference }
+      - { formula: '=SUMIF(B2:B6,">60",C2:C6', rule: syntax }
+notes:
+  summary: An ageing report sorts what customers owe by how late it is. A band table with the first day of each band lets one approximate lookup place every balance.
+  syntax: XLOOKUP(days,band_starts,band_names,,-1) or VLOOKUP(days,band_table,2,TRUE)
+  example: "`=VLOOKUP(45,A1:B4,2,TRUE)` with band starts 0, 31, 61 and 91 in A1:A4 returns the band that starts at 31."
+  commonErrors:
+    - An exact match finds nothing, because 47 is not one of the band starts.
+    - Approximate VLOOKUP needs the band starts sorted from smallest to largest.
+    - Match mode 1 takes the next larger band, which puts every balance one band too late.

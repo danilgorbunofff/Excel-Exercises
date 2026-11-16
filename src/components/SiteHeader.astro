@@ -1,25 +1,27 @@
 ---
 // Why this exists: the header on every page. Wide screens show the logo, the
-// search box, the section links and the account buttons. Phones get a Menu
-// button that opens a native dialog with the same links.
+// search box, Practice and Learn buttons that open a panel of links, Pricing
+// and the account buttons. Phones get a Menu button that opens a native
+// dialog with the same groups. The panels are popovers, so they open, close
+// on Escape or an outside click, and hand focus back without a script.
 import { siteConfig } from "../../site.config.ts";
-import { ACCOUNT_NAV, MAIN_NAV } from "../lib/nav.ts";
+import {
+  ACCOUNT_NAV,
+  currentHref,
+  NAV_GROUPS,
+  type NavItem,
+  PRICING_NAV,
+  YOU_NAV,
+} from "../lib/nav.ts";
 import HeaderSearch from "./HeaderSearch.astro";
 import Icon from "./Icon.astro";
 import Logo from "./Logo.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 
-interface Props {
-  /** The section the page belongs to, marked as current in the links. */
-  current?: string | undefined;
-}
-const { current } = Astro.props;
-const menuLinks = [
-  { label: "Start here", href: "/exercises/tracks/" },
-  ...MAIN_NAV,
-  { label: "Progress", href: "/progress/" },
-  { label: "Search", href: "/search/" },
-];
+const path = Astro.url.pathname;
+const groups = NAV_GROUPS.map((g) => ({ ...g, here: currentHref(g.items, path) }));
+const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
+  item.href === path ? "page" : item.href === here ? "true" : undefined;
 ---
 
 <header class="site-header">
@@ -33,14 +35,38 @@ const menuLinks = [
     <nav class="nav-wide" aria-label="Main">
       <ul>
         {
-          MAIN_NAV.map((item) => (
+          groups.map((g) => (
             <li>
-              <a href={item.href} aria-current={item.href === current ? "page" : undefined}>
-                {item.label}
-              </a>
+              <button
+                class="group-button"
+                class:list={{ "is-here": g.here !== null }}
+                type="button"
+                popovertarget={`nav-${g.id}`}
+                aria-expanded="false"
+              >
+                {g.label}
+                <Icon name="chevron-down" size={16} />
+              </button>
+              <div class="panel" id={`nav-${g.id}`} popover data-nav-panel>
+                <ul class="panel-list">
+                  {g.items.map((item) => (
+                    <li>
+                      <a href={item.href} aria-current={pageCurrent(item, g.here)}>
+                        {item.label}
+                      </a>
+                      <p>{item.description}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </li>
           ))
         }
+        <li>
+          <a class="plain" href={PRICING_NAV.href} aria-current={path === PRICING_NAV.href ? "page" : undefined}>
+            {PRICING_NAV.label}
+          </a>
+        </li>
       </ul>
     </nav>
     <div class="account" data-when="out">
@@ -50,10 +76,33 @@ const menuLinks = [
       </a>
     </div>
     <div class="account" data-when="in" hidden>
-      <a class="login" href={ACCOUNT_NAV.profile.href}>{ACCOUNT_NAV.profile.label}</a>
-      <a class="button button-secondary signup" href={ACCOUNT_NAV.account.href}>
+      <button
+        class="button button-secondary signup"
+        type="button"
+        popovertarget="nav-you"
+        aria-expanded="false"
+      >
         {ACCOUNT_NAV.account.label}
-      </a>
+        <Icon name="chevron-down" size={16} />
+      </button>
+      <div class="panel panel-you" id="nav-you" popover data-nav-panel>
+        <ul class="you-list">
+          {
+            YOU_NAV.map((item) => (
+              <li>
+                <a href={item.href} aria-current={item.href === path ? "page" : undefined}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <form method="post" action="/api/auth/logout/">
+              <button class="logout" type="submit">Log out</button>
+            </form>
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="menu-wrap">
       <span class="theme-phone"><ThemeToggle /></span>
@@ -65,17 +114,29 @@ const menuLinks = [
   </div>
   <dialog id="menu" aria-label="Menu" closedby="any">
     <HeaderSearch id="menu-search" />
-    <nav aria-label="Main">
+    <nav class="menu-nav" aria-label="Main">
+      {
+        groups.map((g) => (
+          <section aria-labelledby={`menu-${g.id}`}>
+            <h2 id={`menu-${g.id}`}>{g.label}</h2>
+            <ul>
+              {g.items.map((item) => (
+                <li>
+                  <a href={item.href} aria-current={pageCurrent(item, g.here)}>
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
       <ul>
-        {
-          menuLinks.map((item) => (
-            <li>
-              <a href={item.href} aria-current={item.href === current ? "page" : undefined}>
-                {item.label}
-              </a>
-            </li>
-          ))
-        }
+        <li>
+          <a href={PRICING_NAV.href} aria-current={path === PRICING_NAV.href ? "page" : undefined}>
+            {PRICING_NAV.label}
+          </a>
+        </li>
       </ul>
     </nav>
     <div class="menu-account" data-when="out">
@@ -84,10 +145,23 @@ const menuLinks = [
         {ACCOUNT_NAV.register.label}
       </a>
     </div>
-    <div class="menu-account" data-when="in" hidden>
-      <a class="button button-secondary" href={ACCOUNT_NAV.profile.href}>{ACCOUNT_NAV.profile.label}</a>
-      <a class="button button-primary" href={ACCOUNT_NAV.account.href}>{ACCOUNT_NAV.account.label}</a>
-    </div>
+    <section class="menu-you" data-when="in" hidden aria-labelledby="menu-you">
+      <h2 id="menu-you">Your account</h2>
+      <ul>
+        {
+          YOU_NAV.map((item) => (
+            <li>
+              <a href={item.href} aria-current={item.href === path ? "page" : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <form method="post" action="/api/auth/logout/">
+        <button class="button button-secondary" type="submit">Log out</button>
+      </form>
+    </section>
     <button class="button button-secondary close" type="button" commandfor="menu" command="close">
       Close
     </button>
@@ -106,6 +180,14 @@ const menuLinks = [
         button.getAttribute("command") === "close" ? dialog.close() : dialog.showModal(),
       );
     }
+  }
+
+  // Each panel button says whether its panel is open.
+  for (const panel of document.querySelectorAll<HTMLElement>("[data-nav-panel]")) {
+    const button = document.querySelector(`[popovertarget="${panel.id}"]`);
+    panel.addEventListener("toggle", (e) =>
+      button?.setAttribute("aria-expanded", String((e as ToggleEvent).newState === "open")),
+    );
   }
 </script>
 
@@ -150,24 +232,134 @@ const menuLinks = [
   .theme-wide {
     margin-left: auto;
   }
-  .nav-wide ul {
+  .nav-wide > ul {
     display: flex;
-    gap: var(--space-6);
+    gap: var(--space-5);
   }
-  .nav-wide a,
+  .group-button,
+  .plain,
   .login {
     display: inline-flex;
     align-items: center;
+    gap: var(--space-1);
     min-height: var(--target);
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
     font-size: var(--size-s);
     font-weight: 500;
     text-decoration: none;
+    cursor: pointer;
   }
-  .nav-wide a:hover,
-  .nav-wide a[aria-current="page"],
+  .group-button:hover,
+  .group-button.is-here,
+  .group-button[aria-expanded="true"],
+  .plain:hover,
+  .plain[aria-current="page"],
   .login:hover {
     text-decoration: underline 2px;
     text-underline-offset: 0.45em;
+  }
+  .group-button[aria-expanded="true"] :global(.icon) {
+    rotate: 180deg;
+  }
+  /* The panels open in the top layer, just under the 4rem header bar. */
+  .panel {
+    position: fixed;
+    inset: calc(4rem + 1px) 0 auto;
+    width: auto;
+    max-width: none;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid var(--rule);
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: var(--shadow-pop);
+  }
+  .panel-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-2) var(--space-5);
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: var(--space-5) var(--space-6);
+  }
+  .panel-list li {
+    position: relative;
+    padding: var(--space-3);
+    border-radius: var(--radius-m);
+  }
+  .panel-list li:hover {
+    background: var(--bg);
+  }
+  .panel-list a {
+    font-weight: 600;
+    color: var(--heading);
+    text-decoration: none;
+  }
+  /* The whole item is the link's target; the name stays the label alone. */
+  .panel-list a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .panel-list a:focus-visible {
+    outline: none;
+  }
+  .panel-list a:focus-visible::after {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  .panel-list a[aria-current] {
+    text-decoration: underline 2px;
+    text-underline-offset: 0.3em;
+  }
+  .panel-list p {
+    margin: var(--space-1) 0 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .panel-you {
+    inset: calc(4rem + 1px) max(var(--space-6), calc((100vw - 80rem) / 2 + var(--space-6))) auto
+      auto;
+    width: 14rem;
+    padding: var(--space-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-m);
+  }
+  .you-list a,
+  .logout {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: var(--target);
+    padding: 0 var(--space-3);
+    border: 0;
+    border-radius: var(--radius-m);
+    background: none;
+    color: var(--text);
+    font: inherit;
+    font-size: var(--size-s);
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .you-list a:hover,
+  .logout:hover {
+    background: var(--bg);
+  }
+  .you-list a[aria-current] {
+    font-weight: 600;
+  }
+  .you-list li:last-child {
+    margin-top: var(--space-1);
+    padding-top: var(--space-1);
+    border-top: 1px solid var(--rule);
   }
   .account {
     display: flex;
@@ -206,6 +398,7 @@ const menuLinks = [
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
+    overflow-y: auto;
   }
   dialog::backdrop {
     background: rgb(0 0 0 / 0.45);
@@ -216,18 +409,37 @@ const menuLinks = [
   }
   dialog ul {
     display: grid;
-    gap: var(--space-1);
   }
-  dialog nav a {
+  .menu-nav {
+    display: grid;
+    gap: var(--space-4);
+  }
+  dialog h2 {
+    margin: 0 0 var(--space-1);
+    font-size: var(--size-xs);
+    font-weight: 600;
+    color: var(--muted);
+  }
+  dialog nav a,
+  .menu-you a {
     display: flex;
     align-items: center;
     min-height: var(--target);
-    font-size: var(--size-l);
     font-weight: 500;
+  }
+  dialog a[aria-current] {
+    font-weight: 700;
   }
   .menu-account {
     display: grid;
     gap: var(--space-2);
+  }
+  .menu-you[hidden] {
+    display: none;
+  }
+  .menu-you form {
+    display: grid;
+    margin-top: var(--space-2);
   }
   .close {
     margin-top: auto;
@@ -274,6 +486,18 @@ const menuLinks = [
     }
     .menu-wrap {
       gap: var(--space-1);
+    }
+  }
+  /* Browsers without popovers cannot open the panels, so they get the Menu
+     dialog at every width instead. */
+  @supports not selector(:popover-open) {
+    .nav-wide,
+    .account[data-when="in"],
+    .theme-wide {
+      display: none !important;
+    }
+    .menu-wrap {
+      display: flex;
     }
   }
   @media (prefers-reduced-motion: no-preference) {

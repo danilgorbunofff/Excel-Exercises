@@ -520,6 +520,47 @@ ol.ruled {
   background: var(--advanced-bg);
   color: var(--advanced);
 }
+/* An exercise's state, painted by status.ts after load. The word always
+   shows; the colour only repeats it. The hidden ::after holds the longest
+   label in status.ts, so the box is the same size before and after paint. */
+.state-tag {
+  display: inline-grid;
+  align-items: center;
+  padding: 0.125rem 0.625rem;
+  border-radius: var(--radius-pill);
+  background: var(--header);
+  color: var(--muted);
+  font-size: var(--size-xs);
+  font-weight: 700;
+  line-height: 1.5;
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: middle;
+}
+.state-tag > *,
+.state-tag::after {
+  grid-area: 1 / 1;
+}
+.state-tag::after {
+  content: "Solved with help" / "";
+  visibility: hidden;
+}
+.state-tag:is([data-state="solved"], [data-state="helped"]) {
+  background: var(--correct-tint);
+  color: var(--correct);
+}
+.state-tag[data-state="revealed"] {
+  background: var(--miss-tint);
+  color: var(--miss);
+}
+/* A narrow table column: the tag wraps, and the hidden label wraps the same way. */
+@media (max-width: 29.99rem) {
+  td .state-tag {
+    max-inline-size: 5.5rem;
+    border-radius: var(--radius-m);
+    white-space: normal;
+  }
+}
 .tag,
 .badge-pro {
   display: inline-flex;

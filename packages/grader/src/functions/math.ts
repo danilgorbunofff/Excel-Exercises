@@ -21,6 +21,15 @@ function toMultiple(n: number, step: number, pick: (x: number) => number): numbe
   return clean(-pick(clean(n / step)) * -step);
 }
 
+/**
+ * ODD (parity 1) and EVEN (parity 0): round away from zero to the next whole
+ * number with that parity. Zero counts as positive, so ODD(0) is 1.
+ */
+function awayToParity(n: number, parity: 0 | 1): number {
+  const up = Math.ceil(clean(Math.abs(n)));
+  return (n < 0 ? -1 : 1) * (up % 2 === parity ? up : up + 1);
+}
+
 export const MATH: Record<string, FunctionSpec> = {
   SUM: fn(
     1,
@@ -151,6 +160,16 @@ export const MATH: Record<string, FunctionSpec> = {
     1,
     1,
     safe((args) => Math.floor(num(args[0]))),
+  ),
+  ODD: fn(
+    1,
+    1,
+    safe((args) => awayToParity(num(args[0]), 1)),
+  ),
+  EVEN: fn(
+    1,
+    1,
+    safe((args) => awayToParity(num(args[0]), 0)),
   ),
   MOD: fn(
     2,

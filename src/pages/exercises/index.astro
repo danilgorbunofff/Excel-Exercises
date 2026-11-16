@@ -6,8 +6,10 @@
 import { siteConfig } from "../../../site.config.ts";
 import ExerciseTable from "../../components/ExerciseTable.astro";
 import Icon from "../../components/Icon.astro";
+import PracticeTabs from "../../components/PracticeTabs.astro";
 import TrackList from "../../components/TrackList.astro";
 import Base from "../../layouts/Base.astro";
+import { isLocked } from "../../lib/access.ts";
 import {
   exercisePath,
   functionsOf,
@@ -22,11 +24,14 @@ import { ACCOUNT_NAV } from "../../lib/nav.ts";
 const placed = await placedExercises();
 const tracks = trackSummaries(placed);
 const total = placed.length;
-const free = siteConfig.freeCount === null ? total : Math.min(siteConfig.freeCount, total);
+const free = placed.filter((p) => !isLocked(p)).length;
 const firstTrack = tracks[0];
 const functionNames = [...new Set(placed.flatMap((p) => functionsOf(p.exercise)))].sort();
 const beginners = placed.filter((p) => p.exercise.level === 1).slice(0, 3);
-const forWork = placed.filter((p) => p.exercise.level >= 2).slice(-6);
+const forWork = placed
+  .filter((p) => p.exercise.level >= 2 && p.topic.group !== "interview")
+  .slice(-6);
+const interview = tracks.filter((t) => t.topic.group === "interview");
 const faq = [
   {
     q: "I am new to Excel. Where do I begin?",
@@ -34,7 +39,7 @@ const faq = [
   },
   {
     q: "Can these exercises help me prepare for a job that uses Excel?",
-    a: "Yes. The later tracks cover the conditions and lookups that office, finance and data roles use every day.",
+    a: "Yes. The later tracks cover the conditions and lookups that office, finance and data roles use every day, and the interview tracks practise the tasks those tests set.",
   },
   {
     q: "How much time does one exercise need?",
@@ -54,15 +59,15 @@ const faq = [
 <Base
   title="Exercises"
   description={`All ${total} Excel formula exercises, in order from cell references to capstone tasks, with learning tracks and filters.`}
-  section="/exercises/"
   layout="wide"
 >
+  <PracticeTabs />
   <header class="page-head">
     <h1>Excel formula exercises</h1>
     <p class="pill-note">Runs in your browser. Free, with no account.</p>
     <p class="lead">
       Work through {total} short spreadsheet tasks on totals, logic, lookups, text, dates and
-      more, with instant feedback. {free === total ? `All ${total} are free.` : `The first ${free} are free.`}
+      more, with instant feedback. {free === total ? `All ${total} are free.` : `${free} of them are free.`}
     </p>
   </header>
 
@@ -124,6 +129,24 @@ const faq = [
         </ul>
       </section>
 
+      <section class="picks" aria-labelledby="for-interviews">
+        <h2 id="for-interviews">Practice for job interviews</h2>
+        <p>Short tracks built on the tasks finance, accounting and analyst tests set.</p>
+        <ul class="pick-grid">
+          {
+            interview.map((t) => (
+              <li>
+                <a class="card pick" href={topicPath(t.topic.slug)}>
+                  <span class={`badge badge-${t.level}`}>{LEVELS[t.level]}</span>
+                  <span class="pick-title">{t.topic.title}</span>
+                  <span class="pick-text">{t.topic.summary}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
       <section class="faq" aria-labelledby="faq">
         <h2 id="faq">Frequently asked questions</h2>
         {
@@ -161,7 +184,7 @@ const faq = [
               siteConfig.accountsOpen ? (
                 <>
                   <a class="sync" href={ACCOUNT_NAV.register.href} data-when="out">
-                    Sign up to keep progress on every device&nbsp;<span aria-hidden="true">→</span>
+                    Sign up to keep progress&nbsp;<span aria-hidden="true">→</span>
                   </a>
                   <a class="sync" href="/progress/" data-when="in" hidden>
                     Saved to your account. See your progress&nbsp;<span aria-hidden="true">→</span>
@@ -410,10 +433,11 @@ const faq = [
       grid-template-rows: auto 1fr;
       grid-template-areas: "tracks side" "all side";
     }
-    .side {
+    /* The aside spans both rows, so the start card sits by the tracks and
+       only the filter follows the scroll. */
+    .filter {
       position: sticky;
       top: 5rem;
-      align-self: start;
     }
   }
   @media (max-width: 63.99rem) {

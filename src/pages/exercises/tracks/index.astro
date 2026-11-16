@@ -1,11 +1,13 @@
 ---
 // Why this exists: every learning track, grouped by where you are: the
-// essentials first, then one skill at a time. Each card shows its level,
-// size, time and this browser's progress.
+// essentials first, then one skill at a time, then interview practice. Each
+// card shows its level, size, time and this browser's progress.
 import Breadcrumbs from "../../../components/Breadcrumbs.astro";
 import Icon from "../../../components/Icon.astro";
+import PracticeTabs from "../../../components/PracticeTabs.astro";
 import TrackIcon from "../../../components/TrackIcon.astro";
 import Base from "../../../layouts/Base.astro";
+import { isLocked } from "../../../lib/access.ts";
 import {
   formatMinutes,
   LEVELS,
@@ -18,7 +20,20 @@ import {
 const placed = await placedExercises();
 const tracks = trackSummaries(placed);
 const essentials = tracks.filter((t) => t.topic.group === "essentials");
-const skills = tracks.filter((t) => t.topic.group === "skill");
+const groups = [
+  {
+    id: "skill",
+    heading: "Go deeper on one family of functions",
+    text: "Counting, logic, lookups, text, dates and more, one track each.",
+    tracks: tracks.filter((t) => t.topic.group === "skill"),
+  },
+  {
+    id: "interview",
+    heading: "Prepare for a job interview",
+    text: "Tasks like the ones finance, accounting and analyst tests set, built on everyday work data.",
+    tracks: tracks.filter((t) => t.topic.group === "interview"),
+  },
+];
 const essentialMinutes = essentials.reduce((s, t) => s + t.minutes, 0);
 const essentialCount = essentials.reduce((s, t) => s + t.exercises.length, 0);
 const essentialFunctions = [...new Set(essentials.flatMap((t) => t.functions))];
@@ -27,7 +42,7 @@ const how = [
   {
     icon: "route" as const,
     title: "Choose where to start",
-    text: "Start with the essentials, or go straight to the skill you need for work.",
+    text: "Start with the essentials, go straight to the skill you need for work, or practise for an interview.",
   },
   {
     icon: "grid" as const,
@@ -44,10 +59,10 @@ const how = [
 
 <Base
   title="Learning tracks"
-  description={`${tracks.length} Excel learning tracks, from your first cell reference to lookups, text, dates and capstone tasks, in a sensible order.`}
-  section="/exercises/"
+  description={`${tracks.length} Excel learning tracks, from your first cell reference to lookups, text, dates, capstone tasks and interview practice, in a sensible order.`}
   layout="wide"
 >
+  <PracticeTabs />
   <div class="crumbs-row">
     <Breadcrumbs items={[{ label: "Exercises", href: "/exercises/" }]} />
   </div>
@@ -117,44 +132,54 @@ const how = [
     </div>
   </section>
 
-  <section class="group" aria-labelledby="g-skill">
-    <div class="group-head">
-      <h2 id="g-skill">Go deeper on one family of functions</h2>
-      <p>Counting, logic, lookups, text, dates and more, one track each.</p>
-    </div>
-    <ul class="cards cards-3">
-      {
-        skills.map((t) => (
-          <li>
-            <article class="card track" data-track-progress={idsOf(t)}>
-              <div class="track-top">
-                <TrackIcon slug={t.topic.slug} />
-                <span class="status-pill" data-track-state>
-                  Not started
-                </span>
-                <span class={`badge badge-${t.level}`}>{LEVELS[t.level]}</span>
-              </div>
-              <h3>{t.topic.title}</h3>
-              <p>{t.topic.summary}</p>
-              <p class="facts">
-                <span>{t.exercises.length} exercises</span>
-                <span>{formatMinutes(t.minutes)}</span>
-              </p>
-              <span class="progress-bar" aria-hidden="true">
-                <span data-bar />
-              </span>
-              <span class="visually-hidden" data-bar-text>
-                0 of {t.exercises.length} done
-              </span>
-              <a class="button button-primary" href={topicPath(t.topic.slug)}>
-                <span aria-hidden="true" data-track-action>Start track</span><span class="visually-hidden"><span data-track-action>Start track</span>: {t.topic.title}</span>
-              </a>
-            </article>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
+  {
+    groups.map((g) => (
+      <section class="group" aria-labelledby={`g-${g.id}`}>
+        <div class="group-head">
+          <h2 id={`g-${g.id}`}>{g.heading}</h2>
+          <p>{g.text}</p>
+        </div>
+        <ul class="cards cards-3">
+          {g.tracks.map((t) => {
+            const locked = t.exercises.filter((p) => isLocked(p)).length;
+            return (
+              <li>
+                <article class="card track" data-track-progress={idsOf(t)}>
+                  <div class="track-top">
+                    <TrackIcon slug={t.topic.slug} />
+                    <span class="status-pill" data-track-state>
+                      Not started
+                    </span>
+                    <span class={`badge badge-${t.level}`}>{LEVELS[t.level]}</span>
+                  </div>
+                  <h3>{t.topic.title}</h3>
+                  <p>{t.topic.summary}</p>
+                  <p class="facts">
+                    <span>{t.exercises.length} exercises</span>
+                    <span>{formatMinutes(t.minutes)}</span>
+                    {locked > 0 && (
+                      <span>
+                        {t.exercises.length - locked} free, {locked} with PRO
+                      </span>
+                    )}
+                  </p>
+                  <span class="progress-bar" aria-hidden="true">
+                    <span data-bar />
+                  </span>
+                  <span class="visually-hidden" data-bar-text>
+                    0 of {t.exercises.length} done
+                  </span>
+                  <a class="button button-primary" href={topicPath(t.topic.slug)}>
+                    <span aria-hidden="true" data-track-action>Start track</span><span class="visually-hidden"><span data-track-action>Start track</span>: {t.topic.title}</span>
+                  </a>
+                </article>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    ))
+  }
 
   <section class="group how" aria-labelledby="g-how">
     <h2 id="g-how">How a track works</h2>
@@ -276,6 +301,7 @@ const how = [
   }
   .facts {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--space-2);
   }
   .facts span {

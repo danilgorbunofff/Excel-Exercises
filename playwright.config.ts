@@ -13,7 +13,7 @@ export default defineConfig({
   reporter: process.env["CI"] ? [["list"], ["html", { open: "never" }]] : "list",
   use: { baseURL: `http://localhost:${PORT}` },
   webServer: {
-    command: `node tools/serve-static.ts ${PORT}`,
+    command: `node tools/serve-static.ts ${PORT} --ssr`,
     url: `http://localhost:${PORT}/`,
     reuseExistingServer: !process.env["CI"],
   },

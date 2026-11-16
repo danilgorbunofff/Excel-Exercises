@@ -1,0 +1,70 @@
+id: month-end-accrual-for-part-of-a-month
+slug: month-end-accrual-for-part-of-a-month
+level: 3
+title: Month end accrual for part of a month
+topic: interview-accounting
+pro: true
+updated: 2026-11-15
+checkedInExcel: null
+screens:
+  - prompt: The start date in C2 is a serial number. In D2, return the last day of the month it falls in.
+    rows:
+      - [Contract, Monthly fee, Start date, Month end]
+      - [Office cleaning, 3100, 46093, null]
+    answerCell: D2
+    expected: 46112
+    answer: =EOMONTH(C2,0)
+    requiredFunctions: [EOMONTH]
+    hints:
+      nudge: One function jumps to the end of a month, counted from a start date.
+      rule: EOMONTH takes a date and a number of months. 0 means the end of the same month.
+    misses:
+      value: The contract starts on 12 March, so the month ends on 31 March, serial 46112.
+      syntax: "Check the brackets and commas. EOMONTH follows the pattern `=EOMONTH(start_date, months)`."
+      required-function: Months have different lengths, so adding a fixed number of days lands on the wrong date. EOMONTH knows each month's length.
+      reference: Point at the start date in C2.
+    accept:
+      - =EOMONTH(C2,0)
+      - =eomonth(c2,0)
+      - =EOMONTH($C$2,0)
+      - =EOMONTH(C2,0)+0
+    reject:
+      - { formula: "=EOMONTH(C2,1)", rule: value }
+      - { formula: "=EOMONTH(C2,-1)", rule: value }
+      - { formula: "=C2+30", rule: required-function }
+      - { formula: "=EOMONTH(C2)", rule: syntax }
+  - prompt: In D2, accrue the fee for the days from the start date to the month end, both days included, as a share of the days in that month.
+    rows:
+      - [Contract, Monthly fee, Start date, Accrual]
+      - [Office cleaning, 3100, 46093, null]
+    answerCell: D2
+    expected: 2000
+    answer: =B2*(EOMONTH(C2,0)-C2+1)/DAY(EOMONTH(C2,0))
+    requiredFunctions: [EOMONTH, DAY]
+    hints:
+      nudge: Count the days used, divide by the days in the month, then multiply by the fee.
+      rule: The month end minus the start date, plus 1, counts both days. DAY of the month end gives the number of days in the month.
+    misses:
+      value: 12 to 31 March is 20 days out of 31, and 20 thirty-firsts of 3100 is 2000.
+      syntax: Check the brackets. The days used need their own pair before the division.
+      required-function: DAY of the month end gives the days in the month, so the formula works for 28, 30 or 31 days.
+      reference: Point at the fee in B2 and the start date in C2.
+    accept:
+      - =B2*(EOMONTH(C2,0)-C2+1)/DAY(EOMONTH(C2,0))
+      - =b2*(eomonth(c2,0)-c2+1)/day(eomonth(c2,0))
+      - =B2/DAY(EOMONTH(C2,0))*(EOMONTH(C2,0)-C2+1)
+      - =ROUND(B2*(EOMONTH(C2,0)-C2+1)/DAY(EOMONTH(C2,0)),2)
+    reject:
+      - { formula: "=B2*(EOMONTH(C2,0)-C2)/DAY(EOMONTH(C2,0))", rule: value }
+      - { formula: "=B2*(EOMONTH(C2,0)-C2+1)/30", rule: required-function }
+      - { formula: "=B2*(EOMONTH(C2,0)-C2+1)/DAY(C2)", rule: value }
+      - { formula: "=B2/DAY(EOMONTH(C2,0))", rule: value }
+      - { formula: "=B2*(EOMONTH(C2,0)-C2+1/DAY(EOMONTH(C2,0))", rule: syntax }
+notes:
+  summary: An accrual books the part of a cost that belongs to this month. Counting days with EOMONTH and DAY makes the share right for any month length.
+  syntax: fee*(EOMONTH(start,0)-start+1)/DAY(EOMONTH(start,0))
+  example: "`=DAY(EOMONTH(A1,0))` gives 28, 30 or 31, the number of days in the month of the date in A1."
+  commonErrors:
+    - Leaving out the plus 1 drops the start day from the count.
+    - Dividing by 30 is only right for months with 30 days.
+    - DAY of the start date gives the day number, not the length of the month.

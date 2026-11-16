@@ -13,8 +13,6 @@ import { hiddenFromSearch } from "../lib/routes.ts";
 interface Props {
   title: string;
   description: string;
-  /** The main section this page belongs to, such as "/exercises/". */
-  section?: string;
   /** Where the skip link goes. The exercise page sends it to the formula input. */
   skipTo?: { href: string; label: string };
   /**
@@ -28,7 +26,6 @@ interface Props {
 const {
   title,
   description,
-  section,
   skipTo = { href: "#main", label: "Skip to content" },
   layout = "page",
 } = Astro.props;
@@ -84,7 +81,7 @@ const noindex = hiddenFromSearch(Astro.url.pathname, siteConfig.accountsOpen);
   </head>
   <body>
     <a class="skip" href={skipTo.href}>{skipTo.label}</a>
-    <SiteHeader current={section} />
+    <SiteHeader />
     <main id="main" tabindex="-1" class={layout}>
       <slot />
     </main>

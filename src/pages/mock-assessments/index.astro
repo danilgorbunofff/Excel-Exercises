@@ -5,6 +5,7 @@ import { getCollection } from "astro:content";
 // functions, level and your best, and your past attempts beside them. The
 // sample is free; the other sets are PRO.
 import Icon from "../../components/Icon.astro";
+import PracticeTabs from "../../components/PracticeTabs.astro";
 import Base from "../../layouts/Base.astro";
 import { assessmentPath, coverOf, loadAssessments } from "../../lib/assessments.ts";
 import { LEVELS } from "../../lib/exercises.ts";
@@ -42,6 +43,7 @@ const timeSpan = span(
   description="Timed sets of Excel tasks like an employer's test, marked at the end with an explanation for every miss. The sample is free."
   layout="wide"
 >
+  <PracticeTabs />
   <div class="a-page index">
     <div class="ruled a-card">
       <div class="a-head">

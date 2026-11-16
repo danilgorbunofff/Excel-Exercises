@@ -1,0 +1,79 @@
+id: full-year-forecast-from-the-run-rate
+slug: full-year-forecast-from-the-run-rate
+level: 2
+title: Full year forecast from the run rate
+topic: interview-fpa
+pro: true
+updated: 2026-11-15
+checkedInExcel: null
+screens:
+  - prompt: Five months have closed. In D2, forecast the full year as the actual to date plus the average month for each month left.
+    rows:
+      - [Month, Actual, Months closed, Forecast]
+      - [1, 52000, 5, null]
+      - [2, 48500, null, null]
+      - [3, 50500, null, null]
+      - [4, 53000, null, null]
+      - [5, 51000, null, null]
+    answerCell: D2
+    expected: 612000
+    answer: =SUM(B2:B6)+AVERAGE(B2:B6)*(12-C2)
+    hints:
+      nudge: Add what has happened so far to what the remaining months would bring at the usual rate.
+      rule: The months left are 12 minus the months closed. Multiply the average month by that, then add the actual to date.
+    misses:
+      value: The five months add up to 255000, an average of 51000. Seven more months at 51000 is 357000, so the year is 612000.
+      syntax: Check the brackets. The months left, 12 minus C2, need their own pair.
+      reference: Point at the actuals in B2:B6 and the months closed in C2.
+    accept:
+      - =SUM(B2:B6)+AVERAGE(B2:B6)*(12-C2)
+      - =sum(b2:b6)+average(b2:b6)*(12-c2)
+      - =AVERAGE(B2:B6)*12
+      - =SUM(B2:B6)/C2*12
+      - =SUM($B$2:$B$6)+AVERAGE($B$2:$B$6)*(12-$C$2)
+    reject:
+      - { formula: "=SUM(B2:B6)*12", rule: value }
+      - { formula: "=AVERAGE(B2:B6)*(12-C2)", rule: value }
+      - { formula: "=SUM(B2:B6)+AVERAGE(B2:B6)*C2", rule: value }
+      - { formula: "=SUM(B2:B6)+AVERAGE(B2:B6)*12-C2", rule: value }
+      - { formula: "=51000*12", rule: reference }
+      - { formula: "=SUM(B2:B6)+AVERAGE(B2:B6)*(12-C2", rule: syntax }
+  - prompt: The finance lead wants the run rate from the last three months only. In D2, forecast the year the same way, using the average of months 3 to 5.
+    rows:
+      - [Month, Actual, Months closed, Forecast]
+      - [1, 52000, 5, null]
+      - [2, 48500, null, null]
+      - [3, 50500, null, null]
+      - [4, 53000, null, null]
+      - [5, 51000, null, null]
+    answerCell: D2
+    expected: 615500
+    answer: =SUM(B2:B6)+AVERAGE(B4:B6)*(12-C2)
+    requiredFunctions: [AVERAGE]
+    hints:
+      nudge: Keep the actual to date for all five months, and change only the range the average reads.
+      rule: Months 3 to 5 sit in B4:B6. AVERAGE over that range gives the recent run rate.
+    misses:
+      value: Months 3 to 5 average 51500. Seven months at that rate is 360500, plus 255000 to date gives 615500.
+      syntax: Check the brackets. AVERAGE needs its own pair, and so do the months left.
+      required-function: AVERAGE over B4:B6 gives the run rate and updates when a month changes.
+      reference: Months 3 to 5 are in B4:B6, and all five months are in B2:B6.
+    accept:
+      - =SUM(B2:B6)+AVERAGE(B4:B6)*(12-C2)
+      - =sum(b2:b6)+average(b4:b6)*(12-c2)
+      - =SUM($B$2:$B$6)+AVERAGE($B$4:$B$6)*(12-$C$2)
+      - =AVERAGE(B4:B6)*(12-C2)+SUM(B2:B6)
+    reject:
+      - { formula: "=AVERAGE(B4:B6)*12", rule: value }
+      - { formula: "=SUM(B2:B6)+AVERAGE(B2:B6)*(12-C2)", rule: value }
+      - { formula: "=SUM(B2:B6)+AVERAGE(B3:B5)*(12-C2)", rule: value }
+      - { formula: "=SUM(B2:B6)+(B4+B5+B6)/3*(12-C2)", rule: required-function }
+      - { formula: "=SUM(B2:B6)+AVERAGE(B4:B6)*(12-C2", rule: syntax }
+notes:
+  summary: A run rate forecast keeps the months already closed and fills the rest at a typical monthly rate. Using only recent months reacts faster to a change in trend.
+  syntax: SUM(actuals)+AVERAGE(recent_months)*(12-months_closed)
+  example: "`=SUM(A1:A3)+AVERAGE(A1:A3)*9` with 10, 12 and 14 in A1:A3 gives 144."
+  commonErrors:
+    - Multiplying the total to date by 12 counts the closed months twelve times over.
+    - Forgetting the brackets around 12 minus the months closed subtracts after multiplying.
+    - Averaging the wrong three rows picks up a different run rate.

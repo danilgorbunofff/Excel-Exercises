@@ -2,6 +2,7 @@
 // Why this exists: what you have done, what is next, and what is due for
 // review. It reads progress from this browser; nothing is stored elsewhere.
 import ExerciseTable from "../../components/ExerciseTable.astro";
+import PracticeTabs from "../../components/PracticeTabs.astro";
 import Base from "../../layouts/Base.astro";
 import { exercisePath, placedExercises } from "../../lib/exercises.ts";
 import { REVIEW_GAPS } from "../../scripts/progress.ts";
@@ -21,8 +22,8 @@ const gaps = `${REVIEW_GAPS.slice(0, -1).join(", ")} and ${REVIEW_GAPS.at(-1)} d
 <Base
   title="Progress"
   description="What you have solved, what is next, and which exercises are due for review. Kept in your browser only."
-  section="/progress/"
 >
+  <PracticeTabs />
   <h1>Progress</h1>
   <p>
     Your progress is kept in this browser only. It does not follow you to another browser or

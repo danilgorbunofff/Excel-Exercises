@@ -1,10 +1,83 @@
-// Why this exists: the one list of sections, so the header, the menu and the
-// footer use the same names and addresses.
-export const MAIN_NAV = [
-  { label: "Exercises", href: "/exercises/" },
-  { label: "Functions", href: "/functions/" },
-  { label: "Articles", href: "/articles/" },
+// Why this exists: the one list of sections, so the header panels, the phone
+// menu, the Practice tabs, the home page and the footer use the same names,
+// addresses and descriptions.
+
+export interface NavItem {
+  label: string;
+  href: string;
+  /** One plain line saying what the page is for, shown in the header panels. */
+  description: string;
+}
+
+/** Ways to practise. The Practice tabs and the Practice header panel. */
+export const PRACTICE_NAV: readonly NavItem[] = [
+  {
+    label: "Exercises",
+    href: "/exercises/",
+    description: "Every exercise, with filters for level, function and track.",
+  },
+  {
+    label: "Learning tracks",
+    href: "/exercises/tracks/",
+    description: "Exercises in a sensible order. Start here if formulas are new to you.",
+  },
+  {
+    label: "Interview prep",
+    href: "/exercises/tracks/#g-interview",
+    description: "Tracks built around the tasks Excel interviews tend to ask for.",
+  },
+  {
+    label: "Daily exercise",
+    href: "/daily/",
+    description: "One free exercise a day, the same for everyone, with your streak.",
+  },
+  {
+    label: "Mock assessments",
+    href: "/mock-assessments/",
+    description: "Timed sets of tasks like an employer's test, marked at the end.",
+  },
+  {
+    label: "Progress",
+    href: "/progress/",
+    description: "What you have solved and which exercises are due for review.",
+  },
+];
+
+/** Pages to look things up in. The Learn header panel. */
+export const LEARN_NAV: readonly NavItem[] = [
+  {
+    label: "Functions",
+    href: "/functions/",
+    description: "Each Excel function with its syntax and the exercises that use it.",
+  },
+  {
+    label: "Articles",
+    href: "/articles/",
+    description: "Short articles on references, lookups and errors.",
+  },
+  {
+    label: "Formula explainer",
+    href: "/formula-explainer/",
+    description: "Paste a formula and see every part worked out step by step.",
+  },
+  {
+    label: "Keyboard shortcuts",
+    href: "/excel-shortcuts/",
+    description: "Excel shortcuts for Windows and Mac, grouped by task.",
+  },
+  {
+    label: "Resources",
+    href: "/resources/",
+    description: "Everything on the site in one place, plus outside references.",
+  },
+];
+
+export const NAV_GROUPS = [
+  { id: "practice", label: "Practice", items: PRACTICE_NAV },
+  { id: "learn", label: "Learn", items: LEARN_NAV },
 ] as const;
+
+export const PRICING_NAV = { label: "Pricing", href: "/pricing/" } as const;
 
 /** The account links: signed out, then signed in. */
 export const ACCOUNT_NAV = {
@@ -14,21 +87,29 @@ export const ACCOUNT_NAV = {
   account: { label: "Account", href: "/account/" },
 } as const;
 
-export const FOOTER_NAV = {
-  learn: [
-    { label: "Exercises", href: "/exercises/" },
-    { label: "Learning tracks", href: "/exercises/tracks/" },
-    { label: "Functions", href: "/functions/" },
-    { label: "Articles", href: "/articles/" },
-    { label: "Mock assessments", href: "/mock-assessments/" },
-    { label: "Formula explainer", href: "/formula-explainer/" },
-    { label: "Keyboard shortcuts", href: "/excel-shortcuts/" },
-    { label: "Resources", href: "/resources/" },
-    { label: "Progress", href: "/progress/" },
-  ],
-  support: [
-    { label: "Pricing", href: "/pricing/" },
-    { label: "Terms", href: "/terms/" },
-    { label: "Privacy", href: "/privacy/" },
-  ],
-} as const;
+/** The signed-in account menu. Log out is a form, added where the menu is drawn. */
+export const YOU_NAV = [
+  { label: "Profile", href: "/profile/" },
+  { label: "Certificates", href: "/account/#cert-title" },
+  { label: "Account settings", href: "/account/" },
+] as const;
+
+export const SUPPORT_NAV = [
+  PRICING_NAV,
+  { label: "Terms", href: "/terms/" },
+  { label: "Privacy", href: "/privacy/" },
+] as const;
+
+/**
+ * The item a page belongs to: the longest href the path starts with. Items
+ * that point at a place inside a page (a # link) never match, so the track
+ * pages count as Learning tracks.
+ */
+export function currentHref(items: readonly { href: string }[], path: string): string | null {
+  let best: string | null = null;
+  for (const { href } of items) {
+    if (href.includes("#") || !path.startsWith(href)) continue;
+    if (best === null || href.length > best.length) best = href;
+  }
+  return best;
+}

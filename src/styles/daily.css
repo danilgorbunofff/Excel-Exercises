@@ -1,0 +1,108 @@
+/* Why this exists: the daily page's own look, on top of assessments.css.
+   daily.ts builds the strip and swaps in the workbench, so these rules are
+   global: scoped styles would not reach that DOM. The strip reads as a row of
+   a sheet: weekday letters as column headers, solved days filled in, and
+   today outlined like the active cell. */
+
+/* No breadcrumbs above the card here, so the page sets its own gap under the header. */
+.a-page.daily {
+  padding-top: var(--space-5);
+}
+.daily .a-head {
+  padding-bottom: var(--space-4);
+}
+/* Three numbers in a two-column band: today takes the whole first row. */
+@media (max-width: 39.99rem) {
+  .daily .a-stats > div:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Narrow padding on phones keeps each day close to a 44 px target. */
+.d-strip-wrap {
+  padding: 0 var(--space-3) var(--space-4);
+}
+@media (min-width: 48rem) {
+  .d-strip-wrap {
+    padding: 0 var(--space-5) var(--space-5);
+  }
+}
+.d-strip {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+  list-style: none;
+}
+@media (min-width: 64rem) {
+  .d-strip {
+    grid-template-columns: repeat(14, minmax(0, 1fr));
+  }
+}
+.d-day {
+  display: grid;
+  min-width: 0;
+}
+.d-head {
+  padding: 0.125rem 0;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  background: var(--header);
+  font-size: var(--size-xs);
+  font-weight: 500;
+  text-align: center;
+  color: var(--muted);
+}
+.d-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.125rem;
+  min-height: calc(var(--target) + var(--space-2));
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  background: var(--surface);
+  font-family: var(--font-cell);
+  font-size: var(--size-s);
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  text-decoration: none;
+}
+a.d-cell:hover {
+  background: var(--panel);
+}
+a.d-cell:focus-visible {
+  z-index: 1;
+  outline-offset: -2px;
+}
+.d-day.is-solved .d-cell {
+  background: var(--correct-tint);
+  font-weight: 600;
+  color: var(--correct);
+}
+.d-day.is-today .d-cell {
+  box-shadow: inset 0 0 0 2px var(--primary);
+}
+.d-day.is-today .d-head {
+  background: var(--primary);
+  font-weight: 700;
+  color: var(--on-primary);
+}
+.d-cell[aria-current="page"] .d-num {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* The workbench sits in the main column, not under a hero. */
+.d-task .live {
+  margin-top: 0;
+}
+.d-noscript {
+  margin: 0;
+  padding: var(--space-4) var(--space-5);
+}

@@ -1,0 +1,34 @@
+---
+// Why this exists: the daily page picks its exercise from the visitor's date,
+// which a static page cannot know at build time. Each free exercise is built
+// here as a bare workbench; daily.ts fetches the day's one and puts it in the
+// page. These pages are not linked and stay out of the sitemap.
+import { siteConfig } from "../../../../site.config.ts";
+import LiveExercise from "../../../components/LiveExercise.astro";
+import { dailyPool } from "../../../lib/daily.ts";
+import { type Placed, placedExercises } from "../../../lib/exercises.ts";
+
+export async function getStaticPaths() {
+  const placed = await placedExercises();
+  const pool = new Set(dailyPool(placed).map((e) => e.id));
+  return placed
+    .filter((p) => pool.has(p.exercise.id))
+    .map((p) => ({ params: { slug: p.exercise.slug }, props: { placed: p } }));
+}
+
+interface Props {
+  placed: Placed;
+}
+const { placed } = Astro.props;
+---
+
+<html lang={siteConfig.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>{placed.exercise.title}</title>
+  </head>
+  <body>
+    <LiveExercise placed={placed} heading="Today's exercise" defer />
+  </body>
+</html>

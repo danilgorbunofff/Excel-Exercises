@@ -54,6 +54,11 @@ function datedif(start: number, end: number, unit: string): number {
 }
 
 export const DATES: Record<string, FunctionSpec> = {
+  // Volatile in Excel; here the date comes from EvaluateOptions.today so a grade can be repeated.
+  TODAY: fn(0, 0, (_args, options) => {
+    const d = options?.today ?? new Date();
+    return serialFromDate(d.getFullYear(), d.getMonth() + 1, d.getDate());
+  }),
   DATE: fn(
     3,
     3,

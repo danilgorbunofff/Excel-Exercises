@@ -1,0 +1,47 @@
+id: weighted-average-unit-cost
+slug: weighted-average-unit-cost
+level: 2
+title: Weighted average unit cost
+topic: interview-finance-analyst
+pro: true
+updated: 2026-11-15
+checkedInExcel: null
+screens:
+  - prompt: Three batches were bought at different prices. In D2, work out the average cost of one unit across all the units bought.
+    rows:
+      - [Batch, Units, Unit cost, Average]
+      - [Batch 1, 200, 4.5, null]
+      - [Batch 2, 500, 4.2, null]
+      - [Batch 3, 300, 5.1, null]
+    answerCell: D2
+    expected: 4.53
+    answer: =SUMPRODUCT(B2:B4,C2:C4)/SUM(B2:B4)
+    requiredFunctions: [SUMPRODUCT]
+    hints:
+      nudge: The batch of 500 should count for more than the batch of 200. Work out the total cost, then share it over the total units.
+      rule: SUMPRODUCT multiplies each pair of values and adds the results, which gives the total cost. Divide it by the total units to get the weighted average.
+    misses:
+      value: The batches cost 900, 2100 and 1530, which is 4530 for 1000 units, or 4.53 a unit.
+      syntax: "Check the brackets and commas. SUMPRODUCT follows the pattern `=SUMPRODUCT(array1, array2)`."
+      required-function: A plain average treats every batch the same, whatever its size. SUMPRODUCT weights each cost by its units.
+      reference: The units run down B2:B4 and the costs down C2:C4.
+    accept:
+      - =SUMPRODUCT(B2:B4,C2:C4)/SUM(B2:B4)
+      - =sumproduct(b2:b4,c2:c4)/sum(b2:b4)
+      - =SUMPRODUCT(C2:C4,B2:B4)/SUM(B2:B4)
+      - =SUMPRODUCT($B$2:$B$4,$C$2:$C$4)/SUM($B$2:$B$4)
+    reject:
+      - { formula: "=AVERAGE(C2:C4)", rule: required-function }
+      - { formula: "=SUMPRODUCT(B2:B4,C2:C4)", rule: value }
+      - { formula: "=SUMPRODUCT(B2:B4,C2:C4)/COUNT(B2:B4)", rule: value }
+      - { formula: "=SUMPRODUCT(B2:B4,C2:C4)/SUM(C2:C4)", rule: value }
+      - { formula: "=SUMPRODUCT(B2:B3,C2:C3)/SUM(B2:B3)", rule: value }
+      - { formula: "=SUMPRODUCT(B2:B4,C2:C4/SUM(B2:B4)", rule: syntax }
+notes:
+  summary: A weighted average lets each value count in proportion to its size. Total cost divided by total units is the fair price of one unit.
+  syntax: SUMPRODUCT(units,costs)/SUM(units)
+  example: "`=SUMPRODUCT(A1:A2,B1:B2)/SUM(A1:A2)` with 10 and 30 units at 2 and 4 gives 3.5."
+  commonErrors:
+    - A plain AVERAGE of the costs ignores how many units each batch had.
+    - Dividing by the number of batches instead of the units gives a cost per batch.
+    - The two ranges in SUMPRODUCT must be the same size, or the result is an error.

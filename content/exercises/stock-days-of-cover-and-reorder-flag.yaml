@@ -1,0 +1,77 @@
+id: stock-days-of-cover-and-reorder-flag
+slug: stock-days-of-cover-and-reorder-flag
+level: 2
+title: Stock days of cover and reorder flag
+topic: interview-data-analyst
+pro: true
+updated: 2026-11-15
+checkedInExcel: null
+screens:
+  - prompt: In E2, work out how many whole days the pallet wrap on hand will last at its daily use.
+    rows:
+      - [Item, On hand, Daily use, Lead time days, Days of cover]
+      - [Pallet wrap, 350, 24, 10, null]
+      - [Label rolls, 90, 15, 7, null]
+      - [Packing tape, 500, 40, 5, null]
+    answerCell: E2
+    expected: 14
+    answer: =ROUNDDOWN(B2/C2,0)
+    hints:
+      nudge: Divide the stock by the daily use, then drop the part day. A part day of stock does not cover a full day.
+      rule: ROUNDDOWN with 0 removes the decimals without rounding up. INT does the same for positive numbers.
+    misses:
+      value: 350 divided by 24 is 14.58, and only 14 full days are covered.
+      syntax: "Check the brackets and commas. ROUNDDOWN follows the pattern `=ROUNDDOWN(number, num_digits)`."
+      reference: Point at the stock in B2 and the daily use in C2.
+    accept:
+      - =ROUNDDOWN(B2/C2,0)
+      - =rounddown(b2/c2,0)
+      - =INT(B2/C2)
+      - =FLOOR(B2/C2,1)
+      - =ROUNDDOWN($B2/$C2,0)
+    reject:
+      - { formula: "=B2/C2", rule: value }
+      - { formula: "=ROUND(B2/C2,0)", rule: value }
+      - { formula: "=ROUNDUP(B2/C2,0)", rule: value }
+      - { formula: "=ROUNDDOWN(C2/B2,0)", rule: value }
+      - { formula: "=ROUNDDOWN(350/24,0)", rule: reference }
+      - { formula: "=ROUNDDOWN(B2/C2,0", rule: syntax }
+  - prompt: In E3, show Reorder when the label rolls will run out before a new delivery could arrive, and OK when they will not.
+    rows:
+      - [Item, On hand, Daily use, Lead time days, Flag]
+      - [Pallet wrap, 350, 24, 10, null]
+      - [Label rolls, 90, 15, 7, null]
+      - [Packing tape, 500, 40, 5, null]
+    answerCell: E3
+    expected: Reorder
+    answer: =IF(B3/C3<D3,"Reorder","OK")
+    requiredFunctions: [IF]
+    hints:
+      nudge: Compare the days the stock lasts with the days a delivery takes.
+      rule: IF returns its second argument when the test is true. The test is days of cover less than the lead time.
+    misses:
+      value: 90 rolls at 15 a day last 6 days, and a delivery takes 7, so the rolls need reordering.
+      syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, value_if_false)`."
+      required-function: The answer is one of two words, so the comparison sits inside an IF.
+      reference: Use the label roll row, B3, C3 and D3.
+    accept:
+      - =IF(B3/C3<D3,"Reorder","OK")
+      - =if(b3/c3<d3,"Reorder","OK")
+      - =IF(B3/C3>=D3,"OK","Reorder")
+      - =IF(B3<C3*D3,"Reorder","OK")
+      - =IF(ROUNDDOWN(B3/C3,0)<D3,"Reorder","OK")
+    reject:
+      - { formula: '=IF(B3/C3>D3,"Reorder","OK")', rule: value }
+      - { formula: '=IF(B3<D3,"Reorder","OK")', rule: value }
+      - { formula: '=IF(B3/C3<D3,"OK","Reorder")', rule: value }
+      - { formula: '=IF(B2/C2<D2,"Reorder","OK")', rule: value }
+      - { formula: "=B3/C3<D3", rule: required-function }
+      - { formula: '=IF(B3/C3<D3,"Reorder","OK"', rule: syntax }
+notes:
+  summary: Days of cover is how long stock lasts at the current rate of use. When it is shorter than the time a delivery takes, the item must be ordered now.
+  syntax: ROUNDDOWN(on_hand/daily_use,0), IF(on_hand/daily_use<lead_time,"Reorder","OK")
+  example: "`=ROUNDDOWN(A1/B1,0)` with 100 in A1 and 30 in B1 gives 3."
+  commonErrors:
+    - ROUND lifts 14.58 to 15, a day the stock does not cover.
+    - Comparing the stock itself with the lead time mixes units with days.
+    - Daily use divided by stock gives a fraction of a day, not days.

@@ -1,0 +1,79 @@
+id: top-customer-share-of-revenue
+slug: top-customer-share-of-revenue
+level: 3
+title: Top customer share of revenue
+topic: interview-finance-analyst
+pro: true
+updated: 2026-11-15
+checkedInExcel: null
+screens:
+  - prompt: In C2, name the customer with the second highest revenue.
+    rows:
+      - [Customer, Revenue, Answer]
+      - [Harbour Foods, 18400, null]
+      - [Kestrel Retail, 42500, null]
+      - [Linden Hotels, 27600, null]
+      - [Mason and Co, 11500, null]
+    answerCell: C2
+    expected: Linden Hotels
+    answer: =INDEX(A2:A5,MATCH(LARGE(B2:B5,2),B2:B5,0))
+    requiredFunctions: [LARGE]
+    hints:
+      nudge: Find the second highest revenue first, then look up whose it is.
+      rule: LARGE with 2 returns the second highest value. MATCH with 0 finds its row, and INDEX reads the name there. XLOOKUP can do the last two steps at once.
+    misses:
+      value: Kestrel Retail is first with 42500, so Linden Hotels is second with 27600.
+      syntax: "Check the brackets and commas. The pattern is `=INDEX(names, MATCH(LARGE(revenue, 2), revenue, 0))`."
+      required-function: Let LARGE pick the second highest value, so the answer stays right when the numbers change.
+      reference: The names run down A2:A5 and the revenue down B2:B5.
+    accept:
+      - =INDEX(A2:A5,MATCH(LARGE(B2:B5,2),B2:B5,0))
+      - =index(a2:a5,match(large(b2:b5,2),b2:b5,0))
+      - =XLOOKUP(LARGE(B2:B5,2),B2:B5,A2:A5)
+      - =INDEX($A$2:$A$5,MATCH(LARGE($B$2:$B$5,2),$B$2:$B$5,0))
+    reject:
+      - { formula: "=LARGE(B2:B5,2)", rule: value }
+      - { formula: "=INDEX(A2:A5,MATCH(LARGE(B2:B5,1),B2:B5,0))", rule: value }
+      - { formula: "=INDEX(A2:A5,MATCH(SMALL(B2:B5,2),B2:B5,0))", rule: required-function }
+      - { formula: "=XLOOKUP(LARGE(B2:B5,3),B2:B5,A2:A5)", rule: value }
+      - { formula: "=A4", rule: required-function }
+      - { formula: "=INDEX(A2:A5,MATCH(LARGE(B2:B5,2),B2:B5,0)", rule: syntax }
+  - prompt: In C2, show the top customer's share of total revenue.
+    rows:
+      - [Customer, Revenue, Answer]
+      - [Harbour Foods, 18400, null]
+      - [Kestrel Retail, 42500, null]
+      - [Linden Hotels, 27600, null]
+      - [Mason and Co, 11500, null]
+    answerCell: C2
+    expected: 0.425
+    answer: =MAX(B2:B5)/SUM(B2:B5)
+    requiredFunctions: [SUM]
+    hints:
+      nudge: Take the highest revenue and divide it by the total of all revenue.
+      rule: MAX returns the highest value and SUM the total. One divided by the other is the share.
+    misses:
+      value: 42500 out of 100000 is 0.425, so the top customer brings in over two fifths of revenue.
+      syntax: Check the brackets. Each function needs its own pair around its range.
+      required-function: The total should come from SUM over the revenue, so it updates when a figure changes.
+      reference: The revenue runs down B2:B5.
+    accept:
+      - =MAX(B2:B5)/SUM(B2:B5)
+      - =max(b2:b5)/sum(b2:b5)
+      - =LARGE(B2:B5,1)/SUM(B2:B5)
+      - =MAX($B$2:$B$5)/SUM($B$2:$B$5)
+      - =MAX(B2:B5)/SUM(B2:B5)+0
+    reject:
+      - { formula: "=MAX(B2:B5)/SUM(B2:B4)", rule: value }
+      - { formula: "=SUM(B2:B5)/MAX(B2:B5)", rule: value }
+      - { formula: "=MIN(B2:B5)/SUM(B2:B5)", rule: value }
+      - { formula: "=MAX(B2:B5)/COUNT(B2:B5)", rule: required-function }
+      - { formula: "=MAX(B2:B5)/SUM(B2:B5", rule: syntax }
+notes:
+  summary: A customer share shows how much revenue depends on one account. Interviewers ask it to see whether you can rank, look up and divide in a few steps.
+  syntax: INDEX(names,MATCH(LARGE(values,2),values,0)) and MAX(values)/SUM(values)
+  example: "`=LARGE(A1:A4,2)` with 5, 9, 7 and 2 in A1:A4 gives 7."
+  commonErrors:
+    - LARGE with 1 returns the highest, not the second highest.
+    - Returning the revenue instead of the name answers the wrong question.
+    - Two customers with the same revenue both match, and MATCH returns the first one.

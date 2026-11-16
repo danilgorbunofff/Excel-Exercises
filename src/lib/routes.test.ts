@@ -37,6 +37,11 @@ describe("hiddenFromSearch", () => {
     for (const path of PRIVATE_PATHS) expect(hiddenFromSearch(path, true), path).toBe(true);
   });
 
+  it("always hides certificate pages", () => {
+    expect(hiddenFromSearch("/certificates/abcdefghijklmnopqrstuv/", false)).toBe(true);
+    expect(hiddenFromSearch("/certificates/abcdefghijklmnopqrstuv/", true)).toBe(true);
+  });
+
   it("never hides other pages, including PRO and pages that only start alike", () => {
     for (const path of ["/", "/pro/", "/exercises/", "/login-help/", "/accounts/"]) {
       expect(hiddenFromSearch(path, false), path).toBe(false);

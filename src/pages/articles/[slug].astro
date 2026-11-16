@@ -48,7 +48,7 @@ const jsonLd = JSON.stringify({
 }).replaceAll("<", "\\u003c");
 ---
 
-<Base title={article.data.title} description={article.data.description} section="/articles/">
+<Base title={article.data.title} description={article.data.description}>
   <Breadcrumbs items={[{ label: "Articles", href: "/articles/" }]} />
   <ArticleCover
     text={article.data.cover ?? article.data.functions[0] ?? "fx"}

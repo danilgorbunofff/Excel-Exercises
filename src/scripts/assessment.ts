@@ -5,12 +5,14 @@
 // visitor. It never touches practice progress.
 import type { Segment } from "../lib/rich-text.ts";
 import { byFunction, scoreAttempt, type TaskData } from "./assessment-score.ts";
+import { offerCertificate, type Saved } from "./certificate-offer.ts";
 import { loadMe, signedIn } from "./session.ts";
 import { verdictView } from "./view.ts";
 
 interface SetData {
   slug: string;
   minutes: number;
+  sample: boolean;
   tasks: TaskData[];
 }
 interface State {
@@ -21,6 +23,10 @@ interface State {
   index: number;
   finishedAt?: string;
   saved?: boolean;
+  /** The server's signed start time, for a timed run by a signed-in visitor. */
+  startToken?: string;
+  /** What the server saved and marked. */
+  result?: Saved;
 }
 type Result = ReturnType<typeof scoreAttempt>[number];
 
@@ -378,8 +384,19 @@ function run(root: HTMLElement, data: SetData) {
     } catch {
       // No history line; the result itself is unaffected.
     }
+    const offer = () => {
+      const box = q<HTMLElement>("[data-cert]");
+      if (box && state?.result)
+        void offerCertificate(box, {
+          slug: data.slug,
+          sample: data.sample,
+          timed: state.deadline !== null,
+          saved: state.result,
+        });
+    };
     if (state.saved) {
       saveNote("saved");
+      offer();
       return;
     }
     try {
@@ -392,18 +409,18 @@ function run(root: HTMLElement, data: SetData) {
           startedAt: state.startedAt,
           finishedAt: state.finishedAt,
           timeLimit: state.deadline === null ? null : data.minutes * 60,
-          results: results.map((r) => ({
-            exercise: r.task.exercise,
-            screen: r.task.screen,
-            correct: r.correct,
-            rule: r.rule,
-          })),
+          // The server marks these itself; the marks shown here are not sent.
+          formulas: results.map((r) => r.formula),
+          startToken: state.startToken ?? null,
         }),
       });
       if (!res.ok) throw new Error(String(res.status));
+      const body = (await res.json()) as Saved;
       state.saved = true;
+      state.result = { id: body.id, score: body.score, total: body.total };
       save();
       saveNote("saved");
+      offer();
     } catch {
       saveNote("failed");
     }
@@ -443,6 +460,26 @@ function run(root: HTMLElement, data: SetData) {
     };
     save();
     begin();
+    // A timed run gets the server's start time, which a certificate rests on.
+    if (signedIn() && state.deadline !== null) {
+      const run = state;
+      void fetch("/api/assessments/start/", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ assessment: data.slug }),
+      })
+        .then((r) => (r.ok ? (r.json() as Promise<{ token: string }>) : null))
+        .then((t) => {
+          if (t && state === run) {
+            run.startToken = t.token;
+            save();
+          }
+        })
+        .catch(() => {
+          // No token: the result still saves, without a certificate.
+        });
+    }
   });
   for (const [i, section] of sections.entries()) {
     const form = section.querySelector<HTMLFormElement>("[data-form]");

@@ -53,6 +53,7 @@ const fnHref = (name: string) => lessons.get(name) ?? `/exercises/?fn=${encodeUR
 const data = {
   slug: set.slug,
   minutes: set.minutes,
+  sample: set.sample,
   tasks: tasks.map((t) => ({
     exercise: t.exercise.id,
     screen: t.screen,
@@ -307,6 +308,7 @@ const data = {
             <dd data-best></dd>
           </div>
         </dl>
+        <div class="a-notice cert-offer" data-cert hidden></div>
       </div>
 
       <div class="a-grid">

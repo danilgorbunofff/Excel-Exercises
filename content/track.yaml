@@ -147,6 +147,46 @@ topics:
       - Pull answers from three tables
       - Clean up an imported list
       - Find and fix broken formulas
+  - slug: interview-finance-analyst
+    title: Finance analyst interview
+    summary: Growth, margin, variance and weighted cost, the way a finance analyst test asks for them.
+    group: interview
+    assessment: finance
+    learn:
+      - Work out growth from one year to the next
+      - Turn revenue and cost into a margin
+      - Flag a variance that breaks a limit in either direction
+      - Weight a cost by quantity and find a top customer's share
+  - slug: interview-fpa
+    title: FP&A interview
+    summary: Year to date, run rate, roll ups and headcount cost, as in a planning and analysis test.
+    group: interview
+    assessment: finance
+    learn:
+      - Add up the months to date
+      - Project a full year from the run rate
+      - Roll costs up by department and type
+      - Cost a headcount plan and compare a quarter with budget
+  - slug: interview-accounting
+    title: Accounting interview
+    summary: Overdue days, ageing, reconciliation, accruals and a trial balance check.
+    group: interview
+    assessment: finance
+    learn:
+      - Count the days an invoice is overdue
+      - Sort balances into ageing bands
+      - Match a ledger to a bank statement
+      - Accrue part of a month and check a trial balance
+  - slug: interview-data-analyst
+    title: Operations and data analyst interview
+    summary: Late orders, lookups across tables, rates, stock cover and messy codes.
+    group: interview
+    assessment: data-analyst
+    learn:
+      - Count the orders that shipped late
+      - Pull a value from a second table by its key
+      - Work out an on time rate for one carrier
+      - Clean a code before you look it up
 order:
   # Cells and arithmetic
   - add-two-cells
@@ -256,3 +296,27 @@ order:
   - budget-versus-actual-with-a-variance-flag
   - formula-audit-fix-five-broken-sheets
   - capstone-margin
+  # Finance analyst interview
+  - year-on-year-revenue-growth
+  - gross-margin-by-product
+  - variance-to-budget-by-cost-centre
+  - weighted-average-unit-cost
+  - top-customer-share-of-revenue
+  # FP&A interview
+  - year-to-date-actual-against-budget
+  - full-year-forecast-from-the-run-rate
+  - department-cost-roll-up
+  - headcount-cost-plan
+  - quarter-forecast-against-budget
+  # Accounting interview
+  - days-overdue-on-open-invoices
+  - ageing-buckets-for-receivables
+  - bank-reconciliation-match
+  - month-end-accrual-for-part-of-a-month
+  - trial-balance-lookup-and-check
+  # Operations and data analyst interview
+  - count-late-shipments
+  - order-details-from-two-tables
+  - on-time-rate-for-one-carrier
+  - stock-days-of-cover-and-reorder-flag
+  - clean-a-product-code-then-look-it-up

@@ -1,0 +1,81 @@
+id: gross-margin-by-product
+slug: gross-margin-by-product
+level: 2
+title: Gross margin by product
+topic: interview-finance-analyst
+pro: true
+updated: 2026-11-15
+checkedInExcel: null
+screens:
+  - prompt: In D2, work out the gross margin on desk lamps as a share of revenue.
+    rows:
+      - [Product, Revenue, Cost of sales, Margin]
+      - [Desk lamp, 12500, 7500, null]
+      - [Office chair, 40000, 30000, null]
+      - [Monitor arm, 8000, 4400, null]
+      - [Footrest, 5000, 3600, null]
+      - [Cable tray, 6000, 4500, null]
+    answerCell: D2
+    expected: 0.4
+    answer: =(B2-C2)/B2
+    hints:
+      nudge: Take the cost away from the revenue, then compare what is left with the revenue.
+      rule: Gross margin is revenue minus cost of sales, divided by revenue. Dividing by cost instead gives the markup, which is a different measure.
+    misses:
+      value: 12500 minus 7500 leaves 5000, and 5000 is 0.4 of the 12500 revenue.
+      syntax: Check the brackets. The subtraction sits inside its own pair, then the division follows.
+      reference: Point at B2 and C2 on the desk lamp row.
+    accept:
+      - =(B2-C2)/B2
+      - =(b2-c2)/b2
+      - =1-C2/B2
+      - =($B$2-$C$2)/$B$2
+      - =( B2 - C2 ) / B2
+    reject:
+      - { formula: "=(B2-C2)/C2", rule: value }
+      - { formula: "=B2-C2", rule: value }
+      - { formula: "=C2/B2", rule: value }
+      - { formula: "=B2-C2/B2", rule: value }
+      - { formula: "=(12500-7500)/12500", rule: reference }
+      - { formula: "=(B2-C2/B2", rule: syntax }
+  - prompt: "The margins are now in column D. The target is thirty per cent. In E2, count the products below target."
+    rows:
+      - [Product, Revenue, Cost of sales, Margin, Below target]
+      - [Desk lamp, 12500, 7500, 0.4, null]
+      - [Office chair, 40000, 30000, 0.25, null]
+      - [Monitor arm, 8000, 4400, 0.45, null]
+      - [Footrest, 5000, 3600, 0.28, null]
+      - [Cable tray, 6000, 4500, 0.25, null]
+    answerCell: E2
+    expected: 3
+    answer: =COUNTIF(D2:D6,"<0.3")
+    requiredFunctions: [COUNTIF]
+    hints:
+      nudge: Count only the margins under thirty per cent. Thirty per cent is 0.3 in a cell.
+      rule: COUNTIF takes a range and a condition in quotes. A comparison such as less than goes inside the quotes, in front of the number.
+    misses:
+      value: Office chair, footrest and cable tray sit under 0.3, so the count is 3.
+      syntax: "Check the brackets, commas and quote marks. COUNTIF follows the pattern `=COUNTIF(range, criteria)`."
+      required-function: Counting by eye works today but not when the margins change. COUNTIF counts the matches for you.
+      reference: The margins run down D2:D6.
+    accept:
+      - =COUNTIF(D2:D6,"<0.3")
+      - =countif(d2:d6,"<0.3")
+      - =COUNTIF(D2:D6,"<"&0.3)
+      - =COUNTIF($D$2:$D$6,"<0.3")
+      - =COUNTIF(D2:D6,"<30%")
+    reject:
+      - { formula: '=COUNTIF(D2:D6,">0.3")', rule: value }
+      - { formula: '=COUNTIF(D2:D6,"<30")', rule: value }
+      - { formula: '=COUNTIF(D2:D6,"<=0.25")', rule: value }
+      - { formula: '=COUNTIF(D2:D4,"<0.3")', rule: value }
+      - { formula: "=COUNT(D2:D6)", rule: required-function }
+      - { formula: '=COUNTIF(D2:D6,"<0.3"', rule: syntax }
+notes:
+  summary: Gross margin is the share of revenue left after the cost of what was sold. It is divided by revenue, which is what sets it apart from markup.
+  syntax: (revenue-cost)/revenue, then COUNTIF(margins,"<0.3")
+  example: '`=COUNTIF(A1:A4,"<0.3")` with 0.2, 0.35, 0.1 and 0.5 in A1:A4 gives 2.'
+  commonErrors:
+    - Dividing by cost gives markup, which is always larger than margin.
+    - Writing the target as 30 instead of 0.3 counts every margin, because every share is under 30.
+    - A condition without quotes is read as a number, not a comparison.

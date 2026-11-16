@@ -1,0 +1,173 @@
+---
+// Why this exists: the public page that confirms a certificate is real. It is
+// rendered on the server on every visit, so a revoked or deleted certificate
+// shows as such at once. It shows only the public fields and is kept out of
+// search engines.
+import "../../styles/assessments.css";
+import Base from "../../layouts/Base.astro";
+import { publicCertificate } from "../../server/certificates.ts";
+
+export const prerender = false;
+
+const id = Astro.params["id"] ?? "";
+const cert = await publicCertificate(id);
+Astro.response.headers.set("X-Robots-Tag", "noindex");
+Astro.response.headers.set("Cache-Control", "no-store");
+if (!cert) Astro.response.status = 404;
+
+const day = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+const minutes = cert ? Math.round(cert.time_limit_s / 60) : 0;
+---
+
+{
+  cert ? (
+    <Base
+      title={`Certificate for ${cert.name}`}
+      description={`${cert.name} passed the ${cert.assessment_title} mock assessment on excelexercises.online.`}
+      layout="wide"
+    >
+      <article class="ruled cert" aria-labelledby="cert-title">
+        <div class="a-head">
+          <div>
+            <h1 id="cert-title">
+              <span class="a-context">Certificate</span>
+              <span class="a-title">{cert.name}</span>
+            </h1>
+            <p class="cert-claim">
+              passed the <strong>{cert.assessment_title}</strong> mock assessment on
+              excelexercises.online on <strong>{day(cert.issued_at)}</strong>, with{" "}
+              <strong>
+                {cert.score} of {cert.total}
+              </strong>{" "}
+              tasks right in a timed {minutes}-minute run.
+            </p>
+          </div>
+          <div class="a-actions no-print">
+            <button class="button button-outline" type="button" data-print>
+              Print or save as PDF
+            </button>
+          </div>
+        </div>
+        <dl class="a-stats cert-stats">
+          <div class="cert-status">
+            <dt>Status</dt>
+            {cert.revoked_at ? (
+              <dd class="miss">Revoked on {day(cert.revoked_at)}</dd>
+            ) : (
+              <dd class="correct">Valid</dd>
+            )}
+          </div>
+          <div>
+            <dt>Score</dt>
+            <dd>
+              {cert.score} of {cert.total}
+            </dd>
+          </div>
+          <div>
+            <dt>Issued</dt>
+            <dd>{day(cert.issued_at)}</dd>
+          </div>
+          <div class="cert-number-row">
+            <dt>Certificate number</dt>
+            <dd class="cert-number">{id}</dd>
+          </div>
+        </dl>
+        <p class="cert-small">
+          The server checked every answer again when it issued this certificate. The assessment was
+          taken online and nobody supervised it. It is not a qualification from an examining body.
+        </p>
+      </article>
+    </Base>
+  ) : (
+    <Base title="Certificate not found" description="No certificate has this number.">
+      <h1>Certificate not found</h1>
+      <p>No certificate has this number. Check the link, or ask the person who sent it.</p>
+      <p>
+        <a href="/mock-assessments/">See the mock assessments</a>
+      </p>
+    </Base>
+  )
+}
+
+<script>
+  document.querySelector("[data-print]")?.addEventListener("click", () => window.print());
+</script>
+
+<style>
+  .cert {
+    max-width: 48rem;
+    margin: var(--space-5) auto;
+  }
+  .cert-claim {
+    max-width: 40rem;
+    margin: var(--space-3) 0 0;
+    font-size: var(--size-l);
+    line-height: 1.5;
+  }
+  /* Status, score and date, then the number on its own row. On a phone the
+     status takes the first row so no cell is left empty. */
+  .cert-number-row,
+  .cert-status {
+    grid-column: 1 / -1;
+  }
+  @media (min-width: 40rem) {
+    .cert-stats {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .cert-status {
+      grid-column: auto;
+    }
+  }
+  .cert-number {
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    overflow-wrap: anywhere;
+  }
+  .cert-small {
+    margin: 0;
+    padding: var(--space-4) var(--space-5);
+    border-top: 1px solid var(--rule);
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+
+  @media print {
+    :global(header),
+    :global(footer),
+    :global(nav),
+    :global(.skip-link),
+    .no-print {
+      display: none !important;
+    }
+    :global(html),
+    :global(body),
+    :global(main) {
+      background: #fff !important;
+      color: #000 !important;
+    }
+    .cert {
+      max-width: none;
+      margin: 0;
+      border: 1px solid #000;
+      box-shadow: none;
+      background: #fff;
+      break-inside: avoid;
+    }
+    .cert,
+    .cert * {
+      color: #000 !important;
+    }
+    .cert :global(.a-stats) {
+      background: #fff;
+    }
+  }
+  @page {
+    margin: 15mm;
+  }
+</style>

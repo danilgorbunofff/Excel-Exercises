@@ -121,8 +121,10 @@ export const trackSchema = z.object({
         slug: kebab,
         title: sentence,
         summary: sentence,
-        /** Where the track sits on the tracks page: the essentials, or one skill. */
-        group: z.enum(["essentials", "skill"]).default("skill"),
+        /** Where the track sits on the tracks page: the essentials, one skill, or interview practice. */
+        group: z.enum(["essentials", "skill", "interview"]).default("skill"),
+        /** The slug of a related mock assessment set, linked from the track page. */
+        assessment: kebab.optional(),
         /** What you will learn, one line each, shown as a checklist on the track page. */
         learn: z.array(sentence).default([]),
       }),

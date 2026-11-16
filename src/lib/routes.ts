@@ -41,6 +41,8 @@ export const PRIVATE_PATHS = [
  * while accounts are closed, and the private ones always.
  */
 export function hiddenFromSearch(path: string, accountsOpen: boolean): boolean {
+  // A certificate page is for whoever has the link, never for search.
+  if (path.startsWith("/certificates/")) return true;
   const list: readonly string[] = accountsOpen ? PRIVATE_PATHS : ACCOUNT_PATHS;
   return list.includes(path);
 }

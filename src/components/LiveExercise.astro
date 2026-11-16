@@ -14,8 +14,10 @@ interface Props {
   heading: string;
   /** Lines under the heading, before the task. */
   intro?: string;
+  /** Left for the page's own script to start, as the daily page does. */
+  defer?: boolean;
 }
-const { placed, heading, intro } = Astro.props;
+const { placed, heading, intro, defer = false } = Astro.props;
 // An embed would put a PRO answer in a free page.
 if (isLocked(placed)) {
   throw new Error(
@@ -27,19 +29,18 @@ const { exercise, number, total } = placed;
 const path = exercisePath(exercise.slug);
 ---
 
-<section class="live" data-exercise aria-labelledby="live-heading">
-  <h2 id="live-heading">{heading}</h2>
+<section class="live" data-exercise data-defer={defer ? "" : undefined} aria-labelledby="live-heading">
+  <h2 id="live-heading" data-live-heading>{heading}</h2>
   {intro && <p class="intro">{intro}</p>}
-  <p class="task">
-    <strong>{exercise.title}.</strong>
+  <div class="task">
     {
       exercise.screens.map((s, i) => (
-        <span data-prompt={i} hidden={i > 0}>
-          <RichText text={s.prompt} />
-        </span>
+        <p data-prompt={i} hidden={i > 0}>
+          <strong>{exercise.title}.</strong> <RichText text={s.prompt} />
+        </p>
       ))
     }
-  </p>
+  </div>
   {
     exercise.screens.map((s, i) => (
       <div class="work" data-screen={i} hidden={i > 0}>
@@ -80,6 +81,9 @@ const path = exercisePath(exercise.slug);
   }
   .meta a {
     color: var(--text);
+  }
+  .task p {
+    margin: 0;
   }
   .work[hidden],
   [data-prompt][hidden],

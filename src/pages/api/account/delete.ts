@@ -1,6 +1,8 @@
 // Why this exists: deletes the account for good. It cancels any PRO
 // subscription first so nobody is charged for an account that is gone, then
-// removes the user; their profile and progress rows go with it (on delete cascade).
+// removes the user; their profile, progress, daily solves, assessment results
+// and certificates go with it (on delete cascade), so a certificate's public
+// page then says no certificate has that number.
 import type { APIRoute } from "astro";
 import { back, field, redirect } from "../../../server/http.ts";
 import { stripe } from "../../../server/stripe.ts";

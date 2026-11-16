@@ -58,6 +58,13 @@ For local work: `vercel link`, then `vercel env pull .env.local`.
    security, and a profile for every new user.
    Then run `supabase/migrations/0002_assessments.sql` the same way. It creates
    `assessment_attempts`, where `/api/assessments/` keeps mock assessment results.
+   Then run `supabase/migrations/0003_daily.sql`. It creates `daily_solves`,
+   where `/api/daily/` keeps the days a user solved the daily exercise.
+   Then run `supabase/migrations/0004_certificates.sql`. It creates
+   `certificates`, adds the stored formulas and server times to
+   `assessment_attempts`, and stops the browser from writing attempts itself:
+   from then on only `/api/assessments/` (service role) saves them. Deploy the
+   code and run 0004 together, since older code saves attempts as the user.
 2. Authentication, URL Configuration: Site URL `https://excelexercises.online`.
    Redirect URLs: `https://excelexercises.online/api/auth/callback/**`,
    `http://localhost:4321/api/auth/callback/**` and your preview domain.

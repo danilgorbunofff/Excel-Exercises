@@ -1,6 +1,16 @@
+import { readFileSync } from "node:fs";
+import type { GradeSpec } from "@practice/grader";
 import { describe, expect, it } from "vitest";
-import { assessmentsSchema } from "../content/schema.ts";
-import { checkAssessments, cleanAttempt, coverOf, loadAssessments } from "./assessments.ts";
+import { parse as parseYaml } from "yaml";
+import { assessmentsSchema, trackSchema } from "../content/schema.ts";
+import {
+  checkAssessments,
+  cleanAttempt,
+  coverOf,
+  gradeAttempt,
+  loadAssessments,
+  type SpecFor,
+} from "./assessments.ts";
 
 const facts = [
   { id: "a", pro: false, screens: 1 },
@@ -12,6 +22,15 @@ const parse = (sets: unknown) => assessmentsSchema.parse({ sets });
 describe("checkAssessments", () => {
   it("accepts the real file", () => {
     expect(loadAssessments().sets.some((s) => s.sample)).toBe(true);
+  });
+
+  it("every assessment a track links to exists, and each interview track links one", () => {
+    const track = trackSchema.parse(parseYaml(readFileSync("content/track.yaml", "utf8")));
+    const slugs = new Set(loadAssessments().sets.map((s) => s.slug));
+    const interview = track.topics.filter((t) => t.group === "interview");
+    expect(interview.length).toBeGreaterThan(0);
+    for (const t of interview) expect(t.assessment).toBeDefined();
+    for (const t of track.topics) if (t.assessment) expect(slugs).toContain(t.assessment);
   });
 
   it("reads a bare id as the first screen", () => {
@@ -56,46 +75,91 @@ describe("cleanAttempt", () => {
       tasks: ["a", { exercise: "b", screen: 1 }],
     },
   ]).sets;
+  // Two tiny screens: A1 + A2 in B1, and the larger of A1 and A2 in B1.
+  const spec = (expected: number, fn: string): GradeSpec => ({
+    rows: [[2], [5]],
+    answerCell: "B1",
+    expected,
+    requiredFunctions: [fn],
+    forbiddenFunctions: [],
+    requireReference: true,
+  });
+  const specs: Record<string, GradeSpec> = { "a#0": spec(7, "SUM"), "b#1": spec(5, "MAX") };
+  const specFor: SpecFor = (exercise, screen) => specs[`${exercise}#${screen}`] ?? null;
   const good = {
     assessment: "s",
     startedAt: "2026-11-15T10:00:00.000Z",
     finishedAt: "2026-11-15T10:08:00.000Z",
     timeLimit: 600,
     score: 99,
+    // The browser's own marks are ignored: only the formulas count.
     results: [
       { exercise: "a", screen: 0, correct: true, rule: null },
-      { exercise: "b", screen: 1, correct: false, rule: "value" },
+      { exercise: "b", screen: 1, correct: true, rule: null },
     ],
+    formulas: ["=SUM(A1:A2)", "=MIN(A1:A2)"],
+    startToken: null,
   };
 
-  it("keeps a matching attempt and recounts the score", () => {
-    expect(cleanAttempt(good, sets)).toMatchObject({
-      assessment: "s",
-      score: 1,
-      total: 2,
-      timeLimit: 600,
-    });
+  it("marks the formulas on the server and ignores the browser's marks", () => {
+    const attempt = cleanAttempt(good, sets, specFor);
+    expect(attempt).toMatchObject({ assessment: "s", score: 1, total: 2, timeLimit: 600 });
+    expect(attempt?.results[0]).toEqual({ exercise: "a", screen: 0, correct: true, rule: null });
+    expect(attempt?.results[1]?.correct).toBe(false);
+    expect(attempt?.results[1]?.rule).not.toBeNull();
+    expect(attempt?.formulas).toEqual(good.formulas);
+  });
+
+  it("counts a blank formula as missed with no rule", () => {
+    const attempt = cleanAttempt({ ...good, formulas: ["  ", "=MAX(A1:A2)"] }, sets, specFor);
+    expect(attempt?.results[0]).toMatchObject({ correct: false, rule: null });
+    expect(attempt?.score).toBe(1);
   });
 
   it("accepts an untimed attempt", () => {
-    expect(cleanAttempt({ ...good, timeLimit: null }, sets)?.timeLimit).toBeNull();
+    expect(cleanAttempt({ ...good, timeLimit: null }, sets, specFor)?.timeLimit).toBeNull();
   });
 
-  it("rejects an unknown set, the wrong tasks, a wrong limit and bad dates", () => {
-    expect(cleanAttempt({ ...good, assessment: "x" }, sets)).toBeNull();
-    expect(cleanAttempt({ ...good, results: good.results.slice(0, 1) }, sets)).toBeNull();
-    expect(cleanAttempt({ ...good, results: [good.results[1], good.results[0]] }, sets)).toBeNull();
-    expect(cleanAttempt({ ...good, timeLimit: 60 }, sets)).toBeNull();
-    expect(cleanAttempt({ ...good, finishedAt: "2026-11-15T09:00:00.000Z" }, sets)).toBeNull();
-    expect(cleanAttempt({ ...good, startedAt: "yesterday" }, sets)).toBeNull();
-    expect(cleanAttempt(null, sets)).toBeNull();
+  it("keeps a well-formed start token and drops anything else", () => {
+    const token = `${Date.UTC(2026, 10, 15)}.${"a".repeat(43)}`;
+    expect(cleanAttempt({ ...good, startToken: token }, sets, specFor)?.startToken).toBe(token);
+    expect(cleanAttempt({ ...good, startToken: "x.y" }, sets, specFor)?.startToken).toBeNull();
   });
 
-  it("drops the rule of a correct task and rejects a malformed rule", () => {
-    const withRule = { ...good, results: [{ ...good.results[0], rule: "value" }, good.results[1]] };
-    expect(cleanAttempt(withRule, sets)?.results[0]?.rule).toBeNull();
-    const bad = { ...good, results: [good.results[0], { ...good.results[1], rule: "<b>" }] };
-    expect(cleanAttempt(bad, sets)).toBeNull();
+  it("rejects an unknown set, the wrong formulas, a wrong limit and bad dates", () => {
+    expect(cleanAttempt({ ...good, assessment: "x" }, sets, specFor)).toBeNull();
+    expect(cleanAttempt({ ...good, formulas: ["=1"] }, sets, specFor)).toBeNull();
+    expect(cleanAttempt({ ...good, formulas: ["=1", 2] }, sets, specFor)).toBeNull();
+    expect(cleanAttempt({ ...good, formulas: ["=1", "x".repeat(2001)] }, sets, specFor)).toBeNull();
+    expect(cleanAttempt({ ...good, formulas: undefined }, sets, specFor)).toBeNull();
+    expect(cleanAttempt({ ...good, timeLimit: 60 }, sets, specFor)).toBeNull();
+    expect(
+      cleanAttempt({ ...good, finishedAt: "2026-11-15T09:00:00.000Z" }, sets, specFor),
+    ).toBeNull();
+    expect(cleanAttempt({ ...good, startedAt: "yesterday" }, sets, specFor)).toBeNull();
+    expect(cleanAttempt(null, sets, specFor)).toBeNull();
+  });
+
+  it("rejects an attempt whose task has no grading spec", () => {
+    expect(cleanAttempt(good, sets, () => null)).toBeNull();
+  });
+});
+
+describe("gradeAttempt", () => {
+  it("is the score a certificate is checked against", () => {
+    const set = parse([
+      { slug: "s", title: "S", summary: "S.", minutes: 5, sample: true, tasks: ["a"] },
+    ]).sets[0];
+    const spec: GradeSpec = {
+      rows: [[2], [5]],
+      answerCell: "B1",
+      expected: 7,
+      requiredFunctions: ["SUM"],
+      forbiddenFunctions: [],
+      requireReference: true,
+    };
+    expect(set && gradeAttempt(set, ["=SUM(A1:A2)"], () => spec)?.score).toBe(1);
+    expect(set && gradeAttempt(set, ["=7"], () => spec)?.score).toBe(0);
   });
 });
 

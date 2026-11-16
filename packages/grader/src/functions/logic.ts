@@ -66,6 +66,11 @@ export const LOGIC: Record<string, FunctionSpec> = {
     255,
     safe((args) => logicals(args).some(Boolean)),
   ),
+  XOR: fn(
+    1,
+    255,
+    safe((args) => logicals(args).filter(Boolean).length % 2 === 1),
+  ),
   NOT: fn(
     1,
     1,

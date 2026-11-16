@@ -1,0 +1,78 @@
+id: year-on-year-revenue-growth
+slug: year-on-year-revenue-growth
+level: 2
+title: Year on year revenue growth
+topic: interview-finance-analyst
+updated: 2026-11-15
+checkedInExcel: null
+screens:
+  - prompt: In D2, work out the growth in kettle revenue as a share of last year's revenue.
+    rows:
+      - [Product, Last year, This year, Growth]
+      - [Kettles, 48000, 55200, null]
+      - [Toasters, 36000, 34200, null]
+      - [Blenders, 22500, 27000, null]
+      - [Mixers, 15000, 16500, null]
+    answerCell: D2
+    expected: 0.15
+    answer: =(C2-B2)/B2
+    hints:
+      nudge: Find how much revenue went up, then compare that rise with where it started.
+      rule: Growth is this year minus last year, divided by last year. Brackets make the subtraction happen before the division.
+    misses:
+      value: Revenue rose by 7200 on a base of 48000, which is 0.15, or fifteen per cent.
+      syntax: Check the brackets. The subtraction sits inside its own pair, then the division follows.
+      reference: Point at B2 and C2, so the formula can be filled down for the other products.
+    accept:
+      - =(C2-B2)/B2
+      - =(c2-b2)/b2
+      - =C2/B2-1
+      - =($C$2-$B$2)/$B$2
+      - =( C2 - B2 ) / B2
+      - =(C2-B2)/B2+0
+    reject:
+      - { formula: "=(C2-B2)/C2", rule: value }
+      - { formula: "=C2-B2", rule: value }
+      - { formula: "=(B2-C2)/B2", rule: value }
+      - { formula: "=C2-B2/B2", rule: value }
+      - { formula: "=(55200-48000)/48000", rule: reference }
+      - { formula: "=(C2-B2/B2", rule: syntax }
+  - prompt: The growth for each product is now in column D. In E2, name the product that grew fastest.
+    rows:
+      - [Product, Last year, This year, Growth, Fastest]
+      - [Kettles, 48000, 55200, 0.15, null]
+      - [Toasters, 36000, 34200, -0.05, null]
+      - [Blenders, 22500, 27000, 0.2, null]
+      - [Mixers, 15000, 16500, 0.1, null]
+    answerCell: E2
+    expected: Blenders
+    answer: =INDEX(A2:A5,MATCH(MAX(D2:D5),D2:D5,0))
+    requiredFunctions: [MAX]
+    hints:
+      nudge: Find the highest growth first, then find which row it sits on and read the name from that row.
+      rule: MAX returns the highest value. MATCH with 0 finds its position, and INDEX reads the name at that position. XLOOKUP does both of the last two steps in one.
+    misses:
+      value: Blenders grew by twenty per cent, more than any other product. The largest revenue is not the fastest growth.
+      syntax: "Check the brackets and commas. The pattern is `=INDEX(names, MATCH(MAX(growth), growth, 0))`."
+      required-function: Typing the name works today but not when the numbers change. Let MAX find the highest growth.
+      reference: The names run down A2:A5 and the growth down D2:D5.
+    accept:
+      - =INDEX(A2:A5,MATCH(MAX(D2:D5),D2:D5,0))
+      - =index(a2:a5,match(max(d2:d5),d2:d5,0))
+      - =XLOOKUP(MAX(D2:D5),D2:D5,A2:A5)
+      - =INDEX($A$2:$A$5,MATCH(MAX($D$2:$D$5),$D$2:$D$5,0))
+    reject:
+      - { formula: "=MAX(D2:D5)", rule: value }
+      - { formula: "=INDEX(A2:A5,MATCH(MAX(C2:C5),C2:C5,0))", rule: value }
+      - { formula: "=INDEX(A2:A5,MATCH(MIN(D2:D5),D2:D5,0))", rule: required-function }
+      - { formula: "=XLOOKUP(MAX(D2:D5),D2:D5,B2:B5)", rule: value }
+      - { formula: "=A4", rule: required-function }
+      - { formula: "=INDEX(A2:A5,MATCH(MAX(D2:D5),D2:D5,0)", rule: syntax }
+notes:
+  summary: Growth compares the change with the starting point, so products of different sizes can be ranked side by side. The fastest grower is the highest growth, not the highest revenue.
+  syntax: (this_year-last_year)/last_year, then INDEX(names,MATCH(MAX(growth),growth,0))
+  example: "`=(B1-A1)/A1` with 200 in A1 and 230 in B1 gives 0.15, a rise of fifteen per cent."
+  commonErrors:
+    - Dividing by this year instead of last year gives a smaller, wrong share.
+    - Without brackets, Excel divides B2 by B2 first and subtracts after.
+    - Looking up the largest revenue answers a different question from the fastest growth.

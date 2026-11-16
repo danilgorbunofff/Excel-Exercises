@@ -1,6 +1,7 @@
 // Why this exists: computes a parsed formula against the exercise sheet with
 // Excel's rules for operators, types and errors. Pure and deterministic: the
-// same formula on the same sheet always gives the same value.
+// same formula on the same sheet, with the same options.today, always gives
+// the same value.
 import type { Address } from "./address.ts";
 import { errorValue, isError } from "./errors.ts";
 import { FUNCTIONS } from "./functions/index.ts";
@@ -22,6 +23,8 @@ import {
 export interface EvaluateOptions {
   /** The cell the formula is written in. Excel would call reading it circular; here it reads as empty. */
   cell?: Address;
+  /** The date TODAY() returns, in local time. Defaults to now; set it for repeatable results. */
+  today?: Date;
 }
 
 export function evaluate(node: Node, grid: Grid, options: EvaluateOptions = {}): Value {
@@ -68,7 +71,7 @@ export function evaluate(node: Node, grid: Grid, options: EvaluateOptions = {}):
               ? { kind: "range", origin: a.address, rows: [[cell(a.address)]] }
               : run(a),
         }));
-        return impl.run(args);
+        return impl.run(args, options);
       }
       case "unary": {
         const v = toNumber(scalarOf(n.operand));

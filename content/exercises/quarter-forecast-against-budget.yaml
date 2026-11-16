@@ -1,0 +1,93 @@
+id: quarter-forecast-against-budget
+slug: quarter-forecast-against-budget
+level: 2
+title: Quarter forecast against budget
+topic: interview-fpa
+pro: true
+updated: 2026-11-15
+checkedInExcel: null
+screens:
+  - prompt: In E2, show the second quarter forecast minus the second quarter budget.
+    rows:
+      - [Month, Quarter, Forecast, Budget, Answer]
+      - [Jan, Q1, 30500, 30000, null]
+      - [Feb, Q1, 29000, 30000, null]
+      - [Mar, Q1, 33000, 32000, null]
+      - [Apr, Q2, 31500, 32000, null]
+      - [May, Q2, 30500, 32000, null]
+      - [Jun, Q2, 34500, 34000, null]
+    answerCell: E2
+    expected: -1500
+    answer: =SUMIFS(C2:C7,B2:B7,"Q2")-SUMIFS(D2:D7,B2:B7,"Q2")
+    requiredFunctions: [SUMIFS]
+    hints:
+      nudge: Total the Q2 forecast, total the Q2 budget, then take one from the other.
+      rule: SUMIFS with the quarter as its condition picks out the three Q2 months on each side. Forecast minus budget keeps a shortfall negative.
+    misses:
+      value: Q2 forecast is 96500 against a budget of 98000, so the quarter is 1500 short.
+      syntax: "Check the brackets, commas and quote marks. SUMIFS follows the pattern `=SUMIFS(sum_range, criteria_range1, criteria1)`."
+      required-function: Pick the Q2 months with SUMIFS, so the formula still works if rows are added or sorted.
+      reference: The quarters run down B2:B7, the forecast down C2:C7 and the budget down D2:D7.
+    accept:
+      - =SUMIFS(C2:C7,B2:B7,"Q2")-SUMIFS(D2:D7,B2:B7,"Q2")
+      - =sumifs(c2:c7,b2:b7,"q2")-sumifs(d2:d7,b2:b7,"q2")
+      - =SUMIFS($C$2:$C$7,$B$2:$B$7,"Q2")-SUMIFS($D$2:$D$7,$B$2:$B$7,"Q2")
+      - =-(SUMIFS(D2:D7,B2:B7,"Q2")-SUMIFS(C2:C7,B2:B7,"Q2"))
+    reject:
+      - { formula: '=SUMIFS(D2:D7,B2:B7,"Q2")-SUMIFS(C2:C7,B2:B7,"Q2")', rule: value }
+      - { formula: '=SUMIFS(C2:C7,B2:B7,"Q1")-SUMIFS(D2:D7,B2:B7,"Q1")', rule: value }
+      - { formula: '=SUMIFS(C2:C7,B2:B7,"Q2")', rule: value }
+      - { formula: "=SUM(C5:C7)-SUM(D5:D7)", rule: required-function }
+      - { formula: '=SUMIFS(C2:C7,B2:B7,"Q2")-SUMIFS(D2:D7,B2:B7,"Q2"', rule: syntax }
+  - prompt: In E2, show Over when the second quarter forecast is above its budget and Under when it is not.
+    rows:
+      - [Month, Quarter, Forecast, Budget, Answer]
+      - [Jan, Q1, 30500, 30000, null]
+      - [Feb, Q1, 29000, 30000, null]
+      - [Mar, Q1, 33000, 32000, null]
+      - [Apr, Q2, 31500, 32000, null]
+      - [May, Q2, 30500, 32000, null]
+      - [Jun, Q2, 34500, 34000, null]
+    answerCell: E2
+    expected: Under
+    answer: =IF(SUMIFS(C2:C7,B2:B7,"Q2")>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under")
+    requiredFunctions: [IF, SUMIFS]
+    hints:
+      nudge: Compare the two Q2 totals inside an IF and return one of the two words.
+      rule: IF returns its second argument when the test is true and its third when it is false. The test here is forecast greater than budget.
+    misses:
+      value: Q2 forecast of 96500 is below the 98000 budget, so the answer is Under.
+      syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, value_if_false)`."
+      required-function: The test compares two SUMIFS totals inside an IF.
+      reference: The quarters run down B2:B7.
+    accept:
+      - =IF(SUMIFS(C2:C7,B2:B7,"Q2")>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under")
+      - =if(sumifs(c2:c7,b2:b7,"q2")>sumifs(d2:d7,b2:b7,"q2"),"Over","Under")
+      - =IF(SUMIFS(C2:C7,B2:B7,"Q2")<=SUMIFS(D2:D7,B2:B7,"Q2"),"Under","Over")
+      - =IF(SUMIFS(C2:C7,B2:B7,"Q2")-SUMIFS(D2:D7,B2:B7,"Q2")>0,"Over","Under")
+    reject:
+      - {
+          formula: '=IF(SUMIFS(C2:C7,B2:B7,"Q2")<SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under")',
+          rule: value,
+        }
+      - {
+          formula: '=IF(SUMIFS(C2:C7,B2:B7,"Q1")>SUMIFS(D2:D7,B2:B7,"Q1"),"Over","Under")',
+          rule: value,
+        }
+      - {
+          formula: '=IF(SUMIFS(C2:C7,B2:B7,"Q2")>SUMIFS(D2:D7,B2:B7,"Q2"),"Under","Over")',
+          rule: value,
+        }
+      - { formula: '=IF(SUM(C5:C7)>SUM(D5:D7),"Over","Under")', rule: required-function }
+      - {
+          formula: '=IF(SUMIFS(C2:C7,B2:B7,"Q2")>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under"',
+          rule: syntax,
+        }
+notes:
+  summary: Quarter totals come from monthly rows tagged with their quarter. One SUMIFS per side keeps the comparison right when months are added or sorted.
+  syntax: SUMIFS(forecast,quarters,"Q2")-SUMIFS(budget,quarters,"Q2")
+  example: '`=SUMIFS(C1:C6,B1:B6,"Q1")` adds the forecast for the three Q1 months.'
+  commonErrors:
+    - Budget minus forecast flips the sign, so a shortfall looks like a gain.
+    - Adding fixed rows such as C5:C7 breaks when the months are sorted.
+    - Swapping the words in the IF reports Over for a quarter that is short.

@@ -2,6 +2,7 @@
 // and the rules for an attempt. The pages, the API and the content validator
 // share it, so a set cannot pass one and fail another.
 import { readFileSync } from "node:fs";
+import { type GradeSpec, grade } from "@practice/grader";
 import { parse } from "yaml";
 import { type AssessmentSet, type Assessments, assessmentsSchema } from "../content/schema.ts";
 
@@ -48,7 +49,7 @@ export function checkAssessments(data: Assessments, exercises: readonly Exercise
   return problems;
 }
 
-/** One graded task in an attempt, as the browser reports it. */
+/** One graded task in an attempt, as the server marked it. */
 export interface TaskResult {
   exercise: string;
   screen: number;
@@ -66,46 +67,76 @@ export interface Attempt {
   score: number;
   total: number;
   results: TaskResult[];
+  /** The formula typed for each task, in task order; "" when left blank. */
+  formulas: string[];
+  /** The token from /api/assessments/start/, or null when the browser has none. */
+  startToken: string | null;
 }
 
+/** The grading spec of one exercise screen, or null when there is no such screen. */
+export type SpecFor = (exercise: string, screen: number) => GradeSpec | null;
+
 const ISO = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$/u;
-const RULE = /^[a-z-]{1,40}$/u;
+const MAX_FORMULA = 2000;
+const TOKEN = /^\d{13}\.[A-Za-z0-9_-]{43}$/u;
 
 /**
- * The attempt, if it matches its set exactly; otherwise null. The score is
- * recounted here rather than trusted.
- * shortcut: grading runs in the browser, so a visitor can still report a
- * formula as correct when it was not. It only changes their own history; grade
- * on the server if scores are ever shown to anyone else.
+ * Marks each formula against its task with the grader. The browser's own
+ * marks are never read: this is the score that is stored and certified.
  */
-export function cleanAttempt(body: unknown, sets: readonly AssessmentSet[]): Attempt | null {
+export function gradeAttempt(
+  set: AssessmentSet,
+  formulas: readonly string[],
+  specFor: SpecFor,
+): { score: number; total: number; results: TaskResult[] } | null {
+  const results: TaskResult[] = [];
+  for (const [i, task] of set.tasks.entries()) {
+    const spec = specFor(task.exercise, task.screen);
+    if (!spec) return null;
+    const formula = (formulas[i] ?? "").trim();
+    const verdict = formula ? grade(formula, spec) : null;
+    results.push({
+      exercise: task.exercise,
+      screen: task.screen,
+      correct: verdict?.correct ?? false,
+      rule: verdict?.rule ?? null,
+    });
+  }
+  return { score: results.filter((r) => r.correct).length, total: results.length, results };
+}
+
+/**
+ * The attempt, if it matches its set exactly, marked here on the server;
+ * otherwise null.
+ */
+export function cleanAttempt(
+  body: unknown,
+  sets: readonly AssessmentSet[],
+  specFor: SpecFor,
+): Attempt | null {
   if (!body || typeof body !== "object") return null;
   const b = body as Record<string, unknown>;
   const set = sets.find((s) => s.slug === b["assessment"]);
-  if (!set || !Array.isArray(b["results"]) || b["results"].length !== set.tasks.length) return null;
+  const raw = b["formulas"];
+  if (!set || !Array.isArray(raw) || raw.length !== set.tasks.length) return null;
+  if (!raw.every((f) => typeof f === "string" && f.length <= MAX_FORMULA)) return null;
+  const formulas = (raw as string[]).map((f) => f.trim());
   const startedAt = String(b["startedAt"]);
   const finishedAt = String(b["finishedAt"]);
   if (!ISO.test(startedAt) || !ISO.test(finishedAt) || finishedAt < startedAt) return null;
   const limit = b["timeLimit"];
   if (limit !== null && !(Number.isInteger(limit) && limit === set.minutes * 60)) return null;
-  const results: TaskResult[] = [];
-  for (const [i, raw] of (b["results"] as unknown[]).entries()) {
-    const r = (raw ?? {}) as Record<string, unknown>;
-    const task = set.tasks[i];
-    if (!task || r["exercise"] !== task.exercise || r["screen"] !== task.screen) return null;
-    if (typeof r["correct"] !== "boolean") return null;
-    const rule = r["correct"] || r["rule"] === null ? null : String(r["rule"]);
-    if (rule !== null && !RULE.test(rule)) return null;
-    results.push({ exercise: task.exercise, screen: task.screen, correct: r["correct"], rule });
-  }
+  const token = b["startToken"];
+  const graded = gradeAttempt(set, formulas, specFor);
+  if (!graded) return null;
   return {
     assessment: set.slug,
     startedAt,
     finishedAt,
     timeLimit: limit as number | null,
-    score: results.filter((r) => r.correct).length,
-    total: results.length,
-    results,
+    ...graded,
+    formulas,
+    startToken: typeof token === "string" && TOKEN.test(token) ? token : null,
   };
 }
 

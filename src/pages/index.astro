@@ -4,14 +4,15 @@
 // it works beside what a check says about a wrong formula, why to practise
 // here, a dark band on who uses it, the tracks, questions and a solid green
 // last call to start.
-import { siteConfig } from "../../site.config.ts";
 import MissExample from "../components/home/MissExample.astro";
 import Icon, { type IconName } from "../components/Icon.astro";
 import LiveExercise from "../components/LiveExercise.astro";
 import TrackList from "../components/TrackList.astro";
 import Base from "../layouts/Base.astro";
+import { isLocked } from "../lib/access.ts";
 import { exercisePath, placedExercises, trackSummaries, tracksPath } from "../lib/exercises.ts";
 import { loadFunctionIndex } from "../lib/functions.ts";
+import { PRACTICE_NAV } from "../lib/nav.ts";
 
 const placed = await placedExercises();
 const first = placed[0];
@@ -19,7 +20,7 @@ if (!first) throw new Error("The track has no exercises");
 const total = placed.length;
 const tracks = trackSummaries(placed);
 const functionCount = loadFunctionIndex().functions.length;
-const free = siteConfig.freeCount === null ? total : Math.min(siteConfig.freeCount, total);
+const free = placed.filter((p) => !isLocked(p)).length;
 const sumExercise = placed.find((p) => p.exercise.id === "sum-a-column");
 const missScreen = sumExercise?.exercise.screens[0];
 
@@ -29,7 +30,7 @@ const faq = [
     a:
       free === total
         ? `Yes. All ${total} exercises, the hints and the function pages are free. PRO will add more exercises later, and the free ones stay free.`
-        : `The first ${free} of ${total} exercises are free.`,
+        : `Yes. ${free} of the ${total} exercises, the hints and the function pages are free. PRO adds the rest, and the free ones stay free.`,
   },
   {
     q: "Do I need Excel?",
@@ -80,6 +81,9 @@ const offers: {
     link: "View the tracks",
   },
 ];
+// The other ways to practise, under the three offers. Progress is not a way in.
+const offerLinks = new Set(offers.map((o) => o.href));
+const moreWays = PRACTICE_NAV.filter((i) => !offerLinks.has(i.href) && i.href !== "/progress/");
 const steps = [
   {
     title: "Choose a task",
@@ -149,6 +153,10 @@ const audiences: { title: string; text: string }[] = [
           </a>
           <a class="button button-outline button-l" href="/exercises/">See all exercises</a>
         </div>
+        <p class="hero-daily">
+          New every day: <a href="/daily/">the daily exercise</a>.
+          <span class="hero-streak" data-home-streak hidden></span>
+        </p>
       </div>
       <div class="hero-try">
         <LiveExercise placed={first} heading="Try the first exercise" />
@@ -172,8 +180,8 @@ const audiences: { title: string; text: string }[] = [
   <section class="band">
     <div class="container">
       <div class="section-head">
-        <h2>Three ways to use the site</h2>
-        <p>Solve exercises, look up a function, or follow a track from start to finish.</p>
+        <h2>Ways to practise</h2>
+        <p>Solve exercises, look up a function, follow a track, or test yourself against the clock.</p>
       </div>
       <ul class="grid-3">
         {
@@ -185,6 +193,18 @@ const audiences: { title: string; text: string }[] = [
               <a class="offer-link" href={o.href}>
                 {o.link}&nbsp;<span aria-hidden="true">→</span>
               </a>
+            </li>
+          ))
+        }
+      </ul>
+      <ul class="grid-3 more-ways">
+        {
+          moreWays.map((m) => (
+            <li class="card more-way">
+              <h3>
+                <a href={m.href}>{m.label}</a>
+              </h3>
+              <p>{m.description}</p>
             </li>
           ))
         }
@@ -326,6 +346,7 @@ const audiences: { title: string; text: string }[] = [
 
 <script>
   import "../scripts/catalogue.ts";
+  import "../scripts/home-streak.ts";
 </script>
 
 <style>
@@ -359,6 +380,24 @@ const audiences: { title: string; text: string }[] = [
     flex-wrap: wrap;
     gap: var(--space-3);
     margin-top: var(--space-6);
+  }
+  .hero-daily {
+    position: relative;
+    margin: var(--space-4) 0 0;
+    color: var(--muted);
+  }
+  /* A returning visitor's streak sits on its own line in the gap under the
+     paragraph, out of the flow, so showing it never moves the page. */
+  .hero-streak {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: var(--space-1);
+    font-weight: 600;
+    color: var(--text);
+  }
+  .hero-daily a {
+    color: var(--text);
   }
   .hero-try :global(.live) {
     margin: 0;
@@ -483,6 +522,41 @@ const audiences: { title: string; text: string }[] = [
   }
   .offer-link:focus-visible {
     outline-color: var(--on-primary);
+  }
+  .more-ways {
+    margin-top: var(--space-5);
+  }
+  .more-way {
+    position: relative;
+    padding: var(--space-5);
+  }
+  .more-way h3 {
+    margin: 0 0 var(--space-2);
+  }
+  .more-way a {
+    color: var(--heading);
+    text-decoration: none;
+  }
+  /* The whole card is the link's target. */
+  .more-way a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+  .more-way a:focus-visible {
+    outline: none;
+  }
+  .more-way a:focus-visible::after {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  .more-way:hover a {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .grid-3 .more-way p {
+    margin: 0;
   }
   .how {
     display: grid;

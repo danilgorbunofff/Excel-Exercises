@@ -149,7 +149,10 @@ test("a PRO account takes a PRO set and the result is saved once", async ({ page
         ],
       });
     bodies.push(r.request().postDataJSON());
-    return r.fulfill({ status: 201, json: { saved: true } });
+    return r.fulfill({
+      status: 201,
+      json: { saved: true, id: "11111111-2222-4333-8444-555555555555", score: 10, total: 10 },
+    });
   });
   await page.reload();
   await expect(page.locator("[data-paywall]")).toHaveCount(0);
@@ -170,6 +173,9 @@ test("a PRO account takes a PRO set and the result is saved once", async ({ page
   await expect(page.locator("[data-save-note]")).toHaveText("Saved to your history.");
   expect(bodies).toHaveLength(1);
   expect(bodies[0]).toMatchObject({ assessment: "office-essentials", timeLimit: 30 * 60 });
+  // Only the formulas go to the server, which marks them itself.
+  expect((bodies[0] as { formulas: string[] }).formulas).toEqual(answers);
+  expect(bodies[0]).not.toHaveProperty("results");
 });
 
 test("the assessment works from the keyboard alone", async ({ page }) => {

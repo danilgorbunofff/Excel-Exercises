@@ -1,9 +1,13 @@
 ---
 // Why this exists: account settings: plan and billing, email, password, email
 // preferences, log out and delete. Every form posts to an /api/ function and
-// comes back here with a message. account-page.ts fills in the current values.
+// comes back here with a message. account-page.ts fills in the current values
+// and the daily streak.
+import Icon from "../../components/Icon.astro";
 import SignedOutPanel from "../../components/SignedOutPanel.astro";
 import Base from "../../layouts/Base.astro";
+import { STRIP_DAYS } from "../../lib/daily.ts";
+import "../../styles/daily.css";
 ---
 
 <Base title="Account" description="Your account settings." layout="flush">
@@ -28,6 +32,34 @@ import Base from "../../layouts/Base.astro";
         </form>
         <p class="small">Change your plan, update your card, see invoices or cancel, on Stripe.</p>
       </div>
+    </section>
+
+    <section class="card block streak" aria-labelledby="streak-title" data-streak>
+      <h2 id="streak-title">Daily streak</h2>
+      <dl class="streak-stats">
+        <div>
+          <dt>Current streak</dt>
+          <dd data-current>0 days</dd>
+        </div>
+        <div>
+          <dt>Best streak</dt>
+          <dd data-best>0 days</dd>
+        </div>
+      </dl>
+      <template data-check-icon><Icon name="check" size={16} /></template>
+      <h3 class="visually-hidden" id="account-strip-title">The last {STRIP_DAYS} days</h3>
+      <ol class="d-strip" aria-labelledby="account-strip-title" data-strip></ol>
+      <p><a href="/daily/">Open the daily exercise</a></p>
+    </section>
+
+    <section class="card block" aria-labelledby="cert-title" data-certs>
+      <h2 id="cert-title">Certificates</h2>
+      <p class="small" data-certs-empty>
+        Pass a timed mock assessment with 80% or more to get a certificate.
+        <span data-certs-free hidden>Certificates come with <a href="/pricing/">PRO</a>.</span>
+      </p>
+      <ul class="cert-list" data-certs-list hidden></ul>
+      <p><a href="/mock-assessments/">See the mock assessments</a></p>
     </section>
 
     <section class="card block" aria-labelledby="email-title">
@@ -58,6 +90,18 @@ import Base from "../../layouts/Base.astro";
         <label class="check"><input type="checkbox" name="news" data-news /> Send me an email when new exercises arrive</label>
         <button class="button button-outline" type="submit">Save</button>
       </form>
+    </section>
+
+    <section class="card block" aria-labelledby="export-title">
+      <h2 id="export-title">Your data</h2>
+      <p>
+        Download everything your account keeps as one JSON file: your plan, progress, mock
+        assessment results, daily solves and certificates.
+      </p>
+      <p class="small">
+        Progress saved only in a browser where you have not logged in is not in the file.
+      </p>
+      <p><a class="button button-outline" href="/api/account/export/" download>Download your data</a></p>
     </section>
 
     <section class="card block" aria-labelledby="session-title">
@@ -157,5 +201,62 @@ import Base from "../../layouts/Base.astro";
   }
   .danger {
     border-color: var(--miss);
+  }
+  .streak-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+    margin: 0;
+  }
+  .streak-stats dt {
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .streak-stats dd {
+    margin: var(--space-1) 0 0;
+    font-size: var(--size-l);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--heading);
+  }
+  .cert-list {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--rule);
+  }
+  .cert-list :global(li) {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .cert-list :global(p) {
+    margin: 0;
+  }
+  .cert-list :global(.cert-name) {
+    font-weight: 600;
+  }
+  .cert-list :global(.cert-revoked) {
+    color: var(--miss);
+  }
+  .cert-list :global(.cert-actions) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-1);
+  }
+  /* The card is narrow, so the strip keeps two weeks of seven at every width. */
+  .streak .d-strip {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+  /* On phones the strip takes half the card padding, so each day stays 44 px wide. */
+  @media (max-width: 47.99rem) {
+    .streak .d-strip {
+      margin-inline: calc(-1 * var(--space-3));
+    }
   }
 </style>

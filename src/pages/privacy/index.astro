@@ -3,6 +3,7 @@
 // does. The owner's host choice fills in the one part the code cannot know.
 import { siteConfig } from "../../../site.config.ts";
 import Base from "../../layouts/Base.astro";
+import { DAILY_KEY } from "../../scripts/daily-store.ts";
 import { STORAGE_KEY } from "../../scripts/progress.ts";
 
 const host = siteConfig.host;
@@ -22,6 +23,10 @@ const host = siteConfig.host;
     account it is never sent to the site.
   </p>
   <p>
+    The days you solved the <a href="/daily/">daily exercise</a> are saved the same way, under the
+    name <code>{DAILY_KEY}</code>, to count your streak.
+  </p>
+  <p>
     To remove it, use <a href="/progress/">Clear my progress</a> on the progress page, or clear this
     site's data in your browser settings.
   </p>
@@ -32,13 +37,30 @@ const host = siteConfig.host;
     <li>your email address, and your password in a form that cannot be read back;</li>
     <li>if you sign in with Google, the email address, name and picture Google shares with the site;</li>
     <li>a copy of your progress, so it follows you to other devices;</li>
+    <li>the days you solved the daily exercise, for your streak;</li>
+    <li>your mock assessment results, with the formula you typed for each task, so the server can mark them;</li>
+    <li>
+      your certificates (the <code>certificates</code> table): the name you typed for it, the
+      assessment, your score, the date, and whether you revoked it;
+    </li>
     <li>whether you want an email when new exercises arrive;</li>
     <li>whether you have PRO, and until when.</li>
   </ul>
   <p>
     Accounts are stored by <a href="https://supabase.com/privacy">Supabase</a>. You can change your
     email and password, or delete the account and everything in it, on the
-    <a href="/account/">account page</a>.
+    <a href="/account/">account page</a>. You can also download everything it keeps there, as one
+    JSON file.
+  </p>
+  <p>
+    A certificate has its own page, at an address made of a long random number. Anyone with that
+    link sees the name you typed, the assessment, your score, the date and whether it is valid or
+    revoked. It never shows your email or anything else from your account, and it asks search
+    engines not to list it.
+  </p>
+  <p>
+    You can revoke a certificate on the account page. Deleting your account removes your
+    certificates, and their links then say no certificate has that number.
   </p>
 
   <h2>If you buy PRO</h2>

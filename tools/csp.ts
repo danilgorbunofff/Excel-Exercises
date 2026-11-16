@@ -1,11 +1,13 @@
 // Why this exists: keeps the Content-Security-Policy in vercel.json in step
 // with the build. It hashes every inline script, style and style attribute in
-// dist and fails if vercel.json does not list exactly those hashes, because a
-// stale list blocks scripts and styles on the live site only.
+// dist and in the server-rendered pages, and fails if vercel.json does not
+// list exactly those hashes, because a stale list blocks scripts and styles on
+// the live site only.
 // Run after `npm run build`: npm run check:csp, or npm run csp:write to update.
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { buildPolicy, inlineHashes } from "./lib/csp.ts";
 import { listFiles } from "./lib/fs.ts";
+import { ssrPages } from "./lib/ssr.ts";
 
 const CONFIG = "vercel.json";
 const HEADER = "Content-Security-Policy";
@@ -16,7 +18,9 @@ if (!existsSync("dist/client")) {
 }
 // SVG files are served with the same header, and the favicon has a style element.
 const files = listFiles("dist/client", (n) => n.endsWith(".html") || n.endsWith(".svg"));
-const hashes = inlineHashes(files.map((f) => readFileSync(f, "utf8")));
+// The certificate pages are rendered by the server, so they are not in dist:
+// render each kind through the built function and hash those too.
+const hashes = inlineHashes([...files.map((f) => readFileSync(f, "utf8")), ...(await ssrPages())]);
 const policy = buildPolicy(hashes);
 
 const raw = readFileSync(CONFIG, "utf8");

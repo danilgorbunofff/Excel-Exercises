@@ -4,10 +4,12 @@
 // marked, and where to go after.
 import Breadcrumbs from "../../../components/Breadcrumbs.astro";
 import Icon from "../../../components/Icon.astro";
+import PracticeTabs from "../../../components/PracticeTabs.astro";
 import RichText from "../../../components/RichText.astro";
 import TrackIcon from "../../../components/TrackIcon.astro";
 import Base from "../../../layouts/Base.astro";
 import { isLocked } from "../../../lib/access.ts";
+import { assessmentPath, loadAssessments } from "../../../lib/assessments.ts";
 import {
   exercisePath,
   exercisesForFunction,
@@ -41,6 +43,8 @@ const first = exercises[0];
 const ids = exercises.map((p) => p.exercise.id).join(" ");
 const pages = new Map((await functionPages()).map((p) => [p.name, functionPath(p.slug)]));
 const fnHref = (name: string) => pages.get(name) ?? exercisesForFunction(name);
+const assessment = loadAssessments().sets.find((s) => s.slug === topic.assessment);
+const anyLocked = exercises.some((p) => isLocked(p));
 const jsonLd = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "ItemList",
@@ -56,10 +60,10 @@ const jsonLd = JSON.stringify({
 
 <Base
   title={`${topic.title}: ${exercises.length} practice exercises`}
-  description={`${exercises.length} free Excel exercises on ${topic.title}. ${topic.summary}`}
-  section="/exercises/"
+  description={`${exercises.length} ${anyLocked ? "" : "free "}Excel exercises on ${topic.title}. ${topic.summary}`}
   layout="wide"
 >
+  <PracticeTabs />
   <div class="crumbs-row">
     <Breadcrumbs
       items={[
@@ -165,11 +169,8 @@ const jsonLd = JSON.stringify({
                       ))}
                     </ul>
                   )}
-                  <span class="status" data-status-for={p.exercise.id}>
-                    <span class="dot" aria-hidden="true" />
-                    <span class="visually-hidden" data-status-label>
-                      Not started
-                    </span>
+                  <span class="state-tag" data-status-for={p.exercise.id}>
+                    <span data-status-label>Not started</span>
                   </span>
                 </div>
               </div>
@@ -186,6 +187,17 @@ const jsonLd = JSON.stringify({
   <section aria-labelledby="where" class="where">
     <h2 id="where">After this track</h2>
     <div class="where-grid">
+      {
+        assessment && (
+          <a class="card where-card" href={assessmentPath(assessment.slug)}>
+            <span class="where-text">
+              <span class="where-title">Mock assessment: {assessment.title}</span>
+              <span>{assessment.summary} {assessment.minutes} minutes.</span>
+            </span>
+            <Icon name="arrow" size={18} />
+          </a>
+        )
+      }
       {
         next ? (
           <a class="card where-card" href={topicPath(next.topic.slug)}>
@@ -396,19 +408,6 @@ const jsonLd = JSON.stringify({
   .go {
     grid-column: 1 / -1;
     justify-self: start;
-  }
-  .status .dot {
-    display: inline-grid;
-    place-items: center;
-    width: 1.25rem;
-    height: 1.25rem;
-    border: 2px solid var(--line);
-    border-radius: 50%;
-  }
-  .status[data-state="solved"] .dot,
-  .status[data-state="helped"] .dot {
-    border-color: var(--primary);
-    background: var(--primary);
   }
   .where {
     margin: var(--space-7) 0;

@@ -1,0 +1,23 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX(B$2:D$4,MATCH(B5,A2:A4,0),MATCH(B6,B1:D1,0))
+      - =index(b2:d4, match(b5, a2:a4, 0), match(b6, b1:d1, 0))
+      - =LET(data,B2:D4,INDEX(data,MATCH(B5,A2:A4,0),MATCH(B6,B1:D1,0)))
+    wrong:
+      - formula: =INDEX(B2:D3,MATCH(B5,A2:A4,0),MATCH(B6,B1:D1,0))
+        rule: fragile
+        why: range B2:D4 one row short at the end
+      - formula: =INDEX(B2:D4,MATCH(B5,A2:A3,0),MATCH(B6,B1:D1,0))
+        rule: fragile
+        why: range A2:A4 one row short at the end
+      - formula: =INDEX(B2:D4,MATCH(B5,A2:A4,1),MATCH(B6,B1:D1,0))
+        rule: fragile
+        why: 0 written as 1
+    equivalent:
+      - formula: =INDEX(B2:D5,MATCH(B5,A2:A4,0),MATCH(B6,B1:D1,0))
+        why: "range B2:D4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(B2:D4,MATCH(B5,A2:A5,0),MATCH(B6,B1:D1,0))
+        why: "range A2:A4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(B2:D4,MATCH(B5,A2:A4,0),MATCH(B6,B1:D1,1))
+        why: "0 written as 1: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

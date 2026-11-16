@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF(A$2:A$6,"North",C2:C6)
+      - =sumif(a2:a6, "North", c2:c6)
+      - =LET(data,A2:A6,SUMIF(data,"North",C2:C6))
+    wrong: []
+    equivalent:
+      - formula: =SUMIF(A2:A7,"North",C2:C6)
+        why: "range A2:A6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+  - correct:
+      - =sumif(b2:b6, ">40")
+      - =LET(data,B2:B6,SUMIF(data,">40"))
+    wrong:
+      - formula: =SUMIF(B3:B6,">40")
+        rule: fragile
+        why: range B2:B6 skips its first row
+    equivalent: []

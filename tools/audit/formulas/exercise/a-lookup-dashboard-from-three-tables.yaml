@@ -1,0 +1,28 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX(C$2:C$5,MATCH(F2,A2:A5,0))
+      - =index(c2:c5, match(f2, a2:a5, 0))
+      - =XLOOKUP(F2,A2:A5,C2:C5)
+      - =LET(data,C2:C5,INDEX(data,MATCH(F2,A2:A5,0)))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =INDEX(G$2:G$4,MATCH(INDEX(B2:B5,MATCH(F7,A2:A5,0)),F2:F4,0))
+      - =index(g2:g4, match(index(b2:b5, match(f7, a2:a5, 0)), f2:f4, 0))
+      - =XLOOKUP(INDEX(B2:B5,MATCH(F7,A2:A5,0)),F2:F4,G2:G4)
+      - =INDEX(G2:G4,MATCH(XLOOKUP(F7,A2:A5,B2:B5),F2:F4,0))
+      - =LET(data,G2:G4,INDEX(data,MATCH(INDEX(B2:B5,MATCH(F7,A2:A5,0)),F2:F4,0)))
+    wrong:
+      - formula: =INDEX(G2:G4,MATCH(INDEX(B2:B5,MATCH(F7,A2:A5,1)),F2:F4,0))
+        rule: fragile
+        why: 0 written as 1
+    equivalent:
+      - formula: =INDEX(G2:G5,MATCH(INDEX(B2:B5,MATCH(F7,A2:A5,0)),F2:F4,0))
+        why: "range G2:G4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(G2:G4,MATCH(INDEX(B2:B6,MATCH(F7,A2:A5,0)),F2:F4,0))
+        why: "range B2:B5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(G2:G4,MATCH(INDEX(B2:B5,MATCH(F7,A2:A6,0)),F2:F4,0))
+        why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(G2:G4,MATCH(INDEX(B2:B5,MATCH(F7,A2:A5,0)),F2:F5,0))
+        why: "range F2:F4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

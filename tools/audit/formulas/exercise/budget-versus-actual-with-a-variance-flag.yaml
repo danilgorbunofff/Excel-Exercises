@@ -1,0 +1,25 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND((C$2-B2)/B2,3)
+      - =round((c2-b2)/b2, 3)
+    wrong:
+      - formula: =ROUNDUP((C2-B2)/B2,3)
+        rule: fragile
+        why: ROUNDUP instead of ROUND
+    equivalent: []
+  - correct:
+      - =IF(ABS(C$2-B2)/B2>0.1,"review","ok")
+      - =if(abs(c2-b2)/b2>0.1, "review", "ok")
+      - =IFS(ABS(C2-B2)/B2>0.1,"review",TRUE,"ok")
+    wrong:
+      - formula: =IF(ABS(C2-B2)/B2>=0.1,"review","ok")
+        rule: fragile
+        why: "> written as >="
+      - formula: =IF(ABS(C2-B2)/B3>0.1,"review","ok")
+        rule: fragile
+        why: B2 read from the next row
+      - formula: =IF(ABS(C2-B2)/C2>0.1,"review","ok")
+        rule: fragile
+        why: B2 read from the next column
+    equivalent: []

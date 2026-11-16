@@ -1,0 +1,23 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF($B$2>=50,"Pass","Fail")
+      - =IF(B$2>=50,"Pass","Fail")
+      - =if(b2>=50, "Pass", "Fail")
+    wrong:
+      - formula: =IF(B2>50,"Pass","Fail")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IF(B1>=50,"Pass","Fail")
+        rule: fragile
+        why: B2 read from the row above
+      - formula: =IF(A2>=50,"Pass","Fail")
+        rule: fragile
+        why: B2 read from the column to the left
+      - formula: =IF(B2>=51,"Pass","Fail")
+        rule: fragile
+        why: 50 written as 51
+      - formula: =IF(B2>=49,"Pass","Fail")
+        rule: fragile
+        why: 50 written as 49
+    equivalent: []

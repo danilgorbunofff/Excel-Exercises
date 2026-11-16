@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LET(data,B2:B6,SUM(data))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =SUM(C$2:C$6)-SUMIF(A2:A6,"North",C2:C6)
+      - =sum(c2:c6)-sumif(a2:a6, "North", c2:c6)
+      - =LET(data,C2:C6,SUM(data)-SUMIF(A2:A6,"North",data))
+    wrong: []
+    equivalent:
+      - formula: =SUM(C2:C6)-SUMIF(A2:A7,"North",C2:C6)
+        why: "range A2:A6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

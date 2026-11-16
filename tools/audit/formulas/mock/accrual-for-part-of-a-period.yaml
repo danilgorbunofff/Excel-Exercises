@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND($B$2*$B$3/$B$4,2)
+      - =ROUND(B$2*B3/B4,2)
+      - =round(b2*b3/b4, 2)
+    wrong:
+      - formula: =ROUNDUP(B2*B3/B4,2)
+        rule: fragile
+        why: ROUNDUP instead of ROUND
+    equivalent: []

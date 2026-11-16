@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(COUNTIF($A$2:$A$9,$A$5)>1,"Duplicate","Unique")
+      - =IF(COUNTIF(A$2:A$9,A5)>1,"Duplicate","Unique")
+      - =if(countif(a2:a9, a5)>1, "Duplicate", "Unique")
+      - =IFS(COUNTIF(A2:A9,A5)>1,"Duplicate",TRUE,"Unique")
+      - =IF(COUNTIFS(A2:A9,A5)>1,"Duplicate","Unique")
+      - =IF(SUMPRODUCT(--(A2:A9=A5))>1,"Duplicate","Unique")
+      - =LET(data,A2:A9,IF(COUNTIF(data,A5)>1,"Duplicate","Unique"))
+    wrong:
+      - formula: =IF(COUNTIF(A2:A8,A5)>1,"Duplicate","Unique")
+        rule: fragile
+        why: range A2:A9 one row short at the end
+      - formula: =IF(COUNTIF(A3:A9,A5)>1,"Duplicate","Unique")
+        rule: fragile
+        why: range A2:A9 skips its first row
+    equivalent: []

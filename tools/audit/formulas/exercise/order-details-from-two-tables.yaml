@@ -1,0 +1,19 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP($B$2,$E$2:$E$5,$G$2:$G$5)
+      - =XLOOKUP(B$2,$E$2:$E$5,$G$2:$G$5)
+      - =xlookup(b2, $e$2:$e$5, $g$2:$g$5)
+      - =LET(data,$E$2:$E$5,XLOOKUP(B2,data,$G$2:$G$5))
+    wrong:
+      - formula: =G5
+        rule: fragile
+        why: points at G5, which holds the result
+    equivalent: []
+  - correct:
+      - =$C$2*XLOOKUP($B$2,$F$2:$F$4,$G$2:$G$4)
+      - =C$2*XLOOKUP(B2,$F$2:$F$4,$G$2:$G$4)
+      - =c2*xlookup(b2, $f$2:$f$4, $g$2:$g$4)
+      - =LET(data,$F$2:$F$4,C2*XLOOKUP(B2,data,$G$2:$G$4))
+    wrong: []
+    equivalent: []

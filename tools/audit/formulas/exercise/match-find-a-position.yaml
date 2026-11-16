@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MATCH(B$6,A2:A5,0)
+      - =match(b6, a2:a5, 0)
+      - =LET(data,A2:A5,MATCH(B6,data,0))
+    wrong:
+      - formula: =MATCH(B6,A2:A4,0)
+        rule: fragile
+        why: range A2:A5 one row short at the end
+    equivalent:
+      - formula: =MATCH(B6,A2:A6,0)
+        why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

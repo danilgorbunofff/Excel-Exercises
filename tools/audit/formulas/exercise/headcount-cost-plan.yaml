@@ -1,0 +1,23 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(C$2:C$6,D2:D6)
+      - =sumproduct(c2:c6, d2:d6)
+      - =LET(data,C2:C6,SUMPRODUCT(data,D2:D6))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =SUMIFS(C$2:C$6,B2:B6,"Senior")
+      - =sumifs(c2:c6, b2:b6, "Senior")
+      - =SUMPRODUCT((B2:B6="Senior")*C2:C6)
+      - =SUM(FILTER(C2:C6,(B2:B6="Senior"),0))
+      - =LET(data,C2:C6,SUMIFS(data,B2:B6,"Senior"))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =SUMPRODUCT(C$2:C$6,D2:D6)/SUM(C2:C6)
+      - =sumproduct(c2:c6, d2:d6)/sum(c2:c6)
+      - =SUMPRODUCT(C2:C6,D2:D6)/SUMPRODUCT(C2:C6)
+      - =LET(data,C2:C6,SUMPRODUCT(data,D2:D6)/SUM(data))
+    wrong: []
+    equivalent: []

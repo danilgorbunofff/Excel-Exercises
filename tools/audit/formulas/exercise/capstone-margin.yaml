@@ -1,0 +1,38 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFERROR(ROUND((SUMIF(A$2:A$5,"North",B2:B5)-SUMIF(A2:A5,"North",C2:C5))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
+      - =iferror(round((sumif(a2:a5, "North", b2:b5)-sumif(a2:a5, "North", c2:c5))/sumif(a2:a5, "North", b2:b5)*100, 1), "")
+      - =IFERROR(ROUND((SUMIFS(B2:B5,A2:A5,"North")-SUMIF(A2:A5,"North",C2:C5))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
+      - =IFERROR(ROUND((SUMPRODUCT((A2:A5="North")*B2:B5)-SUMIF(A2:A5,"North",C2:C5))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
+      - =IFERROR(ROUND((SUM(FILTER(B2:B5,(A2:A5="North"),0))-SUMIF(A2:A5,"North",C2:C5))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
+      - =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUMIFS(C2:C5,A2:A5,"North"))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
+      - =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUMPRODUCT((A2:A5="North")*C2:C5))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
+      - =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUM(FILTER(C2:C5,(A2:A5="North"),0)))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
+      - =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUMIF(A2:A5,"North",C2:C5))/SUMIFS(B2:B5,A2:A5,"North")*100,1),"")
+      - =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUMIF(A2:A5,"North",C2:C5))/SUMPRODUCT((A2:A5="North")*B2:B5)*100,1),"")
+      - =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUMIF(A2:A5,"North",C2:C5))/SUM(FILTER(B2:B5,(A2:A5="North"),0))*100,1),"")
+      - =LET(data,A2:A5,IFERROR(ROUND((SUMIF(data,"North",B2:B5)-SUMIF(data,"North",C2:C5))/SUMIF(data,"North",B2:B5)*100,1),""))
+    wrong:
+      - formula: =IFERROR(ROUND((SUMIF(A2:A4,"North",B2:B5)-SUMIF(A2:A5,"North",C2:C5))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
+        rule: fragile
+        why: range A2:A5 one row short at the end
+      - formula: =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUMIF(A2:A4,"North",C2:C5))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
+        rule: fragile
+        why: range A2:A5 one row short at the end
+      - formula: =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUMIF(A2:A5,"North",C2:C5))/SUMIF(A2:A4,"North",B2:B5)*100,1),"")
+        rule: fragile
+        why: range A2:A5 one row short at the end
+    equivalent:
+      - formula: =IFERROR(ROUND((SUMIF(A2:A6,"North",B2:B5)-SUMIF(A2:A5,"North",C2:C5))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
+        why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B6)-SUMIF(A2:A5,"North",C2:C5))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
+        why: "range B2:B5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUMIF(A2:A6,"North",C2:C5))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
+        why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUMIF(A2:A5,"North",C2:C6))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
+        why: "range C2:C5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUMIF(A2:A5,"North",C2:C5))/SUMIF(A2:A6,"North",B2:B5)*100,1),"")
+        why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUMIF(A2:A5,"North",C2:C5))/SUMIF(A2:A5,"North",B2:B6)*100,1),"")
+        why: "range B2:B5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

@@ -1,0 +1,20 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUM(B$2:B$6)+AVERAGE(B2:B6)*(12-C2)
+      - =SUMPRODUCT(B2:B6)+AVERAGE(B2:B6)*(12-C2)
+      - =LET(data,B2:B6,SUM(data)+AVERAGE(data)*(12-C2))
+    wrong:
+      - formula: =SUM(B2:B6)+MEDIAN(B2:B6)*(12-C2)
+        rule: fragile
+        why: MEDIAN instead of AVERAGE
+      - formula: =SUM(B2:B6)+AVERAGE(B2:B5)*(12-C2)
+        rule: fragile
+        why: range B2:B6 one row short at the end
+    equivalent: []
+  - correct:
+      - =SUM(B$2:B$6)+AVERAGE(B4:B6)*(12-C2)
+      - =SUMPRODUCT(B2:B6)+AVERAGE(B4:B6)*(12-C2)
+      - =LET(data,B2:B6,SUM(data)+AVERAGE(B4:B6)*(12-C2))
+    wrong: []
+    equivalent: []

@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(AVERAGE($B$2:$B$7),1)
+      - =ROUND(AVERAGE(B$2:B$7),1)
+      - =round(average(b2:b7), 1)
+      - =LET(data,B2:B7,ROUND(AVERAGE(data),1))
+    wrong:
+      - formula: =ROUNDUP(AVERAGE(B2:B7),1)
+        rule: fragile
+        why: ROUNDUP instead of ROUND
+    equivalent: []

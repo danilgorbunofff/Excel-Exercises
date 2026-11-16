@@ -1,0 +1,52 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($A$2:$A$6,MATCH($B$8,$B$2:$B$6,0))
+      - =INDEX(A$2:A$6,MATCH(B8,B2:B6,0))
+      - =index(a2:a6, match(b8, b2:b6, 0))
+      - =LET(data,A2:A6,INDEX(data,MATCH(B8,B2:B6,0)))
+    wrong:
+      - formula: =INDEX(A2:A5,MATCH(B8,B2:B6,0))
+        rule: fragile
+        why: range A2:A6 one row short at the end
+      - formula: =INDEX(A3:A6,MATCH(B8,B2:B6,0))
+        rule: value
+        why: range A2:A6 skips its first row
+      - formula: =INDEX(B2:B6,MATCH(B8,B2:B6,0))
+        rule: value
+        why: range A2:A6 one column right
+      - formula: =INDEX(A2:A6,MATCH(B9,B2:B6,0))
+        rule: reference
+        why: B8 read from the next row
+      - formula: =INDEX(A2:A6,MATCH(B7,B2:B6,0))
+        rule: value
+        why: B8 read from the row above
+      - formula: =INDEX(A2:A6,MATCH(C8,B2:B6,0))
+        rule: value
+        why: B8 read from the next column
+      - formula: =INDEX(A2:A6,MATCH(A8,B2:B6,0))
+        rule: value
+        why: B8 read from the column to the left
+      - formula: =INDEX(A2:A6,MATCH(B8,B2:B5,0))
+        rule: fragile
+        why: range B2:B6 one row short at the end
+      - formula: =INDEX(A2:A6,MATCH(B8,B3:B6,0))
+        rule: value
+        why: range B2:B6 skips its first row
+      - formula: =INDEX(A2:A6,MATCH(B8,C2:C6,0))
+        rule: value
+        why: range B2:B6 one column right
+      - formula: =INDEX(A2:A6,MATCH(B8,B2:B6,1))
+        rule: value
+        why: 0 written as 1
+      - formula: ="S-03"
+        rule: required-function
+        why: result typed in
+      - formula: =A4
+        rule: required-function
+        why: points at A4, which holds the result
+    equivalent:
+      - formula: =INDEX(A2:A7,MATCH(B8,B2:B6,0))
+        why: "range A2:A6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(A2:A6,MATCH(B8,B2:B7,0))
+        why: "range B2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

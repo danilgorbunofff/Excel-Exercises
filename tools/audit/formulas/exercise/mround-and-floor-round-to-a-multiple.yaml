@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =mround(b2, 5)
+    wrong: []
+    equivalent: []
+  - correct:
+      - =FLOOR(B$2,C2)
+      - =floor(b2, c2)
+    wrong:
+      - formula: =FLOOR(B2,C3)
+        rule: fragile
+        why: C2 read from the next row
+    equivalent: []

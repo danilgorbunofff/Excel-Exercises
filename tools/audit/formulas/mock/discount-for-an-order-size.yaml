@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =VLOOKUP($B$2,$E$2:$F$5,2,TRUE)
+      - =VLOOKUP(B$2,E2:F5,2,TRUE)
+      - =vlookup(b2, e2:f5, 2, true)
+      - =LET(data,E2:F5,VLOOKUP(B2,data,2,TRUE))
+    wrong:
+      - formula: =VLOOKUP(B2,E3:F5,2,TRUE)
+        rule: fragile
+        why: range E2:F5 skips its first row
+    equivalent: []

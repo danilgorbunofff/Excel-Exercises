@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTA(UNIQUE($B$2:$B$13))
+      - =COUNTA(UNIQUE(B$2:B$13))
+      - =LET(data,B2:B13,COUNTA(UNIQUE(data)))
+    wrong:
+      - formula: =COUNTA(UNIQUE(B3:B13))
+        rule: fragile
+        why: range B2:B13 skips its first row
+    equivalent: []

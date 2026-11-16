@@ -1,0 +1,43 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =($B$2-$B$3)/$B$4
+      - =(B$2-B3)/B4
+    wrong:
+      - formula: =(B3-B3)/B4
+        rule: value
+        why: B2 read from the next row
+      - formula: =(B1-B3)/B4
+        rule: value
+        why: B2 read from the row above
+      - formula: =(C2-B3)/B4
+        rule: value
+        why: B2 read from the next column
+      - formula: =(A2-B3)/B4
+        rule: value
+        why: B2 read from the column to the left
+      - formula: =(B2-B4)/B4
+        rule: value
+        why: B3 read from the next row
+      - formula: =(B2-B2)/B4
+        rule: value
+        why: B3 read from the row above
+      - formula: =(B2-C3)/B4
+        rule: value
+        why: B3 read from the next column
+      - formula: =(B2-A3)/B4
+        rule: value
+        why: B3 read from the column to the left
+      - formula: =(B2-B3)/B5
+        rule: reference
+        why: B4 read from the next row
+      - formula: =(B2-B3)/B3
+        rule: value
+        why: B4 read from the row above
+      - formula: =(B2-B3)/C4
+        rule: value
+        why: B4 read from the next column
+      - formula: =(B2-B3)/A4
+        rule: value
+        why: B4 read from the column to the left
+    equivalent: []

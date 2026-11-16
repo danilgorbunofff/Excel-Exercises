@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF($A$2:$A$13,"<="&$D$2,$B$2:$B$13)
+      - =SUMIF(A$2:A$13,"<="&D2,B2:B13)
+      - =sumif(a2:a13, "<="&d2, b2:b13)
+      - =LET(data,A2:A13,SUMIF(data,"<="&D2,B2:B13))
+    wrong:
+      - formula: =SUMIF(A2:A12,"<="&D2,B2:B13)
+        rule: fragile
+        why: range A2:A13 one row short at the end
+    equivalent: []

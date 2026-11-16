@@ -1,0 +1,53 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AND($B$2>=60,$C$2>=60)
+      - =AND(B$2>=60,C2>=60)
+      - =and(b2>=60, c2>=60)
+    wrong:
+      - formula: =AND(B2>60,C2>=60)
+        rule: fragile
+        why: ">= written as >"
+      - formula: =AND(B3>=60,C2>=60)
+        rule: fragile
+        why: B2 read from the next row
+      - formula: =AND(B1>=60,C2>=60)
+        rule: fragile
+        why: B2 read from the row above
+      - formula: =AND(C2>=60,C2>=60)
+        rule: fragile
+        why: B2 read from the next column
+      - formula: =AND(A2>=60,C2>=60)
+        rule: fragile
+        why: B2 read from the column to the left
+      - formula: =AND(B2>=61,C2>=60)
+        rule: fragile
+        why: 60 written as 61
+      - formula: =AND(B2>=59,C2>=60)
+        rule: fragile
+        why: 60 written as 59
+      - formula: =AND(B2>=60,C2>60)
+        rule: fragile
+        why: ">= written as >"
+      - formula: =AND(B2>=60,C3>=60)
+        rule: fragile
+        why: C2 read from the next row
+      - formula: =AND(B2>=60,C1>=60)
+        rule: value
+        why: C2 read from the row above
+      - formula: =AND(B2>=60,D2>=60)
+        rule: reference
+        why: C2 read from the next column
+      - formula: =AND(B2>=60,B2>=60)
+        rule: value
+        why: C2 read from the column to the left
+      - formula: =AND(B2>=60,C2>=61)
+        rule: fragile
+        why: 60 written as 61
+      - formula: =AND(B2>=60,C2>=59)
+        rule: fragile
+        why: 60 written as 59
+      - formula: =FALSE
+        rule: required-function
+        why: result typed in
+    equivalent: []

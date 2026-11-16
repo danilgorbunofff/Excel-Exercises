@@ -1,0 +1,22 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF(A$2:A$8,"Widget*")
+      - =countif(a2:a8, "Widget*")
+      - =LET(data,A2:A8,COUNTIF(data,"Widget*"))
+    wrong:
+      - formula: =COUNTIF(A2:A7,"Widget*")
+        rule: fragile
+        why: range A2:A8 one row short at the end
+    equivalent:
+      - formula: =COUNTIF(A2:A9,"Widget*")
+        why: "range A2:A8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+  - correct:
+      - =COUNTIF(A$2:A$8,"*B")
+      - =countif(a2:a8, "*B")
+      - =LET(data,A2:A8,COUNTIF(data,"*B"))
+    wrong:
+      - formula: =COUNTIF(A3:A8,"*B")
+        rule: fragile
+        why: range A2:A8 skips its first row
+    equivalent: []

@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(SUMPRODUCT($B$2:$B$7,$C$2:$C$7)/SUM($C$2:$C$7),1)
+      - =ROUND(SUMPRODUCT(B$2:B$7,C2:C7)/SUM(C2:C7),1)
+      - =round(sumproduct(b2:b7, c2:c7)/sum(c2:c7), 1)
+      - =ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUMPRODUCT(C2:C7),1)
+      - =LET(data,B2:B7,ROUND(SUMPRODUCT(data,C2:C7)/SUM(C2:C7),1))
+    wrong:
+      - formula: =ROUNDUP(SUMPRODUCT(B2:B7,C2:C7)/SUM(C2:C7),1)
+        rule: fragile
+        why: ROUNDUP instead of ROUND
+    equivalent:
+      - formula: =ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUM(C2:C6),1)
+        why: "range C2:C7 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

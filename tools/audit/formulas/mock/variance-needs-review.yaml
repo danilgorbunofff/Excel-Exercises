@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(ABS($C$2-$B$2)/$B$2>0.1,"Review","OK")
+      - =IF(ABS(C$2-B2)/B2>0.1,"Review","OK")
+      - =if(abs(c2-b2)/b2>0.1, "Review", "OK")
+      - =IFS(ABS(C2-B2)/B2>0.1,"Review",TRUE,"OK")
+    wrong:
+      - formula: =IF(ABS(C2-B2)/B2>=0.1,"Review","OK")
+        rule: fragile
+        why: "> written as >="
+      - formula: =IF(ABS(C2-B2)/C2>0.1,"Review","OK")
+        rule: fragile
+        why: B2 read from the next column
+    equivalent: []

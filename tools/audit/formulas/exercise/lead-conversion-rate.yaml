@@ -1,0 +1,50 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND($C$2/$B$2*100,1)
+      - =ROUND(C$2/B2*100,1)
+      - =round(c2/b2*100, 1)
+    wrong:
+      - formula: =ROUNDDOWN(C2/B2*100,1)
+        rule: required-function
+        why: ROUNDDOWN instead of ROUND
+      - formula: =ROUNDUP(C2/B2*100,1)
+        rule: required-function
+        why: ROUNDUP instead of ROUND
+      - formula: =ROUND(C3/B2*100,1)
+        rule: value
+        why: C2 read from the next row
+      - formula: =ROUND(C1/B2*100,1)
+        rule: value
+        why: C2 read from the row above
+      - formula: =ROUND(D2/B2*100,1)
+        rule: reference
+        why: C2 read from the next column
+      - formula: =ROUND(B2/B2*100,1)
+        rule: value
+        why: C2 read from the column to the left
+      - formula: =ROUND(C2/B3*100,1)
+        rule: value
+        why: B2 read from the next row
+      - formula: =ROUND(C2/B1*100,1)
+        rule: value
+        why: B2 read from the row above
+      - formula: =ROUND(C2/C2*100,1)
+        rule: value
+        why: B2 read from the next column
+      - formula: =ROUND(C2/A2*100,1)
+        rule: value
+        why: B2 read from the column to the left
+      - formula: =ROUND(C2/B2*101,1)
+        rule: fragile
+        why: 100 written as 101
+      - formula: =ROUND(C2/B2*99,1)
+        rule: value
+        why: 100 written as 99
+      - formula: =ROUND(C2/B2*100,2)
+        rule: value
+        why: 1 written as 2
+      - formula: =ROUND(C2/B2*100,0)
+        rule: value
+        why: 1 written as 0
+    equivalent: []

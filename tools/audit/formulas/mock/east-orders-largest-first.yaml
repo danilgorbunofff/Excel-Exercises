@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SORTBY(FILTER($A$2:$A$13,$B$2:$B$13="East"),FILTER($C$2:$C$13,$B$2:$B$13="East"),-1)
+      - =SORTBY(FILTER(A$2:A$13,B2:B13="East"),FILTER(C2:C13,B2:B13="East"),-1)
+      - =sortby(filter(a2:a13, b2:b13="East"), filter(c2:c13, b2:b13="East"), -1)
+      - =LET(data,A2:A13,SORTBY(FILTER(data,B2:B13="East"),FILTER(C2:C13,B2:B13="East"),-1))
+    wrong: []
+    equivalent: []

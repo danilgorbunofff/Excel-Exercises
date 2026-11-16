@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =VLOOKUP($A$6,$A$1:$C$5,MATCH($B$6,$A$1:$C$1,0),FALSE)
+      - =VLOOKUP(A$6,A1:C5,MATCH(B6,A1:C1,0),FALSE)
+      - =vlookup(a6, a1:c5, match(b6, a1:c1, 0), false)
+      - =LET(data,A1:C5,VLOOKUP(A6,data,MATCH(B6,A1:C1,0),FALSE))
+    wrong:
+      - formula: =VLOOKUP(A6,A1:C4,MATCH(B6,A1:C1,0),FALSE)
+        rule: fragile
+        why: range A1:C5 one row short at the end
+    equivalent:
+      - formula: =VLOOKUP(A6,A1:C5,MATCH(B6,A1:C1,1),FALSE)
+        why: "0 written as 1: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

@@ -1,0 +1,19 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =sumif(b2:b6, ">0")
+      - =LET(data,B2:B6,SUMIF(data,">0"))
+    wrong: []
+    equivalent:
+      - formula: =SUMIF(B2:B6,">=0")
+        why: 'criteria ">0" written with >=: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed).'
+  - correct:
+      - =-sumif(b2:b6, "<0")
+      - =LET(data,B2:B6,-SUMIF(data,"<0"))
+    wrong:
+      - formula: =-SUMIF(B2:B5,"<0")
+        rule: fragile
+        why: range B2:B6 one row short at the end
+    equivalent:
+      - formula: =-SUMIF(B2:B6,"<=0")
+        why: 'criteria "<0" written with <=: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed).'

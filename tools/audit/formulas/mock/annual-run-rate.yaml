@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(AVERAGE($B$2:$B$4)*12,0)
+      - =ROUND(AVERAGE(B$2:B$4)*12,0)
+      - =round(average(b2:b4)*12, 0)
+      - =LET(data,B2:B4,ROUND(AVERAGE(data)*12,0))
+    wrong: []
+    equivalent:
+      - formula: =ROUNDDOWN(AVERAGE(B2:B4)*12,0)
+        why: "ROUNDDOWN instead of ROUND: The inputs leave no extra decimals to round, so Excel gives the same answer on the sheet and every variant."
+      - formula: =ROUNDUP(AVERAGE(B2:B4)*12,0)
+        why: "ROUNDUP instead of ROUND: The inputs leave no extra decimals to round, so Excel gives the same answer on the sheet and every variant."
+      - formula: =ROUND(AVERAGE(B2:B5)*12,0)
+        why: "range B2:B4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =ROUND(AVERAGE(B2:B4)*12,1)
+        why: "0 written as 1: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

@@ -1,0 +1,22 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($B$1:$E$1,MATCH(MAX(INDEX($B$2:$E$5,MATCH($G$2,$A$2:$A$5,0),0)),INDEX($B$2:$E$5,MATCH($G$2,$A$2:$A$5,0),0),0))
+      - =INDEX(B$1:E$1,MATCH(MAX(INDEX(B2:E5,MATCH(G2,A2:A5,0),0)),INDEX(B2:E5,MATCH(G2,A2:A5,0),0),0))
+      - =index(b1:e1, match(max(index(b2:e5, match(g2, a2:a5, 0), 0)), index(b2:e5, match(g2, a2:a5, 0), 0), 0))
+      - =XLOOKUP(MAX(INDEX(B2:E5,MATCH(G2,A2:A5,0),0)),INDEX(B2:E5,MATCH(G2,A2:A5,0),0),B1:E1)
+      - =LET(data,B1:E1,INDEX(data,MATCH(MAX(INDEX(B2:E5,MATCH(G2,A2:A5,0),0)),INDEX(B2:E5,MATCH(G2,A2:A5,0),0),0)))
+    wrong:
+      - formula: =INDEX(B1:E1,MATCH(MAX(INDEX(B2:E4,MATCH(G2,A2:A5,0),0)),INDEX(B2:E5,MATCH(G2,A2:A5,0),0),0))
+        rule: fragile
+        why: range B2:E5 one row short at the end
+      - formula: =INDEX(B1:E1,MATCH(MAX(INDEX(B2:E5,MATCH(G2,A2:A4,0),0)),INDEX(B2:E5,MATCH(G2,A2:A5,0),0),0))
+        rule: fragile
+        why: range A2:A5 one row short at the end
+      - formula: =INDEX(B1:E1,MATCH(MAX(INDEX(B2:E5,MATCH(G2,A2:A5,0),0)),INDEX(B2:E4,MATCH(G2,A2:A5,0),0),0))
+        rule: fragile
+        why: range B2:E5 one row short at the end
+      - formula: =INDEX(B1:E1,MATCH(MAX(INDEX(B2:E5,MATCH(G2,A2:A5,0),0)),INDEX(B2:E5,MATCH(G2,A2:A4,0),0),0))
+        rule: fragile
+        why: range A2:A5 one row short at the end
+    equivalent: []

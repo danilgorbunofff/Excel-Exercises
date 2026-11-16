@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =DAYS(C$2,B2)
+      - =days(c2, b2)
+    wrong:
+      - formula: =DAYS(C3,B2)
+        rule: fragile
+        why: C2 read from the next row
+    equivalent: []
+  - correct:
+      - =DAYS(C$2,B2)/7
+      - =days(c2, b2)/7
+    wrong: []
+    equivalent: []

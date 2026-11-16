@@ -15,7 +15,8 @@
       "!**/.lighthouseci",
       "!**/test-results",
       "!**/playwright-report",
-      "!docs/design/contrast.md"
+      "!docs/design/contrast.md",
+      "!tools/audit/*.json"
     ]
   },
   "formatter": {

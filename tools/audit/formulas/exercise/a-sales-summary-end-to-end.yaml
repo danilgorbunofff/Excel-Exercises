@@ -1,0 +1,30 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIFS(C$2:C$5,A2:A5,"North")
+      - =sumifs(c2:c5, a2:a5, "North")
+      - =SUMPRODUCT((A2:A5="North")*C2:C5)
+      - =SUM(FILTER(C2:C5,(A2:A5="North"),0))
+      - =SUMIF(A2:A5,"North",C2:C5)
+      - =LET(data,C2:C5,SUMIFS(data,A2:A5,"North"))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =IF(SUMIFS(C$2:C$5,A2:A5,"North")>SUMIFS(C2:C5,A2:A5,"South"),"North","South")
+      - =if(sumifs(c2:c5, a2:a5, "North")>sumifs(c2:c5, a2:a5, "South"), "North", "South")
+      - =IFS(SUMIFS(C2:C5,A2:A5,"North")>SUMIFS(C2:C5,A2:A5,"South"),"North",TRUE,"South")
+      - =IF(SUMPRODUCT((A2:A5="North")*C2:C5)>SUMIFS(C2:C5,A2:A5,"South"),"North","South")
+      - =IF(SUM(FILTER(C2:C5,(A2:A5="North"),0))>SUMIFS(C2:C5,A2:A5,"South"),"North","South")
+      - =IF(SUMIF(A2:A5,"North",C2:C5)>SUMIFS(C2:C5,A2:A5,"South"),"North","South")
+      - =IF(SUMIFS(C2:C5,A2:A5,"North")>SUMPRODUCT((A2:A5="South")*C2:C5),"North","South")
+      - =IF(SUMIFS(C2:C5,A2:A5,"North")>SUM(FILTER(C2:C5,(A2:A5="South"),0)),"North","South")
+      - =IF(SUMIFS(C2:C5,A2:A5,"North")>SUMIF(A2:A5,"South",C2:C5),"North","South")
+      - =LET(data,C2:C5,IF(SUMIFS(data,A2:A5,"North")>SUMIFS(data,A2:A5,"South"),"North","South"))
+    wrong:
+      - formula: =IF(AVERAGEIFS(C2:C5,A2:A5,"North")>SUMIFS(C2:C5,A2:A5,"South"),"North","South")
+        rule: fragile
+        why: AVERAGEIFS instead of SUMIFS
+      - formula: =A2
+        rule: fragile
+        why: points at A2, which holds the result
+    equivalent: []

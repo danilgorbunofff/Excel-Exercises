@@ -1,0 +1,16 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =subtotal(9, d2:d4)
+      - =LET(data,D2:D4,SUBTOTAL(9,data))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =ROUND(SUMPRODUCT(B$2:B$4,C2:C4)/SUBTOTAL(9,D2:D4),1)
+      - =round(sumproduct(b2:b4, c2:c4)/subtotal(9, d2:d4), 1)
+      - =LET(data,B2:B4,ROUND(SUMPRODUCT(data,C2:C4)/SUBTOTAL(9,D2:D4),1))
+    wrong:
+      - formula: =ROUNDUP(SUMPRODUCT(B2:B4,C2:C4)/SUBTOTAL(9,D2:D4),1)
+        rule: fragile
+        why: ROUNDUP instead of ROUND
+    equivalent: []

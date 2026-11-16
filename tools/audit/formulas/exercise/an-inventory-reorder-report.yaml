@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MAX(0,C$2-B2)
+      - =max(0, c2-b2)
+    wrong: []
+    equivalent: []
+  - correct:
+      - =MAX(0,SUM(C$2:C$5)-SUM(B2:B5))
+      - =max(0, sum(c2:c5)-sum(b2:b5))
+      - =MAX(0,SUMPRODUCT(C2:C5)-SUM(B2:B5))
+      - =MAX(0,SUM(C2:C5)-SUMPRODUCT(B2:B5))
+      - =LET(data,C2:C5,MAX(0,SUM(data)-SUM(B2:B5)))
+    wrong: []
+    equivalent: []

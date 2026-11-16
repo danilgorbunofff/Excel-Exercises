@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AVERAGEIF($B$2:$B$11,"<>0")
+      - =AVERAGEIF(B$2:B$11,"<>0")
+      - =averageif(b2:b11, "<>0")
+      - =AVERAGEIFS(B2:B11,B2:B11,"<>0")
+      - =AVERAGE(FILTER(B2:B11,(B2:B11<>0)))
+      - =LET(data,B2:B11,AVERAGEIF(data,"<>0"))
+    wrong: []
+    equivalent: []

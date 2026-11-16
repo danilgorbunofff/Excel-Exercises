@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTA(UNIQUE(FILTER($B$2:$B$13,$C$2:$C$13="Active")))
+      - =COUNTA(UNIQUE(FILTER(B$2:B$13,C2:C13="Active")))
+      - =counta(unique(filter(b2:b13, c2:c13="Active")))
+      - =LET(data,B2:B13,COUNTA(UNIQUE(FILTER(data,C2:C13="Active"))))
+    wrong: []
+    equivalent: []

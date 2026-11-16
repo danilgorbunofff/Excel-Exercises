@@ -1,0 +1,28 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFERROR(VLOOKUP(A$4,A2:B3,2,FALSE),"no price")
+      - =iferror(vlookup(a4, a2:b3, 2, false), "no price")
+      - =LET(data,A2:B3,IFERROR(VLOOKUP(A4,data,2,FALSE),"no price"))
+    wrong:
+      - formula: =IFERROR(VLOOKUP(A5,A2:B3,2,FALSE),"no price")
+        rule: fragile
+        why: A4 read from the next row
+      - formula: =IFERROR(VLOOKUP(B4,A2:B3,2,FALSE),"no price")
+        rule: fragile
+        why: A4 read from the next column
+      - formula: =IFERROR(VLOOKUP(A4,A3:B3,2,FALSE),"no price")
+        rule: fragile
+        why: range A2:B3 skips its first row
+      - formula: =IFERROR(VLOOKUP(A4,B2:C3,2,FALSE),"no price")
+        rule: fragile
+        why: range A2:B3 one column right
+      - formula: =IFERROR(VLOOKUP(A4,A2:B3,3,FALSE),"no price")
+        rule: fragile
+        why: 2 written as 3
+      - formula: =IFERROR(VLOOKUP(A4,A2:B3,1,FALSE),"no price")
+        rule: fragile
+        why: 2 written as 1
+    equivalent:
+      - formula: =IFERROR(VLOOKUP(A4,A2:B2,2,FALSE),"no price")
+        why: "range A2:B3 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

@@ -1,0 +1,26 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP($B$2,$F$2:$F$5,$G$2:$G$5,,-1)
+      - =XLOOKUP(B$2,$F$2:$F$5,$G$2:$G$5,,-1)
+      - =xlookup(b2, $f$2:$f$5, $g$2:$g$5, , -1)
+      - =LET(data,$F$2:$F$5,XLOOKUP(B2,data,$G$2:$G$5,,-1))
+    wrong:
+      - formula: =G3
+        rule: fragile
+        why: points at G3, which holds the result
+    equivalent: []
+  - correct:
+      - =SUMIF(B$2:B$6,">60",C2:C6)
+      - =sumif(b2:b6, ">60", c2:c6)
+      - =SUMPRODUCT((B2:B6>60)*C2:C6)
+      - =SUM(FILTER(C2:C6,(B2:B6>60),0))
+      - =LET(data,B2:B6,SUMIF(data,">60",C2:C6))
+    wrong:
+      - formula: =SUMIF(B2:B5,">60",C2:C6)
+        rule: fragile
+        why: range B2:B6 one row short at the end
+      - formula: =SUMIF(B2:B6,">=60",C2:C6)
+        rule: fragile
+        why: criteria ">60" written with >=
+    equivalent: []

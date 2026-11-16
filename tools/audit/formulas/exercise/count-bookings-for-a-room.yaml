@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF($B$2:$B$11,$E$2)
+      - =COUNTIF(B$2:B$11,E2)
+      - =countif(b2:b11, e2)
+      - =LET(data,B2:B11,COUNTIF(data,E2))
+    wrong: []
+    equivalent: []

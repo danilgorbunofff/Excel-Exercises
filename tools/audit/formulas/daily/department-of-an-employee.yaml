@@ -1,0 +1,25 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =VLOOKUP($E$2,$A$2:$C$7,3,FALSE)
+      - =VLOOKUP(E$2,A2:C7,3,FALSE)
+      - =vlookup(e2, a2:c7, 3, false)
+      - =INDEX(C2:C7,MATCH(E2,A2:A7,0))
+      - =LET(data,A2:C7,VLOOKUP(E2,data,3,FALSE))
+    wrong:
+      - formula: =VLOOKUP(E2,A2:C7,3)
+        rule: fragile
+        why: VLOOKUP without FALSE
+      - formula: =VLOOKUP(E2,A2:C6,3,FALSE)
+        rule: fragile
+        why: range A2:C7 one row short at the end
+      - formula: =VLOOKUP(E2,A3:C7,3,FALSE)
+        rule: fragile
+        why: range A2:C7 skips its first row
+      - formula: =VLOOKUP(E2,A2:C7,3,TRUE)
+        rule: fragile
+        why: FALSE written as TRUE
+      - formula: =C5
+        rule: fragile
+        why: points at C5, which holds the result
+    equivalent: []

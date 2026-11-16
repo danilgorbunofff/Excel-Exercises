@@ -1,0 +1,35 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUNDDOWN($B$2/$C$2,0)
+      - =ROUNDDOWN(B$2/C2,0)
+      - =rounddown(b2/c2, 0)
+    wrong: []
+    equivalent: []
+  - correct:
+      - =IF($B$3/$C$3<$D$3,"Reorder","OK")
+      - =IF(B$3/C3<D3,"Reorder","OK")
+      - =if(b3/c3<d3, "Reorder", "OK")
+    wrong:
+      - formula: =IF(B3/C3<=D3,"Reorder","OK")
+        rule: fragile
+        why: < written as <=
+      - formula: =IF(C3/C3<D3,"Reorder","OK")
+        rule: fragile
+        why: B3 read from the next column
+      - formula: =IF(B3/C4<D3,"Reorder","OK")
+        rule: fragile
+        why: C3 read from the next row
+      - formula: =IF(B3/C2<D3,"Reorder","OK")
+        rule: fragile
+        why: C3 read from the row above
+      - formula: =IF(B3/B3<D3,"Reorder","OK")
+        rule: fragile
+        why: C3 read from the column to the left
+      - formula: =IF(B3/C3<D2,"Reorder","OK")
+        rule: fragile
+        why: D3 read from the row above
+      - formula: =IF(B3/C3<C3,"Reorder","OK")
+        rule: fragile
+        why: D3 read from the column to the left
+    equivalent: []

@@ -1,0 +1,69 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(SUMPRODUCT($B$2:$B$7,$C$2:$C$7)/SUM($B$2:$B$7),2)
+      - =ROUND(SUMPRODUCT(B$2:B$7,C2:C7)/SUM(B2:B7),2)
+      - =round(sumproduct(b2:b7, c2:c7)/sum(b2:b7), 2)
+      - =ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUMPRODUCT(B2:B7),2)
+      - =LET(data,B2:B7,ROUND(SUMPRODUCT(data,C2:C7)/SUM(data),2))
+    wrong:
+      - formula: =ROUNDDOWN(SUMPRODUCT(B2:B7,C2:C7)/SUM(B2:B7),2)
+        rule: fragile
+        why: ROUNDDOWN instead of ROUND
+      - formula: =ROUNDUP(SUMPRODUCT(B2:B7,C2:C7)/SUM(B2:B7),2)
+        rule: value
+        why: ROUNDUP instead of ROUND
+      - formula: =ROUND(SUMPRODUCT(B2:B6,C2:C7)/SUM(B2:B7),2)
+        rule: value
+        why: range B2:B7 one row short at the end
+      - formula: =ROUND(SUMPRODUCT(B3:B7,C2:C7)/SUM(B2:B7),2)
+        rule: value
+        why: range B2:B7 skips its first row
+      - formula: =ROUND(SUMPRODUCT(B2:B8,C2:C7)/SUM(B2:B7),2)
+        rule: value
+        why: range B2:B7 one row long
+      - formula: =ROUND(SUMPRODUCT(C2:C7,C2:C7)/SUM(B2:B7),2)
+        rule: value
+        why: range B2:B7 one column right
+      - formula: =ROUND(SUMPRODUCT(A2:A7,C2:C7)/SUM(B2:B7),2)
+        rule: value
+        why: range B2:B7 one column left
+      - formula: =ROUND(SUMPRODUCT(B2:B7,C2:C6)/SUM(B2:B7),2)
+        rule: value
+        why: range C2:C7 one row short at the end
+      - formula: =ROUND(SUMPRODUCT(B2:B7,C3:C7)/SUM(B2:B7),2)
+        rule: value
+        why: range C2:C7 skips its first row
+      - formula: =ROUND(SUMPRODUCT(B2:B7,C2:C8)/SUM(B2:B7),2)
+        rule: reference
+        why: range C2:C7 one row long
+      - formula: =ROUND(SUMPRODUCT(B2:B7,D2:D7)/SUM(B2:B7),2)
+        rule: value
+        why: range C2:C7 one column right
+      - formula: =ROUND(SUMPRODUCT(B2:B7,B2:B7)/SUM(B2:B7),2)
+        rule: value
+        why: range C2:C7 one column left
+      - formula: =ROUND(SUMPRODUCT(B2:B7,C2:C7)/AVERAGE(B2:B7),2)
+        rule: value
+        why: AVERAGE instead of SUM
+      - formula: =ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUM(B2:B6),2)
+        rule: value
+        why: range B2:B7 one row short at the end
+      - formula: =ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUM(B3:B7),2)
+        rule: value
+        why: range B2:B7 skips its first row
+      - formula: =ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUM(C2:C7),2)
+        rule: value
+        why: range B2:B7 one column right
+      - formula: =ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUM(A2:A7),2)
+        rule: value
+        why: range B2:B7 one column left
+      - formula: =ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUM(B2:B7),3)
+        rule: value
+        why: 2 written as 3
+      - formula: =ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUM(B2:B7),1)
+        rule: value
+        why: 2 written as 1
+    equivalent:
+      - formula: =ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUM(B2:B8),2)
+        why: "range B2:B7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

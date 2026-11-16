@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIFS(C$2:C$6,A2:A6,"North",B2:B6,"Ada")
+      - =sumifs(c2:c6, a2:a6, "North", b2:b6, "Ada")
+      - =LET(data,C2:C6,SUMIFS(data,A2:A6,"North",B2:B6,"Ada"))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =SUMIFS(C$2:C$6,B2:B6,"Shipped",C2:C6,">200")
+      - =sumifs(c2:c6, b2:b6, "Shipped", c2:c6, ">200")
+      - =LET(data,C2:C6,SUMIFS(data,B2:B6,"Shipped",data,">200"))
+    wrong:
+      - formula: =SUMIFS(C2:C6,B2:B6,"Shipped",C2:C6,">=200")
+        rule: fragile
+        why: criteria ">200" written with >=
+    equivalent: []

@@ -1,0 +1,64 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AND(B$8>100,MIN(B2:B7)>=15)
+      - =and(b8>100, min(b2:b7)>=15)
+      - =LET(data,B2:B7,AND(B8>100,MIN(data)>=15))
+    wrong:
+      - formula: =AND(B8>=100,MIN(B2:B7)>=15)
+        rule: fragile
+        why: "> written as >="
+      - formula: =AND(A8>100,MIN(B2:B7)>=15)
+        rule: fragile
+        why: B8 read from the column to the left
+      - formula: =AND(B8>101,MIN(B2:B7)>=15)
+        rule: fragile
+        why: 100 written as 101
+      - formula: =AND(B8>99,MIN(B2:B7)>=15)
+        rule: fragile
+        why: 100 written as 99
+      - formula: =AND(B8>100,MIN(B2:B7)>15)
+        rule: fragile
+        why: ">= written as >"
+      - formula: =AND(B8>100,MIN(B2:B6)>=15)
+        rule: fragile
+        why: range B2:B7 one row short at the end
+      - formula: =AND(B8>100,MIN(B2:B7)>=16)
+        rule: fragile
+        why: 15 written as 16
+      - formula: =AND(B8>100,MIN(B2:B7)>=14)
+        rule: fragile
+        why: 15 written as 14
+    equivalent:
+      - formula: =AND(B8>100,MIN(B2:B8)>=15)
+        why: "range B2:B7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+  - correct:
+      - =OR(MIN(B$2:B$7)<20,B8>200)
+      - =or(min(b2:b7)<20, b8>200)
+      - =LET(data,B2:B7,OR(MIN(data)<20,B8>200))
+    wrong:
+      - formula: =OR(MIN(B2:B7)<=20,B8>200)
+        rule: fragile
+        why: < written as <=
+      - formula: =OR(MIN(B2:B6)<20,B8>200)
+        rule: fragile
+        why: range B2:B7 one row short at the end
+      - formula: =OR(MIN(B2:B8)<20,B8>200)
+        rule: fragile
+        why: range B2:B7 one row long
+      - formula: =OR(MIN(B2:B7)<21,B8>200)
+        rule: fragile
+        why: 20 written as 21
+      - formula: =OR(MIN(B2:B7)<19,B8>200)
+        rule: fragile
+        why: 20 written as 19
+      - formula: =OR(MIN(B2:B7)<20,B8>=200)
+        rule: fragile
+        why: "> written as >="
+      - formula: =OR(MIN(B2:B7)<20,B8>201)
+        rule: fragile
+        why: 200 written as 201
+      - formula: =OR(MIN(B2:B7)<20,B8>199)
+        rule: fragile
+        why: 200 written as 199
+    equivalent: []

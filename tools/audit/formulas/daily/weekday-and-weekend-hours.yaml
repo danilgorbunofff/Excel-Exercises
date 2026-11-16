@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUM($B$2:$C$5)
+      - =SUM(B$2:C$5)
+      - =SUMPRODUCT(B2:C5)
+      - =LET(data,B2:C5,SUM(data))
+    wrong: []
+    equivalent: []

@@ -1,0 +1,29 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =OR($B$2>50,$C$2="Yes")
+      - =OR(B$2>50,C2="Yes")
+      - =or(b2>50, c2="Yes")
+    wrong:
+      - formula: =OR(B2>=50,C2="Yes")
+        rule: fragile
+        why: "> written as >="
+      - formula: =OR(B3>50,C2="Yes")
+        rule: fragile
+        why: B2 read from the next row
+      - formula: =OR(B1>50,C2="Yes")
+        rule: fragile
+        why: B2 read from the row above
+      - formula: =OR(C2>50,C2="Yes")
+        rule: fragile
+        why: B2 read from the next column
+      - formula: =OR(A2>50,C2="Yes")
+        rule: fragile
+        why: B2 read from the column to the left
+      - formula: =OR(B2>51,C2="Yes")
+        rule: fragile
+        why: 50 written as 51
+      - formula: =OR(B2>49,C2="Yes")
+        rule: fragile
+        why: 50 written as 49
+    equivalent: []

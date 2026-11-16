@@ -1,0 +1,26 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =(LARGE(B$2:B$6,1)+LARGE(B2:B6,2))/2
+      - =(large(b2:b6, 1)+large(b2:b6, 2))/2
+      - =LET(data,B2:B6,(LARGE(data,1)+LARGE(data,2))/2)
+    wrong:
+      - formula: =(LARGE(B2:B5,1)+LARGE(B2:B6,2))/2
+        rule: fragile
+        why: range B2:B6 one row short at the end
+      - formula: =(LARGE(B3:B6,1)+LARGE(B2:B6,2))/2
+        rule: fragile
+        why: range B2:B6 skips its first row
+      - formula: =(LARGE(B2:B6,1)+LARGE(B2:B5,2))/2
+        rule: fragile
+        why: range B2:B6 one row short at the end
+    equivalent: []
+  - correct:
+      - =RANK(MEDIAN(B$2:B$6),B2:B6)
+      - =rank(median(b2:b6), b2:b6)
+      - =LET(data,B2:B6,RANK(MEDIAN(data),data))
+    wrong:
+      - formula: =RANK(MEDIAN(B2:B6),B2:B5)
+        rule: fragile
+        why: range B2:B6 one row short at the end
+    equivalent: []

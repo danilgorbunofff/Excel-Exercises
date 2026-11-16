@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($B$2:$E$5,MATCH($G$2,$A$2:$A$5,0),MATCH($H$2,$B$1:$E$1,0))
+      - =INDEX(B$2:E$5,MATCH(G2,A2:A5,0),MATCH(H2,B1:E1,0))
+      - =index(b2:e5, match(g2, a2:a5, 0), match(h2, b1:e1, 0))
+      - =LET(data,B2:E5,INDEX(data,MATCH(G2,A2:A5,0),MATCH(H2,B1:E1,0)))
+    wrong:
+      - formula: =INDEX(B2:E4,MATCH(G2,A2:A5,0),MATCH(H2,B1:E1,0))
+        rule: fragile
+        why: range B2:E5 one row short at the end
+      - formula: =INDEX(B2:E5,MATCH(G2,A2:A4,0),MATCH(H2,B1:E1,0))
+        rule: fragile
+        why: range A2:A5 one row short at the end
+    equivalent:
+      - formula: =INDEX(B2:E5,MATCH(G2,A2:A5,0),MATCH(H2,B1:E1,1))
+        why: "0 written as 1: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

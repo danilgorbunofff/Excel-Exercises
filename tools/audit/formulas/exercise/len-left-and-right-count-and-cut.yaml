@@ -1,0 +1,37 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LEN(A$2)
+    wrong:
+      - formula: =LEN(A3)
+        rule: value
+        why: A2 read from the next row
+      - formula: =LEN(A1)
+        rule: value
+        why: A2 read from the row above
+      - formula: =LEN(B2)
+        rule: reference
+        why: A2 read from the next column
+    equivalent: []
+  - correct:
+      - =LEFT(A$2,3)
+      - =left(a2, 3)
+    wrong:
+      - formula: =LEFT(A3,3)
+        rule: value
+        why: A2 read from the next row
+      - formula: =LEFT(A1,3)
+        rule: value
+        why: A2 read from the row above
+      - formula: =LEFT(B2,3)
+        rule: reference
+        why: A2 read from the next column
+      - formula: =LEFT(A2,4)
+        rule: value
+        why: 3 written as 4
+    equivalent: []
+  - correct:
+      - =RIGHT(A$2,7)
+      - =right(a2, 7)
+    wrong: []
+    equivalent: []

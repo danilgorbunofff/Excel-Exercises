@@ -1,0 +1,104 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP($A$7,$A$2:$A$6,$B$2:$B$6,,0,-1)
+      - =XLOOKUP(A$7,A2:A6,B2:B6,,0,-1)
+      - =xlookup(a7, a2:a6, b2:b6, , 0, -1)
+      - =LET(data,A2:A6,XLOOKUP(A7,data,B2:B6,,0,-1))
+    wrong:
+      - formula: =XLOOKUP(A8,A2:A6,B2:B6,,0,-1)
+        rule: value
+        why: A7 read from the next row
+      - formula: =XLOOKUP(A6,A2:A6,B2:B6,,0,-1)
+        rule: value
+        why: A7 read from the row above
+      - formula: =XLOOKUP(B7,A2:A6,B2:B6,,0,-1)
+        rule: reference
+        why: A7 read from the next column
+      - formula: =XLOOKUP(A7,A2:A5,B2:B6,,0,-1)
+        rule: value
+        why: range A2:A6 one row short at the end
+      - formula: =XLOOKUP(A7,A3:A6,B2:B6,,0,-1)
+        rule: value
+        why: range A2:A6 skips its first row
+      - formula: =XLOOKUP(A7,A2:A7,B2:B6,,0,-1)
+        rule: value
+        why: range A2:A6 one row long
+      - formula: =XLOOKUP(A7,B2:B6,B2:B6,,0,-1)
+        rule: value
+        why: range A2:A6 one column right
+      - formula: =XLOOKUP(A7,A2:A6,B3:B6,,0,-1)
+        rule: value
+        why: range B2:B6 skips its first row
+      - formula: =XLOOKUP(A7,A2:A6,B2:B7,,0,-1)
+        rule: reference
+        why: range B2:B6 one row long
+      - formula: =XLOOKUP(A7,A2:A6,C2:C6,,0,-1)
+        rule: value
+        why: range B2:B6 one column right
+      - formula: =XLOOKUP(A7,A2:A6,A2:A6,,0,-1)
+        rule: value
+        why: range B2:B6 one column left
+      - formula: =XLOOKUP(A7,A2:A6,B2:B6,,0,-2)
+        rule: fragile
+        why: 1 written as 2
+      - formula: =XLOOKUP(A7,A2:A6,B2:B6,,0,-0)
+        rule: value
+        why: 1 written as 0
+      - formula: =21.5
+        rule: required-function
+        why: result typed in
+      - formula: =B4
+        rule: required-function
+        why: points at B4, which holds the result
+    equivalent:
+      - formula: =XLOOKUP(A7,A2:A6,B2:B6,,1,-1)
+        why: "0 written as 1: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+  - correct:
+      - =XLOOKUP($A$8,$A$2:$A$6,$B$2:$B$6,,0,-1)
+      - =XLOOKUP(A$8,A2:A6,B2:B6,,0,-1)
+      - =xlookup(a8, a2:a6, b2:b6, , 0, -1)
+      - =LET(data,A2:A6,XLOOKUP(A8,data,B2:B6,,0,-1))
+    wrong:
+      - formula: =XLOOKUP(A9,A2:A6,B2:B6,,0,-1)
+        rule: value
+        why: A8 read from the next row
+      - formula: =XLOOKUP(A7,A2:A6,B2:B6,,0,-1)
+        rule: value
+        why: A8 read from the row above
+      - formula: =XLOOKUP(B8,A2:A6,B2:B6,,0,-1)
+        rule: reference
+        why: A8 read from the next column
+      - formula: =XLOOKUP(A8,A2:A5,B2:B6,,0,-1)
+        rule: value
+        why: range A2:A6 one row short at the end
+      - formula: =XLOOKUP(A8,A3:A6,B2:B6,,0,-1)
+        rule: value
+        why: range A2:A6 skips its first row
+      - formula: =XLOOKUP(A8,A2:A7,B2:B6,,0,-1)
+        rule: value
+        why: range A2:A6 one row long
+      - formula: =XLOOKUP(A8,B2:B6,B2:B6,,0,-1)
+        rule: value
+        why: range A2:A6 one column right
+      - formula: =XLOOKUP(A8,A2:A6,B3:B6,,0,-1)
+        rule: value
+        why: range B2:B6 skips its first row
+      - formula: =XLOOKUP(A8,A2:A6,B2:B7,,0,-1)
+        rule: value
+        why: range B2:B6 one row long
+      - formula: =XLOOKUP(A8,A2:A6,C2:C6,,0,-1)
+        rule: value
+        why: range B2:B6 one column right
+      - formula: =XLOOKUP(A8,A2:A6,A2:A6,,0,-1)
+        rule: value
+        why: range B2:B6 one column left
+      - formula: =XLOOKUP(A8,A2:A6,B2:B6,,0,-2)
+        rule: value
+        why: 1 written as 2
+      - formula: =XLOOKUP(A8,A2:A6,B2:B6,,0,-0)
+        rule: value
+        why: 1 written as 0
+    equivalent:
+      - formula: =XLOOKUP(A8,A2:A6,B2:B6,,1,-1)
+        why: "0 written as 1: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

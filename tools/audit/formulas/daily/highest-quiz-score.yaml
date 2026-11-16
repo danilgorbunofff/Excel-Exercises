@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MAX($B$2:$B$7)
+      - =MAX(B$2:B$7)
+      - =LET(data,B2:B7,MAX(data))
+    wrong:
+      - formula: =MAX(B2:B6)
+        rule: fragile
+        why: range B2:B7 one row short at the end
+    equivalent: []

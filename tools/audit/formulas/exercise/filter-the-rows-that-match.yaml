@@ -1,0 +1,23 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =FILTER(C$2:C$19,B2:B19="North")
+      - =filter(c2:c19, b2:b19="North")
+      - =LET(data,C2:C19,FILTER(data,B2:B19="North"))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =FILTER(A$2:A$19,(B2:B19="North")*(D2:D19>=800))
+      - =filter(a2:a19, (b2:b19="North")*(d2:d19>=800))
+      - =LET(data,A2:A19,FILTER(data,(B2:B19="North")*(D2:D19>=800)))
+    wrong:
+      - formula: =FILTER(A2:A19,(B2:B19="North")*(D2:D19>800))
+        rule: fragile
+        why: ">= written as >"
+      - formula: =FILTER(A2:A19,(B2:B19="North")*(D2:D19>=801))
+        rule: fragile
+        why: 800 written as 801
+      - formula: =FILTER(A2:A19,(B2:B19="North")*(D2:D19>=799))
+        rule: fragile
+        why: 800 written as 799
+    equivalent: []

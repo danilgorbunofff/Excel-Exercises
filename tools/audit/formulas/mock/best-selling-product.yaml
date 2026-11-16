@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($A$2:$A$16,MATCH(MAX($B$2:$B$16),$B$2:$B$16,0))
+      - =INDEX(A$2:A$16,MATCH(MAX(B2:B16),B2:B16,0))
+      - =index(a2:a16, match(max(b2:b16), b2:b16, 0))
+      - =LET(data,A2:A16,INDEX(data,MATCH(MAX(B2:B16),B2:B16,0)))
+    wrong: []
+    equivalent:
+      - formula: =INDEX(A2:A15,MATCH(MAX(B2:B16),B2:B16,0))
+        why: "range A2:A16 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(A2:A16,MATCH(MAX(B2:B15),B2:B16,0))
+        why: "range B2:B16 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(A2:A16,MATCH(MAX(B2:B16),B2:B15,0))
+        why: "range B2:B16 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

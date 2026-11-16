@@ -1,0 +1,75 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFNA(VLOOKUP(A$8,A2:B7,2,FALSE),"not on the list")
+      - =ifna(vlookup(a8, a2:b7, 2, false), "not on the list")
+      - =IFNA(XLOOKUP(A8,A2:A7,B2:B7),"not on the list")
+      - =LET(data,A2:B7,IFNA(VLOOKUP(A8,data,2,FALSE),"not on the list"))
+    wrong:
+      - formula: =VLOOKUP(A8,A2:B7,2,FALSE)
+        rule: value
+        why: without IFNA
+      - formula: =IFNA(VLOOKUP(A8,A2:B7,2),"not on the list")
+        rule: value
+        why: VLOOKUP without FALSE
+      - formula: =IFNA(VLOOKUP(A9,A2:B7,2,FALSE),"not on the list")
+        rule: fragile
+        why: A8 read from the next row
+      - formula: =IFNA(VLOOKUP(A7,A2:B7,2,FALSE),"not on the list")
+        rule: value
+        why: A8 read from the row above
+      - formula: =IFNA(VLOOKUP(B8,A2:B7,2,FALSE),"not on the list")
+        rule: fragile
+        why: A8 read from the next column
+      - formula: =IFNA(VLOOKUP(A8,A2:B6,2,FALSE),"not on the list")
+        rule: fragile
+        why: range A2:B7 one row short at the end
+      - formula: =IFNA(VLOOKUP(A8,A3:B7,2,FALSE),"not on the list")
+        rule: fragile
+        why: range A2:B7 skips its first row
+      - formula: =IFNA(VLOOKUP(A8,A2:B8,2,FALSE),"not on the list")
+        rule: value
+        why: range A2:B7 one row long
+      - formula: =IFNA(VLOOKUP(A8,B2:C7,2,FALSE),"not on the list")
+        rule: fragile
+        why: range A2:B7 one column right
+      - formula: =IFNA(VLOOKUP(A8,A2:B7,1,FALSE),"not on the list")
+        rule: fragile
+        why: 2 written as 1
+      - formula: ="not on the list"
+        rule: reference
+        why: result typed in
+    equivalent: []
+  - correct:
+      - =ifna(vlookup(a2, a2:b7, 2, false), "not on the list")
+      - =LET(data,A2:B7,IFNA(VLOOKUP(A2,data,2,FALSE),"not on the list"))
+    wrong:
+      - formula: =IFNA(VLOOKUP(A3,A2:B7,2,FALSE),"not on the list")
+        rule: value
+        why: A2 read from the next row
+      - formula: =IFNA(VLOOKUP(A1,A2:B7,2,FALSE),"not on the list")
+        rule: value
+        why: A2 read from the row above
+      - formula: =IFNA(VLOOKUP(B2,A2:B7,2,FALSE),"not on the list")
+        rule: value
+        why: A2 read from the next column
+      - formula: =IFNA(VLOOKUP(A2,A3:B7,2,FALSE),"not on the list")
+        rule: value
+        why: range A2:B7 skips its first row
+      - formula: =IFNA(VLOOKUP(A2,B2:C7,2,FALSE),"not on the list")
+        rule: value
+        why: range A2:B7 one column right
+      - formula: =IFNA(VLOOKUP(A2,A2:B7,3,FALSE),"not on the list")
+        rule: value
+        why: 2 written as 3
+      - formula: =10
+        rule: reference
+        why: result typed in
+      - formula: =B2
+        rule: fragile
+        why: points at B2, which holds the result
+    equivalent:
+      - formula: =IFNA(VLOOKUP(A2,A2:B6,2,FALSE),"not on the list")
+        why: "range A2:B7 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IFNA(VLOOKUP(A2,A2:B8,2,FALSE),"not on the list")
+        why: "range A2:B7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

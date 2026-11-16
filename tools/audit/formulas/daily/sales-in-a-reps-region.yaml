@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF($A$2:$A$11,XLOOKUP($G$2,$D$2:$D$5,$E$2:$E$5),$B$2:$B$11)
+      - =SUMIF(A$2:A$11,XLOOKUP(G2,D2:D5,E2:E5),B2:B11)
+      - =sumif(a2:a11, xlookup(g2, d2:d5, e2:e5), b2:b11)
+      - =SUMIFS(B2:B11,A2:A11,XLOOKUP(G2,D2:D5,E2:E5))
+      - =SUMIF(A2:A11,VLOOKUP(G2,D2:E5,2,FALSE),B2:B11)
+      - =LET(data,A2:A11,SUMIF(data,XLOOKUP(G2,D2:D5,E2:E5),B2:B11))
+    wrong:
+      - formula: =SUMIF(A2:A10,XLOOKUP(G2,D2:D5,E2:E5),B2:B11)
+        rule: fragile
+        why: range A2:A11 one row short at the end
+    equivalent: []

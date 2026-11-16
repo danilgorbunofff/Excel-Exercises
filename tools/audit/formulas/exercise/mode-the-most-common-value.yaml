@@ -1,0 +1,22 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LET(data,B2:B7,MODE(data))
+    wrong:
+      - formula: =MODE(B2:B6)
+        rule: fragile
+        why: range B2:B7 one row short at the end
+      - formula: =MODE(B3:B7)
+        rule: value
+        why: range B2:B7 skips its first row
+    equivalent: []
+  - correct:
+      - =LET(data,B2:B8,MODE(data))
+    wrong:
+      - formula: =MODE(B2:B7)
+        rule: fragile
+        why: range B2:B8 one row short at the end
+      - formula: =MODE(B3:B8)
+        rule: value
+        why: range B2:B8 skips its first row
+    equivalent: []

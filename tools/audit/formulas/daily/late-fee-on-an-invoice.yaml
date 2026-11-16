@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND($C$2*VLOOKUP($B$2,$F$2:$G$5,2,TRUE),2)
+      - =ROUND(C$2*VLOOKUP(B2,F2:G5,2,TRUE),2)
+      - =round(c2*vlookup(b2, f2:g5, 2, true), 2)
+      - =ROUND(C2*XLOOKUP(B2,F2:F5,G2:G5,,-1),2)
+      - =LET(data,F2:G5,ROUND(C2*VLOOKUP(B2,data,2,TRUE),2))
+    wrong:
+      - formula: =ROUND(C2*VLOOKUP(B2,F3:G5,2,TRUE),2)
+        rule: fragile
+        why: range F2:G5 skips its first row
+    equivalent:
+      - formula: =ROUNDUP(C2*VLOOKUP(B2,F2:G5,2,TRUE),2)
+        why: "ROUNDUP instead of ROUND: The inputs leave no extra decimals to round, so Excel gives the same answer on the sheet and every variant."
+      - formula: =ROUND(C2*VLOOKUP(B2,F2:G5,2),2)
+        why: "VLOOKUP without FALSE: The table is sorted and the answer already matches approximately, so Excel gives the same answer here."

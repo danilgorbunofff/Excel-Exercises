@@ -1,0 +1,55 @@
+{
+  "_why": "Variant changes reviewed and refused as unrealistic (tools/suggest-variants.ts skips them). Keys are screens, values the refused cell changes, or \"*\" when no realistic change separates the leftovers.",
+  "exercise/a-commission-sheet-that-updates-itself#1": "*",
+  "exercise/a-commission-sheet-that-updates-itself#2": [
+    {
+      "B2": 1800,
+      "A9": 2
+    }
+  ],
+  "exercise/budget-versus-actual-with-a-variance-flag#2": [
+    {
+      "C2": null
+    }
+  ],
+  "exercise/iferror-catch-the-error-show-your-text#1": [
+    {
+      "A2": "Price"
+    }
+  ],
+  "exercise/index-a-value-at-a-row-and-column#1": [
+    {
+      "B5": null
+    }
+  ],
+  "exercise/top-customer-share-of-revenue#1": "*",
+  "exercise/true-and-false-what-a-comparison-returns#1": "*",
+  "exercise/xlookup-with-a-fallback-when-nothing-matches#1": [
+    {
+      "A2": "Lookup"
+    }
+  ],
+  "exercise/year-to-date-actual-against-budget#2": [
+    {
+      "C2": null
+    }
+  ],
+  "daily/late-fee-on-an-invoice#1": [
+    {
+      "F3": 60
+    }
+  ],
+  "mock/accrual-for-part-of-a-period#1": [
+    {
+      "B2": 3
+    }
+  ],
+  "mock/gross-margin-percent#1": "*",
+  "mock/mileage-claim#1": "*",
+  "mock/tax-rate-band#1": "*",
+  "mock/variance-needs-review#1": [
+    {
+      "C2": null
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MAX(0,$D$2-$B$4)
+      - =max(0, $d$2-b4)
+    wrong:
+      - formula: =MAX(0,$D$3-B4)
+        rule: fragile
+        why: $D$2 read from the next row
+      - formula: =MAX(0,$E$2-B4)
+        rule: fragile
+        why: $D$2 read from the next column
+      - formula: =MAX(0,$C$2-B4)
+        rule: fragile
+        why: $D$2 read from the column to the left
+    equivalent: []
+  - correct:
+      - =SUMIF(E$2:E$5,">30",C2:C5)
+      - =sumif(e2:e5, ">30", c2:c5)
+      - =SUMPRODUCT((E2:E5>30)*C2:C5)
+      - =SUM(FILTER(C2:C5,(E2:E5>30),0))
+      - =LET(data,E2:E5,SUMIF(data,">30",C2:C5))
+    wrong:
+      - formula: =SUMIF(E2:E5,">=30",C2:C5)
+        rule: fragile
+        why: criteria ">30" written with >=
+    equivalent: []

@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =RANK($B$4,$B$2:$B$7)
+      - =RANK(B$4,B2:B7)
+      - =rank(b4, b2:b7)
+      - =LET(data,B2:B7,RANK(B4,data))
+    wrong:
+      - formula: =RANK(B4,B3:B7)
+        rule: fragile
+        why: range B2:B7 skips its first row
+    equivalent: []

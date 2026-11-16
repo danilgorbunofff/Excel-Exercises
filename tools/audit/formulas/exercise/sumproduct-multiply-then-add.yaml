@@ -1,0 +1,20 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(B$2:B$4,C2:C4)
+      - =sumproduct(b2:b4, c2:c4)
+      - =LET(data,B2:B4,SUMPRODUCT(data,C2:C4))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =ROUND(SUMPRODUCT(B$2:B$4,C2:C4)/SUM(C2:C4),1)
+      - =round(sumproduct(b2:b4, c2:c4)/sum(c2:c4), 1)
+      - =ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUMPRODUCT(C2:C4),1)
+      - =LET(data,B2:B4,ROUND(SUMPRODUCT(data,C2:C4)/SUM(C2:C4),1))
+    wrong:
+      - formula: =ROUNDDOWN(SUMPRODUCT(B2:B4,C2:C4)/SUM(C2:C4),1)
+        rule: fragile
+        why: ROUNDDOWN instead of ROUND
+    equivalent:
+      - formula: =ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUM(C2:C5),1)
+        why: "range C2:C4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

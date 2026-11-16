@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTA($B$2:$B$9)
+      - =COUNTA(B$2:B$9)
+      - =LET(data,B2:B9,COUNTA(data))
+    wrong:
+      - formula: =A7
+        rule: fragile
+        why: points at A7, which holds the result
+    equivalent: []

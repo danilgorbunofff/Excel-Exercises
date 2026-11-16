@@ -1,0 +1,38 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =if(b2=0, "ready", "check")
+    wrong:
+      - formula: =IF(B1=0,"ready","check")
+        rule: value
+        why: B2 read from the row above
+      - formula: =IF(C2=0,"ready","check")
+        rule: reference
+        why: B2 read from the next column
+      - formula: =IF(A2=0,"ready","check")
+        rule: value
+        why: B2 read from the column to the left
+      - formula: =IF(B2=1,"ready","check")
+        rule: value
+        why: 0 written as 1
+    equivalent: []
+  - correct:
+      - =countif(b2:b5, "<>0")
+      - =LET(data,B2:B5,COUNTIF(data,"<>0"))
+    wrong:
+      - formula: =COUNTIF(B2:B4,"<>0")
+        rule: fragile
+        why: range B2:B5 one row short at the end
+      - formula: =COUNTIF(B3:B5,"<>0")
+        rule: fragile
+        why: range B2:B5 skips its first row
+      - formula: =COUNTIF(A2:A5,"<>0")
+        rule: value
+        why: range B2:B5 one column left
+      - formula: =COUNTIF(B2:B5,"=0")
+        rule: fragile
+        why: criteria "<>0" written with =
+      - formula: =2
+        rule: required-function
+        why: result typed in
+    equivalent: []

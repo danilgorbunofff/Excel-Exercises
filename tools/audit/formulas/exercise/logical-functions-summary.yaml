@@ -1,0 +1,56 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(AND(B$8>100,MIN(B2:B7)>=15),"PASS","FAIL")
+      - =if(and(b8>100, min(b2:b7)>=15), "PASS", "FAIL")
+      - =IFS(AND(B8>100,MIN(B2:B7)>=15),"PASS",TRUE,"FAIL")
+      - =LET(data,B2:B7,IF(AND(B8>100,MIN(data)>=15),"PASS","FAIL"))
+    wrong:
+      - formula: =IF(AND(B8>=100,MIN(B2:B7)>=15),"PASS","FAIL")
+        rule: fragile
+        why: "> written as >="
+      - formula: =IF(AND(A8>100,MIN(B2:B7)>=15),"PASS","FAIL")
+        rule: fragile
+        why: B8 read from the column to the left
+      - formula: =IF(AND(B8>101,MIN(B2:B7)>=15),"PASS","FAIL")
+        rule: fragile
+        why: 100 written as 101
+      - formula: =IF(AND(B8>99,MIN(B2:B7)>=15),"PASS","FAIL")
+        rule: fragile
+        why: 100 written as 99
+      - formula: =IF(AND(B8>100,MIN(B2:B7)>15),"PASS","FAIL")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IF(AND(B8>100,MIN(B2:B6)>=15),"PASS","FAIL")
+        rule: fragile
+        why: range B2:B7 one row short at the end
+      - formula: =IF(AND(B8>100,MIN(B2:B7)>=16),"PASS","FAIL")
+        rule: fragile
+        why: 15 written as 16
+      - formula: =IF(AND(B8>100,MIN(B2:B7)>=14),"PASS","FAIL")
+        rule: fragile
+        why: 15 written as 14
+    equivalent:
+      - formula: =IF(AND(B8>100,MIN(B2:B8)>=15),"PASS","FAIL")
+        why: "range B2:B7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+  - correct:
+      - =IF(ISNUMBER(AVERAGE(C$2:C$7)),ROUND(AVERAGE(C2:C7),1),"none")
+      - =if(isnumber(average(c2:c7)), round(average(c2:c7), 1), "none")
+      - =IFS(ISNUMBER(AVERAGE(C2:C7)),ROUND(AVERAGE(C2:C7),1),TRUE,"none")
+      - =LET(data,C2:C7,IF(ISNUMBER(AVERAGE(data)),ROUND(AVERAGE(data),1),"none"))
+    wrong: []
+    equivalent:
+      - formula: =IF(ISNUMBER(SUM(C2:C7)),ROUND(AVERAGE(C2:C7),1),"none")
+        why: "SUM instead of AVERAGE: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =IF(ISNUMBER(MEDIAN(C2:C7)),ROUND(AVERAGE(C2:C7),1),"none")
+        why: "MEDIAN instead of AVERAGE: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =IF(ISNUMBER(AVERAGE(C2:C6)),ROUND(AVERAGE(C2:C7),1),"none")
+        why: "range C2:C7 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IF(ISNUMBER(AVERAGE(C3:C7)),ROUND(AVERAGE(C2:C7),1),"none")
+        why: "range C2:C7 skips its first row: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IF(ISNUMBER(AVERAGE(C2:C8)),ROUND(AVERAGE(C2:C7),1),"none")
+        why: "range C2:C7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IF(ISNUMBER(AVERAGE(B2:B7)),ROUND(AVERAGE(C2:C7),1),"none")
+        why: "range C2:C7 one column left: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IF(ISNUMBER(AVERAGE(C2:C7)),ROUND(AVERAGE(C2:C8),1),"none")
+        why: "range C2:C7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

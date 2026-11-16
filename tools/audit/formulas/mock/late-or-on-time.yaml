@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF($C$2>$B$2,"Late","On time")
+      - =IF(C$2>B2,"Late","On time")
+      - =if(c2>b2, "Late", "On time")
+      - =IFS(C2>B2,"Late",TRUE,"On time")
+    wrong:
+      - formula: =IF(C2>=B2,"Late","On time")
+        rule: fragile
+        why: "> written as >="
+    equivalent: []

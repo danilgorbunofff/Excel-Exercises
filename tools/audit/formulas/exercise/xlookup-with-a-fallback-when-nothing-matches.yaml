@@ -1,0 +1,26 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP(B$5,A2:A4,B2:B4,"not stocked")
+      - =xlookup(b5, a2:a4, b2:b4, "not stocked")
+      - =LET(data,A2:A4,XLOOKUP(B5,data,B2:B4,"not stocked"))
+    wrong:
+      - formula: =XLOOKUP(B4,A2:A4,B2:B4,"not stocked")
+        rule: fragile
+        why: B5 read from the row above
+      - formula: =XLOOKUP(C5,A2:A4,B2:B4,"not stocked")
+        rule: fragile
+        why: B5 read from the next column
+      - formula: =XLOOKUP(A5,A2:A4,B2:B4,"not stocked")
+        rule: fragile
+        why: B5 read from the column to the left
+      - formula: =XLOOKUP(B5,B2:B4,B2:B4,"not stocked")
+        rule: fragile
+        why: range A2:A4 one column right
+      - formula: =XLOOKUP(B5,A2:A4,C2:C4,"not stocked")
+        rule: fragile
+        why: range B2:B4 one column right
+      - formula: =XLOOKUP(B5,A2:A4,A2:A4,"not stocked")
+        rule: fragile
+        why: range B2:B4 one column left
+    equivalent: []

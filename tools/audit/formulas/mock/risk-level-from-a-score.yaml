@@ -1,0 +1,52 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF($B$2>=75,"High",IF($B$2>=50,"Medium","Low"))
+      - =IF(B$2>=75,"High",IF(B2>=50,"Medium","Low"))
+      - =if(b2>=75, "High", if(b2>=50, "Medium", "Low"))
+      - =IFS(B2>=75,"High",TRUE,IF(B2>=50,"Medium","Low"))
+      - =IF(B2>=75,"High",IFS(B2>=50,"Medium",TRUE,"Low"))
+    wrong:
+      - formula: =IF(B2>75,"High",IF(B2>=50,"Medium","Low"))
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IF(B3>=75,"High",IF(B2>=50,"Medium","Low"))
+        rule: value
+        why: B2 read from the next row
+      - formula: =IF(B1>=75,"High",IF(B2>=50,"Medium","Low"))
+        rule: fragile
+        why: B2 read from the row above
+      - formula: =IF(C2>=75,"High",IF(B2>=50,"Medium","Low"))
+        rule: reference
+        why: B2 read from the next column
+      - formula: =IF(A2>=75,"High",IF(B2>=50,"Medium","Low"))
+        rule: fragile
+        why: B2 read from the column to the left
+      - formula: =IF(B2>=76,"High",IF(B2>=50,"Medium","Low"))
+        rule: fragile
+        why: 75 written as 76
+      - formula: =IF(B2>=74,"High",IF(B2>=50,"Medium","Low"))
+        rule: fragile
+        why: 75 written as 74
+      - formula: =IF(B2>=75,"High",IF(B2>50,"Medium","Low"))
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IF(B2>=75,"High",IF(B3>=50,"Medium","Low"))
+        rule: fragile
+        why: B2 read from the next row
+      - formula: =IF(B2>=75,"High",IF(B1>=50,"Medium","Low"))
+        rule: fragile
+        why: B2 read from the row above
+      - formula: =IF(B2>=75,"High",IF(C2>=50,"Medium","Low"))
+        rule: reference
+        why: B2 read from the next column
+      - formula: =IF(B2>=75,"High",IF(A2>=50,"Medium","Low"))
+        rule: fragile
+        why: B2 read from the column to the left
+      - formula: =IF(B2>=75,"High",IF(B2>=51,"Medium","Low"))
+        rule: fragile
+        why: 50 written as 51
+      - formula: =IF(B2>=75,"High",IF(B2>=49,"Medium","Low"))
+        rule: fragile
+        why: 50 written as 49
+    equivalent: []

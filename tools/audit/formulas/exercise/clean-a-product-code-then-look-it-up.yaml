@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =UPPER(TRIM($A$2))
+      - =UPPER(TRIM(A$2))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =XLOOKUP(TRIM($A$2),$D$2:$D$4,$E$2:$E$4)
+      - =XLOOKUP(TRIM(A$2),$D$2:$D$4,$E$2:$E$4)
+      - =xlookup(trim(a2), $d$2:$d$4, $e$2:$e$4)
+      - =LET(data,$D$2:$D$4,XLOOKUP(TRIM(A2),data,$E$2:$E$4))
+    wrong: []
+    equivalent: []

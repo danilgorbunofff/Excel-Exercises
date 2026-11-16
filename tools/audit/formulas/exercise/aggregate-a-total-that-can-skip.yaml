@@ -1,0 +1,27 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =aggregate(9, 6, b2:b4)
+      - =LET(data,B2:B4,AGGREGATE(9,6,data))
+    wrong: []
+    equivalent:
+      - formula: =AGGREGATE(9,7,B2:B4)
+        why: "6 written as 7: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =AGGREGATE(9,5,B2:B4)
+        why: "6 written as 5: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =AGGREGATE(9,6,B2:B5)
+        why: "range B2:B4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+  - correct:
+      - =round(aggregate(1, 6, b2:b4), 1)
+      - =LET(data,B2:B4,ROUND(AGGREGATE(1,6,data),1))
+    wrong:
+      - formula: =ROUNDUP(AGGREGATE(1,6,B2:B4),1)
+        rule: fragile
+        why: ROUNDUP instead of ROUND
+    equivalent:
+      - formula: =ROUND(AGGREGATE(1,7,B2:B4),1)
+        why: "6 written as 7: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =ROUND(AGGREGATE(1,5,B2:B4),1)
+        why: "6 written as 5: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =ROUND(AGGREGATE(1,6,B2:B5),1)
+        why: "range B2:B4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

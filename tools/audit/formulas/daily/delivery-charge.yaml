@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF($B$2>=60,0,4.99)
+      - =IF(B$2>=60,0,4.99)
+      - =if(b2>=60, 0, 4.99)
+      - =IFS(B2>=60,0,TRUE,4.99)
+    wrong:
+      - formula: =IF(B2>60,0,4.99)
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IF(B2>=61,0,4.99)
+        rule: fragile
+        why: 60 written as 61
+      - formula: =IF(B2>=59,0,4.99)
+        rule: fragile
+        why: 60 written as 59
+    equivalent: []

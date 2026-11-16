@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =DATEDIF(B$2,C2,"Y")
+      - =datedif(b2, c2, "Y")
+    wrong:
+      - formula: =DATEDIF(B2,C3,"Y")
+        rule: fragile
+        why: C2 read from the next row
+    equivalent: []
+  - correct:
+      - =DATEDIF(B$2,C2,"M")
+      - =datedif(b2, c2, "M")
+    wrong:
+      - formula: =DATEDIF(B2,C3,"M")
+        rule: fragile
+        why: C2 read from the next row
+    equivalent: []

@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF($B$2:$B$7,"North")
+      - =COUNTIF(B$2:B$7,"North")
+      - =countif(b2:b7, "North")
+      - =LET(data,B2:B7,COUNTIF(data,"North"))
+    wrong: []
+    equivalent: []

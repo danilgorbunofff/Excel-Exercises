@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(B$2:B$5,C2:C5)
+      - =sumproduct(b2:b5, c2:c5)
+      - =LET(data,B2:B5,SUMPRODUCT(data,C2:C5))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =ROUND(SUMPRODUCT(B$2:B$5,C2:C5)/SUM(B2:B5),0)
+      - =round(sumproduct(b2:b5, c2:c5)/sum(b2:b5), 0)
+      - =ROUND(SUMPRODUCT(B2:B5,C2:C5)/SUMPRODUCT(B2:B5),0)
+      - =LET(data,B2:B5,ROUND(SUMPRODUCT(data,C2:C5)/SUM(data),0))
+    wrong:
+      - formula: =ROUNDDOWN(SUMPRODUCT(B2:B5,C2:C5)/SUM(B2:B5),0)
+        rule: fragile
+        why: ROUNDDOWN instead of ROUND
+    equivalent: []

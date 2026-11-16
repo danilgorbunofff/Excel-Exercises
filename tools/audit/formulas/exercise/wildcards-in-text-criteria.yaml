@@ -1,0 +1,34 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =countif(b2:b5, "Nor*")
+      - =LET(data,B2:B5,COUNTIF(data,"Nor*"))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =SUMIF(A$2:A$5,"??-*",C2:C5)
+      - =sumif(a2:a5, "??-*", c2:c5)
+      - =LET(data,A2:A5,SUMIF(data,"??-*",C2:C5))
+    wrong:
+      - formula: =COUNTIF(A2:A5,"??-*",C2:C5)
+        rule: syntax
+        why: COUNTIF instead of SUMIF
+      - formula: =AVERAGEIF(A2:A5,"??-*",C2:C5)
+        rule: required-function
+        why: AVERAGEIF instead of SUMIF
+      - formula: =SUMIF(A2:A4,"??-*",C2:C5)
+        rule: value
+        why: range A2:A5 one row short at the end
+      - formula: =SUMIF(A3:A5,"??-*",C2:C5)
+        rule: value
+        why: range A2:A5 skips its first row
+      - formula: =SUMIF(B2:B5,"??-*",C2:C5)
+        rule: value
+        why: range A2:A5 one column right
+      - formula: =SUMIF(A2:A5,"??-*",C3:C5)
+        rule: value
+        why: range C2:C5 skips its first row
+      - formula: =SUMIF(A2:A5,"??-*",D2:D5)
+        rule: reference
+        why: range C2:C5 one column right
+    equivalent: []

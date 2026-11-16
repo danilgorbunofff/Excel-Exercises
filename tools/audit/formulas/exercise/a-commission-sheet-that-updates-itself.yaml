@@ -1,0 +1,36 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND($B$2*VLOOKUP($B$2,$A$7:$B$9,2,TRUE),2)
+      - =ROUND(B$2*VLOOKUP(B2,$A$7:$B$9,2,TRUE),2)
+      - =round(b2*vlookup(b2, $a$7:$b$9, 2, true), 2)
+      - =ROUND(B2*XLOOKUP(B2,$A$7:$A$9,$B$7:$B$9,,-1),2)
+      - =ROUND(B2*INDEX($B$7:$B$9,MATCH(B2,$A$7:$A$9,1)),2)
+      - =LET(data,$A$7:$B$9,ROUND(B2*VLOOKUP(B2,data,2,TRUE),2))
+    wrong: []
+    equivalent:
+      - formula: =ROUNDDOWN(B2*VLOOKUP(B2,$A$7:$B$9,2,TRUE),2)
+        why: "ROUNDDOWN instead of ROUND: The inputs leave no extra decimals to round, so Excel gives the same answer on the sheet and every variant."
+      - formula: =ROUNDUP(B2*VLOOKUP(B2,$A$7:$B$9,2,TRUE),2)
+        why: "ROUNDUP instead of ROUND: The inputs leave no extra decimals to round, so Excel gives the same answer on the sheet and every variant."
+      - formula: =ROUND(B2*VLOOKUP(B2,$A$7:$B$9,2),2)
+        why: "VLOOKUP without FALSE: The table is sorted and the answer already matches approximately, so Excel gives the same answer here."
+      - formula: =ROUND(B2*VLOOKUP(B2,$A$8:$B$9,2,TRUE),2)
+        why: "range $A$7:$B$9 skips its first row: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =ROUND(B2*VLOOKUP(B2,$A$7:$B$9,2,TRUE),3)
+        why: "2 written as 3: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =ROUND(B2*VLOOKUP(B2,$A$7:$B$9,2,TRUE),1)
+        why: "2 written as 1: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+  - correct:
+      - =VLOOKUP(B$2,$A$7:$B$9,2,TRUE)
+      - =vlookup(b2, $a$7:$b$9, 2, true)
+      - =XLOOKUP(B2,$A$7:$A$9,$B$7:$B$9,,-1)
+      - =INDEX($B$7:$B$9,MATCH(B2,$A$7:$A$9,1))
+      - =LET(data,$A$7:$B$9,VLOOKUP(B2,data,2,TRUE))
+    wrong:
+      - formula: =VLOOKUP(B2,$A$8:$B$9,2,TRUE)
+        rule: fragile
+        why: range $A$7:$B$9 skips its first row
+    equivalent:
+      - formula: =VLOOKUP(B2,$A$7:$B$9,2)
+        why: "VLOOKUP without FALSE: The table is sorted and the answer already matches approximately, so Excel gives the same answer here."

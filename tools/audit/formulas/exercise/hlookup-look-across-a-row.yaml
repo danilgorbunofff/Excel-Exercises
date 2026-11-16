@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =HLOOKUP(B$4,B1:D3,3,FALSE)
+      - =hlookup(b4, b1:d3, 3, false)
+      - =LET(data,B1:D3,HLOOKUP(B4,data,3,FALSE))
+    wrong: []
+    equivalent:
+      - formula: =HLOOKUP(B4,B1:D4,3,FALSE)
+        why: "range B1:D3 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =HLOOKUP(B4,C1:E3,3,FALSE)
+        why: "range B1:D3 one column right: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =HLOOKUP(B4,A1:C3,3,FALSE)
+        why: "range B1:D3 one column left: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

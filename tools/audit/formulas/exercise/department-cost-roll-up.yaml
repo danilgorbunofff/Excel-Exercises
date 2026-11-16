@@ -1,0 +1,25 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIFS(C$2:C$7,A2:A7,"Marketing",B2:B7,"Software")
+      - =sumifs(c2:c7, a2:a7, "Marketing", b2:b7, "Software")
+      - =LET(data,C2:C7,SUMIFS(data,A2:A7,"Marketing",B2:B7,"Software"))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =ROUND(SUMIFS(C$2:C$7,A2:A7,"Marketing",B2:B7,"Salaries")/SUMIFS(C2:C7,A2:A7,"Marketing"),2)
+      - =round(sumifs(c2:c7, a2:a7, "Marketing", b2:b7, "Salaries")/sumifs(c2:c7, a2:a7, "Marketing"), 2)
+      - =ROUND(SUMPRODUCT((A2:A7="Marketing")*(B2:B7="Salaries")*C2:C7)/SUMIFS(C2:C7,A2:A7,"Marketing"),2)
+      - =ROUND(SUM(FILTER(C2:C7,(A2:A7="Marketing")*(B2:B7="Salaries"),0))/SUMIFS(C2:C7,A2:A7,"Marketing"),2)
+      - =ROUND(SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Salaries")/SUMPRODUCT((A2:A7="Marketing")*C2:C7),2)
+      - =ROUND(SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Salaries")/SUM(FILTER(C2:C7,(A2:A7="Marketing"),0)),2)
+      - =ROUND(SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Salaries")/SUMIF(A2:A7,"Marketing",C2:C7),2)
+      - =LET(data,C2:C7,ROUND(SUMIFS(data,A2:A7,"Marketing",B2:B7,"Salaries")/SUMIFS(data,A2:A7,"Marketing"),2))
+    wrong:
+      - formula: =ROUND(AVERAGEIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Salaries")/SUMIFS(C2:C7,A2:A7,"Marketing"),2)
+        rule: fragile
+        why: AVERAGEIFS instead of SUMIFS
+      - formula: =ROUND(SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Salaries")/SUMIFS(C2:C7,A2:A7,"Marketing"),1)
+        rule: fragile
+        why: 2 written as 1
+    equivalent: []

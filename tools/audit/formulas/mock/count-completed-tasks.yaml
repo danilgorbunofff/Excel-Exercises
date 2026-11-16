@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF($C$2:$C$9,"Done")
+      - =COUNTIF(C$2:C$9,"Done")
+      - =countif(c2:c9, "Done")
+      - =SUMPRODUCT(--(C2:C9="Done"))
+      - =LET(data,C2:C9,COUNTIF(data,"Done"))
+    wrong:
+      - formula: =COUNTIF(C2:C8,"Done")
+        rule: fragile
+        why: range C2:C9 one row short at the end
+    equivalent: []

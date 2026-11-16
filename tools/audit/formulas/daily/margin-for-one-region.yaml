@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LET(rev,SUMIF($A$2:$A$9,$F$2,$B$2:$B$9),cost,SUMIF($A$2:$A$9,$F$2,$C$2:$C$9),ROUND((rev-cost)/rev*100,1))
+      - =LET(rev,SUMIF(A$2:A$9,F2,B2:B9),cost,SUMIF(A2:A9,F2,C2:C9),ROUND((rev-cost)/rev*100,1))
+      - =let(rev, sumif(a2:a9, f2, b2:b9), cost, sumif(a2:a9, f2, c2:c9), round((rev-cost)/rev*100, 1))
+      - =LET(rev,SUMIFS(B2:B9,A2:A9,F2),cost,SUMIF(A2:A9,F2,C2:C9),ROUND((rev-cost)/rev*100,1))
+      - =LET(rev,SUMPRODUCT((A2:A9=F2)*B2:B9),cost,SUMIF(A2:A9,F2,C2:C9),ROUND((rev-cost)/rev*100,1))
+      - =LET(rev,SUM(FILTER(B2:B9,(A2:A9=F2),0)),cost,SUMIF(A2:A9,F2,C2:C9),ROUND((rev-cost)/rev*100,1))
+      - =LET(rev,SUMIF(A2:A9,F2,B2:B9),cost,SUMIFS(C2:C9,A2:A9,F2),ROUND((rev-cost)/rev*100,1))
+      - =LET(rev,SUMIF(A2:A9,F2,B2:B9),cost,SUMPRODUCT((A2:A9=F2)*C2:C9),ROUND((rev-cost)/rev*100,1))
+      - =LET(rev,SUMIF(A2:A9,F2,B2:B9),cost,SUM(FILTER(C2:C9,(A2:A9=F2),0)),ROUND((rev-cost)/rev*100,1))
+      - =LET(data,A2:A9,LET(rev,SUMIF(data,F2,B2:B9),cost,SUMIF(data,F2,C2:C9),ROUND((rev-cost)/rev*100,1)))
+    wrong: []
+    equivalent: []

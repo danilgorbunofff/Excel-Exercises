@@ -1,0 +1,32 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AVERAGE($B$2:$B$9)
+      - =AVERAGE(B$2:B$9)
+      - =LET(data,B2:B9,AVERAGE(data))
+    wrong:
+      - formula: =SUM(B2:B9)
+        rule: value
+        why: SUM instead of AVERAGE
+      - formula: =MEDIAN(B2:B9)
+        rule: value
+        why: MEDIAN instead of AVERAGE
+      - formula: =AVERAGE(B2:B8)
+        rule: value
+        why: range B2:B9 one row short at the end
+      - formula: =AVERAGE(B3:B9)
+        rule: value
+        why: range B2:B9 skips its first row
+      - formula: =AVERAGE(B2:B10)
+        rule: reference
+        why: range B2:B9 one row long
+      - formula: =AVERAGE(C2:C9)
+        rule: value
+        why: range B2:B9 one column right
+      - formula: =AVERAGE(A2:A9)
+        rule: value
+        why: range B2:B9 one column left
+      - formula: =B8
+        rule: fragile
+        why: points at B8, which holds the result
+    equivalent: []

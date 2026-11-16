@@ -1,0 +1,40 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFERROR(XLOOKUP($E$2,$A$2:$A$6,$B$2:$B$6),"Not listed")
+      - =IFERROR(XLOOKUP(E$2,A2:A6,B2:B6),"Not listed")
+      - =iferror(xlookup(e2, a2:a6, b2:b6), "Not listed")
+      - =IFERROR(INDEX(B2:B6,MATCH(E2,A2:A6,0)),"Not listed")
+      - =LET(data,A2:A6,IFERROR(XLOOKUP(E2,data,B2:B6),"Not listed"))
+    wrong:
+      - formula: =IFERROR(XLOOKUP(E3,A2:A6,B2:B6),"Not listed")
+        rule: fragile
+        why: E2 read from the next row
+      - formula: =IFERROR(XLOOKUP(E1,A2:A6,B2:B6),"Not listed")
+        rule: fragile
+        why: E2 read from the row above
+      - formula: =IFERROR(XLOOKUP(D2,A2:A6,B2:B6),"Not listed")
+        rule: fragile
+        why: E2 read from the column to the left
+      - formula: =IFERROR(XLOOKUP(E2,A2:A5,B2:B6),"Not listed")
+        rule: fragile
+        why: range A2:A6 one row short at the end
+      - formula: =IFERROR(XLOOKUP(E2,A3:A6,B2:B6),"Not listed")
+        rule: fragile
+        why: range A2:A6 skips its first row
+      - formula: =IFERROR(XLOOKUP(E2,B2:B6,B2:B6),"Not listed")
+        rule: fragile
+        why: range A2:A6 one column right
+      - formula: =IFERROR(XLOOKUP(E2,A2:A6,B2:B5),"Not listed")
+        rule: fragile
+        why: range B2:B6 one row short at the end
+      - formula: =IFERROR(XLOOKUP(E2,A2:A6,B3:B6),"Not listed")
+        rule: fragile
+        why: range B2:B6 skips its first row
+      - formula: =IFERROR(XLOOKUP(E2,A2:A6,C2:C6),"Not listed")
+        rule: fragile
+        why: range B2:B6 one column right
+      - formula: =IFERROR(XLOOKUP(E2,A2:A6,A2:A6),"Not listed")
+        rule: fragile
+        why: range B2:B6 one column left
+    equivalent: []

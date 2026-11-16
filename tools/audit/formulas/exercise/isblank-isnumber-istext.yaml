@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct: []
+    wrong: []
+    equivalent:
+      - formula: =ISBLANK(A2)
+        why: "A3 read from the row above: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+  - correct: []
+    wrong: []
+    equivalent:
+      - formula: =ISNUMBER(A8)
+        why: "A7 read from the next row: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =ISNUMBER(B7)
+        why: "A7 read from the next column: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

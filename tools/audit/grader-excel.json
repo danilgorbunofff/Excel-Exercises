@@ -1,0 +1,4762 @@
+[
+ {
+  "area": "coercion",
+  "formula": "=\"12\"+1",
+  "excel": 13,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=\"1,050\"+0",
+  "locale": true,
+  "excel": 1.05,
+  "match": false
+ },
+ {
+  "area": "coercion",
+  "formula": "=\"5%\"*1",
+  "locale": true,
+  "excel": 0.05,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=\"1.5\"*2",
+  "locale": true,
+  "excel": 92286,
+  "match": false
+ },
+ {
+  "area": "coercion",
+  "formula": "=C4+1",
+  "excel": 301,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=C6+1",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=C5+1",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=TRUE+TRUE",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=TRUE*5",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=SUM(C2:C9)",
+  "excel": 398.33,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=SUM(C4)",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=SUM(\"12\",1)",
+  "excel": 13,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=SUM(TRUE,1)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=SUM(\"x\",1)",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=SUM(C2:C9,\"5\")",
+  "excel": 403.33,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=SUM(--C2:C9)",
+  "excel": 699.33,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=SUM(C2:C9*1)",
+  "excel": 699.33,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=SUMPRODUCT(--C2:C9)",
+  "excel": 699.33,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=SUMPRODUCT(C2:C9*1)",
+  "excel": 699.33,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=SUMPRODUCT(C2:C9)",
+  "excel": 398.33,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=AVERAGE(C2:C9)",
+  "excel": 79.666,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=COUNT(C2:C9)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=COUNTA(C2:C9)",
+  "excel": 7,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=COUNTBLANK(C2:C9)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=COUNTBLANK(B2:B9)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=MAX(C2:C9)",
+  "excel": 250,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=MIN(C2:C9)",
+  "excel": -2.675,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=MAX(\"12\",3)",
+  "excel": 12,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=PRODUCT(C2:C3,F2:F3)",
+  "excel": 75000,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=MEDIAN(F2:F9)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=MODE(F2:F9)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=MODE(F2,F3,F4,F3,F2)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=C5&\"x\"",
+  "excel": "x",
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=C4&\"\"",
+  "excel": "300",
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=F2&F3",
+  "excel": "31",
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=-C4",
+  "excel": -300,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=--\"12\"",
+  "excel": 12,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=+C2",
+  "excel": 100,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=C2%",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=2^3^2",
+  "excel": 64,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=-2^2",
+  "excel": 4,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=10/C5",
+  "excel": {
+   "error": "#DIV/0!"
+  },
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=10/C9",
+  "excel": -3.738317757009346,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=C5*1",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=ISNUMBER(C4)",
+  "excel": false,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=ISTEXT(C4)",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=ISBLANK(C5)",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=ISBLANK(B9)",
+  "excel": false,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=N(C4)",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=VALUE(C4)",
+  "excel": 300,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=VALUE(\"1,050\")",
+  "locale": true,
+  "excel": 1.05,
+  "match": false
+ },
+ {
+  "area": "coercion",
+  "formula": "=VALUE(\"5%\")",
+  "locale": true,
+  "excel": 0.05,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=VALUE(\" 12 \")",
+  "excel": 12,
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=VALUE(\"abc\")",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "coercion",
+  "formula": "=VALUE(TRUE)",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=1<\"a\"",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=\"a\"<TRUE",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=1<TRUE",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=\"A\"=\"a\"",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=\"abc\"<\"abd\"",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=\"Z\"<\"a\"",
+  "excel": false,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=C5=0",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=C5=\"\"",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=C5<1",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=C5>-1",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=B9=\"\"",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=B9=0",
+  "excel": false,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=C4=300",
+  "excel": false,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=C4=\"300\"",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=TRUE=1",
+  "excel": false,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=\"10\"<\"9\"",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=A5=\"Dee\"",
+  "excel": false,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=A2=A7",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=EXACT(A2,A7)",
+  "excel": false,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=C6=1",
+  "excel": false,
+  "match": true
+ },
+ {
+  "area": "comparison",
+  "formula": "=C6=TRUE",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=1/0",
+  "excel": {
+   "error": "#DIV/0!"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=IFERROR(1/0,\"x\")",
+  "excel": "x",
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=IFERROR(C5/C5,0)",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=IFNA(1/0,\"x\")",
+  "excel": {
+   "error": "#DIV/0!"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=IFNA(MATCH(\"zz\",A2:A9,0),\"none\")",
+  "excel": "none",
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=IFERROR(MATCH(\"zz\",A2:A9,0),\"none\")",
+  "excel": "none",
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=SUM(1/0,1)",
+  "excel": {
+   "error": "#DIV/0!"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=SUM(IFERROR(1/(F2:F9),0))",
+  "excel": 2.783333333333333,
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=ISNA(MATCH(\"zz\",A2:A9,0))",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=ISERROR(1/0)",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=ISNA(1/0)",
+  "excel": false,
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=1/0+MATCH(\"zz\",A2:A9,0)",
+  "excel": {
+   "error": "#DIV/0!"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=MATCH(\"zz\",A2:A9,0)+1/0",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=IF(1/0,1,2)",
+  "excel": {
+   "error": "#DIV/0!"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=IF(TRUE,1,1/0)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=AND(1/0,FALSE)",
+  "excel": {
+   "error": "#DIV/0!"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=INDEX(A2:A9,20)",
+  "excel": {
+   "error": "#REF!"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=INDEX(A2:A9,0)",
+  "excel": [
+   [
+    "Ann"
+   ],
+   [
+    "bob"
+   ],
+   [
+    "Cy"
+   ],
+   [
+    "Dee "
+   ],
+   [
+    "Eli"
+   ],
+   [
+    "ann"
+   ],
+   [
+    0
+   ],
+   [
+    "Fay"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=VLOOKUP(\"Ann\",A2:C9,5,FALSE)",
+  "excel": {
+   "error": "#REF!"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=VLOOKUP(\"Ann\",A2:C9,0,FALSE)",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=FILTER(A2:A9,F2:F9>100)",
+  "excel": {
+   "error": "#CALC!"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=FILTER(A2:A9,F2:F9>100,\"none\")",
+  "excel": "none",
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=AVERAGE(D2:D9)",
+  "excel": {
+   "error": "#DIV/0!"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=AVERAGEIF(B2:B9,\"zz\",C2:C9)",
+  "excel": {
+   "error": "#DIV/0!"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=MOD(5,0)",
+  "excel": {
+   "error": "#DIV/0!"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=SQRT(-1)",
+  "excel": {
+   "error": "#NUM!"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=LARGE(F2:F9,20)",
+  "excel": {
+   "error": "#NUM!"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=LEFT(\"abc\",-1)",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "errors",
+  "formula": "=DATE(2024,1,1)/0",
+  "excel": {
+   "error": "#DIV/0!"
+  },
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(B2:B9,\"north\")",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(B2:B9,\"North\")",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(B2:B9,\"<>North\")",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(B2:B9,\"\")",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(B2:B9,\"<>\")",
+  "excel": 8,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(C2:C9,\">=100\")",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(C2:C9,\">\"&C2)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(C2:C9,\"<=\"&C3)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(C2:C9,300)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(C2:C9,\"300\")",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(C2:C9,TRUE)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(D2:D9,\"*-*\")",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(D2:D9,\"?-?\")",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(D2:D9,\"*~**\")",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(D2:D9,\"*~?*\")",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(D2:D9,\"*~~*\")",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(D2:D9,\"12\")",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(D2:D9,12)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(D2:D9,7)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(A2:A9,\"ann\")",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(A2:A9,\"Dee\")",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(A2:A9,\"Dee*\")",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(A2:A9,A2)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(B2:B9,B9)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(F2:F9,C5)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(C2:C9,\"=\")",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(C2:C9,\"<>\")",
+  "excel": 7,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(F2:F9,\">2\")",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(F2:F9,\">\"&\"2\")",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(F2:F9,\"=2\")",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(F2:F9,\"2\")",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(E2:E9,\">=\"&DATE(2024,6,1))",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIFS(B2:B9,\"North\",F2:F9,\">=3\")",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIFS(B2:B9,\"North\",F2:F9,\">=3\",C2:C9,\">0\")",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIFS(B2:B9,\"North\",F2:F8,\">=3\")",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIF(B2:B9,\"North\",C2:C9)",
+  "excel": 101.005,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIF(B2:B9,\"north\",F2:F9)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIF(F2:F9,\">2\")",
+  "excel": 12,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIF(C2:C9,\"<>0\")",
+  "excel": 398.33,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIF(B2:B9,\"North\",F2:F5)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIF(B2:B9,\"South\",F2)",
+  "excel": 6,
+  "match": false
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIFS(F2:F9,B2:B9,\"North\")",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIFS(F2:F9,B2:B9,\"North\",C2:C9,\">1\")",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIFS(F2:F9,B2:B9,\"North\",C2:C8,\">1\")",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIFS(F2:F9,B2:B9,\"<>North\")",
+  "excel": 12,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIFS(F2:F9,B2:B9,{\"North\",\"South\"})",
+  "excel": [
+   [
+    5,
+    6
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUM(SUMIFS(F2:F9,B2:B9,{\"North\",\"South\"}))",
+  "excel": 11,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=AVERAGEIF(B2:B9,\"South\",F2:F9)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=AVERAGEIF(F2:F9,\"<>0\")",
+  "excel": 2.8333333333333335,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=AVERAGEIFS(F2:F9,B2:B9,\"North\")",
+  "excel": 2.5,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=AVERAGEIFS(F2:F9,F2:F9,\">0\",B2:B9,\"<>East\")",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=COUNTIF(B2:B9,B2:B4)",
+  "excel": [
+   [
+    3
+   ],
+   [
+    2
+   ],
+   [
+    3
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUM(COUNTIF(B2:B9,B2:B4))",
+  "excel": 8,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(\"Cy\",A2:F9,6,FALSE)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(\"cy\",A2:F9,6,FALSE)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(\"Cy\",A2:F9,6,0)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(\"Dee\",A2:F9,2,FALSE)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(120,G2:H6,2,TRUE)",
+  "excel": "C",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(120,G2:H6,2)",
+  "excel": "C",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(-5,G2:H6,2,TRUE)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(500,G2:H6,2,TRUE)",
+  "excel": "A",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(9999,G2:H6,2,TRUE)",
+  "excel": "A",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(120,G2:H6,3,TRUE)",
+  "excel": {
+   "error": "#REF!"
+  },
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(\"Ann\",A2:F9,7,FALSE)",
+  "excel": {
+   "error": "#REF!"
+  },
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(12,D2:F9,2,FALSE)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(\"12\",D2:F9,2,FALSE)",
+  "excel": 45366,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(\"a*\",A2:F9,6,FALSE)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(\"?ob\",A2:F9,6,FALSE)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=HLOOKUP(\"Qty\",A1:H9,3,FALSE)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=MATCH(\"South\",B2:B9,0)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=MATCH(\"south\",B2:B9,0)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=MATCH(120,G2:G6,1)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=MATCH(120,G2:G6)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=MATCH(-1,G2:G6,1)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=MATCH(120,{500,200,100,50,0},-1)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=MATCH(600,{500,200,100,50,0},-1)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=MATCH(3,F2:F9,0)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=MATCH(\"3\",F2:F9,0)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=MATCH(300,C2:C9,0)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=MATCH(\"300\",C2:C9,0)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=MATCH(\"D*\",A2:A9,0)",
+  "excel": 4,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=INDEX(A2:H9,3,2)",
+  "excel": "north",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=INDEX(A2:A9,3)",
+  "excel": "Cy",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=INDEX(B2:H2,3)",
+  "excel": "A-1",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=INDEX(A2:H9,0,6)",
+  "excel": [
+   [
+    3
+   ],
+   [
+    1
+   ],
+   [
+    2
+   ],
+   [
+    2
+   ],
+   [
+    5
+   ],
+   [
+    4
+   ],
+   [
+    0
+   ],
+   [
+    0
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=INDEX(A2:H9,2,0)",
+  "excel": [
+   [
+    "bob",
+    "South",
+    250,
+    "B-22",
+    45351,
+    1,
+    50,
+    "D"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=SUM(INDEX(F2:F9,0))",
+  "excel": 17,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=SUM(INDEX(A2:H9,0,6))",
+  "excel": 17,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=INDEX(A2:H9,MATCH(\"Eli\",A2:A9,0),MATCH(\"Qty\",A1:H1,0))",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(\"Eli\",A2:A9,F2:F9)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(\"zz\",A2:A9,F2:F9)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(\"zz\",A2:A9,F2:F9,\"none\")",
+  "excel": "none",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(\"zz\",A2:A9,F2:F9,0)",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(120,G2:G6,H2:H6,,-1)",
+  "excel": "C",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(120,G2:G6,H2:H6,,1)",
+  "excel": "B",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(600,G2:G6,H2:H6,,1)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(\"ann\",A2:A9,B2:B9)",
+  "excel": "North",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(\"ann\",A2:A9,B2:B9,,0,-1)",
+  "excel": "West",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(\"North\",B2:B9,A2:A9,,0,-1)",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(\"a*\",A2:A9,B2:B9,,2)",
+  "excel": "North",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(\"a*\",A2:A9,B2:B9)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(\"Eli\",A2:A9,B2:F9)",
+  "excel": [
+   [
+    "South",
+    true,
+    "D?5",
+    45688,
+    5
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(12,D2:D9,F2:F9,\"none\")",
+  "excel": "none",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(\"Qty\",A1:H1,A2:H2)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(\"Ann\",A2:B9,2,TRUE)",
+  "excel": "North",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=VLOOKUP(A8,A2:F9,2,FALSE)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=MATCH(A8,A2:A9,0)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(A8,A2:A9,B2:B9)",
+  "excel": "North",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XMATCH(A8,A2:A9)",
+  "excel": 7,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=COUNTIF(A2:A9,A8)",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(\"ann\",A2:A9,B2:B9,,0,2)",
+  "excel": "North",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(\"ann\",A2:A9,B2:B9,,0,-2)",
+  "excel": "West",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XMATCH(\"Eli\",A2:A9,0,2)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XMATCH(120,G2:G6,0,2)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XMATCH(100,G2:G6,0,2)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XMATCH(120,G2:G6,-1,2)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XMATCH(120,G2:G6,1,2)",
+  "excel": 4,
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=XLOOKUP(120,G2:G6,H2:H6,,-1,2)",
+  "excel": "C",
+  "match": true
+ },
+ {
+  "area": "lookup",
+  "formula": "=INDEX(B2:B9,MATCH(A8,A2:A9,0))",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=ROUND(2.675,2)",
+  "excel": 2.68,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=ROUND(1.005,2)",
+  "excel": 1.01,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=ROUND(C9,2)",
+  "excel": -2.68,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=ROUND(C8,2)",
+  "excel": 1.01,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=ROUND(-2.5,0)",
+  "excel": -3,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=ROUND(2.5,0)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=ROUND(1234.5,-2)",
+  "excel": 1200,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=ROUND(0.285,2)",
+  "excel": 0.29,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=ROUND(1.0049999999,2)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=ROUNDUP(2.001,2)",
+  "excel": 2.01,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=ROUNDUP(-2.001,2)",
+  "excel": -2.01,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=ROUNDDOWN(-2.999,1)",
+  "excel": -2.9,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=ROUNDDOWN(2.999,0)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=ROUNDUP(1234,-2)",
+  "excel": 1300,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=MROUND(7,5)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=MROUND(7.5,5)",
+  "excel": 10,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=MROUND(-7.5,-5)",
+  "excel": -10,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=MROUND(-7,5)",
+  "excel": {
+   "error": "#NUM!"
+  },
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=MROUND(1.15,0.1)",
+  "excel": 1.2000000000000002,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=FLOOR(7,5)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=FLOOR(-7,5)",
+  "excel": -10,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=FLOOR(-7,-5)",
+  "excel": -5,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=FLOOR(7,-5)",
+  "excel": {
+   "error": "#NUM!"
+  },
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=FLOOR(2.5,0.1)",
+  "excel": 2.5,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=CEILING(7,5)",
+  "excel": 10,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=CEILING(-7,5)",
+  "excel": -5,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=CEILING(-7,-5)",
+  "excel": -10,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=CEILING(7,-5)",
+  "excel": {
+   "error": "#NUM!"
+  },
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=CEILING(1.15,0.05)",
+  "excel": 1.1500000000000001,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=INT(-2.5)",
+  "excel": -3,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=INT(2.9)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=MOD(-7,3)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=MOD(7,-3)",
+  "excel": -2,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=MOD(5.5,2)",
+  "excel": 1.5,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=ABS(-3)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=0.1+0.2",
+  "excel": 0.30000000000000004,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=0.1+0.2=0.3",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=1-0.9",
+  "excel": 0.09999999999999998,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=ROUND(1-0.9,10)=0.1",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=100*1.1",
+  "excel": 110.00000000000001,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=19.99*3",
+  "excel": 59.97,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DATE(2024,2,29)",
+  "excel": 45351,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DATE(2023,2,29)",
+  "excel": 44986,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DATE(2024,13,1)",
+  "excel": 45658,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DATE(2024,0,1)",
+  "excel": 45261,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DATE(24,1,1)",
+  "excel": 8767,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=YEAR(E3)",
+  "excel": 2024,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=MONTH(E3)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DAY(E3)",
+  "excel": 29,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=EOMONTH(E2,0)",
+  "excel": 45322,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=EOMONTH(E2,1)",
+  "excel": 45351,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=EOMONTH(E3,-1)",
+  "excel": 45322,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=EOMONTH(E2,12)",
+  "excel": 45688,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=EOMONTH(E2,1.9)",
+  "excel": 45351,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=EDATE(DATE(2024,1,31),1)",
+  "excel": 45351,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=EDATE(DATE(2024,3,31),-1)",
+  "excel": 45351,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=EDATE(E3,12)",
+  "excel": 45716,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=WEEKDAY(E2)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=WEEKDAY(E2,2)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=WEEKDAY(E2,3)",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=WEEKDAY(E2,11)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=WEEKDAY(E2,16)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DATEDIF(E2,E4,\"d\")",
+  "excel": 365,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DATEDIF(E2,E4,\"m\")",
+  "excel": 11,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DATEDIF(E2,E4,\"y\")",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DATEDIF(E2,E4,\"ym\")",
+  "excel": 11,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DATEDIF(E2,E4,\"md\")",
+  "excel": 30,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DATEDIF(E2,E4,\"yd\")",
+  "excel": 365,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DATEDIF(DATE(2024,1,31),DATE(2024,3,1),\"md\")",
+  "excel": -1,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DATEDIF(DATE(2024,1,31),DATE(2024,2,29),\"m\")",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DATEDIF(E4,E2,\"d\")",
+  "excel": {
+   "error": "#NUM!"
+  },
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DAYS(E4,E2)",
+  "excel": 365,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DAYS(E2,E4)",
+  "excel": -365,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=E4-E2",
+  "excel": 365,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=HOUR(0.75)",
+  "excel": 18,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=YEAR(0)",
+  "excel": 1900,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=MONTH(\"x\")",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=E2+30",
+  "excel": 45322,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DATE(2024,1,1)+0.5",
+  "excel": 45292.5,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=YEAR(DATE(1900,3,1))",
+  "excel": 1900,
+  "match": true
+ },
+ {
+  "area": "dates",
+  "formula": "=DATE(1900,2,28)+1",
+  "excel": 60,
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=LEFT(D3,1)",
+  "excel": "B",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=LEFT(D3)",
+  "excel": "B",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=LEFT(D3,10)",
+  "excel": "B-22",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=LEFT(D3,0)",
+  "excel": "",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=RIGHT(D3,2)",
+  "excel": "22",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=MID(D3,3,5)",
+  "excel": "22",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=MID(D3,10,2)",
+  "excel": "",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=MID(D3,0,2)",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=FIND(\"-\",D3)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=FIND(\"x\",D3)",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=FIND(\"a\",D4)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=FIND(\"A\",D4)",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=SEARCH(\"A\",D4)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=SEARCH(\"?-\",D3)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=SEARCH(\"*\",D5)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=SEARCH(\"~*\",D5)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=FIND(\"*\",D5)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=FIND(\"-\",D3,3)",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=SUBSTITUTE(\"a-b-c\",\"-\",\"\")",
+  "excel": "abc",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=SUBSTITUTE(\"a-b-c\",\"-\",\"+\",2)",
+  "excel": "a-b+c",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=SUBSTITUTE(\"a-b-c\",\"-\",\"+\",5)",
+  "excel": "a-b-c",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=SUBSTITUTE(\"aaa\",\"a\",\"b\")",
+  "excel": "bbb",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=SUBSTITUTE(\"ABC\",\"b\",\"x\")",
+  "excel": "ABC",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=REPLACE(\"abcdef\",2,3,\"X\")",
+  "excel": "aXef",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TRIM(\"  a   b  \")",
+  "excel": "a b",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TRIM(A5)",
+  "excel": "Dee",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=LEN(A5)",
+  "excel": 4,
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=LEN(C2)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=LEN(C8)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=UPPER(A3)",
+  "excel": "BOB",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=PROPER(\"o'neil mc-dee\")",
+  "excel": "O'Neil Mc-Dee",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=PROPER(\"ANN smith\")",
+  "excel": "Ann Smith",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=LOWER(TRUE)",
+  "excel": "true",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TEXTBEFORE(\"a-b-c\",\"-\")",
+  "excel": "a",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TEXTBEFORE(\"a-b-c\",\"-\",2)",
+  "excel": "a-b",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TEXTBEFORE(\"a-b-c\",\"-\",-1)",
+  "excel": "a-b",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TEXTBEFORE(\"a-b-c\",\"x\")",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TEXTBEFORE(\"a-b-c\",\"x\",,,,\"none\")",
+  "excel": "none",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TEXTBEFORE(\"a-b-c\",\"-\",5)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TEXTAFTER(\"a-b-c\",\"-\")",
+  "excel": "b-c",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TEXTAFTER(\"a-b-c\",\"-\",-1)",
+  "excel": "c",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TEXTAFTER(\"A-b-C\",\"b\")",
+  "excel": "-C",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TEXTAFTER(\"A-b-C\",\"B\")",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TEXTAFTER(\"A-b-C\",\"B\",,1)",
+  "excel": "-C",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TEXTAFTER(\"a-b-c\",\"-\",3)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TEXTJOIN(\",\",TRUE,A2:A9)",
+  "excel": "Ann,bob,Cy,Dee ,Eli,ann,Fay",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TEXTJOIN(\",\",FALSE,A2:A9)",
+  "excel": "Ann,bob,Cy,Dee ,Eli,ann,,Fay",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TEXTJOIN(\", \",TRUE,\"a\",\"\",\"b\")",
+  "excel": "a, b",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=TEXTJOIN(\"-\",TRUE,F2:F4)",
+  "excel": "3-1-2",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=CONCAT(A2:A4)",
+  "excel": "AnnbobCy",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=CONCATENATE(A2,\" \",B2)",
+  "excel": "Ann North",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=A2&\" \"&B2",
+  "excel": "Ann North",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=\"x\"&TRUE",
+  "excel": "xTRUE",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=EXACT(\"a\",\"A\")",
+  "excel": false,
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=LEFT(C2,2)",
+  "excel": "10",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=LEFT(1234.5,3)",
+  "excel": "123",
+  "match": true
+ },
+ {
+  "area": "text",
+  "formula": "=RIGHT(D9,1)+0",
+  "excel": 7,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=F2:F4*2",
+  "excel": [
+   [
+    6
+   ],
+   [
+    2
+   ],
+   [
+    4
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=F2:F4*G2:G4",
+  "excel": [
+   [
+    0
+   ],
+   [
+    50
+   ],
+   [
+    200
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=F2:F4+G2:H2",
+  "excel": [
+   [
+    3,
+    {
+     "error": "#VALUE!"
+    }
+   ],
+   [
+    1,
+    {
+     "error": "#VALUE!"
+    }
+   ],
+   [
+    2,
+    {
+     "error": "#VALUE!"
+    }
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=F2:F4*F2:F3",
+  "excel": [
+   [
+    9
+   ],
+   [
+    1
+   ]
+  ],
+  "match": false
+ },
+ {
+  "area": "arrays",
+  "formula": "=F2:F4*{1,2}",
+  "excel": [
+   [
+    3,
+    6
+   ],
+   [
+    1,
+    2
+   ],
+   [
+    2,
+    4
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SUM(F2:F9*(B2:B9=\"North\"))",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SUM((B2:B9=\"North\")*(F2:F9>2))",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SUM(IF(B2:B9=\"North\",F2:F9,0))",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SUM(IF(B2:B9=\"North\",F2:F9))",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=IF(F2:F5>2,\"big\",\"small\")",
+  "excel": [
+   [
+    "big"
+   ],
+   [
+    "small"
+   ],
+   [
+    "small"
+   ],
+   [
+    "small"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SUMPRODUCT((B2:B9=\"North\")*F2:F9)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SUMPRODUCT(--(B2:B9=\"North\"),F2:F9)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SUMPRODUCT((B2:B9=\"North\"),F2:F9)",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SUMPRODUCT(F2:F9,G2:G9)",
+  "excel": 3150,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SUMPRODUCT(F2:F9,G2:G8)",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SUMPRODUCT(F2:F9>2)",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SUMPRODUCT(N(F2:F9>2))",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=MAX(IF(B2:B9=\"South\",F2:F9))",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=MAX((B2:B9=\"South\")*F2:F9)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=FILTER(A2:A9,B2:B9=\"North\")",
+  "excel": [
+   [
+    "Ann"
+   ],
+   [
+    "Cy"
+   ],
+   [
+    0
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=FILTER(A2:A9,B2:B9=\"zz\")",
+  "excel": {
+   "error": "#CALC!"
+  },
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=FILTER(A2:A9,B2:B9=\"zz\",\"\")",
+  "excel": "",
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=FILTER(A2:F9,F2:F9>=3)",
+  "excel": [
+   [
+    "Ann",
+    "North",
+    100,
+    "A-1",
+    45292,
+    3
+   ],
+   [
+    "Eli",
+    "South",
+    true,
+    "D?5",
+    45688,
+    5
+   ],
+   [
+    "ann",
+    "West",
+    50,
+    "E~6",
+    45716,
+    4
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=FILTER(A1:F1,A1:F1<>\"Code\")",
+  "excel": [
+   [
+    "Name",
+    "Region",
+    "Amount",
+    "Date",
+    "Qty"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=FILTER(A2:A9,(B2:B9=\"North\")+(F2:F9>3))",
+  "excel": [
+   [
+    "Ann"
+   ],
+   [
+    "Cy"
+   ],
+   [
+    "Eli"
+   ],
+   [
+    "ann"
+   ],
+   [
+    0
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=FILTER(A2:A9,(B2:B9=\"North\")*(F2:F9>2))",
+  "excel": "Ann",
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=FILTER(A2:B9,F2:F9>2,0)",
+  "excel": [
+   [
+    "Ann",
+    "North"
+   ],
+   [
+    "Eli",
+    "South"
+   ],
+   [
+    "ann",
+    "West"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=FILTER(A2:A9,B2:B9=\"North\",)",
+  "excel": [
+   [
+    "Ann"
+   ],
+   [
+    "Cy"
+   ],
+   [
+    0
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=UNIQUE(B2:B9)",
+  "excel": [
+   [
+    "North"
+   ],
+   [
+    "South"
+   ],
+   [
+    "East"
+   ],
+   [
+    "West"
+   ],
+   [
+    ""
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=UNIQUE(A2:A9)",
+  "excel": [
+   [
+    "Ann"
+   ],
+   [
+    "bob"
+   ],
+   [
+    "Cy"
+   ],
+   [
+    "Dee "
+   ],
+   [
+    "Eli"
+   ],
+   [
+    0
+   ],
+   [
+    "Fay"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=UNIQUE(F2:F9)",
+  "excel": [
+   [
+    3
+   ],
+   [
+    1
+   ],
+   [
+    2
+   ],
+   [
+    5
+   ],
+   [
+    4
+   ],
+   [
+    0
+   ],
+   [
+    0
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=UNIQUE(F2:F9,,TRUE)",
+  "excel": [
+   [
+    3
+   ],
+   [
+    1
+   ],
+   [
+    5
+   ],
+   [
+    4
+   ],
+   [
+    0
+   ],
+   [
+    0
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=UNIQUE(A1:H1,TRUE)",
+  "excel": [
+   [
+    "Name",
+    "Region",
+    "Amount",
+    "Code",
+    "Date",
+    "Qty",
+    "Band",
+    "Grade"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=UNIQUE({1,2,2,3},TRUE)",
+  "excel": [
+   [
+    1,
+    2,
+    3
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=UNIQUE(B2:B9,FALSE,TRUE)",
+  "excel": [
+   [
+    "East"
+   ],
+   [
+    "West"
+   ],
+   [
+    ""
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=ROWS(UNIQUE(B2:B9))",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=COUNTA(UNIQUE(B2:B9))",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SORT(F2:F9)",
+  "excel": [
+   [
+    0
+   ],
+   [
+    1
+   ],
+   [
+    2
+   ],
+   [
+    2
+   ],
+   [
+    3
+   ],
+   [
+    4
+   ],
+   [
+    5
+   ],
+   [
+    0
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SORT(F2:F9,,-1)",
+  "excel": [
+   [
+    5
+   ],
+   [
+    4
+   ],
+   [
+    3
+   ],
+   [
+    2
+   ],
+   [
+    2
+   ],
+   [
+    1
+   ],
+   [
+    0
+   ],
+   [
+    0
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SORT(A2:B9,2)",
+  "excel": [
+   [
+    "Fay",
+    ""
+   ],
+   [
+    "Dee ",
+    "East"
+   ],
+   [
+    "Ann",
+    "North"
+   ],
+   [
+    "Cy",
+    "north"
+   ],
+   [
+    0,
+    "North"
+   ],
+   [
+    "bob",
+    "South"
+   ],
+   [
+    "Eli",
+    "South"
+   ],
+   [
+    "ann",
+    "West"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SORT(A2:B9,2,-1)",
+  "excel": [
+   [
+    "ann",
+    "West"
+   ],
+   [
+    "bob",
+    "South"
+   ],
+   [
+    "Eli",
+    "South"
+   ],
+   [
+    "Ann",
+    "North"
+   ],
+   [
+    "Cy",
+    "north"
+   ],
+   [
+    0,
+    "North"
+   ],
+   [
+    "Dee ",
+    "East"
+   ],
+   [
+    "Fay",
+    ""
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SORT(A2:F9,{2,6},{1,-1})",
+  "excel": [
+   [
+    "Fay",
+    "",
+    -2.675,
+    "07",
+    45383,
+    0
+   ],
+   [
+    "Dee ",
+    "East",
+    0,
+    "C*4",
+    45322,
+    2
+   ],
+   [
+    "Ann",
+    "North",
+    100,
+    "A-1",
+    45292,
+    3
+   ],
+   [
+    "Cy",
+    "north",
+    "300",
+    "a-3",
+    45657,
+    2
+   ],
+   [
+    0,
+    "North",
+    1.005,
+    "12",
+    45366,
+    0
+   ],
+   [
+    "Eli",
+    "South",
+    true,
+    "D?5",
+    45688,
+    5
+   ],
+   [
+    "bob",
+    "South",
+    250,
+    "B-22",
+    45351,
+    1
+   ],
+   [
+    "ann",
+    "West",
+    50,
+    "E~6",
+    45716,
+    4
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SORT(B2:B9)",
+  "excel": [
+   [
+    ""
+   ],
+   [
+    "East"
+   ],
+   [
+    "North"
+   ],
+   [
+    "north"
+   ],
+   [
+    "North"
+   ],
+   [
+    "South"
+   ],
+   [
+    "South"
+   ],
+   [
+    "West"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SORT(A1:H1,,,TRUE)",
+  "excel": [
+   [
+    "Amount",
+    "Band",
+    "Code",
+    "Date",
+    "Grade",
+    "Name",
+    "Qty",
+    "Region"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SORTBY(A2:A9,F2:F9,-1)",
+  "excel": [
+   [
+    "Eli"
+   ],
+   [
+    "ann"
+   ],
+   [
+    "Ann"
+   ],
+   [
+    "Cy"
+   ],
+   [
+    "Dee "
+   ],
+   [
+    "bob"
+   ],
+   [
+    "Fay"
+   ],
+   [
+    0
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SORTBY(A2:A9,B2:B9,1,F2:F9,-1)",
+  "excel": [
+   [
+    "Fay"
+   ],
+   [
+    "Dee "
+   ],
+   [
+    "Ann"
+   ],
+   [
+    "Cy"
+   ],
+   [
+    0
+   ],
+   [
+    "Eli"
+   ],
+   [
+    "bob"
+   ],
+   [
+    "ann"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SORTBY(A2:A9,F2:F8)",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=TAKE(SORT(F2:F9,,-1),3)",
+  "excel": [
+   [
+    5
+   ],
+   [
+    4
+   ],
+   [
+    3
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=TAKE(A2:F9,2)",
+  "excel": [
+   [
+    "Ann",
+    "North",
+    100,
+    "A-1",
+    45292,
+    3
+   ],
+   [
+    "bob",
+    "South",
+    250,
+    "B-22",
+    45351,
+    1
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=TAKE(A2:F9,-2)",
+  "excel": [
+   [
+    0,
+    "North",
+    1.005,
+    "12",
+    45366,
+    0
+   ],
+   [
+    "Fay",
+    "",
+    -2.675,
+    "07",
+    45383,
+    0
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=TAKE(A2:F9,2,-1)",
+  "excel": [
+   [
+    3
+   ],
+   [
+    1
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=TAKE(A2:F9,,2)",
+  "excel": [
+   [
+    "Ann",
+    "North"
+   ],
+   [
+    "bob",
+    "South"
+   ],
+   [
+    "Cy",
+    "north"
+   ],
+   [
+    "Dee ",
+    "East"
+   ],
+   [
+    "Eli",
+    "South"
+   ],
+   [
+    "ann",
+    "West"
+   ],
+   [
+    0,
+    "North"
+   ],
+   [
+    "Fay",
+    ""
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=TAKE(A2:F9,20)",
+  "excel": [
+   [
+    "Ann",
+    "North",
+    100,
+    "A-1",
+    45292,
+    3
+   ],
+   [
+    "bob",
+    "South",
+    250,
+    "B-22",
+    45351,
+    1
+   ],
+   [
+    "Cy",
+    "north",
+    "300",
+    "a-3",
+    45657,
+    2
+   ],
+   [
+    "Dee ",
+    "East",
+    0,
+    "C*4",
+    45322,
+    2
+   ],
+   [
+    "Eli",
+    "South",
+    true,
+    "D?5",
+    45688,
+    5
+   ],
+   [
+    "ann",
+    "West",
+    50,
+    "E~6",
+    45716,
+    4
+   ],
+   [
+    0,
+    "North",
+    1.005,
+    "12",
+    45366,
+    0
+   ],
+   [
+    "Fay",
+    "",
+    -2.675,
+    "07",
+    45383,
+    0
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=TAKE(A2:F9,0)",
+  "excel": {
+   "error": "#CALC!"
+  },
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=CHOOSECOLS(A2:F3,1,-1)",
+  "excel": [
+   [
+    "Ann",
+    3
+   ],
+   [
+    "bob",
+    1
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=CHOOSECOLS(A2:F3,7)",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=CHOOSECOLS(A2:F3,{1,3})",
+  "excel": [
+   [
+    "Ann",
+    100
+   ],
+   [
+    "bob",
+    250
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SEQUENCE(3)",
+  "excel": [
+   [
+    1
+   ],
+   [
+    2
+   ],
+   [
+    3
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SEQUENCE(2,3,10,5)",
+  "excel": [
+   [
+    10,
+    15,
+    20
+   ],
+   [
+    25,
+    30,
+    35
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SEQUENCE(1,3,,0)",
+  "excel": [
+   [
+    1,
+    1,
+    1
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=ROWS(A2:F9)",
+  "excel": 8,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=COLUMNS(A2:F9)",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=ROWS(FILTER(A2:A9,B2:B9=\"North\"))",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=ROWS(FILTER(A2:A9,B2:B9=\"zz\"))",
+  "excel": {
+   "error": "#CALC!"
+  },
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SUM(FILTER(F2:F9,B2:B9=\"North\"))",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SUM(FILTER(F2:F9,B2:B9=\"zz\"))",
+  "excel": {
+   "error": "#CALC!"
+  },
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SUM(FILTER(F2:F9,B2:B9=\"zz\",0))",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SUM(TAKE(SORT(F2:F9,,-1),3))",
+  "excel": 12,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=INDEX(SORT(F2:F9,,-1),2)",
+  "excel": 4,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=LARGE(F2:F9,{1,2,3})",
+  "excel": [
+   [
+    5,
+    4,
+    3
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=SUM(LARGE(F2:F9,{1,2,3}))",
+  "excel": 12,
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "={1,2;3,4}",
+  "excel": [
+   [
+    1,
+    2
+   ],
+   [
+    3,
+    4
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "={1,2;3,4}*{10;100}",
+  "excel": [
+   [
+    10,
+    20
+   ],
+   [
+    300,
+    400
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "arrays",
+  "formula": "=TRANSPOSE(F2:F4)",
+  "excel": [
+   [
+    3,
+    1,
+    2
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "let",
+  "formula": "=LET(x,2,x*3)",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "let",
+  "formula": "=LET(x,2,y,x+1,x*y)",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "let",
+  "formula": "=LET(x,F2:F9,SUM(x))",
+  "excel": 17,
+  "match": true
+ },
+ {
+  "area": "let",
+  "formula": "=LET(x,2,LET(x,3,x)+x)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "let",
+  "formula": "=LET(x,2,x,3,x)",
+  "excel": "",
+  "match": false
+ },
+ {
+  "area": "let",
+  "formula": "=LET(ab1,2,ab1)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "let",
+  "formula": "=LET(a1,2,a1)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "let",
+  "formula": "=LET(total,SUM(F2:F9),n,COUNT(F2:F9),total/n)",
+  "excel": 2.4285714285714284,
+  "match": true
+ },
+ {
+  "area": "let",
+  "formula": "=LET(r,FILTER(A2:F9,B2:B9=\"North\"),ROWS(r))",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "let",
+  "formula": "=LET(x,2)",
+  "excel": "",
+  "match": false
+ },
+ {
+  "area": "let",
+  "formula": "=LET(_x,2,_x+1)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "let",
+  "formula": "=LET(x.y,2,x.y+1)",
+  "excel": "",
+  "match": false
+ },
+ {
+  "area": "lifting",
+  "formula": "=LEN(A2:A4)",
+  "excel": [
+   [
+    3
+   ],
+   [
+    3
+   ],
+   [
+    2
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=SUM(LEN(A2:A9))",
+  "excel": 21,
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=TRIM(A2:A5)",
+  "excel": [
+   [
+    "Ann"
+   ],
+   [
+    "bob"
+   ],
+   [
+    "Cy"
+   ],
+   [
+    "Dee"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=VALUE(D8:D9)",
+  "excel": [
+   [
+    12
+   ],
+   [
+    7
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=LEFT(D2:D4,1)",
+  "excel": [
+   [
+    "A"
+   ],
+   [
+    "B"
+   ],
+   [
+    "a"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=UPPER(A2:A3)",
+  "excel": [
+   [
+    "ANN"
+   ],
+   [
+    "BOB"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=COUNTIF(B2:B9,{\"North\",\"South\"})",
+  "excel": [
+   [
+    3,
+    2
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=SUM(COUNTIF(B2:B9,{\"North\",\"South\"}))",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=MATCH({\"Cy\",\"Eli\"},A2:A9,0)",
+  "excel": [
+   [
+    3,
+    5
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=XLOOKUP({\"Cy\",\"Eli\"},A2:A9,F2:F9)",
+  "excel": [
+   [
+    2,
+    5
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=VLOOKUP(A2:A3,A2:F9,6,FALSE)",
+  "excel": [
+   [
+    3
+   ],
+   [
+    1
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=ROUND(C2:C3/3,1)",
+  "excel": [
+   [
+    33.3
+   ],
+   [
+    83.3
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=YEAR(E2:E4)",
+  "excel": [
+   [
+    2024
+   ],
+   [
+    2024
+   ],
+   [
+    2024
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=ABS(C8:C9)",
+  "excel": [
+   [
+    1.005
+   ],
+   [
+    2.675
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=IFERROR(1/F8:F9,\"x\")",
+  "excel": [
+   [
+    "x"
+   ],
+   [
+    "x"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=ISNUMBER(C2:C5)",
+  "excel": [
+   [
+    true
+   ],
+   [
+    true
+   ],
+   [
+    false
+   ],
+   [
+    false
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=SUM(--ISNUMBER(SEARCH(\"a\",A2:A9)))",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=SUMPRODUCT(--(LEFT(D2:D9,1)=\"A\"))",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=SUMPRODUCT(--(TRIM(A2:A9)=\"Dee\"))",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=SUMPRODUCT(--(LEN(A2:A9)>3))",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=SUM(--(MONTH(E2:E9)=1))",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=SUMPRODUCT((YEAR(E2:E9)=2024)*F2:F9)",
+  "excel": 8,
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=INDEX(F2:F9,MATCH(1,(B2:B9=\"North\")*(F2:F9>2),0))",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=INDEX(A2:A9,MATCH(1,(B2:B9=\"South\")*(F2:F9=5),0))",
+  "excel": "Eli",
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=XLOOKUP(1,(B2:B9=\"South\")*(F2:F9=5),A2:A9)",
+  "excel": "Eli",
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=MAXIFS(F2:F9,B2:B9,\"North\")",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=MINIFS(F2:F9,B2:B9,\"South\")",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=XMATCH(\"Eli\",A2:A9)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=CHOOSE(2,\"a\",\"b\",\"c\")",
+  "excel": "b",
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=TEXT(1234.5,\"0\")",
+  "excel": "1235",
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=ROW(A5)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=COLUMN(C1)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=NETWORKDAYS(E2,E3)",
+  "excel": 44,
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=COUNTA(A2:A9)-COUNTBLANK(A2:A9)",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=DROP(F2:F9,2)",
+  "excel": [
+   [
+    2
+   ],
+   [
+    2
+   ],
+   [
+    5
+   ],
+   [
+    4
+   ],
+   [
+    0
+   ],
+   [
+    0
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=VSTACK(F2:F3,G2:G3)",
+  "excel": [
+   [
+    3
+   ],
+   [
+    1
+   ],
+   [
+    0
+   ],
+   [
+    50
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=HSTACK(F2:F3,G2:G3)",
+  "excel": [
+   [
+    3,
+    0
+   ],
+   [
+    1,
+    50
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=TOCOL(F2:G3)",
+  "excel": [
+   [
+    3
+   ],
+   [
+    0
+   ],
+   [
+    1
+   ],
+   [
+    50
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "lifting",
+  "formula": "=CHOOSEROWS(A2:F9,1)",
+  "excel": [
+   [
+    "Ann",
+    "North",
+    100,
+    "A-1",
+    45292,
+    3
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=$F$2+F$3+$F4",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=SUM(F:F)",
+  "excel": 17,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=SUM($F:$F)",
+  "excel": 17,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=SUM( F2 : F4 )",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "= SUM(F2:F4)",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=SUM(F2:F4) ",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=+SUM(F2:F4)",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=@F2:F4",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": false
+ },
+ {
+  "area": "parser",
+  "formula": "=@SUM(F2:F4)",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=sum(f2:f4)",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=SUM(F2:F4,)",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=SUM(,F2)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=IF(F2>1,,5)",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=IF(F2>1,\"x\")",
+  "excel": "x",
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=IF(F2<1,\"x\")",
+  "excel": false,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=1--1",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=1+-+1",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=F2 * F3",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=(F2+F3)*2",
+  "excel": 8,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=((F2))",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=F2:F4 F3:F5",
+  "excel": [
+   [
+    1
+   ],
+   [
+    2
+   ]
+  ],
+  "match": false
+ },
+ {
+  "area": "parser",
+  "formula": "=SUM(F2:F4 F3:F5)",
+  "excel": 3,
+  "match": false
+ },
+ {
+  "area": "parser",
+  "formula": "=\"a\"\"b\"",
+  "excel": "a\"b",
+  "match": true
+ },
+ {
+  "area": "parser",
+  "formula": "=LEN(\"a\"\"b\")",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=SQRT(16)",
+  "excel": 4,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=SQRT(F2:F4)",
+  "excel": [
+   [
+    1.7320508075688772
+   ],
+   [
+    1
+   ],
+   [
+    1.4142135623730951
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=POWER(2,10)",
+  "excel": 1024,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=N(F2)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=N(A2)",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=N(TRUE)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=SUM(N(F2:F4))",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=MAXIFS(F2:F9,B2:B9,\"South\",C2:C9,\">0\")",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=MINIFS(F2:F9,B2:B9,\"zz\")",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=MAXIFS(F2:F9,B2:B8,\"North\")",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=XMATCH(120,G2:G6,-1)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=XMATCH(120,G2:G6,1)",
+  "excel": 4,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=XMATCH(\"zz\",A2:A9)",
+  "excel": {
+   "error": "#N/A"
+  },
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=XMATCH(\"a*\",A2:A9,2)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=XMATCH(\"ann\",A2:A9,0,-1)",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=CHOOSE(3,\"a\",\"b\",\"c\")",
+  "excel": "c",
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=CHOOSE(4,\"a\",\"b\",\"c\")",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=CHOOSE(2,F2,F3)",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=SUM(CHOOSE(2,F2:F3,G2:G3))",
+  "excel": 50,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=ROW()",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=COLUMN()",
+  "excel": 11,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=ROW(A2:A4)",
+  "excel": [
+   [
+    2
+   ],
+   [
+    3
+   ],
+   [
+    4
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=COLUMN(B1:D1)",
+  "excel": [
+   [
+    2,
+    3,
+    4
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=ROWS(A2:A9)-ROW(A2)",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=TRANSPOSE(A1:C1)",
+  "excel": [
+   [
+    "Name"
+   ],
+   [
+    "Region"
+   ],
+   [
+    "Amount"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=DROP(A2:B4,1)",
+  "excel": [
+   [
+    "bob",
+    "South"
+   ],
+   [
+    "Cy",
+    "north"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=DROP(A2:B4,,1)",
+  "excel": [
+   [
+    "North"
+   ],
+   [
+    "South"
+   ],
+   [
+    "north"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=DROP(A2:B4,-2)",
+  "excel": [
+   [
+    "Ann",
+    "North"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=CHOOSEROWS(A2:B9,-1,1)",
+  "excel": [
+   [
+    "Fay",
+    ""
+   ],
+   [
+    "Ann",
+    "North"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=VSTACK(A1:B1,A2:C2)",
+  "excel": [
+   [
+    "Name",
+    "Region",
+    {
+     "error": "#N/A"
+    }
+   ],
+   [
+    "Ann",
+    "North",
+    100
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=TOCOL(F2:G4,,TRUE)",
+  "excel": [
+   [
+    3
+   ],
+   [
+    1
+   ],
+   [
+    2
+   ],
+   [
+    0
+   ],
+   [
+    50
+   ],
+   [
+    100
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=TOCOL(F7:G9,1)",
+  "excel": [
+   [
+    4
+   ],
+   [
+    0
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=NETWORKDAYS(E2,E4)",
+  "excel": 262,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=NETWORKDAYS(E4,E2)",
+  "excel": -262,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=NETWORKDAYS(E2,E3,E5)",
+  "excel": 43,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=WEEKDAY(E2,12)",
+  "excel": 7,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=WEEKDAY(E2,17)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=WEEKDAY(E2,4)",
+  "excel": {
+   "error": "#NUM!"
+  },
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=1-0.9=0.1",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=100*1.1=110",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=0.3=0.1+0.2+1E-16",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=1=1.0000001",
+  "excel": false,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=IF(0.1+0.2=0.3,\"same\",\"different\")",
+  "excel": "same",
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=@SUM(F2:F4)",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=@F2",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=LET(a1,2,a1+1)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=LET(n,2,n*3)",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=LET(sum,2,sum+1)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=CONCATENATE(A2:A3,\"!\")",
+  "excel": [
+   [
+    "Ann!"
+   ],
+   [
+    "bob!"
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=IFERROR(VLOOKUP(A2:A3,A2:F9,6,FALSE),0)",
+  "excel": [
+   [
+    3
+   ],
+   [
+    1
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=SUM(--(TEXTBEFORE(D2:D4,\"-\")=\"A\"))",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=COUNTIF(B2:B9,{\"North\";\"East\"})",
+  "excel": [
+   [
+    3
+   ],
+   [
+    1
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=SUM(SUMIF(B2:B9,{\"North\",\"East\"},F2:F9))",
+  "excel": 7,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=SUMPRODUCT(--ISNUMBER(MATCH(B2:B9,{\"North\",\"East\"},0)))",
+  "excel": 4,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=INDEX({10,20,30},2)",
+  "excel": 20,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=SUM({1,2,3}*F2:F4)",
+  "excel": 36,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=MAX(IFERROR(1/F2:F9,0))",
+  "excel": 1,
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=TEXTJOIN(\",\",TRUE,IF(F2:F9>2,A2:A9,\"\"))",
+  "excel": "Ann,Eli,ann",
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=TEXT(1234.5,\"0\")",
+  "locale": true,
+  "excel": "1235",
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=TEXT(1234.5,\"#,##0.00\")",
+  "locale": true,
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": false
+ },
+ {
+  "area": "added",
+  "formula": "=TEXT(0.256,\"0.0%\")",
+  "locale": true,
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": false
+ },
+ {
+  "area": "added",
+  "formula": "=TEXT(E3,\"yyyy-mm-dd\")",
+  "locale": true,
+  "excel": "yyyy-02-29",
+  "match": false
+ },
+ {
+  "area": "added",
+  "formula": "=TEXT(E3,\"mmm\")",
+  "locale": true,
+  "excel": "Feb",
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=TEXT(E3,\"dddd\")",
+  "locale": true,
+  "excel": "Thursday",
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=TEXT(7,\"000\")",
+  "locale": true,
+  "excel": "007",
+  "match": true
+ },
+ {
+  "area": "added",
+  "formula": "=TEXT(5,\"0.##\")",
+  "locale": true,
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": false
+ }
+]

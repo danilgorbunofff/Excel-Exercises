@@ -1,0 +1,33 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SWITCH($A$2,"W-01","Widget","G-02","Gadget","S-03","Screw","Unknown")
+      - =SWITCH(A$2,"W-01","Widget","G-02","Gadget","S-03","Screw","Unknown")
+      - =switch(a2, "W-01", "Widget", "G-02", "Gadget", "S-03", "Screw", "Unknown")
+    wrong:
+      - formula: =SWITCH(A2,"W-01","Widget","W-01","Gadget","S-03","Screw","Unknown")
+        rule: fragile
+        why: criteria "G-02" swapped for "W-01"
+      - formula: =SWITCH(A2,"W-01","Widget","G-02","Widget","S-03","Screw","Unknown")
+        rule: fragile
+        why: criteria "Gadget" swapped for "Widget"
+      - formula: =SWITCH(A2,"W-01","Widget","G-02","Gadget","W-01","Screw","Unknown")
+        rule: fragile
+        why: criteria "S-03" swapped for "W-01"
+      - formula: =SWITCH(A2,"W-01","Widget","G-02","Gadget","S-03","Widget","Unknown")
+        rule: fragile
+        why: criteria "Screw" swapped for "Widget"
+    equivalent: []
+  - correct:
+      - =switch(b3, 1, "Bronze", 2, "Silver", 3, "Gold", "None")
+    wrong:
+      - formula: =SWITCH(B3,2,"Bronze",2,"Silver",3,"Gold","None")
+        rule: fragile
+        why: 1 written as 2
+      - formula: =SWITCH(B3,0,"Bronze",2,"Silver",3,"Gold","None")
+        rule: fragile
+        why: 1 written as 0
+      - formula: =SWITCH(B3,1,"Bronze",1,"Silver",3,"Gold","None")
+        rule: fragile
+        why: 2 written as 1
+    equivalent: []

@@ -1,0 +1,24 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(COUNTIF($B$2:$B$11,">48")/COUNT($B$2:$B$11)*100,1)
+      - =ROUND(COUNTIF(B$2:B$11,">48")/COUNT(B2:B11)*100,1)
+      - =round(countif(b2:b11, ">48")/count(b2:b11)*100, 1)
+      - =ROUND(COUNTIFS(B2:B11,">48")/COUNT(B2:B11)*100,1)
+      - =ROUND(SUMPRODUCT(--(B2:B11>48))/COUNT(B2:B11)*100,1)
+      - =LET(data,B2:B11,ROUND(COUNTIF(data,">48")/COUNT(data)*100,1))
+    wrong:
+      - formula: =ROUND(COUNTIF(B3:B11,">48")/COUNT(B2:B11)*100,1)
+        rule: fragile
+        why: range B2:B11 skips its first row
+    equivalent:
+      - formula: =ROUNDDOWN(COUNTIF(B2:B11,">48")/COUNT(B2:B11)*100,1)
+        why: "ROUNDDOWN instead of ROUND: The inputs leave no extra decimals to round, so Excel gives the same answer on the sheet and every variant."
+      - formula: =ROUNDUP(COUNTIF(B2:B11,">48")/COUNT(B2:B11)*100,1)
+        why: "ROUNDUP instead of ROUND: The inputs leave no extra decimals to round, so Excel gives the same answer on the sheet and every variant."
+      - formula: =ROUND(COUNTIF(B2:B11,">48")/COUNTA(B2:B11)*100,1)
+        why: "COUNTA instead of COUNT: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =ROUND(COUNTIF(B2:B11,">48")/COUNT(B2:B11)*100,2)
+        why: "1 written as 2: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =ROUND(COUNTIF(B2:B11,">48")/COUNT(B2:B11)*100,0)
+        why: "1 written as 0: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

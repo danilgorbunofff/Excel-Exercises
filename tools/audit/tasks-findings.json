@@ -1,0 +1,64 @@
+[
+ {
+  "screen": "exercise/filter-amounts-stored-as-text#1",
+  "file": "content/exercises/filter-amounts-stored-as-text.yaml",
+  "problems": [
+   "locale: =FILTER(A2:A19,--D2:D19>1000)  [reference] grader=correct",
+   "locale: =FILTER(A2:A19,D2:D19*1>1000)  [accept] grader=correct",
+   "locale: =FILTER(A2:A19,(D2:D19+0)>1000)  [accept] grader=correct",
+   "locale: =filter(a2:a19,--d2:d19>1000)  [accept] grader=correct",
+   "locale: =FILTER($A$2:$A$19,--$D$2:$D$19>1000)  [accept] grader=correct",
+   "locale: =FILTER(A$2:A$19,--D2:D19>1000)  [restyle (mixed references)] grader=correct",
+   "locale: =filter(a2:a19, --d2:d19>1000)  [restyle (lower case and spaces)] grader=correct",
+   "locale: =LET(data,A2:A19,FILTER(data,--D2:D19>1000))  [rewrite (LET naming the first range)] grader=correct",
+   "locale: =FILTER(A2:A19,--D2:D19>=1000)  [mutant (> written as >=)] grader=correct",
+   "locale: =FILTER(A2:A19,--D2:D19>1001)  [mutant (1000 written as 1001)] grader=correct",
+   "locale: =FILTER(A2:A19,--D2:D19>999)  [mutant (1000 written as 999)] grader=correct",
+   "coverage: only 0 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "exercise/gross-margin-by-product#2",
+  "file": "content/exercises/gross-margin-by-product.yaml",
+  "problems": [
+   "locale: =COUNTIF(D2:D6,\"<0.3\")  [reference] grader=correct",
+   "locale: =countif(d2:d6,\"<0.3\")  [accept] grader=correct",
+   "locale: =COUNTIF($D$2:$D$6,\"<0.3\")  [accept] grader=correct",
+   "locale: =COUNTIF(D$2:D$6,\"<0.3\")  [restyle (mixed references)] grader=correct",
+   "locale: =countif(d2:d6, \"<0.3\")  [restyle (lower case and spaces)] grader=correct",
+   "locale: =LET(data,D2:D6,COUNTIF(data,\"<0.3\"))  [rewrite (LET naming the first range)] grader=correct",
+   "locale: =COUNTIF(D3:D6,\"<0.3\")  [mutant (range D2:D6 skips its first row)] grader=correct",
+   "locale: =COUNTIF(D2:D6,\"<=0.3\")  [mutant (criteria \"<0.3\" written with <=)] grader=correct",
+   "coverage: only 2 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "exercise/lead-conversion-rate#1",
+  "file": "content/exercises/lead-conversion-rate.yaml",
+  "problems": [
+   "misses: no text for rule reference"
+  ]
+ },
+ {
+  "screen": "exercise/reading-error-values#2",
+  "file": "content/exercises/reading-error-values.yaml",
+  "problems": [
+   "level: level 3 without variants or a spill"
+  ]
+ },
+ {
+  "screen": "daily/card-payments-of-500-or-more#1",
+  "file": "content/daily/card-payments-of-500-or-more.yaml",
+  "problems": [
+   "locale: =FILTER(A2:A13,(B2:B13=\"Card\")*(--C2:C13>=500))  [reference] grader=correct",
+   "locale: =filter(a2:a13,(b2:b13=\"Card\")*(--c2:c13>=500))  [accept] grader=correct",
+   "locale: =FILTER(A2:A13,(--C2:C13>=500)*(B2:B13=\"Card\"))  [accept] grader=correct",
+   "locale: =FILTER(A2:A13,(B2:B13=\"Card\")*(C2:C13*1>=500))  [accept] grader=correct",
+   "locale: =FILTER($A$2:$A$13,($B$2:$B$13=\"Card\")*(--$C$2:$C$13>=500))  [restyle (absolute references)] grader=correct",
+   "locale: =FILTER(A$2:A$13,(B2:B13=\"Card\")*(--C2:C13>=500))  [restyle (mixed references)] grader=correct",
+   "locale: =filter(a2:a13, (b2:b13=\"Card\")*(--c2:c13>=500))  [restyle (lower case and spaces)] grader=correct",
+   "locale: =LET(data,A2:A13,FILTER(data,(B2:B13=\"Card\")*(--C2:C13>=500)))  [rewrite (LET naming the first range)] grader=correct",
+   "coverage: only 0 correct formulas checked in Excel"
+  ]
+ }
+]

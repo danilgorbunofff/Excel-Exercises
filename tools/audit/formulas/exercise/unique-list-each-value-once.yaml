@@ -1,0 +1,20 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =UNIQUE(B$2:B$19)
+      - =LET(data,B2:B19,UNIQUE(data))
+    wrong: []
+    equivalent:
+      - formula: =UNIQUE(B2:B18)
+        why: "range B2:B19 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+  - correct:
+      - =COUNTA(UNIQUE(C$2:C$19))
+      - =LET(data,C2:C19,COUNTA(UNIQUE(data)))
+    wrong:
+      - formula: =COUNTA(UNIQUE(C2:C18))
+        rule: fragile
+        why: range C2:C19 one row short at the end
+      - formula: =COUNTA(UNIQUE(C3:C19))
+        rule: fragile
+        why: range C2:C19 skips its first row
+    equivalent: []

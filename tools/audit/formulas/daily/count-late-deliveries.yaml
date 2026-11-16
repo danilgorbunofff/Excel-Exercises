@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF(C$2:C$9,"Late")
+      - =countif(c2:c9, "Late")
+      - =COUNTIFS(C2:C9,"Late")
+      - =SUMPRODUCT(--(C2:C9="Late"))
+      - =LET(data,C2:C9,COUNTIF(data,"Late"))
+    wrong: []
+    equivalent:
+      - formula: =COUNTIF(C2:C10,"Late")
+        why: "range C2:C9 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

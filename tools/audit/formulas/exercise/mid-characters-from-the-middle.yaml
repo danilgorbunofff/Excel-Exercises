@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =mid(b2, 4, 4)
+    wrong: []
+    equivalent:
+      - formula: =MID(B2,4,5)
+        why: "4 written as 5: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+  - correct:
+      - =mid(b2, 1, 2)
+    wrong: []
+    equivalent: []

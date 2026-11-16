@@ -1,0 +1,51 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIFS(C$2:C$7,B2:B7,"Q2")-SUMIFS(D2:D7,B2:B7,"Q2")
+      - =sumifs(c2:c7, b2:b7, "Q2")-sumifs(d2:d7, b2:b7, "Q2")
+      - =SUMPRODUCT((B2:B7="Q2")*C2:C7)-SUMIFS(D2:D7,B2:B7,"Q2")
+      - =SUM(FILTER(C2:C7,(B2:B7="Q2"),0))-SUMIFS(D2:D7,B2:B7,"Q2")
+      - =SUMIF(B2:B7,"Q2",C2:C7)-SUMIFS(D2:D7,B2:B7,"Q2")
+      - =SUMIFS(C2:C7,B2:B7,"Q2")-SUMPRODUCT((B2:B7="Q2")*D2:D7)
+      - =SUMIFS(C2:C7,B2:B7,"Q2")-SUM(FILTER(D2:D7,(B2:B7="Q2"),0))
+      - =SUMIFS(C2:C7,B2:B7,"Q2")-SUMIF(B2:B7,"Q2",D2:D7)
+      - =LET(data,C2:C7,SUMIFS(data,B2:B7,"Q2")-SUMIFS(D2:D7,B2:B7,"Q2"))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =IF(SUMIFS($C$2:$C$7,$B$2:$B$7,"Q2")>SUMIFS($D$2:$D$7,$B$2:$B$7,"Q2"),"Over","Under")
+      - =IF(SUMIFS(C$2:C$7,B2:B7,"Q2")>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under")
+      - =if(sumifs(c2:c7, b2:b7, "Q2")>sumifs(d2:d7, b2:b7, "Q2"), "Over", "Under")
+      - =IF(SUMPRODUCT((B2:B7="Q2")*C2:C7)>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under")
+      - =IF(SUM(FILTER(C2:C7,(B2:B7="Q2"),0))>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under")
+      - =IF(SUMIF(B2:B7,"Q2",C2:C7)>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under")
+      - =IF(SUMIFS(C2:C7,B2:B7,"Q2")>SUMPRODUCT((B2:B7="Q2")*D2:D7),"Over","Under")
+      - =IF(SUMIFS(C2:C7,B2:B7,"Q2")>SUM(FILTER(D2:D7,(B2:B7="Q2"),0)),"Over","Under")
+      - =IF(SUMIFS(C2:C7,B2:B7,"Q2")>SUMIF(B2:B7,"Q2",D2:D7),"Over","Under")
+      - =LET(data,C2:C7,IF(SUMIFS(data,B2:B7,"Q2")>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under"))
+    wrong:
+      - formula: =IF(SUMIFS(C2:C7,B2:B7,"Q2")>=SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under")
+        rule: fragile
+        why: "> written as >="
+      - formula: =IF(AVERAGEIFS(C2:C7,B2:B7,"Q2")>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under")
+        rule: fragile
+        why: AVERAGEIFS instead of SUMIFS
+      - formula: =IF(SUMIFS(D2:D7,B2:B7,"Q2")>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under")
+        rule: fragile
+        why: range C2:C7 one column right
+      - formula: =IF(SUMIFS(B2:B7,B2:B7,"Q2")>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under")
+        rule: fragile
+        why: range C2:C7 one column left
+      - formula: =IF(SUMIFS(C2:C7,C2:C7,"Q2")>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under")
+        rule: fragile
+        why: range B2:B7 one column right
+      - formula: =IF(SUMIFS(C2:C7,A2:A7,"Q2")>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under")
+        rule: fragile
+        why: range B2:B7 one column left
+      - formula: =IF(SUMIFS(C2:C7,B2:B7,"Q1")>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under")
+        rule: fragile
+        why: criteria "Q2" swapped for "Q1"
+      - formula: =IF(SUMIFS(C2:C7,B2:B7,"Q2")>SUMIFS(C2:C7,B2:B7,"Q2"),"Over","Under")
+        rule: fragile
+        why: range D2:D7 one column left
+    equivalent: []

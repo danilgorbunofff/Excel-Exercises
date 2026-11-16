@@ -1,0 +1,31 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF(D$2:D$7,">0")
+      - =countif(d2:d7, ">0")
+      - =LET(data,D2:D7,COUNTIF(data,">0"))
+    wrong:
+      - formula: =COUNTIF(D3:D7,">0")
+        rule: fragile
+        why: range D2:D7 skips its first row
+    equivalent: []
+  - correct:
+      - =COUNTIF(D$2:D$7,">0")/COUNTA(A2:A7)
+      - =countif(d2:d7, ">0")/counta(a2:a7)
+      - =LET(data,D2:D7,COUNTIF(data,">0")/COUNTA(A2:A7))
+    wrong:
+      - formula: =COUNTIF(D3:D7,">0")/COUNTA(A2:A7)
+        rule: fragile
+        why: range D2:D7 skips its first row
+    equivalent:
+      - formula: =COUNTIF(D2:D7,">0")/COUNTA(B2:B7)
+        why: "range A2:A7 one column right: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+  - correct:
+      - =AVERAGEIF(D$2:D$7,">0")
+      - =averageif(d2:d7, ">0")
+      - =LET(data,D2:D7,AVERAGEIF(data,">0"))
+    wrong:
+      - formula: =AVERAGEIF(D3:D7,">0")
+        rule: fragile
+        why: range D2:D7 skips its first row
+    equivalent: []

@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIFS(C$2:C$7,A2:A7,"<="&D2)
+      - =sumifs(c2:c7, a2:a7, "<="&d2)
+      - =LET(data,C2:C7,SUMIFS(data,A2:A7,"<="&D2))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =SUMIFS(B$2:B$7,A2:A7,"<="&D2)-SUMIFS(C2:C7,A2:A7,"<="&D2)
+      - =sumifs(b2:b7, a2:a7, "<="&d2)-sumifs(c2:c7, a2:a7, "<="&d2)
+      - =SUMIF(A2:A7,"<="&D2,B2:B7)-SUMIFS(C2:C7,A2:A7,"<="&D2)
+      - =SUMIFS(B2:B7,A2:A7,"<="&D2)-SUMIF(A2:A7,"<="&D2,C2:C7)
+      - =LET(data,B2:B7,SUMIFS(data,A2:A7,"<="&D2)-SUMIFS(C2:C7,A2:A7,"<="&D2))
+    wrong: []
+    equivalent:
+      - formula: =SUMIFS(B2:B7,A2:A7,"<="&C2)-SUMIFS(C2:C7,A2:A7,"<="&D2)
+        why: "D2 read from the column to the left: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

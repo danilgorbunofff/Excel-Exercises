@@ -1,0 +1,26 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MID($A$2,6,2)
+      - =MID(A$2,6,2)
+      - =mid(a2, 6, 2)
+    wrong:
+      - formula: =MID(A3,6,2)
+        rule: value
+        why: A2 read from the next row
+      - formula: =MID(A1,6,2)
+        rule: value
+        why: A2 read from the row above
+      - formula: =MID(B2,6,2)
+        rule: reference
+        why: A2 read from the next column
+      - formula: =MID(A2,7,2)
+        rule: value
+        why: 6 written as 7
+      - formula: =MID(A2,6,3)
+        rule: value
+        why: 2 written as 3
+      - formula: =MID(A2,6,1)
+        rule: value
+        why: 2 written as 1
+    equivalent: []

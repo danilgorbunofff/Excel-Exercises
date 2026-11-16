@@ -1,0 +1,22 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIFS($B$2:$B$7,$A$2:$A$7,$D$2)-$E$2
+      - =SUMIFS(B$2:B$7,A2:A7,D2)-E2
+      - =sumifs(b2:b7, a2:a7, d2)-e2
+      - =SUMPRODUCT((A2:A7=D2)*B2:B7)-E2
+      - =SUM(FILTER(B2:B7,(A2:A7=D2),0))-E2
+      - =SUMIF(A2:A7,D2,B2:B7)-E2
+      - =LET(data,B2:B7,SUMIFS(data,A2:A7,D2)-E2)
+    wrong: []
+    equivalent: []
+  - correct:
+      - =ROUND((SUMIFS($B$2:$B$7,$A$2:$A$7,$D$3)-$E$3)/$E$3,3)
+      - =ROUND((SUMIFS(B$2:B$7,A2:A7,D3)-E3)/E3,3)
+      - =round((sumifs(b2:b7, a2:a7, d3)-e3)/e3, 3)
+      - =ROUND((SUMPRODUCT((A2:A7=D3)*B2:B7)-E3)/E3,3)
+      - =ROUND((SUM(FILTER(B2:B7,(A2:A7=D3),0))-E3)/E3,3)
+      - =ROUND((SUMIF(A2:A7,D3,B2:B7)-E3)/E3,3)
+      - =LET(data,B2:B7,ROUND((SUMIFS(data,A2:A7,D3)-E3)/E3,3))
+    wrong: []
+    equivalent: []

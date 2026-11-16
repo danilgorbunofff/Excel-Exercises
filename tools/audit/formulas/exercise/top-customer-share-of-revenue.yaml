@@ -1,0 +1,26 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX(A$2:A$5,MATCH(LARGE(B2:B5,2),B2:B5,0))
+      - =index(a2:a5, match(large(b2:b5, 2), b2:b5, 0))
+      - =LET(data,A2:A5,INDEX(data,MATCH(LARGE(B2:B5,2),B2:B5,0)))
+    wrong: []
+    equivalent:
+      - formula: =INDEX(A2:A4,MATCH(LARGE(B2:B5,2),B2:B5,0))
+        why: "range A2:A5 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(A2:A5,MATCH(LARGE(B2:B4,2),B2:B5,0))
+        why: "range B2:B5 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(A2:A5,MATCH(LARGE(B2:B5,2),B2:B4,0))
+        why: "range B2:B5 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+  - correct:
+      - =MAX(B$2:B$5)/SUM(B2:B5)
+      - =MAX(B2:B5)/SUMPRODUCT(B2:B5)
+      - =LET(data,B2:B5,MAX(data)/SUM(data))
+    wrong:
+      - formula: =MAX(B2:B4)/SUM(B2:B5)
+        rule: fragile
+        why: range B2:B5 one row short at the end
+      - formula: =MAX(B3:B5)/SUM(B2:B5)
+        rule: fragile
+        why: range B2:B5 skips its first row
+    equivalent: []

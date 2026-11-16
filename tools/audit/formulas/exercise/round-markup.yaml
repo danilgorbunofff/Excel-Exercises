@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(SUM($B$2:$B$4)*1.08,2)
+      - =ROUND(SUM(B$2:B$4)*1.08,2)
+      - =round(sum(b2:b4)*1.08, 2)
+      - =LET(data,B2:B4,ROUND(SUM(data)*1.08,2))
+    wrong:
+      - formula: =ROUND(SUM(B2:B4)*1.08,1)
+        rule: fragile
+        why: 2 written as 1
+    equivalent:
+      - formula: =ROUND(SUM(B2:B5)*1.08,2)
+        why: "range B2:B4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

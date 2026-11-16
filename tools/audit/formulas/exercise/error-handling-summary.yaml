@@ -1,0 +1,81 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =iferror(vlookup(a8, a2:b7, 2, false), "no match")
+      - =IFNA(VLOOKUP(A8,A2:B7,2,FALSE),"no match")
+      - =IFERROR(XLOOKUP(A8,A2:A7,B2:B7),"no match")
+      - =IFERROR(INDEX(B2:B7,MATCH(A8,A2:A7,0)),"no match")
+      - =LET(data,A2:B7,IFERROR(VLOOKUP(A8,data,2,FALSE),"no match"))
+    wrong:
+      - formula: =VLOOKUP(A8,A2:B7,2,FALSE)
+        rule: value
+        why: without IFERROR
+      - formula: =IFERROR(VLOOKUP(A8,A2:B7,2),"no match")
+        rule: value
+        why: VLOOKUP without FALSE
+      - formula: =IFERROR(VLOOKUP(A9,A2:B7,2,FALSE),"no match")
+        rule: fragile
+        why: A8 read from the next row
+      - formula: =IFERROR(VLOOKUP(A7,A2:B7,2,FALSE),"no match")
+        rule: value
+        why: A8 read from the row above
+      - formula: =IFERROR(VLOOKUP(B8,A2:B7,2,FALSE),"no match")
+        rule: fragile
+        why: A8 read from the next column
+      - formula: =IFERROR(VLOOKUP(A8,A2:B6,2,FALSE),"no match")
+        rule: fragile
+        why: range A2:B7 one row short at the end
+      - formula: =IFERROR(VLOOKUP(A8,A3:B7,2,FALSE),"no match")
+        rule: fragile
+        why: range A2:B7 skips its first row
+      - formula: =IFERROR(VLOOKUP(A8,A2:B8,2,FALSE),"no match")
+        rule: value
+        why: range A2:B7 one row long
+      - formula: =IFERROR(VLOOKUP(A8,B2:C7,2,FALSE),"no match")
+        rule: fragile
+        why: range A2:B7 one column right
+      - formula: =IFERROR(VLOOKUP(A8,A2:B7,3,FALSE),"no match")
+        rule: fragile
+        why: 2 written as 3
+      - formula: =IFERROR(VLOOKUP(A8,A2:B7,1,FALSE),"no match")
+        rule: fragile
+        why: 2 written as 1
+      - formula: =IFERROR(VLOOKUP(A8,A2:B7,2,TRUE),"no match")
+        rule: value
+        why: FALSE written as TRUE
+      - formula: ="no match"
+        rule: reference
+        why: result typed in
+    equivalent: []
+  - correct:
+      - =IFERROR(B$4/C4,"no units")
+      - =iferror(b4/c4, "no units")
+    wrong:
+      - formula: =B4/C4
+        rule: value
+        why: without IFERROR
+      - formula: =IFERROR(B5/C4,"no units")
+        rule: fragile
+        why: B4 read from the next row
+      - formula: =IFERROR(B3/C4,"no units")
+        rule: fragile
+        why: B4 read from the row above
+      - formula: =IFERROR(C4/C4,"no units")
+        rule: fragile
+        why: B4 read from the next column
+      - formula: =IFERROR(A4/C4,"no units")
+        rule: fragile
+        why: B4 read from the column to the left
+      - formula: =IFERROR(B4/C3,"no units")
+        rule: value
+        why: C4 read from the row above
+      - formula: =IFERROR(B4/D4,"no units")
+        rule: fragile
+        why: C4 read from the next column
+      - formula: =IFERROR(B4/B4,"no units")
+        rule: value
+        why: C4 read from the column to the left
+      - formula: ="no units"
+        rule: reference
+        why: result typed in
+    equivalent: []

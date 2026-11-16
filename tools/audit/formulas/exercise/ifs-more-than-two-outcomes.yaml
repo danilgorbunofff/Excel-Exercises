@@ -1,0 +1,93 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFS(B$3>=90,"A",B3>=80,"B",B3>=70,"C",TRUE,"D")
+      - =ifs(b3>=90, "A", b3>=80, "B", b3>=70, "C", true, "D")
+    wrong:
+      - formula: =IFS(B3>90,"A",B3>=80,"B",B3>=70,"C",TRUE,"D")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IFS(B4>=90,"A",B3>=80,"B",B3>=70,"C",TRUE,"D")
+        rule: fragile
+        why: B3 read from the next row
+      - formula: =IFS(C3>=90,"A",B3>=80,"B",B3>=70,"C",TRUE,"D")
+        rule: fragile
+        why: B3 read from the next column
+      - formula: =IFS(B3>=91,"A",B3>=80,"B",B3>=70,"C",TRUE,"D")
+        rule: fragile
+        why: 90 written as 91
+      - formula: =IFS(B3>=89,"A",B3>=80,"B",B3>=70,"C",TRUE,"D")
+        rule: fragile
+        why: 90 written as 89
+      - formula: =IFS(B3>=90,"A",B3>80,"B",B3>=70,"C",TRUE,"D")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IFS(B3>=90,"A",C3>=80,"B",B3>=70,"C",TRUE,"D")
+        rule: fragile
+        why: B3 read from the next column
+      - formula: =IFS(B3>=90,"A",B3>=81,"B",B3>=70,"C",TRUE,"D")
+        rule: fragile
+        why: 80 written as 81
+      - formula: =IFS(B3>=90,"A",B3>=79,"B",B3>=70,"C",TRUE,"D")
+        rule: fragile
+        why: 80 written as 79
+      - formula: =IFS(B3>=90,"A",B3>=80,"B",B3>70,"C",TRUE,"D")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IFS(B3>=90,"A",B3>=80,"B",B4>=70,"C",TRUE,"D")
+        rule: fragile
+        why: B3 read from the next row
+      - formula: =IFS(B3>=90,"A",B3>=80,"B",B2>=70,"C",TRUE,"D")
+        rule: fragile
+        why: B3 read from the row above
+      - formula: =IFS(B3>=90,"A",B3>=80,"B",A3>=70,"C",TRUE,"D")
+        rule: fragile
+        why: B3 read from the column to the left
+      - formula: =IFS(B3>=90,"A",B3>=80,"B",B3>=71,"C",TRUE,"D")
+        rule: fragile
+        why: 70 written as 71
+      - formula: =IFS(B3>=90,"A",B3>=80,"B",B3>=69,"C",TRUE,"D")
+        rule: fragile
+        why: 70 written as 69
+      - formula: =IFS(B3>=90,"A",B3>=80,"B",B3>=70,"C",FALSE,"D")
+        rule: fragile
+        why: TRUE written as FALSE
+    equivalent: []
+  - correct:
+      - =IFS(B$4>=90,"Merit",B4>=80,"Pass",TRUE,"Resit")
+      - =ifs(b4>=90, "Merit", b4>=80, "Pass", true, "Resit")
+    wrong:
+      - formula: =IFS(B4>90,"Merit",B4>=80,"Pass",TRUE,"Resit")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IFS(B5>=90,"Merit",B4>=80,"Pass",TRUE,"Resit")
+        rule: fragile
+        why: B4 read from the next row
+      - formula: =IFS(B3>=90,"Merit",B4>=80,"Pass",TRUE,"Resit")
+        rule: fragile
+        why: B4 read from the row above
+      - formula: =IFS(C4>=90,"Merit",B4>=80,"Pass",TRUE,"Resit")
+        rule: fragile
+        why: B4 read from the next column
+      - formula: =IFS(B4>=91,"Merit",B4>=80,"Pass",TRUE,"Resit")
+        rule: fragile
+        why: 90 written as 91
+      - formula: =IFS(B4>=89,"Merit",B4>=80,"Pass",TRUE,"Resit")
+        rule: fragile
+        why: 90 written as 89
+      - formula: =IFS(B4>=90,"Merit",B4>80,"Pass",TRUE,"Resit")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IFS(B4>=90,"Merit",A4>=80,"Pass",TRUE,"Resit")
+        rule: fragile
+        why: B4 read from the column to the left
+      - formula: =IFS(B4>=90,"Merit",B4>=81,"Pass",TRUE,"Resit")
+        rule: fragile
+        why: 80 written as 81
+      - formula: =IFS(B4>=90,"Merit",B4>=79,"Pass",TRUE,"Resit")
+        rule: fragile
+        why: 80 written as 79
+      - formula: =IFS(B4>=90,"Merit",B4>=80,"Pass",FALSE,"Resit")
+        rule: fragile
+        why: TRUE written as FALSE
+    equivalent: []

@@ -1,0 +1,10 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX(B$2:D$4,B5,B6)
+      - =index(b2:d4, b5, b6)
+      - =LET(data,B2:D4,INDEX(data,B5,B6))
+    wrong: []
+    equivalent:
+      - formula: =INDEX(B2:D5,B5,B6)
+        why: "range B2:D4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

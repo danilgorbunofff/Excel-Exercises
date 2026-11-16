@@ -1,0 +1,10 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF($A$2:$A$10,"*-XL")
+      - =COUNTIF(A$2:A$10,"*-XL")
+      - =countif(a2:a10, "*-XL")
+      - =COUNTIFS(A2:A10,"*-XL")
+      - =LET(data,A2:A10,COUNTIF(data,"*-XL"))
+    wrong: []
+    equivalent: []

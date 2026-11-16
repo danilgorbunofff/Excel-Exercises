@@ -1,0 +1,45 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(B$2:B$4,C2:C4)/SUM(B2:B4)
+      - =sumproduct(b2:b4, c2:c4)/sum(b2:b4)
+      - =SUMPRODUCT(B2:B4,C2:C4)/SUMPRODUCT(B2:B4)
+      - =LET(data,B2:B4,SUMPRODUCT(data,C2:C4)/SUM(data))
+    wrong:
+      - formula: =SUMPRODUCT(B2:B3,C2:C4)/SUM(B2:B4)
+        rule: value
+        why: range B2:B4 one row short at the end
+      - formula: =SUMPRODUCT(B3:B4,C2:C4)/SUM(B2:B4)
+        rule: value
+        why: range B2:B4 skips its first row
+      - formula: =SUMPRODUCT(C2:C4,C2:C4)/SUM(B2:B4)
+        rule: value
+        why: range B2:B4 one column right
+      - formula: =SUMPRODUCT(A2:A4,C2:C4)/SUM(B2:B4)
+        rule: value
+        why: range B2:B4 one column left
+      - formula: =SUMPRODUCT(B2:B4,C2:C3)/SUM(B2:B4)
+        rule: value
+        why: range C2:C4 one row short at the end
+      - formula: =SUMPRODUCT(B2:B4,C3:C4)/SUM(B2:B4)
+        rule: value
+        why: range C2:C4 skips its first row
+      - formula: =SUMPRODUCT(B2:B4,D2:D4)/SUM(B2:B4)
+        rule: reference
+        why: range C2:C4 one column right
+      - formula: =SUMPRODUCT(B2:B4,B2:B4)/SUM(B2:B4)
+        rule: value
+        why: range C2:C4 one column left
+      - formula: =SUMPRODUCT(B2:B4,C2:C4)/AVERAGE(B2:B4)
+        rule: value
+        why: AVERAGE instead of SUM
+      - formula: =SUMPRODUCT(B2:B4,C2:C4)/SUM(B2:B3)
+        rule: value
+        why: range B2:B4 one row short at the end
+      - formula: =SUMPRODUCT(B2:B4,C2:C4)/SUM(B3:B4)
+        rule: value
+        why: range B2:B4 skips its first row
+      - formula: =SUMPRODUCT(B2:B4,C2:C4)/SUM(A2:A4)
+        rule: value
+        why: range B2:B4 one column left
+    equivalent: []

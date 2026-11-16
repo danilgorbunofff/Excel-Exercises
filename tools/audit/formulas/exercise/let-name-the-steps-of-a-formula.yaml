@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LET(north,SUMIF(B$2:B$19,"North",D2:D19),total,SUM(D2:D19),ROUND(north/total*100,1))
+      - =let(north, sumif(b2:b19, "North", d2:d19), total, sum(d2:d19), round(north/total*100, 1))
+      - =LET(north,SUMIFS(D2:D19,B2:B19,"North"),total,SUM(D2:D19),ROUND(north/total*100,1))
+      - =LET(north,SUMPRODUCT((B2:B19="North")*D2:D19),total,SUM(D2:D19),ROUND(north/total*100,1))
+      - =LET(north,SUM(FILTER(D2:D19,(B2:B19="North"),0)),total,SUM(D2:D19),ROUND(north/total*100,1))
+      - =LET(north,SUMIF(B2:B19,"North",D2:D19),total,SUMPRODUCT(D2:D19),ROUND(north/total*100,1))
+      - =LET(data,B2:B19,LET(north,SUMIF(data,"North",D2:D19),total,SUM(D2:D19),ROUND(north/total*100,1)))
+    wrong:
+      - formula: =LET(north,SUMIF(B2:B18,"North",D2:D19),total,SUM(D2:D19),ROUND(north/total*100,1))
+        rule: fragile
+        why: range B2:B19 one row short at the end
+    equivalent: []

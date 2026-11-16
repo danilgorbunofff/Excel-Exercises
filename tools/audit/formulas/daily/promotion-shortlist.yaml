@@ -1,0 +1,33 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(AND($B$2>=3,$C$2>=4),"Yes","No")
+      - =IF(AND(B$2>=3,C2>=4),"Yes","No")
+      - =if(and(b2>=3, c2>=4), "Yes", "No")
+      - =IFS(AND(B2>=3,C2>=4),"Yes",TRUE,"No")
+    wrong:
+      - formula: =IF(AND(B2>3,C2>=4),"Yes","No")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IF(AND(B1>=3,C2>=4),"Yes","No")
+        rule: fragile
+        why: B2 read from the row above
+      - formula: =IF(AND(C2>=3,C2>=4),"Yes","No")
+        rule: fragile
+        why: B2 read from the next column
+      - formula: =IF(AND(A2>=3,C2>=4),"Yes","No")
+        rule: fragile
+        why: B2 read from the column to the left
+      - formula: =IF(AND(B2>=4,C2>=4),"Yes","No")
+        rule: fragile
+        why: 3 written as 4
+      - formula: =IF(AND(B2>=2,C2>=4),"Yes","No")
+        rule: fragile
+        why: 3 written as 2
+      - formula: =IF(AND(B2>=3,C2>4),"Yes","No")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IF(AND(B2>=3,C2>=5),"Yes","No")
+        rule: fragile
+        why: 4 written as 5
+    equivalent: []

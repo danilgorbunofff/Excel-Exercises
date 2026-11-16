@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(--($C$2:$C$13>$B$2:$B$13*1.1))
+      - =SUMPRODUCT(--(C$2:C$13>B2:B13*1.1))
+      - =LET(data,C2:C13,SUMPRODUCT(--(data>B2:B13*1.1)))
+    wrong: []
+    equivalent: []

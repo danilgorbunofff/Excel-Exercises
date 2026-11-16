@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIFS(B$2:B$8,"North",C2:C8,"Open")
+      - =countifs(b2:b8, "North", c2:c8, "Open")
+      - =LET(data,B2:B8,COUNTIFS(data,"North",C2:C8,"Open"))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =COUNTIFS(C$2:C$8,"Open",D2:D8,">5")
+      - =countifs(c2:c8, "Open", d2:d8, ">5")
+      - =LET(data,C2:C8,COUNTIFS(data,"Open",D2:D8,">5"))
+    wrong: []
+    equivalent: []

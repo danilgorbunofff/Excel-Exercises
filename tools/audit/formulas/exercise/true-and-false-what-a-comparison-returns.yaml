@@ -1,0 +1,46 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LET(data,B2:B7,SUM(data)>100)
+    wrong:
+      - formula: =SUM(B2:B7)>=100
+        rule: fragile
+        why: "> written as >="
+      - formula: =SUM(B2:B6)>100
+        rule: fragile
+        why: range B2:B7 one row short at the end
+      - formula: =SUM(B3:B7)>100
+        rule: fragile
+        why: range B2:B7 skips its first row
+      - formula: =SUM(B2:B8)>100
+        rule: fragile
+        why: range B2:B7 one row long
+      - formula: =SUM(B2:B7)>101
+        rule: fragile
+        why: 100 written as 101
+      - formula: =SUM(B2:B7)>99
+        rule: fragile
+        why: 100 written as 99
+    equivalent: []
+  - correct:
+      - =LET(data,B2:B7,AVERAGE(data)>=20)
+    wrong:
+      - formula: =AVERAGE(B2:B7)>20
+        rule: fragile
+        why: ">= written as >"
+      - formula: =AVERAGE(B2:B6)>=20
+        rule: fragile
+        why: range B2:B7 one row short at the end
+      - formula: =AVERAGE(B3:B7)>=20
+        rule: fragile
+        why: range B2:B7 skips its first row
+      - formula: =AVERAGE(B2:B8)>=20
+        rule: fragile
+        why: range B2:B7 one row long
+      - formula: =AVERAGE(B2:B7)>=21
+        rule: fragile
+        why: 20 written as 21
+      - formula: =AVERAGE(B2:B7)>=19
+        rule: fragile
+        why: 20 written as 19
+    equivalent: []

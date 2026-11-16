@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(COUNTIFS($E$2:$E$5,$A$6,$F$2:$F$5,$B$6)>0,"Matched","Missing")
+      - =if(countifs($e$2:$e$5, a6, $f$2:$f$5, b6)>0, "Matched", "Missing")
+      - =IFS(COUNTIFS($E$2:$E$5,A6,$F$2:$F$5,B6)>0,"Matched",TRUE,"Missing")
+      - =IF(SUMPRODUCT(($E$2:$E$5=A6)*($F$2:$F$5=B6))>0,"Matched","Missing")
+      - =LET(data,$E$2:$E$5,IF(COUNTIFS(data,A6,$F$2:$F$5,B6)>0,"Matched","Missing"))
+    wrong: []
+    equivalent: []
+  - correct:
+      - =SUMIF(C$2:C$6,"Missing",B2:B6)
+      - =sumif(c2:c6, "Missing", b2:b6)
+      - =SUMPRODUCT((C2:C6="Missing")*B2:B6)
+      - =SUM(FILTER(B2:B6,(C2:C6="Missing"),0))
+      - =LET(data,C2:C6,SUMIF(data,"Missing",B2:B6))
+    wrong: []
+    equivalent: []

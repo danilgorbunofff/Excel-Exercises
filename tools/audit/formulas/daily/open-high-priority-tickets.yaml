@@ -1,0 +1,10 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIFS($B$2:$B$11,"Open",$C$2:$C$11,"High")
+      - =COUNTIFS(B$2:B$11,"Open",C2:C11,"High")
+      - =countifs(b2:b11, "Open", c2:c11, "High")
+      - =SUMPRODUCT((B2:B11="Open")*(C2:C11="High"))
+      - =LET(data,B2:B11,COUNTIFS(data,"Open",C2:C11,"High"))
+    wrong: []
+    equivalent: []

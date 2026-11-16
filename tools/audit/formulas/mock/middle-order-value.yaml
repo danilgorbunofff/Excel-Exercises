@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MEDIAN($B$2:$B$11)
+      - =MEDIAN(B$2:B$11)
+      - =LET(data,B2:B11,MEDIAN(data))
+    wrong: []
+    equivalent: []

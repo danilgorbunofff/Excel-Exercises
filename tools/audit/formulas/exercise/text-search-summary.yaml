@@ -1,0 +1,21 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MID(A$2,FIND("-",A2)+1,4)
+      - =mid(a2, find("-", a2)+1, 4)
+    wrong:
+      - formula: =MID(A2,FIND("-",A3)+1,4)
+        rule: fragile
+        why: A2 read from the next row
+    equivalent:
+      - formula: =MID(A2,FIND("-",A2)+1,5)
+        why: "4 written as 5: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+  - correct:
+      - =ROUND(AVERAGEIFS(C$2:C$5,B2:B5,"N*"),1)
+      - =round(averageifs(c2:c5, b2:b5, "N*"), 1)
+      - =LET(data,C2:C5,ROUND(AVERAGEIFS(data,B2:B5,"N*"),1))
+    wrong:
+      - formula: =ROUNDUP(AVERAGEIFS(C2:C5,B2:B5,"N*"),1)
+        rule: fragile
+        why: ROUNDUP instead of ROUND
+    equivalent: []

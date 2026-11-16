@@ -1,0 +1,10 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF(B$2:B$9,">1000")
+      - =countif(b2:b9, ">1000")
+      - =COUNTIFS(B2:B9,">1000")
+      - =SUMPRODUCT(--(B2:B9>1000))
+      - =LET(data,B2:B9,COUNTIF(data,">1000"))
+    wrong: []
+    equivalent: []

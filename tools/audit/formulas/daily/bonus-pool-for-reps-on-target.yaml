@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(SUMPRODUCT(($C$2:$C$13>=$B$2:$B$13)*$C$2:$C$13)*0.05,2)
+      - =ROUND(SUMPRODUCT((C$2:C$13>=B2:B13)*C2:C13)*0.05,2)
+      - =round(sumproduct((c2:c13>=b2:b13)*c2:c13)*0.05, 2)
+      - =LET(data,C2:C13,ROUND(SUMPRODUCT((data>=B2:B13)*data)*0.05,2))
+    wrong:
+      - formula: =ROUND(SUMPRODUCT((C2:C13>=B2:B13)*C2:C13)*0.05,1)
+        rule: fragile
+        why: 2 written as 1
+    equivalent:
+      - formula: =ROUNDDOWN(SUMPRODUCT((C2:C13>=B2:B13)*C2:C13)*0.05,2)
+        why: "ROUNDDOWN instead of ROUND: The inputs leave no extra decimals to round, so Excel gives the same answer on the sheet and every variant."
+      - formula: =ROUNDUP(SUMPRODUCT((C2:C13>=B2:B13)*C2:C13)*0.05,2)
+        why: "ROUNDUP instead of ROUND: The inputs leave no extra decimals to round, so Excel gives the same answer on the sheet and every variant."
+      - formula: =ROUND(SUMPRODUCT((C2:C13>=B2:B13)*C2:C13)*0.05,3)
+        why: "2 written as 3: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

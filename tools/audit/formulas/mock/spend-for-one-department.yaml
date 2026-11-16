@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF($B$2:$B$9,$E$2,$C$2:$C$9)
+      - =SUMIF(B$2:B$9,E2,C2:C9)
+      - =sumif(b2:b9, e2, c2:c9)
+      - =SUMPRODUCT((B2:B9=E2)*C2:C9)
+      - =SUM(FILTER(C2:C9,(B2:B9=E2),0))
+      - =LET(data,B2:B9,SUMIF(data,E2,C2:C9))
+    wrong: []
+    equivalent: []

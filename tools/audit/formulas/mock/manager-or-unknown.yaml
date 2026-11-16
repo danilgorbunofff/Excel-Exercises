@@ -1,0 +1,40 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFERROR(XLOOKUP($E$2,$A$2:$A$5,$B$2:$B$5),"Unknown")
+      - =IFERROR(XLOOKUP(E$2,A2:A5,B2:B5),"Unknown")
+      - =iferror(xlookup(e2, a2:a5, b2:b5), "Unknown")
+      - =IFERROR(INDEX(B2:B5,MATCH(E2,A2:A5,0)),"Unknown")
+      - =LET(data,A2:A5,IFERROR(XLOOKUP(E2,data,B2:B5),"Unknown"))
+    wrong:
+      - formula: =IFERROR(XLOOKUP(E3,A2:A5,B2:B5),"Unknown")
+        rule: fragile
+        why: E2 read from the next row
+      - formula: =IFERROR(XLOOKUP(E1,A2:A5,B2:B5),"Unknown")
+        rule: fragile
+        why: E2 read from the row above
+      - formula: =IFERROR(XLOOKUP(D2,A2:A5,B2:B5),"Unknown")
+        rule: fragile
+        why: E2 read from the column to the left
+      - formula: =IFERROR(XLOOKUP(E2,A2:A4,B2:B5),"Unknown")
+        rule: fragile
+        why: range A2:A5 one row short at the end
+      - formula: =IFERROR(XLOOKUP(E2,A3:A5,B2:B5),"Unknown")
+        rule: fragile
+        why: range A2:A5 skips its first row
+      - formula: =IFERROR(XLOOKUP(E2,B2:B5,B2:B5),"Unknown")
+        rule: fragile
+        why: range A2:A5 one column right
+      - formula: =IFERROR(XLOOKUP(E2,A2:A5,B2:B4),"Unknown")
+        rule: fragile
+        why: range B2:B5 one row short at the end
+      - formula: =IFERROR(XLOOKUP(E2,A2:A5,B3:B5),"Unknown")
+        rule: fragile
+        why: range B2:B5 skips its first row
+      - formula: =IFERROR(XLOOKUP(E2,A2:A5,C2:C5),"Unknown")
+        rule: fragile
+        why: range B2:B5 one column right
+      - formula: =IFERROR(XLOOKUP(E2,A2:A5,A2:A5),"Unknown")
+        rule: fragile
+        why: range B2:B5 one column left
+    equivalent: []

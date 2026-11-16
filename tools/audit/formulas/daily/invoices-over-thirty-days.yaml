@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =FILTER(A$2:A$12,C2:C12>30)
+      - =filter(a2:a12, c2:c12>30)
+      - =LET(data,A2:A12,FILTER(data,C2:C12>30))
+    wrong: []
+    equivalent: []

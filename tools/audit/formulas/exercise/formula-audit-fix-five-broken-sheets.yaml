@@ -1,0 +1,65 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(B$3=0,"n/a",C3/B3)
+      - =if(b3=0, "n/a", c3/b3)
+      - =IFS(B3=0,"n/a",TRUE,C3/B3)
+    wrong:
+      - formula: =IF(B3=0,"n/a",C3/B4)
+        rule: fragile
+        why: B3 read from the next row
+      - formula: =IF(B3=0,"n/a",C3/B2)
+        rule: fragile
+        why: B3 read from the row above
+    equivalent: []
+  - correct:
+      - =IF(COUNTIF(A$2:A$5,E2)=0,"not found",VLOOKUP(E2,A2:C5,3,FALSE))
+      - =if(countif(a2:a5, e2)=0, "not found", vlookup(e2, a2:c5, 3, false))
+      - =IFS(COUNTIF(A2:A5,E2)=0,"not found",TRUE,VLOOKUP(E2,A2:C5,3,FALSE))
+      - =IF(COUNTIFS(A2:A5,E2)=0,"not found",VLOOKUP(E2,A2:C5,3,FALSE))
+      - =IF(SUMPRODUCT(--(A2:A5=E2))=0,"not found",VLOOKUP(E2,A2:C5,3,FALSE))
+      - =IF(COUNTIF(A2:A5,E2)=0,"not found",XLOOKUP(E2,A2:A5,C2:C5))
+      - =IF(COUNTIF(A2:A5,E2)=0,"not found",INDEX(C2:C5,MATCH(E2,A2:A5,0)))
+      - =LET(data,A2:A5,IF(COUNTIF(data,E2)=0,"not found",VLOOKUP(E2,A2:C5,3,FALSE)))
+    wrong:
+      - formula: =IF(COUNTIF(A2:A4,E2)=0,"not found",VLOOKUP(E2,A2:C5,3,FALSE))
+        rule: fragile
+        why: range A2:A5 one row short at the end
+      - formula: =IF(COUNTIF(A3:A5,E2)=0,"not found",VLOOKUP(E2,A2:C5,3,FALSE))
+        rule: fragile
+        why: range A2:A5 skips its first row
+      - formula: =IF(COUNTIF(A2:A5,E2)=0,"not found",VLOOKUP(E2,A2:C5,3))
+        rule: fragile
+        why: VLOOKUP without FALSE
+      - formula: =IF(COUNTIF(A2:A5,E2)=0,"not found",VLOOKUP(E2,A2:C4,3,FALSE))
+        rule: fragile
+        why: range A2:C5 one row short at the end
+      - formula: =IF(COUNTIF(A2:A5,E2)=0,"not found",VLOOKUP(E2,A3:C5,3,FALSE))
+        rule: fragile
+        why: range A2:C5 skips its first row
+      - formula: =IF(COUNTIF(A2:A5,E2)=0,"not found",VLOOKUP(E2,A2:C5,3,TRUE))
+        rule: fragile
+        why: FALSE written as TRUE
+    equivalent: []
+  - correct:
+      - =IF(ISNUMBER(B$3),B3*C3,0)
+      - =if(isnumber(b3), b3*c3, 0)
+      - =IFS(ISNUMBER(B3),B3*C3,TRUE,0)
+    wrong: []
+    equivalent: []
+  - correct:
+      - =SUMIF(A$2:A$5,"North",B2:B5)
+      - =sumif(a2:a5, "North", b2:b5)
+      - =SUMIFS(B2:B5,A2:A5,"North")
+      - =SUMPRODUCT((A2:A5="North")*B2:B5)
+      - =SUM(FILTER(B2:B5,(A2:A5="North"),0))
+      - =LET(data,A2:A5,SUMIF(data,"North",B2:B5))
+    wrong:
+      - formula: =SUMIF(A2:A4,"North",B2:B5)
+        rule: fragile
+        why: range A2:A5 one row short at the end
+    equivalent: []
+  - correct:
+      - =LET(data,B2:B5,AVERAGE(data))
+    wrong: []
+    equivalent: []

@@ -1,0 +1,10 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SORT(UNIQUE(B$2:B$13))
+      - =LET(data,B2:B13,SORT(UNIQUE(data)))
+    wrong:
+      - formula: =SORT(UNIQUE(B2:B12))
+        rule: fragile
+        why: range B2:B13 one row short at the end
+    equivalent: []

@@ -1,0 +1,88 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP($A$2,$F$2:$F$6,$G$2:$G$6)
+      - =XLOOKUP(A$2,$F$2:$F$6,$G$2:$G$6)
+      - =xlookup(a2, $f$2:$f$6, $g$2:$g$6)
+      - =LET(data,$F$2:$F$6,XLOOKUP(A2,data,$G$2:$G$6))
+    wrong:
+      - formula: =XLOOKUP(A3,$F$2:$F$6,$G$2:$G$6)
+        rule: value
+        why: A2 read from the next row
+      - formula: =XLOOKUP(A1,$F$2:$F$6,$G$2:$G$6)
+        rule: value
+        why: A2 read from the row above
+      - formula: =XLOOKUP(B2,$F$2:$F$6,$G$2:$G$6)
+        rule: value
+        why: A2 read from the next column
+      - formula: =XLOOKUP(A2,$F$2:$F$5,$G$2:$G$6)
+        rule: value
+        why: range $F$2:$F$6 one row short at the end
+      - formula: =XLOOKUP(A2,$F$3:$F$6,$G$2:$G$6)
+        rule: value
+        why: range $F$2:$F$6 skips its first row
+      - formula: =XLOOKUP(A2,$G$2:$G$6,$G$2:$G$6)
+        rule: value
+        why: range $F$2:$F$6 one column right
+      - formula: =XLOOKUP(A2,$E$2:$E$6,$G$2:$G$6)
+        rule: value
+        why: range $F$2:$F$6 one column left
+      - formula: =XLOOKUP(A2,$F$2:$F$6,$G$2:$G$5)
+        rule: value
+        why: range $G$2:$G$6 one row short at the end
+      - formula: =XLOOKUP(A2,$F$2:$F$6,$G$3:$G$6)
+        rule: value
+        why: range $G$2:$G$6 skips its first row
+      - formula: =XLOOKUP(A2,$F$2:$F$6,$H$2:$H$6)
+        rule: value
+        why: range $G$2:$G$6 one column right
+      - formula: =XLOOKUP(A2,$F$2:$F$6,$F$2:$F$6)
+        rule: value
+        why: range $G$2:$G$6 one column left
+      - formula: ="Sales"
+        rule: reference
+        why: result typed in
+      - formula: =G4
+        rule: fragile
+        why: points at G4, which holds the result
+    equivalent: []
+  - correct:
+      - =IF(SUM($B$2:$B$6)=SUM($C$2:$C$6),"Balanced","Check")
+      - =IF(SUM(B$2:B$6)=SUM(C2:C6),"Balanced","Check")
+      - =if(sum(b2:b6)=sum(c2:c6), "Balanced", "Check")
+      - =IFS(SUM(B2:B6)=SUM(C2:C6),"Balanced",TRUE,"Check")
+      - =IF(SUMPRODUCT(B2:B6)=SUM(C2:C6),"Balanced","Check")
+      - =IF(SUM(B2:B6)=SUMPRODUCT(C2:C6),"Balanced","Check")
+      - =LET(data,B2:B6,IF(SUM(data)=SUM(C2:C6),"Balanced","Check"))
+    wrong:
+      - formula: =IF(AVERAGE(B2:B6)=SUM(C2:C6),"Balanced","Check")
+        rule: value
+        why: AVERAGE instead of SUM
+      - formula: =IF(SUM(B3:B6)=SUM(C2:C6),"Balanced","Check")
+        rule: fragile
+        why: range B2:B6 skips its first row
+      - formula: =IF(SUM(C2:C6)=SUM(C2:C6),"Balanced","Check")
+        rule: fragile
+        why: range B2:B6 one column right
+      - formula: =IF(SUM(A2:A6)=SUM(C2:C6),"Balanced","Check")
+        rule: value
+        why: range B2:B6 one column left
+      - formula: =IF(SUM(B2:B6)=AVERAGE(C2:C6),"Balanced","Check")
+        rule: value
+        why: AVERAGE instead of SUM
+      - formula: =IF(SUM(B2:B6)=SUM(C2:C5),"Balanced","Check")
+        rule: fragile
+        why: range C2:C6 one row short at the end
+      - formula: =IF(SUM(B2:B6)=SUM(C3:C6),"Balanced","Check")
+        rule: value
+        why: range C2:C6 skips its first row
+      - formula: =IF(SUM(B2:B6)=SUM(D2:D6),"Balanced","Check")
+        rule: reference
+        why: range C2:C6 one column right
+      - formula: =IF(SUM(B2:B6)=SUM(B2:B6),"Balanced","Check")
+        rule: fragile
+        why: range C2:C6 one column left
+      - formula: ="Balanced"
+        rule: reference
+        why: result typed in
+    equivalent: []

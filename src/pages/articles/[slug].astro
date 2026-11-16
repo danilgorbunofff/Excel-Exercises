@@ -5,6 +5,7 @@ import { render } from "astro:content";
 import ArticleCard from "../../components/articles/ArticleCard.astro";
 import ArticleCover from "../../components/articles/ArticleCover.astro";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
+import Icon from "../../components/Icon.astro";
 import Base from "../../layouts/Base.astro";
 import { type ArticleEntry, allArticles } from "../../lib/articles.ts";
 import { exercisePath, LEVELS, placedExercises } from "../../lib/exercises.ts";
@@ -38,6 +39,11 @@ const date = new Date(`${article.data.updated}T12:00:00Z`).toLocaleDateString("e
   timeZone: "UTC",
 });
 const sections = headings.filter((h) => h.depth === 2);
+// The contents number every entry, so a heading's own "Step 2:" or "3." is dropped there.
+const tocLabel = (text: string) => {
+  const rest = text.replace(/^(?:Step )?\d+[.:]\s+/, "");
+  return rest.charAt(0).toUpperCase() + rest.slice(1);
+};
 const jsonLd = JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Article",
@@ -48,90 +54,195 @@ const jsonLd = JSON.stringify({
 }).replaceAll("<", "\\u003c");
 ---
 
-<Base title={article.data.title} description={article.data.description}>
-  <Breadcrumbs items={[{ label: "Articles", href: "/articles/" }]} />
-  <ArticleCover
-    text={article.data.cover ?? article.data.functions[0] ?? "fx"}
-    tone={position}
-    wide
-  />
-  <h1>{article.data.title}</h1>
-  <p class="lead">{article.data.description}</p>
-  <p class="meta">{article.data.minutes} min read. Updated {date}.</p>
-  {
-    article.data.functions.length > 0 && (
-      <ul class="chips" aria-label="Functions in this article">
-        {article.data.functions.map((f) => (
-          <li>
-            {pages.has(f) ? (
-              <a class="chip" href={pages.get(f)}>
-                {f}
-              </a>
-            ) : (
-              <span class="chip">{f}</span>
-            )}
-          </li>
-        ))}
-      </ul>
-    )
-  }
+<Base title={article.data.title} description={article.data.description} layout="wide">
+  <div class:list={["article", { "has-contents": sections.length > 1 }]}>
+    <div class="crumbs">
+      <Breadcrumbs items={[{ label: "Articles", href: "/articles/" }]} />
+    </div>
+    <div class="head">
+      <ArticleCover
+        text={article.data.cover ?? article.data.functions[0] ?? "fx"}
+        tone={position}
+        wide
+      />
+      <h1>{article.data.title}</h1>
+      <p class="lead">{article.data.description}</p>
+      <p class="meta">
+        <span><Icon name="clock" size={16} />{article.data.minutes} min read.</span>
+        <span><Icon name="calendar" size={16} />Updated {date}.</span>
+      </p>
+      {
+        article.data.functions.length > 0 && (
+          <ul class="chips" aria-label="Functions in this article">
+            {article.data.functions.map((f) => (
+              <li>
+                {pages.has(f) ? (
+                  <a class="chip" href={pages.get(f)}>
+                    {f}
+                  </a>
+                ) : (
+                  <span class="chip">{f}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
 
-  {
-    sections.length > 1 && (
-      <nav class="contents" aria-labelledby="contents">
-        <h2 id="contents">On this page</h2>
-        <ol>
-          {sections.map((h) => (
-            <li>
-              <a href={`#${h.slug}`}>{h.text}</a>
-            </li>
-          ))}
-        </ol>
-      </nav>
-    )
-  }
+    {
+      sections.length > 1 && (
+        <nav class="contents" aria-labelledby="contents" data-contents>
+          <h2 id="contents">On this page</h2>
+          <ol>
+            {sections.map((h, i) => (
+              <li>
+                <a href={`#${h.slug}`} aria-current={i === 0 ? "true" : undefined}>
+                  {tocLabel(h.text)}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
 
-  <div class="prose">
-    <Content />
+    <div class="body">
+      <div class="prose">
+        <Content />
+      </div>
+
+      {
+        practise.length > 0 && (
+          <section class="practise" aria-labelledby="practise">
+            <h2 id="practise">Practise what you read</h2>
+            <ul>
+              {practise.map((p) => (
+                <li>
+                  <span class="go" aria-hidden="true">
+                    <Icon name="play" size={14} />
+                  </span>
+                  <a href={exercisePath(p.exercise.slug)}>{p.exercise.title}</a>
+                  <span class={`level level-${p.exercise.level}`}>
+                    {LEVELS[p.exercise.level as 1 | 2 | 3]}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+      {
+        more.length > 0 && (
+          <section class="more" aria-labelledby="more">
+            <h2 id="more">More articles</h2>
+            <ul>
+              {more.map((a) => (
+                <li>
+                  <ArticleCard article={a} index={all.indexOf(a)} level="h3" />
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+    </div>
   </div>
-
-  {
-    practise.length > 0 && (
-      <section class="practise" aria-labelledby="practise">
-        <h2 id="practise">Practise what you read</h2>
-        <ul>
-          {practise.map((p) => (
-            <li>
-              <a href={exercisePath(p.exercise.slug)}>{p.exercise.title}</a>
-              <span class={`level level-${p.exercise.level}`}>
-                {LEVELS[p.exercise.level as 1 | 2 | 3]}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </section>
-    )
-  }
-  {
-    more.length > 0 && (
-      <section class="more" aria-labelledby="more">
-        <h2 id="more">More articles</h2>
-        <ul>
-          {more.map((a) => (
-            <li>
-              <ArticleCard article={a} index={all.indexOf(a)} level="h3" />
-            </li>
-          ))}
-        </ul>
-      </section>
-    )
-  }
   <script type="application/ld+json" set:html={jsonLd} />
 </Base>
 
+<script>
+  // Mark the section being read in the contents: the last heading above
+  // the top fifth of the screen.
+  const nav = document.querySelector<HTMLElement>("[data-contents]");
+  const links = [...(nav?.querySelectorAll<HTMLAnchorElement>("a") ?? [])];
+  const heads = links
+    .map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))))
+    .filter((h): h is HTMLElement => h !== null);
+  let frame = 0;
+  const mark = () => {
+    frame = 0;
+    const line = innerHeight * 0.2;
+    let current = 0;
+    heads.forEach((h, i) => {
+      if (h.getBoundingClientRect().top <= line) current = i;
+    });
+    // At the very bottom the last short sections never reach the line.
+    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) {
+      const last = heads.findLastIndex((h) => h.getBoundingClientRect().top < innerHeight);
+      if (last > current) current = last;
+    }
+    links.forEach((a, i) => {
+      if (i === current) a.setAttribute("aria-current", "true");
+      else a.removeAttribute("aria-current");
+    });
+  };
+  if (heads.length > 0) {
+    addEventListener("scroll", () => (frame ||= requestAnimationFrame(mark)), { passive: true });
+    mark();
+  }
+
+  // Copy a formula bar's formula. The button says so for a moment.
+  document.addEventListener("click", async (e) => {
+    const button = (e.target as Element).closest<HTMLButtonElement>("[data-copy]");
+    const code = button?.parentElement?.querySelector("code");
+    if (!button || !code) return;
+    try {
+      await navigator.clipboard.writeText(code.textContent ?? "");
+      button.dataset.done = "";
+      button.setAttribute("aria-label", "Copied");
+      setTimeout(() => {
+        delete button.dataset.done;
+        button.setAttribute("aria-label", "Copy formula");
+      }, 1500);
+    } catch {
+      // No clipboard access: the formula can still be selected by hand.
+    }
+  });
+</script>
+
 <style>
+  /* One reading column; on wide screens the contents sit beside it and
+     follow the scroll. */
+  .article {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding-top: var(--space-6);
+  }
   h1 {
-    margin-top: var(--space-5);
+    margin: var(--space-5) 0 var(--space-4);
+    font-size: var(--size-xxl);
+    color: var(--heading);
+  }
+  @media (min-width: 64rem) {
+    .article.has-contents {
+      display: grid;
+      grid-template-columns: minmax(0, 44rem) 16rem;
+      /* The breadcrumbs get their own row, so the card starts level with the cover. */
+      grid-template-areas: "crumbs ." "head contents" "body contents";
+      grid-template-rows: auto auto 1fr;
+      column-gap: var(--space-7);
+      justify-content: center;
+      max-width: none;
+    }
+    .crumbs {
+      grid-area: crumbs;
+    }
+    .head {
+      grid-area: head;
+    }
+    .body {
+      grid-area: body;
+    }
+    .has-contents .contents {
+      grid-area: contents;
+      align-self: start;
+      position: sticky;
+      top: 5rem;
+      max-height: calc(100vh - 6rem);
+      overflow-y: auto;
+      margin: 0;
+    }
   }
   .more {
     margin-top: var(--space-7);
@@ -156,29 +267,83 @@ const jsonLd = JSON.stringify({
     color: var(--muted);
   }
   .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-4);
     margin: 0 0 var(--space-3);
     font-size: var(--size-s);
     color: var(--muted);
+  }
+  .meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
   }
   .chips {
     margin-bottom: var(--space-5);
   }
   .contents {
     margin-bottom: var(--space-6);
-    padding-left: var(--space-4);
-    border-left: 2px solid var(--rule);
+    padding: var(--space-4);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
   }
   .contents h2 {
-    margin: 0 0 var(--space-2);
-    font-size: var(--size-s);
+    margin: 0 0 var(--space-3);
+    font-size: var(--size-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     color: var(--muted);
   }
   .contents ol {
+    display: grid;
+    gap: 2px;
     margin: 0;
-    padding-left: var(--space-5);
+    padding: 0;
+    list-style: none;
+    counter-reset: section;
   }
-  .contents li {
-    margin: var(--space-1) 0;
+  .contents a {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-left: 2px solid var(--rule);
+    border-radius: 0 var(--radius-m) var(--radius-m) 0;
+    font-size: var(--size-s);
+    line-height: 1.4;
+    color: var(--text);
+    text-decoration: none;
+    counter-increment: section;
+  }
+  .contents a::before {
+    content: counter(section);
+    min-width: 1.1em;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .contents a:hover {
+    background: var(--bg);
+    color: var(--heading);
+  }
+  .contents a[aria-current] {
+    border-left-color: var(--primary);
+    background: var(--correct-tint);
+    color: var(--correct);
+    font-weight: 600;
+  }
+  .contents a[aria-current]::before {
+    color: inherit;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .contents a {
+      transition:
+        background-color 200ms var(--ease),
+        border-color 200ms var(--ease),
+        color 200ms var(--ease);
+    }
   }
   .prose :global(h2) {
     margin: var(--space-6) 0 var(--space-3);
@@ -194,6 +359,117 @@ const jsonLd = JSON.stringify({
     padding: 0.0625rem 0.3rem;
     border-radius: var(--radius-s);
     background: var(--header);
+  }
+  .prose :global(li::marker) {
+    color: var(--correct);
+  }
+  .prose :global(strong) {
+    color: var(--heading);
+  }
+
+  /* A paragraph that is one formula: drawn like Excel's formula bar. */
+  .prose :global(.formula) {
+    display: flex;
+    align-items: stretch;
+    margin: var(--space-4) 0;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+  .prose :global(.formula .fx) {
+    display: grid;
+    place-items: center;
+    padding: 0 var(--space-3);
+    border-right: 1px solid var(--rule);
+    background: var(--header);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    font-style: italic;
+    font-weight: 600;
+  }
+  .prose :global(.formula code) {
+    flex: 1;
+    min-width: 0;
+    padding: var(--space-3) var(--space-4);
+    border-radius: 0;
+    background: none;
+    color: var(--heading);
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .prose :global(.formula .copy) {
+    display: grid;
+    place-items: center;
+    width: var(--target);
+    border: 0;
+    border-left: 1px solid var(--rule);
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .prose :global(.formula .copy:hover) {
+    background: var(--bg);
+    color: var(--heading);
+  }
+  .prose :global(.formula .copy[data-done]) {
+    color: var(--correct);
+  }
+
+  /* "Step 2: ..." and "3. ..." headings: the number sits in a badge. */
+  .prose :global(h2.step) {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .prose :global(h2 .badge) {
+    flex: none;
+    padding: 0.125rem 0.625rem;
+    border-radius: var(--radius-pill);
+    background: var(--correct-tint);
+    color: var(--correct);
+    font-size: var(--size-s);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Common mistakes, Checks and Which to use: a boxed note with an icon. */
+  .prose :global(.note) {
+    --note: var(--read);
+    --note-tint: var(--read-tint);
+    margin: var(--space-6) 0;
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid color-mix(in srgb, var(--note) 30%, transparent);
+    border-left: 4px solid var(--note);
+    border-radius: var(--radius-l);
+    background: var(--note-tint);
+  }
+  .prose :global(.note-warn) {
+    --note: var(--miss);
+    --note-tint: var(--miss-tint);
+  }
+  .prose :global(.note-check) {
+    --note: var(--correct);
+    --note-tint: var(--correct-tint);
+  }
+  .prose :global(.note h2) {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0 0 var(--space-2);
+    font-size: var(--size-l);
+  }
+  .prose :global(.note h2 .icon) {
+    flex: none;
+    color: var(--note);
+  }
+  .prose :global(.note > :last-child) {
+    margin-bottom: 0;
+  }
+  .prose :global(.note li::marker) {
+    color: var(--note);
   }
   .practise {
     margin-top: var(--space-7);
@@ -214,12 +490,24 @@ const jsonLd = JSON.stringify({
   .practise li {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: var(--space-3);
     padding: var(--space-2) 0;
     border-bottom: 1px solid var(--rule);
   }
   .practise li:last-child {
     border-bottom: 0;
+  }
+  .practise li a {
+    flex: 1;
+  }
+  .go {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--correct-tint);
+    color: var(--correct);
   }
 </style>

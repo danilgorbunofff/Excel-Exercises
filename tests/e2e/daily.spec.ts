@@ -5,24 +5,39 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { expect, type Page, test } from "@playwright/test";
 import { parse } from "yaml";
+import { topicNumbers } from "../../src/lib/access.ts";
 import { DAILY_START, dailyPool, pickFor } from "../../src/lib/daily.ts";
 import { addDays } from "../../src/scripts/progress.ts";
 
 interface ExerciseFile {
   id: string;
   slug: string;
-  pro?: boolean;
+  topic: string;
+  screens: { answer: string }[];
 }
 const files = readdirSync("content/exercises").map(
   (f) => parse(readFileSync(`content/exercises/${f}`, "utf8")) as ExerciseFile,
 );
 const order = (parse(readFileSync("content/track.yaml", "utf8")) as { order: string[] }).order;
-const placed = files.map((e) => ({
-  exercise: { id: e.id, slug: e.slug, pro: e.pro === true },
-  number: order.indexOf(e.id) + 1,
-}));
-const pool = dailyPool(placed);
-const proIds = files.filter((e) => e.pro).map((e) => e.id);
+const topicOf = new Map(files.map((e) => [e.id, e.topic]));
+const numbers = topicNumbers(order, (id) => topicOf.get(id) ?? "");
+const pool = dailyPool(
+  files.map((e) => ({
+    exercise: { id: e.id, slug: e.slug },
+    topicNumber: numbers.get(e.id) ?? 0,
+  })),
+);
+
+// The static test server has no Supabase, so the answers API is answered here
+// as the live one answers on a Saturday: with the PRO daily's answers.
+test.beforeEach(async ({ page }) => {
+  await page.route("**/api/exercises/*/**", (r) => {
+    const slug = new URL(r.request().url()).pathname.split("/")[3];
+    r.fulfill({
+      json: { answers: files.find((e) => e.slug === slug)?.screens.map((s) => s.answer) },
+    });
+  });
+});
 
 /** Noon local time, so no time zone puts the day on either side of midnight. */
 const setDay = (page: Page, day: string) => page.clock.setFixedTime(new Date(`${day}T12:00:00`));
@@ -34,7 +49,9 @@ const exerciseData = async (page: Page) =>
 /** Types each screen's answer and checks it, as a visitor would. */
 async function solve(page: Page) {
   await expect(page.locator("[data-task-slot]")).toBeVisible();
-  const { screens } = await exerciseData(page);
+  // A Saturday's PRO daily has no answers in the page; they come from the file.
+  const { id } = await exerciseData(page);
+  const screens = files.find((e) => e.id === id)?.screens ?? [];
   for (const [i, s] of screens.entries()) {
     const input = page.locator(i === 0 ? "#formula" : `#formula-${i + 1}`);
     await input.fill(s.answer);
@@ -158,23 +175,51 @@ test("the account's days are merged into this browser on sign in", async ({ page
   await expect(stat(page, "today")).toHaveText("Not yet");
 });
 
-test("a PRO exercise is never the daily", async ({ page }) => {
+test("a PRO exercise is the daily on Saturdays only", async ({ page }) => {
+  const proIds = pool.filter((e) => e.pro).map((e) => e.id);
   expect(proIds.length).toBeGreaterThan(0);
   await page.goto("/daily/");
   const pagePool = JSON.parse(
     (await page.locator("script[data-daily-pool]").textContent()) ?? "[]",
   ) as { id: string }[];
-  expect(pagePool.map((e) => e.id)).toEqual(pool.map((e) => e.id));
-  for (const id of proIds) expect(pagePool.some((e) => e.id === id)).toBe(false);
-  for (let i = 0; i < 30; i++) {
-    const day = addDays(DAILY_START, i * 3);
+  expect(pagePool).toEqual(pool);
+  for (let i = 0; i < 14; i++) {
+    const day = addDays(DAILY_START, i);
     await setDay(page, day);
     await page.reload();
     await expect(page.locator("[data-task-slot]")).toBeVisible();
     const { id } = await exerciseData(page);
-    expect(proIds).not.toContain(id);
     expect(id).toBe(pickFor(day, pool)?.id);
+    expect(proIds.includes(id)).toBe(new Date(`${day}T00:00:00Z`).getUTCDay() === 6);
   }
+});
+
+test("Saturday's PRO daily opens with the answers the API gives", async ({ page }) => {
+  const day = "2026-11-21";
+  const pick = pickFor(day, pool);
+  expect(pick?.pro).toBe(true);
+  await page.route(`**/api/exercises/${pick?.slug}/**`, (r) =>
+    r.fulfill({ json: { answers: ["=1"] } }),
+  );
+  await setDay(page, day);
+  await page.goto("/daily/");
+  const exercise = page.locator("[data-task-slot] [data-exercise]");
+  await expect(exercise).not.toHaveAttribute("data-locked");
+  await expect(page.locator("[data-live-heading]")).toHaveText(
+    "Today's exercise: a PRO one, free today",
+  );
+});
+
+test("a past Saturday's PRO daily asks for PRO when the API says no", async ({ page }) => {
+  const day = "2026-11-21";
+  const pick = pickFor(day, pool);
+  await page.route(`**/api/exercises/${pick?.slug}/**`, (r) =>
+    r.fulfill({ status: 401, json: { error: "signed out" } }),
+  );
+  await setDay(page, "2026-11-23");
+  await page.goto(`/daily/?day=${day}`);
+  await expect(page.locator(".pro-note")).toContainText("Get PRO");
+  await expect(page.locator("[data-task-slot] [data-exercise]")).toHaveAttribute("data-locked");
 });
 
 test("the daily works from the keyboard alone", async ({ page, browserName }) => {

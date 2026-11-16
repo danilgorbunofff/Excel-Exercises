@@ -52,6 +52,7 @@ const pages = new Map((await functionPages()).map((p) => [p.name, functionPath(p
 const fnHref = (name: string) => pages.get(name) ?? exercisesForFunction(name);
 const { exercise, topic } = placed;
 const locked = isLocked(placed);
+const proCount = (await placedExercises()).filter((p) => isLocked(p)).length;
 const { screens, notes } = exercise;
 const path = exercisePath(exercise.slug);
 const first = screens[0];
@@ -121,7 +122,10 @@ const description = `Practise ${functions.length > 0 ? list(functions) : "Excel 
       <section class="work paywall" aria-labelledby="paywall-title" data-paywall>
         <div class="card">
           <h2 id="paywall-title">This is a PRO exercise</h2>
-          <p data-paywall-text>Get PRO to open the sheet, check your formula and see the answer.</p>
+          <p data-paywall-text>
+            Get PRO to solve it on the sheet, check your formula and see the answer, with {proCount}
+            PRO exercises in every track.
+          </p>
           <div class="actions">
             <a class="button button-primary" href="/pricing/">See PRO plans</a>
             <a class="button button-outline" href={`/login/?next=${encodeURIComponent(path)}`} data-when="out">Log in</a>
@@ -133,7 +137,7 @@ const description = `Practise ${functions.length > 0 ? list(functions) : "Excel 
 
   {
     screens.map((s, i) => (
-      <section class="work" aria-label="Sheet" data-screen={i} hidden={i > 0}>
+      <section class="work" aria-label="Sheet" data-screen={i} hidden={i > 0} inert={locked}>
         <Sheet screen={s} index={i} action={path} />
         <StatusBar index={i} answerCell={s.answerCell} next={nextAction(placed, i)} />
       </section>
@@ -255,8 +259,18 @@ const description = `Practise ${functions.length > 0 ? list(functions) : "Excel 
 </script>
 
 <style is:global>
-  /* Until a PRO visitor opens it, a locked exercise shows the paywall, not the sheet and answers. */
-  [data-locked] .work:not(.paywall),
+  /* Until a PRO visitor opens it, a locked exercise shows its task and sheet
+     behind the paywall card (inert, so nothing can be typed), but no hints or answers. */
+  [data-locked] .work:not(.paywall) {
+    opacity: 0.55;
+  }
+  .exercise .paywall {
+    z-index: 1;
+    align-self: start;
+    height: auto;
+    background: transparent;
+    pointer-events: none;
+  }
   [data-locked] [data-tabs],
   [data-locked] .hints,
   [data-locked] #hints,
@@ -270,6 +284,11 @@ const description = `Practise ${functions.length > 0 ? list(functions) : "Excel 
     margin: var(--space-6) auto;
     padding: var(--space-6);
     text-align: center;
+    pointer-events: auto;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-l);
+    box-shadow: var(--shadow-card);
   }
   .paywall h2 {
     margin: 0;

@@ -16,8 +16,8 @@ export const siteConfig = {
     name: string;
     privacyUrl: string;
   } | null,
-  /** How many exercises, counted in track order, are free. null means all are free. */
-  freeCount: null as number | null,
+  /** How many exercises at the start of each track, in track order, are free. The rest need PRO. */
+  freePerTrack: 2,
   /**
    * Accounts and the PRO waitlist need a server, which comes in a later phase.
    * While this is false, the Log in, Sign up and PRO forms are shown but

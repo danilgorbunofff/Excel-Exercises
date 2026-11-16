@@ -1,18 +1,24 @@
 import { describe, expect, it } from "vitest";
-import { hasPro, isLocked } from "./access.ts";
-
-const at = (number: number, pro = false) => ({ exercise: { pro }, number });
+import { hasPro, isLocked, topicNumbers } from "./access.ts";
 
 describe("isLocked", () => {
-  it("locks only pro exercises when every exercise is free", () => {
-    expect(isLocked(at(50), null)).toBe(false);
-    expect(isLocked(at(3, true), null)).toBe(true);
+  it("leaves the first ones in a track free and locks the rest", () => {
+    expect(isLocked({ topicNumber: 1 }, 2)).toBe(false);
+    expect(isLocked({ topicNumber: 2 }, 2)).toBe(false);
+    expect(isLocked({ topicNumber: 3 }, 2)).toBe(true);
   });
+});
 
-  it("locks exercises after the free count, and pro ones before it", () => {
-    expect(isLocked(at(10), 10)).toBe(false);
-    expect(isLocked(at(11), 10)).toBe(true);
-    expect(isLocked(at(2, true), 10)).toBe(true);
+describe("topicNumbers", () => {
+  it("counts each track from 1 in track order", () => {
+    const topic: Record<string, string> = { a: "x", b: "y", c: "x", d: "x" };
+    const n = topicNumbers(["a", "b", "c", "d"], (id) => topic[id] ?? "");
+    expect([...n]).toEqual([
+      ["a", 1],
+      ["b", 1],
+      ["c", 2],
+      ["d", 3],
+    ]);
   });
 });
 

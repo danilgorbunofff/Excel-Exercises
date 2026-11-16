@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatAmount, perText, planFor, priceIdFor } from "./plans.ts";
+import { formatAmount, perText, planFor, priceIdFor, savingPercent } from "./plans.ts";
 
 describe("plans", () => {
   it("formats amounts and periods the way the pricing page shows them", () => {
@@ -11,6 +11,11 @@ describe("plans", () => {
     expect(perText(r("month", 1))).toBe("/ month");
     expect(perText(r("month", 6))).toBe("/ 6 months");
     expect(perText(r("year", 1))).toBe("/ year");
+  });
+
+  it("works out the saving against paying monthly", () => {
+    expect(savingPercent(3900, 6, 900)).toBe(27);
+    expect(savingPercent(5900, 12, 900)).toBe(45);
   });
 
   it("reads each plan's price id from its Vercel variable, and knows no other plan", () => {

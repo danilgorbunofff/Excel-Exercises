@@ -242,11 +242,18 @@ for (const route of exerciseRoutes) {
 }
 
 test("the last exercise leads to all exercises", async ({ page }) => {
-  await page.goto("/exercises/capstone-margin/");
-  await check(
-    page,
-    '=IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUMIF(A2:A5,"North",C2:C5))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")',
-  );
+  const last = "/exercises/clean-a-product-code-then-look-it-up/";
+  const { screens } = parse(
+    readFileSync("content/exercises/clean-a-product-code-then-look-it-up.yaml", "utf8"),
+  ) as { screens: { answer: string }[] };
+  await page.goto(last);
+  await openAsPro(page, last);
+  for (const [i, s] of screens.entries()) {
+    const input = page.locator(i === 0 ? "#formula" : `#formula-${i + 1}`);
+    await input.fill(s.answer);
+    await input.press("Enter");
+    if (i < screens.length - 1) await page.keyboard.press("Enter");
+  }
   await page.keyboard.press("Escape");
   await expect(page.getByRole("link", { name: "All exercises", exact: true })).toHaveAttribute(
     "href",

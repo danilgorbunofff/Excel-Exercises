@@ -1,11 +1,17 @@
 ---
 // Why this exists: what you have done, what is next, and what is due for
-// review. It reads progress from this browser; nothing is stored elsewhere.
+// review. It reads progress from this browser, which a signed-in visitor's
+// account keeps in step (session.ts). The look is the shared summary card,
+// numbers band, main card and side card of the daily and assessment pages.
 import ExerciseTable from "../../components/ExerciseTable.astro";
+import Icon from "../../components/Icon.astro";
 import PracticeTabs from "../../components/PracticeTabs.astro";
 import Base from "../../layouts/Base.astro";
+import { isLocked } from "../../lib/access.ts";
 import { exercisePath, placedExercises } from "../../lib/exercises.ts";
+import { ACCOUNT_NAV } from "../../lib/nav.ts";
 import { REVIEW_GAPS } from "../../scripts/progress.ts";
+import "../../styles/assessments.css";
 
 const placed = await placedExercises();
 const first = placed[0];
@@ -15,54 +21,100 @@ const list = placed.map((p) => ({
   number: p.number,
   title: p.exercise.title,
   href: exercisePath(p.exercise.slug),
+  locked: isLocked(p),
 }));
 const gaps = `${REVIEW_GAPS.slice(0, -1).join(", ")} and ${REVIEW_GAPS.at(-1)} days`;
 ---
 
 <Base
   title="Progress"
-  description="What you have solved, what is next, and which exercises are due for review. Kept in your browser only."
+  description="What you have solved, what is next, and which exercises are due for review."
+  layout="wide"
 >
   <PracticeTabs />
-  <h1>Progress</h1>
-  <p>
-    Your progress is kept in this browser only. It does not follow you to another browser or
-    device, and nothing about it is sent anywhere.
-  </p>
-  <noscript>
-    <p>This page needs JavaScript to read your progress from this browser.</p>
-  </noscript>
+  <div class="a-page">
+    <section class="ruled a-card" aria-labelledby="progress-title">
+      <div class="a-head">
+        <div>
+          <h1 id="progress-title" class="a-title">Progress</h1>
+          <p class="a-lead" data-when="out">
+            Saved in this browser. <a href={ACCOUNT_NAV.register.href}>Sign up free</a> to keep it on
+            every device.
+          </p>
+          <p class="a-lead" data-when="in" hidden>Saved to your account, on every device.</p>
+        </div>
+        <div class="a-actions">
+          <a class="button button-outline" href="/daily/">Today's exercise</a>
+          <a class="button button-primary" href={exercisePath(first.exercise.slug)} data-next>
+            Start: {first.exercise.title}
+          </a>
+        </div>
+      </div>
+      <dl class="a-stats">
+        <div>
+          <dt><Icon name="check" size={16} class="a-icon" />Solved</dt>
+          <dd data-stat="solved">0 of {placed.length}</dd>
+        </div>
+        <div>
+          <dt><Icon name="bolt" size={16} class="a-icon" />On your own</dt>
+          <dd data-stat="own">0</dd>
+        </div>
+        <div>
+          <dt><Icon name="hint" size={16} class="a-icon" />With help</dt>
+          <dd data-stat="helped">0</dd>
+        </div>
+        <div>
+          <dt><Icon name="clock" size={16} class="a-icon" />Due for review</dt>
+          <dd data-stat="due">0</dd>
+        </div>
+      </dl>
+    </section>
+    <noscript>
+      <p class="ruled a-pad">This page needs JavaScript to read your progress from this browser.</p>
+    </noscript>
 
-  <h2>Next</h2>
-  <p data-next>
-    Start with <a href={exercisePath(first.exercise.slug)}>{first.exercise.title}</a>, exercise 1
-    of {placed.length}.
-  </p>
+    <div class="a-grid">
+      <section class="ruled" aria-labelledby="all">
+        <div class="list-head">
+          <h2 id="all">All exercises</h2>
+          <p class="count" data-summary>You have not solved an exercise yet.</p>
+        </div>
+        <ExerciseTable rows={placed} labelledby="all" />
+      </section>
 
-  <h2>Due for review</h2>
-  <p data-due-empty>
-    Nothing is due. A solved exercise comes back here after {gaps}, counting from the last time you
-    solved it.
-  </p>
-  <ul data-due hidden></ul>
+      <section class="ruled a-side" aria-labelledby="due-title">
+        <div class="list-head">
+          <h2 id="due-title">Due for review</h2>
+        </div>
+        <p class="a-pad" data-due-empty>Nothing is due.</p>
+        <ul class="a-links" data-due hidden></ul>
 
-  <h2 id="all">All exercises</h2>
-  <p data-summary>You have not solved an exercise yet.</p>
-  <ExerciseTable rows={placed} labelledby="all" />
+        <div class="list-head">
+          <h2 id="how-title">How reviews work</h2>
+        </div>
+        <p class="a-pad">
+          A solved exercise comes back here after {gaps}, counting from the last time you solved it.
+          Solving it again spaces out the next review.
+        </p>
 
-  <h2>Clear your progress</h2>
-  <p>This removes every solve and review from this browser. It cannot be undone.</p>
-  <div class="clear" data-clear>
-    <button class="button button-secondary" type="button" data-clear-ask>Clear my progress</button>
-    <p class="confirm" data-clear-confirm hidden>
-      <span>Clear all progress in this browser?</span>
-      <button class="button button-primary" type="button" data-clear-yes>Yes, clear it</button>
-      <button class="link-button" type="button" data-clear-no>Keep it</button>
-    </p>
-    <p role="status" data-clear-status></p>
+        <div class="list-head">
+          <h2 id="clear-title">Clear your progress</h2>
+        </div>
+        <div class="a-pad clear" data-clear>
+          <p>This removes every solve and review from this browser. It cannot be undone.</p>
+          <button class="button button-secondary" type="button" data-clear-ask>Clear my progress</button>
+          <p class="confirm" data-clear-confirm hidden>
+            <span>Clear all progress in this browser?</span>
+            <button class="button button-primary" type="button" data-clear-yes>Yes, clear it</button>
+            <button class="link-button" type="button" data-clear-no>Keep it</button>
+          </p>
+          <p role="status" data-clear-status></p>
+        </div>
+      </section>
+    </div>
+
+    <script type="application/json" data-exercises set:html={JSON.stringify(list).replaceAll("<", "\\u003c")} />
   </div>
-
-  <script type="application/json" data-exercises set:html={JSON.stringify(list).replaceAll("<", "\\u003c")} />
 </Base>
 
 <script>
@@ -71,18 +123,39 @@ const gaps = `${REVIEW_GAPS.slice(0, -1).join(", ")} and ${REVIEW_GAPS.at(-1)} d
 </script>
 
 <style>
-  h2 {
-    margin: var(--space-6) 0 var(--space-2);
-    font-size: var(--size-xl);
+  /* The table is wider than a phone: it scrolls inside its card, not the page. */
+  .a-page,
+  .a-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
-  [hidden] {
+  @media (min-width: 64rem) {
+    .a-grid {
+      grid-template-columns: minmax(0, 2fr) minmax(16rem, 1fr);
+    }
+  }
+  /* The card already draws the frame. */
+  .ruled :global(.table-wrap) {
+    border: 0;
+    border-radius: 0;
+  }
+  .list-head .count {
+    margin: 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .a-side .list-head:not(:first-child) {
+    border-top: 1px solid var(--rule);
+  }
+  .clear {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-3);
+  }
+  .clear p {
+    margin: 0;
+  }
+  .clear p:empty {
     display: none;
-  }
-  ul {
-    padding-left: var(--space-5);
-  }
-  li {
-    padding-block: var(--space-1);
   }
   .confirm {
     display: flex;
@@ -90,7 +163,8 @@ const gaps = `${REVIEW_GAPS.slice(0, -1).join(", ")} and ${REVIEW_GAPS.at(-1)} d
     align-items: center;
     gap: var(--space-3);
   }
-  .confirm[hidden] {
+  .confirm[hidden],
+  [data-due][hidden] {
     display: none;
   }
 </style>

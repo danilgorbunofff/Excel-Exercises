@@ -31,6 +31,7 @@ if (root) {
       code.textContent = answers[Number(code.dataset["answer"])] ?? "";
     }
     root.querySelector("[data-paywall]")?.remove();
+    for (const work of root.querySelectorAll<HTMLElement>(".work")) work.inert = false;
     delete root.dataset["locked"];
     root.dispatchEvent(new CustomEvent("exercise-unlock", { detail: answers }));
   });

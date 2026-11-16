@@ -99,8 +99,6 @@ export const exerciseSchema = z.object({
   level: z.number().int().min(1).max(3),
   title: sentence,
   topic: kebab,
-  /** A PRO exercise: built without its answers and locked until the visitor has PRO (isLocked). */
-  pro: z.boolean().default(false),
   updated: isoDate,
   /** The date the expected values were last checked in Excel, or null if not yet. */
   checkedInExcel: isoDate.nullable(),

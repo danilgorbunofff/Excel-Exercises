@@ -20,7 +20,8 @@ export function loadAssessments(): Assessments {
 /** What the checks need to know about an exercise. */
 export interface ExerciseFacts {
   id: string;
-  pro: boolean;
+  /** Needs PRO (isLocked). */
+  locked: boolean;
   screens: number;
 }
 
@@ -39,7 +40,7 @@ export function checkAssessments(data: Assessments, exercises: readonly Exercise
       if (!ex) problems.push(`${set.slug}: no exercise "${task.exercise}"`);
       else if (task.screen >= ex.screens)
         problems.push(`${set.slug}: "${task.exercise}" has no screen ${task.screen}`);
-      else if (set.sample && ex.pro)
+      else if (set.sample && ex.locked)
         problems.push(`${set.slug}: the free sample uses PRO exercise "${task.exercise}"`);
       if (seen.has(key)) problems.push(`${set.slug}: "${key}" appears twice`);
       seen.add(key);

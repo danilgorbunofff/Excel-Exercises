@@ -3,11 +3,25 @@
 // so a plan's billing changes in Stripe without a code change.
 import type Stripe from "stripe";
 
+// `listCents` (USD) is what the pricing page shows when the build has no Stripe
+// keys; with keys it shows Stripe's own amounts, which should match.
 export const PLANS = [
-  { key: "monthly", label: "Monthly", env: "STRIPE_PRICE_MONTHLY" },
-  { key: "semiannual", label: "Every 6 months", env: "STRIPE_PRICE_SEMIANNUAL" },
-  { key: "annual", label: "Yearly", env: "STRIPE_PRICE_ANNUAL" },
-  { key: "lifetime", label: "Lifetime", env: "STRIPE_PRICE_LIFETIME" },
+  { key: "monthly", label: "Monthly", env: "STRIPE_PRICE_MONTHLY", months: 1, listCents: 900 },
+  {
+    key: "semiannual",
+    label: "Every 6 months",
+    env: "STRIPE_PRICE_SEMIANNUAL",
+    months: 6,
+    listCents: 3900,
+  },
+  { key: "annual", label: "Yearly", env: "STRIPE_PRICE_ANNUAL", months: 12, listCents: 5900 },
+  {
+    key: "lifetime",
+    label: "Lifetime",
+    env: "STRIPE_PRICE_LIFETIME",
+    months: null,
+    listCents: null,
+  },
 ] as const;
 
 export type PlanKey = (typeof PLANS)[number]["key"];
@@ -36,3 +50,7 @@ export function perText(p: Pick<Stripe.Price, "recurring">): string {
   const n = p.recurring.interval_count;
   return n === 1 ? `/ ${p.recurring.interval}` : `/ ${n} ${p.recurring.interval}s`;
 }
+
+/** Whole percent saved against paying monthly: 3900 over 6 months against 900 a month is 28. */
+export const savingPercent = (cents: number, months: number, monthlyCents: number): number =>
+  Math.floor((1 - cents / months / monthlyCents) * 100);

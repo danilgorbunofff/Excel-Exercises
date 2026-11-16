@@ -2,8 +2,12 @@
 // menu, the Practice tabs, the home page and the footer use the same names,
 // addresses and descriptions.
 
+import type { IconName } from "../components/Icon.astro";
+
 export interface NavItem {
   label: string;
+  /** Shown beside the name in the header panels. */
+  icon: IconName;
   href: string;
   /** One plain line saying what the page is for, shown in the header panels. */
   description: string;
@@ -13,31 +17,37 @@ export interface NavItem {
 export const PRACTICE_NAV: readonly NavItem[] = [
   {
     label: "Exercises",
+    icon: "grid",
     href: "/exercises/",
     description: "Every exercise, with filters for level, function and track.",
   },
   {
     label: "Learning tracks",
+    icon: "route",
     href: "/exercises/tracks/",
     description: "Exercises in a sensible order. Start here if formulas are new to you.",
   },
   {
     label: "Interview prep",
+    icon: "briefcase",
     href: "/exercises/tracks/#g-interview",
     description: "Tracks built around the tasks Excel interviews tend to ask for.",
   },
   {
     label: "Daily exercise",
+    icon: "calendar",
     href: "/daily/",
     description: "One free exercise a day, the same for everyone, with your streak.",
   },
   {
     label: "Mock assessments",
+    icon: "clock",
     href: "/mock-assessments/",
     description: "Timed sets of tasks like an employer's test, marked at the end.",
   },
   {
     label: "Progress",
+    icon: "chart",
     href: "/progress/",
     description: "What you have solved and which exercises are due for review.",
   },
@@ -47,26 +57,31 @@ export const PRACTICE_NAV: readonly NavItem[] = [
 export const LEARN_NAV: readonly NavItem[] = [
   {
     label: "Functions",
+    icon: "sigma",
     href: "/functions/",
     description: "Each Excel function with its syntax and the exercises that use it.",
   },
   {
     label: "Articles",
+    icon: "book",
     href: "/articles/",
     description: "Short articles on references, lookups and errors.",
   },
   {
     label: "Formula explainer",
+    icon: "formula",
     href: "/formula-explainer/",
     description: "Paste a formula and see every part worked out step by step.",
   },
   {
     label: "Keyboard shortcuts",
+    icon: "keyboard",
     href: "/excel-shortcuts/",
     description: "Excel shortcuts for Windows and Mac, grouped by task.",
   },
   {
     label: "Resources",
+    icon: "link",
     href: "/resources/",
     description: "Everything on the site in one place, plus outside references.",
   },

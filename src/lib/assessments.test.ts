@@ -13,9 +13,9 @@ import {
 } from "./assessments.ts";
 
 const facts = [
-  { id: "a", pro: false, screens: 1 },
-  { id: "b", pro: false, screens: 2 },
-  { id: "p", pro: true, screens: 1 },
+  { id: "a", locked: false, screens: 1 },
+  { id: "b", locked: false, screens: 2 },
+  { id: "p", locked: true, screens: 1 },
 ];
 const parse = (sets: unknown) => assessmentsSchema.parse({ sets });
 

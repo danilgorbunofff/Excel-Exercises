@@ -11,6 +11,9 @@ export interface Price {
   amount: string;
   /** "/ month", "/ 6 months", "/ year" or "once". */
   per: string;
+  /** The raw amount and currency, for per-month prices and savings. */
+  cents: number;
+  currency: string;
 }
 
 export async function proPrices(): Promise<Record<PlanKey, Price> | null> {
@@ -25,7 +28,15 @@ export async function proPrices(): Promise<Record<PlanKey, Price> | null> {
   return Object.fromEntries(
     PLANS.map((p, i) => {
       const price = prices[i] as Stripe.Price;
-      return [p.key, { amount: formatAmount(price), per: perText(price) }];
+      return [
+        p.key,
+        {
+          amount: formatAmount(price),
+          per: perText(price),
+          cents: price.unit_amount ?? 0,
+          currency: price.currency,
+        },
+      ];
     }),
   ) as Record<PlanKey, Price>;
 }

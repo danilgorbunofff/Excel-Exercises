@@ -14,17 +14,21 @@ const DAY = /^\d{4}-\d{2}-\d{2}$/u;
 export interface PoolEntry {
   id: string;
   slug: string;
+  /** A PRO exercise. It is the daily only on a Saturday, open to everyone that day. */
+  pro: boolean;
 }
 
-/** The free exercises, sorted by id. A PRO exercise is never in the pool. */
+/** Every exercise, sorted by id, with whether it needs PRO. */
 export function dailyPool(
-  placed: readonly { exercise: { id: string; slug: string; pro: boolean }; number: number }[],
+  placed: readonly { exercise: { id: string; slug: string }; topicNumber: number }[],
 ): PoolEntry[] {
   return placed
-    .filter((p) => !isLocked(p))
-    .map((p) => ({ id: p.exercise.id, slug: p.exercise.slug }))
+    .map((p) => ({ id: p.exercise.id, slug: p.exercise.slug, pro: isLocked(p) }))
     .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
 }
+
+/** True when the day (YYYY-MM-DD) is a Saturday, the day a PRO exercise is the daily. */
+export const isProDay = (day: string): boolean => new Date(`${day}T00:00:00Z`).getUTCDay() === 6;
 
 /**
  * FNV-1a, 32 bit, then the MurmurHash3 finaliser so the last characters (the
@@ -45,13 +49,16 @@ function hash(text: string): number {
 }
 
 /**
- * The exercise for a day. Each exercise scores hash(day:id) and the highest
- * wins, so adding or removing one exercise only changes the days it wins.
+ * The exercise for a day: a PRO one on a Saturday, a free one on other days.
+ * Each exercise scores hash(day:id) and the highest wins, so adding or
+ * removing one exercise only changes the days it wins.
  */
 export function pickFor(day: string, pool: readonly PoolEntry[]): PoolEntry | null {
+  const pro = isProDay(day);
   let best: PoolEntry | null = null;
   let bestScore = -1;
   for (const entry of pool) {
+    if (entry.pro !== pro) continue;
     const score = hash(`${day}:${entry.id}`);
     if (score > bestScore || (score === bestScore && best !== null && entry.id < best.id)) {
       best = entry;

@@ -18,8 +18,10 @@ interface Props {
   defer?: boolean;
 }
 const { placed, heading, intro, defer = false } = Astro.props;
-// An embed would put a PRO answer in a free page.
-if (isLocked(placed)) {
+// An embed would put a PRO answer in a free page. Only the daily page (defer)
+// shows a PRO exercise, built without its answers; daily.ts fetches them.
+const locked = isLocked(placed);
+if (locked && !defer) {
   throw new Error(
     `${Astro.url.pathname} embeds ${placed.exercise.id}, a PRO exercise. Embed a free one.`,
   );
@@ -29,7 +31,13 @@ const { exercise, number, total } = placed;
 const path = exercisePath(exercise.slug);
 ---
 
-<section class="live" data-exercise data-defer={defer ? "" : undefined} aria-labelledby="live-heading">
+<section
+  class="live"
+  data-exercise
+  data-defer={defer ? "" : undefined}
+  data-locked={locked ? exercise.slug : undefined}
+  aria-labelledby="live-heading"
+>
   <h2 id="live-heading" data-live-heading>{heading}</h2>
   {intro && <p class="intro">{intro}</p>}
   <div class="task">
@@ -55,8 +63,8 @@ const path = exercisePath(exercise.slug);
     <a href={path}>Open it on its own page</a> for notes on the function.
   </p>
   <h3>Hints</h3>
-  {exercise.screens.map((s, i) => <HintLadder screen={s} index={i} />)}
-  <ExerciseData exercise={exercise} />
+  {exercise.screens.map((s, i) => <HintLadder screen={s} index={i} locked={locked} />)}
+  <ExerciseData exercise={exercise} locked={locked} />
 </section>
 
 <style>

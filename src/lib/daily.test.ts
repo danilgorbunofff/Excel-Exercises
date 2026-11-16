@@ -7,25 +7,27 @@ import {
   DAILY_START,
   dailyPool,
   isDay,
+  isProDay,
   mergeDaily,
   pickFor,
   stripDays,
 } from "./daily.ts";
 
+// 9 tracks of 10: the first 2 of each are free, so 18 free and 72 PRO.
 const placed = Array.from({ length: 90 }, (_, i) => ({
-  exercise: { id: `ex-${String(i).padStart(2, "0")}`, slug: `ex-${i}`, pro: i % 30 === 7 },
-  number: i + 1,
+  exercise: { id: `ex-${String(i).padStart(2, "0")}`, slug: `ex-${i}` },
+  topicNumber: (i % 10) + 1,
 }));
 const pool = dailyPool(placed);
-const proIds = new Set(placed.filter((p) => p.exercise.pro).map((p) => p.exercise.id));
+const proIds = new Set(pool.filter((e) => e.pro).map((e) => e.id));
 const daysFrom = (start: string, n: number) =>
   Array.from({ length: n }, (_, i) => addDays(start, i));
 const set = (...days: string[]) => new Set(days);
 
 describe("dailyPool and pickFor", () => {
-  it("leaves PRO exercises out and sorts by id", () => {
-    expect(pool).toHaveLength(87);
-    expect(pool.some((e) => proIds.has(e.id))).toBe(false);
+  it("keeps every exercise, marks the PRO ones and sorts by id", () => {
+    expect(pool).toHaveLength(90);
+    expect(proIds.size).toBe(72);
     expect(pool.map((e) => e.id)).toEqual([...pool.map((e) => e.id)].sort());
   });
 
@@ -36,21 +38,28 @@ describe("dailyPool and pickFor", () => {
     }
   });
 
-  it("never picks a PRO exercise over three years", () => {
+  it("picks a PRO exercise on Saturdays only, over three years", () => {
     for (const day of daysFrom("2026-11-01", 3 * 366)) {
       const pick = pickFor(day, pool);
       expect(pick).not.toBeNull();
-      expect(proIds.has(pick?.id ?? "")).toBe(false);
+      expect(proIds.has(pick?.id ?? "")).toBe(isProDay(day));
     }
   });
 
+  it("knows Saturday from the date alone", () => {
+    expect(isProDay("2026-11-21")).toBe(true);
+    expect(isProDay("2026-11-20")).toBe(false);
+    expect(isProDay("2026-11-22")).toBe(false);
+  });
+
   it("spreads the days over many exercises", () => {
-    const picks = new Set(daysFrom("2026-11-01", 365).map((d) => pickFor(d, pool)?.id));
-    expect(picks.size).toBeGreaterThan(60);
+    const picks = daysFrom("2026-11-01", 365).map((d) => pickFor(d, pool)?.id ?? "");
+    expect(new Set(picks.filter((id) => !proIds.has(id))).size).toBe(18);
+    expect(new Set(picks.filter((id) => proIds.has(id))).size).toBeGreaterThan(30);
   });
 
   it("changes few days when one exercise is added", () => {
-    const bigger = [...pool, { id: "ex-new", slug: "ex-new" }];
+    const bigger = [...pool, { id: "ex-new", slug: "ex-new", pro: false }];
     const days = daysFrom("2026-11-01", 1000);
     const changed = days.filter((d) => pickFor(d, pool)?.id !== pickFor(d, bigger)?.id);
     // Only the days the new exercise wins can change.

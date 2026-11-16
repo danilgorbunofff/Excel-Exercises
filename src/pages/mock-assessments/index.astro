@@ -9,16 +9,12 @@ import PracticeTabs from "../../components/PracticeTabs.astro";
 import Base from "../../layouts/Base.astro";
 import { assessmentPath, coverOf, loadAssessments } from "../../lib/assessments.ts";
 import { LEVELS } from "../../lib/exercises.ts";
-import { functionPages, functionPath } from "../../lib/functions.ts";
 import { ACCOUNT_NAV } from "../../lib/nav.ts";
 import "../../styles/assessments.css";
 
 const SHOWN = 5;
 const byId = new Map((await getCollection("exercises")).map((e) => [e.data.id, e.data]));
 const levelWord = (l: number) => LEVELS[l as 1 | 2 | 3];
-// A function links to its lesson, or to the exercises that use it when it has none.
-const lessons = new Map((await functionPages()).map((p) => [p.name, functionPath(p.slug)]));
-const fnHref = (name: string) => lessons.get(name) ?? `/exercises/?fn=${encodeURIComponent(name)}`;
 // A set's level is its hardest task's.
 const sets = loadAssessments().sets.map((set) => {
   const cover = coverOf(set, byId);
@@ -97,17 +93,17 @@ const timeSpan = span(
                     <Icon name="clock" size={16} class="a-icon" />
                     {set.tasks.length} tasks in {set.minutes} minutes.
                   </p>
-                  <p class="fns">
-                    {set.functions.slice(0, SHOWN).map((f) => <a href={fnHref(f)}>{f}</a>)}
+                  <p class="chips fn-chips">
+                    {set.functions.slice(0, SHOWN).map((f) => <span class="chip">{f}</span>)}
                     {set.functions.length > SHOWN && (
-                      <span class="plain">and {set.functions.length - SHOWN} more</span>
+                      <span class="more">and {set.functions.length - SHOWN} more</span>
                     )}
                   </p>
                   <p class="line" data-when="in" hidden>
                     Your best: <strong data-best={set.slug}>Not taken</strong>
                   </p>
                 </div>
-                <div class="a-tags">
+                <div class="a-tags split">
                   {set.sample ? <span class="mark-tag free">Free</span> : <span class="tag">PRO</span>}
                   <span class={`level level-${set.level}`}>{set.levelName}</span>
                 </div>
@@ -206,5 +202,21 @@ const timeSpan = span(
 <style>
   .index {
     padding-top: var(--space-5);
+  }
+  /* Free or PRO stays top right; the level drops to the bottom right corner. */
+  .a-tags.split {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    align-self: stretch;
+  }
+  .fn-chips {
+    margin-top: var(--space-1);
+    align-items: center;
+  }
+  .fn-chips .more {
+    font-size: var(--size-s);
+    color: var(--muted);
   }
 </style>

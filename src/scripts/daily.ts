@@ -100,9 +100,40 @@ async function showExercise(
   }
   const heading = q<HTMLElement>(exercise, "[data-live-heading]");
   if (heading && past) heading.textContent = `The exercise for ${longDate(day)}`;
+  if (pick.pro && heading && !past) heading.textContent = "Today's exercise: a PRO one, free today";
   slot.hidden = false;
   mountExercise(exercise);
+  if (exercise.dataset["locked"] !== undefined) await unlock(exercise, pick, day);
   return exercise;
+}
+
+/**
+ * A Saturday's PRO exercise is built without its answers. The API gives them
+ * to anyone on that day, and to PRO visitors on any day; anyone else sees why not.
+ */
+async function unlock(exercise: HTMLElement, pick: PoolEntry, day: string): Promise<void> {
+  const res = await fetch(
+    `/api/exercises/${encodeURIComponent(pick.slug)}/?day=${encodeURIComponent(day)}`,
+    { credentials: "same-origin" },
+  ).catch(() => null);
+  if (!res?.ok) {
+    const note = document.createElement("p");
+    note.className = "pro-note";
+    note.append(
+      "This PRO exercise was free on its Saturday. ",
+      Object.assign(document.createElement("a"), { href: "/pricing/", textContent: "Get PRO" }),
+      " to practise it again, with every other PRO exercise.",
+    );
+    exercise.prepend(note);
+    for (const work of exercise.querySelectorAll<HTMLElement>(".work")) work.inert = true;
+    return;
+  }
+  const { answers } = (await res.json()) as { answers: string[] };
+  for (const code of exercise.querySelectorAll<HTMLElement>("[data-answer]")) {
+    code.textContent = answers[Number(code.dataset["answer"])] ?? "";
+  }
+  delete exercise.dataset["locked"];
+  exercise.dispatchEvent(new CustomEvent("exercise-unlock", { detail: answers }));
 }
 
 const page = document.querySelector<HTMLElement>("[data-daily]");

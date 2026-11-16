@@ -1,206 +1,663 @@
 ---
-// Why this exists: the plans and what each one gives. The PRO form posts to
-// /api/stripe/checkout/, which asks a signed-out visitor to log in first.
-// It works without JavaScript: the plan is a set of radio buttons.
+// Why this exists: Free and PRO side by side, the way pricing pages usually
+// work: a billing switch, two cards with what each gives, a comparison table
+// and the usual questions. The switch is three radios joined to the PRO form,
+// and CSS shows the chosen price, so checkout works without JavaScript. The
+// form posts to /api/stripe/checkout/, which asks a signed-out visitor to log
+// in first. Lifetime exists in the code and in Stripe but is not offered here.
 import { siteConfig } from "../../../site.config.ts";
+import Icon from "../../components/Icon.astro";
 import Base from "../../layouts/Base.astro";
 import { isLocked } from "../../lib/access.ts";
-import { exercisePath, LEVELS, placedExercises } from "../../lib/exercises.ts";
-import { PLANS } from "../../server/plans.ts";
+import { loadAssessments } from "../../lib/assessments.ts";
+import { placedExercises } from "../../lib/exercises.ts";
+import { formatAmount, PLANS, savingPercent } from "../../server/plans.ts";
 import { proPrices } from "../../server/prices.ts";
 
 const placed = await placedExercises();
-const locked = placed.filter((p) => isLocked(p));
-const free = placed.length - locked.length;
+const locked = placed.filter((p) => isLocked(p)).length;
+const free = placed.length - locked;
+const perTrack = siteConfig.freePerTrack;
+const fullSets = loadAssessments().sets.filter((s) => !s.sample).length;
 const prices = await proPrices();
-const proAdds: { title: string; text: string }[] = [
+
+// Stripe's amounts when the build has keys, the list prices otherwise.
+const amountOf = (p: (typeof PLANS)[number]) => ({
+  cents: prices?.[p.key].cents ?? p.listCents ?? 0,
+  currency: prices?.[p.key].currency ?? "usd",
+});
+const monthlyCents = amountOf(PLANS[0]).cents;
+const PER = { 1: "/ month", 6: "/ 6 months", 12: "/ year" } as const;
+const periods = PLANS.flatMap((p) => {
+  if (p.months === null) return [];
+  const { cents, currency } = amountOf(p);
+  const fmt = (c: number) => formatAmount({ currency, unit_amount: Math.round(c) });
+  return [
+    {
+      key: p.key,
+      label: p.months === 6 ? "6 months" : p.label,
+      price: fmt(cents),
+      per: PER[p.months],
+      note:
+        p.months === 1
+          ? "Billed every month"
+          : `${fmt(cents / p.months)} a month, billed ${p.months === 6 ? "every 6 months" : "once a year"}`,
+      saving: p.months === 1 ? 0 : savingPercent(cents, p.months, monthlyCents),
+    },
+  ];
+});
+const DEFAULT = "annual";
+
+const freeHas = [
+  `${free} exercises: the first ${perTrack} of every learning track`,
+  "Hints and an instant check on every answer",
+  "The daily exercise, with a PRO one free every Saturday",
+  "The sample mock assessment",
+  "Function guides, the formula explainer and articles",
+  "Progress saved on every device",
+];
+const freeLacks = ["PRO exercises", "Full mock assessments", "Certificates"];
+const proAdds = [
+  `${locked} PRO exercises: the rest of every track, with the work models and interview sets`,
+  `${fullSets} full timed mock assessments, marked at the end`,
+  "A certificate for each mock assessment you pass",
+  "Advanced tracks as they arrive",
+];
+
+// true / false is a check or a cross; a string is shown as it is.
+type Cell = boolean | string;
+const compare: { group: string; rows: [string, Cell, Cell][] }[] = [
   {
-    title: `${locked.length} PRO exercises`,
-    text: "Longer tasks built on finance, operations and analyst work, with several formulas per sheet.",
+    group: "Practice",
+    rows: [
+      ["Free exercises", String(free), String(free)],
+      ["PRO exercises", false, String(locked)],
+      ["Learning tracks", `First ${perTrack} of each`, "Every exercise"],
+      ["Daily exercise", true, true],
+      ["Hints and instant checks", true, true],
+    ],
   },
   {
-    title: "Advanced tracks as they arrive",
-    text: "Dynamic arrays, dates and text cleaning, in the same step-by-step order as the free tracks.",
+    group: "Assessments",
+    rows: [
+      ["Sample mock assessment", true, true],
+      ["Full mock assessments", false, String(fullSets)],
+      ["Certificates", false, true],
+    ],
   },
   {
-    title: "Mock assessments",
-    text: "Timed sets of tasks like the ones employers use, marked at the end, with your results kept.",
+    group: "Learn",
+    rows: [
+      ["Function guides", true, true],
+      ["Formula explainer", true, true],
+      ["Articles", true, true],
+    ],
+  },
+  {
+    group: "Account",
+    rows: [["Progress on every device", true, true]],
+  },
+];
+
+const faq = [
+  {
+    q: "Which plan should I pick?",
+    a: `Start with Free: the first ${perTrack} exercises of every track are yours for good. Take PRO for the rest of each track, the interview sets and the timed mock assessments. Yearly costs the least per month.`,
+  },
+  {
+    q: "Can I cancel?",
+    a: "Yes, at any time from your account. PRO stays until the end of the period you paid for, then the plan does not renew.",
+  },
+  {
+    q: "What happens when PRO ends?",
+    a: "The PRO exercises and full mock assessments lock again. Your progress and past results stay in your account.",
+  },
+  {
+    q: "Which exercises are free?",
+    a: `The first ${perTrack} exercises of every learning track, with their hints and answers, and the daily exercise. Every Saturday the daily exercise is a PRO one, free for that day.`,
+  },
+  {
+    q: "How do I pay?",
+    a: "On Stripe Checkout, which shows the price again before you pay. You can enter a promo code there.",
   },
 ];
 ---
 
 <Base
   title="Pricing"
-  description={`${free} Excel exercises are free. PRO adds ${locked.length} more and every new track.`}
+  description={`${free} Excel exercises are free. PRO adds ${locked} more, timed mock assessments and certificates.`}
   layout="wide"
 >
   <header class="page-head">
-    <h1>Pricing</h1>
-    <p class="lead">
-      {free} exercises are free, for good. PRO unlocks the other {locked.length} and everything new.
-    </p>
+    <h1>Choose your plan</h1>
+    <p class="lead">Start free. Go PRO for the longer exercises and timed mock assessments.</p>
   </header>
 
   <p class="flash" role="status" data-flash hidden></p>
 
-  <div class="plans">
-    <section class="card plan" aria-labelledby="free-title">
-      <h2 id="free-title">Free</h2>
-      <p class="price"><strong>$0</strong></p>
-      <ul>
-        <li>{free} exercises in {siteConfig.name}'s learning tracks</li>
-        <li>Hints, the formula explainer and every function guide</li>
-        <li>Progress saved to your account, on every device</li>
-      </ul>
-      <a class="button button-outline" href="/register/" data-when="out">Sign up free</a>
-      <a class="button button-outline" href="/exercises/" data-when="in" hidden>Go to the exercises</a>
-    </section>
+  <div class="pricing">
+    <fieldset class="switch">
+      <legend class="visually-hidden">Billing period</legend>
+      <span class="thumb" aria-hidden="true"></span>
+      {
+        periods.map((p) => (
+          <label>
+            <input
+              type="radio"
+              name="plan"
+              value={p.key}
+              form="pro-checkout"
+              checked={p.key === DEFAULT}
+              data-period={p.key}
+            />
+            <span>{p.label}</span>
+            {p.saving > 0 && <span class="off">−{p.saving}%</span>}
+          </label>
+        ))
+      }
+    </fieldset>
 
-    <section class="card plan pro" aria-labelledby="pro-title">
-      <h2 id="pro-title"><span class="tag">PRO</span></h2>
-      <form method="post" action="/api/stripe/checkout/">
-        <fieldset>
-          <legend class="visually-hidden">Plan</legend>
+    <div class="cards">
+      <section class="card-plan" aria-labelledby="free-title">
+        <h2 id="free-title">Free</h2>
+        <p class="tagline">Everything you need to learn the basics.</p>
+        <div>
+          <p class="price"><strong>$0</strong><span>forever</span></p>
+          <p class="note">No card needed</p>
+        </div>
+        <a class="button button-outline" href="/register/" data-when="out">Sign up free</a>
+        <a class="button button-outline" href="/exercises/" data-when="in" hidden>Go to the exercises</a>
+        <ul class="list divide">
           {
-            PLANS.map((plan, i) => (
-              <label class="period">
-                <input type="radio" name="plan" value={plan.key} checked={i === 0} />
-                <span>{plan.label}</span>
-                {prices && (
-                  <strong>
-                    {prices[plan.key].amount}
-                    <small> {prices[plan.key].per}</small>
-                  </strong>
-                )}
-              </label>
+            freeHas.map((f) => (
+              <li>
+                <Icon name="check" size={18} class="yes" />
+                {f}
+              </li>
             ))
           }
-        </fieldset>
-        {!prices && <p class="small">You see the price before you pay, on Stripe Checkout.</p>}
-        <ul>
-          <li>Everything in Free</li>
-          {proAdds.map((a) => <li><strong>{a.title}.</strong> {a.text}</li>)}
-        </ul>
-        <button class="button button-primary" type="submit">Get PRO</button>
-        <p class="small">
-          Plans renew until you cancel, from your account; PRO stays until the end of the period you
-          paid for. Lifetime is one payment and never renews.
-        </p>
-      </form>
-    </section>
-  </div>
-
-  {
-    locked.length > 0 && (
-      <section class="locked" aria-labelledby="locked-title">
-        <h2 id="locked-title" class="section-title">PRO exercises</h2>
-        <ul class="ruled">
-          {locked.map((p) => (
-            <li>
-              <a href={exercisePath(p.exercise.slug)}>{p.exercise.title}</a>
-              <span class={`level level-${p.exercise.level}`}>{LEVELS[p.exercise.level as 1 | 2 | 3]}</span>
-            </li>
-          ))}
+          {
+            freeLacks.map((f) => (
+              <li class="lacks">
+                <Icon name="close" size={18} class="no" />
+                <span><span class="visually-hidden">Not included: </span>{f}</span>
+              </li>
+            ))
+          }
         </ul>
       </section>
-    )
-  }
+
+      <section class="card-plan pro" aria-labelledby="pro-title">
+        <p class="band">Recommended</p>
+        <h2 id="pro-title">PRO</h2>
+        <p class="tagline">For work tasks and timed Excel tests.</p>
+        {
+          periods.map((p) => (
+            <div class="period" data-shows={p.key}>
+              <p class="price">
+                <strong>{p.price}</strong>
+                <span>{p.per}</span>
+              </p>
+              <p class="note">{p.note}</p>
+            </div>
+          ))
+        }
+        <form id="pro-checkout" method="post" action="/api/stripe/checkout/">
+          <button class="button button-primary" type="submit">Get PRO</button>
+        </form>
+        <p class="plus divide">Everything in Free, plus:</p>
+        <ul class="list">
+          {
+            proAdds.map((f) => (
+              <li>
+                <Icon name="check" size={18} class="yes" />
+                {f}
+              </li>
+            ))
+          }
+        </ul>
+        <p class="small">Renews until you cancel. Cancel anytime from your account.</p>
+      </section>
+    </div>
+
+    <ul class="trust">
+      <li><Icon name="check" size={16} /> Cancel anytime</li>
+      <li><Icon name="lock" size={16} /> Secure checkout by Stripe</li>
+      <li><Icon name="bolt" size={16} /> Promo codes accepted</li>
+    </ul>
+  </div>
+
+  <section class="compare" aria-labelledby="compare-title">
+    <h2 id="compare-title" class="section-title">Compare plans</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col"><span class="visually-hidden">Feature</span></th>
+            <th scope="col">Free</th>
+            <th scope="col" class="pro-col">PRO</th>
+          </tr>
+        </thead>
+        {
+          compare.map((g) => (
+            <tbody>
+              <tr class="group">
+                <th scope="colgroup" colspan="3">
+                  {g.group}
+                </th>
+              </tr>
+              {g.rows.map(([name, f, p]) => (
+                <tr>
+                  <th scope="row">{name}</th>
+                  {[f, p].map((c, i) => (
+                    <td class:list={{ "pro-col": i === 1 }}>
+                      {typeof c === "string" ? (
+                        c
+                      ) : c ? (
+                        <>
+                          <Icon name="check" size={18} class="yes" />
+                          <span class="visually-hidden">Included</span>
+                        </>
+                      ) : (
+                        <>
+                          <Icon name="close" size={18} class="no" />
+                          <span class="visually-hidden">Not included</span>
+                        </>
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          ))
+        }
+      </table>
+    </div>
+  </section>
+
+  <section class="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title" class="section-title">Questions</h2>
+    {
+      faq.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <p>{f.a}</p>
+        </details>
+      ))
+    }
+  </section>
 </Base>
 
 <script>
   import "../../scripts/flash.ts";
+
+  // Slide the highlight under the chosen period.
+  const sw = document.querySelector<HTMLElement>(".switch");
+  const thumb = sw?.querySelector<HTMLElement>(".thumb");
+  const place = () => {
+    const on = sw?.querySelector<HTMLElement>("label:has(input:checked)");
+    if (!sw || !thumb || !on) return;
+    thumb.style.width = `${on.offsetWidth}px`;
+    thumb.style.height = `${on.offsetHeight}px`;
+    thumb.style.transform = `translate(${on.offsetLeft}px, ${on.offsetTop}px)`;
+    // Add after the first paint so the pill does not slide in from the left on load.
+    requestAnimationFrame(() => sw.classList.add("ready"));
+  };
+  place();
+  sw?.addEventListener("change", place);
+  addEventListener("resize", place);
+  document.fonts?.ready.then(place);
 </script>
 
 <style>
-  .plans {
+  .pricing {
+    max-width: 56rem;
+    margin: 0 auto;
+  }
+
+  /* Billing switch: a segmented control made of radios. */
+  .switch {
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto var(--space-6);
+    padding: var(--space-1);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-pill);
+    background: var(--surface);
+  }
+  .switch label {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 2.5rem;
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-pill);
+    font-size: var(--size-s);
+    font-weight: 600;
+    color: var(--muted);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .switch input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .switch label:has(input:checked) {
+    color: #fff;
+  }
+  /* Without script the chosen label carries the fill itself. */
+  .switch:not(.ready) label:has(input:checked) {
+    background: var(--primary);
+  }
+  .switch label {
+    z-index: 1;
+  }
+  .thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: var(--radius-pill);
+    background: var(--primary);
+    pointer-events: none;
+  }
+  .switch {
+    position: relative;
+  }
+  .switch label:has(input:focus-visible) {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+  .off {
+    padding: 0 0.375rem;
+    border-radius: var(--radius-pill);
+    background: var(--correct-tint);
+    color: var(--correct);
+    font-size: var(--size-xs);
+    font-weight: 700;
+  }
+  .switch label:has(input:checked) .off {
+    background: rgb(255 255 255 / 0.2);
+    color: #fff;
+  }
+
+  /* Show only the price for the chosen period. */
+  .period {
+    display: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .thumb {
+      transition:
+        transform 300ms var(--ease),
+        width 300ms var(--ease);
+    }
+    .switch:not(.ready) .thumb {
+      transition: none;
+    }
+    .switch label {
+      transition: color 300ms var(--ease);
+    }
+    .period {
+      animation: price-in 320ms var(--ease) both;
+    }
+  }
+  @keyframes price-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.5rem);
+    }
+  }
+  .pricing:has([data-period="monthly"]:checked) [data-shows="monthly"],
+  .pricing:has([data-period="semiannual"]:checked) [data-shows="semiannual"],
+  .pricing:has([data-period="annual"]:checked) [data-shows="annual"] {
+    display: block;
+  }
+
+  .cards {
     display: grid;
     gap: var(--space-5);
-    padding-bottom: var(--space-6);
   }
-  .plan {
-    display: grid;
-    align-content: start;
-    gap: var(--space-4);
-    padding: var(--space-6);
+  .card-plan {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: calc(var(--space-6) + 1.75rem) var(--space-6) var(--space-6);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-xl);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
   }
   .pro {
-    border-color: var(--primary);
+    order: -1;
+    border: 2px solid var(--primary);
+    box-shadow: var(--shadow-pop);
+    overflow: hidden;
   }
-  h2 {
+  .band {
+    position: absolute;
+    inset: 0 0 auto;
+    margin: 0;
+    padding: 0.3rem 0;
+    background: var(--primary);
+    color: #fff;
+    font-size: var(--size-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .card-plan h2 {
     margin: 0;
     font-size: var(--size-xl);
     color: var(--heading);
   }
+  .tagline {
+    margin: calc(-1 * var(--space-2)) 0 0;
+    color: var(--muted);
+  }
   .price {
-    margin: 0;
-    font-size: var(--size-xxl);
-  }
-  ul {
-    display: grid;
-    gap: var(--space-2);
-    margin: 0;
-    padding-left: var(--space-5);
-  }
-  form {
-    display: grid;
-    gap: var(--space-4);
-  }
-  fieldset {
-    display: grid;
-    gap: var(--space-2);
-    margin: 0;
-    padding: 0;
-    border: 0;
-  }
-  .period {
     display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    min-height: var(--target);
-    padding: var(--space-2) var(--space-4);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-m);
-    cursor: pointer;
+    align-items: baseline;
+    gap: var(--space-2);
+    margin: var(--space-2) 0 0;
   }
-  .period:has(input:checked) {
-    border-color: var(--primary);
-    background: var(--chip-bg);
+  .price strong {
+    font-size: 3rem;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--heading);
+    font-variant-numeric: tabular-nums;
   }
-  .period strong {
-    margin-left: auto;
-    font-size: var(--size-l);
+  .price span {
+    color: var(--muted);
   }
-  .period small {
+  .note {
+    min-height: 1.5em;
+    margin: var(--space-1) 0 0;
     font-size: var(--size-s);
-    font-weight: 400;
+    color: var(--muted);
+  }
+  .card-plan .button,
+  .card-plan form {
+    width: 100%;
+    margin-top: var(--space-2);
+  }
+  .card-plan form .button {
+    margin: 0;
+  }
+  .plus {
+    margin-bottom: 0;
+    font-weight: 700;
+    color: var(--heading);
+  }
+  .list {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-2) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  .list :global(svg) {
+    flex-shrink: 0;
+    margin-top: 0.15em;
+  }
+  /* The line between the price block and what the plan gives. */
+  .divide {
+    margin-top: var(--space-3);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--rule);
+  }
+  .lacks {
+    color: var(--muted);
+  }
+  :global(.yes) {
+    color: var(--correct);
+  }
+  :global(.no) {
     color: var(--muted);
   }
   .small {
-    margin: 0;
+    margin: auto 0 0;
+    padding-top: var(--space-3);
     font-size: var(--size-s);
     color: var(--muted);
   }
-  .flash {
+
+  .trust {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2) var(--space-6);
+    margin: var(--space-6) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .trust li {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .trust :global(svg) {
+    color: var(--correct);
+  }
+
+  .compare,
+  .faq {
+    max-width: 56rem;
+    margin: var(--space-7) auto 0;
+  }
+  .section-title {
+    margin: 0 0 var(--space-5);
+    text-align: center;
+  }
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+  }
+  table {
+    width: 100%;
+    min-width: 34rem;
+    border-collapse: collapse;
+  }
+  th,
+  td {
+    padding: var(--space-3) var(--space-4);
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  thead th {
+    border-top: 0;
+    font-size: var(--size-m);
+    color: var(--heading);
+  }
+  th[scope="row"] {
+    text-align: left;
+    font-weight: 400;
+    color: var(--text);
+  }
+  td {
+    width: 12rem;
+    font-weight: 600;
+    color: var(--heading);
+  }
+  .group th {
+    padding-top: var(--space-4);
+    background: var(--bg);
+    text-align: left;
+    font-size: var(--size-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .pro-col {
+    background: var(--correct-tint);
+  }
+  thead .pro-col {
+    color: var(--correct);
+  }
+
+  .faq {
+    padding-bottom: var(--space-7);
+  }
+  .faq details {
+    border-bottom: 1px solid var(--rule);
+  }
+  .faq summary {
+    display: flex;
+    align-items: center;
+    min-height: var(--target);
+    padding: var(--space-3) 0;
+    font-weight: 600;
+    color: var(--heading);
+    cursor: pointer;
+  }
+  .faq details p {
     margin: 0 0 var(--space-4);
+    color: var(--muted);
+  }
+
+  .flash {
+    max-width: 56rem;
+    margin: 0 auto var(--space-4);
     padding: var(--space-3) var(--space-4);
     border: 1px solid var(--miss);
     border-radius: var(--radius-m);
     background: var(--miss-tint);
     font-size: var(--size-s);
   }
-  .locked {
-    padding-bottom: var(--space-7);
-  }
-  .locked li {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: var(--space-3);
-    padding: var(--space-3) var(--space-4);
+
+  @media (max-width: 30rem) {
+    .switch {
+      width: 100%;
+    }
+    .switch label {
+      flex: 1;
+      justify-content: center;
+      gap: var(--space-1);
+      padding: 0 var(--space-2);
+    }
   }
   @media (min-width: 48rem) {
-    .plans {
+    .cards {
       grid-template-columns: 1fr 1fr;
+      align-items: stretch;
+    }
+    .pro {
+      order: 0;
     }
   }
 </style>

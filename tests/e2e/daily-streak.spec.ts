@@ -6,6 +6,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
 import { parse } from "yaml";
+import { topicNumbers } from "../../src/lib/access.ts";
 import { dailyPool, pickFor } from "../../src/lib/daily.ts";
 
 const files = readdirSync("content/exercises").map(
@@ -13,14 +14,16 @@ const files = readdirSync("content/exercises").map(
     parse(readFileSync(`content/exercises/${f}`, "utf8")) as {
       id: string;
       slug: string;
-      pro?: boolean;
+      topic: string;
     },
 );
 const order = (parse(readFileSync("content/track.yaml", "utf8")) as { order: string[] }).order;
+const topicOf = new Map(files.map((e) => [e.id, e.topic]));
+const numbers = topicNumbers(order, (id) => topicOf.get(id) ?? "");
 const pool = dailyPool(
   files.map((e) => ({
-    exercise: { id: e.id, slug: e.slug, pro: e.pro === true },
-    number: order.indexOf(e.id) + 1,
+    exercise: { id: e.id, slug: e.slug },
+    topicNumber: numbers.get(e.id) ?? 0,
   })),
 );
 const solve = (day: string) => ({ day, exercise: pickFor(day, pool)?.id ?? "" });

@@ -664,3 +664,12 @@ select {
   background-repeat: no-repeat;
   cursor: pointer;
 }
+
+/* Lines that scripts add under an exercise: the sign-up ask after a few solves,
+   and the note on a past Saturday's PRO daily. */
+.sign-up-line,
+.pro-note {
+  margin: var(--space-2) 0 0;
+  font-size: var(--size-s);
+  color: var(--muted);
+}

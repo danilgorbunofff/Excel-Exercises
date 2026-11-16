@@ -1,6 +1,16 @@
 // Why this exists: fills the progress page from this browser's storage: the
-// next exercise, the review list and the counts, and clears progress on request.
-import { clearProgress, dueDate, isDue, localDay, readProgress } from "./progress.ts";
+// numbers band, the next exercise, the review list and the counts, and clears
+// progress on request. It paints again when a solve lands or when a signed-in
+// visitor's account progress has been merged in, so the page is never stale.
+import {
+  clearProgress,
+  dueDate,
+  isDue,
+  localDay,
+  PROGRESS_EVENT,
+  readProgress,
+} from "./progress.ts";
+import { loadMe, SYNCED_EVENT } from "./session.ts";
 import { paintStatus } from "./status.ts";
 
 interface Item {
@@ -8,18 +18,25 @@ interface Item {
   number: number;
   title: string;
   href: string;
+  /** Needs PRO. "Continue" skips these until the visitor is known to have PRO. */
+  locked: boolean;
 }
+let pro = false;
 
-// The page as the server rendered it, which is also the page with no progress.
-const pristine = new Map(
-  [...document.querySelectorAll<HTMLElement>("[data-next], [data-due-empty], [data-summary]")].map(
-    (el) => [el, [...el.childNodes].map((n) => n.cloneNode(true))],
-  ),
-);
 const node = document.querySelector("script[data-exercises]");
 const items: Item[] = node?.textContent ? JSON.parse(node.textContent) : [];
-const progress = readProgress();
-const today = localDay();
+const q = <T extends HTMLElement>(selector: string) => document.querySelector<T>(selector);
+const next = q<HTMLAnchorElement>("[data-next]");
+const dueList = q<HTMLElement>("[data-due]");
+const dueEmpty = q<HTMLElement>("[data-due-empty]");
+const summary = q<HTMLElement>("[data-summary]");
+// The server-rendered first exercise, which is also the page with no progress.
+const start = next ? { href: next.getAttribute("href") ?? "", text: next.textContent ?? "" } : null;
+
+const stat = (key: string, value: string) => {
+  const el = q(`[data-stat="${key}"]`);
+  if (el) el.textContent = value;
+};
 
 const link = (item: Item) => {
   const a = document.createElement("a");
@@ -28,67 +45,87 @@ const link = (item: Item) => {
   return a;
 };
 
-const solved = items.filter((i) => {
-  const s = progress[i.id]?.state;
-  return s === "solved" || s === "helped";
-});
-const helped = solved.filter((i) => progress[i.id]?.state === "helped");
-
-const next = items.find((i) => !solved.includes(i));
-const nextLine = document.querySelector<HTMLElement>("[data-next]");
-if (nextLine && solved.length > 0) {
-  if (next) {
-    nextLine.replaceChildren(
-      "Exercise ",
-      String(next.number),
-      " of ",
-      String(items.length),
-      ": ",
-      link(next),
-      ".",
+function paint(): void {
+  const progress = readProgress();
+  const today = localDay();
+  const solved = items.filter((i) => {
+    const s = progress[i.id]?.state;
+    return s === "solved" || s === "helped";
+  });
+  const helped = solved.filter((i) => progress[i.id]?.state === "helped").length;
+  const due = solved
+    .filter((i) => {
+      const e = progress[i.id];
+      return e ? isDue(e, today) : false;
+    })
+    .sort((a, b) =>
+      (dueDate(progress[a.id] ?? { state: "solved", date: "" }) ?? "").localeCompare(
+        dueDate(progress[b.id] ?? { state: "solved", date: "" }) ?? "",
+      ),
     );
-  } else {
-    nextLine.textContent =
-      "You have solved every exercise. The review list below keeps them fresh.";
+
+  stat("solved", `${solved.length} of ${items.length}`);
+  stat("own", String(solved.length - helped));
+  stat("helped", String(helped));
+  stat("due", String(due.length));
+
+  const upNext = items.find((i) => !solved.includes(i) && (pro || !i.locked));
+  if (next && start) {
+    if (solved.length === 0) {
+      next.href = start.href;
+      next.textContent = start.text;
+    } else if (upNext) {
+      next.href = upNext.href;
+      next.textContent = `Continue: ${upNext.title}`;
+    } else if (solved.length < items.length) {
+      // Every free one is solved; the rest need PRO.
+      next.href = "/pricing/";
+      next.textContent = "Get PRO for the next exercises";
+    } else {
+      next.href = "#due-title";
+      next.textContent = "Every exercise solved";
+    }
+  }
+
+  if (dueList && dueEmpty) {
+    dueList.replaceChildren(
+      ...due.map((i) => {
+        const li = document.createElement("li");
+        li.append(link(i));
+        return li;
+      }),
+    );
+    dueList.hidden = due.length === 0;
+    dueEmpty.textContent =
+      due.length === 0
+        ? "Nothing is due."
+        : `${due.length} ${due.length === 1 ? "exercise is" : "exercises are"} due. Solve ${due.length === 1 ? "it" : "them"} again to space out the next review.`;
+  }
+
+  if (summary) {
+    summary.textContent =
+      solved.length === 0
+        ? "You have not solved an exercise yet."
+        : `You have solved ${solved.length} of ${items.length}${helped > 0 ? `, ${helped} of them with help` : ""}.`;
   }
 }
 
-const due = solved
-  .filter((i) => {
-    const e = progress[i.id];
-    return e ? isDue(e, today) : false;
-  })
-  .sort((a, b) =>
-    (dueDate(progress[a.id] ?? { state: "solved", date: "" }) ?? "").localeCompare(
-      dueDate(progress[b.id] ?? { state: "solved", date: "" }) ?? "",
-    ),
-  );
-const dueList = document.querySelector<HTMLElement>("[data-due]");
-const dueEmpty = document.querySelector<HTMLElement>("[data-due-empty]");
-if (dueList && dueEmpty && due.length > 0) {
-  dueList.replaceChildren(
-    ...due.map((i) => {
-      const li = document.createElement("li");
-      li.append(link(i));
-      return li;
-    }),
-  );
-  dueList.hidden = false;
-  dueEmpty.textContent = `${due.length} ${due.length === 1 ? "exercise is" : "exercises are"} due. Solve ${due.length === 1 ? "it" : "them"} again to space out the next review.`;
-}
+paint();
+void loadMe().then((me) => {
+  pro = me?.pro === true;
+  if (pro) paint();
+});
+document.addEventListener(PROGRESS_EVENT, paint);
+document.addEventListener(SYNCED_EVENT, () => {
+  paint();
+  paintStatus();
+});
 
-const summary = document.querySelector<HTMLElement>("[data-summary]");
-if (summary && solved.length > 0) {
-  summary.textContent = `You have solved ${solved.length} of ${items.length}${
-    helped.length > 0 ? `, ${helped.length} of them with help` : ""
-  }.`;
-}
-
-const ask = document.querySelector<HTMLButtonElement>("[data-clear-ask]");
-const confirm = document.querySelector<HTMLElement>("[data-clear-confirm]");
-const yes = document.querySelector<HTMLButtonElement>("[data-clear-yes]");
-const no = document.querySelector<HTMLButtonElement>("[data-clear-no]");
-const status = document.querySelector<HTMLElement>("[data-clear-status]");
+const ask = q<HTMLButtonElement>("[data-clear-ask]");
+const confirm = q<HTMLElement>("[data-clear-confirm]");
+const yes = q<HTMLButtonElement>("[data-clear-yes]");
+const no = q<HTMLButtonElement>("[data-clear-no]");
+const status = q<HTMLElement>("[data-clear-status]");
 ask?.addEventListener("click", () => {
   if (!confirm || !yes) return;
   confirm.hidden = false;
@@ -103,8 +140,7 @@ no?.addEventListener("click", () => {
 });
 yes?.addEventListener("click", () => {
   clearProgress();
-  for (const [el, nodes] of pristine) el.replaceChildren(...nodes);
-  if (dueList) dueList.hidden = true;
+  paint();
   paintStatus({});
   if (confirm && ask) {
     confirm.hidden = true;

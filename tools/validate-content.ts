@@ -3,6 +3,7 @@
 import { readFileSync } from "node:fs";
 import { parse } from "yaml";
 import { assessmentsSchema } from "../src/content/schema.ts";
+import { isLocked, topicNumbers } from "../src/lib/access.ts";
 import { checkAssessments } from "../src/lib/assessments.ts";
 import { listFiles } from "./lib/fs.ts";
 import { validateContent } from "./lib/validate-content.ts";
@@ -25,10 +26,17 @@ if (!assessments.success) {
     ),
   );
 } else {
-  const facts = exerciseFiles.map((f) => {
-    const d = read(f).data as { id?: string; pro?: boolean; screens?: unknown[] };
-    return { id: String(d.id), pro: d.pro === true, screens: d.screens?.length ?? 0 };
-  });
+  const files = exerciseFiles.map(
+    (f) => read(f).data as { id?: string; topic?: string; screens?: unknown[] },
+  );
+  const topicOf = new Map(files.map((d) => [String(d.id), String(d.topic)]));
+  const order = (read("content/track.yaml").data as { order?: string[] }).order ?? [];
+  const numbers = topicNumbers(order, (id) => topicOf.get(id) ?? "");
+  const facts = files.map((d) => ({
+    id: String(d.id),
+    locked: isLocked({ topicNumber: numbers.get(String(d.id)) ?? Number.POSITIVE_INFINITY }),
+    screens: d.screens?.length ?? 0,
+  }));
   errors.push(
     ...checkAssessments(assessments.data, facts).map((e) => `content/assessments.yaml: ${e}`),
   );

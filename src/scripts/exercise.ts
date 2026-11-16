@@ -5,6 +5,7 @@
 import { type GradeSpec, grade, type Rule, type Verdict } from "@practice/grader";
 import type { Segment } from "../lib/rich-text.ts";
 import { readProgress, record } from "./progress.ts";
+import { signedIn } from "./session.ts";
 import { compareWithAnswer, outlineClasses, verdictView } from "./view.ts";
 
 interface ScreenData {
@@ -232,6 +233,7 @@ function setupScreen(exercise: HTMLElement, page: PageData, index: number, root:
       if (index === page.screens.length - 1) {
         record(page.id, "solved");
         showProgress(exercise, page.id);
+        askToSignUp(status);
         exercise.dispatchEvent(new CustomEvent("exercise-solved"));
       }
       showNext(true);
@@ -314,6 +316,31 @@ function start(exercise: HTMLElement, data: PageData): void {
     record(data.id, "revealed");
     showProgress(exercise, data.id);
   });
+}
+
+/** Solves after which a signed-out visitor is asked to make a free account. */
+export const SIGN_UP_AFTER = 3;
+
+/**
+ * From the third solved exercise on, a signed-out visitor gets one line under
+ * the sheet: their progress lives only in this browser until they sign up.
+ */
+function askToSignUp(status: HTMLElement | null): void {
+  if (!status || signedIn() || status.parentElement?.querySelector("[data-sign-up]")) return;
+  const solved = Object.values(readProgress()).filter((e) => e.state !== "revealed").length;
+  if (solved < SIGN_UP_AFTER) return;
+  const line = document.createElement("p");
+  line.dataset["signUp"] = "";
+  line.className = "sign-up-line";
+  line.append(
+    `You have solved ${solved} exercises. Your progress is only in this browser: `,
+    Object.assign(document.createElement("a"), {
+      href: "/register/",
+      textContent: "create a free account",
+    }),
+    " to keep it on every device.",
+  );
+  status.after(line);
 }
 
 /** Starts one exercise. The daily page calls it for an exercise it adds later. */

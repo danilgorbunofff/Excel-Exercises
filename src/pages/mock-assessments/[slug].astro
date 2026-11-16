@@ -11,13 +11,14 @@ import Icon from "../../components/Icon.astro";
 import RichText from "../../components/RichText.astro";
 import Sheet from "../../components/Sheet.astro";
 import Base from "../../layouts/Base.astro";
+import { isLocked } from "../../lib/access.ts";
 import {
   type AssessmentSet,
   assessmentPath,
   coverOf,
   loadAssessments,
 } from "../../lib/assessments.ts";
-import { exercisePath, LEVELS } from "../../lib/exercises.ts";
+import { exercisePath, LEVELS, placedExercises } from "../../lib/exercises.ts";
 import { functionPages, functionPath } from "../../lib/functions.ts";
 import "../../styles/assessments.css";
 
@@ -30,6 +31,9 @@ interface Props {
 }
 const { set } = Astro.props;
 const byId = new Map((await getCollection("exercises")).map((e) => [e.data.id, e.data]));
+const lockedIds = new Set(
+  (await placedExercises()).filter((p) => isLocked(p)).map((p) => p.exercise.id),
+);
 const tasks = set.tasks.map((t) => {
   const exercise = byId.get(t.exercise);
   const screen = exercise?.screens[t.screen];
@@ -38,6 +42,7 @@ const tasks = set.tasks.map((t) => {
 });
 const cover = coverOf(set, byId);
 const locked = !set.sample;
+const fullSets = loadAssessments().sets.filter((s) => !s.sample);
 const path = assessmentPath(set.slug);
 const n = tasks.length;
 const levelWord = (l: number) => LEVELS[l as 1 | 2 | 3];
@@ -60,7 +65,7 @@ const data = {
     title: t.exercise.title,
     href: exercisePath(t.exercise.slug),
     slug: t.exercise.slug,
-    answer: t.exercise.pro ? null : t.screen.answer,
+    answer: lockedIds.has(t.exercise.id) ? null : t.screen.answer,
     spec: {
       rows: t.screen.rows,
       answerCell: t.screen.answerCell,
@@ -309,6 +314,24 @@ const data = {
           </div>
         </dl>
         <div class="a-notice cert-offer" data-cert hidden></div>
+        {
+          set.sample && (
+            <div class="a-notice">
+              <p>
+                That was the short sample. The full sets are timed like an employer's test:{" "}
+                {fullSets.map((s, i) => (
+                  <>
+                    {i > 0 && ", "}
+                    <a href={assessmentPath(s.slug)}>{s.title}</a> ({s.tasks.length} tasks,{" "}
+                    {s.minutes} minutes)
+                  </>
+                ))}
+                . They come with PRO, with a certificate for each one you pass.{" "}
+                <a href="/pricing/">See PRO plans</a>.
+              </p>
+            </div>
+          )
+        }
       </div>
 
       <div class="a-grid">

@@ -20,7 +20,7 @@ test("the home page runs the first exercise and leads to the second", async ({ p
     "/exercises/subtract-costs/",
   );
   await expect(
-    page.getByText("94 of the 112 exercises, the hints and the function pages are free."),
+    page.getByText("40 of the 112 exercises, the hints and the function pages are free."),
   ).toBeVisible();
 });
 
@@ -142,16 +142,25 @@ test("Log in and Sign up post to the account functions, with Google as well", as
   await expect(page.locator("[data-next-field]")).toHaveValue("/account/");
 });
 
-test("pricing offers PRO and lists the PRO exercises", async ({ page }) => {
+test("pricing shows Free beside PRO with a billing switch and a comparison", async ({ page }) => {
   await page.goto("/pricing/");
-  await expect(page.getByRole("button", { name: "Get PRO" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Find a code" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Free", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "PRO", exact: true })).toBeVisible();
+  // Yearly is chosen first; without Stripe keys the page shows the list prices.
+  await expect(page.getByRole("radio", { name: /Yearly/ })).toBeChecked();
+  await expect(page.locator(".pro .price strong").filter({ visible: true })).toHaveText("$59");
+  await page.getByText("Monthly", { exact: true }).click();
+  await expect(page.locator(".pro .price strong").filter({ visible: true })).toHaveText("$9");
+  await expect(page.getByRole("table")).toBeVisible();
+  await expect(page.getByText("Lifetime")).toHaveCount(0);
 });
 
-test("a PRO exercise shows the paywall, not the sheet or the answer", async ({ page }) => {
+test("a PRO exercise shows the paywall over an inert sheet, not the answer", async ({ page }) => {
   await page.goto("/exercises/find-a-code/");
   await expect(page.getByRole("heading", { name: "This is a PRO exercise" })).toBeVisible();
-  await expect(page.locator("[data-input]").first()).toBeHidden();
+  const sheet = page.locator(".work[data-screen='0']");
+  await expect(sheet).toBeVisible();
+  await expect(sheet).toHaveAttribute("inert", "");
   await expect(page.getByRole("tab", { name: "Answer" })).toBeHidden();
   await expect(page.locator("[data-answer]").first()).toBeEmpty();
 });
@@ -192,9 +201,13 @@ test("the progress page shows what is next, what is due, and clears", async ({ p
     }),
   );
   await page.goto("/progress/");
-  await expect(page.locator("[data-next]")).toContainText(
-    "Exercise 3 of 112: Multiply price by quantity.",
-  );
+  // Exercise 3 needs PRO, so a free visitor continues with the next free one.
+  await expect(page.locator("[data-next]")).toHaveText("Continue: Add up a column");
+  await expect(page.locator("[data-next]")).toHaveAttribute("href", "/exercises/sum-a-column/");
+  await expect(page.locator('[data-stat="solved"]')).toHaveText("2 of 112");
+  await expect(page.locator('[data-stat="own"]')).toHaveText("1");
+  await expect(page.locator('[data-stat="helped"]')).toHaveText("1");
+  await expect(page.locator('[data-stat="due"]')).toHaveText("1");
   await expect(page.locator("[data-due] a")).toHaveText(["Add two cells"]);
   await expect(page.locator("[data-summary]")).toHaveText(
     "You have solved 2 of 112, 1 of them with help.",
@@ -209,6 +222,8 @@ test("the progress page shows what is next, what is due, and clears", async ({ p
   await expect(page.getByText("Your progress is cleared.")).toBeVisible();
   await expect(page.locator("[data-summary]")).toHaveText("You have not solved an exercise yet.");
   await expect(page.locator("[data-due]")).toBeHidden();
+  await expect(page.locator('[data-stat="solved"]')).toHaveText("0 of 112");
+  await expect(page.locator("[data-next]")).toHaveText("Start: Add two cells");
   await page.reload();
   await expect(page.locator("[data-summary]")).toHaveText("You have not solved an exercise yet.");
 });
@@ -301,7 +316,7 @@ test("the tracks page has three groups, the last for interviews", async ({ page 
   ]);
   const interview = page.getByRole("region", { name: "Prepare for a job interview" });
   await expect(interview.locator("article.track")).toHaveCount(4);
-  await expect(interview.getByText("1 free, 4 with PRO")).toHaveCount(4);
+  await expect(interview.getByText("2 free, 3 with PRO")).toHaveCount(4);
   await expect(
     interview.getByRole("link", { name: "Start track: Accounting interview" }),
   ).toHaveAttribute("href", "/exercises/tracks/interview-accounting/");
@@ -311,7 +326,7 @@ test("an interview track lists its exercises, locks and mock assessment", async 
   await page.goto("/exercises/tracks/interview-accounting/");
   await expect(page.locator("h1")).toHaveText("Accounting interview");
   await expect(page.locator("[data-exercise-id]")).toHaveCount(5);
-  await expect(page.locator("[data-exercise-id] .badge-pro")).toHaveCount(4);
+  await expect(page.locator("[data-exercise-id] .badge-pro")).toHaveCount(3);
   await expect(page.locator("[data-exercise-id]").first().locator(".badge-pro")).toHaveCount(0);
   await expect(page.locator("[data-up-next]:not([hidden])")).toHaveCount(1);
   await expect(page.getByText("0 of 5 done")).toBeVisible();
@@ -348,12 +363,12 @@ test("a started track says Continue, and a solved exercise says Review", async (
 
 test("articles show as cards, and an article offers more to read", async ({ page }) => {
   await page.goto("/articles/");
-  await expect(page.locator(".article-card")).toHaveCount(3);
+  await expect(page.locator(".article-card")).toHaveCount(13);
   await expect(page.locator(".article-card .cover code").first()).not.toBeEmpty();
   await page.getByRole("link", { name: "Relative and absolute references" }).click();
   await expect(page.locator(".cover code").first()).toHaveText("$A$1");
   const more = page.getByRole("region", { name: "More articles" });
-  await expect(more.locator(".article-card")).toHaveCount(2);
+  await expect(more.locator(".article-card")).toHaveCount(3);
 });
 
 test("a function page explains the function and its header example can be edited", async ({

@@ -1,12 +1,12 @@
 ---
 
-title: "Wildcards in lookups: *, ? and ~"
+title: Wildcards in lookups
 description: How to find a value when you know only part of it, in VLOOKUP, XLOOKUP, MATCH and COUNTIF.
 updated: 2026-11-16
 minutes: 4
 functions: [VLOOKUP, XLOOKUP, MATCH, COUNTIF, SUMIF]
 exercises: [vlookup-with-a-wildcard, wildcards-in-text-criteria, countif-with-wildcards]
-cover: "\"*\"&A2"
+cover: "B-2??"
 ---
 
 ## The three characters

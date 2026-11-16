@@ -363,7 +363,7 @@ test("a started track says Continue, and a solved exercise says Review", async (
 
 test("articles show as cards, and an article offers more to read", async ({ page }) => {
   await page.goto("/articles/");
-  await expect(page.locator(".article-card")).toHaveCount(13);
+  await expect(page.locator(".article-card")).toHaveCount(53);
   await expect(page.locator(".article-card .cover code").first()).not.toBeEmpty();
   await page.getByRole("link", { name: "Relative and absolute references" }).click();
   await expect(page.locator(".cover code").first()).toHaveText("$A$1");

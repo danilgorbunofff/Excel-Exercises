@@ -38,16 +38,17 @@ the hashed files in `/_astro/`.
 
 ## Accounts and PRO
 
-Accounts use Supabase (Auth and Postgres). PRO is a Stripe subscription.
+Accounts use Supabase (Auth and Postgres). PRO is a Stripe subscription, or a one-time lifetime payment while the launch offer runs.
 
 ### Environment variables (Vercel, Production and Preview)
 
-| Name                                                                                              | From                                                                                                                                                                           |
-| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`                                  | The Supabase integration sets these. `src/server/env.ts` also accepts the `NEXT_PUBLIC_*`, `SUPABASE_PUBLISHABLE_KEY` and `SUPABASE_SECRET_KEY` names.                         |
-| `STRIPE_SECRET_KEY`                                                                               | Stripe, Developers, API keys. Production gets live keys; add test-mode keys and test price ids to Preview, or previews show no prices and checkout fails.                      |
-| `STRIPE_WEBHOOK_SECRET`                                                                           | The webhook endpoint below.                                                                                                                                                    |
-| `STRIPE_PRICE_MONTHLY`, `STRIPE_PRICE_SEMIANNUAL`, `STRIPE_PRICE_ANNUAL`, `STRIPE_PRICE_LIFETIME` | The price ids (`price_...`) of the PRO product, listed in `src/server/plans.ts`. Checkout reads from Stripe whether each is recurring (a subscription) or one-time (lifetime). |
+| Name                                                                                             | From                                                                                                                                                                                                                                                                  |
+| ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`                                 | The Supabase integration sets these. `src/server/env.ts` also accepts the `NEXT_PUBLIC_*`, `SUPABASE_PUBLISHABLE_KEY` and `SUPABASE_SECRET_KEY` names.                                                                                                                |
+| `STRIPE_SECRET_KEY`                                                                              | Stripe, Developers, API keys. Production gets live keys; add test-mode keys and test price ids to Preview, or previews show no prices and checkout fails.                                                                                                             |
+| `STRIPE_WEBHOOK_SECRET`                                                                          | The webhook endpoint below.                                                                                                                                                                                                                                           |
+| `STRIPE_PRICE_MONTHLY`, `STRIPE_PRICE_QUARTERLY`, `STRIPE_PRICE_ANNUAL`, `STRIPE_PRICE_LIFETIME` | The price ids (`price_...`) of the PRO product, listed in `src/server/plans.ts`. Checkout reads from Stripe whether each is recurring (a subscription) or one-time (lifetime). On a build with Stripe keys, an unset `STRIPE_PRICE_LIFETIME` hides the lifetime plan. |
+| `STRIPE_PRICE_SEMIANNUAL` (optional)                                                             | The retired 6-month price. Not sold any more and not needed: access and billing for existing 6-month members follow their Stripe subscription, not this variable.                                                                                                     |
 
 For local work: `vercel link`, then `vercel env pull .env.local`.
 
@@ -77,15 +78,58 @@ For local work: `vercel link`, then `vercel env pull .env.local`.
 
 ### Stripe
 
-1. A product "PRO" with recurring prices for 1 month, 6 months and 1 year, and
-   a one-time price for lifetime.
+1. A product "PRO" with these prices:
+
+   | Plan           | Price | Billing                   | Variable                 |
+   | -------------- | ----- | ------------------------- | ------------------------ |
+   | Monthly        | $15   | recurring, every month    | `STRIPE_PRICE_MONTHLY`   |
+   | Every 3 months | $29   | recurring, every 3 months | `STRIPE_PRICE_QUARTERLY` |
+   | Yearly         | $59   | recurring, every year     | `STRIPE_PRICE_ANNUAL`    |
+   | Lifetime       | $129  | one-time, launch offer    | `STRIPE_PRICE_LIFETIME`  |
+
+   No free trial on any price.
 2. Developers, Webhooks: endpoint `https://excelexercises.online/api/stripe/webhook/`
    with `checkout.session.completed`, `checkout.session.async_payment_succeeded`
    and `customer.subscription.created`, `.updated` and `.deleted`. Copy its signing secret to `STRIPE_WEBHOOK_SECRET`.
 3. Settings, Billing, Customer portal: turn it on, and allow cancelling and
-   switching between the three recurring prices.
+   switching between the monthly, 3-month and yearly prices. Do not add the old
+   6-month price as a switch target; members on it can still cancel.
 4. The pricing page reads the prices at build time. Redeploy after you change
    a price.
+
+### Pricing change checklist (owner only)
+
+Code is done; these steps are in Stripe and Vercel, in this order:
+
+1. Stripe, Product catalogue, product "PRO": create the four prices in the table
+   above.
+2. Archive the old $9 monthly and $39 6-month prices (Archive, not delete).
+   Archived prices stop new sales; existing subscriptions on them keep renewing
+   and keep their price.
+3. Vercel, Settings, Environment Variables, Preview and Production: set
+   `STRIPE_PRICE_MONTHLY`, `STRIPE_PRICE_QUARTERLY`, `STRIPE_PRICE_ANNUAL` and
+   `STRIPE_PRICE_LIFETIME` to the new price ids (Preview with test-mode ids and
+   a test-mode `STRIPE_SECRET_KEY`). `STRIPE_PRICE_SEMIANNUAL` can be removed:
+   the code no longer needs it. Redeploy.
+4. Stripe, Settings, Adaptive Pricing: turn it on, so buyers see prices in their
+   local currency. Then turn on Stripe Tax (Settings, Tax) or set up VAT
+   another way, and check the Checkout page shows tax before you go live.
+5. Test in test mode: buy each plan, check PRO appears on the account page, and
+   that the lifetime payment shows "never renews or ends".
+
+### Ending the lifetime offer
+
+Lifetime is a launch offer, so there is one switch to turn it off:
+
+- Set `lifetimeOffer: false` in `site.config.ts` and deploy. The pricing page
+  stops showing it and `/api/stripe/checkout/` refuses it, whatever
+  `STRIPE_PRICE_LIFETIME` holds.
+- Or remove `STRIPE_PRICE_LIFETIME` from Vercel and redeploy. On a build with Stripe
+  keys that hides it too.
+- Then archive the $129 price in Stripe so no old link can sell it.
+
+People who already bought lifetime keep PRO: it is stored on their account
+(`pro_status = lifetime`), not read from the price.
 
 ### What is locked
 

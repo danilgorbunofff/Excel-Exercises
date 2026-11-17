@@ -4,49 +4,54 @@
 // and the usual questions. The switch is three radios joined to the PRO form,
 // and CSS shows the chosen price, so checkout works without JavaScript. The
 // form posts to /api/stripe/checkout/, which asks a signed-out visitor to log
-// in first. Lifetime exists in the code and in Stripe but is not offered here.
+// in first. Lifetime is a launch offer, shown only while offeredPlans() has it.
+// The old 6-month plan is not offered; its members are handled by the webhook.
 import { siteConfig } from "../../../site.config.ts";
 import Icon from "../../components/Icon.astro";
 import Base from "../../layouts/Base.astro";
 import { isLocked } from "../../lib/access.ts";
 import { loadAssessments } from "../../lib/assessments.ts";
 import { placedExercises } from "../../lib/exercises.ts";
-import { formatAmount, PLANS, savingPercent } from "../../server/plans.ts";
+import { formatAmount, offeredPlans, PLANS, savingPercent } from "../../server/plans.ts";
 import { proPrices } from "../../server/prices.ts";
 
+const DEFAULT = "annual";
 const placed = await placedExercises();
 const locked = placed.filter((p) => isLocked(p)).length;
 const free = placed.length - locked;
 const perTrack = siteConfig.freePerTrack;
 const fullSets = loadAssessments().sets.filter((s) => !s.sample).length;
 const prices = await proPrices();
+const offered = offeredPlans();
+const lifetime = offered.some((p) => p.months === null);
 
 // Stripe's amounts when the build has keys, the list prices otherwise.
 const amountOf = (p: (typeof PLANS)[number]) => ({
-  cents: prices?.[p.key].cents ?? p.listCents ?? 0,
-  currency: prices?.[p.key].currency ?? "usd",
+  cents: prices?.[p.key]?.cents ?? p.listCents ?? 0,
+  currency: prices?.[p.key]?.currency ?? "usd",
 });
 const monthlyCents = amountOf(PLANS[0]).cents;
-const PER = { 1: "/ month", 6: "/ 6 months", 12: "/ year" } as const;
-const periods = PLANS.flatMap((p) => {
-  if (p.months === null) return [];
+const PER = { 1: "/ month", 3: "/ 3 months", 12: "/ year" } as const;
+const SHORT = { quarterly: "3 months" } as const;
+const periods = offered.map((p) => {
   const { cents, currency } = amountOf(p);
   const fmt = (c: number) => formatAmount({ currency, unit_amount: Math.round(c) });
-  return [
-    {
-      key: p.key,
-      label: p.months === 6 ? "6 months" : p.label,
-      price: fmt(cents),
-      per: PER[p.months],
-      note:
-        p.months === 1
+  const months = p.months;
+  return {
+    key: p.key,
+    label: SHORT[p.key as keyof typeof SHORT] ?? p.label,
+    price: fmt(cents),
+    per: months === null ? "once" : PER[months as keyof typeof PER],
+    note:
+      months === null
+        ? "Launch offer: pay once, keep PRO for good. Offered for a limited time."
+        : months === 1
           ? "Billed every month"
-          : `${fmt(cents / p.months)} a month, billed ${p.months === 6 ? "every 6 months" : "once a year"}`,
-      saving: p.months === 1 ? 0 : savingPercent(cents, p.months, monthlyCents),
-    },
-  ];
+          : `${fmt(cents / months)} a month, billed ${months === 3 ? "every 3 months" : "once a year"}`,
+    saving: months === null || months === 1 ? 0 : savingPercent(cents, months, monthlyCents),
+    best: p.key === DEFAULT,
+  };
 });
-const DEFAULT = "annual";
 
 const freeHas = [
   `${free} exercises: the first ${perTrack} of every learning track`,
@@ -106,8 +111,16 @@ const faq = [
   },
   {
     q: "Can I cancel?",
-    a: "Yes, at any time from your account. PRO stays until the end of the period you paid for, then the plan does not renew.",
+    a: `Yes, at any time from your account. PRO stays until the end of the period you paid for, then the plan does not renew.${lifetime ? " Lifetime is one payment, so there is nothing to cancel." : ""}`,
   },
+  ...(lifetime
+    ? [
+        {
+          q: "What is the lifetime plan?",
+          a: "A launch offer: one payment, and PRO stays on your account for good. It is on sale for a limited time and can be withdrawn without notice; if you buy it, it stays yours.",
+        },
+      ]
+    : []),
   {
     q: "What happens when PRO ends?",
     a: "The PRO exercises and full mock assessments lock again. Your progress and past results stay in your account.",
@@ -194,6 +207,7 @@ const faq = [
         {
           periods.map((p) => (
             <div class="period" data-shows={p.key}>
+              {p.best && <p class="best">Best value</p>}
               <p class="price">
                 <strong>{p.price}</strong>
                 <span>{p.per}</span>
@@ -216,7 +230,9 @@ const faq = [
             ))
           }
         </ul>
-        <p class="small">Renews until you cancel. Cancel anytime from your account.</p>
+        <p class="small">
+          Subscriptions renew until you cancel; cancel anytime from your account.{lifetime && " Lifetime is a single payment."}
+        </p>
       </section>
     </div>
 
@@ -379,7 +395,7 @@ const faq = [
     font-weight: 700;
   }
   .switch label:has(input:checked) .off {
-    background: rgb(255 255 255 / 0.2);
+    background: rgb(0 0 0 / 0.25);
     color: #fff;
   }
 
@@ -410,9 +426,20 @@ const faq = [
     }
   }
   .pricing:has([data-period="monthly"]:checked) [data-shows="monthly"],
-  .pricing:has([data-period="semiannual"]:checked) [data-shows="semiannual"],
-  .pricing:has([data-period="annual"]:checked) [data-shows="annual"] {
+  .pricing:has([data-period="quarterly"]:checked) [data-shows="quarterly"],
+  .pricing:has([data-period="annual"]:checked) [data-shows="annual"],
+  .pricing:has([data-period="lifetime"]:checked) [data-shows="lifetime"] {
     display: block;
+  }
+  .best {
+    width: fit-content;
+    margin: 0 0 var(--space-2);
+    padding: 0 var(--space-2);
+    border-radius: var(--radius-pill);
+    background: var(--correct-tint);
+    color: var(--correct);
+    font-size: var(--size-xs);
+    font-weight: 700;
   }
 
   .cards {
@@ -643,6 +670,9 @@ const faq = [
   @media (max-width: 30rem) {
     .switch {
       width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-radius: var(--radius-m);
     }
     .switch label {
       flex: 1;

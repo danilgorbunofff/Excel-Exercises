@@ -4,21 +4,22 @@
 // Without Stripe keys (local builds, CI, previews without Stripe variables) it
 // returns null and the page says the price shows at checkout.
 import Stripe from "stripe";
-import { formatAmount, PLANS, type PlanKey, perText, priceIdFor } from "./plans.ts";
+import { formatAmount, offeredPlans, type PlanKey, perText, priceIdFor } from "./plans.ts";
 
 export interface Price {
-  /** Formatted for display, such as "$9" or "€90". */
+  /** Formatted for display, such as "$15" or "€90". */
   amount: string;
-  /** "/ month", "/ 6 months", "/ year" or "once". */
+  /** "/ month", "/ 3 months", "/ year" or "once". */
   per: string;
   /** The raw amount and currency, for per-month prices and savings. */
   cents: number;
   currency: string;
 }
 
-export async function proPrices(): Promise<Record<PlanKey, Price> | null> {
+export async function proPrices(): Promise<Partial<Record<PlanKey, Price>> | null> {
   const key = process.env["STRIPE_SECRET_KEY"];
-  const ids = PLANS.map((p) => priceIdFor(p.key));
+  const plans = offeredPlans();
+  const ids = plans.map((p) => priceIdFor(p.key));
   if (!key || ids.some((id) => !id)) {
     console.warn("[pricing] Stripe key or a price id is missing: the page shows no amounts.");
     return null;
@@ -26,7 +27,7 @@ export async function proPrices(): Promise<Record<PlanKey, Price> | null> {
   const s = new Stripe(key);
   const prices = await Promise.all(ids.map((id) => s.prices.retrieve(id ?? "")));
   return Object.fromEntries(
-    PLANS.map((p, i) => {
+    plans.map((p, i) => {
       const price = prices[i] as Stripe.Price;
       return [
         p.key,
@@ -38,5 +39,5 @@ export async function proPrices(): Promise<Record<PlanKey, Price> | null> {
         },
       ];
     }),
-  ) as Record<PlanKey, Price>;
+  ) as Partial<Record<PlanKey, Price>>;
 }

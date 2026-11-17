@@ -4,14 +4,16 @@
 import type { APIRoute } from "astro";
 import { hasPro } from "../../../lib/access.ts";
 import { back, field, redirect } from "../../../server/http.ts";
-import { priceIdFor } from "../../../server/plans.ts";
+import { offeredPlans, priceIdFor } from "../../../server/plans.ts";
 import { stripe } from "../../../server/stripe.ts";
 import { adminClient, currentUser } from "../../../server/supabase.ts";
 
 export const prerender = false;
 
 export const POST: APIRoute = async (ctx) => {
-  const priceId = priceIdFor(field(await ctx.request.formData(), "plan"));
+  const plan = field(await ctx.request.formData(), "plan");
+  // A plan off sale (semiannual, an ended lifetime offer) cannot be bought, even with its price id set.
+  const priceId = offeredPlans().some((p) => p.key === plan) ? priceIdFor(plan) : null;
   if (!priceId) return back("/pricing/", { error: "Choose a plan, then try again." });
   const { supabase, user } = await currentUser(ctx);
   if (!user)

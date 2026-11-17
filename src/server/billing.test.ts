@@ -40,3 +40,22 @@ describe("lifetime", () => {
     expect(subscriptionMayUpdate(null)).toBe(true);
   });
 });
+
+describe("a member on the retired 6-month plan", () => {
+  // Access reads the subscription's status and period end, never the plan, so
+  // a 6-month subscription made before the change keeps unlocking PRO.
+  const sub = {
+    customer: "cus_old",
+    status: "active",
+    current_period_end: 1_800_000_000,
+    items: { data: [{ current_period_end: 1_800_000_000, plan: { interval_count: 6 } }] },
+  };
+
+  it("still gives PRO until the paid period ends", () => {
+    const row = proFields(sub);
+    expect(row.pro_status).toBe("active");
+    expect(hasPro(row, new Date("2026-12-01"))).toBe(true);
+    expect(hasPro(row, new Date("2027-02-01"))).toBe(false);
+    expect(subscriptionMayUpdate(row.pro_status)).toBe(true);
+  });
+});

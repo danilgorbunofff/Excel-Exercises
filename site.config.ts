@@ -24,4 +24,9 @@ export const siteConfig = {
    * disabled, with a note that progress stays in this browser.
    */
   accountsOpen: true,
+  /**
+   * The lifetime plan is a launch offer. Set this to false to stop selling it
+   * (see docs/launch.md); people who already bought it keep PRO.
+   */
+  lifetimeOffer: true,
 } as const;

@@ -147,12 +147,22 @@ test("pricing shows Free beside PRO with a billing switch and a comparison", asy
   await expect(page.getByRole("heading", { name: "Free", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "PRO", exact: true })).toBeVisible();
   // Yearly is chosen first; without Stripe keys the page shows the list prices.
+  const shown = page.locator(".pro .price strong").filter({ visible: true });
+  await expect(page.getByRole("radio")).toHaveCount(4);
   await expect(page.getByRole("radio", { name: /Yearly/ })).toBeChecked();
-  await expect(page.locator(".pro .price strong").filter({ visible: true })).toHaveText("$59");
+  await expect(shown).toHaveText("$59");
+  await expect(page.getByText("Best value")).toBeVisible();
+  await expect(page.locator(".switch label", { hasText: "3 months" })).toContainText("−35%");
+  await expect(page.locator(".switch label", { hasText: "Yearly" })).toContainText("−67%");
+  await page.getByText("3 months", { exact: true }).click();
+  await expect(shown).toHaveText("$29");
+  await page.getByText("Lifetime", { exact: true }).first().click();
+  await expect(shown).toHaveText("$129");
+  await expect(shown.locator("xpath=../following-sibling::p")).toContainText("Launch offer");
   await page.getByText("Monthly", { exact: true }).click();
-  await expect(page.locator(".pro .price strong").filter({ visible: true })).toHaveText("$9");
+  await expect(shown).toHaveText("$15");
   await expect(page.getByRole("table")).toBeVisible();
-  await expect(page.getByText("Lifetime")).toHaveCount(0);
+  await expect(page.getByText("6 months")).toHaveCount(0);
 });
 
 test("a PRO exercise shows the paywall over an inert sheet, not the answer", async ({ page }) => {

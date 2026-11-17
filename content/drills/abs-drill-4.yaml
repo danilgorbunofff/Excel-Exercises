@@ -1,0 +1,48 @@
+id: abs-drill-4
+slug: abs-drill-4
+level: 2
+title: Total movement up and down
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ABS
+screens:
+  - prompt: In B8, use SUMPRODUCT and ABS to add up the size of every change in B2:B6, ignoring the signs.
+    rows:
+      - [Day, Change]
+      - [Mon, 12]
+      - [Tue, -8]
+      - [Wed, 5]
+      - [Thu, -15]
+      - [Fri, 3]
+      - [null, null]
+      - [Movement, null]
+    answerCell: B8
+    expected: 43
+    variants:
+      - set: { B3: 8 }
+        expected: 43
+      - set: { B5: -20 }
+        expected: 48
+    answer: =SUMPRODUCT(ABS(B2:B6))
+    requiredFunctions:
+      - ABS
+      - SUMPRODUCT
+    hints:
+      nudge: ABS on a range gives a list without signs; SUMPRODUCT adds the list.
+      rule: SUMPRODUCT(ABS(range)) adds every value as if it were positive.
+    misses:
+      value: "The changes move 43 in all: 12 + 8 + 5 + 15 + 3."
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ABS and SUMPRODUCT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUMPRODUCT(ABS(B2:B6))
+    reject:
+      - formula: =ABS(SUM(B2:B6))
+        rule: required-function
+      - formula: =SUMPRODUCT(ABS(B2:B5))
+        rule: value
+      - formula: =43
+        rule: required-function
+      - formula: =SUMPRODUCT(ABS(B2:B6)
+        rule: syntax

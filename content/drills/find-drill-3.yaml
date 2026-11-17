@@ -1,0 +1,41 @@
+id: find-drill-3
+slug: find-drill-3
+level: 1
+title: Start looking further on
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: FIND
+screens:
+  - prompt: In C2, use FIND to find the position of "-" in A2, starting the search at the character in B2.
+    rows:
+      - [Code, Start, Result]
+      - [INV-204-81, 5, null]
+    answerCell: C2
+    expected: 8
+    variants:
+      - set: { B2: 1 }
+        expected: 4
+      - set: { B2: 8 }
+        expected: 8
+    answer: =FIND("-",A2,B2)
+    requiredFunctions:
+      - FIND
+    hints:
+      nudge: FIND's third argument says where to start looking.
+      rule: FIND("-",A2,5) skips the first four characters, so it finds the second dash.
+    misses:
+      value: From character 5 on, the next dash is at 8.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for FIND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =FIND("-",A2,B2)
+    reject:
+      - formula: =FIND("-",A2)
+        rule: value
+      - formula: =FIND("-",A2,5)
+        rule: fragile
+      - formula: =8
+        rule: required-function
+      - formula: =FIND("-",A2,B2
+        rule: syntax

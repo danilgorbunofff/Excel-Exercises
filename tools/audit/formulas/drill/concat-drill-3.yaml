@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =CONCAT($B$2:$E$2)
+      - =CONCAT(B$2:E$2)
+      - =concat(b2:e2)
+      - =LET(data,B2:E2,CONCAT(data))
+    wrong: []
+    equivalent: []

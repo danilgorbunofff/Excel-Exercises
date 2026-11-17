@@ -1,0 +1,39 @@
+id: mround-drill-4
+slug: mround-drill-4
+level: 2
+title: Round a negative number to 5
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MROUND
+screens:
+  - prompt: In C2, use MROUND to round the change in B2 to the nearest 5. The number and the multiple must have the same sign.
+    rows:
+      - [Week, Change, Rounded]
+      - [W1, -23, null]
+    answerCell: C2
+    expected: -25
+    variants:
+      - set: { B2: -22 }
+        expected: -20
+      - set: { B2: -28 }
+        expected: -30
+    answer: =MROUND(B2,-5)
+    requiredFunctions:
+      - MROUND
+    hints:
+      nudge: For a negative number, use a negative multiple.
+      rule: "MROUND(-23,5) gives an error, while MROUND(-23,-5) gives -25."
+    misses:
+      value: -23 is nearer -25 than -20, so it rounds to -25.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MROUND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MROUND(B2,-5)
+    reject:
+      - formula: =MROUND(B2,5)
+        rule: value
+      - formula: =-25
+        rule: required-function
+      - formula: =MROUND(B2,-5
+        rule: syntax

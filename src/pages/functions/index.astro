@@ -3,7 +3,12 @@
 // search box, "Start with a task" cards, a card per essential function with
 // its syntax and exercise count, and every function by category.
 import Base from "../../layouts/Base.astro";
-import { exercisesForFunction, placedExercises } from "../../lib/exercises.ts";
+import {
+  drillsPath,
+  drillTasks,
+  exercisesForFunction,
+  placedExercises,
+} from "../../lib/exercises.ts";
 import {
   functionPages,
   functionPath,
@@ -14,6 +19,7 @@ import {
 const pages = await functionPages();
 const withPage = new Map(pages.map((p) => [p.name, functionPath(p.slug)]));
 const practised = new Map(functionsPractised(await placedExercises()));
+const drilled = new Set((await drillTasks()).map((d) => d.fn));
 const index = loadFunctionIndex();
 const href = (name: string) => withPage.get(name) ?? exercisesForFunction(name);
 const plural = (n: number) => (n === 1 ? "1 exercise" : `${n} exercises`);
@@ -103,6 +109,11 @@ const slug = (c: string) => c.replaceAll(" ", "-").toLowerCase();
               {count > 0 && (
                 <a class="arrow-link small" href={exercisesForFunction(f.name)}>
                   {plural(count)} on this function
+                </a>
+              )}
+              {drilled.has(f.name) && (
+                <a class="arrow-link small" href={drillsPath(f.name)}>
+                  Drill {f.name} (PRO)
                 </a>
               )}
             </li>
@@ -242,6 +253,10 @@ const slug = (c: string) => c.replaceAll(" ", "-").toLowerCase();
   .fn {
     display: flex;
     flex-direction: column;
+  }
+  /* Two links stacked at the foot of a card: keep each a full touch target apart. */
+  .fn .arrow-link.small + .arrow-link.small {
+    margin-top: var(--space-3);
   }
   .fn-top {
     display: flex;

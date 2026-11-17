@@ -1,0 +1,43 @@
+id: roundup-drill-2
+slug: roundup-drill-2
+level: 1
+title: Boxes needed
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ROUNDUP
+screens:
+  - prompt: In D2, use ROUNDUP to find how many boxes are needed for the items in B2 when each box holds the number in C2.
+    rows:
+      - [Order, Items, Per box, Boxes]
+      - [O1, 130, 12, null]
+    answerCell: D2
+    expected: 11
+    variants:
+      - set: { B2: 132 }
+        expected: 11
+      - set: { B2: 133 }
+        expected: 12
+      - set: { C2: 10 }
+        expected: 13
+    answer: =ROUNDUP(B2/C2,0)
+    requiredFunctions:
+      - ROUNDUP
+    hints:
+      nudge: "Divide, then round up: a part box is still a box."
+      rule: ROUNDUP(items/per_box,0) gives whole boxes.
+    misses:
+      value: 130 items at 12 a box need 11 boxes.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ROUNDUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ROUNDUP(B2/C2,0)
+    reject:
+      - formula: =ROUND(B2/C2,0)
+        rule: required-function
+      - formula: =ROUNDUP(B2/C2,1)
+        rule: value
+      - formula: =11
+        rule: required-function
+      - formula: =ROUNDUP(B2/C2,0
+        rule: syntax

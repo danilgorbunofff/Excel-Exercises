@@ -1,0 +1,46 @@
+id: ifs-drill-4
+slug: ifs-drill-4
+level: 2
+title: Four bands in the right order
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IFS
+screens:
+  - prompt: In C2, use IFS to give "Excellent" for 90 or more, "Good" for 70 or more, "Fair" for 50 or more, and "Poor" otherwise.
+    rows:
+      - [Student, Score, Band]
+      - [Ann, 76, null]
+    answerCell: C2
+    expected: Good
+    variants:
+      - { set: { B2: 95 }, expected: Excellent }
+      - { set: { B2: 30 }, expected: Poor }
+      - { set: { B2: 55 }, expected: Fair }
+      - { set: { B2: 90 }, expected: Excellent }
+      - { set: { B2: 50 }, expected: Fair }
+      - { set: { B2: 69 }, expected: Fair }
+      - { set: { B2: 49 }, expected: Poor }
+      - set: { B2: 89 }
+        expected: Good
+      - set: { B2: 70 }
+        expected: Good
+    answer: =IFS(B2>=90,"Excellent",B2>=70,"Good",B2>=50,"Fair",TRUE,"Poor")
+    requiredFunctions:
+      - IFS
+    hints:
+      nudge: IFS stops at the first true test, so put the highest band first.
+      rule: With the lowest band first, every score of 50 or more would stop at Fair.
+    misses:
+      value: 76 is under 90 but at least 70, so the band is Good.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IFS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IFS(B2>=90,"Excellent",B2>=70,"Good",B2>=50,"Fair",TRUE,"Poor")
+    reject:
+      - formula: =IFS(B2>=50,"Fair",B2>=70,"Good",B2>=90,"Excellent",TRUE,"Poor")
+        rule: value
+      - formula: ="Good"
+        rule: required-function
+      - formula: =IFS(B2>=90,"Excellent",B2>=70,"Good",B2>=50,"Fair",TRUE,"Poor"
+        rule: syntax

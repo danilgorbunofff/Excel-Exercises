@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ISNUMBER(FIND("@",$A$2))
+      - =ISNUMBER(FIND("@",A$2))
+      - =isnumber(find("@", a2))
+    wrong: []
+    equivalent: []

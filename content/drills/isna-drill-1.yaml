@@ -1,0 +1,41 @@
+id: isna-drill-1
+slug: isna-drill-1
+level: 1
+title: Is the code not found
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISNA
+screens:
+  - prompt: In E3, use ISNA and MATCH to test whether the code in E2 is not found in A2:A5.
+    rows:
+      - [Code, Price, null, Find, null]
+      - [D40, 2, null, Code, Z99]
+      - [A10, 1.5, null, Not found, null]
+      - [F60, 12, null, null, null]
+      - [B20, 3, null, null, null]
+    answerCell: E3
+    expected: true
+    variants:
+      - { set: { E2: B20 }, expected: false }
+      - { set: { E2: D40 }, expected: false }
+    answer: =ISNA(MATCH(E2,A2:A5,0))
+    requiredFunctions:
+      - ISNA
+      - MATCH
+    hints:
+      nudge: "MATCH gives #N/A when nothing matches; ISNA tests for exactly that."
+      rule: ISNA(MATCH(...)) is TRUE when the code is not there.
+    misses:
+      value: Z99 is not in the list, so the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISNA and MATCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ISNA(MATCH(E2,A2:A5,0))
+    reject:
+      - formula: =ISERROR(MATCH(E2,A2:A5,0))
+        rule: required-function
+      - formula: =ISNA(MATCH(E2,B2:B5,0))
+        rule: fragile
+      - formula: =ISNA(MATCH(E2,A2:A5,0)
+        rule: syntax

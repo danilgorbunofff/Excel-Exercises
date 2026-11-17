@@ -1,0 +1,42 @@
+id: datedif-drill-1
+slug: datedif-drill-1
+level: 1
+title: Age in full years
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: DATEDIF
+screens:
+  - prompt: In D2, use DATEDIF with "y" to find the age in full years of someone born on B2, on the date in C2.
+    rows:
+      - [Name, Born, On, Age]
+      - [Ann, 33109, 46343, null]
+    answerCell: D2
+    expected: 36
+    variants:
+      - set: { C2: 46257 }
+        expected: 35
+      - set: { C2: 46258 }
+        expected: 36
+    answer: =DATEDIF(B2,C2,"y")
+    requiredFunctions:
+      - DATEDIF
+    hints:
+      nudge: 'DATEDIF takes the start date, the end date and a unit: "y" for years.'
+      rule: DATEDIF(born,on,"y") counts complete years only.
+    misses:
+      value: Ann had her 36th birthday on 24 August 2026, so she is 36.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for DATEDIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =DATEDIF(B2,C2,"y")
+      - =DATEDIF(B2,C2,"Y")
+    reject:
+      - formula: =DATEDIF(B2,C2,"m")
+        rule: value
+      - formula: =DATEDIF(C2,B2,"y")
+        rule: value
+      - formula: =36
+        rule: required-function
+      - formula: =DATEDIF(B2,C2,"y"
+        rule: syntax

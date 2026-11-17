@@ -1,0 +1,39 @@
+id: upper-drill-1
+slug: upper-drill-1
+level: 1
+title: A code in capitals
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: UPPER
+screens:
+  - prompt: In B2, use UPPER to turn the code in A2 into capitals.
+    rows:
+      - [Code, Result]
+      - [inv-204, null]
+    answerCell: B2
+    expected: INV-204
+    variants:
+      - set: { A2: crd-17b }
+        expected: CRD-17B
+    answer: =UPPER(A2)
+    requiredFunctions:
+      - UPPER
+    hints:
+      nudge: UPPER takes one piece of text.
+      rule: UPPER(text) turns every letter into a capital.
+    misses:
+      value: In capitals, the code is INV-204.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for UPPER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =UPPER(A2)
+    reject:
+      - formula: =PROPER(A2)
+        rule: required-function
+      - formula: =UPPER(LEFT(A2,3))
+        rule: value
+      - formula: ="INV-204"
+        rule: required-function
+      - formula: =UPPER(A2
+        rule: syntax

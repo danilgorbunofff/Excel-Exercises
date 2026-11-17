@@ -1,0 +1,45 @@
+id: rank-drill-2
+slug: rank-drill-2
+level: 1
+title: Rank a time, lowest first
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: RANK
+screens:
+  - prompt: In C2, use RANK with order 1 to find where Ann's time in B2 ranks in B2:B8, lowest first.
+    rows:
+      - [Runner, Time, Rank]
+      - [Ann, 41.2, null]
+      - [Bo, 38.9, null]
+      - [Cy, 44.5, null]
+      - [Di, 37.6, null]
+      - [Ed, 40.1, null]
+      - [Flo, 39.4, null]
+      - [Gus, 42.8, null]
+    answerCell: C2
+    expected: 5
+    variants:
+      - { set: { B2: 30 }, expected: 1 }
+      - { set: { B3: 45 }, expected: 4 }
+      - { set: { B2: 44.5 }, expected: 6 }
+    answer: =RANK(B2,B2:B8,1)
+    requiredFunctions:
+      - RANK
+    hints:
+      nudge: A third argument of 1 ranks the lowest value first.
+      rule: RANK(number,list,1) gives 1 to the smallest value, as for race times.
+    misses:
+      value: Four times are faster than 41.2, so Ann ranks 5.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for RANK.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =RANK(B2,B2:B8,1)
+      - =RANK(B2,$B$2:$B$8,1)
+    reject:
+      - formula: =RANK(B2,B2:B8)
+        rule: value
+      - formula: =5
+        rule: required-function
+      - formula: =RANK(B2,B2:B8,1
+        rule: syntax

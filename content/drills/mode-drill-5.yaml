@@ -1,0 +1,51 @@
+id: mode-drill-5
+slug: mode-drill-5
+level: 2
+title: How often the most common size appears
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MODE
+screens:
+  - prompt: In B10, use COUNTIF and MODE to count how many times the most common size in B2:B8 appears.
+    rows:
+      - [Order, Size]
+      - [O1, 42]
+      - [O2, 40]
+      - [O3, 42]
+      - [O4, 38]
+      - [O5, 42]
+      - [O6, 40]
+      - [O7, 44]
+      - [null, null]
+      - [Times, null]
+    answerCell: B10
+    expected: 3
+    variants:
+      - { set: { B3: 40, B6: 40, B4: 40 }, expected: 4 }
+      - { set: { B8: 42 }, expected: 4 }
+      - { set: { B5: 40, B8: 40 }, expected: 4 }
+    answer: =COUNTIF(B2:B8,MODE(B2:B8))
+    requiredFunctions:
+      - MODE
+      - COUNTIF
+    hints:
+      nudge: MODE gives the size; COUNTIF counts it.
+      rule: COUNTIF(range,MODE(range)) counts the most common value.
+    misses:
+      value: Size 42 is the most common, appearing 3 times.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MODE and COUNTIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTIF(B2:B8,MODE(B2:B8))
+    reject:
+      - formula: =COUNTIF(B2:B8,42)
+        rule: required-function
+      - formula: =COUNTIF(B2:B8,MEDIAN(B2:B8))
+        rule: required-function
+      - formula: =COUNT(B2:B8)-COUNTIF(B2:B8,MODE(B2:B8))
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =COUNTIF(B2:B8,MODE(B2:B8)
+        rule: syntax

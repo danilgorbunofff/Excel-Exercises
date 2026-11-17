@@ -1,6 +1,6 @@
 // Why this exists: Phase 3 of the reverification, run after `npm run build`.
 // Checks the free and PRO split per track, then scans dist/client for any PRO
-// or mock reference answer and for daily-only tasks outside /daily/.
+// mock or drill reference answer and for daily-only tasks outside /daily/.
 // Usage: node tools/audit-access.ts
 import { readFileSync } from "node:fs";
 import { parse } from "yaml";
@@ -38,6 +38,7 @@ for (const topic of track.topics) {
 const pro = tasks.filter(
   (t) =>
     t.kind === "mock" ||
+    t.kind === "drill" ||
     (t.kind === "exercise" && isLocked({ topicNumber: numbers.get(t.id) ?? 0 })),
 );
 const secrets = pro.map((t) => ({
@@ -56,7 +57,9 @@ const dailySlugs = [...new Set(tasks.filter((t) => t.kind === "daily").map((t) =
 for (const h of findDailyMentions(DIST, dailySlugs))
   problems.push(`daily  ${h.owner} named in ${h.file}`);
 
-console.log(`\n${secrets.length} PRO and mock answers scanned, ${dailySlugs.length} daily tasks.`);
+console.log(
+  `\n${secrets.length} PRO, mock and drill answers scanned, ${dailySlugs.length} daily tasks.`,
+);
 for (const p of problems) console.log(p);
 console.log(problems.length ? `${problems.length} problems.` : "No problems.");
 process.exitCode = problems.some((p) => !p.startsWith("shared")) ? 1 : 0;

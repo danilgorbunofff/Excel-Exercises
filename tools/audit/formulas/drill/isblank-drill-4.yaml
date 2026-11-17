@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(--ISBLANK($B$2:$B$6))
+      - =SUMPRODUCT(--ISBLANK(B$2:B$6))
+      - =sumproduct(--isblank(b2:b6))
+      - =LET(data,B2:B6,SUMPRODUCT(--ISBLANK(data)))
+    wrong: []
+    equivalent: []

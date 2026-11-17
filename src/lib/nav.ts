@@ -34,6 +34,12 @@ export const PRACTICE_NAV: readonly NavItem[] = [
     description: "Tracks built around the tasks Excel interviews tend to ask for.",
   },
   {
+    label: "Function drills",
+    icon: "bolt",
+    href: "/exercises/drills/",
+    description: "PRO: short drills for one function or many, one after another.",
+  },
+  {
     label: "Daily exercise",
     icon: "calendar",
     href: "/daily/",

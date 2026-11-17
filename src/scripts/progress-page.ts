@@ -6,8 +6,11 @@ import {
   clearProgress,
   dueDate,
   isDue,
+  isSolved,
   localDay,
+  needsReview,
   PROGRESS_EVENT,
+  type Progress,
   readProgress,
 } from "./progress.ts";
 import { loadMe, SYNCED_EVENT } from "./session.ts";
@@ -25,6 +28,8 @@ let pro = false;
 
 const node = document.querySelector("script[data-exercises]");
 const items: Item[] = node?.textContent ? JSON.parse(node.textContent) : [];
+const drillNode = document.querySelector("script[data-drill-items]");
+const drills: Item[] = drillNode?.textContent ? JSON.parse(drillNode.textContent) : [];
 const q = <T extends HTMLElement>(selector: string) => document.querySelector<T>(selector);
 const next = q<HTMLAnchorElement>("[data-next]");
 const summary = q<HTMLElement>("[data-summary]");
@@ -36,13 +41,55 @@ const stat = (key: string, value: string) => {
   if (el) el.textContent = value;
 };
 
+/** How many review items to show; the rest wait until these are done. */
+const REVIEW_MAX = 10;
+
+/** Missed and unsolved first (most misses on top), then the rest by due day. */
+function reviewItems(progress: Progress, today: string): Item[] {
+  const key = (i: Item) => {
+    const e = progress[i.id];
+    return isSolved(e) ? (dueDate(e ?? { state: "solved", date: "" }) ?? today) : "";
+  };
+  return [...items, ...drills]
+    .filter((i) => needsReview(progress[i.id], today) && (pro || !i.locked))
+    .sort(
+      (a, b) =>
+        key(a).localeCompare(key(b)) ||
+        (progress[b.id]?.misses ?? 0) - (progress[a.id]?.misses ?? 0),
+    );
+}
+
+function paintReview(progress: Progress, today: string): void {
+  const list = q<HTMLOListElement>("[data-review]");
+  const empty = q<HTMLElement>("[data-review-empty]");
+  if (!list || !empty) return;
+  const due = reviewItems(progress, today);
+  list.replaceChildren(
+    ...due.slice(0, REVIEW_MAX).map((i) => {
+      const e = progress[i.id];
+      const li = document.createElement("li");
+      const a = Object.assign(document.createElement("a"), { href: i.href, textContent: i.title });
+      const why = document.createElement("span");
+      why.className = "why";
+      const misses = e?.misses ?? 0;
+      why.textContent = !isSolved(e)
+        ? `Not solved yet, ${misses} wrong ${misses === 1 ? "check" : "checks"}`
+        : (e?.missed ?? "") > (e?.last ?? "")
+          ? "Wrong on your last try"
+          : "Due for review";
+      li.append(a, why);
+      return li;
+    }),
+  );
+  list.hidden = due.length === 0;
+  empty.hidden = due.length > 0;
+}
+
 function paint(): void {
   const progress = readProgress();
   const today = localDay();
-  const solved = items.filter((i) => {
-    const s = progress[i.id]?.state;
-    return s === "solved" || s === "helped";
-  });
+  paintReview(progress, today);
+  const solved = items.filter((i) => isSolved(progress[i.id]));
   const helped = solved.filter((i) => progress[i.id]?.state === "helped").length;
   const due = solved
     .filter((i) => {

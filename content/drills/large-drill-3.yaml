@@ -1,0 +1,45 @@
+id: large-drill-3
+slug: large-drill-3
+level: 1
+title: Ties count twice
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LARGE
+screens:
+  - prompt: In B9, use LARGE to find the second largest order in B2:B7. Two orders share the top value.
+    rows:
+      - [Order, Value]
+      - [O1, 90]
+      - [O2, 85]
+      - [O3, 90]
+      - [O4, 70]
+      - [O5, 85]
+      - [O6, 60]
+      - [null, null]
+      - [Second, null]
+    answerCell: B9
+    expected: 90
+    variants:
+      - { set: { B4: 80 }, expected: 85 }
+      - { set: { B7: 95 }, expected: 90 }
+      - { set: { B2: 97, B7: 120 }, expected: 97 }
+    answer: =LARGE(B2:B7,2)
+    requiredFunctions:
+      - LARGE
+    hints:
+      nudge: Equal values each take a place.
+      rule: LARGE counts a repeated value once for each time it appears.
+    misses:
+      value: 90 appears twice, so the first and second largest are both 90.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LARGE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LARGE(B2:B7,2)
+    reject:
+      - formula: =LARGE(B2:B7,3)
+        rule: value
+      - formula: =90
+        rule: required-function
+      - formula: =LARGE(B2:B7,2
+        rule: syntax

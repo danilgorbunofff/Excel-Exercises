@@ -1,0 +1,23 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AND($B$2>=70,$C$2>=3,$D$2="Yes")
+      - =AND(B$2>=70,C2>=3,D2="Yes")
+      - =and(b2>=70, c2>=3, d2="Yes")
+    wrong:
+      - formula: =AND(B2>70,C2>=3,D2="Yes")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =AND(B2>=71,C2>=3,D2="Yes")
+        rule: fragile
+        why: 70 written as 71
+      - formula: =AND(B2>=69,C2>=3,D2="Yes")
+        rule: fragile
+        why: 70 written as 69
+      - formula: =AND(B2>=70,C2>3,D2="Yes")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =AND(B2>=70,C2>=4,D2="Yes")
+        rule: fragile
+        why: 3 written as 4
+    equivalent: []

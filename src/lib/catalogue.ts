@@ -11,7 +11,7 @@ export interface CatalogueRow {
   search: string;
   /** The functions the exercise requires, such as "SUMIF". */
   functions: readonly string[];
-  /** "solved", "helped", "revealed" or "" when not started. */
+  /** "solved", "helped", "revealed", "tried" or "" when not started. */
   state: string;
 }
 
@@ -52,13 +52,13 @@ export function trackStatus(done: number, total: number) {
 /** The button beside one exercise in a track. */
 export const exerciseAction = (state: string) => (isDone(state) ? "Review" : "Start");
 
-const STATE_RANK: Record<string, number> = { solved: 0, helped: 1, revealed: 2, "": 3 };
+const STATE_RANK: Record<string, number> = { solved: 0, helped: 1, revealed: 2, tried: 3, "": 4 };
 
 export function compare(a: CatalogueRow, b: CatalogueRow, key: SortKey, dir: SortDir): number {
   let d: number;
   if (key === "title") d = a.title.localeCompare(b.title, "en");
   else if (key === "level") d = a.level - b.level;
-  else if (key === "state") d = (STATE_RANK[a.state] ?? 3) - (STATE_RANK[b.state] ?? 3);
+  else if (key === "state") d = (STATE_RANK[a.state] ?? 4) - (STATE_RANK[b.state] ?? 4);
   else d = a.order - b.order;
   if (d === 0) d = a.order - b.order;
   return dir === "descending" ? -d : d;

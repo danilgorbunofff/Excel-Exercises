@@ -1,0 +1,40 @@
+id: and-drill-4
+slug: and-drill-4
+level: 2
+title: Three tests for a hire
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: AND
+screens:
+  - prompt: In E2, use AND to test that the test score in B2 is 70 or more, the interview mark in C2 is 3 or more, and D2 is "Yes".
+    rows:
+      - [Candidate, Test, Interview, References, Hire]
+      - [Ann, 82, 4, Yes, null]
+    answerCell: E2
+    expected: true
+    variants:
+      - { set: { C2: 2 }, expected: false }
+      - { set: { D2: No }, expected: false }
+      - { set: { B2: 65 }, expected: false }
+      - { set: { B2: 69 }, expected: false }
+      - { set: { B2: 70, C2: 3 }, expected: true }
+    answer: =AND(B2>=70,C2>=3,D2="Yes")
+    requiredFunctions:
+      - AND
+    hints:
+      nudge: AND can take three tests or more.
+      rule: AND(test1,test2,test3) is TRUE only when all three are true.
+    misses:
+      value: All three tests pass, so the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AND(B2>=70,C2>=3,D2="Yes")
+    reject:
+      - formula: =AND(B2>=70,C2>=3)
+        rule: fragile
+      - formula: =OR(B2>=70,C2>=3,D2="Yes")
+        rule: required-function
+      - formula: =AND(B2>=70,C2>=3,D2="Yes"
+        rule: syntax

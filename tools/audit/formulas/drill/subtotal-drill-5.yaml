@@ -1,0 +1,25 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUBTOTAL(4,$B$2:$B$6)-SUBTOTAL(5,$B$2:$B$6)
+      - =SUBTOTAL(4,B$2:B$6)-SUBTOTAL(5,B2:B6)
+      - =subtotal(4, b2:b6)-subtotal(5, b2:b6)
+      - =LET(data,B2:B6,SUBTOTAL(4,data)-SUBTOTAL(5,data))
+    wrong:
+      - formula: =SUBTOTAL(4,B2:B5)-SUBTOTAL(5,B2:B6)
+        rule: fragile
+        why: range B2:B6 one row short at the end
+      - formula: =SUBTOTAL(4,B3:B6)-SUBTOTAL(5,B2:B6)
+        rule: fragile
+        why: range B2:B6 skips its first row
+      - formula: =SUBTOTAL(4,B2:B6)-SUBTOTAL(5,B2:B5)
+        rule: fragile
+        why: range B2:B6 one row short at the end
+      - formula: =SUBTOTAL(4,B2:B6)-SUBTOTAL(5,B3:B6)
+        rule: fragile
+        why: range B2:B6 skips its first row
+    equivalent:
+      - formula: =SUBTOTAL(4,B2:B7)-SUBTOTAL(5,B2:B6)
+        why: "range B2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =SUBTOTAL(4,B2:B6)-SUBTOTAL(5,B2:B7)
+        why: "range B2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

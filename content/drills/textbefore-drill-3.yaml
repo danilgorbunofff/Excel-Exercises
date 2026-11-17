@@ -1,0 +1,37 @@
+id: textbefore-drill-3
+slug: textbefore-drill-3
+level: 1
+title: Before the second dash
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TEXTBEFORE
+screens:
+  - prompt: In B2, use TEXTBEFORE to take everything in A2 before the second "-".
+    rows:
+      - [Code, Result]
+      - [INV-204-81, null]
+    answerCell: B2
+    expected: INV-204
+    variants:
+      - set: { A2: CR-9-17-02 }
+        expected: CR-9
+    answer: =TEXTBEFORE(A2,"-",2)
+    requiredFunctions:
+      - TEXTBEFORE
+    hints:
+      nudge: "The third argument says which dash: 2 means the second."
+      rule: TEXTBEFORE(A2,"-",2) stops at the second dash.
+    misses:
+      value: Before the second dash is INV-204.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TEXTBEFORE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TEXTBEFORE(A2,"-",2)
+    reject:
+      - formula: =TEXTBEFORE(A2,"-")
+        rule: value
+      - formula: ="INV-204"
+        rule: required-function
+      - formula: =TEXTBEFORE(A2,"-",2
+        rule: syntax

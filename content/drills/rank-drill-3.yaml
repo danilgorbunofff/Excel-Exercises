@@ -1,0 +1,48 @@
+id: rank-drill-3
+slug: rank-drill-3
+level: 1
+title: Rank a value picked in a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: RANK
+screens:
+  - prompt: In E3, use RANK to find where the score typed in E2 ranks among the scores in B2:B8, highest first.
+    rows:
+      - [Student, Score, null, Pick, null]
+      - [Ann, 72, null, Score, 85]
+      - [Bo, 85, null, Rank, null]
+      - [Cy, 64, null, null, null]
+      - [Di, 91, null, null, null]
+      - [Ed, 78, null, null, null]
+      - [Flo, 59, null, null, null]
+      - [Gus, 88, null, null, null]
+    answerCell: E3
+    expected: 3
+    variants:
+      - set: { E2: 59 }
+        expected: 7
+      - set: { E2: 91 }
+        expected: 1
+    answer: =RANK(E2,B2:B8)
+    requiredFunctions:
+      - RANK
+    hints:
+      nudge: The number to rank can come from a cell, as long as it is in the list.
+      rule: RANK(E2,list) ranks whatever score E2 holds.
+    misses:
+      value: Two scores are higher than 85, so it ranks 3.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      required-function: This drill asks for RANK.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =RANK(E2,B2:B8)
+    reject:
+      - formula: =RANK(85,B2:B8)
+        rule: reference
+      - formula: =RANK(E2,B2:B8,1)
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =RANK(E2,B2:B8
+        rule: syntax

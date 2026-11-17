@@ -1,0 +1,47 @@
+id: filter-drill-3
+slug: filter-drill-3
+level: 1
+title: Region picked in a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: FILTER
+screens:
+  - prompt: In E2, use FILTER to list the reps in A2:A7 from the region typed in I1.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, West]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [Bo]
+      - [Flo]
+    variants:
+      - set: { I1: North }
+        expected: Di
+      - set: { I1: East }
+        expected:
+          - - Ann
+          - - Cy
+          - - Ed
+    answer: =FILTER(A2:A7,B2:B7=I1)
+    requiredFunctions:
+      - FILTER
+    hints:
+      nudge: Compare the regions with the cell I1.
+      rule: FILTER(A2:A7,B2:B7=I1) follows whatever region I1 holds.
+    misses:
+      value: The West reps are Bo, Flo.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =FILTER(A2:A7,B2:B7=I1)
+    reject:
+      - formula: =FILTER(A2:A7,B2:B7="West")
+        rule: fragile
+      - formula: =FILTER(A2:A7,B2:B7=I1
+        rule: syntax

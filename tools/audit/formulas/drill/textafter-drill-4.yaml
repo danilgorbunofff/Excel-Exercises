@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =TEXTAFTER($A$2,$B$2)
+      - =TEXTAFTER(A$2,B2)
+      - =textafter(a2, b2)
+    wrong: []
+    equivalent: []

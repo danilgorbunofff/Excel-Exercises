@@ -1,0 +1,48 @@
+id: large-drill-1
+slug: large-drill-1
+level: 1
+title: The second highest score
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LARGE
+screens:
+  - prompt: In B10, use LARGE to find the second highest score in B2:B8.
+    rows:
+      - [Student, Score]
+      - [Ann, 72]
+      - [Bo, 85]
+      - [Cy, 64]
+      - [Di, 91]
+      - [Ed, 78]
+      - [Flo, 59]
+      - [Gus, 88]
+      - [null, null]
+      - [Second, null]
+    answerCell: B10
+    expected: 88
+    variants:
+      - { set: { B5: 80 }, expected: 85 }
+      - { set: { B8: 95 }, expected: 91 }
+      - { set: { B2: 91 }, expected: 91 }
+    answer: =LARGE(B2:B8,2)
+    requiredFunctions:
+      - LARGE
+    hints:
+      nudge: "LARGE takes a range and k: which largest you want."
+      rule: LARGE(range,2) returns the second largest value.
+    misses:
+      value: The highest is 91 and the second highest is 88.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LARGE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LARGE(B2:B8,2)
+    reject:
+      - formula: =MAX(B2:B8)
+        rule: required-function
+      - formula: =LARGE(B2:B8,1)
+        rule: value
+      - formula: =88
+        rule: required-function
+      - formula: =LARGE(B2:B8,2
+        rule: syntax

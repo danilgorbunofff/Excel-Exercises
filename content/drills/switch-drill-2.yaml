@@ -1,0 +1,38 @@
+id: switch-drill-2
+slug: switch-drill-2
+level: 1
+title: Day name with a default
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SWITCH
+screens:
+  - prompt: In B2, use SWITCH to show "Mon" for 1, "Tue" for 2, "Wed" for 3, and "Other" for anything else.
+    rows:
+      - [Day number, Name]
+      - [2, null]
+    answerCell: B2
+    expected: Tue
+    variants:
+      - { set: { A2: 7 }, expected: Other }
+      - { set: { A2: 3 }, expected: Wed }
+      - { set: { A2: 1 }, expected: Mon }
+    answer: =SWITCH(A2,1,"Mon",2,"Tue",3,"Wed","Other")
+    requiredFunctions:
+      - SWITCH
+    hints:
+      nudge: A last value with no pair is the default.
+      rule: SWITCH(A2,1,...,2,...,3,...,default) returns the default when nothing matches.
+    misses:
+      value: 2 is paired with Tue.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SWITCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SWITCH(A2,1,"Mon",2,"Tue",3,"Wed","Other")
+    reject:
+      - formula: =SWITCH(A2,1,"Mon",2,"Tue",3,"Wed")
+        rule: fragile
+      - formula: ="Tue"
+        rule: required-function
+      - formula: =SWITCH(A2,1,"Mon",2,"Tue",3,"Wed","Other"
+        rule: syntax

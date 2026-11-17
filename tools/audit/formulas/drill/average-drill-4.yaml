@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AVERAGE($B$2:$B$7)
+      - =AVERAGE(B$2:B$7)
+      - =average(b2:b7)
+      - =LET(data,B2:B7,AVERAGE(data))
+    wrong: []
+    equivalent:
+      - formula: =AVERAGE(B2:B8)
+        why: "range B2:B7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

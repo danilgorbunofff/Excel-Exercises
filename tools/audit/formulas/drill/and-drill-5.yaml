@@ -1,0 +1,35 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(AND($B$2>=50,$C$2>=50),"Pass","Resit")
+      - =IF(AND(B$2>=50,C2>=50),"Pass","Resit")
+      - =if(and(b2>=50, c2>=50), "Pass", "Resit")
+    wrong:
+      - formula: =IF(AND(B2>50,C2>=50),"Pass","Resit")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IF(AND(B1>=50,C2>=50),"Pass","Resit")
+        rule: fragile
+        why: B2 read from the row above
+      - formula: =IF(AND(C2>=50,C2>=50),"Pass","Resit")
+        rule: fragile
+        why: B2 read from the next column
+      - formula: =IF(AND(A2>=50,C2>=50),"Pass","Resit")
+        rule: fragile
+        why: B2 read from the column to the left
+      - formula: =IF(AND(B2>=51,C2>=50),"Pass","Resit")
+        rule: fragile
+        why: 50 written as 51
+      - formula: =IF(AND(B2>=49,C2>=50),"Pass","Resit")
+        rule: fragile
+        why: 50 written as 49
+      - formula: =IF(AND(B2>=50,C2>50),"Pass","Resit")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IF(AND(B2>=50,C2>=51),"Pass","Resit")
+        rule: fragile
+        why: 50 written as 51
+      - formula: =IF(AND(B2>=50,C2>=49),"Pass","Resit")
+        rule: fragile
+        why: 50 written as 49
+    equivalent: []

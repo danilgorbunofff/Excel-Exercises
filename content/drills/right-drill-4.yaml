@@ -1,0 +1,39 @@
+id: right-drill-4
+slug: right-drill-4
+level: 2
+title: The end of a number
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: RIGHT
+screens:
+  - prompt: In B2, use RIGHT to take the last 2 digits of the year in A2. A2 holds a number, not text.
+    rows:
+      - [Year, Result]
+      - [2026, null]
+    answerCell: B2
+    expected: "26"
+    variants:
+      - set: { A2: 1999 }
+        expected: "99"
+    answer: =RIGHT(A2,2)
+    requiredFunctions:
+      - RIGHT
+    hints:
+      nudge: RIGHT works on numbers too, and returns text.
+      rule: RIGHT(2026,2) returns the text 26.
+    misses:
+      value: The last two digits of 2026 are 26.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for RIGHT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =RIGHT(A2,2)
+    reject:
+      - formula: =RIGHT(A2,3)
+        rule: value
+      - formula: =MOD(A2,100)
+        rule: required-function
+      - formula: ="26"
+        rule: required-function
+      - formula: =RIGHT(A2,2
+        rule: syntax

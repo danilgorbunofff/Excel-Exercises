@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LARGE($B$2:$B$8,$E$2)
+      - =LARGE(B$2:B$8,E2)
+      - =large(b2:b8, e2)
+      - =LET(data,B2:B8,LARGE(data,E2))
+    wrong: []
+    equivalent: []

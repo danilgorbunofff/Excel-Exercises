@@ -26,6 +26,7 @@ const ROWS: Record<string, unknown> = {
     pro_status: "active",
     pro_until: "2027-11-15T00:00:00Z",
     news: true,
+    digest: false,
     updated_at: "2026-11-01T00:00:00Z",
   },
   progress: [
@@ -72,6 +73,7 @@ describe("GET /api/account/export/", () => {
       proStatus: "active",
       proUntil: "2027-11-15T00:00:00Z",
       news: true,
+      digest: false,
       updatedAt: "2026-11-01T00:00:00Z",
     });
     for (const key of ["progress", "assessment_attempts", "daily_solves", "certificates"]) {

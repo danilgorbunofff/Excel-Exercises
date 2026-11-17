@@ -1,0 +1,47 @@
+id: countifs-drill-5
+slug: countifs-drill-5
+level: 2
+title: Share of East orders that are paid
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTIFS
+screens:
+  - prompt: In B9, use COUNTIFS and COUNTIF to find the share of "East" rows in A2:A8 whose status in B2:B8 is "Paid".
+    rows:
+      - [Region, Status]
+      - [East, Paid]
+      - [West, Paid]
+      - [East, Open]
+      - [East, Paid]
+      - [North, Paid]
+      - [East, Late]
+      - [West, Open]
+      - [Share, null]
+    answerCell: B9
+    expected: 0.5
+    variants:
+      - { set: { B4: Paid }, expected: 0.75 }
+      - { set: { A8: East }, expected: 0.4 }
+    answer: =COUNTIFS(A2:A8,"East",B2:B8,"Paid")/COUNTIF(A2:A8,"East")
+    requiredFunctions:
+      - COUNTIFS
+      - COUNTIF
+    hints:
+      nudge: Count the East rows that are Paid, then divide by all East rows.
+      rule: COUNTIFS gives the rows meeting both tests; COUNTIF gives all East rows.
+    misses:
+      value: Two of four East rows are Paid, a share of about 0.50.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTIFS and COUNTIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTIFS(A2:A8,"East",B2:B8,"Paid")/COUNTIF(A2:A8,"East")
+    reject:
+      - formula: =COUNTIFS(A2:A8,"East",B2:B8,"Paid")/COUNTA(A2:A8)
+        rule: required-function
+      - formula: =COUNTIFS(A2:A8,"East",B2:B8,"Paid")/COUNTIF(A2:A8,"West")
+        rule: value
+      - formula: =0.5
+        rule: required-function
+      - formula: =COUNTIFS(A2:A8,"East",B2:B8,"Paid")/COUNTIF(A2:A8,"East"
+        rule: syntax

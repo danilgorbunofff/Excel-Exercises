@@ -1,0 +1,47 @@
+id: sumproduct-drill-4
+slug: sumproduct-drill-4
+level: 2
+title: Add up sales for one region
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUMPRODUCT
+screens:
+  - prompt: In D9, use SUMPRODUCT to add up the sales in C2:C7 for the region named in D8.
+    rows:
+      - [Rep, Region, Sales, null]
+      - [Ann, East, 400, null]
+      - [Ben, West, 250, null]
+      - [Cy, East, 310, null]
+      - [Di, North, 520, null]
+      - [Ed, East, 190, null]
+      - [Flo, West, 330, null]
+      - [null, null, Region, East]
+      - [null, null, Sales, null]
+    answerCell: D9
+    expected: 900
+    variants:
+      - set: { D8: West }
+        expected: 580
+    answer: =SUMPRODUCT((B2:B7=D8)*C2:C7)
+    requiredFunctions:
+      - SUMPRODUCT
+    hints:
+      nudge: A test like (B2:B7=D8) gives 1 for a match and 0 otherwise. Multiply it by the sales.
+      rule: SUMPRODUCT((range=value)*amounts) adds only the amounts on rows where the test is true.
+    misses:
+      value: The three East rows add up to 900.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUMPRODUCT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUMPRODUCT((B2:B7=D8)*C2:C7)
+      - =SUMPRODUCT(--(B2:B7=D8),C2:C7)
+    reject:
+      - formula: =SUMPRODUCT(C2:C7)
+        rule: value
+      - formula: =SUMPRODUCT((B2:B7="East")*C2:C7)
+        rule: fragile
+      - formula: =900
+        rule: required-function
+      - formula: =SUMPRODUCT((B2:B7=D8)*C2:C7
+        rule: syntax

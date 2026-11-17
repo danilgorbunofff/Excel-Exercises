@@ -12,8 +12,9 @@ import {
   type Verdict,
 } from "@practice/grader";
 import type { Segment } from "../lib/rich-text.ts";
-import { readProgress, record } from "./progress.ts";
+import { isSolved, readProgress, record } from "./progress.ts";
 import { signedIn } from "./session.ts";
+import { trackOnce } from "./track.ts";
 import { compareWithAnswer, outlineClasses, verdictView } from "./view.ts";
 
 interface ScreenData {
@@ -62,6 +63,7 @@ const PROGRESS_TEXT = {
   solved: "You solved this exercise.",
   helped: "You solved this exercise with help.",
   revealed: "You have seen the answer to this exercise.",
+  tried: "You tried this exercise. It is on your review list until you solve it.",
 } as const;
 
 function showProgress(exercise: HTMLElement, id: string) {
@@ -203,6 +205,7 @@ function setupScreen(exercise: HTMLElement, page: PageData, index: number, root:
       return;
     }
     if (formula !== input.value) input.value = formula;
+    trackOnce("first_check");
     const verdict = grade(formula, spec);
     const view = verdictView(verdict, spec.answerCell, screen.misses, valueAt);
 
@@ -267,6 +270,7 @@ function setupScreen(exercise: HTMLElement, page: PageData, index: number, root:
       input.removeAttribute("aria-invalid");
       if (index === page.screens.length - 1) {
         record(page.id, "solved");
+        trackSolves();
         showProgress(exercise, page.id);
         askToSignUp(status);
         exercise.dispatchEvent(new CustomEvent("exercise-solved"));
@@ -275,6 +279,8 @@ function setupScreen(exercise: HTMLElement, page: PageData, index: number, root:
       next.focus();
     } else {
       input.setAttribute("aria-invalid", "true");
+      // Only a real formula counts as a miss: a syntax slip is not a gap in knowledge.
+      if (verdict.rule !== "syntax") record(page.id, "missed");
       showNext(false);
     }
   });
@@ -356,13 +362,21 @@ function start(exercise: HTMLElement, data: PageData): void {
 /** Solves after which a signed-out visitor is asked to make a free account. */
 export const SIGN_UP_AFTER = 3;
 
+const solvedCount = () => Object.values(readProgress()).filter(isSolved).length;
+
+function trackSolves(): void {
+  const solved = solvedCount();
+  if (solved >= 1) trackOnce("first_solve");
+  if (solved >= SIGN_UP_AFTER) trackOnce("solve_3");
+}
+
 /**
  * From the third solved exercise on, a signed-out visitor gets one line under
  * the sheet: their progress lives only in this browser until they sign up.
  */
 function askToSignUp(status: HTMLElement | null): void {
   if (!status || signedIn() || status.parentElement?.querySelector("[data-sign-up]")) return;
-  const solved = Object.values(readProgress()).filter((e) => e.state !== "revealed").length;
+  const solved = solvedCount();
   if (solved < SIGN_UP_AFTER) return;
   const line = document.createElement("p");
   line.dataset["signUp"] = "";

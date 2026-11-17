@@ -1,0 +1,46 @@
+id: hlookup-drill-2
+slug: hlookup-drill-2
+level: 1
+title: Costs from the third row
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: HLOOKUP
+screens:
+  - prompt: In B6, use HLOOKUP to find the costs, row 3 of B1:F3, for the month typed in B5.
+    rows:
+      - [Month, Jan, Feb, Mar, Apr, May]
+      - [Sales, 120, 95, 140, 110, 135]
+      - [Costs, 80, 70, 90, 85, 75]
+      - [null, null, null, null, null, null]
+      - [Find, Apr, null, null, null, null]
+      - [Costs, null, null, null, null, null]
+    answerCell: B6
+    expected: 85
+    variants:
+      - set: { B5: Feb }
+        expected: 70
+      - set: { B5: May }
+        expected: 75
+      - set: { B5: Jan }
+        expected: 80
+    answer: =HLOOKUP(B5,B1:F3,3,FALSE)
+    requiredFunctions:
+      - HLOOKUP
+    hints:
+      nudge: "Count the rows of the table from its top: Month is 1, Costs is 3."
+      rule: The row number counts within the table range.
+    misses:
+      value: April costs are 85.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for HLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =HLOOKUP(B5,B1:F3,3,FALSE)
+      - =HLOOKUP(B5,B1:F3,3,0)
+    reject:
+      - formula: =HLOOKUP(B5,B1:F3,2,FALSE)
+        rule: value
+      - formula: =85
+        rule: required-function
+      - formula: =HLOOKUP(B5,B1:F3,3,FALSE
+        rule: syntax

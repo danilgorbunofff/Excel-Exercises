@@ -1,0 +1,37 @@
+id: textbefore-drill-2
+slug: textbefore-drill-2
+level: 1
+title: First name before the space
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TEXTBEFORE
+screens:
+  - prompt: In B2, use TEXTBEFORE to take everything in A2 before the first space.
+    rows:
+      - [Name, Result]
+      - [Rosa Diaz, null]
+    answerCell: B2
+    expected: Rosa
+    variants:
+      - set: { A2: Christopher Lane }
+        expected: Christopher
+    answer: =TEXTBEFORE(A2," ")
+    requiredFunctions:
+      - TEXTBEFORE
+    hints:
+      nudge: 'The delimiter here is a space: " ".'
+      rule: TEXTBEFORE(A2," ") returns the first word.
+    misses:
+      value: The first name is Rosa.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TEXTBEFORE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TEXTBEFORE(A2," ")
+    reject:
+      - formula: =LEFT(A2,4)
+        rule: required-function
+      - formula: ="Rosa"
+        rule: required-function
+      - formula: =TEXTBEFORE(A2," "
+        rule: syntax

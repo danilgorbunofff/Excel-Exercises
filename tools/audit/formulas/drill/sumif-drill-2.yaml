@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF($B$2:$B$8,">100")
+      - =SUMIF(B$2:B$8,">100")
+      - =sumif(b2:b8, ">100")
+      - =LET(data,B2:B8,SUMIF(data,">100"))
+    wrong:
+      - formula: =SUMIF(B2:B7,">100")
+        rule: fragile
+        why: range B2:B8 one row short at the end
+    equivalent: []

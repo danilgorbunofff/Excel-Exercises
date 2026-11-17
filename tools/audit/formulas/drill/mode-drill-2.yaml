@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MODE($B$2:$H$2)
+      - =MODE(B$2:H$2)
+      - =mode(b2:h2)
+      - =LET(data,B2:H2,MODE(data))
+    wrong:
+      - formula: =MODE(A2:G2)
+        rule: fragile
+        why: range B2:H2 one column left
+    equivalent: []

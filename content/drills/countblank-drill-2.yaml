@@ -1,0 +1,37 @@
+id: countblank-drill-2
+slug: countblank-drill-2
+level: 1
+title: Count the gaps in a row
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTBLANK
+screens:
+  - prompt: In H2, use COUNTBLANK to find how many weeks in B2:G2 have no score.
+    rows:
+      - [Name, W1, W2, W3, W4, W5, W6, Gaps]
+      - [Ann, 5, null, 4, null, null, 6, null]
+    answerCell: H2
+    expected: 3
+    variants:
+      - { set: { C2: 7 }, expected: 2 }
+      - { set: { G2: null }, expected: 4 }
+    answer: =COUNTBLANK(B2:G2)
+    requiredFunctions:
+      - COUNTBLANK
+    hints:
+      nudge: The weeks run along row 2.
+      rule: "COUNTBLANK works on a row range: COUNTBLANK(B2:G2)."
+    misses:
+      value: 3 weeks have no score.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTBLANK.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTBLANK(B2:G2)
+    reject:
+      - formula: =COUNTBLANK(B2:D2)
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =COUNTBLANK(B2:G2
+        rule: syntax

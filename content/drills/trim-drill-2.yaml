@@ -1,0 +1,37 @@
+id: trim-drill-2
+slug: trim-drill-2
+level: 1
+title: Spaces between words
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TRIM
+screens:
+  - prompt: In C2, use TRIM to clean up the city in B2, which has several spaces between its words.
+    rows:
+      - [ID, City, Result]
+      - [R1, New     York, null]
+    answerCell: C2
+    expected: New York
+    variants:
+      - set: { B2: San   Jose   Hub }
+        expected: San Jose Hub
+    answer: =TRIM(B2)
+    requiredFunctions:
+      - TRIM
+    hints:
+      nudge: TRIM also squeezes runs of spaces inside the text.
+      rule: TRIM leaves exactly one space between words.
+    misses:
+      value: Cleaned, the city reads New York.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TRIM.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TRIM(B2)
+    reject:
+      - formula: =SUBSTITUTE(B2," ","")
+        rule: required-function
+      - formula: ="New York"
+        rule: required-function
+      - formula: =TRIM(B2
+        rule: syntax

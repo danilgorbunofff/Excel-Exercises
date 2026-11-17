@@ -1,0 +1,25 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MAX($B$2:$B$6)-MIN($B$2:$B$6)
+      - =MAX(B$2:B$6)-MIN(B2:B6)
+      - =max(b2:b6)-min(b2:b6)
+      - =LET(data,B2:B6,MAX(data)-MIN(data))
+    wrong:
+      - formula: =MAX(B2:B5)-MIN(B2:B6)
+        rule: fragile
+        why: range B2:B6 one row short at the end
+      - formula: =MAX(B3:B6)-MIN(B2:B6)
+        rule: fragile
+        why: range B2:B6 skips its first row
+      - formula: =MAX(B2:B6)-MIN(B2:B5)
+        rule: fragile
+        why: range B2:B6 one row short at the end
+      - formula: =MAX(B2:B6)-MIN(B3:B6)
+        rule: fragile
+        why: range B2:B6 skips its first row
+    equivalent:
+      - formula: =MAX(B2:B7)-MIN(B2:B6)
+        why: "range B2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =MAX(B2:B6)-MIN(B2:B7)
+        why: "range B2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

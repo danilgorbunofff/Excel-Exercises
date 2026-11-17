@@ -1,0 +1,46 @@
+id: sumif-drill-3
+slug: sumif-drill-3
+level: 1
+title: Total for a region picked in a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUMIF
+screens:
+  - prompt: In D4, use SUMIF to add up the sales in B2:B8 for the region typed in D2.
+    rows:
+      - [Region, Sales, null, Pick]
+      - [East, 400, null, West]
+      - [West, 250, null, Total]
+      - [East, 310, null, null]
+      - [North, 520, null, null]
+      - [East, 190, null, null]
+      - [West, 330, null, null]
+      - [North, 450, null, null]
+    answerCell: D4
+    expected: 580
+    variants:
+      - set: { D2: North }
+        expected: 970
+      - set: { A2: West }
+        expected: 980
+    answer: =SUMIF(A2:A8,D2,B2:B8)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: Point the criteria at D2.
+      rule: SUMIF(regions,D2,sales) adds the sales for whatever region D2 holds.
+    misses:
+      value: The West rows add up to 580.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUMIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUMIF(A2:A8,D2,B2:B8)
+      - =SUMIF($A$2:$A$8,$D$2,$B$2:$B$8)
+    reject:
+      - formula: =SUMIF(A2:A8,"West",B2:B8)
+        rule: fragile
+      - formula: =580
+        rule: required-function
+      - formula: =SUMIF(A2:A8,D2,B2:B8
+        rule: syntax

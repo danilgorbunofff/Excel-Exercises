@@ -1,0 +1,37 @@
+id: substitute-drill-2
+slug: substitute-drill-2
+level: 1
+title: Shorten a word
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUBSTITUTE
+screens:
+  - prompt: In B2, use SUBSTITUTE to replace "Street" with "St" in the address in A2.
+    rows:
+      - [Address, Result]
+      - [12 High Street, null]
+    answerCell: B2
+    expected: 12 High St
+    variants:
+      - set: { A2: 4 Mill Street East }
+        expected: 4 Mill St East
+    answer: =SUBSTITUTE(A2,"Street","St")
+    requiredFunctions:
+      - SUBSTITUTE
+    hints:
+      nudge: The old text comes before the new text.
+      rule: SUBSTITUTE(A2,"Street","St") swaps the word wherever it appears.
+    misses:
+      value: Shortened, the address reads 12 High St.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUBSTITUTE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUBSTITUTE(A2,"Street","St")
+    reject:
+      - formula: =SUBSTITUTE(A2,"St","Street")
+        rule: value
+      - formula: ="12 High St"
+        rule: required-function
+      - formula: =SUBSTITUTE(A2,"Street","St"
+        rule: syntax

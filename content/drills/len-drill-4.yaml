@@ -1,0 +1,38 @@
+id: len-drill-4
+slug: len-drill-4
+level: 2
+title: Check a code's length
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LEN
+screens:
+  - prompt: In B2, use LEN to test whether the code in A2 has exactly 8 characters.
+    rows:
+      - [Code, Result]
+      - [AB12CD34, null]
+    answerCell: B2
+    expected: true
+    variants:
+      - set: { A2: AB12CD3 }
+        expected: false
+      - set: { A2: AB12CD345 }
+        expected: false
+    answer: =LEN(A2)=8
+    requiredFunctions:
+      - LEN
+    hints:
+      nudge: Compare LEN with 8 to get TRUE or FALSE.
+      rule: LEN(A2)=8 is TRUE only for exactly eight characters.
+    misses:
+      value: AB12CD34 has exactly 8 characters, so the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LEN(A2)=8
+    reject:
+      - formula: =LEN(A2)>=8
+        rule: fragile
+      - formula: =LEN(A2)
+        rule: value
+      - formula: =LEN(A2)=8,
+        rule: syntax

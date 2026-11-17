@@ -1,0 +1,50 @@
+id: large-drill-5
+slug: large-drill-5
+level: 2
+title: Who came second
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LARGE
+screens:
+  - prompt: In B10, use INDEX, MATCH and LARGE to find the name in A2:A8 of the student with the second highest score in B2:B8.
+    rows:
+      - [Student, Score]
+      - [Ann, 72]
+      - [Bo, 85]
+      - [Cy, 64]
+      - [Di, 91]
+      - [Ed, 78]
+      - [Flo, 59]
+      - [Gus, 88]
+      - [null, null]
+      - [Second, null]
+    answerCell: B10
+    expected: Gus
+    variants:
+      - { set: { B4: 89 }, expected: Cy }
+      - { set: { B5: 70 }, expected: Bo }
+      - { set: { B2: 91 }, expected: Ann }
+    answer: =INDEX(A2:A8,MATCH(LARGE(B2:B8,2),B2:B8,0))
+    requiredFunctions:
+      - LARGE
+      - INDEX
+      - MATCH
+    hints:
+      nudge: LARGE gives the score; MATCH finds its row; INDEX returns the name.
+      rule: INDEX(names,MATCH(LARGE(scores,2),scores,0)) names the runner-up.
+    misses:
+      value: The second highest score is 88, which is Gus's.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LARGE, INDEX and MATCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =INDEX(A2:A8,MATCH(LARGE(B2:B8,2),B2:B8,0))
+    reject:
+      - formula: =INDEX(A2:A8,MATCH(LARGE(B2:B8,1),B2:B8,0))
+        rule: value
+      - formula: =INDEX(A2:A8,MATCH(MAX(B2:B8),B2:B8,0))
+        rule: required-function
+      - formula: ="Gus"
+        rule: required-function
+      - formula: =INDEX(A2:A8,MATCH(LARGE(B2:B8,2),B2:B8,0)
+        rule: syntax

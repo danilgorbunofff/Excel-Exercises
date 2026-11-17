@@ -1,0 +1,52 @@
+id: unique-drill-4
+slug: unique-drill-4
+level: 2
+title: How many different regions
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: UNIQUE
+screens:
+  - prompt: In E2, use COUNTA and UNIQUE to count how many different regions are in B2:B7.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, null]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [Total, All, 2000, null, null, null, null, null, null]
+    answerCell: E2
+    expected: 3
+    variants:
+      - set: { B5: South }
+        expected: 3
+      - set: { B5: East }
+        expected: 2
+      - set: { B7: South }
+        expected: 4
+      - set: { B2: South }
+        expected: 4
+    answer: =COUNTA(UNIQUE(B2:B7))
+    requiredFunctions:
+      - UNIQUE
+      - COUNTA
+    hints:
+      nudge: UNIQUE lists each region once; COUNTA counts the list.
+      rule: COUNTA(UNIQUE(range)) counts distinct values.
+    misses:
+      value: There are 3 different regions.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for UNIQUE and COUNTA.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTA(UNIQUE(B2:B7))
+    reject:
+      - formula: =COUNTA(B2:B7)
+        rule: required-function
+      - formula: =COUNTA(UNIQUE(A2:A7))
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =COUNTA(UNIQUE(B2:B7)
+        rule: syntax

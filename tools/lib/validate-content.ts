@@ -2,6 +2,7 @@
 // links between files, such as the single track order. CI runs it on each push.
 import {
   dailySchema,
+  drillSchema,
   exerciseSchema,
   functionSchema,
   mockSchema,
@@ -70,6 +71,12 @@ export function advancedProblems(ex: {
   return out;
 }
 
+/** Drills per function: the target, and the most any function may have. */
+export const DRILLS_PER_FUNCTION = 5;
+
+/** Paths under /exercises/ that are pages, so no exercise may take them as its slug. */
+const RESERVED_SLUGS = new Set(["drills", "tracks"]);
+
 /** Returns a list of readable errors. An empty list means the content is valid. */
 export function validateContent(
   exercises: readonly SourceFile[],
@@ -77,6 +84,9 @@ export function validateContent(
   functions: readonly SourceFile[] = [],
   daily: readonly SourceFile[] = [],
   mocks: readonly SourceFile[] = [],
+  drills: readonly SourceFile[] = [],
+  /** The names in content/function-index.yaml. Empty skips the drill name check. */
+  indexNames: readonly string[] = [],
 ): string[] {
   const errors: string[] = [];
   const ids = new Map<string, string>();
@@ -97,6 +107,7 @@ export function validateContent(
     errors.push(...advancedProblems(ex).map((e) => `${file}: ${e}`));
     errors.push(...unstatedRequirements(ex).map((e) => `${file}: ${e}`));
     if (ids.has(ex.id)) errors.push(`${file}: id "${ex.id}" is also used by ${ids.get(ex.id)}`);
+    if (RESERVED_SLUGS.has(ex.slug)) errors.push(`${file}: slug "${ex.slug}" is a page address`);
     ids.set(ex.id, file);
     slugs.set(ex.slug, (slugs.get(ex.slug) ?? 0) + 1);
     topicsUsed.push({ file, topic: ex.topic });
@@ -144,7 +155,35 @@ export function validateContent(
       errors.push(`${file}: id "${task.id}" is also used by ${ids.get(task.id)}`);
     ids.set(task.id, file);
   }
-  const dailyIds = new Set([...daily, ...mocks].map((d) => (d.data as { id?: string } | null)?.id));
+  // Drills: one function each, named in the prompt and required, exactly five for every indexed function.
+  const perFunction = new Map<string, number>();
+  const known = new Set(indexNames);
+  for (const { file, data } of drills) {
+    const parsed = drillSchema.safeParse(data);
+    if (!parsed.success) {
+      errors.push(...issuesOf(file, parsed.error));
+      continue;
+    }
+    const drill = parsed.data;
+    errors.push(...unstatedRequirements(drill).map((e) => `${file}: ${e}`));
+    if (known.size > 0 && !known.has(drill.function))
+      errors.push(`${file}: function ${drill.function} is not in content/function-index.yaml`);
+    if (!drill.screens[0]?.requiredFunctions.includes(drill.function))
+      errors.push(`${file}: screens.0.requiredFunctions must include ${drill.function}`);
+    if (ids.has(drill.id))
+      errors.push(`${file}: id "${drill.id}" is also used by ${ids.get(drill.id)}`);
+    ids.set(drill.id, file);
+    perFunction.set(drill.function, (perFunction.get(drill.function) ?? 0) + 1);
+  }
+  if (drills.length > 0)
+    for (const fn of new Set([...indexNames, ...perFunction.keys()])) {
+      const n = perFunction.get(fn) ?? 0;
+      if (n !== DRILLS_PER_FUNCTION)
+        errors.push(`content/drills: ${fn} has ${n} drills, not ${DRILLS_PER_FUNCTION}`);
+    }
+  const dailyIds = new Set(
+    [...daily, ...mocks, ...drills].map((d) => (d.data as { id?: string } | null)?.id),
+  );
 
   for (const [slug, n] of slugs) {
     if (n > 1) errors.push(`slug "${slug}" is used by more than one exercise`);
@@ -172,7 +211,9 @@ export function validateContent(
   for (const [id, file] of ids) {
     if (dailyIds.has(id)) {
       if (counts.has(id))
-        errors.push(`${track.file}: "${id}" is a daily or mock task and cannot be in the order`);
+        errors.push(
+          `${track.file}: "${id}" is a daily, mock or drill task and cannot be in the order`,
+        );
       continue;
     }
     if (!counts.has(id)) errors.push(`${file}: "${id}" is not in the track order`);

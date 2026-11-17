@@ -12,6 +12,7 @@ export interface Me {
   proStatus: string | null;
   proUntil: string | null;
   news: boolean;
+  digest: boolean;
   /** Google users have no password to change. */
   hasPassword: boolean;
 }
@@ -24,7 +25,7 @@ export const GET: APIRoute = async (ctx) => {
   }
   const { data: profile } = await supabase
     .from("profiles")
-    .select("pro_status, pro_until, news")
+    .select("pro_status, pro_until, news, digest")
     .eq("id", user.id)
     .maybeSingle();
   const me: Me = {
@@ -33,6 +34,7 @@ export const GET: APIRoute = async (ctx) => {
     proStatus: profile?.pro_status ?? null,
     proUntil: profile?.pro_until ?? null,
     news: profile?.news ?? false,
+    digest: profile?.digest ?? false,
     hasPassword: (user.identities ?? []).some((i) => i.provider === "email"),
   };
   return json(me);

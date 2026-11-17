@@ -39,6 +39,7 @@ describe("currentHref", () => {
     expect(currentHref(PRACTICE_NAV, "/exercises/tracks/")).toBe("/exercises/tracks/");
     expect(currentHref(PRACTICE_NAV, "/exercises/tracks/lookups/")).toBe("/exercises/tracks/");
     expect(currentHref(PRACTICE_NAV, "/daily/")).toBe("/daily/");
+    expect(currentHref(PRACTICE_NAV, "/exercises/drills/")).toBe("/exercises/drills/");
     expect(currentHref(LEARN_NAV, "/functions/xlookup/")).toBe("/functions/");
   });
 

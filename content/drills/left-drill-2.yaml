@@ -1,0 +1,38 @@
+id: left-drill-2
+slug: left-drill-2
+level: 1
+title: The first letter
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LEFT
+screens:
+  - prompt: In B2, use LEFT to take the first letter of the name in A2.
+    rows:
+      - [Name, Initial]
+      - [Morgan, null]
+    answerCell: B2
+    expected: M
+    variants:
+      - set: { A2: Quinn }
+        expected: Q
+    answer: =LEFT(A2)
+    requiredFunctions:
+      - LEFT
+    hints:
+      nudge: With no number, LEFT takes one character.
+      rule: LEFT(text) is the same as LEFT(text,1).
+    misses:
+      value: Morgan starts with M.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LEFT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LEFT(A2)
+      - =LEFT(A2,1)
+    reject:
+      - formula: =LEFT(A2,2)
+        rule: value
+      - formula: ="M"
+        rule: required-function
+      - formula: =LEFT(A2
+        rule: syntax

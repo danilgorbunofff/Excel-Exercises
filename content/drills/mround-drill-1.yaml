@@ -1,0 +1,43 @@
+id: mround-drill-1
+slug: mround-drill-1
+level: 1
+title: Round to the nearest 5
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MROUND
+screens:
+  - prompt: In C2, use MROUND to round the minutes in B2 to the nearest 5.
+    rows:
+      - [Call, Minutes, Rounded]
+      - [C1, 23, null]
+    answerCell: C2
+    expected: 25
+    variants:
+      - set: { B2: 22 }
+        expected: 20
+      - set: { B2: 22.5 }
+        expected: 25
+      - set: { B2: 27.4 }
+        expected: 25
+    answer: =MROUND(B2,5)
+    requiredFunctions:
+      - MROUND
+    hints:
+      nudge: MROUND takes a number and the multiple to round to.
+      rule: MROUND(number,5) rounds to the nearest multiple of 5; a half goes up.
+    misses:
+      value: 23 is nearer 25 than 20, so it rounds to 25.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MROUND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MROUND(B2,5)
+    reject:
+      - formula: =ROUND(B2,0)
+        rule: required-function
+      - formula: =MROUND(B2,10)
+        rule: value
+      - formula: =25
+        rule: required-function
+      - formula: =MROUND(B2,5
+        rule: syntax

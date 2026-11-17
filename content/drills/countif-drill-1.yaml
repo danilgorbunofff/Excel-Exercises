@@ -1,0 +1,48 @@
+id: countif-drill-1
+slug: countif-drill-1
+level: 1
+title: Count the paid orders
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTIF
+screens:
+  - prompt: In B9, use COUNTIF to count the orders in B2:B8 with the status "Paid".
+    rows:
+      - [Order, Status]
+      - [A1, Paid]
+      - [A2, Open]
+      - [A3, Paid]
+      - [A4, Paid]
+      - [A5, Late]
+      - [A6, Open]
+      - [A7, Paid]
+      - [Paid, null]
+    answerCell: B9
+    expected: 4
+    variants:
+      - set: { B3: Paid }
+        expected: 5
+    answer: =COUNTIF(B2:B8,"Paid")
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: COUNTIF takes the range to check, then what to look for.
+      rule: COUNTIF(range,"Paid") counts the cells equal to Paid. Text goes in double quotes.
+    misses:
+      value: 4 orders are Paid.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTIF(B2:B8,"Paid")
+      - =countif(b2:b8,"paid")
+      - =COUNTIF(B2:B8,A9)
+    reject:
+      - formula: =COUNTIF(B2:B8,"Open")
+        rule: value
+      - formula: =COUNTA(B2:B8)
+        rule: required-function
+      - formula: =4
+        rule: required-function
+      - formula: =COUNTIF(B2:B8,"Paid"
+        rule: syntax

@@ -1,0 +1,41 @@
+id: rounddown-drill-4
+slug: rounddown-drill-4
+level: 2
+title: Rounding down a negative number
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ROUNDDOWN
+screens:
+  - prompt: In C2, use ROUNDDOWN to round the change in B2 to a whole number. Note what happens to a negative number.
+    rows:
+      - [Week, Change, Rounded]
+      - [W1, -2.7, null]
+    answerCell: C2
+    expected: -2
+    variants:
+      - set: { B2: 2.7 }
+        expected: 2
+      - set: { B2: -0.4 }
+        expected: 0
+    answer: =ROUNDDOWN(B2,0)
+    requiredFunctions:
+      - ROUNDDOWN
+    hints:
+      nudge: ROUNDDOWN rounds toward zero, so -2.7 becomes -2, not -3.
+      rule: ROUNDDOWN moves toward zero for negative numbers as well as positive ones.
+    misses:
+      value: -2.7 rounds toward zero, to -2.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ROUNDDOWN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ROUNDDOWN(B2,0)
+    reject:
+      - formula: =ROUNDUP(B2,0)
+        rule: required-function
+      - formula: =ROUNDDOWN(B2,1)
+        rule: value
+      - formula: =-2
+        rule: required-function
+      - formula: =ROUNDDOWN(B2,0
+        rule: syntax

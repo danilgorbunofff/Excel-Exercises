@@ -1,0 +1,40 @@
+id: concat-drill-3
+slug: concat-drill-3
+level: 1
+title: Join a whole row
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: CONCAT
+screens:
+  - prompt: In F2, use CONCAT to join the letters in B2:E2 into one piece of text.
+    rows:
+      - [Box, P1, P2, P3, P4, Code]
+      - [B7, Q, R, S, T, null]
+    answerCell: F2
+    expected: QRST
+    variants:
+      - set: { D2: Z }
+        expected: QRZT
+    answer: =CONCAT(B2:E2)
+    requiredFunctions:
+      - CONCAT
+    hints:
+      nudge: CONCAT accepts a whole range.
+      rule: CONCAT(B2:E2) joins every cell of the range in order.
+    misses:
+      value: The four letters join to QRST.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for CONCAT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =CONCAT(B2:E2)
+      - =CONCAT(B2,C2,D2,E2)
+    reject:
+      - formula: =CONCAT(B2:D2)
+        rule: value
+      - formula: =B2&C2&D2&E2
+        rule: required-function
+      - formula: ="QRST"
+        rule: required-function
+      - formula: =CONCAT(B2:E2
+        rule: syntax

@@ -3,8 +3,11 @@
 // page works without it. Solved exercises come back for review after growing
 // gaps, so practice is spaced out over weeks.
 
-/** revealed: the answer was shown, not yet solved. helped: solved after the answer was shown. */
-export type ProgressState = "revealed" | "solved" | "helped";
+/**
+ * tried: checked with a wrong formula, not solved yet. revealed: the answer was
+ * shown, not yet solved. helped: solved after the answer was shown.
+ */
+export type ProgressState = "tried" | "revealed" | "solved" | "helped";
 export interface ProgressEntry {
   state: ProgressState;
   /** The day this state was first reached, YYYY-MM-DD in local time. */
@@ -13,6 +16,10 @@ export interface ProgressEntry {
   last?: string;
   /** How many times it was solved again on a later day. */
   reviews?: number;
+  /** How many wrong checks, ever. */
+  misses?: number;
+  /** The day of the latest wrong check. */
+  missed?: string;
 }
 export type Progress = Record<string, ProgressEntry>;
 
@@ -46,23 +53,34 @@ export function readProgress(storage: Storage | undefined = globalThis.localStor
 }
 
 /**
- * Records a solve or a shown answer. A solve after the answer was shown is
- * "solved with help". Showing the answer after a solve changes nothing. A
- * solve on a later day than the last one counts as a review.
+ * Records a solve, a shown answer or a wrong check. A solve after the answer
+ * was shown is "solved with help". Showing the answer after a solve changes
+ * nothing. A solve on a later day than the last one counts as a review. A
+ * wrong check only counts the miss; it never undoes a solve.
  */
 export function record(
   id: string,
-  event: "solved" | "revealed",
+  event: "solved" | "revealed" | "missed",
   storage: Storage | undefined = globalThis.localStorage,
   today = localDay(),
 ): ProgressEntry {
   const all = readProgress(storage);
   const before = all[id];
   let entry: ProgressEntry;
-  if (event === "revealed") {
-    entry = before ?? { state: "revealed", date: today };
-  } else if (!before || before.state === "revealed") {
-    entry = { state: before ? "helped" : "solved", date: today, last: today, reviews: 0 };
+  if (event === "missed") {
+    const base = before ?? { state: "tried", date: today };
+    entry = { ...base, misses: (base.misses ?? 0) + 1, missed: today };
+  } else if (event === "revealed") {
+    entry =
+      !before || before.state === "tried" ? { ...before, state: "revealed", date: today } : before;
+  } else if (!before || before.state === "revealed" || before.state === "tried") {
+    entry = {
+      ...before,
+      state: before?.state === "revealed" ? "helped" : "solved",
+      date: today,
+      last: today,
+      reviews: 0,
+    };
   } else {
     const later = before.last !== undefined && today > before.last;
     entry = {
@@ -84,7 +102,7 @@ export function record(
 
 /** The day a solved exercise is next due for review, or null if it is not solved. */
 export function dueDate(entry: ProgressEntry): string | null {
-  if (entry.state === "revealed" || !entry.last) return null;
+  if (entry.state === "revealed" || entry.state === "tried" || !entry.last) return null;
   const gap = REVIEW_GAPS[Math.min(entry.reviews ?? 0, REVIEW_GAPS.length - 1)] ?? 1;
   return addDays(entry.last, gap);
 }
@@ -94,7 +112,28 @@ export function isDue(entry: ProgressEntry, today = localDay()): boolean {
   return due !== null && due <= today;
 }
 
-const RANK: Record<ProgressState, number> = { revealed: 0, helped: 1, solved: 2 };
+const RANK: Record<ProgressState, number> = { tried: 0, revealed: 1, helped: 2, solved: 3 };
+
+const latest = (...days: (string | undefined)[]) =>
+  days
+    .filter((d): d is string => d !== undefined)
+    .sort()
+    .at(-1);
+
+/** Solved, on its own or with help. */
+export const isSolved = (entry: ProgressEntry | undefined): boolean =>
+  entry?.state === "solved" || entry?.state === "helped";
+
+/**
+ * Whether an exercise belongs on the review list: missed and not solved since,
+ * or solved and due again.
+ */
+export function needsReview(entry: ProgressEntry | undefined, today = localDay()): boolean {
+  if (!entry) return false;
+  const missedSinceSolve =
+    (entry.misses ?? 0) > 0 && (!isSolved(entry) || (entry.missed ?? "") > (entry.last ?? ""));
+  return missedSinceSolve || isDue(entry, today);
+}
 
 /**
  * Joins progress from two places, such as this browser and the account. For
@@ -109,10 +148,8 @@ export function mergeProgress(a: Progress, b: Progress): Progress {
       out[id] = y;
       continue;
     }
-    const last = [x.last, y.last]
-      .filter((d): d is string => d !== undefined)
-      .sort()
-      .at(-1);
+    const last = latest(x.last, y.last);
+    const missed = latest(x.missed, y.missed);
     const entry: ProgressEntry = {
       state: RANK[y.state] > RANK[x.state] ? y.state : x.state,
       date: [x.date, y.date].sort()[0] ?? x.date,
@@ -121,6 +158,10 @@ export function mergeProgress(a: Progress, b: Progress): Progress {
     if (x.reviews !== undefined || y.reviews !== undefined) {
       entry.reviews = Math.max(x.reviews ?? 0, y.reviews ?? 0);
     }
+    if (x.misses !== undefined || y.misses !== undefined) {
+      entry.misses = Math.max(x.misses ?? 0, y.misses ?? 0);
+    }
+    if (missed !== undefined) entry.missed = missed;
     out[id] = entry;
   }
   return out;

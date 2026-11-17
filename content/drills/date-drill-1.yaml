@@ -1,0 +1,41 @@
+id: date-drill-1
+slug: date-drill-1
+level: 1
+title: A date from three cells
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: DATE
+screens:
+  - prompt: In D2, use DATE to build a date from the year in A2, the month in B2 and the day in C2.
+    rows:
+      - [Year, Month, Day, Date]
+      - [2026, 3, 15, null]
+    answerCell: D2
+    expected: 46096
+    variants:
+      - set: { C2: 1 }
+        expected: 46082
+      - set: { B2: 12, C2: 31 }
+        expected: 46387
+    answer: =DATE(A2,B2,C2)
+    requiredFunctions:
+      - DATE
+    hints:
+      nudge: DATE takes the year, the month, then the day.
+      rule: DATE(year,month,day) returns the date as a number Excel shows as a date.
+    misses:
+      value: 15 March 2026 is the date number 46096.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for DATE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =DATE(A2,B2,C2)
+    reject:
+      - formula: =DATE(A2,C2,B2)
+        rule: value
+      - formula: =DATE(C2,B2,A2)
+        rule: value
+      - formula: =46096
+        rule: required-function
+      - formula: =DATE(A2,B2,C2
+        rule: syntax

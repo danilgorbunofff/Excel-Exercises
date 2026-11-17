@@ -1,0 +1,47 @@
+id: vlookup-drill-3
+slug: vlookup-drill-3
+level: 2
+title: Exact match in an unsorted list
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: VLOOKUP
+screens:
+  - prompt: In F3, use VLOOKUP to find the price for the code in F2. The codes in A2:A7 are not sorted, so ask for an exact match.
+    rows:
+      - [Code, Item, Price, null, Find, null]
+      - [D40, Tape, 2, null, Code, B20]
+      - [F60, Ink, 12, null, Price, null]
+      - [A10, Pen, 1.5, null, null, null]
+      - [E50, File, 4, null, null, null]
+      - [B20, Pad, 3, null, null, null]
+      - [C30, Clip, 0.25, null, null, null]
+    answerCell: F3
+    expected: 3
+    variants:
+      - set: { F2: C30 }
+        expected: 0.25
+      - set: { F2: D40 }
+        expected: 2
+    answer: =VLOOKUP(F2,A2:C7,3,FALSE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: Leaving out the last argument means an approximate match, which needs sorted codes.
+      rule: VLOOKUP(value,table,col,FALSE) finds the exact code wherever it is.
+    misses:
+      value: Code B20 is priced 3. An approximate match can land on the wrong row in an unsorted list.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for VLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =VLOOKUP(F2,A2:C7,3,FALSE)
+      - =VLOOKUP(F2,A2:C7,3,0)
+    reject:
+      - formula: =VLOOKUP(F2,A2:C7,3)
+        rule: value
+      - formula: =VLOOKUP(F2,A2:C7,3,TRUE)
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =VLOOKUP(F2,A2:C7,3,FALSE
+        rule: syntax

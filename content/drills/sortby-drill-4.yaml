@@ -1,0 +1,54 @@
+id: sortby-drill-4
+slug: sortby-drill-4
+level: 2
+title: Region, then sales
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SORTBY
+screens:
+  - prompt: In E2, use SORTBY to list the reps in A2:A7 by region in B2:B7 from A to Z, and within a region by sales in C2:C7, largest first.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, null]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [Ann]
+      - [Cy]
+      - [Ed]
+      - [Di]
+      - [Flo]
+      - [Bo]
+    variants:
+      - set: { C6: 999 }
+        expected:
+          - - Ed
+          - - Ann
+          - - Cy
+          - - Di
+          - - Flo
+          - - Bo
+    answer: =SORTBY(A2:A7,B2:B7,1,C2:C7,-1)
+    requiredFunctions:
+      - SORTBY
+    hints:
+      nudge: "Add a second pair: the sales range and -1."
+      rule: SORTBY(names,key1,order1,key2,order2) breaks ties with the second key.
+    misses:
+      value: Sorted, the reps are Ann, Cy, Ed, Di, Flo, Bo.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SORTBY(A2:A7,B2:B7,1,C2:C7,-1)
+    reject:
+      - formula: =SORTBY(A2:A7,B2:B7)
+        rule: value
+      - formula: =SORTBY(A2:A7,B2:B7,1,C2:C7,1)
+        rule: value
+      - formula: =SORTBY(A2:A7,B2:B7,1,C2:C7,-1
+        rule: syntax

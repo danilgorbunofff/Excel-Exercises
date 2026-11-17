@@ -49,6 +49,8 @@ Accounts use Supabase (Auth and Postgres). PRO is a Stripe subscription, or a on
 | `STRIPE_WEBHOOK_SECRET`                                                                          | The webhook endpoint below.                                                                                                                                                                                                                                           |
 | `STRIPE_PRICE_MONTHLY`, `STRIPE_PRICE_QUARTERLY`, `STRIPE_PRICE_ANNUAL`, `STRIPE_PRICE_LIFETIME` | The price ids (`price_...`) of the PRO product, listed in `src/server/plans.ts`. Checkout reads from Stripe whether each is recurring (a subscription) or one-time (lifetime). On a build with Stripe keys, an unset `STRIPE_PRICE_LIFETIME` hides the lifetime plan. |
 | `STRIPE_PRICE_SEMIANNUAL` (optional)                                                             | The retired 6-month price. Not sold any more and not needed: access and billing for existing 6-month members follow their Stripe subscription, not this variable.                                                                                                     |
+| `RESEND_API_KEY`, `EMAIL_FROM`                                                                   | Resend, for the opt-in weekly email. `EMAIL_FROM` is the sender, such as `Excel Exercises <hello@excelexercises.online>`, on a domain verified in Resend (it asks for DNS records).                                                                                   |
+| `CRON_SECRET`                                                                                    | Any long random string. Vercel sends it with the weekly cron call (`crons` in `vercel.json`); `/api/cron/weekly/` refuses calls without it.                                                                                                                           |
 
 For local work: `vercel link`, then `vercel env pull .env.local`.
 
@@ -66,6 +68,9 @@ For local work: `vercel link`, then `vercel env pull .env.local`.
    `assessment_attempts`, and stops the browser from writing attempts itself:
    from then on only `/api/assessments/` (service role) saves them. Deploy the
    code and run 0004 together, since older code saves attempts as the user.
+   Then run `supabase/migrations/0005_events.sql` (anonymous usage counts,
+   see `docs/metrics.md`) and `0006_digest.sql` (the weekly email switch).
+   Deploy the code and run 0006 together: the account page reads `digest`.
 2. Authentication, URL Configuration: Site URL `https://excelexercises.online`.
    Redirect URLs: `https://excelexercises.online/api/auth/callback/**`,
    `http://localhost:4321/api/auth/callback/**` and your preview domain.

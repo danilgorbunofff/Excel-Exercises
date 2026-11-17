@@ -1,0 +1,37 @@
+id: lower-drill-2
+slug: lower-drill-2
+level: 1
+title: Tidy an email address
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LOWER
+screens:
+  - prompt: In B2, use LOWER to write the email address in A2 in small letters.
+    rows:
+      - [Email, Result]
+      - [Rosa.Diaz@Example.COM, null]
+    answerCell: B2
+    expected: rosa.diaz@example.com
+    variants:
+      - set: { A2: AL@SHOP.ORG }
+        expected: al@shop.org
+    answer: =LOWER(A2)
+    requiredFunctions:
+      - LOWER
+    hints:
+      nudge: Email addresses are usually stored in small letters.
+      rule: LOWER changes only the capitals.
+    misses:
+      value: In small letters, the address is rosa.diaz@example.com.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LOWER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LOWER(A2)
+    reject:
+      - formula: =PROPER(A2)
+        rule: required-function
+      - formula: ="rosa.diaz@example.com"
+        rule: required-function
+      - formula: =LOWER(A2
+        rule: syntax

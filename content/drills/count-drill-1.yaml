@@ -1,0 +1,46 @@
+id: count-drill-1
+slug: count-drill-1
+level: 1
+title: Count the marked tests
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNT
+screens:
+  - prompt: In B8, use COUNT to find how many cells in B2:B7 hold a score.
+    rows:
+      - [Student, Score]
+      - [Ann, 72]
+      - [Bo, absent]
+      - [Cai, 64]
+      - [Dee, 91]
+      - [Eli, sick]
+      - [Fay, 58]
+      - [Marked, null]
+    answerCell: B8
+    expected: 4
+    variants:
+      - set: { B3: 80 }
+        expected: 5
+    answer: =COUNT(B2:B7)
+    requiredFunctions:
+      - COUNT
+    hints:
+      nudge: One function counts only the cells that hold numbers.
+      rule: COUNT(range) counts the numbers in the range and skips text and empty cells.
+    misses:
+      value: 4 cells hold a score. Text such as absent does not count.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNT(B2:B7)
+      - =count(b2:b7)
+    reject:
+      - formula: =COUNTA(B2:B7)
+        rule: required-function
+      - formula: =COUNT(B2:B5)
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =COUNT(B2:B7
+        rule: syntax

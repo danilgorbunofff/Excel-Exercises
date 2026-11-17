@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =PROPER(TRIM($A$3))
+      - =PROPER(TRIM(A$3))
+      - =proper(trim(a3))
+    wrong: []
+    equivalent: []

@@ -1,0 +1,61 @@
+id: filter-drill-5
+slug: filter-drill-5
+level: 2
+title: Two conditions at once
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: FILTER
+screens:
+  - prompt: In E2, use FILTER to list the reps in A2:A7 from the "East" region with sales in C2:C7 over 300. Multiply the two tests.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, null]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [Ann]
+      - [Cy]
+    variants:
+      - set: { C6: 350 }
+        expected:
+          - - Ann
+          - - Cy
+          - - Ed
+      - set: { B5: East }
+        expected:
+          - - Ann
+          - - Cy
+          - - Di
+      - set: { B3: East, C3: 300 }
+        expected:
+          - [Ann]
+          - [Cy]
+      - set: { B3: East, C3: 301 }
+        expected:
+          - [Ann]
+          - [Bo]
+          - [Cy]
+    answer: =FILTER(A2:A7,(B2:B7="East")*(C2:C7>300))
+    requiredFunctions:
+      - FILTER
+    hints:
+      nudge: Multiplying two tests keeps only rows where both are true.
+      rule: FILTER(range,(test1)*(test2)) is an AND of the two tests.
+    misses:
+      value: East reps over 300 are Ann, Cy.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =FILTER(A2:A7,(B2:B7="East")*(C2:C7>300))
+    reject:
+      - formula: =FILTER(A2:A7,B2:B7="East")
+        rule: value
+      - formula: =FILTER(A2:A7,(B2:B7="East")+(C2:C7>300))
+        rule: value
+      - formula: =FILTER(A2:A7,(B2:B7="East")*(C2:C7>300)
+        rule: syntax

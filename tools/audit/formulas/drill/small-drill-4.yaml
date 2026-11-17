@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SMALL($B$2:$B$8,3)
+      - =SMALL(B$2:B$8,3)
+      - =small(b2:b8, 3)
+      - =LET(data,B2:B8,SMALL(data,3))
+    wrong:
+      - formula: =SMALL(B2:B7,3)
+        rule: fragile
+        why: range B2:B8 one row short at the end
+    equivalent:
+      - formula: =SMALL(B2:B9,3)
+        why: "range B2:B8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

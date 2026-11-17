@@ -1,0 +1,37 @@
+id: average-drill-2
+slug: average-drill-2
+level: 1
+title: Average a week of readings
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: AVERAGE
+screens:
+  - prompt: In I2, use AVERAGE to find the mean temperature from Monday to Sunday in B2:H2.
+    rows:
+      - [City, Mon, Tue, Wed, Thu, Fri, Sat, Sun, Mean]
+      - [Oslo, 4, 6, 5, 3, 7, 8, 2, null]
+    answerCell: I2
+    expected: 5
+    variants:
+      - set: { H2: 9 }
+        expected: 6
+    answer: =AVERAGE(B2:H2)
+    requiredFunctions:
+      - AVERAGE
+    hints:
+      nudge: The readings run along row 2.
+      rule: "AVERAGE works on a row range too: AVERAGE(B2:H2)."
+    misses:
+      value: The seven readings average 5.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AVERAGE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AVERAGE(B2:H2)
+    reject:
+      - formula: =AVERAGE(B2:G2)
+        rule: value
+      - formula: =5
+        rule: required-function
+      - formula: =AVERAGE(B2:H2
+        rule: syntax

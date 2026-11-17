@@ -1,0 +1,41 @@
+id: concat-drill-5
+slug: concat-drill-5
+level: 2
+title: Initial and surname
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: CONCAT
+screens:
+  - prompt: In C2, use CONCAT and LEFT to make the first letter of A2, then ". ", then the surname in B2.
+    rows:
+      - [First, Last, Result]
+      - [Rosa, Diaz, null]
+    answerCell: C2
+    expected: R. Diaz
+    variants:
+      - set: { A2: Al, B2: Brook }
+        expected: A. Brook
+    answer: =CONCAT(LEFT(A2,1),". ",B2)
+    requiredFunctions:
+      - CONCAT
+      - LEFT
+    hints:
+      nudge: LEFT takes the initial; CONCAT joins the parts.
+      rule: CONCAT(LEFT(A2,1),". ",B2) makes R. Diaz.
+    misses:
+      value: The short name reads R. Diaz.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for CONCAT and LEFT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =CONCAT(LEFT(A2,1),". ",B2)
+      - =CONCAT(LEFT(A2),". ",B2)
+    reject:
+      - formula: =CONCAT(A2,". ",B2)
+        rule: required-function
+      - formula: =CONCAT(LEFT(A2,1),".",B2)
+        rule: value
+      - formula: ="R. Diaz"
+        rule: required-function
+      - formula: =CONCAT(LEFT(A2,1),". ",B2
+        rule: syntax

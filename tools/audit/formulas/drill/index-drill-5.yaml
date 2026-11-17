@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($C$2:$C$7,MATCH($F$2,$A$2:$A$7,0))
+      - =INDEX(C$2:C$7,MATCH(F2,A2:A7,0))
+      - =index(c2:c7, match(f2, a2:a7, 0))
+      - =LET(data,C2:C7,INDEX(data,MATCH(F2,A2:A7,0)))
+    wrong:
+      - formula: =INDEX(C2:C6,MATCH(F2,A2:A7,0))
+        rule: fragile
+        why: range C2:C7 one row short at the end
+      - formula: =INDEX(C2:C7,MATCH(F2,A2:A6,0))
+        rule: fragile
+        why: range A2:A7 one row short at the end
+    equivalent: []

@@ -1,0 +1,49 @@
+id: match-drill-3
+slug: match-drill-3
+level: 2
+title: Which band a value falls in
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MATCH
+screens:
+  - prompt: In D3, use MATCH with 1 to find which band in A2:A5, holding the start of each band from small to large, the value in D2 falls in.
+    rows:
+      - [From, null, Find, null]
+      - [0, null, Value, 52]
+      - [25, null, Band, null]
+      - [50, null, null, null]
+      - [75, null, null, null]
+    answerCell: D3
+    expected: 3
+    variants:
+      - set: { D2: 50 }
+        expected: 3
+      - set: { D2: 49 }
+        expected: 2
+      - set: { D2: 99 }
+        expected: 4
+      - set: { D2: 0 }
+        expected: 1
+    answer: =MATCH(D2,A2:A5,1)
+    requiredFunctions:
+      - MATCH
+    hints:
+      nudge: Match type 1 finds the largest start that is not more than the value.
+      rule: MATCH(value,starts,1) needs the starts sorted from small to large.
+    misses:
+      value: 52 is at least 50 but under 75, so it falls in band 3.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MATCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MATCH(D2,A2:A5,1)
+      - =MATCH(D2,A2:A5)
+    reject:
+      - formula: =MATCH(D2,A2:A5,0)
+        rule: value
+      - formula: =MATCH(D2,A2:A5,-1)
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =MATCH(D2,A2:A5,1
+        rule: syntax

@@ -1,0 +1,45 @@
+id: iferror-drill-2
+slug: iferror-drill-2
+level: 1
+title: A message for a missing code
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IFERROR
+screens:
+  - prompt: In E3, use IFERROR and VLOOKUP to find the price for the code in E2, and show "Not found" if it is missing.
+    rows:
+      - [Code, Price, null, Find, null]
+      - [D40, 2, null, Code, Z99]
+      - [A10, 1.5, null, Price, null]
+      - [F60, 12, null, null, null]
+      - [B20, 3, null, null, null]
+    answerCell: E3
+    expected: Not found
+    variants:
+      - { set: { E2: B20 }, expected: 3 }
+      - { set: { E2: F60 }, expected: 12 }
+      - { set: { E2: D40 }, expected: 2 }
+    answer: =IFERROR(VLOOKUP(E2,A2:B5,2,FALSE),"Not found")
+    requiredFunctions:
+      - IFERROR
+      - VLOOKUP
+    hints:
+      nudge: Wrap the lookup in IFERROR.
+      rule: 'IFERROR(VLOOKUP(...),"Not found") replaces #N/A with your text.'
+    misses:
+      value: Z99 is not in the list, so the cell shows Not found.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IFERROR and VLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IFERROR(VLOOKUP(E2,A2:B5,2,FALSE),"Not found")
+      - =IFERROR(VLOOKUP(E2,A2:B5,2,0),"Not found")
+    reject:
+      - formula: =VLOOKUP(E2,A2:B5,2,FALSE)
+        rule: required-function
+      - formula: =IFERROR(VLOOKUP(E2,A2:B5,1,FALSE),"Not found")
+        rule: fragile
+      - formula: ="Not found"
+        rule: required-function
+      - formula: =IFERROR(VLOOKUP(E2,A2:B5,2,FALSE),"Not found"
+        rule: syntax

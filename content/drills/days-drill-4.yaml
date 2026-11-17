@@ -1,0 +1,37 @@
+id: days-drill-4
+slug: days-drill-4
+level: 2
+title: Across a leap day
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: DAYS
+screens:
+  - prompt: In C2, use DAYS to count the days from A2 to B2. The dates cross the end of February in a leap year.
+    rows:
+      - [Start, End, Days]
+      - [46810, 46813, null]
+    answerCell: C2
+    expected: 3
+    variants:
+      - set: { A2: 46445, B2: 46447 }
+        expected: 2
+    answer: =DAYS(B2,A2)
+    requiredFunctions:
+      - DAYS
+    hints:
+      nudge: DAYS knows that February 2028 has 29 days.
+      rule: DAYS counts the real calendar, leap days included.
+    misses:
+      value: 27 February to 1 March 2028 is 3 days, because of 29 February.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for DAYS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =DAYS(B2,A2)
+    reject:
+      - formula: =DAYS(A2,B2)
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =DAYS(B2,A2
+        rule: syntax

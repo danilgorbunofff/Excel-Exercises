@@ -1,0 +1,42 @@
+id: and-drill-2
+slug: and-drill-2
+level: 1
+title: Complete when paid and shipped
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: AND
+screens:
+  - prompt: In D2, use IF and AND to show "Complete" when both B2 and C2 are "Yes", and "Open" otherwise.
+    rows:
+      - [Order, Paid, Shipped, Status]
+      - [A1, Yes, Yes, null]
+    answerCell: D2
+    expected: Complete
+    variants:
+      - set: { C2: No }
+        expected: Open
+      - set: { B2: No }
+        expected: Open
+    answer: =IF(AND(B2="Yes",C2="Yes"),"Complete","Open")
+    requiredFunctions:
+      - AND
+      - IF
+    hints:
+      nudge: Put AND inside IF as its test.
+      rule: IF(AND(test1,test2),yes,no) needs both tests to be true for yes.
+    misses:
+      value: Both are Yes, so the status is Complete.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AND and IF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IF(AND(B2="Yes",C2="Yes"),"Complete","Open")
+    reject:
+      - formula: =IF(B2="Yes","Complete","Open")
+        rule: required-function
+      - formula: =IF(AND(B2="Yes",C2="Yes"),"Open","Complete")
+        rule: value
+      - formula: ="Complete"
+        rule: required-function
+      - formula: =IF(AND(B2="Yes",C2="Yes"),"Complete","Open"
+        rule: syntax

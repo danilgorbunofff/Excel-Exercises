@@ -1,0 +1,41 @@
+id: textafter-drill-4
+slug: textafter-drill-4
+level: 2
+title: After a delimiter typed in a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TEXTAFTER
+screens:
+  - prompt: In C2, use TEXTAFTER to take everything in A2 after the delimiter typed in B2.
+    rows:
+      - [Path, Delimiter, Result]
+      - [Sales/2026/North, /, null]
+    answerCell: C2
+    expected: 2026/North
+    variants:
+      - set: { B2: 2026/ }
+        expected: North
+      - set: { A2: HR/Leave }
+        expected: Leave
+    answer: =TEXTAFTER(A2,B2)
+    requiredFunctions:
+      - TEXTAFTER
+    hints:
+      nudge: The delimiter can come from a cell.
+      rule: TEXTAFTER(A2,B2) splits at whatever B2 holds.
+    misses:
+      value: After the first slash is 2026/North.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TEXTAFTER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TEXTAFTER(A2,B2)
+    reject:
+      - formula: =TEXTAFTER(A2,"/")
+        rule: fragile
+      - formula: =TEXTAFTER(B2,A2)
+        rule: value
+      - formula: ="2026/North"
+        rule: required-function
+      - formula: =TEXTAFTER(A2,B2
+        rule: syntax

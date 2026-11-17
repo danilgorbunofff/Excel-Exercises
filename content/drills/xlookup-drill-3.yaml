@@ -1,0 +1,46 @@
+id: xlookup-drill-3
+slug: xlookup-drill-3
+level: 2
+title: A message when the code is missing
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: XLOOKUP
+screens:
+  - prompt: In F3, use XLOOKUP to find the price for the code in F2, and show "Not found" when the code is not in A2:A7.
+    rows:
+      - [Code, Item, Price, null, Find, null]
+      - [A10, Pen, 1.5, null, Code, Z99]
+      - [B20, Pad, 3, null, Price, null]
+      - [C30, Clip, 0.25, null, null, null]
+      - [D40, Tape, 2, null, null, null]
+      - [E50, File, 4, null, null, null]
+      - [F60, Ink, 12, null, null, null]
+    answerCell: F3
+    expected: Not found
+    variants:
+      - set: { F2: C30 }
+        expected: 0.25
+      - set: { F2: A10 }
+        expected: 1.5
+    answer: =XLOOKUP(F2,A2:A7,C2:C7,"Not found")
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: XLOOKUP's fourth argument is what to show when nothing matches.
+      rule: 'XLOOKUP(value,look_in,return,"Not found") shows the text instead of #N/A.'
+    misses:
+      value: Z99 is not in the list, so the cell should say Not found.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for XLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =XLOOKUP(F2,A2:A7,C2:C7,"Not found")
+    reject:
+      - formula: =XLOOKUP(F2,A2:A7,C2:C7)
+        rule: value
+      - formula: =XLOOKUP(F2,A2:A7,B2:B7,"Not found")
+        rule: fragile
+      - formula: ="Not found"
+        rule: required-function
+      - formula: =XLOOKUP(F2,A2:A7,C2:C7,"Not found"
+        rule: syntax

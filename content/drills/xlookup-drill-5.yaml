@@ -1,0 +1,48 @@
+id: xlookup-drill-5
+slug: xlookup-drill-5
+level: 2
+title: Cost of an order line
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: XLOOKUP
+screens:
+  - prompt: In F4, use XLOOKUP to find the price of the code in F2, then multiply it by the quantity in F3.
+    rows:
+      - [Code, Item, Price, null, Find, null]
+      - [A10, Pen, 1.5, null, Code, D40]
+      - [B20, Pad, 3, null, Qty, 12]
+      - [C30, Clip, 0.25, null, Cost, null]
+      - [D40, Tape, 2, null, null, null]
+      - [E50, File, 4, null, null, null]
+      - [F60, Ink, 12, null, null, null]
+    answerCell: F4
+    expected: 24
+    variants:
+      - set: { F2: F60 }
+        expected: 144
+      - set: { F3: 5 }
+        expected: 10
+    answer: =XLOOKUP(F2,A2:A7,C2:C7)*F3
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: A lookup returns a number you can multiply like any other.
+      rule: XLOOKUP(...)*F3 multiplies the price found by the quantity.
+    misses:
+      value: Tape costs 2, and 12 of them cost 24.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      required-function: This drill asks for XLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =XLOOKUP(F2,A2:A7,C2:C7)*F3
+      - =F3*XLOOKUP(F2,A2:A7,C2:C7)
+    reject:
+      - formula: =XLOOKUP(F2,A2:A7,C2:C7)
+        rule: value
+      - formula: =XLOOKUP(F2,A2:A7,C2:C7)*12
+        rule: reference
+      - formula: =24
+        rule: required-function
+      - formula: =XLOOKUP(F2,A2:A7,C2:C7)*F3,
+        rule: syntax

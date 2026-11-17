@@ -1,0 +1,48 @@
+id: mode-drill-4
+slug: mode-drill-4
+level: 2
+title: Most common size with notes in the list
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MODE
+screens:
+  - prompt: In B9, use MODE to find the most common size in B2:B7. Some cells hold notes instead of sizes.
+    rows:
+      - [Order, Size]
+      - [O1, 40]
+      - [O2, returned]
+      - [O3, 42]
+      - [O4, 40]
+      - [O5, n/a]
+      - [O6, 42]
+      - [null, null]
+      - [Mode, null]
+    answerCell: B9
+    expected: 40
+    variants:
+      - set: { B3: 42 }
+        expected: 42
+      - set: { B6: 38 }
+        expected: 40
+    answer: =MODE(B2:B7)
+    requiredFunctions:
+      - MODE
+    hints:
+      nudge: MODE skips text in the range.
+      rule: MODE looks only at the numbers, so the notes are ignored.
+    misses:
+      value: 40 and 42 both appear twice, and 40 comes first, so the mode is 40.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MODE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MODE(B2:B7)
+    reject:
+      - formula: =MODE(B2:B5)
+        rule: fragile
+      - formula: =MEDIAN(B2:B7)
+        rule: required-function
+      - formula: =40
+        rule: required-function
+      - formula: =MODE(B2:B7
+        rule: syntax

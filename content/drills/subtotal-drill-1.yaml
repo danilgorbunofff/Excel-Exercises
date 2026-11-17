@@ -1,0 +1,44 @@
+id: subtotal-drill-1
+slug: subtotal-drill-1
+level: 1
+title: Total with SUBTOTAL
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUBTOTAL
+screens:
+  - prompt: In B7, use SUBTOTAL with function number 9 to add up the costs in B2:B6.
+    rows:
+      - [Trip, Cost]
+      - [Rome, 640]
+      - [Lyon, 380]
+      - [Kiel, 295]
+      - [Faro, 510]
+      - [Riga, 330]
+      - [Total, null]
+    answerCell: B7
+    expected: 2155
+    variants:
+      - set: { B2: 700 }
+        expected: 2215
+    answer: =SUBTOTAL(9,B2:B6)
+    requiredFunctions:
+      - SUBTOTAL
+    hints:
+      nudge: SUBTOTAL takes a function number first. 9 means add up.
+      rule: SUBTOTAL(9,range) adds the range. Unlike SUM, it skips rows a filter hides.
+    misses:
+      value: The five trips cost 2155 in all.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUBTOTAL.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUBTOTAL(9,B2:B6)
+    reject:
+      - formula: =SUM(B2:B6)
+        rule: required-function
+      - formula: =SUBTOTAL(1,B2:B6)
+        rule: value
+      - formula: =2155
+        rule: required-function
+      - formula: =SUBTOTAL(9,B2:B6
+        rule: syntax

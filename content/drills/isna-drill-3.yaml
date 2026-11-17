@@ -1,0 +1,35 @@
+id: isna-drill-3
+slug: isna-drill-3
+level: 2
+title: ISNA ignores other errors
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISNA
+screens:
+  - prompt: "In D2, use ISNA to test whether B2 divided by C2 gives #N/A. C2 is 0, which gives a different error."
+    rows:
+      - [Item, Total, Count, N/A]
+      - [Pens, 120, 0, null]
+    answerCell: D2
+    expected: false
+    variants:
+      - set: { C2: 4 }
+        expected: false
+    answer: =ISNA(B2/C2)
+    requiredFunctions:
+      - ISNA
+    hints:
+      nudge: "Dividing by 0 gives #DIV/0, not #N/A."
+      rule: "ISNA is TRUE only for #N/A; ISERROR is TRUE for any error."
+    misses:
+      value: "The error here is #DIV/0, not #N/A, so the result is FALSE."
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISNA.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ISNA(B2/C2)
+    reject:
+      - formula: =ISERROR(B2/C2)
+        rule: required-function
+      - formula: =ISNA(B2/C2
+        rule: syntax

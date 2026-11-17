@@ -1,0 +1,45 @@
+id: ifna-drill-4
+slug: ifna-drill-4
+level: 2
+title: Price with INDEX and MATCH or a dash
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IFNA
+screens:
+  - prompt: In E3, use IFNA with INDEX and MATCH to find the price in B2:B5 for the code in E2, and show "-" if it is missing.
+    rows:
+      - [Code, Price, null, Find, null]
+      - [D40, 2, null, Code, Z99]
+      - [A10, 1.5, null, Price, null]
+      - [F60, 12, null, null, null]
+      - [B20, 3, null, null, null]
+    answerCell: E3
+    expected: "-"
+    variants:
+      - { set: { E2: F60 }, expected: 12 }
+      - { set: { E2: A10 }, expected: 1.5 }
+      - { set: { E2: B20 }, expected: 3 }
+    answer: =IFNA(INDEX(B2:B5,MATCH(E2,A2:A5,0)),"-")
+    requiredFunctions:
+      - IFNA
+      - INDEX
+      - MATCH
+    hints:
+      nudge: "MATCH gives #N/A for a missing code, and INDEX passes it on."
+      rule: IFNA(INDEX(...,MATCH(...)),"-") catches it.
+    misses:
+      value: Z99 is not in the list, so the cell shows a dash.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IFNA, INDEX and MATCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IFNA(INDEX(B2:B5,MATCH(E2,A2:A5,0)),"-")
+    reject:
+      - formula: =INDEX(B2:B5,MATCH(E2,A2:A5,0))
+        rule: required-function
+      - formula: =IFNA(INDEX(A2:A5,MATCH(E2,A2:A5,0)),"-")
+        rule: fragile
+      - formula: ="-"
+        rule: required-function
+      - formula: =IFNA(INDEX(B2:B5,MATCH(E2,A2:A5,0)),"-"
+        rule: syntax

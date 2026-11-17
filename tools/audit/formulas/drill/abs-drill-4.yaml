@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(ABS($B$2:$B$6))
+      - =SUMPRODUCT(ABS(B$2:B$6))
+      - =sumproduct(abs(b2:b6))
+      - =LET(data,B2:B6,SUMPRODUCT(ABS(data)))
+    wrong: []
+    equivalent:
+      - formula: =SUMPRODUCT(ABS(B2:B7))
+        why: "range B2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

@@ -1,0 +1,51 @@
+id: countblank-drill-5
+slug: countblank-drill-5
+level: 2
+title: Share of reports still missing
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTBLANK
+screens:
+  - prompt: In B9, use COUNTBLANK and COUNTA to find the share of stores in A2:A8 with no report in B2:B8.
+    rows:
+      - [Store, Report]
+      - [S1, done]
+      - [S2, null]
+      - [S3, done]
+      - [S4, null]
+      - [S5, null]
+      - [S6, done]
+      - [S7, done]
+      - [Missing, null]
+    answerCell: B9
+    expected: 0.428571428571
+    variants:
+      - set: { B3: done }
+        expected: 0.285714285714
+      - set: { B8: null }
+        expected: 0.571428571429
+      - set: { B2: null }
+        expected: 0.571428571429
+    answer: =COUNTBLANK(B2:B8)/COUNTA(A2:A8)
+    requiredFunctions:
+      - COUNTBLANK
+      - COUNTA
+    hints:
+      nudge: Count the empty report cells, then divide by the number of stores.
+      rule: COUNTBLANK(reports)/COUNTA(stores) gives the share still missing.
+    misses:
+      value: Three of seven stores have no report, a share of about 0.43.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTBLANK and COUNTA.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTBLANK(B2:B8)/COUNTA(A2:A8)
+    reject:
+      - formula: =COUNTBLANK(B2:B8)/COUNTA(B2:B8)
+        rule: value
+      - formula: =COUNTBLANK(B2:B8)/7
+        rule: required-function
+      - formula: =0.428571428571
+        rule: required-function
+      - formula: =COUNTBLANK(B2:B8)/COUNTA(A2:A8
+        rule: syntax

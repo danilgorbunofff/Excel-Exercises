@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(ISNUMBER(SEARCH("urgent",$A$2)),"Yes","No")
+      - =IF(ISNUMBER(SEARCH("urgent",A$2)),"Yes","No")
+      - =if(isnumber(search("urgent", a2)), "Yes", "No")
+    wrong: []
+    equivalent: []

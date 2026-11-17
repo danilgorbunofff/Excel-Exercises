@@ -1,0 +1,43 @@
+id: filter-drill-4
+slug: filter-drill-4
+level: 2
+title: A message when nothing matches
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: FILTER
+screens:
+  - prompt: In E2, use FILTER to list the reps in A2:A7 from the "South" region, and show "None" if there are none.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, null]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected: None
+    variants:
+      - set: { B4: South }
+        expected: Cy
+    answer: =FILTER(A2:A7,B2:B7="South","None")
+    requiredFunctions:
+      - FILTER
+    hints:
+      nudge: FILTER's third argument is what to show when no row passes.
+      rule: 'FILTER(...,"None") shows None instead of #CALC.'
+    misses:
+      value: No rep is from South, so the cell shows None.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for FILTER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =FILTER(A2:A7,B2:B7="South","None")
+    reject:
+      - formula: =FILTER(A2:A7,B2:B7="South")
+        rule: value
+      - formula: ="None"
+        rule: required-function
+      - formula: =FILTER(A2:A7,B2:B7="South","None"
+        rule: syntax

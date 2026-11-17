@@ -1,0 +1,41 @@
+id: abs-drill-1
+slug: abs-drill-1
+level: 1
+title: Size of a loss
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ABS
+screens:
+  - prompt: In C2, use ABS to show the size of the change in B2 without its sign.
+    rows:
+      - [Week, Change, Size]
+      - [W1, -42, null]
+    answerCell: C2
+    expected: 42
+    variants:
+      - set: { B2: 42 }
+        expected: 42
+      - set: { B2: -7.5 }
+        expected: 7.5
+    answer: =ABS(B2)
+    requiredFunctions:
+      - ABS
+    hints:
+      nudge: ABS drops the minus sign.
+      rule: ABS(number) returns the number without its sign.
+    misses:
+      value: -42 without its sign is 42.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ABS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ABS(B2)
+    reject:
+      - formula: =-B2
+        rule: required-function
+      - formula: =ABS(B2)*-1
+        rule: value
+      - formula: =42
+        rule: required-function
+      - formula: =ABS(B2
+        rule: syntax

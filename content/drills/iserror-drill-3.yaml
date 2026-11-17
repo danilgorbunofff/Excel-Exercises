@@ -1,0 +1,38 @@
+id: iserror-drill-3
+slug: iserror-drill-3
+level: 1
+title: Is the letter missing
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISERROR
+screens:
+  - prompt: In B2, use ISERROR and FIND to test whether the code in A2 has no "x" in it.
+    rows:
+      - [Code, Result]
+      - [AB-204, null]
+    answerCell: B2
+    expected: true
+    variants:
+      - set: { A2: AB-x04 }
+        expected: false
+    answer: =ISERROR(FIND("x",A2))
+    requiredFunctions:
+      - ISERROR
+      - FIND
+    hints:
+      nudge: FIND fails when the text is not there.
+      rule: ISERROR(FIND("x",A2)) is TRUE when there is no x.
+    misses:
+      value: AB-204 has no x, so the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISERROR and FIND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ISERROR(FIND("x",A2))
+    reject:
+      - formula: =ISNUMBER(FIND("x",A2))
+        rule: required-function
+      - formula: =ISERROR(FIND("A",A2))
+        rule: value
+      - formula: =ISERROR(FIND("x",A2)
+        rule: syntax

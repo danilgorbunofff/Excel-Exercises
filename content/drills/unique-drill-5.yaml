@@ -1,0 +1,49 @@
+id: unique-drill-5
+slug: unique-drill-5
+level: 2
+title: Each region once, A to Z
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: UNIQUE
+screens:
+  - prompt: In E2, use SORT and UNIQUE to list each region in B2:B7 once, from A to Z.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, null]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [East]
+      - [North]
+      - [West]
+    variants:
+      - { set: { B5: Central }, expected: [[Central], [East], [West]] }
+      - { set: { B3: East, B5: East }, expected: [[East], [West]] }
+      - { set: { B2: North, B5: East }, expected: [[East], [North], [West]] }
+    answer: =SORT(UNIQUE(B2:B7))
+    requiredFunctions:
+      - UNIQUE
+      - SORT
+    hints:
+      nudge: Wrap UNIQUE in SORT.
+      rule: SORT(UNIQUE(range)) gives a tidy, sorted list.
+    misses:
+      value: Sorted, the regions are East, North, West.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for UNIQUE and SORT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SORT(UNIQUE(B2:B7))
+      - =UNIQUE(SORT(B2:B7))
+    reject:
+      - formula: =UNIQUE(B2:B7)
+        rule: required-function
+      - formula: =SORT(UNIQUE(B2:B7),1,-1)
+        rule: value
+      - formula: =SORT(UNIQUE(B2:B7)
+        rule: syntax

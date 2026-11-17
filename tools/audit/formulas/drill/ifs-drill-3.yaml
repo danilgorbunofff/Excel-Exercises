@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFS($B$2>=$D$2,"Gold",$B$2>=$C$2,"Silver",TRUE,"Bronze")
+      - =IFS(B$2>=D2,"Gold",B2>=C2,"Silver",TRUE,"Bronze")
+      - =ifs(b2>=d2, "Gold", b2>=c2, "Silver", true, "Bronze")
+    wrong:
+      - formula: =IFS(B2>D2,"Gold",B2>=C2,"Silver",TRUE,"Bronze")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IFS(B2>=D2,"Gold",B2>C2,"Silver",TRUE,"Bronze")
+        rule: fragile
+        why: ">= written as >"
+    equivalent: []

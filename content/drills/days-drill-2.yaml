@@ -1,0 +1,37 @@
+id: days-drill-2
+slug: days-drill-2
+level: 1
+title: Days left to a deadline
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: DAYS
+screens:
+  - prompt: In C2, use DAYS to count the days from the date in A2 to the deadline in B2.
+    rows:
+      - [Today, Deadline, Days left]
+      - [46343, 46381, null]
+    answerCell: C2
+    expected: 38
+    variants:
+      - set: { A2: 46357 }
+        expected: 24
+    answer: =DAYS(B2,A2)
+    requiredFunctions:
+      - DAYS
+    hints:
+      nudge: The deadline is the end date, so it goes first.
+      rule: DAYS(deadline,today) is positive while the deadline is ahead.
+    misses:
+      value: From 17 November to 25 December is 38 days.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for DAYS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =DAYS(B2,A2)
+    reject:
+      - formula: =DAYS(A2,B2)
+        rule: value
+      - formula: =38
+        rule: required-function
+      - formula: =DAYS(B2,A2
+        rule: syntax

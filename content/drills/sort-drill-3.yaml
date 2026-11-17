@@ -1,0 +1,66 @@
+id: sort-drill-3
+slug: sort-drill-3
+level: 1
+title: A table by its third column
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SORT
+screens:
+  - prompt: In E2, use SORT to sort the whole table A2:C7 by sales, its 3rd column, largest first.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, null]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [Di, North, 520]
+      - [Ann, East, 400]
+      - [Flo, West, 330]
+      - [Cy, East, 310]
+      - [Bo, West, 250]
+      - [Ed, East, 190]
+    variants:
+      - set: { C3: 600 }
+        expected:
+          - - Bo
+            - West
+            - 600
+          - - Di
+            - North
+            - 520
+          - - Ann
+            - East
+            - 400
+          - - Flo
+            - West
+            - 330
+          - - Cy
+            - East
+            - 310
+          - - Ed
+            - East
+            - 190
+    answer: =SORT(A2:C7,3,-1)
+    requiredFunctions:
+      - SORT
+    hints:
+      nudge: The second argument says which column to sort by.
+      rule: SORT(table,3,-1) keeps each row together, ordered by column 3.
+    misses:
+      value: Sorted by sales, the rows are Di North 520, Ann East 400, Flo West 330, Cy East 310, Bo West 250, Ed East 190.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SORT(A2:C7,3,-1)
+    reject:
+      - formula: =SORT(A2:C7,3)
+        rule: value
+      - formula: =SORT(A2:C7,1,-1)
+        rule: value
+      - formula: =SORT(A2:C7,3,-1
+        rule: syntax

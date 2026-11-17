@@ -1,0 +1,49 @@
+id: isnumber-drill-4
+slug: isnumber-drill-4
+level: 2
+title: Count real numbers with ISNUMBER
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISNUMBER
+screens:
+  - prompt: In B8, use SUMPRODUCT and ISNUMBER to count the cells in B2:B6 that hold real numbers. Write -- before ISNUMBER.
+    rows:
+      - [Invoice, Amount]
+      - [I-1, 250]
+      - [I-2, "180"]
+      - [I-3, 320]
+      - [I-4, n/a]
+      - [I-5, 410]
+      - [null, null]
+      - [Numbers, null]
+    answerCell: B8
+    expected: 3
+    variants:
+      - set: { B3: 180 }
+        expected: 4
+      - set: { B2: x }
+        expected: 2
+    answer: =SUMPRODUCT(--ISNUMBER(B2:B6))
+    requiredFunctions:
+      - ISNUMBER
+      - SUMPRODUCT
+    hints:
+      nudge: ISNUMBER on a range gives TRUE and FALSE; -- turns them into 1 and 0.
+      rule: SUMPRODUCT(--ISNUMBER(range)) counts the numbers, like COUNT.
+    misses:
+      value: 3 amounts are real numbers.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISNUMBER and SUMPRODUCT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUMPRODUCT(--ISNUMBER(B2:B6))
+      - =SUMPRODUCT(ISNUMBER(B2:B6)*1)
+    reject:
+      - formula: =COUNT(B2:B6)
+        rule: required-function
+      - formula: =SUMPRODUCT(--ISNUMBER(B2:B5))
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =SUMPRODUCT(--ISNUMBER(B2:B6)
+        rule: syntax

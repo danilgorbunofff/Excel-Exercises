@@ -5,34 +5,40 @@
 // are the part kept on the server. Move the whole sheet behind the API if that
 // ever matters.
 import { loadMe } from "./session.ts";
+import { track } from "./track.ts";
 
-const root = document.querySelector<HTMLElement>("[data-exercise][data-locked]");
-if (root) {
+export type UnlockResult = "open" | "free" | "out" | "error";
+
+/** Unlocks one locked exercise root. The drills page calls it for each drill it adds. */
+export async function unlock(root: HTMLElement): Promise<UnlockResult> {
   const slug = root.dataset["locked"] ?? "";
-  void loadMe().then(async (me) => {
-    const text = document.querySelector<HTMLElement>("[data-paywall-text]");
-    if (!me) return;
-    if (!me.pro) {
-      if (text)
-        text.textContent =
-          "Your plan is Free. Get PRO to open this exercise and every other PRO one.";
-      return;
-    }
-    const res = await fetch(`/api/exercises/${encodeURIComponent(slug)}/`, {
-      credentials: "same-origin",
-    });
-    if (!res.ok) {
-      if (text)
-        text.textContent = "This exercise could not be opened. Reload the page to try again.";
-      return;
-    }
-    const { answers } = (await res.json()) as { answers: string[] };
-    for (const code of root.querySelectorAll<HTMLElement>("[data-answer]")) {
-      code.textContent = answers[Number(code.dataset["answer"])] ?? "";
-    }
-    root.querySelector("[data-paywall]")?.remove();
-    for (const work of root.querySelectorAll<HTMLElement>(".work")) work.inert = false;
-    delete root.dataset["locked"];
-    root.dispatchEvent(new CustomEvent("exercise-unlock", { detail: answers }));
-  });
+  const text = root.querySelector<HTMLElement>("[data-paywall-text]");
+  const me = await loadMe();
+  if (!me?.pro) {
+    track("paywall_seen");
+    if (me && text)
+      text.textContent =
+        "Your plan is Free. Get PRO to open this exercise and every other PRO one.";
+    return me ? "free" : "out";
+  }
+  const res = await fetch(`/api/exercises/${encodeURIComponent(slug)}/`, {
+    credentials: "same-origin",
+  }).catch(() => null);
+  if (!res?.ok) {
+    if (text) text.textContent = "This exercise could not be opened. Reload the page to try again.";
+    return "error";
+  }
+  const { answers } = (await res.json()) as { answers: string[] };
+  for (const code of root.querySelectorAll<HTMLElement>("[data-answer]")) {
+    code.textContent = answers[Number(code.dataset["answer"])] ?? "";
+  }
+  root.querySelector("[data-paywall]")?.remove();
+  for (const work of root.querySelectorAll<HTMLElement>(".work")) work.inert = false;
+  delete root.dataset["locked"];
+  root.dispatchEvent(new CustomEvent("exercise-unlock", { detail: answers }));
+  return "open";
 }
+
+// An exercise page: its one locked exercise is in the page from the start.
+const root = document.querySelector<HTMLElement>("[data-exercise][data-locked]:not([data-defer])");
+if (root) void unlock(root);

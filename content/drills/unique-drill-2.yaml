@@ -1,0 +1,51 @@
+id: unique-drill-2
+slug: unique-drill-2
+level: 1
+title: Each customer once
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: UNIQUE
+screens:
+  - prompt: In C2, use UNIQUE to list each customer in A2:A9 once.
+    rows:
+      - [Customer, null, List]
+      - [Acme, null, null]
+      - [Bolt, null, null]
+      - [Acme, null, null]
+      - [Core, null, null]
+      - [Bolt, null, null]
+      - [Acme, null, null]
+      - [Dyne, null, null]
+      - [Core, null, null]
+      - [null, null, null]
+    answerCell: C2
+    expected:
+      - [Acme]
+      - [Bolt]
+      - [Core]
+      - [Dyne]
+    variants:
+      - set: { A9: Edge }
+        expected:
+          - - Acme
+          - - Bolt
+          - - Core
+          - - Dyne
+          - - Edge
+    answer: =UNIQUE(A2:A9)
+    requiredFunctions:
+      - UNIQUE
+    hints:
+      nudge: Repeated names appear only the first time.
+      rule: UNIQUE keeps the first appearance of each value.
+    misses:
+      value: The customers are Acme, Bolt, Core, Dyne.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =UNIQUE(A2:A9)
+    reject:
+      - formula: =UNIQUE(A2:A8)
+        rule: fragile
+      - formula: =UNIQUE(A2:A9
+        rule: syntax

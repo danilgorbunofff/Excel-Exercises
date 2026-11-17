@@ -1,0 +1,37 @@
+id: proper-drill-1
+slug: proper-drill-1
+level: 1
+title: Capitalise a name
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: PROPER
+screens:
+  - prompt: In B2, use PROPER to give each word of the name in A2 a capital first letter.
+    rows:
+      - [Name, Result]
+      - [rosa diaz, null]
+    answerCell: B2
+    expected: Rosa Diaz
+    variants:
+      - set: { A2: al brook }
+        expected: Al Brook
+    answer: =PROPER(A2)
+    requiredFunctions:
+      - PROPER
+    hints:
+      nudge: PROPER capitalises the first letter of every word.
+      rule: PROPER(text) makes the first letter of each word a capital and the rest small.
+    misses:
+      value: With capitals, the name reads Rosa Diaz.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for PROPER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =PROPER(A2)
+    reject:
+      - formula: =UPPER(A2)
+        rule: required-function
+      - formula: ="Rosa Diaz"
+        rule: required-function
+      - formula: =PROPER(A2
+        rule: syntax

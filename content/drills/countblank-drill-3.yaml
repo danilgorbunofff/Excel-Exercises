@@ -1,0 +1,41 @@
+id: countblank-drill-3
+slug: countblank-drill-3
+level: 1
+title: Count the free room slots
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTBLANK
+screens:
+  - prompt: In B6, use COUNTBLANK to find how many slots in B2:D4 are free.
+    rows:
+      - [Room, Mon, Tue, Wed]
+      - [A, Ann, null, Bo]
+      - [B, null, null, Cy]
+      - [C, Di, null, null]
+      - [null, null, null, null]
+      - [Free slots, null, null, null]
+    answerCell: B6
+    expected: 5
+    variants:
+      - set: { C2: Ed }
+        expected: 4
+    answer: =COUNTBLANK(B2:D4)
+    requiredFunctions:
+      - COUNTBLANK
+    hints:
+      nudge: The range can cover the whole block.
+      rule: COUNTBLANK(B2:D4) counts the empty cells in all nine.
+    misses:
+      value: 5 slots are free.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTBLANK.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTBLANK(B2:D4)
+    reject:
+      - formula: =COUNTBLANK(B2:B4)
+        rule: value
+      - formula: =5
+        rule: required-function
+      - formula: =COUNTBLANK(B2:D4
+        rule: syntax

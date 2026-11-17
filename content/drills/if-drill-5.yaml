@@ -1,0 +1,44 @@
+id: if-drill-5
+slug: if-drill-5
+level: 2
+title: Three grades with a nested IF
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IF
+screens:
+  - prompt: In C2, use IF inside IF to give "A" for 80 or more, "B" for 60 or more, and "C" otherwise.
+    rows:
+      - [Student, Score, Grade]
+      - [Ann, 74, null]
+    answerCell: C2
+    expected: B
+    variants:
+      - { set: { B2: 85 }, expected: A }
+      - { set: { B2: 40 }, expected: C }
+      - { set: { B2: 60 }, expected: B }
+      - { set: { B2: 80 }, expected: A }
+      - { set: { B2: 59 }, expected: C }
+      - { set: { B2: 79 }, expected: B }
+    answer: =IF(B2>=80,"A",IF(B2>=60,"B","C"))
+    requiredFunctions:
+      - IF
+    hints:
+      nudge: Put a second IF in the false part of the first.
+      rule: Test the highest band first; the inner IF handles everything below it.
+    misses:
+      value: 74 is under 80 but at least 60, so the grade is B.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IF(B2>=80,"A",IF(B2>=60,"B","C"))
+      - =IF(B2<60,"C",IF(B2<80,"B","A"))
+    reject:
+      - formula: =IF(B2>=80,"A","B")
+        rule: fragile
+      - formula: =IF(B2>=60,"B",IF(B2>=80,"A","C"))
+        rule: fragile
+      - formula: ="B"
+        rule: required-function
+      - formula: =IF(B2>=80,"A",IF(B2>=60,"B","C")
+        rule: syntax

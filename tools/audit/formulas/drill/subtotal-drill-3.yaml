@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUBTOTAL(2,$B$2:$B$7)
+      - =SUBTOTAL(2,B$2:B$7)
+      - =subtotal(2, b2:b7)
+      - =LET(data,B2:B7,SUBTOTAL(2,data))
+    wrong: []
+    equivalent: []

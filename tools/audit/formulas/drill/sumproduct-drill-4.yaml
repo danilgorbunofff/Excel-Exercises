@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(($B$2:$B$7=$D$8)*$C$2:$C$7)
+      - =SUMPRODUCT((B$2:B$7=D8)*C2:C7)
+      - =sumproduct((b2:b7=d8)*c2:c7)
+      - =LET(data,B2:B7,SUMPRODUCT((data=D8)*C2:C7))
+    wrong: []
+    equivalent: []

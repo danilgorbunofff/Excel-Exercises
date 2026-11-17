@@ -1,0 +1,50 @@
+id: mround-drill-5
+slug: mround-drill-5
+level: 2
+title: An average rounded to 5
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MROUND
+screens:
+  - prompt: In B8, use MROUND and AVERAGE to find the average of B2:B6, rounded to the nearest 5.
+    rows:
+      - [Day, Visitors]
+      - [Mon, 132]
+      - [Tue, 148]
+      - [Wed, 121]
+      - [Thu, 139]
+      - [Fri, 156]
+      - [null, null]
+      - [Average, null]
+    answerCell: B8
+    expected: 140
+    variants:
+      - set: { B2: 150 }
+        expected: 145
+      - set: { B6: 130 }
+        expected: 135
+    answer: =MROUND(AVERAGE(B2:B6),5)
+    requiredFunctions:
+      - MROUND
+      - AVERAGE
+    hints:
+      nudge: Put the AVERAGE inside MROUND.
+      rule: MROUND(AVERAGE(range),5) rounds the average to a multiple of 5.
+    misses:
+      value: The average is 139.2, which rounds to 140.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MROUND and AVERAGE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MROUND(AVERAGE(B2:B6),5)
+    reject:
+      - formula: =ROUND(AVERAGE(B2:B6),0)
+        rule: required-function
+      - formula: =MROUND(AVERAGE(B2:B6),10)
+        rule: fragile
+      - formula: =MROUND(AVERAGE(B2:B5),5)
+        rule: value
+      - formula: =140
+        rule: required-function
+      - formula: =MROUND(AVERAGE(B2:B6),5
+        rule: syntax

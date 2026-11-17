@@ -1,0 +1,48 @@
+id: small-drill-2
+slug: small-drill-2
+level: 1
+title: The second fastest time
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SMALL
+screens:
+  - prompt: In B10, use SMALL to find the second fastest time in B2:B8.
+    rows:
+      - [Runner, Time]
+      - [Ann, 41.2]
+      - [Bo, 38.9]
+      - [Cy, 44.5]
+      - [Di, 37.6]
+      - [Ed, 40.1]
+      - [Flo, 39.4]
+      - [Gus, 42.8]
+      - [null, null]
+      - [Second, null]
+    answerCell: B10
+    expected: 38.9
+    variants:
+      - { set: { B3: 37 }, expected: 37.6 }
+      - { set: { B7: 38 }, expected: 38 }
+      - { set: { B2: 2, B8: 2 }, expected: 2 }
+    answer: =SMALL(B2:B8,2)
+    requiredFunctions:
+      - SMALL
+    hints:
+      nudge: k = 2 gives the second smallest.
+      rule: SMALL(range,2) returns the second smallest value.
+    misses:
+      value: The fastest is 37.6 and the second fastest is 38.9.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SMALL.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SMALL(B2:B8,2)
+    reject:
+      - formula: =SMALL(B2:B8,1)
+        rule: value
+      - formula: =LARGE(B2:B8,2)
+        rule: required-function
+      - formula: =38.9
+        rule: required-function
+      - formula: =SMALL(B2:B8,2
+        rule: syntax

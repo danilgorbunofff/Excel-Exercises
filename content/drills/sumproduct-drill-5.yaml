@@ -1,0 +1,47 @@
+id: sumproduct-drill-5
+slug: sumproduct-drill-5
+level: 2
+title: Add up sales for a region and a product
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUMPRODUCT
+screens:
+  - prompt: In E10, use SUMPRODUCT to add up the units in C2:C8 where the region in A2:A8 is East and the product in B2:B8 is Pens.
+    rows:
+      - [Region, Product, Units, null, null]
+      - [East, Pens, 40, null, null]
+      - [West, Pens, 25, null, null]
+      - [East, Pads, 30, null, null]
+      - [East, Pens, 15, null, null]
+      - [North, Pens, 50, null, null]
+      - [East, Pads, 20, null, null]
+      - [West, Pads, 35, null, null]
+      - [null, null, null, Region, East]
+      - [null, null, null, Units, null]
+    answerCell: E10
+    expected: 55
+    variants:
+      - set: { E9: West }
+        expected: 25
+    answer: =SUMPRODUCT((A2:A8=E9)*(B2:B8="Pens")*C2:C8)
+    requiredFunctions:
+      - SUMPRODUCT
+    hints:
+      nudge: Multiply two tests and the units together.
+      rule: Each test gives 1 or 0. Multiplying them keeps only rows where both are true.
+    misses:
+      value: East rows with Pens hold 40 and 15, so 55.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUMPRODUCT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUMPRODUCT((A2:A8=E9)*(B2:B8="Pens")*C2:C8)
+    reject:
+      - formula: =SUMPRODUCT((A2:A8=E9)*C2:C8)
+        rule: value
+      - formula: =SUMPRODUCT((A2:A8="East")*(B2:B8="Pens")*C2:C8)
+        rule: fragile
+      - formula: =55
+        rule: required-function
+      - formula: =SUMPRODUCT((A2:A8=E9)*(B2:B8="Pens")*C2:C8
+        rule: syntax

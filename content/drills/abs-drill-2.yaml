@@ -1,0 +1,42 @@
+id: abs-drill-2
+slug: abs-drill-2
+level: 1
+title: Gap between budget and actual
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ABS
+screens:
+  - prompt: In D2, use ABS to show how far the actual in C2 is from the budget in B2, whichever is bigger.
+    rows:
+      - [Item, Budget, Actual, Gap]
+      - [Travel, 500, 620, null]
+    answerCell: D2
+    expected: 120
+    variants:
+      - set: { C2: 380 }
+        expected: 120
+      - set: { C2: 500 }
+        expected: 0
+    answer: =ABS(B2-C2)
+    requiredFunctions:
+      - ABS
+    hints:
+      nudge: Subtract inside ABS, so the order does not matter.
+      rule: ABS(a-b) gives the gap between two numbers, always positive.
+    misses:
+      value: The actual is 120 away from the budget.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ABS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ABS(B2-C2)
+      - =ABS(C2-B2)
+    reject:
+      - formula: =B2-C2
+        rule: required-function
+      - formula: =ABS(B2)-ABS(C2)
+        rule: value
+      - formula: =120
+        rule: required-function
+      - formula: =ABS(B2-C2
+        rule: syntax

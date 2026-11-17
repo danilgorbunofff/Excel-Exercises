@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTA($A$2:$A$8)-COUNTA($B$2:$B$8)
+      - =COUNTA(A$2:A$8)-COUNTA(B2:B8)
+      - =counta(a2:a8)-counta(b2:b8)
+      - =LET(data,A2:A8,COUNTA(data)-COUNTA(B2:B8))
+    wrong: []
+    equivalent: []

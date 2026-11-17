@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LARGE($B$2:$B$7,2)
+      - =LARGE(B$2:B$7,2)
+      - =large(b2:b7, 2)
+      - =LET(data,B2:B7,LARGE(data,2))
+    wrong:
+      - formula: =LARGE(B2:B6,2)
+        rule: fragile
+        why: range B2:B7 one row short at the end
+    equivalent:
+      - formula: =LARGE(B2:B8,2)
+        why: "range B2:B7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

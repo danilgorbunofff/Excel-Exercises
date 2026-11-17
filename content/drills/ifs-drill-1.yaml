@@ -1,0 +1,44 @@
+id: ifs-drill-1
+slug: ifs-drill-1
+level: 1
+title: Three grades with IFS
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IFS
+screens:
+  - prompt: In C2, use IFS to give "A" for 80 or more, "B" for 60 or more, and "C" otherwise.
+    rows:
+      - [Student, Score, Grade]
+      - [Ann, 74, null]
+    answerCell: C2
+    expected: B
+    variants:
+      - { set: { B2: 85 }, expected: A }
+      - { set: { B2: 40 }, expected: C }
+      - { set: { B2: 60 }, expected: B }
+      - { set: { B2: 80 }, expected: A }
+      - { set: { B2: 59 }, expected: C }
+      - { set: { B2: 79 }, expected: B }
+    answer: =IFS(B2>=80,"A",B2>=60,"B",TRUE,"C")
+    requiredFunctions:
+      - IFS
+    hints:
+      nudge: "IFS takes pairs: a test, then its result. The first true test wins."
+      rule: End IFS with TRUE and a result, so every other score still gets one.
+    misses:
+      value: 74 is under 80 but at least 60, so the grade is B.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IFS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IFS(B2>=80,"A",B2>=60,"B",TRUE,"C")
+      - =IFS(B2>=80,"A",B2>=60,"B",B2<60,"C")
+    reject:
+      - formula: =IF(B2>=80,"A",IF(B2>=60,"B","C"))
+        rule: required-function
+      - formula: =IFS(B2>=80,"A",B2>=60,"B")
+        rule: fragile
+      - formula: ="B"
+        rule: required-function
+      - formula: =IFS(B2>=80,"A",B2>=60,"B",TRUE,"C"
+        rule: syntax

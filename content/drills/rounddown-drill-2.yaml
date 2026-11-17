@@ -1,0 +1,41 @@
+id: rounddown-drill-2
+slug: rounddown-drill-2
+level: 1
+title: Cut a rate to two places
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ROUNDDOWN
+screens:
+  - prompt: In C2, use ROUNDDOWN to cut the rate in B2 to 2 decimal places.
+    rows:
+      - [Item, Rate, Cut]
+      - [Fee, 2.349, null]
+    answerCell: C2
+    expected: 2.34
+    variants:
+      - set: { B2: 2.35 }
+        expected: 2.35
+      - set: { B2: 9.999 }
+        expected: 9.99
+    answer: =ROUNDDOWN(B2,2)
+    requiredFunctions:
+      - ROUNDDOWN
+    hints:
+      nudge: 2 places keeps two digits after the point.
+      rule: ROUNDDOWN(number,2) drops every digit after the second.
+    misses:
+      value: 2.349 cut to two places is 2.34.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ROUNDDOWN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ROUNDDOWN(B2,2)
+    reject:
+      - formula: =ROUND(B2,2)
+        rule: required-function
+      - formula: =ROUNDDOWN(B2,1)
+        rule: value
+      - formula: =2.34
+        rule: required-function
+      - formula: =ROUNDDOWN(B2,2
+        rule: syntax

@@ -1,0 +1,48 @@
+id: vlookup-drill-1
+slug: vlookup-drill-1
+level: 1
+title: Price for a code with VLOOKUP
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: VLOOKUP
+screens:
+  - prompt: In F3, use VLOOKUP to find the price for the code in F2. The price is the 3rd column of A2:C7.
+    rows:
+      - [Code, Item, Price, null, Find, null]
+      - [D40, Tape, 2, null, Code, B20]
+      - [A10, Pen, 1.5, null, Price, null]
+      - [F60, Ink, 12, null, null, null]
+      - [B20, Pad, 3, null, null, null]
+      - [E50, File, 4, null, null, null]
+      - [C30, Clip, 0.25, null, null, null]
+    answerCell: F3
+    expected: 3
+    variants:
+      - { set: { F2: E50 }, expected: 4 }
+      - { set: { F2: F60 }, expected: 12 }
+      - { set: { F2: D40 }, expected: 2 }
+      - { set: { F2: C30 }, expected: 0.25 }
+    answer: =VLOOKUP(F2,A2:C7,3,FALSE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: VLOOKUP takes the value, the table, the column number, and FALSE for an exact match.
+      rule: VLOOKUP(value,table,col_index,FALSE) searches the first column and returns from column col_index.
+    misses:
+      value: Code B20 is priced 3.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for VLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =VLOOKUP(F2,A2:C7,3,FALSE)
+      - =VLOOKUP(F2,A2:C7,3,0)
+      - =vlookup(f2,a2:c7,3,false)
+    reject:
+      - formula: =VLOOKUP(F2,A2:C7,2,FALSE)
+        rule: value
+      - formula: =XLOOKUP(F2,A2:A7,C2:C7)
+        rule: required-function
+      - formula: =3
+        rule: required-function
+      - formula: =VLOOKUP(F2,A2:C7,3,FALSE
+        rule: syntax

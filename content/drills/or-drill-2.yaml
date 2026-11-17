@@ -1,0 +1,42 @@
+id: or-drill-2
+slug: or-drill-2
+level: 1
+title: Double pay on weekends or holidays
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: OR
+screens:
+  - prompt: In D2, use IF and OR to show "Double" when B2 or C2 is "Yes", and "Normal" otherwise.
+    rows:
+      - [Day, Weekend, Holiday, Rate]
+      - [Sat, Yes, No, null]
+    answerCell: D2
+    expected: Double
+    variants:
+      - set: { B2: No }
+        expected: Normal
+      - set: { B2: No, C2: Yes }
+        expected: Double
+    answer: =IF(OR(B2="Yes",C2="Yes"),"Double","Normal")
+    requiredFunctions:
+      - OR
+      - IF
+    hints:
+      nudge: Put OR inside IF as its test.
+      rule: IF(OR(test1,test2),yes,no) gives yes when either test is true.
+    misses:
+      value: Saturday is a weekend day, so the rate is Double.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for OR and IF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IF(OR(B2="Yes",C2="Yes"),"Double","Normal")
+    reject:
+      - formula: =IF(B2="Yes","Double","Normal")
+        rule: required-function
+      - formula: =IF(OR(B2="Yes",C2="Yes"),"Normal","Double")
+        rule: value
+      - formula: ="Double"
+        rule: required-function
+      - formula: =IF(OR(B2="Yes",C2="Yes"),"Double","Normal"
+        rule: syntax

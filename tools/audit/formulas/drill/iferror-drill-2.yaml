@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFERROR(VLOOKUP($E$2,$A$2:$B$5,2,FALSE),"Not found")
+      - =IFERROR(VLOOKUP(E$2,A2:B5,2,FALSE),"Not found")
+      - =iferror(vlookup(e2, a2:b5, 2, false), "Not found")
+      - =LET(data,A2:B5,IFERROR(VLOOKUP(E2,data,2,FALSE),"Not found"))
+    wrong:
+      - formula: =IFERROR(VLOOKUP(E2,A3:B5,2,FALSE),"Not found")
+        rule: fragile
+        why: range A2:B5 skips its first row
+    equivalent: []

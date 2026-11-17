@@ -1,0 +1,46 @@
+id: let-drill-1
+slug: let-drill-1
+level: 1
+title: Name a total
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LET
+screens:
+  - prompt: In B8, use LET to name the total of B2:B6 as total, then return total times 0.2.
+    rows:
+      - [Item, Price]
+      - [Desk, 220]
+      - [Chair, 140]
+      - [Lamp, 45]
+      - [Shelf, 95]
+      - [Mat, 30]
+      - [null, null]
+      - [Tax, null]
+    answerCell: B8
+    expected: 106
+    variants:
+      - set: { B2: 300 }
+        expected: 122
+    answer: =LET(total,SUM(B2:B6),total*0.2)
+    requiredFunctions:
+      - LET
+    hints:
+      nudge: LET takes a name, its value, then a calculation that uses the name.
+      rule: LET(name,value,calculation) works out the value once and reuses it.
+    misses:
+      value: The total is 530, and 20% of it is 106.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LET.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LET(total,SUM(B2:B6),total*0.2)
+      - =LET(t,SUM(B2:B6),t*0.2)
+    reject:
+      - formula: =SUM(B2:B6)*0.2
+        rule: required-function
+      - formula: =LET(total,SUM(B2:B6),total*2)
+        rule: value
+      - formula: =106
+        rule: required-function
+      - formula: =LET(total,SUM(B2:B6),total*0.2
+        rule: syntax

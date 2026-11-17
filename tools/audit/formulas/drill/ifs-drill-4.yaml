@@ -1,0 +1,35 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFS($B$2>=90,"Excellent",$B$2>=70,"Good",$B$2>=50,"Fair",TRUE,"Poor")
+      - =IFS(B$2>=90,"Excellent",B2>=70,"Good",B2>=50,"Fair",TRUE,"Poor")
+      - =ifs(b2>=90, "Excellent", b2>=70, "Good", b2>=50, "Fair", true, "Poor")
+    wrong:
+      - formula: =IFS(B2>90,"Excellent",B2>=70,"Good",B2>=50,"Fair",TRUE,"Poor")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IFS(B2>=91,"Excellent",B2>=70,"Good",B2>=50,"Fair",TRUE,"Poor")
+        rule: fragile
+        why: 90 written as 91
+      - formula: =IFS(B2>=89,"Excellent",B2>=70,"Good",B2>=50,"Fair",TRUE,"Poor")
+        rule: fragile
+        why: 90 written as 89
+      - formula: =IFS(B2>=90,"Excellent",B2>70,"Good",B2>=50,"Fair",TRUE,"Poor")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IFS(B2>=90,"Excellent",B2>=71,"Good",B2>=50,"Fair",TRUE,"Poor")
+        rule: fragile
+        why: 70 written as 71
+      - formula: =IFS(B2>=90,"Excellent",B2>=69,"Good",B2>=50,"Fair",TRUE,"Poor")
+        rule: fragile
+        why: 70 written as 69
+      - formula: =IFS(B2>=90,"Excellent",B2>=70,"Good",B2>50,"Fair",TRUE,"Poor")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IFS(B2>=90,"Excellent",B2>=70,"Good",B2>=51,"Fair",TRUE,"Poor")
+        rule: fragile
+        why: 50 written as 51
+      - formula: =IFS(B2>=90,"Excellent",B2>=70,"Good",B2>=49,"Fair",TRUE,"Poor")
+        rule: fragile
+        why: 50 written as 49
+    equivalent: []

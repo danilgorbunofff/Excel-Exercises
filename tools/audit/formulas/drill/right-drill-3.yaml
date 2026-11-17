@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =RIGHT($A$2,$B$2)
+      - =RIGHT(A$2,B2)
+      - =right(a2, b2)
+    wrong: []
+    equivalent: []

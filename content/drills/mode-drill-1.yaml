@@ -1,0 +1,48 @@
+id: mode-drill-1
+slug: mode-drill-1
+level: 1
+title: The most common shoe size
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MODE
+screens:
+  - prompt: In B10, use MODE to find the most common shoe size in B2:B8.
+    rows:
+      - [Order, Size]
+      - [O1, 42]
+      - [O2, 40]
+      - [O3, 42]
+      - [O4, 38]
+      - [O5, 42]
+      - [O6, 40]
+      - [O7, 44]
+      - [null, null]
+      - [Most common, null]
+    answerCell: B10
+    expected: 42
+    variants:
+      - { set: { B3: 40, B6: 40, B4: 40 }, expected: 40 }
+      - { set: { B4: 44, B5: 44, B7: 44 }, expected: 44 }
+      - { set: { B2: 44 }, expected: 44 }
+    answer: =MODE(B2:B8)
+    requiredFunctions:
+      - MODE
+    hints:
+      nudge: MODE returns the value that appears most often.
+      rule: MODE(range) returns the most frequent number.
+    misses:
+      value: 42 appears three times, more than any other size.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MODE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MODE(B2:B8)
+    reject:
+      - formula: =MEDIAN(B2:B8)
+        rule: required-function
+      - formula: =MODE(B2:B6)
+        rule: fragile
+      - formula: =42
+        rule: required-function
+      - formula: =MODE(B2:B8
+        rule: syntax

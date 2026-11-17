@@ -1,0 +1,37 @@
+id: min-drill-2
+slug: min-drill-2
+level: 1
+title: Find the quietest day in a row
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MIN
+screens:
+  - prompt: In F2, use MIN to find the fewest tickets opened in B2:E2.
+    rows:
+      - [Team, Mon, Tue, Wed, Thu, Fewest]
+      - [Help desk, 34, 29, 41, 37, null]
+    answerCell: F2
+    expected: 29
+    variants:
+      - set: { E2: 20 }
+        expected: 20
+    answer: =MIN(B2:E2)
+    requiredFunctions:
+      - MIN
+    hints:
+      nudge: The days run along row 2.
+      rule: "MIN works on a row range: MIN(B2:E2)."
+    misses:
+      value: The quietest day had 29 tickets.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MIN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MIN(B2:E2)
+    reject:
+      - formula: =MIN(B2:D2)
+        rule: fragile
+      - formula: =29
+        rule: required-function
+      - formula: =MIN(B2:E2
+        rule: syntax

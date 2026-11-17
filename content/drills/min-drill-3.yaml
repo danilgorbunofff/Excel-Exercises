@@ -1,0 +1,41 @@
+id: min-drill-3
+slug: min-drill-3
+level: 1
+title: Find the fastest lap in a block
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MIN
+screens:
+  - prompt: In B6, use MIN to find the fastest lap time, in seconds, anywhere in B2:D4.
+    rows:
+      - [Driver, Lap 1, Lap 2, Lap 3]
+      - [Rae, 82.4, 81.9, 83.1]
+      - [Sol, 81.7, 82.2, 81.5]
+      - [Ty, 83, 82.8, 82.6]
+      - [null, null, null, null]
+      - [Fastest, null, null, null]
+    answerCell: B6
+    expected: 81.5
+    variants:
+      - { set: { D4: 80.9 }, expected: 80.9 }
+      - { set: { B2: 78.9 }, expected: 78.9 }
+    answer: =MIN(B2:D4)
+    requiredFunctions:
+      - MIN
+    hints:
+      nudge: The range can cover the whole block.
+      rule: MIN(B2:D4) looks at all nine cells.
+    misses:
+      value: The fastest lap was 81.5 seconds.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MIN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MIN(B2:D4)
+    reject:
+      - formula: =MIN(B2:B4)
+        rule: value
+      - formula: =81.5
+        rule: required-function
+      - formula: =MIN(B2:D4
+        rule: syntax

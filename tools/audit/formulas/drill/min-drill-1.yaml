@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MIN($B$2:$B$6)
+      - =MIN(B$2:B$6)
+      - =min(b2:b6)
+      - =LET(data,B2:B6,MIN(data))
+    wrong:
+      - formula: =MIN(B2:B5)
+        rule: fragile
+        why: range B2:B6 one row short at the end
+      - formula: =MIN(B3:B6)
+        rule: fragile
+        why: range B2:B6 skips its first row
+    equivalent: []

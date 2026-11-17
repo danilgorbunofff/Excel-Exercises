@@ -1,0 +1,41 @@
+id: textjoin-drill-3
+slug: textjoin-drill-3
+level: 2
+title: Skip the empty cells
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TEXTJOIN
+screens:
+  - prompt: In B2, use TEXTJOIN to join the names in A2:A6 with ", ", skipping the empty cells.
+    rows:
+      - [Name, List]
+      - [Ann, null]
+      - [null, null]
+      - [Cy, null]
+      - [null, null]
+      - [Ed, null]
+    answerCell: B2
+    expected: Ann, Cy, Ed
+    variants:
+      - set: { A3: Bo }
+        expected: Ann, Bo, Cy, Ed
+    answer: =TEXTJOIN(", ",TRUE,A2:A6)
+    requiredFunctions:
+      - TEXTJOIN
+    hints:
+      nudge: TRUE as the second argument skips empty cells.
+      rule: With FALSE, each empty cell leaves an extra comma.
+    misses:
+      value: Skipping the gaps, the names read Ann, Cy, Ed.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TEXTJOIN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TEXTJOIN(", ",TRUE,A2:A6)
+    reject:
+      - formula: =TEXTJOIN(", ",FALSE,A2:A6)
+        rule: value
+      - formula: ="Ann, Cy, Ed"
+        rule: required-function
+      - formula: =TEXTJOIN(", ",TRUE,A2:A6
+        rule: syntax

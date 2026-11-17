@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MROUND($B$2,5)
+      - =MROUND(B$2,5)
+      - =mround(b2, 5)
+    wrong: []
+    equivalent: []

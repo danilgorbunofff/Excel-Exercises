@@ -1,0 +1,41 @@
+id: rounddown-drill-1
+slug: rounddown-drill-1
+level: 1
+title: Always round down
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ROUNDDOWN
+screens:
+  - prompt: In C2, use ROUNDDOWN to round the hours in B2 down to a whole number.
+    rows:
+      - [Job, Hours, Full hours]
+      - [Repair, 7.9, null]
+    answerCell: C2
+    expected: 7
+    variants:
+      - set: { B2: 7 }
+        expected: 7
+      - set: { B2: 3.2 }
+        expected: 3
+    answer: =ROUNDDOWN(B2,0)
+    requiredFunctions:
+      - ROUNDDOWN
+    hints:
+      nudge: ROUNDDOWN always goes down, even from .9.
+      rule: ROUNDDOWN(number,0) drops everything after the decimal point.
+    misses:
+      value: 7.9 rounds down to 7.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ROUNDDOWN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ROUNDDOWN(B2,0)
+    reject:
+      - formula: =ROUND(B2,0)
+        rule: required-function
+      - formula: =ROUNDDOWN(B2,1)
+        rule: value
+      - formula: =7
+        rule: required-function
+      - formula: =ROUNDDOWN(B2,0
+        rule: syntax

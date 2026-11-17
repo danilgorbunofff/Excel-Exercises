@@ -3,6 +3,7 @@
 // carries the user id, so the webhook can find the account.
 import type { APIRoute } from "astro";
 import { hasPro } from "../../../lib/access.ts";
+import { logEvent } from "../../../server/events.ts";
 import { back, field, redirect } from "../../../server/http.ts";
 import { offeredPlans, priceIdFor } from "../../../server/plans.ts";
 import { stripe } from "../../../server/stripe.ts";
@@ -59,5 +60,6 @@ export const POST: APIRoute = async (ctx) => {
     cancel_url: `${ctx.url.origin}/pricing/`,
   });
   if (!session.url) return back("/pricing/", { error: "Checkout could not start. Try again." });
+  await logEvent("checkout_start", "/pricing/");
   return redirect(session.url);
 };

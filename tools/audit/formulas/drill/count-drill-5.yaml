@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNT($B$2:$B$7)/COUNTA($A$2:$A$7)
+      - =COUNT(B$2:B$7)/COUNTA(A2:A7)
+      - =count(b2:b7)/counta(a2:a7)
+      - =LET(data,B2:B7,COUNT(data)/COUNTA(A2:A7))
+    wrong: []
+    equivalent:
+      - formula: =COUNT(B2:B8)/COUNTA(A2:A7)
+        why: "range B2:B7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =COUNT(B2:B7)/COUNTA(A2:A8)
+        why: "range A2:A7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

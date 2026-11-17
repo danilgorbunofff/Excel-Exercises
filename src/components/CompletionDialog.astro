@@ -12,25 +12,45 @@ interface Props {
   next: { href: string; label: string };
 }
 const { practised, next } = Astro.props;
+const atEnd = next.label === "All exercises";
+const nextTitle = next.label.replace(/^Next: /u, "");
 ---
 
 <dialog class="done" aria-labelledby="done-title" closedby="any" data-done-dialog>
   <div class="done-head">
-    <h2 id="done-title">
-      <Icon name="check" size={20} /> Exercise completed
-    </h2>
+    <span class="badge" aria-hidden="true"><Icon name="check" size={20} /></span>
+    <h2 id="done-title">Exercise completed</h2>
     <button class="close" type="button" data-done-close>
       <span class="visually-hidden">Close</span>
       <Icon name="close" size={18} />
     </button>
   </div>
   <div class="done-body">
-    <p>{practised}</p>
-    <a class="button button-primary button-l next" href={next.href} autofocus data-done-next>
-      {next.label === "All exercises" ? "Back to all exercises" : `Next recommended exercise: ${next.label.replace(/^Next: /u, "")}`}
-      <Icon name="arrow" size={18} />
-    </a>
-    <p class="save">
+    <p class="practised">{practised}</p>
+    <div class="up-next">
+      {
+        !atEnd && (
+          <p class="up-next-text">
+            <span class="up-next-label">Up next</span>
+            <span class="up-next-title">{nextTitle}</span>
+          </p>
+        )
+      }
+      <a
+        class="button button-primary next"
+        href={next.href}
+        aria-label={atEnd ? undefined : `Next exercise: ${nextTitle}`}
+        autofocus
+        data-done-next
+      >
+        {atEnd ? "Back to all exercises" : "Next exercise"}
+        <Icon name="arrow" size={18} />
+      </a>
+    </div>
+  </div>
+  <p class="save">
+    <Icon name="user" size={16} />
+    <span>
       {
         siteConfig.accountsOpen ? (
           <>
@@ -48,8 +68,8 @@ const { practised, next } = Astro.props;
           </>
         )
       }
-    </p>
-  </div>
+    </span>
+  </p>
 </dialog>
 
 <style>
@@ -57,10 +77,12 @@ const { practised, next } = Astro.props;
     width: min(30rem, calc(100vw - 2rem));
     padding: 0;
     border: 0;
+    border-top: 4px solid var(--primary);
     border-radius: var(--radius-l);
     background: var(--surface);
     color: var(--text);
     box-shadow: var(--shadow-pop);
+    overflow: hidden;
   }
   .done::backdrop {
     background: rgb(0 0 0 / 0.45);
@@ -68,47 +90,100 @@ const { practised, next } = Astro.props;
   .done-head {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: var(--space-3) var(--space-3) var(--space-3) var(--space-5);
-    background: var(--primary);
-    color: var(--on-primary);
+    gap: var(--space-3);
+    padding: var(--space-5) var(--space-3) 0 var(--space-5);
+  }
+  .badge {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-pill);
+    background: var(--correct-tint);
+    color: var(--correct);
   }
   h2 {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
+    flex: 1;
     margin: 0;
-    font-size: var(--size-l);
+    font-size: clamp(var(--size-l), 5vw, var(--size-xl));
+    line-height: var(--leading-tight);
+    color: var(--heading);
   }
   .close {
     display: grid;
+    flex: none;
     place-items: center;
+    align-self: flex-start;
     width: var(--target);
     height: var(--target);
+    margin-top: calc(var(--space-2) * -1);
     border: 0;
     border-radius: var(--radius-m);
     background: transparent;
-    color: var(--on-primary);
+    color: var(--muted);
     cursor: pointer;
   }
-  .close:focus-visible {
-    outline-color: var(--on-primary);
+  .close:hover {
+    background: var(--header);
+    color: var(--text);
   }
   .done-body {
     display: grid;
-    gap: var(--space-4);
-    padding: var(--space-5);
+    gap: var(--space-5);
+    padding: var(--space-4) var(--space-5) var(--space-5);
   }
   .done-body p {
     margin: 0;
   }
+  .practised {
+    font-size: var(--size-m);
+    line-height: var(--leading);
+  }
+  .up-next {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-4);
+    padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-m);
+  }
+  .up-next-text {
+    display: grid;
+    /* Takes the spare width beside the button; once the button wraps, it fills its own row. */
+    flex: 999 1 10rem;
+    gap: var(--space-1);
+    min-width: 0;
+  }
+  .up-next-label {
+    font-size: var(--size-xs);
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .up-next-title {
+    font-weight: 600;
+    line-height: var(--leading-tight);
+  }
   .next {
-    white-space: normal;
-    text-align: left;
+    flex: 1 0 auto;
+    justify-content: center;
+    white-space: nowrap;
   }
   .save {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    margin: 0;
+    padding: var(--space-3) var(--space-5);
+    border-top: 1px solid var(--rule);
+    background: var(--bg);
     font-size: var(--size-s);
     color: var(--muted);
+  }
+  .save :global(svg) {
+    flex: none;
+    align-self: center;
   }
   .save a {
     color: var(--correct);

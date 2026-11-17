@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT($B$2:$B$5,$C$2:$C$5,$D$2:$D$5)
+      - =SUMPRODUCT(B$2:B$5,C2:C5,D2:D5)
+      - =sumproduct(b2:b5, c2:c5, d2:d5)
+      - =LET(data,B2:B5,SUMPRODUCT(data,C2:C5,D2:D5))
+    wrong: []
+    equivalent: []

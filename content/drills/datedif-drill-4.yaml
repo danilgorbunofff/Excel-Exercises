@@ -1,0 +1,41 @@
+id: datedif-drill-4
+slug: datedif-drill-4
+level: 2
+title: Months past the last birthday
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: DATEDIF
+screens:
+  - prompt: In D2, use DATEDIF with "ym" to find how many full months have passed since the last birthday of someone born on B2, on the date in C2.
+    rows:
+      - [Name, Born, On, Months]
+      - [Ann, 33109, 46343, null]
+    answerCell: D2
+    expected: 2
+    variants:
+      - set: { C2: 46350 }
+        expected: 3
+      - set: { C2: 46419 }
+        expected: 5
+    answer: =DATEDIF(B2,C2,"ym")
+    requiredFunctions:
+      - DATEDIF
+    hints:
+      nudge: '"ym" counts months, leaving out whole years.'
+      rule: DATEDIF(born,on,"ym") gives the months since the last birthday.
+    misses:
+      value: From 24 August to 17 November is 2 full months.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for DATEDIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =DATEDIF(B2,C2,"ym")
+    reject:
+      - formula: =DATEDIF(B2,C2,"m")
+        rule: value
+      - formula: =DATEDIF(B2,C2,"md")
+        rule: value
+      - formula: =2
+        rule: required-function
+      - formula: =DATEDIF(B2,C2,"ym"
+        rule: syntax

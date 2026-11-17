@@ -1,0 +1,72 @@
+id: filter-drill-2
+slug: filter-drill-2
+level: 1
+title: Whole rows over a limit
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: FILTER
+screens:
+  - prompt: In E2, use FILTER to list the whole rows of A2:C7 whose sales in C2:C7 are over 300.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, null]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [Ann, East, 400]
+      - [Cy, East, 310]
+      - [Di, North, 520]
+      - [Flo, West, 330]
+    variants:
+      - set: { C3: 301 }
+        expected:
+          - - Ann
+            - East
+            - 400
+          - - Bo
+            - West
+            - 301
+          - - Cy
+            - East
+            - 310
+          - - Di
+            - North
+            - 520
+          - - Flo
+            - West
+            - 330
+      - set: { C2: 300 }
+        expected:
+          - - Cy
+            - East
+            - 310
+          - - Di
+            - North
+            - 520
+          - - Flo
+            - West
+            - 330
+    answer: =FILTER(A2:C7,C2:C7>300)
+    requiredFunctions:
+      - FILTER
+    hints:
+      nudge: Return the whole table range to get every column.
+      rule: FILTER(A2:C7,C2:C7>300) spills the matching rows, all three columns.
+    misses:
+      value: The rows over 300 are Ann East 400, Cy East 310, Di North 520, Flo West 330.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =FILTER(A2:C7,C2:C7>300)
+    reject:
+      - formula: =FILTER(A2:A7,C2:C7>300)
+        rule: value
+      - formula: =FILTER(A2:C7,C2:C7>=300)
+        rule: fragile
+      - formula: =FILTER(A2:C7,C2:C7>300
+        rule: syntax

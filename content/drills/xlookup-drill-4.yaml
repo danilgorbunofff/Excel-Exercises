@@ -1,0 +1,49 @@
+id: xlookup-drill-4
+slug: xlookup-drill-4
+level: 2
+title: Tax rate from the band below
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: XLOOKUP
+screens:
+  - prompt: "In E3, use XLOOKUP with match mode -1 to find the rate in B2:B5 for the income in E2. Each band in A2:A5 starts at the amount shown."
+    rows:
+      - [From, Rate, null, Find, null]
+      - [0, 0.1, null, Income, 52000]
+      - [10000, 0.2, null, Rate, null]
+      - [40000, 0.3, null, null, null]
+      - [100000, 0.4, null, null, null]
+    answerCell: E3
+    expected: 0.3
+    variants:
+      - set: { E2: 40000 }
+        expected: 0.3
+      - set: { E2: 9999 }
+        expected: 0.1
+      - set: { E2: 100000 }
+        expected: 0.4
+      - set: { E2: 39999 }
+        expected: 0.2
+    answer: =XLOOKUP(E2,A2:A5,B2:B5,,-1)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: "Match mode -1 means: an exact match, or else the next smaller value."
+      rule: XLOOKUP(value,starts,rates,,-1) finds the band an income falls in. Leave the fourth argument empty.
+    misses:
+      value: 52000 falls in the band that starts at 40000, so the rate is 0.3.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for XLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =XLOOKUP(E2,A2:A5,B2:B5,,-1)
+      - =XLOOKUP(E2,A2:A5,B2:B5,"",-1)
+    reject:
+      - formula: =XLOOKUP(E2,A2:A5,B2:B5,,1)
+        rule: value
+      - formula: =XLOOKUP(E2,A2:A5,B2:B5)
+        rule: value
+      - formula: =0.3
+        rule: required-function
+      - formula: =XLOOKUP(E2,A2:A5,B2:B5,,-1
+        rule: syntax

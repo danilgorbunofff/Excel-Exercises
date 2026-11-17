@@ -1,0 +1,56 @@
+id: sort-drill-1
+slug: sort-drill-1
+level: 1
+title: Names A to Z
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SORT
+screens:
+  - prompt: In E2, use SORT to list the reps in A2:A7 from A to Z.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [Ann]
+      - [Bo]
+      - [Cy]
+      - [Di]
+      - [Ed]
+      - [Flo]
+    variants:
+      - set: { A3: Zed }
+        expected:
+          - - Ann
+          - - Cy
+          - - Di
+          - - Ed
+          - - Flo
+          - - Zed
+    answer: =SORT(A2:A7)
+    requiredFunctions:
+      - SORT
+    hints:
+      nudge: SORT with one range sorts it from smallest to largest, A to Z.
+      rule: SORT(range) spills the values in order.
+    misses:
+      value: A to Z, the reps are Ann, Bo, Cy, Di, Ed, Flo.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SORT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SORT(A2:A7)
+      - =SORT(A2:A7,1,1)
+    reject:
+      - formula: =SORT(A2:A7,1,-1)
+        rule: value
+      - formula: =UNIQUE(A2:A7)
+        rule: required-function
+      - formula: =SORT(A2:A7
+        rule: syntax

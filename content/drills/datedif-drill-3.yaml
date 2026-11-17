@@ -1,0 +1,39 @@
+id: datedif-drill-3
+slug: datedif-drill-3
+level: 1
+title: Days between with DATEDIF
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: DATEDIF
+screens:
+  - prompt: In D2, use DATEDIF with "d" to count the days from B2 to C2.
+    rows:
+      - [Task, Start, End, Days]
+      - [T1, 46083, 46101, null]
+    answerCell: D2
+    expected: 18
+    variants:
+      - set: { C2: 46113 }
+        expected: 30
+    answer: =DATEDIF(B2,C2,"d")
+    requiredFunctions:
+      - DATEDIF
+    hints:
+      nudge: '"d" counts days.'
+      rule: DATEDIF(start,end,"d") gives the same as end minus start.
+    misses:
+      value: From 2 March to 20 March is 18 days.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for DATEDIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =DATEDIF(B2,C2,"d")
+    reject:
+      - formula: =C2-B2
+        rule: required-function
+      - formula: =DATEDIF(B2,C2,"m")
+        rule: value
+      - formula: =18
+        rule: required-function
+      - formula: =DATEDIF(B2,C2,"d"
+        rule: syntax

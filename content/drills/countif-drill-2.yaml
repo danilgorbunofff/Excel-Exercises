@@ -1,0 +1,44 @@
+id: countif-drill-2
+slug: countif-drill-2
+level: 1
+title: Count the passing scores
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTIF
+screens:
+  - prompt: In B9, use COUNTIF to count the scores in B2:B8 that are 50 or more.
+    rows:
+      - [Student, Score]
+      - [Ann, 72]
+      - [Bo, 45]
+      - [Cai, 88]
+      - [Dee, 50]
+      - [Eli, 39]
+      - [Fay, 61]
+      - [Gus, 49]
+      - [Passed, null]
+    answerCell: B9
+    expected: 4
+    variants:
+      - { set: { B3: 55 }, expected: 5 }
+      - { set: { B8: 72 }, expected: 5 }
+    answer: =COUNTIF(B2:B8,">=50")
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: A test such as ">=50" goes in quotes as the second argument.
+      rule: COUNTIF(range,">=50") counts the cells that are 50 or more.
+    misses:
+      value: 4 scores are 50 or more. 50 itself counts.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTIF(B2:B8,">=50")
+    reject:
+      - formula: =COUNTIF(B2:B8,">50")
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =COUNTIF(B2:B8,">=50"
+        rule: syntax

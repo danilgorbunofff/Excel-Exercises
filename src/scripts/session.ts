@@ -11,6 +11,7 @@ import {
   readProgress,
   STORAGE_KEY,
 } from "./progress.ts";
+import { trackOnce } from "./track.ts";
 
 const SYNCED_KEY = "formula-practice:synced";
 const DAILY_SYNCED_KEY = "formula-practice:daily-synced";
@@ -70,6 +71,9 @@ async function syncDailyOnce(): Promise<void> {
     // Storage blocked: the next page tries again.
   }
 }
+
+// One visit per tab: the start of the funnel /api/events counts.
+trackOnce("visit", "session");
 
 // The cookie answers at once, so the header does not flash the wrong buttons.
 showState(signedIn());

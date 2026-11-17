@@ -1,0 +1,51 @@
+id: take-drill-5
+slug: take-drill-5
+level: 2
+title: The three largest sales
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TAKE
+screens:
+  - prompt: In E2, use TAKE and SORT to return the 3 largest sales in C2:C7, largest first.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, null]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [520]
+      - [400]
+      - [330]
+    variants:
+      - set: { C3: 999 }
+        expected:
+          - - 999
+          - - 520
+          - - 400
+    answer: =TAKE(SORT(C2:C7,1,-1),3)
+    requiredFunctions:
+      - TAKE
+      - SORT
+    hints:
+      nudge: Sort largest first, then keep three.
+      rule: TAKE(SORT(range,1,-1),3) gives the top three values.
+    misses:
+      value: The three largest sales are 520, 400, 330.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TAKE and SORT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TAKE(SORT(C2:C7,1,-1),3)
+      - =TAKE(SORT(C2:C7,,-1),3)
+    reject:
+      - formula: =SORT(C2:C7,1,-1)
+        rule: required-function
+      - formula: =TAKE(SORT(C2:C7),3)
+        rule: value
+      - formula: =TAKE(SORT(C2:C7,1,-1),3
+        rule: syntax

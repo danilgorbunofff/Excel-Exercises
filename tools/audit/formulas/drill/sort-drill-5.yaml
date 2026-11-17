@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =TAKE(SORT($A$2:$C$7,3,-1),3)
+      - =TAKE(SORT(A$2:C$7,3,-1),3)
+      - =take(sort(a2:c7, 3, -1), 3)
+      - =LET(data,A2:C7,TAKE(SORT(data,3,-1),3))
+    wrong: []
+    equivalent:
+      - formula: =TAKE(SORT(A2:C8,3,-1),3)
+        why: "range A2:C7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

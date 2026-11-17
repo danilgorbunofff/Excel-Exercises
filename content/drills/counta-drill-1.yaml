@@ -1,0 +1,45 @@
+id: counta-drill-1
+slug: counta-drill-1
+level: 1
+title: Count the tasks with an owner
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTA
+screens:
+  - prompt: In B8, use COUNTA to find how many tasks have an owner in B2:B7.
+    rows:
+      - [Task, Owner]
+      - [Plan, Ann]
+      - [Build, null]
+      - [Test, Raj]
+      - [Docs, null]
+      - [Ship, Lea]
+      - [Review, Tom]
+      - [Owned, null]
+    answerCell: B8
+    expected: 4
+    variants:
+      - set: { B3: Ivy }
+        expected: 5
+    answer: =COUNTA(B2:B7)
+    requiredFunctions:
+      - COUNTA
+    hints:
+      nudge: One function counts every cell that is not empty.
+      rule: "COUNTA(range) counts cells holding anything: text, numbers or logical values."
+    misses:
+      value: 4 tasks have an owner.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTA.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTA(B2:B7)
+    reject:
+      - formula: =COUNT(B2:B7)
+        rule: required-function
+      - formula: =COUNTA(B2:B5)
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =COUNTA(B2:B7
+        rule: syntax

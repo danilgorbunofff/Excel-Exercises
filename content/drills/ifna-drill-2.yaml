@@ -1,0 +1,45 @@
+id: ifna-drill-2
+slug: ifna-drill-2
+level: 1
+title: Position or zero with IFNA
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IFNA
+screens:
+  - prompt: In E3, use IFNA and MATCH to find the position of the code in E2 within A2:A5, and show 0 if it is not there.
+    rows:
+      - [Code, Price, null, Find, null]
+      - [D40, 2, null, Code, Z99]
+      - [A10, 1.5, null, Position, null]
+      - [F60, 12, null, null, null]
+      - [B20, 3, null, null, null]
+    answerCell: E3
+    expected: 0
+    variants:
+      - set: { E2: B20 }
+        expected: 4
+      - set: { E2: D40 }
+        expected: 1
+    answer: =IFNA(MATCH(E2,A2:A5,0),0)
+    requiredFunctions:
+      - IFNA
+      - MATCH
+    hints:
+      nudge: "MATCH gives #N/A when the code is missing."
+      rule: IFNA(MATCH(...),0) gives 0 for a missing code.
+    misses:
+      value: Z99 is not in the list, so the result is 0.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IFNA and MATCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IFNA(MATCH(E2,A2:A5,0),0)
+    reject:
+      - formula: =IFNA(MATCH(E2,A2:A5,0),1)
+        rule: value
+      - formula: =MATCH(E2,A2:A5,0)
+        rule: required-function
+      - formula: =0
+        rule: required-function
+      - formula: =IFNA(MATCH(E2,A2:A5,0),0
+        rule: syntax

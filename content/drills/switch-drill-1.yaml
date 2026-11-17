@@ -1,0 +1,41 @@
+id: switch-drill-1
+slug: switch-drill-1
+level: 1
+title: Region name from a code
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SWITCH
+screens:
+  - prompt: 'In B2, use SWITCH to turn the code in A2 into a name: "N" North, "S" South, "E" East, "W" West.'
+    rows:
+      - [Code, Region]
+      - [N, null]
+    answerCell: B2
+    expected: North
+    variants:
+      - set: { A2: E }
+        expected: East
+      - set: { A2: W }
+        expected: West
+    answer: =SWITCH(A2,"N","North","S","South","E","East","W","West")
+    requiredFunctions:
+      - SWITCH
+    hints:
+      nudge: SWITCH takes the cell, then pairs of a value and its result.
+      rule: SWITCH(A2,value1,result1,value2,result2,...) returns the result paired with the match.
+    misses:
+      value: N stands for North.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SWITCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SWITCH(A2,"N","North","S","South","E","East","W","West")
+    reject:
+      - formula: =IF(A2="N","North","South")
+        rule: required-function
+      - formula: =SWITCH(A2,"N","North","S","South")
+        rule: fragile
+      - formula: ="North"
+        rule: required-function
+      - formula: =SWITCH(A2,"N","North","S","South","E","East","W","West"
+        rule: syntax

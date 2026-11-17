@@ -1,0 +1,45 @@
+id: aggregate-drill-4
+slug: aggregate-drill-4
+level: 2
+title: Second largest with AGGREGATE
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: AGGREGATE
+screens:
+  - prompt: In B8, use AGGREGATE with function 14 and option 6 to find the second highest bid in B2:B7.
+    rows:
+      - [Bidder, Bid]
+      - [Ava, 420]
+      - [Ben, 515]
+      - [Cal, 480]
+      - [Dot, 390]
+      - [Eve, 505]
+      - [Fin, 460]
+      - [Second, null]
+    answerCell: B8
+    expected: 505
+    variants:
+      - { set: { B4: 510 }, expected: 510 }
+      - { set: { B2: 575, B7: 630 }, expected: 575 }
+    answer: =AGGREGATE(14,6,B2:B7,2)
+    requiredFunctions:
+      - AGGREGATE
+    hints:
+      nudge: "Function 14 works like LARGE, so it takes a fourth argument: which largest you want."
+      rule: AGGREGATE(14,6,range,k) returns the kth largest value, skipping error cells.
+    misses:
+      value: The highest bid is 515 and the second highest is 505.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AGGREGATE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AGGREGATE(14,6,B2:B7,2)
+    reject:
+      - formula: =AGGREGATE(14,6,B2:B7,1)
+        rule: value
+      - formula: =LARGE(B2:B7,2)
+        rule: required-function
+      - formula: =505
+        rule: required-function
+      - formula: =AGGREGATE(14,6,B2:B7,2
+        rule: syntax

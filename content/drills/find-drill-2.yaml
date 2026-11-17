@@ -1,0 +1,39 @@
+id: find-drill-2
+slug: find-drill-2
+level: 1
+title: FIND cares about case
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: FIND
+screens:
+  - prompt: In B2, use FIND to find the position of the lower-case "x" in A2.
+    rows:
+      - [Text, Result]
+      - [AXE axe, null]
+    answerCell: B2
+    expected: 6
+    variants:
+      - set: { A2: Box X }
+        expected: 3
+    answer: =FIND("x",A2)
+    requiredFunctions:
+      - FIND
+    hints:
+      nudge: FIND tells capital X from small x.
+      rule: FIND is case-sensitive; SEARCH is not.
+    misses:
+      value: The first small x in AXE axe is character 6.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for FIND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =FIND("x",A2)
+    reject:
+      - formula: =FIND("X",A2)
+        rule: value
+      - formula: =SEARCH("x",A2)
+        rule: required-function
+      - formula: =6
+        rule: required-function
+      - formula: =FIND("x",A2
+        rule: syntax

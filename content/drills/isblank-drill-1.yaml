@@ -1,0 +1,37 @@
+id: isblank-drill-1
+slug: isblank-drill-1
+level: 1
+title: Is the cell empty
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISBLANK
+screens:
+  - prompt: In C2, use ISBLANK to test whether B2 is empty.
+    rows:
+      - [Task, Owner, No owner]
+      - [Plan, null, null]
+    answerCell: C2
+    expected: true
+    variants:
+      - set: { B2: Ann }
+        expected: false
+    answer: =ISBLANK(B2)
+    requiredFunctions:
+      - ISBLANK
+    hints:
+      nudge: ISBLANK takes one cell.
+      rule: ISBLANK(cell) is TRUE when the cell holds nothing at all.
+    misses:
+      value: B2 is empty, so the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISBLANK.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ISBLANK(B2)
+    reject:
+      - formula: =B2<>""
+        rule: required-function
+      - formula: =ISBLANK(A2)
+        rule: value
+      - formula: =ISBLANK(B2
+        rule: syntax

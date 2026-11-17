@@ -1,0 +1,40 @@
+id: date-drill-4
+slug: date-drill-4
+level: 2
+title: Months past December
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: DATE
+screens:
+  - prompt: In D2, use DATE to build the date. B2 counts months from the start of the year in A2, so it can be more than 12.
+    rows:
+      - [Year, Month, Day, Date]
+      - [2026, 14, 10, null]
+    answerCell: D2
+    expected: 46428
+    variants:
+      - set: { B2: 3 }
+        expected: 46091
+      - set: { B2: 25 }
+        expected: 46762
+    answer: =DATE(A2,B2,C2)
+    requiredFunctions:
+      - DATE
+    hints:
+      nudge: DATE carries extra months into the next year by itself.
+      rule: DATE(2026,14,10) is 10 February 2027.
+    misses:
+      value: Month 14 of 2026 is February 2027, so the date number is 46428.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for DATE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =DATE(A2,B2,C2)
+      - =DATE(A2+1,B2-12,C2)
+    reject:
+      - formula: =DATE(A2,12,C2)
+        rule: value
+      - formula: =46428
+        rule: required-function
+      - formula: =DATE(A2,B2,C2
+        rule: syntax

@@ -5,6 +5,7 @@ import {
   dueDate,
   isDue,
   mergeProgress,
+  needsReview,
   readProgress,
   record,
   STORAGE_KEY,
@@ -95,6 +96,76 @@ describe("progress", () => {
     record("a", "solved", s);
     clearProgress(s);
     expect(readProgress(s)).toEqual({});
+  });
+});
+
+describe("misses", () => {
+  it("counts wrong checks and keeps them through a solve", () => {
+    const s = memoryStorage();
+    expect(record("a", "missed", s, "2026-01-01")).toEqual({
+      state: "tried",
+      date: "2026-01-01",
+      misses: 1,
+      missed: "2026-01-01",
+    });
+    record("a", "missed", s, "2026-01-01");
+    const solved = record("a", "solved", s, "2026-01-02");
+    expect(solved).toMatchObject({ state: "solved", misses: 2, last: "2026-01-02" });
+  });
+
+  it("makes a solve after a miss and a shown answer count as with help", () => {
+    const s = memoryStorage();
+    record("a", "missed", s);
+    expect(record("a", "revealed", s).state).toBe("revealed");
+    expect(record("a", "solved", s).state).toBe("helped");
+  });
+
+  it("never undoes a solve", () => {
+    const s = memoryStorage();
+    record("a", "solved", s, "2026-01-01");
+    expect(record("a", "missed", s, "2026-01-03").state).toBe("solved");
+  });
+
+  it("lists missed exercises and due ones for review", () => {
+    const s = memoryStorage();
+    record("tried", "missed", s, "2026-01-01");
+    record("clean", "solved", s, "2026-01-01");
+    record("relapse", "solved", s, "2026-01-01");
+    record("relapse", "missed", s, "2026-01-01");
+    const p = readProgress(s);
+    expect(needsReview(p["tried"], "2026-01-01")).toBe(true);
+    expect(needsReview(p["clean"], "2026-01-01")).toBe(false);
+    expect(needsReview(p["clean"], "2026-01-02")).toBe(true);
+    // Missed on the day it was solved: back with the normal review, not at once.
+    expect(needsReview(p["relapse"], "2026-01-01")).toBe(false);
+    record("relapse", "missed", s, "2026-01-05");
+    expect(needsReview(readProgress(s)["relapse"], "2026-01-05")).toBe(true);
+    expect(dueDate(p["tried"] ?? { state: "tried", date: "" })).toBeNull();
+  });
+
+  it("merges the most misses and the latest miss", () => {
+    expect(
+      mergeProgress(
+        {
+          a: {
+            state: "solved",
+            date: "2026-01-02",
+            last: "2026-01-02",
+            misses: 1,
+            missed: "2026-01-01",
+          },
+        },
+        { a: { state: "tried", date: "2026-01-01", misses: 3, missed: "2026-01-03" } },
+      ),
+    ).toEqual({
+      a: {
+        state: "solved",
+        date: "2026-01-01",
+        last: "2026-01-02",
+        misses: 3,
+        missed: "2026-01-03",
+      },
+    });
   });
 });
 

@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(ISERROR($B$2/$C$2),"Check",$B$2/$C$2)
+      - =IF(ISERROR(B$2/C2),"Check",B2/C2)
+      - =if(iserror(b2/c2), "Check", b2/c2)
+    wrong:
+      - formula: =IF(ISERROR(B3/C2),"Check",B2/C2)
+        rule: fragile
+        why: B2 read from the next row
+      - formula: =IF(ISERROR(C2/C2),"Check",B2/C2)
+        rule: fragile
+        why: B2 read from the next column
+    equivalent: []

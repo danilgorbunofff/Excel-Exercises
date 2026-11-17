@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LOWER(LEFT($A$2,1)&$B$2)
+      - =LOWER(LEFT(A$2,1)&B2)
+      - =lower(left(a2, 1)&b2)
+    wrong: []
+    equivalent: []

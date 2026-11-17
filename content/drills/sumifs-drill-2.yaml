@@ -1,0 +1,46 @@
+id: sumifs-drill-2
+slug: sumifs-drill-2
+level: 1
+title: Total for quantities in a band
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUMIFS
+screens:
+  - prompt: In C9, use SUMIFS to add up the amounts in C2:C8 for orders whose quantity in B2:B8 is from 10 to 20.
+    rows:
+      - [Order, Qty, Amount]
+      - [O1, 8, 80]
+      - [O2, 12, 120]
+      - [O3, 25, 250]
+      - [O4, 15, 150]
+      - [O5, 20, 200]
+      - [O6, 5, 50]
+      - [O7, 18, 180]
+      - [null, In band, null]
+    answerCell: C9
+    expected: 650
+    variants:
+      - set: { B2: 10 }
+        expected: 730
+      - set: { B4: 21 }
+        expected: 650
+    answer: =SUMIFS(C2:C8,B2:B8,">=10",B2:B8,"<=20")
+    requiredFunctions:
+      - SUMIFS
+    hints:
+      nudge: Test the quantity column twice, once for each end of the band.
+      rule: SUMIFS(amounts,qty,">=10",qty,"<=20") adds the rows with 10 to 20 items.
+    misses:
+      value: The orders with 10 to 20 items add up to 650. 20 itself counts.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUMIFS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUMIFS(C2:C8,B2:B8,">=10",B2:B8,"<=20")
+    reject:
+      - formula: =SUMIFS(C2:C8,B2:B8,">10",B2:B8,"<20")
+        rule: value
+      - formula: =650
+        rule: required-function
+      - formula: =SUMIFS(C2:C8,B2:B8,">=10",B2:B8,"<=20"
+        rule: syntax

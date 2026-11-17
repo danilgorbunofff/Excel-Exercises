@@ -1,0 +1,42 @@
+id: lower-drill-5
+slug: lower-drill-5
+level: 2
+title: A user name from initial and surname
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LOWER
+screens:
+  - prompt: "In C2, use LOWER and LEFT to make a user name: the first letter of A2 followed by the surname in B2, all in small letters."
+    rows:
+      - [First, Last, Result]
+      - [Rosa, Diaz, null]
+    answerCell: C2
+    expected: rdiaz
+    variants:
+      - set: { A2: Al, B2: Brook }
+        expected: abrook
+    answer: =LOWER(LEFT(A2,1)&B2)
+    requiredFunctions:
+      - LOWER
+      - LEFT
+    hints:
+      nudge: Take the initial with LEFT, join the surname, then lower it all.
+      rule: LOWER(LEFT(A2,1)&B2) makes rdiaz from Rosa Diaz.
+    misses:
+      value: The user name is rdiaz.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LOWER and LEFT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LOWER(LEFT(A2,1)&B2)
+      - =LOWER(LEFT(A2)&B2)
+      - =LOWER(LEFT(A2,1))&LOWER(B2)
+    reject:
+      - formula: =LOWER(A2&B2)
+        rule: required-function
+      - formula: =LOWER(LEFT(A2,2)&B2)
+        rule: value
+      - formula: ="rdiaz"
+        rule: required-function
+      - formula: =LOWER(LEFT(A2,1)&B2
+        rule: syntax

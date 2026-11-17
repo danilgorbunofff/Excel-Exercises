@@ -99,7 +99,7 @@ test("a correct answer turns Check into Next, in track order, and is remembered"
   const dialog = page.getByRole("dialog", { name: "Exercise completed" });
   await expect(dialog).toBeVisible();
   await expect(
-    dialog.getByRole("link", { name: "Next recommended exercise: Average score" }),
+    dialog.getByRole("link", { name: "Next exercise: Average score" }),
   ).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(dialog).toBeHidden();
@@ -234,7 +234,8 @@ for (const colorScheme of ["light", "dark"] as const) {
 }
 
 const exerciseRoutes = sitemapRoutes().filter(
-  (r) => /^\/exercises\/[^/]+\/$/u.test(r) && r !== "/exercises/tracks/",
+  (r) =>
+    /^\/exercises\/[^/]+\/$/u.test(r) && r !== "/exercises/tracks/" && r !== "/exercises/drills/",
 );
 
 test("every exercise in the track has a page", () => {

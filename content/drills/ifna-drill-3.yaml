@@ -1,0 +1,44 @@
+id: ifna-drill-3
+slug: ifna-drill-3
+level: 1
+title: None for a missing name
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IFNA
+screens:
+  - prompt: In E3, use IFNA and XLOOKUP to find the team of the name in E2, and show "None" if the name is not in A2:A5.
+    rows:
+      - [Name, Team, null, Find, null]
+      - [Ann, Blue, null, Name, Zoe]
+      - [Bo, Red, null, Team, null]
+      - [Cy, Blue, null, null, null]
+      - [Di, Green, null, null, null]
+    answerCell: E3
+    expected: None
+    variants:
+      - set: { E2: Di }
+        expected: Green
+      - set: { E2: Bo }
+        expected: Red
+    answer: =IFNA(XLOOKUP(E2,A2:A5,B2:B5),"None")
+    requiredFunctions:
+      - IFNA
+    hints:
+      nudge: Wrap the XLOOKUP in IFNA.
+      rule: IFNA(XLOOKUP(...),"None") shows None when the name is missing.
+    misses:
+      value: Zoe is not in the list, so the cell shows None.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IFNA.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IFNA(XLOOKUP(E2,A2:A5,B2:B5),"None")
+    reject:
+      - formula: =XLOOKUP(E2,A2:A5,B2:B5)
+        rule: required-function
+      - formula: =IFNA(XLOOKUP(E2,A2:A5,A2:A5),"None")
+        rule: fragile
+      - formula: ="None"
+        rule: required-function
+      - formula: =IFNA(XLOOKUP(E2,A2:A5,B2:B5),"None"
+        rule: syntax

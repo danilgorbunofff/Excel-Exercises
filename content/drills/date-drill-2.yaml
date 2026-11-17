@@ -1,0 +1,41 @@
+id: date-drill-2
+slug: date-drill-2
+level: 1
+title: The first of the month
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: DATE
+screens:
+  - prompt: In C2, use DATE to build the first day of the month in B2 of the year in A2.
+    rows:
+      - [Year, Month, Start]
+      - [2026, 7, null]
+    answerCell: C2
+    expected: 46204
+    variants:
+      - set: { B2: 2 }
+        expected: 46054
+      - set: { A2: 2028 }
+        expected: 46935
+    answer: =DATE(A2,B2,1)
+    requiredFunctions:
+      - DATE
+    hints:
+      nudge: The day is always 1.
+      rule: DATE(A2,B2,1) is the first day of that month.
+    misses:
+      value: 1 July 2026 is the date number 46204.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for DATE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =DATE(A2,B2,1)
+    reject:
+      - formula: =DATE(A2,B2,0)
+        rule: value
+      - formula: =DATE(A2,1,B2)
+        rule: value
+      - formula: =46204
+        rule: required-function
+      - formula: =DATE(A2,B2,1
+        rule: syntax

@@ -1,0 +1,47 @@
+id: subtotal-drill-4
+slug: subtotal-drill-4
+level: 2
+title: Largest value with SUBTOTAL
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUBTOTAL
+screens:
+  - prompt: In C8, use SUBTOTAL to find the largest delivery in C2:C7.
+    rows:
+      - [Date, Van, Parcels]
+      - [Mon, V1, 48]
+      - [Mon, V2, 61]
+      - [Tue, V1, 55]
+      - [Tue, V2, 39]
+      - [Wed, V1, 70]
+      - [Wed, V2, 44]
+      - [Largest, null, null]
+    answerCell: C8
+    expected: 70
+    variants:
+      - { set: { C3: 80 }, expected: 80 }
+      - { set: { C2: 96 }, expected: 96 }
+      - { set: { C7: 88 }, expected: 88 }
+    answer: =SUBTOTAL(4,C2:C7)
+    requiredFunctions:
+      - SUBTOTAL
+    hints:
+      nudge: Function number 4 finds the largest value.
+      rule: SUBTOTAL(4,range) works like MAX. 104 does the same and also skips rows you hide by hand.
+    misses:
+      value: The largest delivery was 70 parcels.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUBTOTAL.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUBTOTAL(4,C2:C7)
+      - =SUBTOTAL(104,C2:C7)
+    reject:
+      - formula: =MAX(C2:C7)
+        rule: required-function
+      - formula: =SUBTOTAL(5,C2:C7)
+        rule: value
+      - formula: =70
+        rule: required-function
+      - formula: =SUBTOTAL(4,C2:C7
+        rule: syntax

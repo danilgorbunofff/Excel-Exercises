@@ -1,0 +1,49 @@
+id: sumifs-drill-5
+slug: sumifs-drill-5
+level: 2
+title: Share of units from East pens
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUMIFS
+screens:
+  - prompt: In C9, use SUMIFS and SUM to find the share of all units in C2:C8 that are "East" and "Pens".
+    rows:
+      - [Region, Product, Units]
+      - [East, Pens, 40]
+      - [West, Pens, 25]
+      - [East, Pads, 30]
+      - [East, Pens, 15]
+      - [North, Pens, 50]
+      - [East, Pads, 20]
+      - [West, Pads, 35]
+      - [null, Share, null]
+    answerCell: C9
+    expected: 0.255813953488
+    variants:
+      - set: { B4: Pens }
+        expected: 0.395348837209
+      - set: { C8: 100 }
+        expected: 0.196428571429
+    answer: =SUMIFS(C2:C8,A2:A8,"East",B2:B8,"Pens")/SUM(C2:C8)
+    requiredFunctions:
+      - SUMIFS
+      - SUM
+    hints:
+      nudge: Divide the East pens total by the total of every row.
+      rule: SUMIFS gives the matching part; SUM gives the whole.
+    misses:
+      value: East pens are 55 of 215 units, a share of about 0.26.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUMIFS and SUM.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUMIFS(C2:C8,A2:A8,"East",B2:B8,"Pens")/SUM(C2:C8)
+    reject:
+      - formula: =SUMIFS(C2:C8,A2:A8,"East",B2:B8,"Pens")/SUMIFS(C2:C8,A2:A8,"East")
+        rule: required-function
+      - formula: =SUMIFS(C2:C8,A2:A8,"East")/SUM(C2:C8)
+        rule: value
+      - formula: =0.255813953488
+        rule: required-function
+      - formula: =SUMIFS(C2:C8,A2:A8,"East",B2:B8,"Pens")/SUM(C2:C8
+        rule: syntax

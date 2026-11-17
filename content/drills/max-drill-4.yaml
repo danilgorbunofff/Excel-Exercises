@@ -1,0 +1,44 @@
+id: max-drill-4
+slug: max-drill-4
+level: 2
+title: Find the mildest frost
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MAX
+screens:
+  - prompt: In B8, use MAX to find the warmest of the night temperatures in B2:B6. They are all below zero, and one night has no reading.
+    rows:
+      - [Night, Low]
+      - [Mon, -6]
+      - [Tue, -2]
+      - [Wed, null]
+      - [Thu, -9]
+      - [Fri, -4]
+      - [null, null]
+      - [Warmest, null]
+    answerCell: B8
+    expected: -2
+    variants:
+      - { set: { B3: -1 }, expected: -1 }
+      - { set: { B2: 1 }, expected: 1 }
+      - { set: { B3: -6 }, expected: -4 }
+    answer: =MAX(B2:B6)
+    requiredFunctions:
+      - MAX
+    hints:
+      nudge: The largest of several negative numbers is the one closest to zero.
+      rule: MAX(range) skips the empty cell and returns the number nearest to zero here.
+    misses:
+      value: The warmest night was -2.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MAX.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MAX(B2:B6)
+    reject:
+      - formula: =MIN(B2:B6)
+        rule: required-function
+      - formula: =-2
+        rule: required-function
+      - formula: =MAX(B2:B6
+        rule: syntax

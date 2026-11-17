@@ -1,0 +1,42 @@
+id: len-drill-5
+slug: len-drill-5
+level: 2
+title: Count the commas
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LEN
+screens:
+  - prompt: "In B2, use LEN and SUBSTITUTE to count how many commas are in A2: the length minus the length without commas."
+    rows:
+      - [List, Result]
+      - ["pens,pads,clips,tape", null]
+    answerCell: B2
+    expected: 3
+    variants:
+      - set: { A2: pens }
+        expected: 0
+      - set: { A2: "a,b,c,d,e,f" }
+        expected: 5
+    answer: =LEN(A2)-LEN(SUBSTITUTE(A2,",",""))
+    requiredFunctions:
+      - LEN
+      - SUBSTITUTE
+    hints:
+      nudge: Remove the commas with SUBSTITUTE, then compare the lengths.
+      rule: Each comma removed shortens the text by one.
+    misses:
+      value: The list has 3 commas.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LEN and SUBSTITUTE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LEN(A2)-LEN(SUBSTITUTE(A2,",",""))
+    reject:
+      - formula: =LEN(A2)
+        rule: required-function
+      - formula: =LEN(SUBSTITUTE(A2,",",""))
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =LEN(A2)-LEN(SUBSTITUTE(A2,",","")
+        rule: syntax

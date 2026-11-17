@@ -1,0 +1,46 @@
+id: aggregate-drill-5
+slug: aggregate-drill-5
+level: 2
+title: Smallest and largest with AGGREGATE
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: AGGREGATE
+screens:
+  - prompt: In B8, use AGGREGATE twice to find the gap between the second smallest and the second largest time in B2:B7.
+    rows:
+      - [Runner, Time]
+      - [R1, 41]
+      - [R2, 37]
+      - [R3, 45]
+      - [R4, 39]
+      - [R5, 52]
+      - [R6, 43]
+      - [Gap, null]
+    answerCell: B8
+    expected: 6
+    variants:
+      - { set: { B6: 40 }, expected: 4 }
+      - { set: { B2: 52, B3: 45 }, expected: 9 }
+      - { set: { B2: 37 }, expected: 8 }
+    answer: =AGGREGATE(14,6,B2:B7,2)-AGGREGATE(15,6,B2:B7,2)
+    requiredFunctions:
+      - AGGREGATE
+    hints:
+      nudge: Function 14 is like LARGE and 15 is like SMALL. Both take k as a fourth argument.
+      rule: AGGREGATE(14,6,range,2) is the second largest and AGGREGATE(15,6,range,2) the second smallest.
+    misses:
+      value: The second largest time is 45 and the second smallest is 39, so the gap is 6.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AGGREGATE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AGGREGATE(14,6,B2:B7,2)-AGGREGATE(15,6,B2:B7,2)
+    reject:
+      - formula: =AGGREGATE(4,6,B2:B7)-AGGREGATE(5,6,B2:B7)
+        rule: value
+      - formula: =LARGE(B2:B7,2)-SMALL(B2:B7,2)
+        rule: required-function
+      - formula: =6
+        rule: required-function
+      - formula: =AGGREGATE(14,6,B2:B7,2)-AGGREGATE(15,6,B2:B7,2
+        rule: syntax

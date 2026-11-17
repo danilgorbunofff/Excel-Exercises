@@ -1,0 +1,46 @@
+id: averageifs-drill-2
+slug: averageifs-drill-2
+level: 1
+title: Average score for a team and a level
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: AVERAGEIFS
+screens:
+  - prompt: In C9, use AVERAGEIFS to average the scores in C2:C8 where the team is "Blue" and the level is "Senior".
+    rows:
+      - [Team, Level, Score]
+      - [Blue, Senior, 80]
+      - [Red, Senior, 75]
+      - [Blue, Junior, 64]
+      - [Blue, Senior, 90]
+      - [Red, Junior, 58]
+      - [Blue, Senior, 70]
+      - [Red, Senior, 88]
+      - [null, Average, null]
+    answerCell: C9
+    expected: 80
+    variants:
+      - set: { B4: Senior }
+        expected: 76
+      - set: { C2: 98 }
+        expected: 86
+    answer: =AVERAGEIFS(C2:C8,A2:A8,"Blue",B2:B8,"Senior")
+    requiredFunctions:
+      - AVERAGEIFS
+    hints:
+      nudge: "Add a second pair: the level column and Senior."
+      rule: AVERAGEIFS averages only the rows that meet every pair.
+    misses:
+      value: The Blue seniors score 80, 90 and 70, an average of 80.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AVERAGEIFS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AVERAGEIFS(C2:C8,A2:A8,"Blue",B2:B8,"Senior")
+    reject:
+      - formula: =AVERAGEIFS(C2:C8,A2:A8,"Blue")
+        rule: value
+      - formula: =80
+        rule: required-function
+      - formula: =AVERAGEIFS(C2:C8,A2:A8,"Blue",B2:B8,"Senior"
+        rule: syntax

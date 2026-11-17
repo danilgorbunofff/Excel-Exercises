@@ -1,0 +1,41 @@
+id: roundup-drill-1
+slug: roundup-drill-1
+level: 1
+title: Always round up
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ROUNDUP
+screens:
+  - prompt: In C2, use ROUNDUP to round the hours in B2 up to a whole number.
+    rows:
+      - [Job, Hours, Billed]
+      - [Repair, 4.1, null]
+    answerCell: C2
+    expected: 5
+    variants:
+      - set: { B2: 4 }
+        expected: 4
+      - set: { B2: 2.01 }
+        expected: 3
+    answer: =ROUNDUP(B2,0)
+    requiredFunctions:
+      - ROUNDUP
+    hints:
+      nudge: ROUNDUP always goes up, even from .1.
+      rule: ROUNDUP(number,0) goes up to the next whole number unless it already is one.
+    misses:
+      value: 4.1 hours are billed as 5.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ROUNDUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ROUNDUP(B2,0)
+    reject:
+      - formula: =ROUND(B2,0)
+        rule: required-function
+      - formula: =ROUNDUP(B2,1)
+        rule: value
+      - formula: =5
+        rule: required-function
+      - formula: =ROUNDUP(B2,0
+        rule: syntax

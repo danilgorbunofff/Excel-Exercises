@@ -7,6 +7,7 @@ const LABELS = {
   solved: "Solved",
   helped: "Solved with help",
   revealed: "Answer seen",
+  tried: "Tried",
   "": "Not started",
 } as const;
 

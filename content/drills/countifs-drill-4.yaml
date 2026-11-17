@@ -1,0 +1,44 @@
+id: countifs-drill-4
+slug: countifs-drill-4
+level: 2
+title: Count East rows that have an owner
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTIFS
+screens:
+  - prompt: In B9, use COUNTIFS to count the East rows in A2:A8 that have an owner in B2:B8. Use "<>" for not empty.
+    rows:
+      - [Region, Owner]
+      - [East, Ann]
+      - [West, Bo]
+      - [East, null]
+      - [East, Cy]
+      - [North, null]
+      - [East, null]
+      - [West, Di]
+      - [Owned, null]
+    answerCell: B9
+    expected: 2
+    variants:
+      - set: { B4: Ed }
+        expected: 3
+    answer: =COUNTIFS(A2:A8,"East",B2:B8,"<>")
+    requiredFunctions:
+      - COUNTIFS
+    hints:
+      nudge: The criteria "<>" on its own means not empty.
+      rule: COUNTIFS(regions,"East",owners,"<>") counts East rows whose owner cell is filled.
+    misses:
+      value: 2 East rows have an owner.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTIFS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTIFS(A2:A8,"East",B2:B8,"<>")
+    reject:
+      - formula: =COUNTIFS(A2:A8,"East")
+        rule: value
+      - formula: =2
+        rule: required-function
+      - formula: =COUNTIFS(A2:A8,"East",B2:B8,"<>"
+        rule: syntax

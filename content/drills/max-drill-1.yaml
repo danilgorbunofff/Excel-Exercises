@@ -1,0 +1,45 @@
+id: max-drill-1
+slug: max-drill-1
+level: 1
+title: Find the highest score
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MAX
+screens:
+  - prompt: In B7, use MAX to find the highest score in B2:B6.
+    rows:
+      - [Player, Score]
+      - [Mo, 31]
+      - [Kat, 47]
+      - [Lu, 39]
+      - [Sam, 44]
+      - [Nia, 28]
+      - [Best, null]
+    answerCell: B7
+    expected: 47
+    variants:
+      - { set: { B5: 52 }, expected: 52 }
+      - { set: { B2: 62 }, expected: 62 }
+      - { set: { B6: 56 }, expected: 56 }
+    answer: =MAX(B2:B6)
+    requiredFunctions:
+      - MAX
+    hints:
+      nudge: One function returns the largest number in a range.
+      rule: MAX(range) gives the largest number in the range.
+    misses:
+      value: The highest score is 47.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MAX.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MAX(B2:B6)
+    reject:
+      - formula: =MIN(B2:B6)
+        rule: required-function
+      - formula: =MAX(B2:B4)
+        rule: fragile
+      - formula: =47
+        rule: required-function
+      - formula: =MAX(B2:B6
+        rule: syntax

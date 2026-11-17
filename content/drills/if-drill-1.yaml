@@ -1,0 +1,41 @@
+id: if-drill-1
+slug: if-drill-1
+level: 1
+title: Pass or fail
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IF
+screens:
+  - prompt: In C2, use IF to show "Pass" when the score in B2 is 50 or more, and "Fail" otherwise.
+    rows:
+      - [Student, Score, Result]
+      - [Ann, 72, null]
+    answerCell: C2
+    expected: Pass
+    variants:
+      - { set: { B2: 40 }, expected: Fail }
+      - { set: { B2: 50 }, expected: Pass }
+      - { set: { B2: 49 }, expected: Fail }
+    answer: =IF(B2>=50,"Pass","Fail")
+    requiredFunctions:
+      - IF
+    hints:
+      nudge: IF takes a test, the result when it is true, then the result when it is false.
+      rule: IF(test,value_if_true,value_if_false). Text results go in double quotes.
+    misses:
+      value: 72 is 50 or more, so the result is Pass.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IF(B2>=50,"Pass","Fail")
+      - =IF(B2<50,"Fail","Pass")
+    reject:
+      - formula: =IF(B2>=50,"Fail","Pass")
+        rule: value
+      - formula: =IF(B2>50,"Pass","Fail")
+        rule: fragile
+      - formula: ="Pass"
+        rule: required-function
+      - formula: =IF(B2>=50,"Pass","Fail"
+        rule: syntax

@@ -1,0 +1,44 @@
+id: days-drill-5
+slug: days-drill-5
+level: 2
+title: Full weeks between two dates
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: DAYS
+screens:
+  - prompt: In D2, use ROUNDDOWN and DAYS to count the full weeks from the start in B2 to the end in C2.
+    rows:
+      - [Project, Start, End, Weeks]
+      - [P1, 46027, 46082, null]
+    answerCell: D2
+    expected: 7
+    variants:
+      - set: { C2: 46083 }
+        expected: 8
+      - set: { C2: 46033 }
+        expected: 0
+    answer: =ROUNDDOWN(DAYS(C2,B2)/7,0)
+    requiredFunctions:
+      - DAYS
+      - ROUNDDOWN
+    hints:
+      nudge: Count the days, divide by 7, then drop the part week.
+      rule: ROUNDDOWN(DAYS(end,start)/7,0) counts whole weeks only.
+    misses:
+      value: 55 days hold 7 full weeks.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for DAYS and ROUNDDOWN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ROUNDDOWN(DAYS(C2,B2)/7,0)
+    reject:
+      - formula: =ROUNDDOWN((C2-B2)/7,0)
+        rule: required-function
+      - formula: =ROUND(DAYS(C2,B2)/7,0)
+        rule: required-function
+      - formula: =ROUNDDOWN(DAYS(B2,C2)/7,0)
+        rule: value
+      - formula: =7
+        rule: required-function
+      - formula: =ROUNDDOWN(DAYS(C2,B2)/7,0
+        rule: syntax

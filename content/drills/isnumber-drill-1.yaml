@@ -1,0 +1,37 @@
+id: isnumber-drill-1
+slug: isnumber-drill-1
+level: 1
+title: Is it a number
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISNUMBER
+screens:
+  - prompt: In C2, use ISNUMBER to test whether B2 holds a number.
+    rows:
+      - [Item, Amount, Number]
+      - [Pens, 42, null]
+    answerCell: C2
+    expected: true
+    variants:
+      - set: { B2: n/a }
+        expected: false
+    answer: =ISNUMBER(B2)
+    requiredFunctions:
+      - ISNUMBER
+    hints:
+      nudge: ISNUMBER takes one value.
+      rule: ISNUMBER(value) is TRUE for a number and FALSE for anything else.
+    misses:
+      value: B2 holds 42, so the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISNUMBER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ISNUMBER(B2)
+    reject:
+      - formula: =ISBLANK(B2)
+        rule: required-function
+      - formula: =ISNUMBER(A2)
+        rule: value
+      - formula: =ISNUMBER(B2
+        rule: syntax

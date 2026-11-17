@@ -1,0 +1,41 @@
+id: upper-drill-5
+slug: upper-drill-5
+level: 2
+title: A city code
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: UPPER
+screens:
+  - prompt: In B2, use UPPER and LEFT to make a code from the first 3 letters of the city in A2, in capitals.
+    rows:
+      - [City, Result]
+      - [Berlin, null]
+    answerCell: B2
+    expected: BER
+    variants:
+      - set: { A2: oslo }
+        expected: OSL
+    answer: =UPPER(LEFT(A2,3))
+    requiredFunctions:
+      - UPPER
+      - LEFT
+    hints:
+      nudge: Take the first three letters, then wrap them in UPPER.
+      rule: UPPER(LEFT(A2,3)) gives BER for Berlin.
+    misses:
+      value: The city code is BER.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for UPPER and LEFT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =UPPER(LEFT(A2,3))
+      - =LEFT(UPPER(A2),3)
+    reject:
+      - formula: =LEFT(A2,3)
+        rule: required-function
+      - formula: =UPPER(LEFT(A2,2))
+        rule: value
+      - formula: ="BER"
+        rule: required-function
+      - formula: =UPPER(LEFT(A2,3)
+        rule: syntax

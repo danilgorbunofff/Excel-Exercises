@@ -1,0 +1,43 @@
+id: ifs-drill-5
+slug: ifs-drill-5
+level: 2
+title: Level from two tests
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IFS
+screens:
+  - prompt: In D2, use IFS and AND to give a level. "Senior" needs a score in B2 of 80 or more and 5 or more years in C2. "Mid" needs the score alone, and anyone else is "Junior".
+    rows:
+      - [Applicant, Score, Years, Level]
+      - [Ann, 85, 6, null]
+    answerCell: D2
+    expected: Senior
+    variants:
+      - { set: { C2: 2 }, expected: Mid }
+      - { set: { B2: 60 }, expected: Junior }
+      - { set: { B2: 80, C2: 4 }, expected: Mid }
+      - { set: { B2: 79 }, expected: Junior }
+      - { set: { B2: 80, C2: 5 }, expected: Senior }
+    answer: =IFS(AND(B2>=80,C2>=5),"Senior",B2>=80,"Mid",TRUE,"Junior")
+    requiredFunctions:
+      - IFS
+      - AND
+    hints:
+      nudge: The first test needs both conditions, so it is an AND.
+      rule: "Put the strictest test first: AND(score,years), then the score alone."
+    misses:
+      value: Ann scores 85 with 6 years, so the level is Senior.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IFS and AND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IFS(AND(B2>=80,C2>=5),"Senior",B2>=80,"Mid",TRUE,"Junior")
+    reject:
+      - formula: =IFS(B2>=80,"Senior",TRUE,"Junior")
+        rule: required-function
+      - formula: =IFS(B2>=80,"Mid",AND(B2>=80,C2>=5),"Senior",TRUE,"Junior")
+        rule: value
+      - formula: ="Senior"
+        rule: required-function
+      - formula: =IFS(AND(B2>=80,C2>=5),"Senior",B2>=80,"Mid",TRUE,"Junior"
+        rule: syntax

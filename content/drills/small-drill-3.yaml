@@ -1,0 +1,47 @@
+id: small-drill-3
+slug: small-drill-3
+level: 1
+title: The kth lowest from a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SMALL
+screens:
+  - prompt: In E3, use SMALL to find the time in B2:B8 at the place typed in E2, counting from the lowest.
+    rows:
+      - [Runner, Time, null, Pick, null]
+      - [Ann, 41.2, null, Place, 3]
+      - [Bo, 38.9, null, Time, null]
+      - [Cy, 44.5, null, null, null]
+      - [Di, 37.6, null, null, null]
+      - [Ed, 40.1, null, null, null]
+      - [Flo, 39.4, null, null, null]
+      - [Gus, 42.8, null, null, null]
+    answerCell: E3
+    expected: 39.4
+    variants:
+      - set: { E2: 1 }
+        expected: 37.6
+      - set: { E2: 7 }
+        expected: 44.5
+    answer: =SMALL(B2:B8,E2)
+    requiredFunctions:
+      - SMALL
+    hints:
+      nudge: k can come from a cell.
+      rule: SMALL(range,E2) returns the value at whatever place E2 holds.
+    misses:
+      value: In order, the times go 37.6, 38.9, 39.4, so the third is 39.4.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SMALL.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SMALL(B2:B8,E2)
+    reject:
+      - formula: =SMALL(B2:B8,3)
+        rule: fragile
+      - formula: =LARGE(B2:B8,E2)
+        rule: required-function
+      - formula: =39.4
+        rule: required-function
+      - formula: =SMALL(B2:B8,E2
+        rule: syntax

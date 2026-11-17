@@ -1,0 +1,41 @@
+id: mround-drill-3
+slug: mround-drill-3
+level: 1
+title: Round to a multiple in a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MROUND
+screens:
+  - prompt: In D2, use MROUND to round the minutes in B2 to the nearest multiple in C2.
+    rows:
+      - [Task, Minutes, Step, Rounded]
+      - [T1, 52, 15, null]
+    answerCell: D2
+    expected: 45
+    variants:
+      - set: { C2: 10 }
+        expected: 50
+      - set: { B2: 38 }
+        expected: 45
+    answer: =MROUND(B2,C2)
+    requiredFunctions:
+      - MROUND
+    hints:
+      nudge: The multiple can come from a cell.
+      rule: MROUND(B2,C2) rounds to whatever step C2 holds.
+    misses:
+      value: 52 is nearer 45 than 60, so it rounds to 45.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MROUND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MROUND(B2,C2)
+    reject:
+      - formula: =MROUND(B2,15)
+        rule: fragile
+      - formula: =MROUND(C2,B2)
+        rule: value
+      - formula: =45
+        rule: required-function
+      - formula: =MROUND(B2,C2
+        rule: syntax

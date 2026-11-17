@@ -1,0 +1,39 @@
+id: right-drill-1
+slug: right-drill-1
+level: 1
+title: The last four digits
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: RIGHT
+screens:
+  - prompt: In B2, use RIGHT to take the last 4 characters of the code in A2.
+    rows:
+      - [Code, Result]
+      - [INV-20481, null]
+    answerCell: B2
+    expected: "0481"
+    variants:
+      - set: { A2: CRD-11002 }
+        expected: "1002"
+    answer: =RIGHT(A2,4)
+    requiredFunctions:
+      - RIGHT
+    hints:
+      nudge: RIGHT takes the text, then how many characters to keep from the end.
+      rule: RIGHT(text,4) returns the last four characters.
+    misses:
+      value: The last four characters of INV-20481 are 0481.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for RIGHT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =RIGHT(A2,4)
+    reject:
+      - formula: =RIGHT(A2,3)
+        rule: value
+      - formula: =LEFT(A2,4)
+        rule: required-function
+      - formula: ="0481"
+        rule: required-function
+      - formula: =RIGHT(A2,4
+        rule: syntax

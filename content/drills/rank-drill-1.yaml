@@ -1,0 +1,49 @@
+id: rank-drill-1
+slug: rank-drill-1
+level: 1
+title: Rank a score, highest first
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: RANK
+screens:
+  - prompt: In C2, use RANK to find where Ann's score in B2 ranks in B2:B8, highest first.
+    rows:
+      - [Student, Score, Rank]
+      - [Ann, 72, null]
+      - [Bo, 85, null]
+      - [Cy, 64, null]
+      - [Di, 91, null]
+      - [Ed, 78, null]
+      - [Flo, 59, null]
+      - [Gus, 88, null]
+    answerCell: C2
+    expected: 5
+    variants:
+      - set: { B2: 95 }
+        expected: 1
+      - set: { B3: 70 }
+        expected: 4
+    answer: =RANK(B2,B2:B8)
+    requiredFunctions:
+      - RANK
+    hints:
+      nudge: RANK takes the number and the list to rank it in.
+      rule: RANK(number,list) gives 1 to the highest value by default.
+    misses:
+      value: Four scores are higher than 72, so Ann ranks 5.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for RANK.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =RANK(B2,B2:B8)
+      - =RANK(B2,$B$2:$B$8)
+      - =RANK(B2,B2:B8,0)
+    reject:
+      - formula: =RANK(B2,B2:B8,1)
+        rule: value
+      - formula: =LARGE(B2:B8,5)
+        rule: required-function
+      - formula: =5
+        rule: required-function
+      - formula: =RANK(B2,B2:B8
+        rule: syntax

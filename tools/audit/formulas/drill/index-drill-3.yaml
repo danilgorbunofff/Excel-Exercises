@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($B$2:$D$5,$F$2,$G$2)
+      - =INDEX(B$2:D$5,F2,G2)
+      - =index(b2:d5, f2, g2)
+      - =LET(data,B2:D5,INDEX(data,F2,G2))
+    wrong:
+      - formula: =INDEX(B2:D4,F2,G2)
+        rule: fragile
+        why: range B2:D5 one row short at the end
+    equivalent: []

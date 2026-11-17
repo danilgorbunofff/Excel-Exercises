@@ -245,3 +245,44 @@ describe("validateContent: function pages", () => {
     ]);
   });
 });
+
+describe("drills", () => {
+  const drill = (n: number, fn = "SUM") => ({
+    file: `${fn.toLowerCase()}-drill-${n}.yaml`,
+    data: {
+      id: `${fn.toLowerCase()}-drill-${n}`,
+      slug: `${fn.toLowerCase()}-drill-${n}`,
+      level: 1,
+      title: "SUM two cells",
+      updated: "2026-11-17",
+      checkedInExcel: null,
+      function: fn,
+      screens: [{ ...structuredClone(screen), prompt: "Use SUM to add up B2 to B3." }],
+    },
+  });
+  const run = (drills: ReturnType<typeof drill>[], index = ["SUM"]) =>
+    validateContent([exercise("a"), exercise("b")], track, [], [], [], drills, index);
+
+  it("accepts exactly five drills for every function in the index", () => {
+    expect(run([1, 2, 3, 4, 5].map((n) => drill(n)))).toEqual([]);
+  });
+
+  it("reports a function with too few drills, or one missing from the index", () => {
+    expect(run([1, 2, 3, 4].map((n) => drill(n)))).toEqual([
+      "content/drills: SUM has 4 drills, not 5",
+    ]);
+    expect(
+      run(
+        [1, 2, 3, 4, 5].map((n) => drill(n)),
+        ["SUM", "MAX"],
+      ),
+    ).toEqual(["content/drills: MAX has 0 drills, not 5"]);
+  });
+
+  it("needs the function required and named in the prompt", () => {
+    const d = drill(1);
+    d.data.screens[0] = { ...d.data.screens[0], requiredFunctions: [] } as never;
+    const errors = run([d, ...[2, 3, 4, 5].map((n) => drill(n))]);
+    expect(errors).toContain("sum-drill-1.yaml: screens.0.requiredFunctions must include SUM");
+  });
+});

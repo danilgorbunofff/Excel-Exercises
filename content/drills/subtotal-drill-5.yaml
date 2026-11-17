@@ -1,0 +1,46 @@
+id: subtotal-drill-5
+slug: subtotal-drill-5
+level: 2
+title: Range of values with two SUBTOTALs
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUBTOTAL
+screens:
+  - prompt: In B8, use SUBTOTAL twice to find the gap between the largest and smallest score in B2:B6.
+    rows:
+      - [Judge, Score]
+      - [J1, 8.5]
+      - [J2, 7.25]
+      - [J3, 9]
+      - [J4, 6.75]
+      - [J5, 8]
+      - [null, null]
+      - [Gap, null]
+    answerCell: B8
+    expected: 2.25
+    variants:
+      - { set: { B5: 7.5 }, expected: 1.75 }
+      - { set: { B2: 4, B4: 7.25 }, expected: 4 }
+      - { set: { B2: 12, B6: 4 }, expected: 8 }
+    answer: =SUBTOTAL(4,B2:B6)-SUBTOTAL(5,B2:B6)
+    requiredFunctions:
+      - SUBTOTAL
+    hints:
+      nudge: Function 4 gives the largest and 5 the smallest.
+      rule: SUBTOTAL(4,range) minus SUBTOTAL(5,range) gives the spread.
+    misses:
+      value: The scores run from 6.75 to 9, a gap of 2.25.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUBTOTAL.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUBTOTAL(4,B2:B6)-SUBTOTAL(5,B2:B6)
+    reject:
+      - formula: =MAX(B2:B6)-MIN(B2:B6)
+        rule: required-function
+      - formula: =SUBTOTAL(4,B2:B6)
+        rule: value
+      - formula: =2.25
+        rule: required-function
+      - formula: =SUBTOTAL(4,B2:B6)-SUBTOTAL(5,B2:B6
+        rule: syntax

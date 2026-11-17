@@ -1,0 +1,47 @@
+id: min-drill-5
+slug: min-drill-5
+level: 2
+title: Smallest share of the total
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MIN
+screens:
+  - prompt: In B8, use MIN and SUM to show the smallest region's share of the total in B2:B6, as a fraction.
+    rows:
+      - [Region, Sales]
+      - [East, 300]
+      - [West, 450]
+      - [North, 150]
+      - [South, 600]
+      - [Central, 500]
+      - [null, null]
+      - [Smallest share, null]
+    answerCell: B8
+    expected: 0.075
+    variants:
+      - { set: { B4: 250 }, expected: 0.119047619048 }
+      - { set: { B4: 450 }, expected: 0.13043478260869565 }
+      - { set: { B4: 300, B6: 150 }, expected: 0.08333333333333333 }
+    answer: =MIN(B2:B6)/SUM(B2:B6)
+    requiredFunctions:
+      - MIN
+      - SUM
+    hints:
+      nudge: Divide the smallest value by the total.
+      rule: MIN(range)/SUM(range) gives the smallest value as a share of the whole.
+    misses:
+      value: North's 150 out of 2000 is 0.075.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MIN and SUM.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MIN(B2:B6)/SUM(B2:B6)
+    reject:
+      - formula: =SUM(B2:B6)/MIN(B2:B6)
+        rule: value
+      - formula: =MIN(B2:B6)
+        rule: required-function
+      - formula: =0.075
+        rule: required-function
+      - formula: =MIN(B2:B6)/SUM(B2:B6
+        rule: syntax

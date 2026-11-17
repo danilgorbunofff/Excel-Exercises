@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIFS($A$2:$A$8,"East",$B$2:$B$8,"Paid")/COUNTIF($A$2:$A$8,"East")
+      - =COUNTIFS(A$2:A$8,"East",B2:B8,"Paid")/COUNTIF(A2:A8,"East")
+      - =countifs(a2:a8, "East", b2:b8, "Paid")/countif(a2:a8, "East")
+      - =LET(data,A2:A8,COUNTIFS(data,"East",B2:B8,"Paid")/COUNTIF(data,"East"))
+    wrong:
+      - formula: =COUNTIFS(A2:A8,"East",B2:B8,"Paid")/COUNTIF(A2:A7,"East")
+        rule: fragile
+        why: range A2:A8 one row short at the end
+    equivalent:
+      - formula: =COUNTIFS(A2:A8,"East",B2:B8,"Paid")/COUNTIF(A2:A9,"East")
+        why: "range A2:A8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

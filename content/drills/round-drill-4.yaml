@@ -1,0 +1,41 @@
+id: round-drill-4
+slug: round-drill-4
+level: 2
+title: Decimal places from a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ROUND
+screens:
+  - prompt: In D2, use ROUND to round the rate in B2 to the number of places typed in C2.
+    rows:
+      - [Item, Rate, Places, Rounded]
+      - [Loan, 0.054675, 3, null]
+    answerCell: D2
+    expected: 0.055
+    variants:
+      - set: { C2: 1 }
+        expected: 0.1
+      - set: { C2: 4 }
+        expected: 0.0547
+    answer: =ROUND(B2,C2)
+    requiredFunctions:
+      - ROUND
+    hints:
+      nudge: The number of places can come from a cell.
+      rule: ROUND(B2,C2) rounds to whatever C2 says.
+    misses:
+      value: 0.054675 to 3 places is 0.055.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ROUND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ROUND(B2,C2)
+    reject:
+      - formula: =ROUND(B2,3)
+        rule: fragile
+      - formula: =ROUND(C2,B2)
+        rule: value
+      - formula: =0.055
+        rule: required-function
+      - formula: =ROUND(B2,C2
+        rule: syntax

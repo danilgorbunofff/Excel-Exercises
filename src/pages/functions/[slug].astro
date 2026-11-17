@@ -11,6 +11,8 @@ import RichText from "../../components/RichText.astro";
 import Base from "../../layouts/Base.astro";
 import { skillsOf } from "../../lib/assessments.ts";
 import {
+  drillsPath,
+  drillTasks,
   exercisePath,
   exercisesForFunction,
   LEVELS,
@@ -57,6 +59,7 @@ const { page, exercise, linked, using } = Astro.props;
 const entry = loadFunctionIndex().functions.find((f) => f.name === page.name);
 const firstExample = page.examples[0];
 const walkthroughs = walkthroughsFor(page.name, loadExplainers().walkthroughs);
+const hasDrills = (await drillTasks()).some((d) => d.fn === page.name);
 const date = (iso: string) =>
   new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-GB", {
     day: "numeric",
@@ -304,6 +307,15 @@ const jsonLd = JSON.stringify({
 
       <div id="practise" class="practise">
         <LiveExercise placed={exercise} heading={`Practise ${page.name}`} />
+        {
+          hasDrills && (
+            <p class="drill-link">
+              <a class="arrow-link" href={drillsPath(page.name)}>
+                Drill {page.name}: five short exercises in a row (PRO)
+              </a>
+            </p>
+          )
+        }
       </div>
     </article>
 
@@ -509,6 +521,9 @@ const jsonLd = JSON.stringify({
   dd {
     margin: 0;
     color: var(--muted);
+  }
+  .drill-link {
+    margin: var(--space-3) 0 0;
   }
   .practise {
     margin-top: var(--space-7);

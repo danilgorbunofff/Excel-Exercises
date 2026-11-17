@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SORT($C$2:$C$7,1,-1)
+      - =SORT(C$2:C$7,1,-1)
+      - =sort(c2:c7, 1, -1)
+      - =LET(data,C2:C7,SORT(data,1,-1))
+    wrong: []
+    equivalent: []

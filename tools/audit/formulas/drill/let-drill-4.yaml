@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LET(r,$B$2:$B$6,MAX(r)-MIN(r))
+      - =LET(r,B$2:B$6,MAX(r)-MIN(r))
+      - =let(r, b2:b6, max(r)-min(r))
+      - =LET(data,B2:B6,LET(r,data,MAX(r)-MIN(r)))
+    wrong:
+      - formula: =LET(r,B2:B5,MAX(r)-MIN(r))
+        rule: fragile
+        why: range B2:B6 one row short at the end
+      - formula: =LET(r,B3:B6,MAX(r)-MIN(r))
+        rule: fragile
+        why: range B2:B6 skips its first row
+    equivalent:
+      - formula: =LET(r,B2:B7,MAX(r)-MIN(r))
+        why: "range B2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

@@ -1,0 +1,41 @@
+id: substitute-drill-5
+slug: substitute-drill-5
+level: 2
+title: Turn text with commas into a number
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUBSTITUTE
+screens:
+  - prompt: In B2, use VALUE and SUBSTITUTE to remove the "," from the text in A2 and turn the result into a number.
+    rows:
+      - [Amount, Result]
+      - ["1,250", null]
+    answerCell: B2
+    expected: 1250
+    variants:
+      - set: { A2: "12,500,000" }
+        expected: 12500000
+    answer: =VALUE(SUBSTITUTE(A2,",",""))
+    requiredFunctions:
+      - SUBSTITUTE
+    hints:
+      nudge: Remove the comma first, then turn the text into a number.
+      rule: SUBSTITUTE leaves text; VALUE makes it a number you can add up.
+    misses:
+      value: Without the comma, A2 is the number 1250.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUBSTITUTE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =VALUE(SUBSTITUTE(A2,",",""))
+      - =--SUBSTITUTE(A2,",","")
+      - =SUBSTITUTE(A2,",","")*1
+    reject:
+      - formula: =SUBSTITUTE(A2,",","")
+        rule: value
+      - formula: =VALUE(A2)
+        rule: required-function
+      - formula: =1250
+        rule: required-function
+      - formula: =VALUE(SUBSTITUTE(A2,",","")
+        rule: syntax

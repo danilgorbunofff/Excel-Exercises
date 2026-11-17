@@ -1,0 +1,41 @@
+id: round-drill-3
+slug: round-drill-3
+level: 1
+title: Round to the nearest hundred
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ROUND
+screens:
+  - prompt: In C2, use ROUND with -2 to round the sales in B2 to the nearest hundred.
+    rows:
+      - [Region, Sales, Rounded]
+      - [North, 1234, null]
+    answerCell: C2
+    expected: 1200
+    variants:
+      - set: { B2: 1250 }
+        expected: 1300
+      - set: { B2: 1249 }
+        expected: 1200
+    answer: =ROUND(B2,-2)
+    requiredFunctions:
+      - ROUND
+    hints:
+      nudge: A negative number of places rounds to the left of the decimal point.
+      rule: ROUND(number,-2) rounds to hundreds; -1 rounds to tens.
+    misses:
+      value: 1234 rounds to 1200.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ROUND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ROUND(B2,-2)
+    reject:
+      - formula: =ROUND(B2,2)
+        rule: value
+      - formula: =ROUND(B2,-1)
+        rule: value
+      - formula: =1200
+        rule: required-function
+      - formula: =ROUND(B2,-2
+        rule: syntax

@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LET(line,$B$2*$C$2,line-$D$2)
+      - =LET(line,B$2*C2,line-D2)
+      - =let(line, b2*c2, line-d2)
+    wrong: []
+    equivalent: []

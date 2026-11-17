@@ -1,0 +1,49 @@
+id: sumif-drill-1
+slug: sumif-drill-1
+level: 1
+title: Total sales for one region
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUMIF
+screens:
+  - prompt: In B9, use SUMIF to add up the sales in B2:B8 where the region in A2:A8 is "East".
+    rows:
+      - [Region, Sales]
+      - [East, 400]
+      - [West, 250]
+      - [East, 310]
+      - [North, 520]
+      - [East, 190]
+      - [West, 330]
+      - [North, 450]
+      - [East total, null]
+    answerCell: B9
+    expected: 900
+    variants:
+      - { set: { A3: East }, expected: 1150 }
+      - { set: { B2: 100 }, expected: 600 }
+      - { set: { A8: East }, expected: 1350 }
+    answer: =SUMIF(A2:A8,"East",B2:B8)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: SUMIF takes the range to test, what to look for, then the range to add.
+      rule: SUMIF(test_range,"East",sum_range) adds the sales on the East rows only.
+    misses:
+      value: The three East rows add up to 900.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUMIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUMIF(A2:A8,"East",B2:B8)
+      - =sumif(a2:a8,"east",b2:b8)
+      - =SUMIF(A2:A8,A2,B2:B8)
+    reject:
+      - formula: =SUMIF(A2:A8,"West",B2:B8)
+        rule: value
+      - formula: =SUM(B2:B8)
+        rule: required-function
+      - formula: =900
+        rule: required-function
+      - formula: =SUMIF(A2:A8,"East",B2:B8
+        rule: syntax

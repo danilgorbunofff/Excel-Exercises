@@ -1,0 +1,48 @@
+id: take-drill-4
+slug: take-drill-4
+level: 2
+title: How many from a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TAKE
+screens:
+  - prompt: In E2, use TAKE to return as many of the first reps in A2:A7 as the number in I1.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, 4]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [Ann]
+      - [Bo]
+      - [Cy]
+      - [Di]
+    variants:
+      - set: { I1: 1 }
+        expected: Ann
+      - set: { I1: -2 }
+        expected:
+          - - Ed
+          - - Flo
+    answer: =TAKE(A2:A7,I1)
+    requiredFunctions:
+      - TAKE
+    hints:
+      nudge: The number of rows can come from a cell.
+      rule: TAKE(range,I1) follows whatever I1 holds; a negative number counts from the end.
+    misses:
+      value: The first four reps are Ann, Bo, Cy, Di.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TAKE(A2:A7,I1)
+    reject:
+      - formula: =TAKE(A2:A7,4)
+        rule: fragile
+      - formula: =TAKE(A2:A7,I1
+        rule: syntax

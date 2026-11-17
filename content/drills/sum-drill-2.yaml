@@ -1,0 +1,42 @@
+id: sum-drill-2
+slug: sum-drill-2
+level: 1
+title: Total a block of hours
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUM
+screens:
+  - prompt: In B6, use SUM to add up every hour in the block B2:D4.
+    rows:
+      - [Name, Mon, Tue, Wed]
+      - [Ann, 6, 7, 5]
+      - [Ben, 8, 4, 6]
+      - [Cy, 5, 5, 7]
+      - [null, null, null, null]
+      - [Total hours, null, null, null]
+    answerCell: B6
+    expected: 53
+    variants:
+      - set: { C3: 9 }
+        expected: 58
+    answer: =SUM(B2:D4)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: A range can cover several columns at once.
+      rule: SUM(B2:D4) adds the whole block, from the top-left cell to the bottom-right cell.
+    misses:
+      value: All nine cells add up to 53. The range has to reach column D.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUM.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUM(B2:D4)
+      - =SUM(B2:B4,C2:C4,D2:D4)
+    reject:
+      - formula: =SUM(B2:B4)
+        rule: value
+      - formula: =53
+        rule: required-function
+      - formula: =SUM(B2:D4
+        rule: syntax

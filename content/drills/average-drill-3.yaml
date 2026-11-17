@@ -1,0 +1,43 @@
+id: average-drill-3
+slug: average-drill-3
+level: 1
+title: Average a block of ratings
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: AVERAGE
+screens:
+  - prompt: In B6, use AVERAGE to find the mean of every rating in B2:D4.
+    rows:
+      - [Product, Jan, Feb, Mar]
+      - [Lamp, 4, 5, 3]
+      - [Desk, 5, 4, 4]
+      - [Chair, 3, 3, 5]
+      - [null, null, null, null]
+      - [Mean rating, null, null, null]
+    answerCell: B6
+    expected: 4
+    variants:
+      - set: { D4: 2 }
+        expected: 3.66666666667
+    answer: =AVERAGE(B2:D4)
+    requiredFunctions:
+      - AVERAGE
+    hints:
+      nudge: The range can be a whole block.
+      rule: AVERAGE(B2:D4) takes the mean of all nine cells.
+    misses:
+      value: The nine ratings average 4.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AVERAGE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AVERAGE(B2:D4)
+    reject:
+      - formula: =AVERAGE(B2:B4)
+        rule: fragile
+      - formula: =AVERAGE(B2:D4)/9
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =AVERAGE(B2:D4
+        rule: syntax

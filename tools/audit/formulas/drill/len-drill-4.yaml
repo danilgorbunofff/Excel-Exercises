@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LEN($A$2)=8
+      - =LEN(A$2)=8
+      - =len(a2)=8
+    wrong: []
+    equivalent: []

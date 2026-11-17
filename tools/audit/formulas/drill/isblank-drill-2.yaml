@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ISBLANK($B$2)
+      - =ISBLANK(B$2)
+      - =isblank(b2)
+    wrong: []
+    equivalent: []

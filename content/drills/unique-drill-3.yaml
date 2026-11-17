@@ -1,0 +1,46 @@
+id: unique-drill-3
+slug: unique-drill-3
+level: 2
+title: Customers who ordered only once
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: UNIQUE
+screens:
+  - prompt: In C2, use UNIQUE with TRUE as its third argument to list the customers in A2:A9 that appear exactly once. Leave the second argument empty.
+    rows:
+      - [Customer, null, Once]
+      - [Acme, null, null]
+      - [Bolt, null, null]
+      - [Acme, null, null]
+      - [Core, null, null]
+      - [Bolt, null, null]
+      - [Edge, null, null]
+      - [Dyne, null, null]
+      - [Acme, null, null]
+      - [null, null, null]
+    answerCell: C2
+    expected:
+      - [Core]
+      - [Edge]
+      - [Dyne]
+    variants:
+      - { set: { A3: Fox }, expected: [[Fox], [Core], [Bolt], [Edge], [Dyne]] }
+      - { set: { A2: Core }, expected: [[Edge], [Dyne]] }
+    answer: =UNIQUE(A2:A9,,TRUE)
+    requiredFunctions:
+      - UNIQUE
+    hints:
+      nudge: The third argument, TRUE, keeps only values that occur once.
+      rule: UNIQUE(range,,TRUE) lists the one-time values.
+    misses:
+      value: The customers who appear once are Core, Edge, Dyne.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =UNIQUE(A2:A9,,TRUE)
+      - =UNIQUE(A2:A9,FALSE,TRUE)
+    reject:
+      - formula: =UNIQUE(A2:A9)
+        rule: value
+      - formula: =UNIQUE(A2:A9,,TRUE
+        rule: syntax

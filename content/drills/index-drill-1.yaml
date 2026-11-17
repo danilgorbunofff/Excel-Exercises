@@ -1,0 +1,45 @@
+id: index-drill-1
+slug: index-drill-1
+level: 1
+title: The fourth name in a list
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: INDEX
+screens:
+  - prompt: In D2, use INDEX to return the 4th name in B2:B7.
+    rows:
+      - [Rank, Name, null, 4th]
+      - [1, Ann, null, null]
+      - [2, Bo, null, null]
+      - [3, Cy, null, null]
+      - [4, Di, null, null]
+      - [5, Ed, null, null]
+      - [6, Flo, null, null]
+    answerCell: D2
+    expected: Di
+    variants:
+      - set: { B5: Dan }
+        expected: Dan
+    answer: =INDEX(B2:B7,4)
+    requiredFunctions:
+      - INDEX
+    hints:
+      nudge: INDEX takes a range and a position in it.
+      rule: INDEX(range,4) returns the 4th cell of the range, counted from its top.
+    misses:
+      value: The 4th name in B2:B7 is Di.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for INDEX.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =INDEX(B2:B7,4)
+      - =INDEX(B2:B7,4,1)
+    reject:
+      - formula: =INDEX(B2:B7,3)
+        rule: value
+      - formula: =INDEX(B1:B7,4)
+        rule: value
+      - formula: ="Di"
+        rule: required-function
+      - formula: =INDEX(B2:B7,4
+        rule: syntax

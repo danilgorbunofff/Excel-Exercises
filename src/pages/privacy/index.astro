@@ -11,10 +11,10 @@ const host = siteConfig.host;
 
 <Base
   title="Privacy"
-  description="What this site stores and sends: progress in your browser, an optional account, payments through Stripe, and no analytics or tracking."
+  description="What this site stores and sends: progress in your browser, an optional account, payments through Stripe, anonymous usage counts and no tracking."
 >
   <h1>Privacy</h1>
-  <p>Last updated 13 November 2026.</p>
+  <p>Last updated 17 November 2026.</p>
 
   <h2>What stays in your browser</h2>
   <p>
@@ -43,7 +43,7 @@ const host = siteConfig.host;
       your certificates (the <code>certificates</code> table): the name you typed for it, the
       assessment, your score, the date, and whether you revoked it;
     </li>
-    <li>whether you want an email when new exercises arrive;</li>
+    <li>whether you want an email when new exercises arrive, and whether you want the weekly email;</li>
     <li>whether you have PRO, and until when.</li>
   </ul>
   <p>
@@ -63,11 +63,35 @@ const host = siteConfig.host;
     certificates, and their links then say no certificate has that number.
   </p>
 
+  <h2>Emails</h2>
+  <p>
+    The site sends no email unless you turn one on, on the <a href="/account/">account page</a>. The
+    weekly email says how many exercises you solved that week and how many are due for review. To
+    write it, the site reads your saved progress. The email goes to the address on your account.
+  </p>
+  <p>
+    Emails are sent by <a href="https://resend.com/legal/privacy-policy">Resend</a>, which receives
+    your email address and the text of the email. Every weekly email has a link that turns it off,
+    and you can turn it off on the account page at any time.
+  </p>
+
   <h2>If you buy PRO</h2>
   <p>
     Payments are taken by <a href="https://stripe.com/privacy">Stripe</a>. Your card details go to
     Stripe and never reach this site. The site keeps your Stripe customer number and the state of
     your subscription.
+  </p>
+
+  <h2>Anonymous usage counts</h2>
+  <p>
+    To learn which parts of the site help people, pages send a few anonymous events to this site
+    only. Examples are "first exercise solved", "daily exercise done" and "checkout started". Each
+    event holds its name, the page address without anything after a <code>?</code>, and the time.
+    It also holds a random number that lives only in that browser tab and ends when you close it.
+  </p>
+  <p>
+    The events carry no cookie, no account, no email and no IP address, and they never go to
+    another company. They are deleted after 13 months.
   </p>
 
   <h2>Cookies</h2>
@@ -79,7 +103,10 @@ const host = siteConfig.host;
 
   <h2>What the site does not do</h2>
   <ul>
-    <li>No analytics, advertising or tracking of any kind.</li>
+    <li>
+      No advertising, no tracking across sites and no analytics company. The only counting is the
+      anonymous usage counts above.
+    </li>
     <li>
       Pages make no requests to other websites. Fonts and scripts come from this site, and a test
       checks every page for requests elsewhere. Google sign-in and Stripe Checkout are pages on

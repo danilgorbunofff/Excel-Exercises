@@ -1,0 +1,41 @@
+id: mid-drill-2
+slug: mid-drill-2
+level: 1
+title: Start and length from cells
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MID
+screens:
+  - prompt: In D2, use MID to take characters from A2, starting at the position in B2, as many as the number in C2.
+    rows:
+      - [Code, Start, Length, Result]
+      - [NORTH-WEST-04, 7, 4, null]
+    answerCell: D2
+    expected: WEST
+    variants:
+      - set: { B2: 1, C2: 5 }
+        expected: NORTH
+      - set: { B2: 12 }
+        expected: "04"
+    answer: =MID(A2,B2,C2)
+    requiredFunctions:
+      - MID
+    hints:
+      nudge: Both numbers can come from cells.
+      rule: MID(A2,B2,C2) starts at B2 and keeps C2 characters.
+    misses:
+      value: Four characters from position 7 are WEST.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MID.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MID(A2,B2,C2)
+    reject:
+      - formula: =MID(A2,7,4)
+        rule: fragile
+      - formula: =MID(A2,C2,B2)
+        rule: value
+      - formula: ="WEST"
+        rule: required-function
+      - formula: =MID(A2,B2,C2
+        rule: syntax

@@ -1,0 +1,35 @@
+id: isnumber-drill-2
+slug: isnumber-drill-2
+level: 1
+title: A number typed as text
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISNUMBER
+screens:
+  - prompt: In C2, use ISNUMBER to test whether B2 holds a number. The amount was typed as text.
+    rows:
+      - [Item, Amount, Number]
+      - [Pads, "42", null]
+    answerCell: C2
+    expected: false
+    variants:
+      - set: { B2: 42 }
+        expected: true
+    answer: =ISNUMBER(B2)
+    requiredFunctions:
+      - ISNUMBER
+    hints:
+      nudge: Text made of digits is still text.
+      rule: ISNUMBER is FALSE for 42 typed as text, which SUM would skip.
+    misses:
+      value: B2 holds 42 as text, so the result is FALSE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISNUMBER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ISNUMBER(B2)
+    reject:
+      - formula: =ISTEXT(B2)
+        rule: required-function
+      - formula: =ISNUMBER(B2
+        rule: syntax

@@ -1,0 +1,50 @@
+id: xlookup-drill-1
+slug: xlookup-drill-1
+level: 1
+title: Price for a code
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: XLOOKUP
+screens:
+  - prompt: In F3, use XLOOKUP to find the price in C2:C7 for the code in F2, looking it up in A2:A7.
+    rows:
+      - [Code, Item, Price, null, Find, null]
+      - [A10, Pen, 1.5, null, Code, B20]
+      - [B20, Pad, 3, null, Price, null]
+      - [C30, Clip, 0.25, null, null, null]
+      - [D40, Tape, 2, null, null, null]
+      - [E50, File, 4, null, null, null]
+      - [F60, Ink, 12, null, null, null]
+    answerCell: F3
+    expected: 3
+    variants:
+      - set: { F2: E50 }
+        expected: 4
+      - set: { F2: F60 }
+        expected: 12
+    answer: =XLOOKUP(F2,A2:A7,C2:C7)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: XLOOKUP takes what to find, where to look, and what to return.
+      rule: XLOOKUP(lookup_value,lookup_array,return_array) returns the value on the matching row.
+    misses:
+      value: Code B20 is a pad, priced 3.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for XLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =XLOOKUP(F2,A2:A7,C2:C7)
+      - =XLOOKUP(F2,A2:A7,C2:C7,,0)
+      - =XLOOKUP($F$2,$A$2:$A$7,$C$2:$C$7)
+    reject:
+      - formula: =XLOOKUP(F2,A2:A7,B2:B7)
+        rule: value
+      - formula: =VLOOKUP(F2,A2:C7,3,FALSE)
+        rule: required-function
+      - formula: =XLOOKUP("B20",A2:A7,C2:C7)
+        rule: fragile
+      - formula: =3
+        rule: required-function
+      - formula: =XLOOKUP(F2,A2:A7,C2:C7
+        rule: syntax

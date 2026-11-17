@@ -1,0 +1,41 @@
+id: mround-drill-2
+slug: mround-drill-2
+level: 1
+title: Round a price to 5 cents
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MROUND
+screens:
+  - prompt: In C2, use MROUND to round the price in B2 to the nearest 0.05.
+    rows:
+      - [Item, Price, Rounded]
+      - [Bread, 4.37, null]
+    answerCell: C2
+    expected: 4.35
+    variants:
+      - set: { B2: 4.38 }
+        expected: 4.4
+      - set: { B2: 2.01 }
+        expected: 2
+    answer: =MROUND(B2,0.05)
+    requiredFunctions:
+      - MROUND
+    hints:
+      nudge: The multiple can be a decimal, such as 0.05.
+      rule: MROUND(price,0.05) rounds to the nearest 5 cents.
+    misses:
+      value: 4.37 is nearer 4.35 than 4.40, so it rounds to 4.35.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MROUND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MROUND(B2,0.05)
+    reject:
+      - formula: =ROUND(B2,1)
+        rule: required-function
+      - formula: =MROUND(B2,0.1)
+        rule: value
+      - formula: =4.35
+        rule: required-function
+      - formula: =MROUND(B2,0.05
+        rule: syntax

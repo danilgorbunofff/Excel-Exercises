@@ -1,0 +1,56 @@
+id: sortby-drill-1
+slug: sortby-drill-1
+level: 1
+title: Names by sales
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SORTBY
+screens:
+  - prompt: In E2, use SORTBY to list the reps in A2:A7 ordered by their sales in C2:C7, smallest first.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, null]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [Ed]
+      - [Bo]
+      - [Cy]
+      - [Flo]
+      - [Ann]
+      - [Di]
+    variants:
+      - set: { C2: 100 }
+        expected:
+          - - Ann
+          - - Ed
+          - - Bo
+          - - Cy
+          - - Flo
+          - - Di
+    answer: =SORTBY(A2:A7,C2:C7)
+    requiredFunctions:
+      - SORTBY
+    hints:
+      nudge: SORTBY takes what to return, then the range to sort by.
+      rule: SORTBY(names,sales) orders the names by a column you do not return.
+    misses:
+      value: Smallest sales first, the reps are Ed, Bo, Cy, Flo, Ann, Di.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SORTBY.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SORTBY(A2:A7,C2:C7)
+      - =SORTBY(A2:A7,C2:C7,1)
+    reject:
+      - formula: =SORTBY(A2:A7,C2:C7,-1)
+        rule: value
+      - formula: =SORT(A2:A7)
+        rule: required-function
+      - formula: =SORTBY(A2:A7,C2:C7
+        rule: syntax

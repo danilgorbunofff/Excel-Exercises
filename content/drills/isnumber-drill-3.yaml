@@ -1,0 +1,38 @@
+id: isnumber-drill-3
+slug: isnumber-drill-3
+level: 1
+title: Does the name contain a word
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISNUMBER
+screens:
+  - prompt: In B2, use ISNUMBER and SEARCH to test whether the product in A2 contains "pen", in any case.
+    rows:
+      - [Product, Result]
+      - [Blue Pen 0.7, null]
+    answerCell: B2
+    expected: true
+    variants:
+      - set: { A2: Pad A4 }
+        expected: false
+    answer: =ISNUMBER(SEARCH("pen",A2))
+    requiredFunctions:
+      - ISNUMBER
+      - SEARCH
+    hints:
+      nudge: SEARCH gives a number when it finds the word.
+      rule: ISNUMBER(SEARCH(...)) turns found or not found into TRUE or FALSE.
+    misses:
+      value: Blue Pen 0.7 contains Pen, so the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISNUMBER and SEARCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ISNUMBER(SEARCH("pen",A2))
+    reject:
+      - formula: =SEARCH("pen",A2)
+        rule: required-function
+      - formula: =ISNUMBER(FIND("pen",A2))
+        rule: required-function
+      - formula: =ISNUMBER(SEARCH("pen",A2)
+        rule: syntax

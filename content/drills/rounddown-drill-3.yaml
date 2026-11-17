@@ -1,0 +1,43 @@
+id: rounddown-drill-3
+slug: rounddown-drill-3
+level: 1
+title: Full weeks in a number of days
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ROUNDDOWN
+screens:
+  - prompt: In C2, use ROUNDDOWN to find how many full weeks are in the days in B2.
+    rows:
+      - [Project, Days, Full weeks]
+      - [Move, 45, null]
+    answerCell: C2
+    expected: 6
+    variants:
+      - set: { B2: 49 }
+        expected: 7
+      - set: { B2: 48 }
+        expected: 6
+      - set: { B2: 6 }
+        expected: 0
+    answer: =ROUNDDOWN(B2/7,0)
+    requiredFunctions:
+      - ROUNDDOWN
+    hints:
+      nudge: Divide by 7, then drop the part week.
+      rule: ROUNDDOWN(days/7,0) counts only whole weeks.
+    misses:
+      value: 45 days hold 6 full weeks and 3 days over.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ROUNDDOWN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ROUNDDOWN(B2/7,0)
+    reject:
+      - formula: =ROUND(B2/7,0)
+        rule: required-function
+      - formula: =ROUNDDOWN(B2/7,1)
+        rule: value
+      - formula: =6
+        rule: required-function
+      - formula: =ROUNDDOWN(B2/7,0
+        rule: syntax

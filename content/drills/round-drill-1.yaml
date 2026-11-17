@@ -1,0 +1,41 @@
+id: round-drill-1
+slug: round-drill-1
+level: 1
+title: Round to two decimal places
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ROUND
+screens:
+  - prompt: In C2, use ROUND to round the price in B2 to 2 decimal places.
+    rows:
+      - [Item, Price, Rounded]
+      - [Cable, 12.3456, null]
+    answerCell: C2
+    expected: 12.35
+    variants:
+      - set: { B2: 3.14159 }
+        expected: 3.14
+      - set: { B2: 7.004 }
+        expected: 7
+    answer: =ROUND(B2,2)
+    requiredFunctions:
+      - ROUND
+    hints:
+      nudge: ROUND takes the number, then how many decimal places to keep.
+      rule: "ROUND(number,2) rounds to 2 places: 5 and above goes up."
+    misses:
+      value: 12.3456 rounds to 12.35.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ROUND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ROUND(B2,2)
+    reject:
+      - formula: =ROUND(B2,1)
+        rule: value
+      - formula: =ROUNDUP(B2,2)
+        rule: required-function
+      - formula: =12.35
+        rule: required-function
+      - formula: =ROUND(B2,2
+        rule: syntax

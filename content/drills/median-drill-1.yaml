@@ -1,0 +1,47 @@
+id: median-drill-1
+slug: median-drill-1
+level: 1
+title: The middle price
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MEDIAN
+screens:
+  - prompt: In B8, use MEDIAN to find the middle price in B2:B6.
+    rows:
+      - [Shop, Price]
+      - [S1, 12]
+      - [S2, 15]
+      - [S3, 11]
+      - [S4, 19]
+      - [S5, 14]
+      - [null, null]
+      - [Median, null]
+    answerCell: B8
+    expected: 14
+    variants:
+      - set: { B5: 30 }
+        expected: 14
+      - set: { B3: 13 }
+        expected: 13
+    answer: =MEDIAN(B2:B6)
+    requiredFunctions:
+      - MEDIAN
+    hints:
+      nudge: MEDIAN sorts the values and takes the one in the middle.
+      rule: MEDIAN(range) returns the middle value; half are above it and half below.
+    misses:
+      value: Sorted, the prices go 11, 12, 14, 15, 19, so the middle one is 14.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MEDIAN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MEDIAN(B2:B6)
+    reject:
+      - formula: =AVERAGE(B2:B6)
+        rule: required-function
+      - formula: =MEDIAN(B2:B5)
+        rule: value
+      - formula: =14
+        rule: required-function
+      - formula: =MEDIAN(B2:B6
+        rule: syntax

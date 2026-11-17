@@ -1,0 +1,42 @@
+id: left-drill-5
+slug: left-drill-5
+level: 2
+title: First name before the space
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LEFT
+screens:
+  - prompt: "In B2, use LEFT and FIND to take the first name from A2: everything before the first space."
+    rows:
+      - [Name, First name]
+      - [Rosa Diaz, null]
+    answerCell: B2
+    expected: Rosa
+    variants:
+      - set: { A2: Al Brook }
+        expected: Al
+      - set: { A2: Christopher Lane }
+        expected: Christopher
+    answer: =LEFT(A2,FIND(" ",A2)-1)
+    requiredFunctions:
+      - LEFT
+      - FIND
+    hints:
+      nudge: FIND(" ",A2) gives the position of the space; take one less.
+      rule: LEFT(A2,FIND(" ",A2)-1) keeps everything before the space.
+    misses:
+      value: Everything before the space in Rosa Diaz is Rosa.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LEFT and FIND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LEFT(A2,FIND(" ",A2)-1)
+    reject:
+      - formula: =LEFT(A2,4)
+        rule: required-function
+      - formula: =LEFT(A2,FIND(" ",A2))
+        rule: value
+      - formula: ="Rosa"
+        rule: required-function
+      - formula: =LEFT(A2,FIND(" ",A2)-1
+        rule: syntax

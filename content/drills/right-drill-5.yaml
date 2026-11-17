@@ -1,0 +1,43 @@
+id: right-drill-5
+slug: right-drill-5
+level: 2
+title: Surname after the space
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: RIGHT
+screens:
+  - prompt: "In B2, use RIGHT, LEN and FIND to take the surname from A2: everything after the first space."
+    rows:
+      - [Name, Result]
+      - [Rosa Diaz, null]
+    answerCell: B2
+    expected: Diaz
+    variants:
+      - set: { A2: Al Brookfield }
+        expected: Brookfield
+      - set: { A2: Christopher Lane }
+        expected: Lane
+    answer: =RIGHT(A2,LEN(A2)-FIND(" ",A2))
+    requiredFunctions:
+      - RIGHT
+      - LEN
+      - FIND
+    hints:
+      nudge: The surname's length is the full length minus the position of the space.
+      rule: RIGHT(A2,LEN(A2)-FIND(" ",A2)) keeps everything after the space.
+    misses:
+      value: Everything after the space in Rosa Diaz is Diaz.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for RIGHT, LEN and FIND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =RIGHT(A2,LEN(A2)-FIND(" ",A2))
+    reject:
+      - formula: =RIGHT(A2,4)
+        rule: required-function
+      - formula: =RIGHT(A2,LEN(A2)-FIND(" ",A2)+1)
+        rule: value
+      - formula: ="Diaz"
+        rule: required-function
+      - formula: =RIGHT(A2,LEN(A2)-FIND(" ",A2)
+        rule: syntax

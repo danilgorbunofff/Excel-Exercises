@@ -1,0 +1,46 @@
+id: match-drill-1
+slug: match-drill-1
+level: 1
+title: Position of a name
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MATCH
+screens:
+  - prompt: In E3, use MATCH to find the position of the name in E2 within A2:A7.
+    rows:
+      - [Name, Team, null, Find, null]
+      - [Ann, Blue, null, Name, Lea]
+      - [Bo, Red, null, Position, null]
+      - [Cy, Blue, null, null, null]
+      - [Lea, Red, null, null, null]
+      - [Tom, Blue, null, null, null]
+      - [Ivy, Red, null, null, null]
+    answerCell: E3
+    expected: 4
+    variants:
+      - set: { E2: Ivy }
+        expected: 6
+      - set: { E2: Ann }
+        expected: 1
+    answer: =MATCH(E2,A2:A7,0)
+    requiredFunctions:
+      - MATCH
+    hints:
+      nudge: MATCH takes the value, the range, and 0 for an exact match.
+      rule: MATCH(value,range,0) returns the position within the range, not the sheet row.
+    misses:
+      value: Lea is number 4 in A2:A7.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MATCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MATCH(E2,A2:A7,0)
+    reject:
+      - formula: =MATCH(E2,A1:A7,0)
+        rule: value
+      - formula: =MATCH(E2,B2:B7,0)
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =MATCH(E2,A2:A7,0
+        rule: syntax

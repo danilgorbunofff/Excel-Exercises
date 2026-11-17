@@ -1,0 +1,39 @@
+id: left-drill-4
+slug: left-drill-4
+level: 2
+title: The year from a date written as text
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LEFT
+screens:
+  - prompt: In B2, use LEFT to take the year from the date in A2, which is text written year first.
+    rows:
+      - [Date, Year]
+      - ["2026-11-17", null]
+    answerCell: B2
+    expected: "2026"
+    variants:
+      - set: { A2: "2031-02-03" }
+        expected: "2031"
+    answer: =LEFT(A2,4)
+    requiredFunctions:
+      - LEFT
+    hints:
+      nudge: The year is the first four characters.
+      rule: LEFT returns text, even when the characters are digits.
+    misses:
+      value: The first four characters are 2026.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LEFT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LEFT(A2,4)
+    reject:
+      - formula: =LEFT(A2,2)
+        rule: value
+      - formula: =RIGHT(A2,4)
+        rule: required-function
+      - formula: ="2026"
+        rule: required-function
+      - formula: =LEFT(A2,4
+        rule: syntax

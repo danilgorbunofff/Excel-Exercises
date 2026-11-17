@@ -1,0 +1,37 @@
+id: len-drill-1
+slug: len-drill-1
+level: 1
+title: Count the characters
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LEN
+screens:
+  - prompt: In B2, use LEN to count the characters in A2.
+    rows:
+      - [Word, Result]
+      - [Spreadsheet, null]
+    answerCell: B2
+    expected: 11
+    variants:
+      - set: { A2: Cell }
+        expected: 4
+    answer: =LEN(A2)
+    requiredFunctions:
+      - LEN
+    hints:
+      nudge: LEN takes one piece of text.
+      rule: LEN(text) returns how many characters it has.
+    misses:
+      value: Spreadsheet has 11 letters.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LEN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LEN(A2)
+    reject:
+      - formula: =LEN(A2)-1
+        rule: value
+      - formula: =11
+        rule: required-function
+      - formula: =LEN(A2
+        rule: syntax

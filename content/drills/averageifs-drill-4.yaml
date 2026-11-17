@@ -1,0 +1,47 @@
+id: averageifs-drill-4
+slug: averageifs-drill-4
+level: 2
+title: Average for a team with a missing score
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: AVERAGEIFS
+screens:
+  - prompt: In F3, use AVERAGEIFS to average the scores in C2:C8 for the team typed in F2. One player has no score yet.
+    rows:
+      - [Team, Player, Score, null, Pick, null]
+      - [Blue, Ann, 80, null, Team, Blue]
+      - [Red, Bo, 75, null, Average, null]
+      - [Blue, Cy, null, null, null, null]
+      - [Blue, Di, 90, null, null, null]
+      - [Red, Ed, 58, null, null, null]
+      - [Red, Flo, 64, null, null, null]
+      - [Blue, Gus, 76, null, null, null]
+    answerCell: F3
+    expected: 82
+    variants:
+      - set: { F2: Red }
+        expected: 65.6666666667
+      - set: { C4: 50 }
+        expected: 74
+    answer: =AVERAGEIFS(C2:C8,A2:A8,F2)
+    requiredFunctions:
+      - AVERAGEIFS
+    hints:
+      nudge: AVERAGEIFS leaves empty score cells out of the average.
+      rule: An empty cell in the average range is skipped, not counted as 0.
+    misses:
+      value: Blue's three scores average 82. The empty score is left out.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AVERAGEIFS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AVERAGEIFS(C2:C8,A2:A8,F2)
+    reject:
+      - formula: =SUMIFS(C2:C8,A2:A8,F2)/COUNTIFS(A2:A8,F2)
+        rule: required-function
+      - formula: =AVERAGEIFS(C2:C8,A2:A8,"Blue")
+        rule: fragile
+      - formula: =82
+        rule: required-function
+      - formula: =AVERAGEIFS(C2:C8,A2:A8,F2
+        rule: syntax

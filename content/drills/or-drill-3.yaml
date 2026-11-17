@@ -1,0 +1,45 @@
+id: or-drill-3
+slug: or-drill-3
+level: 1
+title: Oversize on either side
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: OR
+screens:
+  - prompt: In E2, use OR to test whether the width in B2 or the height in C2 is over the maximum in D2.
+    rows:
+      - [Part, Width, Height, Max, Oversize]
+      - [P1, 120, 80, 100, null]
+    answerCell: E2
+    expected: true
+    variants:
+      - set: { B2: 90 }
+        expected: false
+      - set: { D2: 130 }
+        expected: false
+      - set: { B2: 90, C2: 110 }
+        expected: true
+      - set: { B2: 100, C2: 80 }
+        expected: false
+      - set: { B2: 90, C2: 100 }
+        expected: false
+    answer: =OR(B2>D2,C2>D2)
+    requiredFunctions:
+      - OR
+    hints:
+      nudge: Compare each side with the maximum in D2.
+      rule: OR(B2>D2,C2>D2) is TRUE when either side is too big.
+    misses:
+      value: The width of 120 is over 100, so the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for OR.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =OR(B2>D2,C2>D2)
+    reject:
+      - formula: =OR(B2>100,C2>100)
+        rule: fragile
+      - formula: =AND(B2>D2,C2>D2)
+        rule: required-function
+      - formula: =OR(B2>D2,C2>D2
+        rule: syntax

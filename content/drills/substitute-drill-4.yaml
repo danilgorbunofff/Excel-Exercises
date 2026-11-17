@@ -1,0 +1,37 @@
+id: substitute-drill-4
+slug: substitute-drill-4
+level: 2
+title: SUBSTITUTE cares about case
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUBSTITUTE
+screens:
+  - prompt: In B2, use SUBSTITUTE to replace every small "a" in A2 with "o".
+    rows:
+      - [Text, Result]
+      - [Banana A, null]
+    answerCell: B2
+    expected: Bonono A
+    variants:
+      - set: { A2: Alpaca a }
+        expected: Alpoco o
+    answer: =SUBSTITUTE(A2,"a","o")
+    requiredFunctions:
+      - SUBSTITUTE
+    hints:
+      nudge: SUBSTITUTE tells capital A from small a.
+      rule: Only the small letters change; the capital A stays.
+    misses:
+      value: Changed, the text reads Bonono A.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUBSTITUTE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUBSTITUTE(A2,"a","o")
+    reject:
+      - formula: =SUBSTITUTE(A2,"A","o")
+        rule: value
+      - formula: ="Bonono A"
+        rule: required-function
+      - formula: =SUBSTITUTE(A2,"a","o"
+        rule: syntax

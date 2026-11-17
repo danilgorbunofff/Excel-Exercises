@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SMALL($B$2:$B$8,2)
+      - =SMALL(B$2:B$8,2)
+      - =small(b2:b8, 2)
+      - =LET(data,B2:B8,SMALL(data,2))
+    wrong:
+      - formula: =SMALL(B2:B7,2)
+        rule: fragile
+        why: range B2:B8 one row short at the end
+      - formula: =SMALL(B3:B8,2)
+        rule: fragile
+        why: range B2:B8 skips its first row
+    equivalent:
+      - formula: =SMALL(B2:B9,2)
+        why: "range B2:B8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

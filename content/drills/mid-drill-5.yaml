@@ -1,0 +1,42 @@
+id: mid-drill-5
+slug: mid-drill-5
+level: 2
+title: Three characters after the dash
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MID
+screens:
+  - prompt: In B2, use MID and FIND to take the 3 characters right after the first "-" in A2.
+    rows:
+      - [Code, Result]
+      - [INV-204-81, null]
+    answerCell: B2
+    expected: "204"
+    variants:
+      - set: { A2: CR-917-02 }
+        expected: "917"
+      - set: { A2: ORDER-555-1 }
+        expected: "555"
+    answer: =MID(A2,FIND("-",A2)+1,3)
+    requiredFunctions:
+      - MID
+      - FIND
+    hints:
+      nudge: FIND gives the dash's position; start one after it.
+      rule: MID(A2,FIND("-",A2)+1,3) works whatever the prefix length.
+    misses:
+      value: After the first dash in INV-204-81 come 204.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MID and FIND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MID(A2,FIND("-",A2)+1,3)
+    reject:
+      - formula: =MID(A2,5,3)
+        rule: required-function
+      - formula: =MID(A2,FIND("-",A2),3)
+        rule: value
+      - formula: ="204"
+        rule: required-function
+      - formula: =MID(A2,FIND("-",A2)+1,3
+        rule: syntax

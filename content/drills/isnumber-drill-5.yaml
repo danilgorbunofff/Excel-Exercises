@@ -1,0 +1,40 @@
+id: isnumber-drill-5
+slug: isnumber-drill-5
+level: 2
+title: Double it or say why not
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISNUMBER
+screens:
+  - prompt: In C2, use IF and ISNUMBER to show B2 times 2 when B2 holds a number, and "Not a number" otherwise.
+    rows:
+      - [Item, Amount, Doubled]
+      - [Pens, 12a, null]
+    answerCell: C2
+    expected: Not a number
+    variants:
+      - set: { B2: 12 }
+        expected: 24
+    answer: =IF(ISNUMBER(B2),B2*2,"Not a number")
+    requiredFunctions:
+      - ISNUMBER
+      - IF
+    hints:
+      nudge: Test with ISNUMBER first, then calculate.
+      rule: IF(ISNUMBER(B2),B2*2,"Not a number") only multiplies real numbers.
+    misses:
+      value: 12a is not a number, so the cell shows Not a number.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISNUMBER and IF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IF(ISNUMBER(B2),B2*2,"Not a number")
+    reject:
+      - formula: =IFERROR(B2*2,"Not a number")
+        rule: required-function
+      - formula: =IF(ISNUMBER(B2),B2,"Not a number")
+        rule: fragile
+      - formula: ="Not a number"
+        rule: required-function
+      - formula: =IF(ISNUMBER(B2),B2*2,"Not a number"
+        rule: syntax

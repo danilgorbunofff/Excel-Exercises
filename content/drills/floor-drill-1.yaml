@@ -1,0 +1,43 @@
+id: floor-drill-1
+slug: floor-drill-1
+level: 1
+title: Down to a multiple of 5
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: FLOOR
+screens:
+  - prompt: In C2, use FLOOR to round the minutes in B2 down to a multiple of 5.
+    rows:
+      - [Call, Minutes, Billed]
+      - [C1, 23, null]
+    answerCell: C2
+    expected: 20
+    variants:
+      - set: { B2: 25 }
+        expected: 25
+      - set: { B2: 31 }
+        expected: 30
+    answer: =FLOOR(B2,5)
+    requiredFunctions:
+      - FLOOR
+    hints:
+      nudge: FLOOR takes a number and a multiple, and always goes down.
+      rule: FLOOR(number,5) rounds down to the multiple of 5 below.
+    misses:
+      value: 23 goes down to 20.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for FLOOR.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =FLOOR(B2,5)
+    reject:
+      - formula: =MROUND(B2,5)
+        rule: required-function
+      - formula: =FLOOR(B2,10)
+        rule: fragile
+      - formula: =FLOOR(B2,5)+5
+        rule: value
+      - formula: =20
+        rule: required-function
+      - formula: =FLOOR(B2,5
+        rule: syntax

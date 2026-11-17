@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =TAKE($A$2:$A$7,-2)
+      - =TAKE(A$2:A$7,-2)
+      - =take(a2:a7, -2)
+      - =LET(data,A2:A7,TAKE(data,-2))
+    wrong: []
+    equivalent:
+      - formula: =TAKE(A3:A7,-2)
+        why: "range A2:A7 skips its first row: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

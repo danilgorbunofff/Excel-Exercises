@@ -1,0 +1,44 @@
+id: countifs-drill-2
+slug: countifs-drill-2
+level: 1
+title: Count weights in a band
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTIFS
+screens:
+  - prompt: In B9, use COUNTIFS to count the weights in B2:B8 from 10 to 20, both included.
+    rows:
+      - [Parcel, Weight]
+      - [P1, 8]
+      - [P2, 12]
+      - [P3, 25]
+      - [P4, 15]
+      - [P5, 20]
+      - [P6, 5]
+      - [P7, 18]
+      - [In band, null]
+    answerCell: B9
+    expected: 4
+    variants:
+      - set: { B2: 10 }
+        expected: 5
+    answer: =COUNTIFS(B2:B8,">=10",B2:B8,"<=20")
+    requiredFunctions:
+      - COUNTIFS
+    hints:
+      nudge: Use the same range twice, once for each end of the band.
+      rule: COUNTIFS(range,">=10",range,"<=20") counts values from 10 to 20.
+    misses:
+      value: 4 weights are from 10 to 20. 20 itself counts.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTIFS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTIFS(B2:B8,">=10",B2:B8,"<=20")
+    reject:
+      - formula: =COUNTIFS(B2:B8,">10",B2:B8,"<20")
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =COUNTIFS(B2:B8,">=10",B2:B8,"<=20"
+        rule: syntax

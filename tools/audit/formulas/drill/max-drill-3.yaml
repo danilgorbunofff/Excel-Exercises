@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MAX($B$2:$D$4)
+      - =MAX(B$2:D$4)
+      - =max(b2:d4)
+      - =LET(data,B2:D4,MAX(data))
+    wrong:
+      - formula: =MAX(B2:D3)
+        rule: fragile
+        why: range B2:D4 one row short at the end
+      - formula: =MAX(A2:C4)
+        rule: fragile
+        why: range B2:D4 one column left
+    equivalent:
+      - formula: =MAX(B2:D5)
+        why: "range B2:D4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

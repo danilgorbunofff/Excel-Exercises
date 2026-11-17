@@ -1,0 +1,48 @@
+id: sumifs-drill-4
+slug: sumifs-drill-4
+level: 2
+title: Hours still open
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUMIFS
+screens:
+  - prompt: In C9, use SUMIFS to add up the hours in C2:C8 for tasks whose status in B2:B8 is not "Done". Write the criteria as "<>Done".
+    rows:
+      - [Task, Status, Hours]
+      - [Plan, Done, 5]
+      - [Build, Open, 12]
+      - [Test, Done, 8]
+      - [Docs, Open, 4]
+      - [Ship, Late, 6]
+      - [Review, Done, 3]
+      - [Fix, Open, 7]
+      - [null, Not done, null]
+    answerCell: C9
+    expected: 29
+    variants:
+      - set: { B3: Done }
+        expected: 17
+      - set: { B2: Open }
+        expected: 34
+    answer: =SUMIFS(C2:C8,B2:B8,"<>Done")
+    requiredFunctions:
+      - SUMIFS
+    hints:
+      nudge: '"<>" means not equal to, so "<>Done" matches every other status.'
+      rule: SUMIFS(hours,status,"<>Done") adds the rows that are Open, Late or anything else.
+    misses:
+      value: The tasks that are not Done hold 29 hours. Late counts too.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUMIFS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUMIFS(C2:C8,B2:B8,"<>Done")
+    reject:
+      - formula: =SUMIFS(C2:C8,B2:B8,"Done")
+        rule: value
+      - formula: =SUMIFS(C2:C8,B2:B8,"Open")
+        rule: value
+      - formula: =29
+        rule: required-function
+      - formula: =SUMIFS(C2:C8,B2:B8,"<>Done"
+        rule: syntax

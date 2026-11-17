@@ -1,0 +1,37 @@
+id: counta-drill-2
+slug: counta-drill-2
+level: 1
+title: Count the days marked in a row
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTA
+screens:
+  - prompt: In G2, use COUNTA to find how many days in B2:F2 are marked with an x.
+    rows:
+      - [Name, Mon, Tue, Wed, Thu, Fri, Days]
+      - [Ann, x, null, x, x, null, null]
+    answerCell: G2
+    expected: 3
+    variants:
+      - set: { C2: x }
+        expected: 4
+    answer: =COUNTA(B2:F2)
+    requiredFunctions:
+      - COUNTA
+    hints:
+      nudge: The days run along row 2.
+      rule: "COUNTA works on a row range: COUNTA(B2:F2)."
+    misses:
+      value: 3 days are marked.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTA.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTA(B2:F2)
+    reject:
+      - formula: =COUNTA(B2:D2)
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =COUNTA(B2:F2
+        rule: syntax

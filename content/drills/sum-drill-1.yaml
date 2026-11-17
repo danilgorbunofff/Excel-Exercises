@@ -1,0 +1,46 @@
+id: sum-drill-1
+slug: sum-drill-1
+level: 1
+title: Total five months of sales
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUM
+screens:
+  - prompt: In B7, use SUM to add up the sales in B2:B6.
+    rows:
+      - [Month, Sales]
+      - [Jan, 120]
+      - [Feb, 95]
+      - [Mar, 140]
+      - [Apr, 110]
+      - [May, 135]
+      - [Total, null]
+    answerCell: B7
+    expected: 600
+    variants:
+      - set: { B3: 200 }
+        expected: 705
+    answer: =SUM(B2:B6)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: One function adds up a whole range.
+      rule: SUM(range) adds every number in the range. Write the range as first cell, colon, last cell.
+    misses:
+      value: The five months add up to 600. Check that the range runs from B2 to B6.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUM.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUM(B2:B6)
+      - =sum(b2:b6)
+      - =SUM($B$2:$B$6)
+    reject:
+      - formula: =SUM(B2:B5)
+        rule: value
+      - formula: =B2+B3+B4+B5+B6
+        rule: required-function
+      - formula: =600
+        rule: required-function
+      - formula: =SUM(B2:B6
+        rule: syntax

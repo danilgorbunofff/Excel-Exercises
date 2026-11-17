@@ -1,0 +1,37 @@
+id: proper-drill-2
+slug: proper-drill-2
+level: 1
+title: From all capitals
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: PROPER
+screens:
+  - prompt: In B2, use PROPER to rewrite the city in A2, typed in all capitals.
+    rows:
+      - [City, Result]
+      - [NEW YORK CITY, null]
+    answerCell: B2
+    expected: New York City
+    variants:
+      - set: { A2: SAN JOSE }
+        expected: San Jose
+    answer: =PROPER(A2)
+    requiredFunctions:
+      - PROPER
+    hints:
+      nudge: PROPER also lowers the letters after the first.
+      rule: PROPER turns NEW into New.
+    misses:
+      value: Rewritten, the city reads New York City.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for PROPER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =PROPER(A2)
+    reject:
+      - formula: =LOWER(A2)
+        rule: required-function
+      - formula: ="New York City"
+        rule: required-function
+      - formula: =PROPER(A2
+        rule: syntax

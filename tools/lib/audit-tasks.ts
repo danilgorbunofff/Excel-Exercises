@@ -19,10 +19,16 @@ import {
   walkAst,
 } from "@practice/grader";
 import { parse as parseYaml } from "yaml";
-import { dailySchema, exerciseSchema, mockSchema, type Screen } from "../../src/content/schema.ts";
+import {
+  dailySchema,
+  drillSchema,
+  exerciseSchema,
+  mockSchema,
+  type Screen,
+} from "../../src/content/schema.ts";
 import type { ExcelResult, ExcelScalar } from "./excel-bridge.ts";
 
-export type Kind = "exercise" | "daily" | "mock";
+export type Kind = "exercise" | "daily" | "mock" | "drill";
 
 export interface TaskScreen {
   kind: Kind;
@@ -39,13 +45,20 @@ const DIRS: [Kind, string][] = [
   ["exercise", "content/exercises"],
   ["daily", "content/daily"],
   ["mock", "content/mocks"],
+  ["drill", "content/drills"],
 ];
+
+const SCHEMAS = {
+  exercise: exerciseSchema,
+  daily: dailySchema,
+  mock: mockSchema,
+  drill: drillSchema,
+} as const;
 
 export function loadTasks(root = "."): TaskScreen[] {
   const out: TaskScreen[] = [];
   for (const [kind, dir] of DIRS) {
-    const schema =
-      kind === "exercise" ? exerciseSchema : kind === "daily" ? dailySchema : mockSchema;
+    const schema = SCHEMAS[kind];
     for (const f of readdirSync(`${root}/${dir}`)
       .filter((n) => n.endsWith(".yaml"))
       .sort()) {

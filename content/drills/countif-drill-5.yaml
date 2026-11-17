@@ -1,0 +1,47 @@
+id: countif-drill-5
+slug: countif-drill-5
+level: 2
+title: Count the reps above average
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTIF
+screens:
+  - prompt: In B9, use COUNTIF and AVERAGE to count the sales in B2:B8 that are above the average of B2:B8.
+    rows:
+      - [Rep, Sales]
+      - [Ann, 400]
+      - [Bo, 250]
+      - [Cy, 310]
+      - [Di, 520]
+      - [Ed, 190]
+      - [Flo, 330]
+      - [Gus, 450]
+      - [Above, null]
+    answerCell: B9
+    expected: 3
+    variants:
+      - { set: { B5: 200 }, expected: 4 }
+      - { set: { B2: 520, B5: 260 }, expected: 2 }
+    answer: =COUNTIF(B2:B8,">"&AVERAGE(B2:B8))
+    requiredFunctions:
+      - COUNTIF
+      - AVERAGE
+    hints:
+      nudge: 'Build the test from the average: ">"&AVERAGE(range).'
+      rule: The second argument can be a formula, joined to the sign with &.
+    misses:
+      value: The average is 350, and 3 reps sold more than that.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTIF and AVERAGE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTIF(B2:B8,">"&AVERAGE(B2:B8))
+    reject:
+      - formula: =COUNTIF(B2:B8,"<"&AVERAGE(B2:B8))
+        rule: value
+      - formula: =COUNTIF(B2:B8,">350")
+        rule: required-function
+      - formula: =3
+        rule: required-function
+      - formula: =COUNTIF(B2:B8,">"&AVERAGE(B2:B8)
+        rule: syntax

@@ -1,0 +1,51 @@
+id: small-drill-5
+slug: small-drill-5
+level: 2
+title: Who was fastest
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SMALL
+screens:
+  - prompt: In B10, use INDEX, MATCH and SMALL to find the name in A2:A8 of the runner with the fastest time in B2:B8.
+    rows:
+      - [Runner, Time]
+      - [Ann, 41.2]
+      - [Bo, 38.9]
+      - [Cy, 44.5]
+      - [Di, 37.6]
+      - [Ed, 40.1]
+      - [Flo, 39.4]
+      - [Gus, 42.8]
+      - [null, null]
+      - [Fastest, null]
+    answerCell: B10
+    expected: Di
+    variants:
+      - { set: { B3: 36.5 }, expected: Bo }
+      - { set: { B5: 45 }, expected: Bo }
+      - { set: { B8: 1 }, expected: Gus }
+      - { set: { B2: 1 }, expected: Ann }
+    answer: =INDEX(A2:A8,MATCH(SMALL(B2:B8,1),B2:B8,0))
+    requiredFunctions:
+      - SMALL
+      - INDEX
+      - MATCH
+    hints:
+      nudge: SMALL gives the time; MATCH finds its row; INDEX returns the name.
+      rule: INDEX(names,MATCH(SMALL(times,1),times,0)) names the winner.
+    misses:
+      value: The fastest time is 37.6, which is Di's.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SMALL, INDEX and MATCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =INDEX(A2:A8,MATCH(SMALL(B2:B8,1),B2:B8,0))
+    reject:
+      - formula: =INDEX(A2:A8,MATCH(SMALL(B2:B8,2),B2:B8,0))
+        rule: value
+      - formula: =INDEX(A2:A8,MATCH(MIN(B2:B8),B2:B8,0))
+        rule: required-function
+      - formula: ="Di"
+        rule: required-function
+      - formula: =INDEX(A2:A8,MATCH(SMALL(B2:B8,1),B2:B8,0)
+        rule: syntax

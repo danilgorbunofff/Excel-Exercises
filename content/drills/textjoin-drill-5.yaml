@@ -1,0 +1,43 @@
+id: textjoin-drill-5
+slug: textjoin-drill-5
+level: 2
+title: A list and its count
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TEXTJOIN
+screens:
+  - prompt: In B2, use TEXTJOIN and COUNTA to join the names in A2:A5 with ", ", then add a space and the number of names in brackets, such as (4).
+    rows:
+      - [Name, List]
+      - [Ann, null]
+      - [Bo, null]
+      - [Cy, null]
+      - [null, null]
+    answerCell: B2
+    expected: Ann, Bo, Cy (3)
+    variants:
+      - set: { A5: Di }
+        expected: Ann, Bo, Cy, Di (4)
+    answer: =TEXTJOIN(", ",TRUE,A2:A5)&" ("&COUNTA(A2:A5)&")"
+    requiredFunctions:
+      - TEXTJOIN
+      - COUNTA
+    hints:
+      nudge: Join the names, then add the count with &.
+      rule: TEXTJOIN(...)&" ("&COUNTA(range)&")" adds the count in brackets.
+    misses:
+      value: With the count, the cell reads Ann, Bo, Cy (3).
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TEXTJOIN and COUNTA.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TEXTJOIN(", ",TRUE,A2:A5)&" ("&COUNTA(A2:A5)&")"
+    reject:
+      - formula: =TEXTJOIN(", ",TRUE,A2:A5)&" (3)"
+        rule: required-function
+      - formula: =TEXTJOIN(", ",TRUE,A2:A5)&" ("&COUNTA(A2:A5)
+        rule: value
+      - formula: ="Ann, Bo, Cy (3)"
+        rule: required-function
+      - formula: =TEXTJOIN(", ",TRUE,A2:A5)&" ("&COUNTA(A2:A5)&")",
+        rule: syntax

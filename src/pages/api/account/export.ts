@@ -34,7 +34,7 @@ export const GET: APIRoute = async (ctx) => {
   }
   const profile = await supabase
     .from("profiles")
-    .select("pro_status, pro_until, news, updated_at")
+    .select("pro_status, pro_until, news, digest, updated_at")
     .eq("id", user.id)
     .maybeSingle();
   const rows = await Promise.all(
@@ -60,6 +60,7 @@ export const GET: APIRoute = async (ctx) => {
       proStatus: profile.data?.pro_status ?? null,
       proUntil: profile.data?.pro_until ?? null,
       news: profile.data?.news ?? false,
+      digest: profile.data?.digest ?? false,
       updatedAt: profile.data?.updated_at ?? null,
     },
     ...Object.fromEntries(rows.map(([key, r]) => [key, r.data ?? []])),

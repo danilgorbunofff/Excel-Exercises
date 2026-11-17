@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MID($A$2,FIND("-",$A$2)+1,3)
+      - =MID(A$2,FIND("-",A2)+1,3)
+      - =mid(a2, find("-", a2)+1, 3)
+    wrong: []
+    equivalent: []

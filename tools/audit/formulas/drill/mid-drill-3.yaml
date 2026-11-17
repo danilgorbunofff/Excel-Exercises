@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MID($A$2,6,50)
+      - =MID(A$2,6,50)
+      - =mid(a2, 6, 50)
+    wrong: []
+    equivalent:
+      - formula: =MID(A2,6,51)
+        why: "50 written as 51: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =MID(A2,6,49)
+        why: "50 written as 49: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

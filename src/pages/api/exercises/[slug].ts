@@ -1,6 +1,6 @@
-// Why this exists: hands the answers of a PRO exercise to a visitor with PRO,
-// and those of a held-out mock task to one with PRO who has finished a set that
-// holds it. The static pages leave them out; see locked-exercise.ts, and
+// Why this exists: hands the answers of a PRO exercise or a function drill to a
+// visitor with PRO, and those of a held-out mock task to one with PRO who has
+// finished a set that holds it. The static pages leave them out; see locked-exercise.ts, and
 // assessment.ts, which asks only once the attempt is saved.
 
 import { getCollection } from "astro:content";
@@ -20,8 +20,11 @@ export const GET: APIRoute = async (ctx) => {
   const mock = placed
     ? undefined
     : (await getCollection("mocks")).find((e) => e.data.slug === slug);
-  if (!placed && !mock) return json({ error: "not found" }, 404);
-  const answers = (placed?.exercise ?? mock?.data)?.screens.map((s) => s.answer) ?? [];
+  const drill =
+    placed || mock ? undefined : (await getCollection("drills")).find((e) => e.data.slug === slug);
+  if (!placed && !mock && !drill) return json({ error: "not found" }, 404);
+  const answers =
+    (placed?.exercise ?? mock?.data ?? drill?.data)?.screens.map((s) => s.answer) ?? [];
   if (placed && !isLocked(placed)) return json({ answers });
 
   const { supabase, user } = await currentUser(ctx);

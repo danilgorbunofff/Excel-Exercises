@@ -1,0 +1,45 @@
+id: ifs-drill-3
+slug: ifs-drill-3
+level: 2
+title: Tier from limits in cells
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IFS
+screens:
+  - prompt: In E2, use IFS to give "Gold" when B2 reaches the gold limit in D2, "Silver" when it reaches the silver limit in C2, and "Bronze" otherwise.
+    rows:
+      - [Rep, Sales, Silver, Gold, Tier]
+      - [Ann, 7200, 5000, 8000, null]
+    answerCell: E2
+    expected: Silver
+    variants:
+      - set: { D2: 7000 }
+        expected: Gold
+      - set: { C2: 7500 }
+        expected: Bronze
+      - set: { B2: 8000 }
+        expected: Gold
+      - set: { B2: 5000 }
+        expected: Silver
+    answer: =IFS(B2>=D2,"Gold",B2>=C2,"Silver",TRUE,"Bronze")
+    requiredFunctions:
+      - IFS
+    hints:
+      nudge: Point the tests at C2 and D2, and test the higher limit first.
+      rule: "The tests can compare cells: IFS(B2>=D2,...,B2>=C2,...,TRUE,...)."
+    misses:
+      value: 7200 reaches 5000 but not 8000, so the tier is Silver.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IFS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IFS(B2>=D2,"Gold",B2>=C2,"Silver",TRUE,"Bronze")
+    reject:
+      - formula: =IFS(B2>=8000,"Gold",B2>=5000,"Silver",TRUE,"Bronze")
+        rule: fragile
+      - formula: =IFS(B2>=C2,"Silver",B2>=D2,"Gold",TRUE,"Bronze")
+        rule: fragile
+      - formula: ="Silver"
+        rule: required-function
+      - formula: =IFS(B2>=D2,"Gold",B2>=C2,"Silver",TRUE,"Bronze"
+        rule: syntax

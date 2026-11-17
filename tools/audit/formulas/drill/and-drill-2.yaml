@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(AND($B$2="Yes",$C$2="Yes"),"Complete","Open")
+      - =IF(AND(B$2="Yes",C2="Yes"),"Complete","Open")
+      - =if(and(b2="Yes", c2="Yes"), "Complete", "Open")
+    wrong: []
+    equivalent: []

@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MATCH("Pads",$A$2:$A$7,0)
+      - =MATCH("Pads",A$2:A$7,0)
+      - =match("Pads", a2:a7, 0)
+      - =LET(data,A2:A7,MATCH("Pads",data,0))
+    wrong:
+      - formula: =MATCH("Pads",A2:A6,0)
+        rule: fragile
+        why: range A2:A7 one row short at the end
+    equivalent: []

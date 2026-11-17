@@ -1,0 +1,47 @@
+id: round-drill-5
+slug: round-drill-5
+level: 2
+title: A rounded average
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ROUND
+screens:
+  - prompt: In B8, use ROUND and AVERAGE to find the average of B2:B6, rounded to 1 decimal place.
+    rows:
+      - [Day, Minutes]
+      - [Mon, 32]
+      - [Tue, 41]
+      - [Wed, 27]
+      - [Thu, 38]
+      - [Fri, 35]
+      - [null, null]
+      - [Average, null]
+    answerCell: B8
+    expected: 34.6
+    variants:
+      - { set: { B2: 33 }, expected: 34.8 }
+      - { set: { B4: 30 }, expected: 35.2 }
+      - { set: { B2: null }, expected: 35.3 }
+    answer: =ROUND(AVERAGE(B2:B6),1)
+    requiredFunctions:
+      - ROUND
+      - AVERAGE
+    hints:
+      nudge: Put the AVERAGE inside ROUND.
+      rule: ROUND(AVERAGE(range),1) rounds the average to one decimal place.
+    misses:
+      value: The five days average 34.6 minutes, which is already 34.6 to one place.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ROUND and AVERAGE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ROUND(AVERAGE(B2:B6),1)
+    reject:
+      - formula: =AVERAGE(B2:B6)
+        rule: required-function
+      - formula: =ROUND(AVERAGE(B2:B6),0)
+        rule: value
+      - formula: =34.6
+        rule: required-function
+      - formula: =ROUND(AVERAGE(B2:B6),1
+        rule: syntax

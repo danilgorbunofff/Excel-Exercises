@@ -1,0 +1,41 @@
+id: roundup-drill-4
+slug: roundup-drill-4
+level: 2
+title: Rounding up a negative number
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ROUNDUP
+screens:
+  - prompt: In C2, use ROUNDUP to round the change in B2 to a whole number. Note what happens to a negative number.
+    rows:
+      - [Week, Change, Rounded]
+      - [W1, -2.3, null]
+    answerCell: C2
+    expected: -3
+    variants:
+      - set: { B2: 2.3 }
+        expected: 3
+      - set: { B2: -0.4 }
+        expected: -1
+    answer: =ROUNDUP(B2,0)
+    requiredFunctions:
+      - ROUNDUP
+    hints:
+      nudge: ROUNDUP rounds away from zero, so a negative number gets more negative.
+      rule: ROUNDUP(-2.3,0) is -3, not -2.
+    misses:
+      value: -2.3 rounds away from zero, to -3.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ROUNDUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ROUNDUP(B2,0)
+    reject:
+      - formula: =ROUNDDOWN(B2,0)
+        rule: required-function
+      - formula: =ROUNDUP(B2,1)
+        rule: value
+      - formula: =-3
+        rule: required-function
+      - formula: =ROUNDUP(B2,0
+        rule: syntax

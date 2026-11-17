@@ -1,0 +1,43 @@
+id: match-drill-2
+slug: match-drill-2
+level: 1
+title: Position of a product
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MATCH
+screens:
+  - prompt: In D2, use MATCH to find the position of "Pads" in A2:A7.
+    rows:
+      - [Product, Stock, null, Position]
+      - [Pens, 120, null, null]
+      - [Clips, 300, null, null]
+      - [Tape, 60, null, null]
+      - [Pads, 45, null, null]
+      - [Files, 25, null, null]
+      - [Ink, 8, null, null]
+    answerCell: D2
+    expected: 4
+    variants:
+      - { set: { A3: Pads }, expected: 2 }
+      - { set: { A5: Pens, A7: Pads }, expected: 6 }
+    answer: =MATCH("Pads",A2:A7,0)
+    requiredFunctions:
+      - MATCH
+    hints:
+      nudge: Text to find goes in double quotes.
+      rule: MATCH("Pads",range,0) returns where Pads sits in the range. Upper and lower case match alike.
+    misses:
+      value: Pads is item number 4 in the list.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MATCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MATCH("Pads",A2:A7,0)
+      - =match("pads",a2:a7,0)
+    reject:
+      - formula: =MATCH("Pads",A1:A7,0)
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =MATCH("Pads",A2:A7,0
+        rule: syntax

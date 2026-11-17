@@ -1,0 +1,46 @@
+id: match-drill-4
+slug: match-drill-4
+level: 2
+title: Find a city by its start
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MATCH
+screens:
+  - prompt: In D2, use MATCH with the wildcard "Lon*" to find the position of the first city in A2:A7 that starts with Lon.
+    rows:
+      - [City, Office, null, Position]
+      - [Paris, P1, null, null]
+      - [Berlin, B1, null, null]
+      - [London, L1, null, null]
+      - [Lisbon, L2, null, null]
+      - [Long Beach, L3, null, null]
+      - [Lyon, L4, null, null]
+    answerCell: D2
+    expected: 3
+    variants:
+      - set: { A3: Londrina }
+        expected: 2
+      - set: { A2: Leeds }
+        expected: 3
+    answer: =MATCH("Lon*",A2:A7,0)
+    requiredFunctions:
+      - MATCH
+    hints:
+      nudge: An asterisk stands for any characters, so Lon* matches anything starting with Lon.
+      rule: MATCH("Lon*",range,0) returns the first cell that starts with Lon.
+    misses:
+      value: London is the first city starting with Lon, at position 3.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MATCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MATCH("Lon*",A2:A7,0)
+    reject:
+      - formula: =MATCH("Lon",A2:A7,0)
+        rule: value
+      - formula: =MATCH("L*",A2:A7,0)
+        rule: fragile
+      - formula: =3
+        rule: required-function
+      - formula: =MATCH("Lon*",A2:A7,0
+        rule: syntax

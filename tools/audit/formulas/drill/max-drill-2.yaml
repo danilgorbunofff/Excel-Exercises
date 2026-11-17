@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MAX($B$2:$G$2)
+      - =MAX(B$2:G$2)
+      - =max(b2:g2)
+      - =LET(data,B2:G2,MAX(data))
+    wrong: []
+    equivalent: []

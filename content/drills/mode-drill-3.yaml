@@ -1,0 +1,45 @@
+id: mode-drill-3
+slug: mode-drill-3
+level: 2
+title: A tie goes to the first
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MODE
+screens:
+  - prompt: In B9, use MODE to find the most common rating in B2:B7. Two ratings appear equally often.
+    rows:
+      - [Review, Rating]
+      - [R1, 3]
+      - [R2, 5]
+      - [R3, 3]
+      - [R4, 5]
+      - [R5, 4]
+      - [R6, 2]
+      - [null, null]
+      - [Mode, null]
+    answerCell: B9
+    expected: 3
+    variants:
+      - { set: { B2: 5 }, expected: 5 }
+      - { set: { B6: 3 }, expected: 3 }
+      - { set: { B2: 2 }, expected: 2 }
+    answer: =MODE(B2:B7)
+    requiredFunctions:
+      - MODE
+    hints:
+      nudge: When values tie, MODE returns the one that appears first.
+      rule: MODE gives the first of the tied values, in the order of the range.
+    misses:
+      value: 3 and 5 both appear twice, and 3 comes first, so the mode is 3.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MODE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MODE(B2:B7)
+    reject:
+      - formula: =MAX(B2:B7)
+        rule: required-function
+      - formula: =3
+        rule: required-function
+      - formula: =MODE(B2:B7
+        rule: syntax

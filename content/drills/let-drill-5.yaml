@@ -1,0 +1,54 @@
+id: let-drill-5
+slug: let-drill-5
+level: 2
+title: Name a filtered list
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LET
+screens:
+  - prompt: In E2, use LET, FILTER and SORT to name the reps in A2:A7 from "East" as east, then return them sorted from A to Z.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, null]
+      - [Flo, East, 330, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Di, East, 520, null, null, null, null, null, null]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Ed, North, 190, null, null, null, null, null, null]
+      - [Cy, West, 310, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [Ann]
+      - [Di]
+      - [Flo]
+    variants:
+      - set: { B3: East }
+        expected:
+          - - Ann
+          - - Bo
+          - - Di
+          - - Flo
+    answer: =LET(east,FILTER(A2:A7,B2:B7="East"),SORT(east))
+    requiredFunctions:
+      - LET
+      - FILTER
+      - SORT
+    hints:
+      nudge: Name the FILTER result, then sort the name.
+      rule: LET can name a whole list as well as a single value.
+    misses:
+      value: Sorted, the East reps are Ann, Di, Flo.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LET, FILTER and SORT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LET(east,FILTER(A2:A7,B2:B7="East"),SORT(east))
+    reject:
+      - formula: =SORT(FILTER(A2:A7,B2:B7="East"))
+        rule: required-function
+      - formula: =LET(east,FILTER(A2:A7,B2:B7="East"),east)
+        rule: required-function
+      - formula: =LET(east,FILTER(A2:A7,B2:B7="East"),SORT(east,1,-1))
+        rule: value
+      - formula: =LET(east,FILTER(A2:A7,B2:B7="East"),SORT(east)
+        rule: syntax

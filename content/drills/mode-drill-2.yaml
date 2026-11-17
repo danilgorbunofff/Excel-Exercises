@@ -1,0 +1,39 @@
+id: mode-drill-2
+slug: mode-drill-2
+level: 1
+title: The most common daily count in a row
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MODE
+screens:
+  - prompt: In I2, use MODE to find the most common number of calls in B2:H2.
+    rows:
+      - [Agent, Mon, Tue, Wed, Thu, Fri, Sat, Sun, Typical]
+      - [Ola, 12, 15, 12, 9, 15, 12, 7, null]
+    answerCell: I2
+    expected: 12
+    variants:
+      - set: { D2: 15, G2: 15 }
+        expected: 15
+      - set: { G2: 9, H2: 9 }
+        expected: 9
+    answer: =MODE(B2:H2)
+    requiredFunctions:
+      - MODE
+    hints:
+      nudge: The days run along row 2.
+      rule: "MODE works on a row range: MODE(B2:H2)."
+    misses:
+      value: 12 calls happen on three days, more than any other count.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MODE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MODE(B2:H2)
+    reject:
+      - formula: =MEDIAN(B2:H2)
+        rule: required-function
+      - formula: =12
+        rule: required-function
+      - formula: =MODE(B2:H2
+        rule: syntax

@@ -1,0 +1,46 @@
+id: xlookup-drill-2
+slug: xlookup-drill-2
+level: 1
+title: Department for a name
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: XLOOKUP
+screens:
+  - prompt: In F3, use XLOOKUP to find the department in A2:A7 of the person named in F2, looking the name up in B2:B7.
+    rows:
+      - [Dept, Name, Ext, null, Find, null]
+      - [Sales, Ann, 101, null, Name, Raj]
+      - [IT, Bo, 102, null, Dept, null]
+      - [Sales, Raj, 103, null, null, null]
+      - [HR, Lea, 104, null, null, null]
+      - [IT, Tom, 105, null, null, null]
+      - [Finance, Ivy, 106, null, null, null]
+    answerCell: F3
+    expected: Sales
+    variants:
+      - set: { F2: Ivy }
+        expected: Finance
+      - set: { F2: Bo }
+        expected: IT
+    answer: =XLOOKUP(F2,B2:B7,A2:A7)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: The column to return can sit to the left of the one you search.
+      rule: XLOOKUP looks in one range and returns from another, in any order.
+    misses:
+      value: Raj works in Sales.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for XLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =XLOOKUP(F2,B2:B7,A2:A7)
+    reject:
+      - formula: =XLOOKUP(F2,B2:B7,C2:C7)
+        rule: value
+      - formula: =XLOOKUP(F2,A2:A7,B2:B7)
+        rule: value
+      - formula: ="Sales"
+        rule: required-function
+      - formula: =XLOOKUP(F2,B2:B7,A2:A7
+        rule: syntax

@@ -1,0 +1,44 @@
+id: aggregate-drill-3
+slug: aggregate-drill-3
+level: 1
+title: Average with AGGREGATE
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: AGGREGATE
+screens:
+  - prompt: In B7, use AGGREGATE with function 1 and option 6 to average the scores in B2:B6.
+    rows:
+      - [Round, Score]
+      - [R1, 62]
+      - [R2, 75]
+      - [R3, 81]
+      - [R4, 58]
+      - [R5, 69]
+      - [Average, null]
+    answerCell: B7
+    expected: 69
+    variants:
+      - set: { B2: 90 }
+        expected: 74.6
+    answer: =AGGREGATE(1,6,B2:B6)
+    requiredFunctions:
+      - AGGREGATE
+    hints:
+      nudge: Function 1 means average.
+      rule: AGGREGATE(1,6,range) averages the range, skipping error cells.
+    misses:
+      value: The five rounds average 69.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AGGREGATE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AGGREGATE(1,6,B2:B6)
+    reject:
+      - formula: =AVERAGE(B2:B6)
+        rule: required-function
+      - formula: =AGGREGATE(9,6,B2:B6)
+        rule: value
+      - formula: =69
+        rule: required-function
+      - formula: =AGGREGATE(1,6,B2:B6
+        rule: syntax

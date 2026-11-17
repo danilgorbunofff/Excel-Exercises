@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =FLOOR(SUM($B$2:$B$6),10)
+      - =FLOOR(SUM(B$2:B$6),10)
+      - =floor(sum(b2:b6), 10)
+      - =LET(data,B2:B6,FLOOR(SUM(data),10))
+    wrong: []
+    equivalent:
+      - formula: =FLOOR(SUM(B2:B7),10)
+        why: "range B2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

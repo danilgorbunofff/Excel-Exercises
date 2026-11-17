@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUBSTITUTE($A$2,"Street","St")
+      - =SUBSTITUTE(A$2,"Street","St")
+      - =substitute(a2, "Street", "St")
+    wrong: []
+    equivalent: []

@@ -1,0 +1,41 @@
+id: or-drill-5
+slug: or-drill-5
+level: 2
+title: Adult with a student or senior card
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: OR
+screens:
+  - prompt: In E2, use AND and OR to test that the age in B2 is 18 or more and that C2 or D2 is "Yes".
+    rows:
+      - [Member, Age, Student, Senior, Discount]
+      - [Ann, 20, No, Yes, null]
+    answerCell: E2
+    expected: true
+    variants:
+      - { set: { D2: No }, expected: false }
+      - { set: { B2: 16 }, expected: false }
+      - { set: { C2: Yes, D2: No }, expected: true }
+      - { set: { B2: 17 }, expected: false }
+      - { set: { B2: 18 }, expected: true }
+    answer: =AND(B2>=18,OR(C2="Yes",D2="Yes"))
+    requiredFunctions:
+      - OR
+      - AND
+    hints:
+      nudge: Put the OR inside the AND, as its second test.
+      rule: AND(age test,OR(card1,card2)) needs the age and at least one card.
+    misses:
+      value: Ann is 20 and has a senior card, so the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for OR and AND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AND(B2>=18,OR(C2="Yes",D2="Yes"))
+    reject:
+      - formula: =OR(C2="Yes",D2="Yes")
+        rule: required-function
+      - formula: =AND(B2>=18,C2="Yes",D2="Yes")
+        rule: required-function
+      - formula: =AND(B2>=18,OR(C2="Yes",D2="Yes")
+        rule: syntax

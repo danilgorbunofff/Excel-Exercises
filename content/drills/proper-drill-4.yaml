@@ -1,0 +1,37 @@
+id: proper-drill-4
+slug: proper-drill-4
+level: 2
+title: PROPER after a digit
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: PROPER
+screens:
+  - prompt: In B2, use PROPER on the text in A2 and see what happens to the letter after a digit.
+    rows:
+      - [Text, Result]
+      - [2nd floor, null]
+    answerCell: B2
+    expected: 2Nd Floor
+    variants:
+      - set: { A2: 3rd street }
+        expected: 3Rd Street
+    answer: =PROPER(A2)
+    requiredFunctions:
+      - PROPER
+    hints:
+      nudge: A digit is not a letter, so PROPER treats the next letter as a new word.
+      rule: "PROPER turns 2nd into 2Nd: check the result when text mixes digits and letters."
+    misses:
+      value: PROPER gives 2Nd Floor, with a capital after the digit.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for PROPER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =PROPER(A2)
+    reject:
+      - formula: =UPPER(A2)
+        rule: required-function
+      - formula: ="2Nd Floor"
+        rule: required-function
+      - formula: =PROPER(A2
+        rule: syntax

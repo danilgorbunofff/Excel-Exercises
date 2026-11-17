@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AGGREGATE(1,6,$B$2:$B$6)
+      - =AGGREGATE(1,6,B$2:B$6)
+      - =aggregate(1, 6, b2:b6)
+      - =LET(data,B2:B6,AGGREGATE(1,6,data))
+    wrong: []
+    equivalent:
+      - formula: =AGGREGATE(1,7,B2:B6)
+        why: "6 written as 7: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =AGGREGATE(1,5,B2:B6)
+        why: "6 written as 5: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =UNIQUE($A$2:$A$9,,TRUE)
+      - =UNIQUE(A$2:A$9,,TRUE)
+      - =unique(a2:a9, , true)
+      - =LET(data,A2:A9,UNIQUE(data,,TRUE))
+    wrong:
+      - formula: =UNIQUE(A2:A8,,TRUE)
+        rule: fragile
+        why: range A2:A9 one row short at the end
+      - formula: =UNIQUE(A3:A9,,TRUE)
+        rule: fragile
+        why: range A2:A9 skips its first row
+    equivalent: []

@@ -1,0 +1,39 @@
+id: substitute-drill-3
+slug: substitute-drill-3
+level: 1
+title: Replace only the second dash
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUBSTITUTE
+screens:
+  - prompt: In B2, use SUBSTITUTE to replace only the second "-" in A2 with "/".
+    rows:
+      - [Code, Result]
+      - [INV-204-81, null]
+    answerCell: B2
+    expected: INV-204/81
+    variants:
+      - set: { A2: CR-9-17-02 }
+        expected: CR-9/17-02
+    answer: =SUBSTITUTE(A2,"-","/",2)
+    requiredFunctions:
+      - SUBSTITUTE
+    hints:
+      nudge: A fourth argument says which one to replace.
+      rule: SUBSTITUTE(A2,"-","/",2) changes the second dash only.
+    misses:
+      value: With the second dash changed, the code reads INV-204/81.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUBSTITUTE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUBSTITUTE(A2,"-","/",2)
+    reject:
+      - formula: =SUBSTITUTE(A2,"-","/")
+        rule: value
+      - formula: =SUBSTITUTE(A2,"-","/",1)
+        rule: value
+      - formula: ="INV-204/81"
+        rule: required-function
+      - formula: =SUBSTITUTE(A2,"-","/",2
+        rule: syntax

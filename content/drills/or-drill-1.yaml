@@ -1,0 +1,41 @@
+id: or-drill-1
+slug: or-drill-1
+level: 1
+title: A VIP by spend or by years
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: OR
+screens:
+  - prompt: In D2, use OR to test that the spend in B2 is 1000 or more or the years in C2 are 5 or more.
+    rows:
+      - [Customer, Spend, Years, VIP]
+      - [Ann, 1200, 1, null]
+    answerCell: D2
+    expected: true
+    variants:
+      - { set: { B2: 500 }, expected: false }
+      - { set: { B2: 500, C2: 6 }, expected: true }
+      - { set: { B2: 1000 }, expected: true }
+      - { set: { B2: 500, C2: 5 }, expected: true }
+      - { set: { B2: 999, C2: 4 }, expected: false }
+    answer: =OR(B2>=1000,C2>=5)
+    requiredFunctions:
+      - OR
+    hints:
+      nudge: OR is TRUE when at least one of its tests is.
+      rule: OR(test1,test2) returns TRUE when any test is true.
+    misses:
+      value: The spend is over 1000, so the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for OR.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =OR(B2>=1000,C2>=5)
+      - =OR(C2>=5,B2>=1000)
+    reject:
+      - formula: =AND(B2>=1000,C2>=5)
+        rule: required-function
+      - formula: =OR(B2>1000,C2>5)
+        rule: fragile
+      - formula: =OR(B2>=1000,C2>=5
+        rule: syntax

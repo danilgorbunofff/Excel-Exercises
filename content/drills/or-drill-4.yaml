@@ -1,0 +1,41 @@
+id: or-drill-4
+slug: or-drill-4
+level: 2
+title: One of three coastal cities
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: OR
+screens:
+  - prompt: In C2, use OR to test whether the city in B2 is "NY", "LA" or "SF".
+    rows:
+      - [Office, City, Coastal]
+      - [O1, LA, null]
+    answerCell: C2
+    expected: true
+    variants:
+      - set: { B2: Chicago }
+        expected: false
+      - set: { B2: SF }
+        expected: true
+      - set: { B2: NY }
+        expected: true
+    answer: =OR(B2="NY",B2="LA",B2="SF")
+    requiredFunctions:
+      - OR
+    hints:
+      nudge: Test the same cell three times inside OR.
+      rule: OR(B2="NY",B2="LA",B2="SF") is TRUE when B2 matches any of them.
+    misses:
+      value: LA is one of the three, so the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for OR.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =OR(B2="NY",B2="LA",B2="SF")
+    reject:
+      - formula: =OR(B2="NY",B2="SF")
+        rule: value
+      - formula: =AND(B2="NY",B2="LA",B2="SF")
+        rule: required-function
+      - formula: =OR(B2="NY",B2="LA",B2="SF"
+        rule: syntax

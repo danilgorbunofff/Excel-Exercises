@@ -1,0 +1,37 @@
+id: len-drill-2
+slug: len-drill-2
+level: 1
+title: Spaces count too
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LEN
+screens:
+  - prompt: In B2, use LEN to count the characters in the city name in A2.
+    rows:
+      - [City, Result]
+      - [New York, null]
+    answerCell: B2
+    expected: 8
+    variants:
+      - set: { A2: Los Angeles }
+        expected: 11
+    answer: =LEN(A2)
+    requiredFunctions:
+      - LEN
+    hints:
+      nudge: LEN counts every character, spaces included.
+      rule: LEN counts letters, digits, spaces and punctuation alike.
+    misses:
+      value: New York has 7 letters and a space, 8 characters.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LEN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LEN(A2)
+    reject:
+      - formula: =LEN(SUBSTITUTE(A2," ",""))
+        rule: value
+      - formula: =8
+        rule: required-function
+      - formula: =LEN(A2
+        rule: syntax

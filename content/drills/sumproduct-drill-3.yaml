@@ -1,0 +1,45 @@
+id: sumproduct-drill-3
+slug: sumproduct-drill-3
+level: 2
+title: Weighted average grade
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUMPRODUCT
+screens:
+  - prompt: "In B7, use SUMPRODUCT and SUM to find the weighted average: each grade in B2:B5 weighted by the credits in C2:C5."
+    rows:
+      - [Course, Grade, Credits]
+      - [Maths, 80, 6]
+      - [History, 65, 3]
+      - [Biology, 72, 4]
+      - [Art, 90, 2]
+      - [null, null, null]
+      - [Weighted, null, null]
+    answerCell: B7
+    expected: 76.2
+    variants:
+      - set: { C2: 3 }
+        expected: 75.25
+    answer: =SUMPRODUCT(B2:B5,C2:C5)/SUM(C2:C5)
+    requiredFunctions:
+      - SUMPRODUCT
+      - SUM
+    hints:
+      nudge: Multiply grades by credits and add them up, then divide by the total credits.
+      rule: SUMPRODUCT(values,weights)/SUM(weights) is a weighted average.
+    misses:
+      value: The weighted total is 1143 over 15 credits, which is 76.2.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUMPRODUCT and SUM.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUMPRODUCT(B2:B5,C2:C5)/SUM(C2:C5)
+    reject:
+      - formula: =AVERAGE(B2:B5)
+        rule: required-function
+      - formula: =SUMPRODUCT(B2:B5,C2:C5)/SUM(B2:B5)
+        rule: value
+      - formula: =76.2
+        rule: required-function
+      - formula: =SUMPRODUCT(B2:B5,C2:C5)/SUM(C2:C5
+        rule: syntax

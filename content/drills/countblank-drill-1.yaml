@@ -1,0 +1,46 @@
+id: countblank-drill-1
+slug: countblank-drill-1
+level: 1
+title: Count the days with no sales figure
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTBLANK
+screens:
+  - prompt: In B8, use COUNTBLANK to find how many days in B2:B7 have no sales figure.
+    rows:
+      - [Day, Sales]
+      - [Mon, 120]
+      - [Tue, null]
+      - [Wed, 95]
+      - [Thu, null]
+      - [Fri, null]
+      - [Sat, 210]
+      - [Missing, null]
+    answerCell: B8
+    expected: 3
+    variants:
+      - { set: { B3: 80 }, expected: 2 }
+      - { set: { B2: null }, expected: 4 }
+      - { set: { B7: null }, expected: 4 }
+    answer: =COUNTBLANK(B2:B7)
+    requiredFunctions:
+      - COUNTBLANK
+    hints:
+      nudge: One function counts the empty cells in a range.
+      rule: COUNTBLANK(range) counts the cells that hold nothing.
+    misses:
+      value: 3 days have no figure.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTBLANK.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTBLANK(B2:B7)
+    reject:
+      - formula: =COUNTA(B2:B7)
+        rule: required-function
+      - formula: =COUNTBLANK(B2:B5)
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =COUNTBLANK(B2:B7
+        rule: syntax

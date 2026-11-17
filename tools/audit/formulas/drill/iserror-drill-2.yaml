@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ISERROR(MATCH($E$2,$A$2:$A$5,0))
+      - =ISERROR(MATCH(E$2,A2:A5,0))
+      - =iserror(match(e2, a2:a5, 0))
+      - =LET(data,A2:A5,ISERROR(MATCH(E2,data,0)))
+    wrong:
+      - formula: =ISERROR(MATCH(E2,A2:A4,0))
+        rule: fragile
+        why: range A2:A5 one row short at the end
+      - formula: =ISERROR(MATCH(E2,A3:A5,0))
+        rule: fragile
+        why: range A2:A5 skips its first row
+    equivalent: []

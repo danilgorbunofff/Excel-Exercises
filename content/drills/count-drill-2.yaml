@@ -1,0 +1,37 @@
+id: count-drill-2
+slug: count-drill-2
+level: 1
+title: Count the days with a reading
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNT
+screens:
+  - prompt: In I2, use COUNT to find how many days in B2:H2 have a reading.
+    rows:
+      - [Sensor, Mon, Tue, Wed, Thu, Fri, Sat, Sun, Days]
+      - [S1, 12, null, 15, 14, null, 11, 13, null]
+    answerCell: I2
+    expected: 5
+    variants:
+      - set: { C2: 9 }
+        expected: 6
+    answer: =COUNT(B2:H2)
+    requiredFunctions:
+      - COUNT
+    hints:
+      nudge: The days run along row 2.
+      rule: "COUNT works on a row range too: COUNT(B2:H2)."
+    misses:
+      value: 5 days have a reading.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNT(B2:H2)
+    reject:
+      - formula: =COUNT(B2:F2)
+        rule: value
+      - formula: =5
+        rule: required-function
+      - formula: =COUNT(B2:H2
+        rule: syntax

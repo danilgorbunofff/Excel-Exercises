@@ -1,0 +1,41 @@
+id: textbefore-drill-4
+slug: textbefore-drill-4
+level: 2
+title: A file name without its extension
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TEXTBEFORE
+screens:
+  - prompt: In B2, use TEXTBEFORE with -1 to take everything in A2 before the last ".".
+    rows:
+      - [File, Result]
+      - [report.final.pdf, null]
+    answerCell: B2
+    expected: report.final
+    variants:
+      - set: { A2: notes.docx }
+        expected: notes
+      - set: { A2: a.b.c.xlsx }
+        expected: a.b.c
+    answer: =TEXTBEFORE(A2,".",-1)
+    requiredFunctions:
+      - TEXTBEFORE
+    hints:
+      nudge: A negative number counts the delimiters from the end.
+      rule: TEXTBEFORE(A2,".",-1) stops at the last dot.
+    misses:
+      value: Without its extension, the file is report.final.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TEXTBEFORE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TEXTBEFORE(A2,".",-1)
+    reject:
+      - formula: =TEXTBEFORE(A2,".")
+        rule: value
+      - formula: =TEXTBEFORE(A2,".",2)
+        rule: fragile
+      - formula: ="report.final"
+        rule: required-function
+      - formula: =TEXTBEFORE(A2,".",-1
+        rule: syntax

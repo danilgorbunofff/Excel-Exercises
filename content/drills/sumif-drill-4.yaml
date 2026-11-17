@@ -1,0 +1,47 @@
+id: sumif-drill-4
+slug: sumif-drill-4
+level: 2
+title: Total value for big orders
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUMIF
+screens:
+  - prompt: In E4, use SUMIF to add up the values in C2:C8 for orders whose units in B2:B8 are at least the minimum in E2.
+    rows:
+      - [Order, Units, Value, null, Min units]
+      - [O1, 5, 50, null, 10]
+      - [O2, 12, 130, null, Value]
+      - [O3, 8, 90, null, null]
+      - [O4, 20, 210, null, null]
+      - [O5, 3, 25, null, null]
+      - [O6, 15, 160, null, null]
+      - [O7, 10, 100, null, null]
+    answerCell: E4
+    expected: 600
+    variants:
+      - set: { E2: 15 }
+        expected: 370
+      - set: { E2: 16 }
+        expected: 210
+    answer: =SUMIF(B2:B8,">="&E2,C2:C8)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: 'Join the sign to the cell: ">="&E2. Test the units, add the values.'
+      rule: SUMIF(units,">="&E2,values) tests one column and adds another.
+    misses:
+      value: Orders with 10 units or more are worth 600. The order with exactly 10 counts.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUMIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUMIF(B2:B8,">="&E2,C2:C8)
+    reject:
+      - formula: =SUMIF(B2:B8,">"&E2,C2:C8)
+        rule: value
+      - formula: =SUMIF(B2:B8,">=10",C2:C8)
+        rule: fragile
+      - formula: =600
+        rule: required-function
+      - formula: =SUMIF(B2:B8,">="&E2,C2:C8
+        rule: syntax

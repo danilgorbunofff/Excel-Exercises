@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($A$2:$A$8,MATCH(LARGE($B$2:$B$8,2),$B$2:$B$8,0))
+      - =INDEX(A$2:A$8,MATCH(LARGE(B2:B8,2),B2:B8,0))
+      - =index(a2:a8, match(large(b2:b8, 2), b2:b8, 0))
+      - =LET(data,A2:A8,INDEX(data,MATCH(LARGE(B2:B8,2),B2:B8,0)))
+    wrong:
+      - formula: =INDEX(A2:A8,MATCH(LARGE(B3:B8,2),B2:B8,0))
+        rule: fragile
+        why: range B2:B8 skips its first row
+    equivalent:
+      - formula: =INDEX(A2:A9,MATCH(LARGE(B2:B8,2),B2:B8,0))
+        why: "range A2:A8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(A2:A8,MATCH(LARGE(B2:B9,2),B2:B8,0))
+        why: "range B2:B8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(A2:A8,MATCH(LARGE(B2:B8,2),B2:B9,0))
+        why: "range B2:B8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

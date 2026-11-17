@@ -1,0 +1,26 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AND($B$2>=$C$2,$B$2<=$D$2)
+      - =AND(B$2>=C2,B2<=D2)
+      - =and(b2>=c2, b2<=d2)
+    wrong:
+      - formula: =AND(B1>=C2,B2<=D2)
+        rule: fragile
+        why: B2 read from the row above
+      - formula: =AND(C2>=C2,B2<=D2)
+        rule: fragile
+        why: B2 read from the next column
+      - formula: =AND(A2>=C2,B2<=D2)
+        rule: fragile
+        why: B2 read from the column to the left
+      - formula: =AND(B2>=C3,B2<=D2)
+        rule: fragile
+        why: C2 read from the next row
+      - formula: =AND(B2>=B2,B2<=D2)
+        rule: fragile
+        why: C2 read from the column to the left
+      - formula: =AND(B2>=C2,B2<D2)
+        rule: fragile
+        why: <= written as <
+    equivalent: []

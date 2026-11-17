@@ -1,0 +1,43 @@
+id: textjoin-drill-1
+slug: textjoin-drill-1
+level: 1
+title: A list with commas
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TEXTJOIN
+screens:
+  - prompt: In B2, use TEXTJOIN to join the names in A2:A5 with ", " between them, skipping empty cells.
+    rows:
+      - [Name, List]
+      - [Ann, null]
+      - [Bo, null]
+      - [Cy, null]
+      - [Di, null]
+    answerCell: B2
+    expected: Ann, Bo, Cy, Di
+    variants:
+      - set: { A3: Raj }
+        expected: Ann, Raj, Cy, Di
+    answer: =TEXTJOIN(", ",TRUE,A2:A5)
+    requiredFunctions:
+      - TEXTJOIN
+    hints:
+      nudge: TEXTJOIN takes the separator, whether to skip empty cells, then the range.
+      rule: TEXTJOIN(", ",TRUE,range) joins the cells with a comma and a space.
+    misses:
+      value: Joined, the names read Ann, Bo, Cy, Di.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TEXTJOIN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TEXTJOIN(", ",TRUE,A2:A5)
+      - =TEXTJOIN(", ",FALSE,A2:A5)
+    reject:
+      - formula: =TEXTJOIN(",",TRUE,A2:A5)
+        rule: value
+      - formula: =CONCAT(A2:A5)
+        rule: required-function
+      - formula: ="Ann, Bo, Cy, Di"
+        rule: required-function
+      - formula: =TEXTJOIN(", ",TRUE,A2:A5
+        rule: syntax

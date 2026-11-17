@@ -1,0 +1,22 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ISNA($B$2/$C$2)
+      - =ISNA(B$2/C2)
+      - =isna(b2/c2)
+    wrong: []
+    equivalent:
+      - formula: =ISNA(B3/C2)
+        why: "B2 read from the next row: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =ISNA(B1/C2)
+        why: "B2 read from the row above: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =ISNA(C2/C2)
+        why: "B2 read from the next column: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =ISNA(A2/C2)
+        why: "B2 read from the column to the left: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =ISNA(B2/C3)
+        why: "C2 read from the next row: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =ISNA(B2/C1)
+        why: "C2 read from the row above: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =ISNA(B2/B2)
+        why: "C2 read from the column to the left: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

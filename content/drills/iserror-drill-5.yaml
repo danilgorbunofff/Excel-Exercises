@@ -1,0 +1,42 @@
+id: iserror-drill-5
+slug: iserror-drill-5
+level: 2
+title: Check or show the average
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISERROR
+screens:
+  - prompt: In D2, use IF and ISERROR to show "Check" when B2 divided by C2 gives an error, and the result of the division otherwise.
+    rows:
+      - [Item, Total, Count, Average]
+      - [Pens, 120, 0, null]
+    answerCell: D2
+    expected: Check
+    variants:
+      - set: { C2: 4 }
+        expected: 30
+      - set: { B2: n/a, C2: 4 }
+        expected: Check
+    answer: =IF(ISERROR(B2/C2),"Check",B2/C2)
+    requiredFunctions:
+      - ISERROR
+      - IF
+    hints:
+      nudge: Test with ISERROR, then give one result or the other.
+      rule: IF(ISERROR(B2/C2),"Check",B2/C2) does what IFERROR does, in two steps.
+    misses:
+      value: C2 is 0, so the cell shows Check.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISERROR and IF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IF(ISERROR(B2/C2),"Check",B2/C2)
+    reject:
+      - formula: =IFERROR(B2/C2,"Check")
+        rule: required-function
+      - formula: =IF(ISERROR(B2/C2),"Check",C2/B2)
+        rule: fragile
+      - formula: ="Check"
+        rule: required-function
+      - formula: =IF(ISERROR(B2/C2),"Check",B2/C2
+        rule: syntax

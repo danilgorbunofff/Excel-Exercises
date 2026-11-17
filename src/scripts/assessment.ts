@@ -7,6 +7,7 @@ import type { Segment } from "../lib/rich-text.ts";
 import { byFunction, scoreAttempt, type TaskData } from "./assessment-score.ts";
 import { offerCertificate, type Saved } from "./certificate-offer.ts";
 import { loadMe, signedIn } from "./session.ts";
+import { track } from "./track.ts";
 import { verdictView } from "./view.ts";
 
 interface SetData {
@@ -441,6 +442,7 @@ function run(root: HTMLElement, data: SetData) {
     const at = state.deadline !== null ? Math.min(now, state.deadline) : now;
     state.finishedAt = new Date(at).toISOString();
     save();
+    track("mock_finish");
     render();
     q<HTMLElement>("#summary-title")?.focus();
   }
@@ -460,6 +462,7 @@ function run(root: HTMLElement, data: SetData) {
   // Wiring.
   start.disabled = false;
   start.addEventListener("click", () => {
+    track("mock_start");
     state = {
       startedAt: new Date().toISOString(),
       deadline: untimed?.checked ? null : Date.now() + data.minutes * 60_000,

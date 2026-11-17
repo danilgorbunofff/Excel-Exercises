@@ -1,0 +1,41 @@
+id: right-drill-3
+slug: right-drill-3
+level: 1
+title: A length typed in a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: RIGHT
+screens:
+  - prompt: In C2, use RIGHT to take as many characters from the end of A2 as the number in B2.
+    rows:
+      - [Code, Length, Result]
+      - [NORTH-WEST-04, 7, null]
+    answerCell: C2
+    expected: WEST-04
+    variants:
+      - set: { B2: 2 }
+        expected: "04"
+      - set: { B2: 13 }
+        expected: NORTH-WEST-04
+    answer: =RIGHT(A2,B2)
+    requiredFunctions:
+      - RIGHT
+    hints:
+      nudge: The number of characters can come from a cell.
+      rule: RIGHT(A2,B2) keeps whatever number of characters B2 says.
+    misses:
+      value: The last seven characters are WEST-04.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for RIGHT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =RIGHT(A2,B2)
+    reject:
+      - formula: =RIGHT(A2,7)
+        rule: fragile
+      - formula: =RIGHT(B2,A2)
+        rule: value
+      - formula: ="WEST-04"
+        rule: required-function
+      - formula: =RIGHT(A2,B2
+        rule: syntax

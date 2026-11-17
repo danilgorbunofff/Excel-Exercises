@@ -1,0 +1,40 @@
+id: sum-drill-3
+slug: sum-drill-3
+level: 1
+title: Total a row across quarters
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUM
+screens:
+  - prompt: In F2, use SUM to add North's four quarters in B2:E2.
+    rows:
+      - [Region, Q1, Q2, Q3, Q4, Year]
+      - [North, 210, 185, 240, 260, null]
+      - [South, 190, 205, 230, 215, null]
+    answerCell: F2
+    expected: 895
+    variants:
+      - set: { C2: 300 }
+        expected: 1010
+    answer: =SUM(B2:E2)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: This time the range runs along a row.
+      rule: "A row range works like a column range: SUM(B2:E2) adds the four cells from B2 to E2."
+    misses:
+      value: North's year is 895. Add only row 2, from B to E.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUM.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUM(B2:E2)
+    reject:
+      - formula: =SUM(B2:D2)
+        rule: value
+      - formula: =SUM(B2:E3)
+        rule: value
+      - formula: =895
+        rule: required-function
+      - formula: =SUM(B2:E2
+        rule: syntax

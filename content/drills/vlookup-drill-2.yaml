@@ -1,0 +1,44 @@
+id: vlookup-drill-2
+slug: vlookup-drill-2
+level: 1
+title: Item name for a code
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: VLOOKUP
+screens:
+  - prompt: In F3, use VLOOKUP to find the item name, the 2nd column of A2:C7, for the code in F2.
+    rows:
+      - [Code, Item, Price, null, Find, null]
+      - [D40, Tape, 2, null, Code, C30]
+      - [A10, Pen, 1.5, null, Item, null]
+      - [F60, Ink, 12, null, null, null]
+      - [B20, Pad, 3, null, null, null]
+      - [E50, File, 4, null, null, null]
+      - [C30, Clip, 0.25, null, null, null]
+    answerCell: F3
+    expected: Clip
+    variants:
+      - { set: { F2: A10 }, expected: Pen }
+      - { set: { F2: E50 }, expected: File }
+      - { set: { F2: D40 }, expected: Tape }
+    answer: =VLOOKUP(F2,A2:C7,2,FALSE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: "Count the columns of the table from its left edge: Code is 1, Item is 2."
+      rule: The column number counts within the table range, not the sheet.
+    misses:
+      value: Code C30 is a clip.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for VLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =VLOOKUP(F2,A2:C7,2,FALSE)
+      - =VLOOKUP(F2,A2:C7,2,0)
+    reject:
+      - formula: =VLOOKUP(F2,A2:C7,3,FALSE)
+        rule: value
+      - formula: ="Clip"
+        rule: required-function
+      - formula: =VLOOKUP(F2,A2:C7,2,FALSE
+        rule: syntax

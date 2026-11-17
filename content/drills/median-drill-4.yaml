@@ -1,0 +1,46 @@
+id: median-drill-4
+slug: median-drill-4
+level: 2
+title: A typical salary despite one outlier
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MEDIAN
+screens:
+  - prompt: In B9, use MEDIAN to find a typical salary in B2:B7. One salary is far above the rest.
+    rows:
+      - [Staff, Salary]
+      - [A, 41000]
+      - [B, 38000]
+      - [C, 45000]
+      - [D, 39000]
+      - [E, 250000]
+      - [F, 43000]
+      - [null, null]
+      - [Typical, null]
+    answerCell: B9
+    expected: 42000
+    variants:
+      - set: { B3: 44000 }
+        expected: 43500
+      - set: { B6: 30000 }
+        expected: 40000
+    answer: =MEDIAN(B2:B7)
+    requiredFunctions:
+      - MEDIAN
+    hints:
+      nudge: One huge value pulls the average up, but not the median.
+      rule: MEDIAN ignores how extreme the top value is; only its place counts.
+    misses:
+      value: The middle two salaries are 41000 and 43000, so the median is 42000.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MEDIAN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MEDIAN(B2:B7)
+    reject:
+      - formula: =AVERAGE(B2:B7)
+        rule: required-function
+      - formula: =42000
+        rule: required-function
+      - formula: =MEDIAN(B2:B7
+        rule: syntax

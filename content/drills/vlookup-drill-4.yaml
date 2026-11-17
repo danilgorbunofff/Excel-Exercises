@@ -1,0 +1,49 @@
+id: vlookup-drill-4
+slug: vlookup-drill-4
+level: 2
+title: Grade from a band table
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: VLOOKUP
+screens:
+  - prompt: In C2, use VLOOKUP with TRUE to find the grade for the score in B2 from the band table E2:F4, whose first column holds where each band starts.
+    rows:
+      - [Student, Score, Grade, null, From, Grade]
+      - [Ann, 74, null, null, 0, C]
+      - [null, null, null, null, 60, B]
+      - [null, null, null, null, 80, A]
+    answerCell: C2
+    expected: B
+    variants:
+      - set: { B2: 85 }
+        expected: A
+      - set: { B2: 59 }
+        expected: C
+      - set: { B2: 60 }
+        expected: B
+      - set: { B2: 80 }
+        expected: A
+      - set: { B2: 79 }
+        expected: B
+    answer: =VLOOKUP(B2,E2:F4,2,TRUE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: TRUE finds the largest band start that is not more than the score.
+      rule: VLOOKUP(value,bands,2,TRUE) needs the band starts sorted from small to large.
+    misses:
+      value: 74 falls in the band that starts at 60, so the grade is B.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for VLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =VLOOKUP(B2,E2:F4,2,TRUE)
+      - =VLOOKUP(B2,E2:F4,2)
+      - =VLOOKUP(B2,$E$2:$F$4,2,TRUE)
+    reject:
+      - formula: =VLOOKUP(B2,E2:F4,2,FALSE)
+        rule: value
+      - formula: ="B"
+        rule: required-function
+      - formula: =VLOOKUP(B2,E2:F4,2,TRUE
+        rule: syntax

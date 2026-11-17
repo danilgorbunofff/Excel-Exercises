@@ -1,0 +1,46 @@
+id: sumif-drill-2
+slug: sumif-drill-2
+level: 1
+title: Total the large amounts
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUMIF
+screens:
+  - prompt: In B9, use SUMIF to add up the amounts in B2:B8 that are over 100.
+    rows:
+      - [Invoice, Amount]
+      - [I-1, 80]
+      - [I-2, 150]
+      - [I-3, 100]
+      - [I-4, 220]
+      - [I-5, 95]
+      - [I-6, 130]
+      - [I-7, 60]
+      - [Over 100, null]
+    answerCell: B9
+    expected: 500
+    variants:
+      - { set: { B4: 101 }, expected: 601 }
+      - { set: { B2: 300 }, expected: 800 }
+      - { set: { B8: 150 }, expected: 650 }
+    answer: =SUMIF(B2:B8,">100")
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: With no third argument, SUMIF adds the same cells it tests.
+      rule: SUMIF(range,">100") adds the values over 100. 100 itself is not over.
+    misses:
+      value: The amounts over 100 add up to 500. 100 itself is not over.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUMIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUMIF(B2:B8,">100")
+      - =SUMIF(B2:B8,">100",B2:B8)
+    reject:
+      - formula: =SUMIF(B2:B8,">=100")
+        rule: value
+      - formula: =500
+        rule: required-function
+      - formula: =SUMIF(B2:B8,">100"
+        rule: syntax

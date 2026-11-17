@@ -1,0 +1,48 @@
+id: vlookup-drill-5
+slug: vlookup-drill-5
+level: 2
+title: Column chosen by its heading
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: VLOOKUP
+screens:
+  - prompt: In G3, use VLOOKUP and MATCH to find, for the code in G2, the column of A2:D7 whose heading in A1:D1 is typed in G1.
+    rows:
+      - [Code, Stock, Price, Item, null, Want, Stock]
+      - [D40, 60, 2, Tape, null, Code, C30]
+      - [A10, 120, 1.5, Pen, null, Result, null]
+      - [F60, 8, 12, Ink, null, null, null]
+      - [C30, 300, 0.25, Clip, null, null, null]
+      - [E50, 25, 4, File, null, null, null]
+      - [B20, 45, 3, Pad, null, null, null]
+    answerCell: G3
+    expected: 300
+    variants:
+      - { set: { G1: Price }, expected: 0.25 }
+      - { set: { G2: F60 }, expected: 8 }
+      - { set: { G1: Item }, expected: Clip }
+      - { set: { G2: D40 }, expected: 60 }
+      - { set: { G2: B20 }, expected: 45 }
+    answer: =VLOOKUP(G2,A2:D7,MATCH(G1,A1:D1,0),FALSE)
+    requiredFunctions:
+      - VLOOKUP
+      - MATCH
+    hints:
+      nudge: MATCH(G1,A1:D1,0) gives the column number of the heading.
+      rule: Put MATCH where VLOOKUP wants the column number, so the heading picks the column.
+    misses:
+      value: Code C30 has 300 in the Stock column.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for VLOOKUP and MATCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =VLOOKUP(G2,A2:D7,MATCH(G1,A1:D1,0),FALSE)
+    reject:
+      - formula: =VLOOKUP(G2,A2:D7,2,FALSE)
+        rule: required-function
+      - formula: =VLOOKUP(G2,A2:D7,MATCH(G1,A1:D1,0)-1,FALSE)
+        rule: value
+      - formula: =300
+        rule: required-function
+      - formula: =VLOOKUP(G2,A2:D7,MATCH(G1,A1:D1,0),FALSE
+        rule: syntax

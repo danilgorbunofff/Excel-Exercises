@@ -1,0 +1,41 @@
+id: floor-drill-3
+slug: floor-drill-3
+level: 1
+title: Down to a multiple in a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: FLOOR
+screens:
+  - prompt: In D2, use FLOOR to round the price in B2 down to the multiple in C2.
+    rows:
+      - [Item, Price, Step, Rounded]
+      - [Lamp, 47.6, 5, null]
+    answerCell: D2
+    expected: 45
+    variants:
+      - set: { C2: 2 }
+        expected: 46
+      - set: { B2: 45 }
+        expected: 45
+    answer: =FLOOR(B2,C2)
+    requiredFunctions:
+      - FLOOR
+    hints:
+      nudge: The multiple can come from a cell.
+      rule: FLOOR(B2,C2) rounds down to whatever step C2 holds.
+    misses:
+      value: 47.6 goes down to 45.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for FLOOR.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =FLOOR(B2,C2)
+    reject:
+      - formula: =FLOOR(B2,5)
+        rule: fragile
+      - formula: =FLOOR(C2,B2)
+        rule: value
+      - formula: =45
+        rule: required-function
+      - formula: =FLOOR(B2,C2
+        rule: syntax

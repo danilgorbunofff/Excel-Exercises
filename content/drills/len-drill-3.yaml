@@ -1,0 +1,37 @@
+id: len-drill-3
+slug: len-drill-3
+level: 1
+title: Digits in a number
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LEN
+screens:
+  - prompt: In B2, use LEN to count the digits of the number in A2.
+    rows:
+      - [Account, Result]
+      - [4417203, null]
+    answerCell: B2
+    expected: 7
+    variants:
+      - set: { A2: 98 }
+        expected: 2
+    answer: =LEN(A2)
+    requiredFunctions:
+      - LEN
+    hints:
+      nudge: LEN works on numbers as well as text.
+      rule: LEN(number) counts the digits Excel shows.
+    misses:
+      value: 4417203 has 7 digits.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LEN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LEN(A2)
+    reject:
+      - formula: =LEN(A2)+1
+        rule: value
+      - formula: =7
+        rule: required-function
+      - formula: =LEN(A2
+        rule: syntax

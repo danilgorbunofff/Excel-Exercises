@@ -1,0 +1,43 @@
+id: median-drill-3
+slug: median-drill-3
+level: 1
+title: The middle of a block
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MEDIAN
+screens:
+  - prompt: In B6, use MEDIAN to find the middle rating in the block B2:D4.
+    rows:
+      - [Product, Jan, Feb, Mar]
+      - [Lamp, 4, 7, 3]
+      - [Desk, 8, 5, 6]
+      - [Chair, 2, 9, 1]
+      - [null, null, null, null]
+      - [Median, null, null, null]
+    answerCell: B6
+    expected: 5
+    variants:
+      - set: { C3: 1 }
+        expected: 4
+      - set: { D4: 10 }
+        expected: 6
+    answer: =MEDIAN(B2:D4)
+    requiredFunctions:
+      - MEDIAN
+    hints:
+      nudge: The range can cover the whole block.
+      rule: MEDIAN(B2:D4) takes the middle of all nine values.
+    misses:
+      value: Sorted, the nine ratings run 1 to 9, so the middle one is 5.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MEDIAN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MEDIAN(B2:D4)
+    reject:
+      - formula: =MEDIAN(B2:B4)
+        rule: value
+      - formula: =5
+        rule: required-function
+      - formula: =MEDIAN(B2:D4
+        rule: syntax

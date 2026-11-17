@@ -1,0 +1,43 @@
+id: min-drill-4
+slug: min-drill-4
+level: 2
+title: Lowest stock with notes in the column
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MIN
+screens:
+  - prompt: In B8, use MIN to find the lowest stock count in B2:B6. Some cells hold notes instead of counts.
+    rows:
+      - [Part, Stock]
+      - [Bolt, 140]
+      - [Nut, on order]
+      - [Washer, 85]
+      - [Screw, 210]
+      - [Pin, check]
+      - [null, null]
+      - [Lowest, null]
+    answerCell: B8
+    expected: 85
+    variants:
+      - { set: { B5: 60 }, expected: 60 }
+      - { set: { B2: 70 }, expected: 70 }
+    answer: =MIN(B2:B6)
+    requiredFunctions:
+      - MIN
+    hints:
+      nudge: MIN skips text in a range.
+      rule: MIN(range) looks only at the numbers, so the notes do not get in the way.
+    misses:
+      value: The lowest count is 85.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MIN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MIN(B2:B6)
+    reject:
+      - formula: =MAX(B2:B6)
+        rule: required-function
+      - formula: =85
+        rule: required-function
+      - formula: =MIN(B2:B6
+        rule: syntax

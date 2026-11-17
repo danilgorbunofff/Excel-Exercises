@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFNA(VLOOKUP($E$2,$A$2:$B$5,2,FALSE),"Missing")
+      - =IFNA(VLOOKUP(E$2,A2:B5,2,FALSE),"Missing")
+      - =ifna(vlookup(e2, a2:b5, 2, false), "Missing")
+      - =LET(data,A2:B5,IFNA(VLOOKUP(E2,data,2,FALSE),"Missing"))
+    wrong:
+      - formula: =IFNA(VLOOKUP(E2,A2:B4,2,FALSE),"Missing")
+        rule: fragile
+        why: range A2:B5 one row short at the end
+      - formula: =IFNA(VLOOKUP(E2,A3:B5,2,FALSE),"Missing")
+        rule: fragile
+        why: range A2:B5 skips its first row
+    equivalent: []

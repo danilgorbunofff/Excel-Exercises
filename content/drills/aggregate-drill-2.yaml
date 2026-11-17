@@ -1,0 +1,45 @@
+id: aggregate-drill-2
+slug: aggregate-drill-2
+level: 1
+title: Largest value with AGGREGATE
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: AGGREGATE
+screens:
+  - prompt: In B8, use AGGREGATE with function 4 and option 6 to find the largest invoice in B2:B7.
+    rows:
+      - [Invoice, Amount]
+      - [I-1, 1200]
+      - [I-2, 860]
+      - [I-3, 2150]
+      - [I-4, 990]
+      - [I-5, 1740]
+      - [I-6, 640]
+      - [Largest, null]
+    answerCell: B8
+    expected: 2150
+    variants:
+      - { set: { B7: 3000 }, expected: 3000 }
+      - { set: { B2: 2400 }, expected: 2400 }
+    answer: =AGGREGATE(4,6,B2:B7)
+    requiredFunctions:
+      - AGGREGATE
+    hints:
+      nudge: Function 4 is the largest value, as in SUBTOTAL.
+      rule: AGGREGATE(4,6,range) works like MAX, and option 6 skips error cells.
+    misses:
+      value: The largest invoice is 2150.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AGGREGATE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AGGREGATE(4,6,B2:B7)
+    reject:
+      - formula: =MAX(B2:B7)
+        rule: required-function
+      - formula: =AGGREGATE(5,6,B2:B7)
+        rule: value
+      - formula: =2150
+        rule: required-function
+      - formula: =AGGREGATE(4,6,B2:B7
+        rule: syntax

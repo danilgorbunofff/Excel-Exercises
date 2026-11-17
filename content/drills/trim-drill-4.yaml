@@ -1,0 +1,37 @@
+id: trim-drill-4
+slug: trim-drill-4
+level: 2
+title: Digits with spaces around
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TRIM
+screens:
+  - prompt: In C2, use TRIM to remove the spaces around the digits in B2. The result is still text.
+    rows:
+      - [ID, Typed, Result]
+      - [R1, "  42  ", null]
+    answerCell: C2
+    expected: "42"
+    variants:
+      - set: { B2: " 1250" }
+        expected: "1250"
+    answer: =TRIM(B2)
+    requiredFunctions:
+      - TRIM
+    hints:
+      nudge: TRIM works on any text, digits included.
+      rule: "TRIM returns text: 42 with the spaces gone, but still text."
+    misses:
+      value: Trimmed, the cell holds the text 42.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TRIM.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TRIM(B2)
+    reject:
+      - formula: =SUBSTITUTE(B2," ","")
+        rule: required-function
+      - formula: ="42"
+        rule: required-function
+      - formula: =TRIM(B2
+        rule: syntax

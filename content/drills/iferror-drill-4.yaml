@@ -1,0 +1,44 @@
+id: iferror-drill-4
+slug: iferror-drill-4
+level: 2
+title: Position or zero
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IFERROR
+screens:
+  - prompt: In E3, use IFERROR and MATCH to find the position of the code in E2 within A2:A5, and show 0 if it is not there.
+    rows:
+      - [Code, Price, null, Find, null]
+      - [D40, 2, null, Code, Z99]
+      - [A10, 1.5, null, Position, null]
+      - [F60, 12, null, null, null]
+      - [B20, 3, null, null, null]
+    answerCell: E3
+    expected: 0
+    variants:
+      - { set: { E2: F60 }, expected: 3 }
+      - { set: { E2: D40 }, expected: 1 }
+      - { set: { E2: B20 }, expected: 4 }
+    answer: =IFERROR(MATCH(E2,A2:A5,0),0)
+    requiredFunctions:
+      - IFERROR
+      - MATCH
+    hints:
+      nudge: "MATCH fails with #N/A when the code is missing; IFERROR catches it."
+      rule: IFERROR(MATCH(...),0) gives 0 for a missing code.
+    misses:
+      value: Z99 is not in the list, so the result is 0.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IFERROR and MATCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IFERROR(MATCH(E2,A2:A5,0),0)
+    reject:
+      - formula: =MATCH(E2,A2:A5,0)
+        rule: required-function
+      - formula: =IFERROR(MATCH(E2,A2:A5,0),1)
+        rule: value
+      - formula: =0
+        rule: required-function
+      - formula: =IFERROR(MATCH(E2,A2:A5,0),0
+        rule: syntax

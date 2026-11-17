@@ -1,0 +1,42 @@
+id: proper-drill-5
+slug: proper-drill-5
+level: 2
+title: Tidy spaces and capitals
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: PROPER
+screens:
+  - prompt: "In B3, use PROPER and TRIM to tidy the name in A3: remove the extra spaces and give each word a capital."
+    rows:
+      - [Name, Tidy]
+      - [null, null]
+      - ["  rosa   diaz ", null]
+    answerCell: B3
+    expected: Rosa Diaz
+    variants:
+      - set: { A3: AL    BROOK }
+        expected: Al Brook
+    answer: =PROPER(TRIM(A3))
+    requiredFunctions:
+      - PROPER
+      - TRIM
+    hints:
+      nudge: Wrap TRIM in PROPER, or the other way round.
+      rule: TRIM removes the spaces; PROPER fixes the capitals.
+    misses:
+      value: Tidied, the name reads Rosa Diaz.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for PROPER and TRIM.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =PROPER(TRIM(A3))
+      - =TRIM(PROPER(A3))
+    reject:
+      - formula: =PROPER(A3)
+        rule: required-function
+      - formula: =TRIM(A3)
+        rule: required-function
+      - formula: ="Rosa Diaz"
+        rule: required-function
+      - formula: =PROPER(TRIM(A3)
+        rule: syntax

@@ -1,0 +1,43 @@
+id: average-drill-5
+slug: average-drill-5
+level: 2
+title: How far above the average
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: AVERAGE
+screens:
+  - prompt: In C2, use AVERAGE to show how far Ann's sales in B2 are above the team average of B2:B6.
+    rows:
+      - [Rep, Sales, Above average]
+      - [Ann, 5400, null]
+      - [Raj, 4100, null]
+      - [Lea, 3800, null]
+      - [Tom, 4700, null]
+      - [Ivy, 4500, null]
+    answerCell: C2
+    expected: 900
+    variants:
+      - set: { B3: 6100 }
+        expected: 500
+    answer: =B2-AVERAGE(B2:B6)
+    requiredFunctions:
+      - AVERAGE
+    hints:
+      nudge: Take Ann's figure, then subtract the average of the whole team.
+      rule: A cell minus AVERAGE(range) shows how far that value sits above the mean.
+    misses:
+      value: The team averages 4500, so Ann is 900 above it.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AVERAGE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =B2-AVERAGE(B2:B6)
+    reject:
+      - formula: =AVERAGE(B2:B6)
+        rule: value
+      - formula: =AVERAGE(B2:B6)-B2
+        rule: value
+      - formula: =900
+        rule: required-function
+      - formula: =B2-AVERAGE(B2:B6
+        rule: syntax

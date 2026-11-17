@@ -1,0 +1,49 @@
+id: isblank-drill-4
+slug: isblank-drill-4
+level: 2
+title: Count empty cells with ISBLANK
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISBLANK
+screens:
+  - prompt: In B8, use SUMPRODUCT and ISBLANK to count the empty cells in B2:B6. Write -- before ISBLANK to turn TRUE and FALSE into 1 and 0.
+    rows:
+      - [Day, Sales]
+      - [Mon, 120]
+      - [Tue, null]
+      - [Wed, 95]
+      - [Thu, null]
+      - [Fri, null]
+      - [null, null]
+      - [Missing, null]
+    answerCell: B8
+    expected: 3
+    variants:
+      - set: { B3: 80 }
+        expected: 2
+      - set: { B2: null }
+        expected: 4
+    answer: =SUMPRODUCT(--ISBLANK(B2:B6))
+    requiredFunctions:
+      - ISBLANK
+      - SUMPRODUCT
+    hints:
+      nudge: ISBLANK on a range gives a list of TRUE and FALSE; -- turns them into 1 and 0.
+      rule: SUMPRODUCT(--ISBLANK(range)) adds up the 1s, one per empty cell.
+    misses:
+      value: 3 days have no figure.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISBLANK and SUMPRODUCT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUMPRODUCT(--ISBLANK(B2:B6))
+      - =SUMPRODUCT(ISBLANK(B2:B6)*1)
+    reject:
+      - formula: =COUNTBLANK(B2:B6)
+        rule: required-function
+      - formula: =SUMPRODUCT(--ISBLANK(B2:B5))
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =SUMPRODUCT(--ISBLANK(B2:B6)
+        rule: syntax

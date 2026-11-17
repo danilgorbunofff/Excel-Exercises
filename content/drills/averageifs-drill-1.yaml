@@ -1,0 +1,48 @@
+id: averageifs-drill-1
+slug: averageifs-drill-1
+level: 1
+title: Average sales for one region
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: AVERAGEIFS
+screens:
+  - prompt: In B9, use AVERAGEIFS to find the average sales in B2:B8 for rows where the region in A2:A8 is "East".
+    rows:
+      - [Region, Sales]
+      - [East, 400]
+      - [West, 250]
+      - [East, 310]
+      - [North, 520]
+      - [East, 190]
+      - [West, 330]
+      - [North, 450]
+      - [East average, null]
+    answerCell: B9
+    expected: 300
+    variants:
+      - set: { A3: East }
+        expected: 287.5
+      - set: { B2: 100 }
+        expected: 200
+    answer: =AVERAGEIFS(B2:B8,A2:A8,"East")
+    requiredFunctions:
+      - AVERAGEIFS
+    hints:
+      nudge: AVERAGEIFS starts with the range to average, then pairs of a range and a criteria.
+      rule: AVERAGEIFS(average_range,criteria_range,"East") averages the East rows only.
+    misses:
+      value: The three East rows average 300.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AVERAGEIFS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AVERAGEIFS(B2:B8,A2:A8,"East")
+    reject:
+      - formula: =AVERAGE(B2:B8)
+        rule: required-function
+      - formula: =AVERAGEIFS(B2:B8,A2:A8,"West")
+        rule: value
+      - formula: =300
+        rule: required-function
+      - formula: =AVERAGEIFS(B2:B8,A2:A8,"East"
+        rule: syntax

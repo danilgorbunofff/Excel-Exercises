@@ -1,0 +1,41 @@
+id: left-drill-3
+slug: left-drill-3
+level: 1
+title: A length typed in a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LEFT
+screens:
+  - prompt: In C2, use LEFT to take as many characters from A2 as the number in B2.
+    rows:
+      - [Code, Length, Part]
+      - [NORTH-WEST-04, 5, null]
+    answerCell: C2
+    expected: NORTH
+    variants:
+      - set: { B2: 10 }
+        expected: NORTH-WEST
+      - set: { B2: 1 }
+        expected: N
+    answer: =LEFT(A2,B2)
+    requiredFunctions:
+      - LEFT
+    hints:
+      nudge: The number of characters can come from a cell.
+      rule: LEFT(A2,B2) keeps whatever number of characters B2 says.
+    misses:
+      value: The first five characters are NORTH.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LEFT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LEFT(A2,B2)
+    reject:
+      - formula: =LEFT(A2,5)
+        rule: fragile
+      - formula: =LEFT(B2,A2)
+        rule: value
+      - formula: ="NORTH"
+        rule: required-function
+      - formula: =LEFT(A2,B2
+        rule: syntax

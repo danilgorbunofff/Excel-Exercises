@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF($B$2>10000,$B$2*0.05,0)
+      - =IF(B$2>10000,B2*0.05,0)
+      - =if(b2>10000, b2*0.05, 0)
+    wrong:
+      - formula: =IF(B2>=10000,B2*0.05,0)
+        rule: fragile
+        why: "> written as >="
+      - formula: =IF(B2>10001,B2*0.05,0)
+        rule: fragile
+        why: 10000 written as 10001
+      - formula: =IF(B2>9999,B2*0.05,0)
+        rule: fragile
+        why: 10000 written as 9999
+    equivalent: []

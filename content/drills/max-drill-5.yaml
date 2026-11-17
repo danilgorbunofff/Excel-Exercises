@@ -1,0 +1,47 @@
+id: max-drill-5
+slug: max-drill-5
+level: 2
+title: Spread between highest and lowest
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MAX
+screens:
+  - prompt: In B8, use MAX and MIN to find the gap between the highest and lowest price in B2:B6.
+    rows:
+      - [Supplier, Price]
+      - [Acme, 14.5]
+      - [Bolt, 12.75]
+      - [Core, 16]
+      - [Dyne, 13.2]
+      - [Edge, 15.1]
+      - [null, null]
+      - [Spread, null]
+    answerCell: B8
+    expected: 3.25
+    variants:
+      - { set: { B3: 11 }, expected: 5 }
+      - { set: { B2: 18, B6: 11.6 }, expected: 6.4 }
+      - { set: { B2: 11, B4: 14.5 }, expected: 4.1 }
+    answer: =MAX(B2:B6)-MIN(B2:B6)
+    requiredFunctions:
+      - MAX
+      - MIN
+    hints:
+      nudge: Subtract the smallest value from the largest.
+      rule: MAX(range) minus MIN(range) gives the spread of the values.
+    misses:
+      value: The prices run from 12.75 to 16, a spread of 3.25.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MAX and MIN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MAX(B2:B6)-MIN(B2:B6)
+    reject:
+      - formula: =MIN(B2:B6)-MAX(B2:B6)
+        rule: value
+      - formula: =MAX(B2:B6)
+        rule: required-function
+      - formula: =3.25
+        rule: required-function
+      - formula: =MAX(B2:B6)-MIN(B2:B6
+        rule: syntax

@@ -1,0 +1,37 @@
+id: upper-drill-2
+slug: upper-drill-2
+level: 1
+title: Mixed case to capitals
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: UPPER
+screens:
+  - prompt: In B2, use UPPER to turn the code in A2, written in mixed case, into capitals.
+    rows:
+      - [Code, Result]
+      - [Ab12cD, null]
+    answerCell: B2
+    expected: AB12CD
+    variants:
+      - set: { A2: xY9z }
+        expected: XY9Z
+    answer: =UPPER(A2)
+    requiredFunctions:
+      - UPPER
+    hints:
+      nudge: Letters already in capitals stay as they are.
+      rule: UPPER changes only the small letters.
+    misses:
+      value: In capitals, the code is AB12CD.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for UPPER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =UPPER(A2)
+    reject:
+      - formula: =LOWER(A2)
+        rule: required-function
+      - formula: ="AB12CD"
+        rule: required-function
+      - formula: =UPPER(A2
+        rule: syntax

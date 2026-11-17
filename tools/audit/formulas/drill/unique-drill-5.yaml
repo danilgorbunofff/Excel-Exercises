@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SORT(UNIQUE($B$2:$B$7))
+      - =SORT(UNIQUE(B$2:B$7))
+      - =sort(unique(b2:b7))
+      - =LET(data,B2:B7,SORT(UNIQUE(data)))
+    wrong:
+      - formula: =SORT(UNIQUE(B2:B6))
+        rule: fragile
+        why: range B2:B7 one row short at the end
+      - formula: =SORT(UNIQUE(B3:B7))
+        rule: fragile
+        why: range B2:B7 skips its first row
+    equivalent: []

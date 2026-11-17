@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LET(total,SUM($B$2:$B$6),total*0.2)
+      - =LET(total,SUM(B$2:B$6),total*0.2)
+      - =let(total, sum(b2:b6), total*0.2)
+      - =LET(total,SUMPRODUCT(B2:B6),total*0.2)
+      - =LET(data,B2:B6,LET(total,SUM(data),total*0.2))
+    wrong: []
+    equivalent:
+      - formula: =LET(total,SUM(B2:B7),total*0.2)
+        why: "range B2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

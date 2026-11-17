@@ -1,0 +1,52 @@
+id: sortby-drill-2
+slug: sortby-drill-2
+level: 1
+title: Names by sales, largest first
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SORTBY
+screens:
+  - prompt: In E2, use SORTBY to list the reps in A2:A7 ordered by sales in C2:C7, largest first.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, null]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [Di]
+      - [Ann]
+      - [Flo]
+      - [Cy]
+      - [Bo]
+      - [Ed]
+    variants:
+      - set: { C6: 999 }
+        expected:
+          - - Ed
+          - - Di
+          - - Ann
+          - - Flo
+          - - Cy
+          - - Bo
+    answer: =SORTBY(A2:A7,C2:C7,-1)
+    requiredFunctions:
+      - SORTBY
+    hints:
+      nudge: Add -1 after the sort range for largest first.
+      rule: SORTBY(names,sales,-1) sorts descending.
+    misses:
+      value: Largest sales first, the reps are Di, Ann, Flo, Cy, Bo, Ed.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SORTBY(A2:A7,C2:C7,-1)
+    reject:
+      - formula: =SORTBY(A2:A7,C2:C7)
+        rule: value
+      - formula: =SORTBY(A2:A7,C2:C7,-1
+        rule: syntax

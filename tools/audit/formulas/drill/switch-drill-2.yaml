@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SWITCH($A$2,1,"Mon",2,"Tue",3,"Wed","Other")
+      - =SWITCH(A$2,1,"Mon",2,"Tue",3,"Wed","Other")
+      - =switch(a2, 1, "Mon", 2, "Tue", 3, "Wed", "Other")
+    wrong:
+      - formula: =SWITCH(A2,0,"Mon",2,"Tue",3,"Wed","Other")
+        rule: fragile
+        why: 1 written as 0
+    equivalent: []

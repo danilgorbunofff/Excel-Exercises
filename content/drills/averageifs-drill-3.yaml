@@ -1,0 +1,46 @@
+id: averageifs-drill-3
+slug: averageifs-drill-3
+level: 2
+title: Average delivery days for big orders
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: AVERAGEIFS
+screens:
+  - prompt: In C9, use AVERAGEIFS to average the delivery days in C2:C8 for orders whose value in B2:B8 is over 100.
+    rows:
+      - [Order, Value, Days]
+      - [O1, 80, 3]
+      - [O2, 150, 5]
+      - [O3, 100, 4]
+      - [O4, 220, 7]
+      - [O5, 95, 2]
+      - [O6, 130, 6]
+      - [O7, 60, 1]
+      - [null, Average, null]
+    answerCell: C9
+    expected: 6
+    variants:
+      - set: { B4: 101 }
+        expected: 5.5
+      - set: { C3: 8 }
+        expected: 7
+    answer: =AVERAGEIFS(C2:C8,B2:B8,">100")
+    requiredFunctions:
+      - AVERAGEIFS
+    hints:
+      nudge: Test the value column with ">100" and average the days.
+      rule: AVERAGEIFS(days,values,">100") averages the days of orders over 100.
+    misses:
+      value: The three orders over 100 take 6 days on average.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AVERAGEIFS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AVERAGEIFS(C2:C8,B2:B8,">100")
+    reject:
+      - formula: =AVERAGEIFS(C2:C8,B2:B8,">=100")
+        rule: value
+      - formula: =6
+        rule: required-function
+      - formula: =AVERAGEIFS(C2:C8,B2:B8,">100"
+        rule: syntax

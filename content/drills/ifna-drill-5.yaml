@@ -1,0 +1,46 @@
+id: ifna-drill-5
+slug: ifna-drill-5
+level: 2
+title: Line cost or zero with IFNA
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IFNA
+screens:
+  - prompt: In E4, use IFNA and VLOOKUP to multiply the price of the code in E2 by the quantity in E3, giving 0 when the code is missing.
+    rows:
+      - [Code, Price, null, Find, null]
+      - [D40, 2, null, Code, B20]
+      - [A10, 1.5, null, Qty, 4]
+      - [F60, 12, null, Cost, null]
+      - [B20, 3, null, null, null]
+    answerCell: E4
+    expected: 12
+    variants:
+      - { set: { E2: Z99 }, expected: 0 }
+      - { set: { E3: 10 }, expected: 30 }
+      - { set: { E2: D40 }, expected: 8 }
+    answer: =IFNA(VLOOKUP(E2,A2:B5,2,FALSE),0)*E3
+    requiredFunctions:
+      - IFNA
+      - VLOOKUP
+    hints:
+      nudge: Catch the missing code with IFNA, then multiply.
+      rule: A missing code gives 0, and 0 times any quantity is 0.
+    misses:
+      value: B20 costs 3, and 4 of them cost 12.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IFNA and VLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IFNA(VLOOKUP(E2,A2:B5,2,FALSE),0)*E3
+      - =IFNA(VLOOKUP(E2,A2:B5,2,FALSE)*E3,0)
+      - =IFNA(VLOOKUP(E2,A2:B5,2,0),0)*E3
+    reject:
+      - formula: =VLOOKUP(E2,A2:B5,2,FALSE)*E3
+        rule: required-function
+      - formula: =IFNA(VLOOKUP(E2,A2:B5,2,FALSE),0)
+        rule: value
+      - formula: =12
+        rule: required-function
+      - formula: =IFNA(VLOOKUP(E2,A2:B5,2,FALSE),0)*E3,
+        rule: syntax

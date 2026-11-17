@@ -1,0 +1,46 @@
+id: average-drill-4
+slug: average-drill-4
+level: 2
+title: Average when some days are missing
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: AVERAGE
+screens:
+  - prompt: In B9, use AVERAGE to find the mean number of visitors. Days with no count are left empty.
+    rows:
+      - [Day, Visitors]
+      - [Mon, 120]
+      - [Tue, null]
+      - [Wed, 150]
+      - [Thu, 90]
+      - [Fri, null]
+      - [Sat, 240]
+      - [null, null]
+      - [Mean, null]
+    answerCell: B9
+    expected: 150
+    variants:
+      - set: { B3: 60 }
+        expected: 132
+    answer: =AVERAGE(B2:B7)
+    requiredFunctions:
+      - AVERAGE
+    hints:
+      nudge: AVERAGE leaves empty cells out of the count.
+      rule: AVERAGE(range) divides by the number of cells that hold numbers, not by the size of the range.
+    misses:
+      value: Four days have counts, and they average 150.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AVERAGE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AVERAGE(B2:B7)
+    reject:
+      - formula: =SUM(B2:B7)/6
+        rule: required-function
+      - formula: =AVERAGE(B2:B5)
+        rule: value
+      - formula: =150
+        rule: required-function
+      - formula: =AVERAGE(B2:B7
+        rule: syntax

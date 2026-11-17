@@ -1,0 +1,48 @@
+id: small-drill-1
+slug: small-drill-1
+level: 1
+title: The fastest time
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SMALL
+screens:
+  - prompt: In B10, use SMALL to find the fastest, lowest, time in B2:B8.
+    rows:
+      - [Runner, Time]
+      - [Ann, 41.2]
+      - [Bo, 38.9]
+      - [Cy, 44.5]
+      - [Di, 37.6]
+      - [Ed, 40.1]
+      - [Flo, 39.4]
+      - [Gus, 42.8]
+      - [null, null]
+      - [Fastest, null]
+    answerCell: B10
+    expected: 37.6
+    variants:
+      - { set: { B5: 39 }, expected: 38.9 }
+      - { set: { B8: 36 }, expected: 36 }
+      - { set: { B2: 1 }, expected: 1 }
+    answer: =SMALL(B2:B8,1)
+    requiredFunctions:
+      - SMALL
+    hints:
+      nudge: "SMALL takes a range and k: which smallest you want."
+      rule: SMALL(range,1) returns the smallest value, like MIN.
+    misses:
+      value: The fastest time is 37.6.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SMALL.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SMALL(B2:B8,1)
+    reject:
+      - formula: =MIN(B2:B8)
+        rule: required-function
+      - formula: =SMALL(B2:B8,2)
+        rule: value
+      - formula: =37.6
+        rule: required-function
+      - formula: =SMALL(B2:B8,1
+        rule: syntax

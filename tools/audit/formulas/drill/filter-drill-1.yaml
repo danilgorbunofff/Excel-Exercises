@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =FILTER($A$2:$A$7,$B$2:$B$7="East")
+      - =FILTER(A$2:A$7,B2:B7="East")
+      - =filter(a2:a7, b2:b7="East")
+      - =LET(data,A2:A7,FILTER(data,B2:B7="East"))
+    wrong: []
+    equivalent: []

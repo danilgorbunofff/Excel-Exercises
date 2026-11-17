@@ -1,0 +1,42 @@
+id: isna-drill-2
+slug: isna-drill-2
+level: 1
+title: Is the lookup empty-handed
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISNA
+screens:
+  - prompt: In E3, use ISNA and VLOOKUP to test whether looking up the code in E2 in A2:B5 finds nothing.
+    rows:
+      - [Code, Price, null, Find, null]
+      - [D40, 2, null, Code, Z99]
+      - [A10, 1.5, null, Not found, null]
+      - [F60, 12, null, null, null]
+      - [B20, 3, null, null, null]
+    answerCell: E3
+    expected: true
+    variants:
+      - { set: { E2: F60 }, expected: false }
+      - { set: { E2: D40 }, expected: false }
+      - { set: { E2: B20 }, expected: false }
+    answer: =ISNA(VLOOKUP(E2,A2:B5,2,FALSE))
+    requiredFunctions:
+      - ISNA
+      - VLOOKUP
+    hints:
+      nudge: Wrap the lookup in ISNA.
+      rule: "ISNA(VLOOKUP(...)) is TRUE when the lookup gives #N/A."
+    misses:
+      value: Z99 is not in the list, so the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISNA and VLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ISNA(VLOOKUP(E2,A2:B5,2,FALSE))
+      - =ISNA(VLOOKUP(E2,A2:B5,2,0))
+      - =ISNA(VLOOKUP(E2,A2:B5,1,FALSE))
+    reject:
+      - formula: =VLOOKUP(E2,A2:B5,2,FALSE)
+        rule: required-function
+      - formula: =ISNA(VLOOKUP(E2,A2:B5,2,FALSE)
+        rule: syntax

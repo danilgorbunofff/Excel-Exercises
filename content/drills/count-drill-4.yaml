@@ -1,0 +1,42 @@
+id: count-drill-4
+slug: count-drill-4
+level: 2
+title: Count real numbers only
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNT
+screens:
+  - prompt: In B7, use COUNT to find how many amounts in B2:B6 are real numbers. Two were typed as text.
+    rows:
+      - [Invoice, Amount]
+      - [I-1, 250]
+      - [I-2, "180"]
+      - [I-3, 320]
+      - [I-4, "95"]
+      - [I-5, 410]
+      - [Numbers, null]
+    answerCell: B7
+    expected: 3
+    variants:
+      - set: { B3: 180 }
+        expected: 4
+    answer: =COUNT(B2:B6)
+    requiredFunctions:
+      - COUNT
+    hints:
+      nudge: A number typed as text looks right, but COUNT does not see it as a number.
+      rule: COUNT(range) skips text, even text made of digits.
+    misses:
+      value: 3 amounts are real numbers. The other two are text.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNT(B2:B6)
+    reject:
+      - formula: =COUNTA(B2:B6)
+        rule: required-function
+      - formula: =3
+        rule: required-function
+      - formula: =COUNT(B2:B6
+        rule: syntax

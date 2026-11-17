@@ -1,0 +1,50 @@
+id: rank-drill-5
+slug: rank-drill-5
+level: 2
+title: Rank out of the field
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: RANK
+screens:
+  - prompt: In C2, use RANK and COUNT to show Ann's place as text such as "3 of 7", for her score in B2 among B2:B8.
+    rows:
+      - [Student, Score, Place]
+      - [Ann, 72, null]
+      - [Bo, 85, null]
+      - [Cy, 64, null]
+      - [Di, 91, null]
+      - [Ed, 78, null]
+      - [Flo, 59, null]
+      - [Gus, 88, null]
+    answerCell: C2
+    expected: 5 of 7
+    variants:
+      - set: { B2: 95 }
+        expected: 1 of 7
+      - set: { B8: absent }
+        expected: 4 of 6
+    answer: =RANK(B2,B2:B8)&" of "&COUNT(B2:B8)
+    requiredFunctions:
+      - RANK
+      - COUNT
+    hints:
+      nudge: Join the rank, the text " of " and the count with &.
+      rule: "& joins numbers and text into one piece of text."
+    misses:
+      value: Ann ranks 5th of 7 scores, so the cell reads 5 of 7.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for RANK and COUNT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =RANK(B2,B2:B8)&" of "&COUNT(B2:B8)
+    reject:
+      - formula: =RANK(B2,B2:B8)&" of 7"
+        rule: required-function
+      - formula: =RANK(B2,B2:B8)&" of "&COUNTA(B2:B8)
+        rule: required-function
+      - formula: =RANK(B2,B2:B8)&"of"&COUNT(B2:B8)
+        rule: value
+      - formula: ="5 of 7"
+        rule: required-function
+      - formula: =RANK(B2,B2:B8)&" of "&COUNT(B2:B8
+        rule: syntax

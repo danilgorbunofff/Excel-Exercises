@@ -1,0 +1,39 @@
+id: textafter-drill-3
+slug: textafter-drill-3
+level: 1
+title: A file's extension
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TEXTAFTER
+screens:
+  - prompt: In B2, use TEXTAFTER with -1 to take everything in A2 after the last ".".
+    rows:
+      - [File, Result]
+      - [report.final.pdf, null]
+    answerCell: B2
+    expected: pdf
+    variants:
+      - set: { A2: notes.docx }
+        expected: docx
+      - set: { A2: a.b.c.xlsx }
+        expected: xlsx
+    answer: =TEXTAFTER(A2,".",-1)
+    requiredFunctions:
+      - TEXTAFTER
+    hints:
+      nudge: A negative number counts the delimiters from the end.
+      rule: TEXTAFTER(A2,".",-1) starts after the last dot.
+    misses:
+      value: The extension is pdf.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TEXTAFTER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TEXTAFTER(A2,".",-1)
+    reject:
+      - formula: =TEXTAFTER(A2,".")
+        rule: value
+      - formula: ="pdf"
+        rule: required-function
+      - formula: =TEXTAFTER(A2,".",-1
+        rule: syntax

@@ -1,0 +1,44 @@
+id: subtotal-drill-2
+slug: subtotal-drill-2
+level: 1
+title: Average with SUBTOTAL
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUBTOTAL
+screens:
+  - prompt: In B7, use SUBTOTAL with function number 1 to find the average wait in B2:B6.
+    rows:
+      - [Patient, Wait]
+      - [P1, 25]
+      - [P2, 40]
+      - [P3, 15]
+      - [P4, 30]
+      - [P5, 20]
+      - [Average, null]
+    answerCell: B7
+    expected: 26
+    variants:
+      - set: { B3: 55 }
+        expected: 29
+    answer: =SUBTOTAL(1,B2:B6)
+    requiredFunctions:
+      - SUBTOTAL
+    hints:
+      nudge: Function number 1 means average.
+      rule: SUBTOTAL(1,range) averages the range. 9 adds, 2 counts numbers, 4 finds the largest and 5 the smallest.
+    misses:
+      value: The waits average 26 minutes.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUBTOTAL.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUBTOTAL(1,B2:B6)
+    reject:
+      - formula: =AVERAGE(B2:B6)
+        rule: required-function
+      - formula: =SUBTOTAL(9,B2:B6)
+        rule: value
+      - formula: =26
+        rule: required-function
+      - formula: =SUBTOTAL(1,B2:B6
+        rule: syntax

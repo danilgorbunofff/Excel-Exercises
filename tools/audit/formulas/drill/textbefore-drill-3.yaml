@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =TEXTBEFORE($A$2,"-",2)
+      - =TEXTBEFORE(A$2,"-",2)
+      - =textbefore(a2, "-", 2)
+    wrong: []
+    equivalent: []

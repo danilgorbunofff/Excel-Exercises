@@ -1,0 +1,42 @@
+id: textjoin-drill-4
+slug: textjoin-drill-4
+level: 2
+title: A separator typed in a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TEXTJOIN
+screens:
+  - prompt: In C2, use TEXTJOIN to join the items in A2:A5 with the separator typed in B2, skipping empty cells.
+    rows:
+      - [Item, Separator, Joined]
+      - [pens, " / ", null]
+      - [pads, null, null]
+      - [clips, null, null]
+      - [tape, null, null]
+    answerCell: C2
+    expected: pens / pads / clips / tape
+    variants:
+      - set: { B2: "; " }
+        expected: pens; pads; clips; tape
+      - set: { A3: null }
+        expected: pens / clips / tape
+    answer: =TEXTJOIN(B2,TRUE,A2:A5)
+    requiredFunctions:
+      - TEXTJOIN
+    hints:
+      nudge: The separator can come from a cell.
+      rule: TEXTJOIN(B2,TRUE,range) uses whatever B2 holds between the items.
+    misses:
+      value: Joined, the items read pens / pads / clips / tape.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TEXTJOIN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TEXTJOIN(B2,TRUE,A2:A5)
+    reject:
+      - formula: =TEXTJOIN(" / ",TRUE,A2:A5)
+        rule: fragile
+      - formula: ="pens / pads / clips / tape"
+        rule: required-function
+      - formula: =TEXTJOIN(B2,TRUE,A2:A5
+        rule: syntax

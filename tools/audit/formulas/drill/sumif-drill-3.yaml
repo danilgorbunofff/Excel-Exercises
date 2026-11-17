@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF(A$2:A$8,D2,B2:B8)
+      - =sumif(a2:a8, d2, b2:b8)
+      - =LET(data,A2:A8,SUMIF(data,D2,B2:B8))
+    wrong: []
+    equivalent: []

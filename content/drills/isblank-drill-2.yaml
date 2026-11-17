@@ -1,0 +1,35 @@
+id: isblank-drill-2
+slug: isblank-drill-2
+level: 1
+title: Zero is not blank
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISBLANK
+screens:
+  - prompt: In C2, use ISBLANK to test whether the stock count in B2 is empty. The count was done and found none.
+    rows:
+      - [Part, Stock, Not counted]
+      - [Bolt, 0, null]
+    answerCell: C2
+    expected: false
+    variants:
+      - set: { B2: null }
+        expected: true
+    answer: =ISBLANK(B2)
+    requiredFunctions:
+      - ISBLANK
+    hints:
+      nudge: A cell holding 0 is not empty.
+      rule: ISBLANK is FALSE for a 0, which is a value.
+    misses:
+      value: B2 holds 0, which is a value, so the result is FALSE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISBLANK.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ISBLANK(B2)
+    reject:
+      - formula: =B2=0
+        rule: required-function
+      - formula: =ISBLANK(B2
+        rule: syntax

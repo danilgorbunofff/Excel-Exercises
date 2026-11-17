@@ -1,0 +1,42 @@
+id: iserror-drill-2
+slug: iserror-drill-2
+level: 1
+title: Is the code missing
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISERROR
+screens:
+  - prompt: In E3, use ISERROR and MATCH to test whether the code in E2 is missing from A2:A5.
+    rows:
+      - [Code, Price, null, Find, null]
+      - [D40, 2, null, Code, Z99]
+      - [A10, 1.5, null, Missing, null]
+      - [F60, 12, null, null, null]
+      - [B20, 3, null, null, null]
+    answerCell: E3
+    expected: true
+    variants:
+      - { set: { E2: A10 }, expected: false }
+      - { set: { E2: D40 }, expected: false }
+      - { set: { E2: B20 }, expected: false }
+    answer: =ISERROR(MATCH(E2,A2:A5,0))
+    requiredFunctions:
+      - ISERROR
+      - MATCH
+    hints:
+      nudge: A missing code makes MATCH fail; ISERROR turns that into TRUE.
+      rule: ISERROR(MATCH(...)) is TRUE when the code is not there.
+    misses:
+      value: Z99 is not in the list, so the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISERROR and MATCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ISERROR(MATCH(E2,A2:A5,0))
+    reject:
+      - formula: =MATCH(E2,A2:A5,0)
+        rule: required-function
+      - formula: =ISERROR(MATCH(E2,B2:B5,0))
+        rule: fragile
+      - formula: =ISERROR(MATCH(E2,A2:A5,0)
+        rule: syntax

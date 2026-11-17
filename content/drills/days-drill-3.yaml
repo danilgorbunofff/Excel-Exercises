@@ -1,0 +1,37 @@
+id: days-drill-3
+slug: days-drill-3
+level: 1
+title: Days late
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: DAYS
+screens:
+  - prompt: In D2, use DAYS to count how many days after the due date in B2 the invoice was paid, on the date in C2.
+    rows:
+      - [Invoice, Due, Paid, Days late]
+      - [I-1, 46152, 46175, null]
+    answerCell: D2
+    expected: 23
+    variants:
+      - set: { C2: 46154 }
+        expected: 2
+    answer: =DAYS(C2,B2)
+    requiredFunctions:
+      - DAYS
+    hints:
+      nudge: The payment date is the later one, so it goes first.
+      rule: DAYS(paid,due) is the number of days late.
+    misses:
+      value: Paid on 2 June against 10 May is 23 days late.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for DAYS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =DAYS(C2,B2)
+    reject:
+      - formula: =DAYS(B2,C2)
+        rule: value
+      - formula: =23
+        rule: required-function
+      - formula: =DAYS(C2,B2
+        rule: syntax

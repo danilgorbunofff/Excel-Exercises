@@ -1,0 +1,49 @@
+id: match-drill-5
+slug: match-drill-5
+level: 2
+title: Position of the top seller
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MATCH
+screens:
+  - prompt: In D2, use MATCH and MAX to find the position in B2:B7 of the highest sales figure.
+    rows:
+      - [Rep, Sales, null, Top position]
+      - [Ann, 400, null, null]
+      - [Bo, 250, null, null]
+      - [Cy, 520, null, null]
+      - [Di, 310, null, null]
+      - [Ed, 190, null, null]
+      - [Flo, 450, null, null]
+    answerCell: D2
+    expected: 3
+    variants:
+      - set: { B7: 600 }
+        expected: 6
+      - set: { B2: 700 }
+        expected: 1
+    answer: =MATCH(MAX(B2:B7),B2:B7,0)
+    requiredFunctions:
+      - MATCH
+      - MAX
+    hints:
+      nudge: MAX gives the highest value; MATCH finds where it is.
+      rule: MATCH(MAX(range),range,0) returns the position of the largest value.
+    misses:
+      value: The highest figure, 520, is at position 3.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MATCH and MAX.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MATCH(MAX(B2:B7),B2:B7,0)
+    reject:
+      - formula: =MATCH(520,B2:B7,0)
+        rule: required-function
+      - formula: =MATCH(MIN(B2:B7),B2:B7,0)
+        rule: required-function
+      - formula: =MATCH(MAX(B2:B7),B1:B7,0)
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =MATCH(MAX(B2:B7),B2:B7,0
+        rule: syntax

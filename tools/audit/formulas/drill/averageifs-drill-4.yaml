@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AVERAGEIFS($C$2:$C$8,$A$2:$A$8,$F$2)
+      - =AVERAGEIFS(C$2:C$8,A2:A8,F2)
+      - =averageifs(c2:c8, a2:a8, f2)
+      - =LET(data,C2:C8,AVERAGEIFS(data,A2:A8,F2))
+    wrong: []
+    equivalent: []

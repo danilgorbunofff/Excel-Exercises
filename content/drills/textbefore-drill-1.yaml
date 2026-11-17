@@ -1,0 +1,39 @@
+id: textbefore-drill-1
+slug: textbefore-drill-1
+level: 1
+title: The name part of an email
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TEXTBEFORE
+screens:
+  - prompt: In B2, use TEXTBEFORE to take the part of the email in A2 before "@".
+    rows:
+      - [Email, Result]
+      - [rosa.diaz@example.com, null]
+    answerCell: B2
+    expected: rosa.diaz
+    variants:
+      - set: { A2: al@shop.org }
+        expected: al
+    answer: =TEXTBEFORE(A2,"@")
+    requiredFunctions:
+      - TEXTBEFORE
+    hints:
+      nudge: TEXTBEFORE takes the text, then the delimiter.
+      rule: TEXTBEFORE(A2,"@") returns everything before the at sign.
+    misses:
+      value: Before the at sign is rosa.diaz.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TEXTBEFORE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TEXTBEFORE(A2,"@")
+    reject:
+      - formula: =TEXTAFTER(A2,"@")
+        rule: required-function
+      - formula: =TEXTBEFORE(A2,".")
+        rule: value
+      - formula: ="rosa.diaz"
+        rule: required-function
+      - formula: =TEXTBEFORE(A2,"@"
+        rule: syntax

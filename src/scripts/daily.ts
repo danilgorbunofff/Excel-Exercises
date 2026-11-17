@@ -9,6 +9,7 @@ import { longDate, renderStreak } from "./daily-view.ts";
 import { mountExercise } from "./exercise.ts";
 import { localDay } from "./progress.ts";
 import { signedIn } from "./session.ts";
+import { track } from "./track.ts";
 
 const q = <T extends Element>(root: Element, selector: string) => root.querySelector<T>(selector);
 
@@ -49,6 +50,7 @@ function start(root: HTMLElement, pool: DailyEntry[]) {
   void showExercise(root, pick, past, day).then((exercise) => {
     exercise?.addEventListener("exercise-solved", () => {
       if (past || !pick) return;
+      track("daily_done");
       sync.days = { ...readDaily(), [day]: pick.id };
       writeDaily(sync.days);
       render();

@@ -1,0 +1,40 @@
+id: isna-drill-4
+slug: isna-drill-4
+level: 2
+title: Is the name missing
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISNA
+screens:
+  - prompt: In E3, use ISNA and XLOOKUP to test whether the name in E2 is missing from A2:A5.
+    rows:
+      - [Name, Team, null, Find, null]
+      - [Ann, Blue, null, Name, Cy]
+      - [Bo, Red, null, Missing, null]
+      - [Cy, Blue, null, null, null]
+      - [Di, Green, null, null, null]
+    answerCell: E3
+    expected: false
+    variants:
+      - set: { E2: Zoe }
+        expected: true
+    answer: =ISNA(XLOOKUP(E2,A2:A5,B2:B5))
+    requiredFunctions:
+      - ISNA
+      - XLOOKUP
+    hints:
+      nudge: "XLOOKUP gives #N/A when the name is not in the list."
+      rule: ISNA(XLOOKUP(...)) is TRUE for a missing name and FALSE for a found one.
+    misses:
+      value: Cy is in the list, so the result is FALSE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISNA and XLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ISNA(XLOOKUP(E2,A2:A5,B2:B5))
+      - =ISNA(XLOOKUP(E2,A2:A5,A2:A5))
+    reject:
+      - formula: =XLOOKUP(E2,A2:A5,B2:B5)
+        rule: required-function
+      - formula: =ISNA(XLOOKUP(E2,A2:A5,B2:B5)
+        rule: syntax

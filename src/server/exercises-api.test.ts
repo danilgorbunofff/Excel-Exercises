@@ -27,9 +27,10 @@ vi.mock("../lib/exercises.ts", () => ({
 }));
 // meeting-room-hours is a held-out task of the real "beginner" set.
 vi.mock("astro:content", () => ({
-  getCollection: async () => [
-    { data: { slug: "meeting-room-hours", id: "meeting-room-hours", ...screen("=MOCK()") } },
-  ],
+  getCollection: async (name: string) =>
+    name === "drills"
+      ? [{ data: { slug: "sum-1", id: "sum-1", ...screen("=SUM(B2:B5)") } }]
+      : [{ data: { slug: "meeting-room-hours", id: "meeting-room-hours", ...screen("=MOCK()") } }],
 }));
 
 const { GET } = await import("../pages/api/exercises/[slug].ts");
@@ -66,6 +67,16 @@ describe("GET /api/exercises/[slug]", () => {
     expect((await call("pro-one")).status).toBe(403);
     mocks.handler = answer(pro, []);
     expect(await (await call("pro-one")).json()).toEqual({ answers: ["=PRO()"] });
+  });
+
+  it("gives a drill's answers only with PRO, with no attempt needed", async () => {
+    mocks.user = null;
+    expect((await call("sum-1")).status).toBe(401);
+    mocks.user = { id: "user-1" };
+    expect((await call("sum-1")).status).toBe(403);
+    mocks.handler = answer(pro, []);
+    expect(await (await call("sum-1")).json()).toEqual({ answers: ["=SUM(B2:B5)"] });
+    expect(mocks.log.some((q) => q.table === "assessment_attempts")).toBe(false);
   });
 
   it("keeps a mock task's answers until a set holding it is finished", async () => {

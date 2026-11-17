@@ -26,6 +26,8 @@ void loadMe().then((me) => {
   }
   const news = $<HTMLInputElement>("[data-news]");
   if (news) news.checked = me.news;
+  const digest = $<HTMLInputElement>("[data-digest]");
+  if (digest) digest.checked = me.digest;
   const password = $("[data-password]");
   if (password) password.hidden = !me.hasPassword;
   const certs = $("[data-certs]");

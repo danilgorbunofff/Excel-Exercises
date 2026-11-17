@@ -8,7 +8,7 @@ import Icon from "../../components/Icon.astro";
 import PracticeTabs from "../../components/PracticeTabs.astro";
 import Base from "../../layouts/Base.astro";
 import { isLocked } from "../../lib/access.ts";
-import { exercisePath, placedExercises } from "../../lib/exercises.ts";
+import { drillTasks, exercisePath, placedExercises } from "../../lib/exercises.ts";
 import { ACCOUNT_NAV } from "../../lib/nav.ts";
 import "../../styles/assessments.css";
 
@@ -21,6 +21,14 @@ const list = placed.map((p) => ({
   title: p.exercise.title,
   href: exercisePath(p.exercise.slug),
   locked: isLocked(p),
+}));
+// Drills come back on the review list too, but never count as exercises solved.
+const drills = (await drillTasks()).map((d) => ({
+  id: d.exercise.id,
+  number: 0,
+  title: `${d.fn} drill: ${d.exercise.title}`,
+  href: `/exercises/drills/?id=${encodeURIComponent(d.exercise.id)}`,
+  locked: true,
 }));
 ---
 
@@ -80,24 +88,39 @@ const list = placed.map((p) => ({
         <ExerciseTable rows={placed} labelledby="all" />
       </section>
 
-      <section class="ruled a-side" aria-labelledby="due-title">
-        <div class="list-head">
-          <h2 id="clear-title">Clear your progress</h2>
-        </div>
-        <div class="a-pad clear" data-clear>
-          <p>This removes every solve and review from this browser. It cannot be undone.</p>
-          <button class="button button-secondary" type="button" data-clear-ask>Clear my progress</button>
-          <p class="confirm" data-clear-confirm hidden>
-            <span>Clear all progress in this browser?</span>
-            <button class="button button-primary" type="button" data-clear-yes>Yes, clear it</button>
-            <button class="link-button" type="button" data-clear-no>Keep it</button>
-          </p>
-          <p role="status" data-clear-status></p>
-        </div>
-      </section>
+      <div class="side">
+        <section class="ruled a-side" aria-labelledby="review-title">
+          <div class="list-head">
+            <h2 id="review-title">To review</h2>
+          </div>
+          <div class="a-pad review">
+            <p data-review-empty>
+              Nothing to review. Exercises you got wrong, and solved ones due again, come back here.
+            </p>
+            <ol class="review-list" data-review hidden></ol>
+          </div>
+        </section>
+
+        <section class="ruled a-side" aria-labelledby="clear-title">
+          <div class="list-head">
+            <h2 id="clear-title">Clear your progress</h2>
+          </div>
+          <div class="a-pad clear" data-clear>
+            <p>This removes every solve and review from this browser. It cannot be undone.</p>
+            <button class="button button-secondary" type="button" data-clear-ask>Clear my progress</button>
+            <p class="confirm" data-clear-confirm hidden>
+              <span>Clear all progress in this browser?</span>
+              <button class="button button-primary" type="button" data-clear-yes>Yes, clear it</button>
+              <button class="link-button" type="button" data-clear-no>Keep it</button>
+            </p>
+            <p role="status" data-clear-status></p>
+          </div>
+        </section>
+      </div>
     </div>
 
     <script type="application/json" data-exercises set:html={JSON.stringify(list).replaceAll("<", "\\u003c")} />
+    <script type="application/json" data-drill-items set:html={JSON.stringify(drills).replaceAll("<", "\\u003c")} />
   </div>
 </Base>
 
@@ -128,6 +151,26 @@ const list = placed.map((p) => ({
   }
   .list-head .count {
     margin: 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .side {
+    display: grid;
+    align-content: start;
+    gap: var(--space-5);
+  }
+  .review p {
+    margin: 0;
+    color: var(--muted);
+  }
+  .review-list {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding-left: var(--space-5);
+  }
+  .review-list :global(.why) {
+    display: block;
     font-size: var(--size-s);
     color: var(--muted);
   }

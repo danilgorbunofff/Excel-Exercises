@@ -1,0 +1,41 @@
+id: floor-drill-4
+slug: floor-drill-4
+level: 2
+title: FLOOR on a negative number
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: FLOOR
+screens:
+  - prompt: In C2, use FLOOR to round the change in B2 down to a multiple of 1. Note which way a negative number moves.
+    rows:
+      - [Week, Change, Rounded]
+      - [W1, -2.5, null]
+    answerCell: C2
+    expected: -3
+    variants:
+      - set: { B2: 2.5 }
+        expected: 2
+      - set: { B2: -0.2 }
+        expected: -1
+    answer: =FLOOR(B2,1)
+    requiredFunctions:
+      - FLOOR
+    hints:
+      nudge: FLOOR goes down the number line, so -2.5 goes to -3.
+      rule: FLOOR always moves to the smaller multiple, which for a negative number is further from zero.
+    misses:
+      value: -2.5 goes down the number line, to -3.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for FLOOR.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =FLOOR(B2,1)
+    reject:
+      - formula: =ROUNDDOWN(B2,0)
+        rule: required-function
+      - formula: =FLOOR(B2,2)
+        rule: value
+      - formula: =-3
+        rule: required-function
+      - formula: =FLOOR(B2,1
+        rule: syntax

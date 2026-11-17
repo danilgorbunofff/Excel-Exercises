@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(ISNA(MATCH($E$2,$A$2:$A$5,0)),"New","Known")
+      - =IF(ISNA(MATCH(E$2,A2:A5,0)),"New","Known")
+      - =if(isna(match(e2, a2:a5, 0)), "New", "Known")
+      - =LET(data,A2:A5,IF(ISNA(MATCH(E2,data,0)),"New","Known"))
+    wrong:
+      - formula: =IF(ISNA(MATCH(E2,A2:A4,0)),"New","Known")
+        rule: fragile
+        why: range A2:A5 one row short at the end
+    equivalent: []

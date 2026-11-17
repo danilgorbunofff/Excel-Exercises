@@ -1,0 +1,47 @@
+id: countifs-drill-3
+slug: countifs-drill-3
+level: 2
+title: Count by region and product picked in cells
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTIFS
+screens:
+  - prompt: In E4, use COUNTIFS to count the rows matching the region in E2 and the product in E3.
+    rows:
+      - [Region, Product, null, Pick, null]
+      - [East, Pens, null, Region, East]
+      - [West, Pens, null, Product, Pens]
+      - [East, Pads, null, Orders, null]
+      - [East, Pens, null, null, null]
+      - [North, Pens, null, null, null]
+      - [East, Pads, null, null, null]
+      - [West, Pads, null, null, null]
+    answerCell: E4
+    expected: 2
+    variants:
+      - set: { E2: West }
+        expected: 1
+      - set: { E3: Pads }
+        expected: 2
+    answer: =COUNTIFS(A2:A8,E2,B2:B8,E3)
+    requiredFunctions:
+      - COUNTIFS
+    hints:
+      nudge: Point each criteria at its cell, E2 and E3.
+      rule: COUNTIFS(regions,E2,products,E3) follows whatever the two cells hold.
+    misses:
+      value: 2 rows are East and Pens.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTIFS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTIFS(A2:A8,E2,B2:B8,E3)
+    reject:
+      - formula: =COUNTIFS(A2:A8,"East",B2:B8,"Pens")
+        rule: fragile
+      - formula: =COUNTIFS(A2:A8,E2)
+        rule: value
+      - formula: =2
+        rule: required-function
+      - formula: =COUNTIFS(A2:A8,E2,B2:B8,E3
+        rule: syntax

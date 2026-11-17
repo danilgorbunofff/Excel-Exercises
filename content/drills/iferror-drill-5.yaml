@@ -1,0 +1,45 @@
+id: iferror-drill-5
+slug: iferror-drill-5
+level: 2
+title: Line cost or zero
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IFERROR
+screens:
+  - prompt: In E4, use IFERROR and XLOOKUP to multiply the price of the code in E2 by the quantity in E3, and show 0 if the code is missing.
+    rows:
+      - [Code, Price, null, Find, null]
+      - [D40, 2, null, Code, F60]
+      - [A10, 1.5, null, Qty, 5]
+      - [F60, 12, null, Cost, null]
+      - [B20, 3, null, null, null]
+    answerCell: E4
+    expected: 60
+    variants:
+      - set: { E2: Z99 }
+        expected: 0
+      - set: { E3: 2 }
+        expected: 24
+    answer: =IFERROR(XLOOKUP(E2,A2:A5,B2:B5)*E3,0)
+    requiredFunctions:
+      - IFERROR
+      - XLOOKUP
+    hints:
+      nudge: Wrap the whole calculation in IFERROR.
+      rule: IFERROR(XLOOKUP(...)*E3,0) gives 0 when the lookup fails.
+    misses:
+      value: F60 costs 12, and 5 of them cost 60.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IFERROR and XLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IFERROR(XLOOKUP(E2,A2:A5,B2:B5)*E3,0)
+    reject:
+      - formula: =XLOOKUP(E2,A2:A5,B2:B5)*E3
+        rule: required-function
+      - formula: =IFERROR(XLOOKUP(E2,A2:A5,B2:B5),0)
+        rule: value
+      - formula: =60
+        rule: required-function
+      - formula: =IFERROR(XLOOKUP(E2,A2:A5,B2:B5)*E3,0
+        rule: syntax

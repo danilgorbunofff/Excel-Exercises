@@ -1,0 +1,26 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SWITCH(TRUE,$B$2>=80,"A",$B$2>=60,"B","C")
+      - =SWITCH(TRUE,B$2>=80,"A",B2>=60,"B","C")
+      - =switch(true, b2>=80, "A", b2>=60, "B", "C")
+    wrong:
+      - formula: =SWITCH(TRUE,B2>80,"A",B2>=60,"B","C")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =SWITCH(TRUE,B2>=81,"A",B2>=60,"B","C")
+        rule: fragile
+        why: 80 written as 81
+      - formula: =SWITCH(TRUE,B2>=79,"A",B2>=60,"B","C")
+        rule: fragile
+        why: 80 written as 79
+      - formula: =SWITCH(TRUE,B2>=80,"A",B2>60,"B","C")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =SWITCH(TRUE,B2>=80,"A",B2>=61,"B","C")
+        rule: fragile
+        why: 60 written as 61
+      - formula: =SWITCH(TRUE,B2>=80,"A",B2>=59,"B","C")
+        rule: fragile
+        why: 60 written as 59
+    equivalent: []

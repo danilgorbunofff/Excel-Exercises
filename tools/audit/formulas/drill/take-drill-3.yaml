@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =TAKE($A$2:$C$7,2,2)
+      - =TAKE(A$2:C$7,2,2)
+      - =take(a2:c7, 2, 2)
+      - =LET(data,A2:C7,TAKE(data,2,2))
+    wrong: []
+    equivalent:
+      - formula: =TAKE(A2:C6,2,2)
+        why: "range A2:C7 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =TAKE(A2:C8,2,2)
+        why: "range A2:C7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

@@ -1,0 +1,41 @@
+id: max-drill-3
+slug: max-drill-3
+level: 1
+title: Find the longest call in a block
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MAX
+screens:
+  - prompt: In B6, use MAX to find the longest call, in minutes, anywhere in B2:D4.
+    rows:
+      - [Agent, Mon, Tue, Wed]
+      - [Ola, 12, 8, 15]
+      - [Pip, 9, 21, 7]
+      - [Quin, 14, 11, 18]
+      - [null, null, null, null]
+      - [Longest, null, null, null]
+    answerCell: B6
+    expected: 21
+    variants:
+      - { set: { B2: 30 }, expected: 30 }
+      - { set: { C3: 8 }, expected: 18 }
+    answer: =MAX(B2:D4)
+    requiredFunctions:
+      - MAX
+    hints:
+      nudge: The range can cover the whole block.
+      rule: MAX(B2:D4) looks at all nine cells.
+    misses:
+      value: The longest call was 21 minutes.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MAX.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MAX(B2:D4)
+    reject:
+      - formula: =MAX(B2:B4)
+        rule: value
+      - formula: =21
+        rule: required-function
+      - formula: =MAX(B2:D4
+        rule: syntax

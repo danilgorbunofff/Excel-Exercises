@@ -1,0 +1,49 @@
+id: rounddown-drill-5
+slug: rounddown-drill-5
+level: 2
+title: Full packs from a week of output
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ROUNDDOWN
+screens:
+  - prompt: In B9, use ROUNDDOWN and SUM to find how many full packs the units in B2:B6 fill when each pack holds the number in B8.
+    rows:
+      - [Day, Units]
+      - [Mon, 23]
+      - [Tue, 18]
+      - [Wed, 27]
+      - [Thu, 21]
+      - [Fri, 19]
+      - [null, null]
+      - [Per pack, 12]
+      - [Full packs, null]
+    answerCell: B9
+    expected: 9
+    variants:
+      - set: { B2: 25 }
+        expected: 9
+      - set: { B8: 9 }
+        expected: 12
+    answer: =ROUNDDOWN(SUM(B2:B6)/B8,0)
+    requiredFunctions:
+      - ROUNDDOWN
+      - SUM
+    hints:
+      nudge: Add the units, divide by the pack size, then drop the part pack.
+      rule: ROUNDDOWN(SUM(range)/size,0) counts only full packs.
+    misses:
+      value: 108 units at 12 a pack fill 9 packs.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ROUNDDOWN and SUM.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ROUNDDOWN(SUM(B2:B6)/B8,0)
+    reject:
+      - formula: =ROUND(SUM(B2:B6)/B8,0)
+        rule: required-function
+      - formula: =ROUNDDOWN(SUM(B2:B5)/B8,0)
+        rule: value
+      - formula: =9
+        rule: required-function
+      - formula: =ROUNDDOWN(SUM(B2:B6)/B8,0
+        rule: syntax

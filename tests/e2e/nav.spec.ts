@@ -129,6 +129,7 @@ for (const [path, current] of [
   ["/exercises/", "Exercises"],
   ["/exercises/tracks/", "Learning tracks"],
   ["/exercises/tracks/counting/", "Learning tracks"],
+  ["/exercises/drills/", "Function drills"],
   ["/daily/", "Daily exercise"],
   ["/mock-assessments/", "Mock assessments"],
   ["/progress/", "Progress"],

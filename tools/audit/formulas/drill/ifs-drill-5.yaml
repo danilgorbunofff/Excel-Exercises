@@ -1,0 +1,35 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFS(AND($B$2>=80,$C$2>=5),"Senior",$B$2>=80,"Mid",TRUE,"Junior")
+      - =IFS(AND(B$2>=80,C2>=5),"Senior",B2>=80,"Mid",TRUE,"Junior")
+      - =ifs(and(b2>=80, c2>=5), "Senior", b2>=80, "Mid", true, "Junior")
+    wrong:
+      - formula: =IFS(AND(B2>80,C2>=5),"Senior",B2>=80,"Mid",TRUE,"Junior")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IFS(AND(B2>=81,C2>=5),"Senior",B2>=80,"Mid",TRUE,"Junior")
+        rule: fragile
+        why: 80 written as 81
+      - formula: =IFS(AND(B2>=79,C2>=5),"Senior",B2>=80,"Mid",TRUE,"Junior")
+        rule: fragile
+        why: 80 written as 79
+      - formula: =IFS(AND(B2>=80,C2>5),"Senior",B2>=80,"Mid",TRUE,"Junior")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IFS(AND(B2>=80,C2>=6),"Senior",B2>=80,"Mid",TRUE,"Junior")
+        rule: fragile
+        why: 5 written as 6
+      - formula: =IFS(AND(B2>=80,C2>=4),"Senior",B2>=80,"Mid",TRUE,"Junior")
+        rule: fragile
+        why: 5 written as 4
+      - formula: =IFS(AND(B2>=80,C2>=5),"Senior",B2>80,"Mid",TRUE,"Junior")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IFS(AND(B2>=80,C2>=5),"Senior",B2>=81,"Mid",TRUE,"Junior")
+        rule: fragile
+        why: 80 written as 81
+      - formula: =IFS(AND(B2>=80,C2>=5),"Senior",B2>=79,"Mid",TRUE,"Junior")
+        rule: fragile
+        why: 80 written as 79
+    equivalent: []

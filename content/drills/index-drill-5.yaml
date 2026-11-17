@@ -1,0 +1,46 @@
+id: index-drill-5
+slug: index-drill-5
+level: 2
+title: INDEX and MATCH for a price
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: INDEX
+screens:
+  - prompt: In F3, use INDEX and MATCH to return the price in C2:C7 for the code in F2.
+    rows:
+      - [Code, Item, Price, null, Find, null]
+      - [D40, Tape, 2, null, Code, D40]
+      - [A10, Pen, 1.5, null, Price, null]
+      - [F60, Ink, 12, null, null, null]
+      - [B20, Pad, 3, null, null, null]
+      - [E50, File, 4, null, null, null]
+      - [C30, Clip, 0.25, null, null, null]
+    answerCell: F3
+    expected: 2
+    variants:
+      - { set: { F2: A10 }, expected: 1.5 }
+      - { set: { F2: F60 }, expected: 12 }
+      - { set: { F2: C30 }, expected: 0.25 }
+    answer: =INDEX(C2:C7,MATCH(F2,A2:A7,0))
+    requiredFunctions:
+      - INDEX
+      - MATCH
+    hints:
+      nudge: MATCH finds the row of the code; INDEX returns the price from that row.
+      rule: INDEX(return_range,MATCH(value,look_in,0)) is a lookup in two parts.
+    misses:
+      value: Code D40 is priced 2.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for INDEX and MATCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =INDEX(C2:C7,MATCH(F2,A2:A7,0))
+    reject:
+      - formula: =INDEX(B2:B7,MATCH(F2,A2:A7,0))
+        rule: value
+      - formula: =XLOOKUP(F2,A2:A7,C2:C7)
+        rule: required-function
+      - formula: =2
+        rule: required-function
+      - formula: =INDEX(C2:C7,MATCH(F2,A2:A7,0)
+        rule: syntax

@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFNA(MATCH($E$2,$A$2:$A$5,0),0)
+      - =IFNA(MATCH(E$2,A2:A5,0),0)
+      - =ifna(match(e2, a2:a5, 0), 0)
+      - =LET(data,A2:A5,IFNA(MATCH(E2,data,0),0))
+    wrong: []
+    equivalent: []

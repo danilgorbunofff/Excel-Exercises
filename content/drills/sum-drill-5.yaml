@@ -1,0 +1,46 @@
+id: sum-drill-5
+slug: sum-drill-5
+level: 2
+title: Total without the biggest order
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUM
+screens:
+  - prompt: In B8, use SUM and MAX to total the orders in B2:B6 without the largest one.
+    rows:
+      - [Order, Value]
+      - [A-101, 340]
+      - [A-102, 125]
+      - [A-103, 980]
+      - [A-104, 210]
+      - [A-105, 455]
+      - [null, null]
+      - [Without largest, null]
+    answerCell: B8
+    expected: 1130
+    variants:
+      - { set: { B2: 1500 }, expected: 1770 }
+      - { set: { B4: 340 }, expected: 1015 }
+    answer: =SUM(B2:B6)-MAX(B2:B6)
+    requiredFunctions:
+      - SUM
+      - MAX
+    hints:
+      nudge: Take the total, then take away the largest value.
+      rule: SUM(range) minus MAX(range) leaves the total of everything but the largest value.
+    misses:
+      value: The total is 2110 and the largest order is 980, so the answer is 1130.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUM and MAX.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUM(B2:B6)-MAX(B2:B6)
+    reject:
+      - formula: =SUM(B2:B5)-MAX(B2:B6)
+        rule: value
+      - formula: =SUM(B2:B6)
+        rule: required-function
+      - formula: =1130
+        rule: required-function
+      - formula: =SUM(B2:B6)-MAX(B2:B6
+        rule: syntax

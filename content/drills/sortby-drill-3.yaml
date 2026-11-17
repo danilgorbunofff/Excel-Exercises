@@ -1,0 +1,52 @@
+id: sortby-drill-3
+slug: sortby-drill-3
+level: 1
+title: Names by start date
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SORTBY
+screens:
+  - prompt: In E2, use SORTBY to list the names in A2:A6 ordered by their start dates in C2:C6, earliest first.
+    rows:
+      - [Name, Team, Started, null, Result, null]
+      - [Ann, Blue, 45047, null, null, null]
+      - [Bo, Red, 44454, null, null, null]
+      - [Cy, Blue, 45299, null, null, null]
+      - [Di, Red, 44623, null, null, null]
+      - [Ed, Blue, 44165, null, null, null]
+      - [null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [Ed]
+      - [Bo]
+      - [Di]
+      - [Ann]
+      - [Cy]
+    variants:
+      - set: { C4: 43466 }
+        expected:
+          - - Cy
+          - - Ed
+          - - Bo
+          - - Di
+          - - Ann
+    answer: =SORTBY(A2:A6,C2:C6)
+    requiredFunctions:
+      - SORTBY
+    hints:
+      nudge: Dates are numbers, so the earliest is the smallest.
+      rule: SORTBY(names,dates) puts the earliest start first.
+    misses:
+      value: Earliest first, the names are Ed, Bo, Di, Ann, Cy.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SORTBY(A2:A6,C2:C6)
+      - =SORTBY(A2:A6,C2:C6,1)
+    reject:
+      - formula: =SORTBY(A2:A6,B2:B6)
+        rule: value
+      - formula: =SORTBY(A2:A6,C2:C6,-1)
+        rule: value
+      - formula: =SORTBY(A2:A6,C2:C6
+        rule: syntax

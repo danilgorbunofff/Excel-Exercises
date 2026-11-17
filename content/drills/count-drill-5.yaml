@@ -1,0 +1,47 @@
+id: count-drill-5
+slug: count-drill-5
+level: 2
+title: Share of students with a score
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNT
+screens:
+  - prompt: In B9, use COUNT and COUNTA to find the share of students in A2:A7 who have a score in B2:B7.
+    rows:
+      - [Student, Score]
+      - [Ann, 72]
+      - [Bo, absent]
+      - [Cai, 64]
+      - [Dee, 91]
+      - [Eli, null]
+      - [Fay, 58]
+      - [null, null]
+      - [Share, null]
+    answerCell: B9
+    expected: 0.666666666667
+    variants:
+      - set: { B3: 80 }
+        expected: 0.833333333333
+    answer: =COUNT(B2:B7)/COUNTA(A2:A7)
+    requiredFunctions:
+      - COUNT
+      - COUNTA
+    hints:
+      nudge: Count the scores, then divide by the number of students.
+      rule: COUNT counts numbers; COUNTA counts every filled cell, so it counts the names.
+    misses:
+      value: Four of six students have a score, a share of about 0.67.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNT and COUNTA.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNT(B2:B7)/COUNTA(A2:A7)
+    reject:
+      - formula: =COUNT(B2:B7)/COUNTA(B2:B7)
+        rule: value
+      - formula: =COUNTA(B2:B7)/COUNTA(A2:A7)
+        rule: required-function
+      - formula: =0.666666666667
+        rule: required-function
+      - formula: =COUNT(B2:B7)/COUNTA(A2:A7
+        rule: syntax

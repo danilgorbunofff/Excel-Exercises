@@ -5,6 +5,7 @@ import { glob } from "astro/loaders";
 import {
   articleSchema,
   dailySchema,
+  drillSchema,
   exerciseSchema,
   functionSchema,
   mockSchema,
@@ -25,6 +26,11 @@ const mocks = defineCollection({
   schema: mockSchema,
 });
 
+const drills = defineCollection({
+  loader: glob({ base: "./content/drills", pattern: "*.yaml" }),
+  schema: drillSchema,
+});
+
 const functions = defineCollection({
   loader: glob({ base: "./content/functions", pattern: "*.yaml" }),
   schema: functionSchema,
@@ -35,4 +41,4 @@ const articles = defineCollection({
   schema: articleSchema,
 });
 
-export const collections = { exercises, daily, mocks, functions, articles };
+export const collections = { exercises, daily, mocks, drills, functions, articles };

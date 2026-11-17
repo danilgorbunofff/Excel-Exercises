@@ -1,0 +1,50 @@
+id: index-drill-4
+slug: index-drill-4
+level: 2
+title: The last entry in a list
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: INDEX
+screens:
+  - prompt: In D2, use INDEX and COUNTA to return the last name in B2:B8. The list has no gaps but ends before row 8.
+    rows:
+      - [Order, Name, null, Last]
+      - [1, Ann, null, null]
+      - [2, Bo, null, null]
+      - [3, Cy, null, null]
+      - [4, Di, null, null]
+      - [5, Ed, null, null]
+      - [6, null, null, null]
+      - [7, null, null, null]
+    answerCell: D2
+    expected: Ed
+    variants:
+      - set: { B7: Flo }
+        expected: Flo
+      - set: { B6: null }
+        expected: Di
+      - set: { B7: Flo, B8: Gus }
+        expected: Gus
+    answer: =INDEX(B2:B8,COUNTA(B2:B8))
+    requiredFunctions:
+      - INDEX
+      - COUNTA
+    hints:
+      nudge: COUNTA counts the names, which is also the position of the last one.
+      rule: INDEX(range,COUNTA(range)) returns the last filled cell of a list with no gaps.
+    misses:
+      value: Five names are filled in, so the last is Ed.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for INDEX and COUNTA.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =INDEX(B2:B8,COUNTA(B2:B8))
+    reject:
+      - formula: =INDEX(B2:B8,5)
+        rule: required-function
+      - formula: =INDEX(B2:B8,COUNTA(B2:B8)-1)
+        rule: value
+      - formula: ="Ed"
+        rule: required-function
+      - formula: =INDEX(B2:B8,COUNTA(B2:B8)
+        rule: syntax

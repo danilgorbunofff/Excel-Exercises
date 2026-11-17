@@ -1,0 +1,50 @@
+id: sortby-drill-5
+slug: sortby-drill-5
+level: 2
+title: Top three names by sales
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SORTBY
+screens:
+  - prompt: In E2, use TAKE and SORTBY to list the 3 reps in A2:A7 with the highest sales in C2:C7.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, null]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [Di]
+      - [Ann]
+      - [Flo]
+    variants:
+      - set: { C6: 999 }
+        expected:
+          - - Ed
+          - - Di
+          - - Ann
+    answer: =TAKE(SORTBY(A2:A7,C2:C7,-1),3)
+    requiredFunctions:
+      - SORTBY
+      - TAKE
+    hints:
+      nudge: Sort the names by sales, largest first, then take three.
+      rule: TAKE(SORTBY(names,sales,-1),3) names the top three.
+    misses:
+      value: The top three reps are Di, Ann, Flo.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SORTBY and TAKE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TAKE(SORTBY(A2:A7,C2:C7,-1),3)
+    reject:
+      - formula: =SORTBY(A2:A7,C2:C7,-1)
+        rule: required-function
+      - formula: =TAKE(SORTBY(A2:A7,C2:C7),3)
+        rule: value
+      - formula: =TAKE(SORTBY(A2:A7,C2:C7,-1),3
+        rule: syntax

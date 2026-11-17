@@ -1,0 +1,42 @@
+id: countblank-drill-4
+slug: countblank-drill-4
+level: 2
+title: Empty is not the same as zero
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTBLANK
+screens:
+  - prompt: In B7, use COUNTBLANK to find how many parts in B2:B6 have no stock count. A 0 means the count was done and found none.
+    rows:
+      - [Part, Stock]
+      - [Bolt, 0]
+      - [Nut, null]
+      - [Pin, 15]
+      - [Cap, 0]
+      - [Rod, null]
+      - [Not counted, null]
+    answerCell: B7
+    expected: 2
+    variants:
+      - { set: { B3: 4 }, expected: 1 }
+      - { set: { B2: null }, expected: 3 }
+    answer: =COUNTBLANK(B2:B6)
+    requiredFunctions:
+      - COUNTBLANK
+    hints:
+      nudge: A cell holding 0 is not empty.
+      rule: COUNTBLANK(range) counts only cells with nothing in them, not cells holding 0.
+    misses:
+      value: 2 cells are empty. A 0 is a value, not an empty cell.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTBLANK.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTBLANK(B2:B6)
+    reject:
+      - formula: =COUNTIF(B2:B6,"0")
+        rule: required-function
+      - formula: =2
+        rule: required-function
+      - formula: =COUNTBLANK(B2:B6
+        rule: syntax

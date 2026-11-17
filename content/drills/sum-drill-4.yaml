@@ -1,0 +1,44 @@
+id: sum-drill-4
+slug: sum-drill-4
+level: 2
+title: Total costs with a gap and a note
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUM
+screens:
+  - prompt: In B7, use SUM to total the costs. One cell holds a note and one is empty.
+    rows:
+      - [Item, Cost]
+      - [Paper, 12.5]
+      - [Ink, n/a]
+      - [Pens, 7.25]
+      - [Tape, null]
+      - [Folders, 9]
+      - [Total, null]
+    answerCell: B7
+    expected: 28.75
+    variants:
+      - set: { B5: 3 }
+        expected: 31.75
+    answer: =SUM(B2:B6)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: SUM skips text and empty cells on its own.
+      rule: Unlike + between cells, SUM(range) ignores text such as n/a and empty cells.
+    misses:
+      value: The three costs add up to 28.75. Include the whole range B2:B6.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUM.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUM(B2:B6)
+    reject:
+      - formula: =B2+B4+B6
+        rule: required-function
+      - formula: =SUM(B2:B4)
+        rule: value
+      - formula: =28.75
+        rule: required-function
+      - formula: =SUM(B2:B6
+        rule: syntax

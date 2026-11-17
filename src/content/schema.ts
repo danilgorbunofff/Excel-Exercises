@@ -200,6 +200,17 @@ export const dailySchema = exerciseSchema.omit({ topic: true, notes: true }).ext
  */
 export const mockSchema = exerciseSchema.omit({ topic: true, notes: true });
 
+/**
+ * A PRO function drill, in content/drills/: one short screen that practises one
+ * function, named in the prompt. Drills play one after another on
+ * /exercises/drills/ and have no page of their own.
+ */
+export const drillSchema = mockSchema.extend({
+  /** The function the drill practises, as named in content/function-index.yaml. */
+  function: z.string().regex(/^[A-Z][A-Z0-9.]*$/u),
+  screens: z.array(screenSchema).length(1),
+});
+
 export const trackSchema = z.object({
   topics: z
     .array(

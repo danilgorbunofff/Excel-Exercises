@@ -7,7 +7,8 @@ import { currentUser } from "../../server/supabase.ts";
 
 export const prerender = false;
 
-const STATES = new Set(["revealed", "solved", "helped"]);
+const STATES = new Set(["tried", "revealed", "solved", "helped"]);
+const MAX_MISSES = 9999;
 const DAY = /^\d{4}-\d{2}-\d{2}$/u;
 const MAX_ENTRIES = 2000;
 
@@ -21,6 +22,9 @@ function clean(body: unknown): Progress {
     const entry: ProgressEntry = { state: e.state as ProgressEntry["state"], date: String(e.date) };
     if (e.last !== undefined && DAY.test(String(e.last))) entry.last = String(e.last);
     if (Number.isInteger(e.reviews) && (e.reviews ?? 0) >= 0) entry.reviews = Number(e.reviews);
+    if (Number.isInteger(e.misses) && (e.misses ?? 0) >= 0)
+      entry.misses = Math.min(Number(e.misses), MAX_MISSES);
+    if (e.missed !== undefined && DAY.test(String(e.missed))) entry.missed = String(e.missed);
     out[id] = entry;
   }
   return out;

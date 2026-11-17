@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF($B$2:$B$8,">"&AVERAGE($B$2:$B$8))
+      - =COUNTIF(B$2:B$8,">"&AVERAGE(B2:B8))
+      - =countif(b2:b8, ">"&average(b2:b8))
+      - =LET(data,B2:B8,COUNTIF(data,">"&AVERAGE(data)))
+    wrong:
+      - formula: =COUNTIF(B2:B8,">="&AVERAGE(B2:B8))
+        rule: fragile
+        why: criteria ">" written with >=
+      - formula: =COUNTIF(B2:B8,">"&AVERAGE(B2:B7))
+        rule: fragile
+        why: range B2:B8 one row short at the end
+      - formula: =COUNTIF(B2:B8,">"&AVERAGE(B3:B8))
+        rule: fragile
+        why: range B2:B8 skips its first row
+    equivalent: []

@@ -1,0 +1,43 @@
+id: index-drill-3
+slug: index-drill-3
+level: 1
+title: A row and a column from a table
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: INDEX
+screens:
+  - prompt: In H2, use INDEX to return the value in B2:D5 at the row in F2 and the column in G2.
+    rows:
+      - [Region, Q1, Q2, Q3, null, Row, Col, Value]
+      - [North, 210, 185, 240, null, 3, 2, null]
+      - [South, 190, 205, 230, null, null, null, null]
+      - [East, 170, 220, 260, null, null, null, null]
+      - [West, 200, 195, 210, null, null, null, null]
+    answerCell: H2
+    expected: 220
+    variants:
+      - { set: { F2: 1 }, expected: 185 }
+      - { set: { G2: 3 }, expected: 260 }
+      - { set: { F2: 4 }, expected: 195 }
+    answer: =INDEX(B2:D5,F2,G2)
+    requiredFunctions:
+      - INDEX
+    hints:
+      nudge: INDEX takes a table, a row number, then a column number.
+      rule: INDEX(table,row,col) counts rows and columns inside the table range.
+    misses:
+      value: Row 3 of the table is East, and its 2nd column, Q2, holds 220.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for INDEX.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =INDEX(B2:D5,F2,G2)
+    reject:
+      - formula: =INDEX(B2:D5,G2,F2)
+        rule: value
+      - formula: =INDEX(A1:D5,F2,G2)
+        rule: value
+      - formula: =220
+        rule: required-function
+      - formula: =INDEX(B2:D5,F2,G2
+        rule: syntax

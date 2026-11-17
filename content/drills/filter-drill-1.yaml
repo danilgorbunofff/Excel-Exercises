@@ -1,0 +1,50 @@
+id: filter-drill-1
+slug: filter-drill-1
+level: 1
+title: Reps from one region
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: FILTER
+screens:
+  - prompt: In E2, use FILTER to list the reps in A2:A7 whose region in B2:B7 is "East".
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, null]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [Ann]
+      - [Cy]
+      - [Ed]
+    variants:
+      - set: { B3: East }
+        expected:
+          - - Ann
+          - - Bo
+          - - Cy
+          - - Ed
+    answer: =FILTER(A2:A7,B2:B7="East")
+    requiredFunctions:
+      - FILTER
+    hints:
+      nudge: FILTER takes what to return, then a test for each row.
+      rule: FILTER(A2:A7,B2:B7="East") spills every rep whose row passes the test.
+    misses:
+      value: The East reps are Ann, Cy, Ed.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for FILTER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =FILTER(A2:A7,B2:B7="East")
+    reject:
+      - formula: =FILTER(A2:A7,B2:B7="West")
+        rule: value
+      - formula: =INDEX(A2:A7,1)
+        rule: required-function
+      - formula: =FILTER(A2:A7,B2:B7="East"
+        rule: syntax

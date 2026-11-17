@@ -1,0 +1,44 @@
+id: ifs-drill-2
+slug: ifs-drill-2
+level: 1
+title: Postage by weight band
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IFS
+screens:
+  - prompt: In C2, use IFS to charge 4 up to 1 kg, 7 up to 5 kg, and 12 above that.
+    rows:
+      - [Parcel, Weight, Cost]
+      - [P1, 3.5, null]
+    answerCell: C2
+    expected: 7
+    variants:
+      - { set: { B2: 0.5 }, expected: 4 }
+      - { set: { B2: 8 }, expected: 12 }
+      - { set: { B2: 5 }, expected: 7 }
+      - { set: { B2: 1 }, expected: 4 }
+      - { set: { B2: 5.5 }, expected: 12 }
+      - { set: { B2: 1.5 }, expected: 7 }
+    answer: =IFS(B2<=1,4,B2<=5,7,TRUE,12)
+    requiredFunctions:
+      - IFS
+    hints:
+      nudge: "Start with the lightest band: the first true test wins."
+      rule: IFS(B2<=1,4,B2<=5,7,TRUE,12) checks the bands in order.
+    misses:
+      value: 3.5 kg is over 1 but not over 5, so the cost is 7.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IFS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IFS(B2<=1,4,B2<=5,7,TRUE,12)
+      - =IFS(B2<=1,4,B2<=5,7,B2>5,12)
+    reject:
+      - formula: =IFS(B2<1,4,B2<5,7,TRUE,12)
+        rule: fragile
+      - formula: =IFS(B2<=5,7,B2<=1,4,TRUE,12)
+        rule: fragile
+      - formula: =7
+        rule: required-function
+      - formula: =IFS(B2<=1,4,B2<=5,7,TRUE,12
+        rule: syntax

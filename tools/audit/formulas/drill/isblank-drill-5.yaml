@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(ISBLANK($B$2),"Missing","OK")
+      - =IF(ISBLANK(B$2),"Missing","OK")
+      - =if(isblank(b2), "Missing", "OK")
+    wrong: []
+    equivalent: []

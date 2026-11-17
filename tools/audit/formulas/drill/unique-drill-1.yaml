@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =UNIQUE($B$2:$B$7)
+      - =UNIQUE(B$2:B$7)
+      - =unique(b2:b7)
+      - =LET(data,B2:B7,UNIQUE(data))
+    wrong:
+      - formula: =UNIQUE(B2:B6)
+        rule: fragile
+        why: range B2:B7 one row short at the end
+    equivalent: []

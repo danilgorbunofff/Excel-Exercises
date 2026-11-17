@@ -1,0 +1,22 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF($B$2>=80,"A",IF($B$2>=60,"B","C"))
+      - =IF(B$2>=80,"A",IF(B2>=60,"B","C"))
+      - =if(b2>=80, "A", if(b2>=60, "B", "C"))
+      - =IFS(B2>=80,"A",TRUE,IF(B2>=60,"B","C"))
+      - =IF(B2>=80,"A",IFS(B2>=60,"B",TRUE,"C"))
+    wrong:
+      - formula: =IF(B2>80,"A",IF(B2>=60,"B","C"))
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IF(B2>=81,"A",IF(B2>=60,"B","C"))
+        rule: fragile
+        why: 80 written as 81
+      - formula: =IF(B2>=79,"A",IF(B2>=60,"B","C"))
+        rule: fragile
+        why: 80 written as 79
+      - formula: =IF(B2>=80,"A",IF(B2>=59,"B","C"))
+        rule: fragile
+        why: 60 written as 59
+    equivalent: []

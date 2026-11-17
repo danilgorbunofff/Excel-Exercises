@@ -1,0 +1,41 @@
+id: search-drill-4
+slug: search-drill-4
+level: 2
+title: Search for text in a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SEARCH
+screens:
+  - prompt: In C2, use SEARCH to find where the word in B2 starts in A2, in any case.
+    rows:
+      - [Sentence, Find, Result]
+      - [Ship the ORDER today, order, null]
+    answerCell: C2
+    expected: 10
+    variants:
+      - set: { B2: TODAY }
+        expected: 16
+      - set: { B2: ship }
+        expected: 1
+    answer: =SEARCH(B2,A2)
+    requiredFunctions:
+      - SEARCH
+    hints:
+      nudge: What to find goes first, then where to look.
+      rule: SEARCH(B2,A2) ignores case, so order finds ORDER.
+    misses:
+      value: ORDER starts at character 10.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SEARCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SEARCH(B2,A2)
+    reject:
+      - formula: =FIND(B2,A2)
+        rule: required-function
+      - formula: =SEARCH("order",A2)
+        rule: fragile
+      - formula: =10
+        rule: required-function
+      - formula: =SEARCH(B2,A2
+        rule: syntax

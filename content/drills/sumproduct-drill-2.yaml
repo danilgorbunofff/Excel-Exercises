@@ -1,0 +1,41 @@
+id: sumproduct-drill-2
+slug: sumproduct-drill-2
+level: 1
+title: Three columns multiplied
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUMPRODUCT
+screens:
+  - prompt: "In D6, use SUMPRODUCT to total the boxes: packs in B2:B5 times boxes per pack in C2:C5 times the price per box in D2:D5."
+    rows:
+      - [Line, Packs, Per pack, Price]
+      - [A, 3, 12, 2]
+      - [B, 5, 6, 3]
+      - [C, 2, 24, 1.5]
+      - [D, 4, 10, 2.5]
+      - [Total, null, null, null]
+    answerCell: D6
+    expected: 334
+    variants:
+      - set: { D3: 4 }
+        expected: 364
+    answer: =SUMPRODUCT(B2:B5,C2:C5,D2:D5)
+    requiredFunctions:
+      - SUMPRODUCT
+    hints:
+      nudge: SUMPRODUCT can take more than two ranges.
+      rule: SUMPRODUCT(r1,r2,r3) multiplies all three ranges row by row, then adds the results.
+    misses:
+      value: The four lines come to 72 + 90 + 72 + 100, which is 334.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUMPRODUCT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUMPRODUCT(B2:B5,C2:C5,D2:D5)
+    reject:
+      - formula: =SUMPRODUCT(B2:B5,C2:C5)
+        rule: value
+      - formula: =334
+        rule: required-function
+      - formula: =SUMPRODUCT(B2:B5,C2:C5,D2:D5
+        rule: syntax

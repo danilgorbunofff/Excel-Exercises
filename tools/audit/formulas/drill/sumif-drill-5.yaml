@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF($A$2:$A$8,"East",$B$2:$B$8)/SUM($B$2:$B$8)
+      - =SUMIF(A$2:A$8,"East",B2:B8)/SUM(B2:B8)
+      - =sumif(a2:a8, "East", b2:b8)/sum(b2:b8)
+      - =LET(data,A2:A8,SUMIF(data,"East",B2:B8)/SUM(B2:B8))
+    wrong:
+      - formula: =SUMIF(A2:A7,"East",B2:B8)/SUM(B2:B8)
+        rule: fragile
+        why: range A2:A8 one row short at the end
+    equivalent:
+      - formula: =SUMIF(A2:A9,"East",B2:B8)/SUM(B2:B8)
+        why: "range A2:A8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

@@ -1,0 +1,41 @@
+id: counta-drill-3
+slug: counta-drill-3
+level: 1
+title: Count the filled shifts
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTA
+screens:
+  - prompt: In B6, use COUNTA to find how many shifts in B2:D4 have a name.
+    rows:
+      - [Shift, Mon, Tue, Wed]
+      - [Early, Ann, null, Bo]
+      - [Late, Cy, Di, null]
+      - [Night, null, Ed, Fay]
+      - [null, null, null, null]
+      - [Filled, null, null, null]
+    answerCell: B6
+    expected: 6
+    variants:
+      - set: { C2: Gus }
+        expected: 7
+    answer: =COUNTA(B2:D4)
+    requiredFunctions:
+      - COUNTA
+    hints:
+      nudge: The range can cover the whole block.
+      rule: COUNTA(B2:D4) counts the filled cells in all nine.
+    misses:
+      value: 6 shifts have a name.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTA.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTA(B2:D4)
+    reject:
+      - formula: =COUNTA(B2:B4)
+        rule: value
+      - formula: =6
+        rule: required-function
+      - formula: =COUNTA(B2:D4
+        rule: syntax

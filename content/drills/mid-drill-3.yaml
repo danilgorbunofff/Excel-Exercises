@@ -1,0 +1,39 @@
+id: mid-drill-3
+slug: mid-drill-3
+level: 1
+title: Everything from a position on
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MID
+screens:
+  - prompt: "In B2, use MID to take everything in A2 from character 6 to the end. Ask for 50 characters: MID stops at the end of the text."
+    rows:
+      - [Code, Result]
+      - [CODE-ABC123, null]
+    answerCell: B2
+    expected: ABC123
+    variants:
+      - set: { A2: CODE-XY99887766 }
+        expected: XY99887766
+    answer: =MID(A2,6,50)
+    requiredFunctions:
+      - MID
+    hints:
+      nudge: A length longer than the rest of the text is fine.
+      rule: MID returns only as many characters as there are.
+    misses:
+      value: From character 6 on, CODE-ABC123 reads ABC123.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MID.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MID(A2,6,50)
+    reject:
+      - formula: =MID(A2,6,3)
+        rule: value
+      - formula: =MID(A2,5,50)
+        rule: value
+      - formula: ="ABC123"
+        rule: required-function
+      - formula: =MID(A2,6,50
+        rule: syntax

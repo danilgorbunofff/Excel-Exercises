@@ -1,0 +1,38 @@
+id: textjoin-drill-2
+slug: textjoin-drill-2
+level: 1
+title: Join a row with dashes
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TEXTJOIN
+screens:
+  - prompt: In E2, use TEXTJOIN to join A2:D2 with "-" between the parts.
+    rows:
+      - [Part 1, Part 2, Part 3, Part 4, Code]
+      - [NOR, WH, 4, B, null]
+    answerCell: E2
+    expected: NOR-WH-4-B
+    variants:
+      - set: { C2: 12 }
+        expected: NOR-WH-12-B
+    answer: =TEXTJOIN("-",TRUE,A2:D2)
+    requiredFunctions:
+      - TEXTJOIN
+    hints:
+      nudge: The range can run along a row.
+      rule: TEXTJOIN("-",TRUE,A2:D2) puts a dash between the parts.
+    misses:
+      value: The parts join to NOR-WH-4-B.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TEXTJOIN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TEXTJOIN("-",TRUE,A2:D2)
+      - =TEXTJOIN("-",FALSE,A2:D2)
+    reject:
+      - formula: =TEXTJOIN("-",TRUE,A2:C2)
+        rule: value
+      - formula: ="NOR-WH-4-B"
+        rule: required-function
+      - formula: =TEXTJOIN("-",TRUE,A2:D2
+        rule: syntax

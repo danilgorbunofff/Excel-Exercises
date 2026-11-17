@@ -1,0 +1,39 @@
+id: iferror-drill-3
+slug: iferror-drill-3
+level: 1
+title: A dash for no sales
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IFERROR
+screens:
+  - prompt: In D2, use IFERROR to work out the price per unit, B2 divided by C2, and show "-" when there were no units.
+    rows:
+      - [Item, Revenue, Units, Per unit]
+      - [Pads, 90, 0, null]
+    answerCell: D2
+    expected: "-"
+    variants:
+      - set: { C2: 30 }
+        expected: 3
+    answer: =IFERROR(B2/C2,"-")
+    requiredFunctions:
+      - IFERROR
+    hints:
+      nudge: The fallback can be text.
+      rule: IFERROR(B2/C2,"-") shows a dash when C2 is 0.
+    misses:
+      value: There were no units, so the cell shows a dash.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IFERROR.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IFERROR(B2/C2,"-")
+    reject:
+      - formula: =B2/C2
+        rule: required-function
+      - formula: =IFERROR(C2/B2,"-")
+        rule: value
+      - formula: ="-"
+        rule: required-function
+      - formula: =IFERROR(B2/C2,"-"
+        rule: syntax

@@ -1,0 +1,41 @@
+id: floor-drill-2
+slug: floor-drill-2
+level: 1
+title: Down to a quarter hour
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: FLOOR
+screens:
+  - prompt: In C2, use FLOOR to round the hours in B2 down to a multiple of 0.25.
+    rows:
+      - [Job, Hours, Billed]
+      - [Repair, 7.8, null]
+    answerCell: C2
+    expected: 7.75
+    variants:
+      - set: { B2: 7.75 }
+        expected: 7.75
+      - set: { B2: 2.2 }
+        expected: 2
+    answer: =FLOOR(B2,0.25)
+    requiredFunctions:
+      - FLOOR
+    hints:
+      nudge: The multiple can be a decimal, such as 0.25.
+      rule: FLOOR(hours,0.25) rounds down to the quarter hour below.
+    misses:
+      value: 7.8 hours go down to 7.75.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for FLOOR.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =FLOOR(B2,0.25)
+    reject:
+      - formula: =ROUNDDOWN(B2,1)
+        rule: required-function
+      - formula: =FLOOR(B2,0.5)
+        rule: value
+      - formula: =7.75
+        rule: required-function
+      - formula: =FLOOR(B2,0.25
+        rule: syntax

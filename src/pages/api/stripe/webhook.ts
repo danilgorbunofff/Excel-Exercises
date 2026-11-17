@@ -12,6 +12,7 @@ import {
   subscriptionMayUpdate,
 } from "../../../server/billing.ts";
 import { env } from "../../../server/env.ts";
+import { logEvent } from "../../../server/events.ts";
 import { stripe } from "../../../server/stripe.ts";
 import { adminClient } from "../../../server/supabase.ts";
 
@@ -69,7 +70,7 @@ export const POST: APIRoute = async ({ request }) => {
       const customer = idOf(session.customer);
       if (session.payment_status !== "paid" || !customer)
         return new Response("Not paid yet", { status: 200 });
-      return save(lifetimeFields(customer), session.client_reference_id);
+      return counted(await save(lifetimeFields(customer), session.client_reference_id));
     }
     subscriptionId = idOf(session.subscription);
   } else if (SUBSCRIPTION_EVENTS.includes(event.type)) {
@@ -78,5 +79,13 @@ export const POST: APIRoute = async ({ request }) => {
   if (!subscriptionId) return new Response("Ignored", { status: 200 });
 
   const sub = await stripe().subscriptions.retrieve(subscriptionId);
-  return save(proFields(sub), sub.metadata["user_id"] ?? null);
+  const res = await save(proFields(sub), sub.metadata["user_id"] ?? null);
+  // A checkout is the one event per purchase; subscription updates are not new buyers.
+  return CHECKOUT_EVENTS.includes(event.type) ? counted(res) : res;
 };
+
+/** Counts one new PRO purchase once its save went through. */
+async function counted(res: Response): Promise<Response> {
+  if (res.ok) await logEvent("pro_active");
+  return res;
+}

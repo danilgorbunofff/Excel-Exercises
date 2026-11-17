@@ -1,0 +1,46 @@
+id: hlookup-drill-1
+slug: hlookup-drill-1
+level: 1
+title: Sales for a month across a row
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: HLOOKUP
+screens:
+  - prompt: In B5, use HLOOKUP to find the sales in row 2 of B1:F2 for the month typed in B4.
+    rows:
+      - [Month, Jan, Feb, Mar, Apr, May]
+      - [Sales, 120, 95, 140, 110, 135]
+      - [null, null, null, null, null, null]
+      - [Find, Mar, null, null, null, null]
+      - [Sales, null, null, null, null, null]
+    answerCell: B5
+    expected: 140
+    variants:
+      - set: { B4: May }
+        expected: 135
+      - set: { B4: Jan }
+        expected: 120
+    answer: =HLOOKUP(B4,B1:F2,2,FALSE)
+    requiredFunctions:
+      - HLOOKUP
+    hints:
+      nudge: HLOOKUP searches the top row of a table and returns from a lower row.
+      rule: HLOOKUP(value,table,row_index,FALSE) is VLOOKUP turned on its side.
+    misses:
+      value: March sales are 140.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for HLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =HLOOKUP(B4,B1:F2,2,FALSE)
+      - =HLOOKUP(B4,B1:F2,2,0)
+      - =HLOOKUP(B4,A1:F2,2,FALSE)
+    reject:
+      - formula: =HLOOKUP(B4,B1:F2,1,FALSE)
+        rule: value
+      - formula: =XLOOKUP(B4,B1:F1,B2:F2)
+        rule: required-function
+      - formula: =140
+        rule: required-function
+      - formula: =HLOOKUP(B4,B1:F2,2,FALSE
+        rule: syntax

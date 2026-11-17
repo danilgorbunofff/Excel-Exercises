@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(AVERAGEIFS($B$2:$B$8,$A$2:$A$8,"East"),1)
+      - =ROUND(AVERAGEIFS(B$2:B$8,A2:A8,"East"),1)
+      - =round(averageifs(b2:b8, a2:a8, "East"), 1)
+      - =LET(data,B2:B8,ROUND(AVERAGEIFS(data,A2:A8,"East"),1))
+    wrong: []
+    equivalent: []

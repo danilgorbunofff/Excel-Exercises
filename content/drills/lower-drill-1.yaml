@@ -1,0 +1,39 @@
+id: lower-drill-1
+slug: lower-drill-1
+level: 1
+title: A code in small letters
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LOWER
+screens:
+  - prompt: In B2, use LOWER to turn the code in A2 into small letters.
+    rows:
+      - [Code, Result]
+      - [INV-204, null]
+    answerCell: B2
+    expected: inv-204
+    variants:
+      - set: { A2: CRD-17B }
+        expected: crd-17b
+    answer: =LOWER(A2)
+    requiredFunctions:
+      - LOWER
+    hints:
+      nudge: LOWER takes one piece of text.
+      rule: LOWER(text) turns every capital into a small letter.
+    misses:
+      value: In small letters, the code is inv-204.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LOWER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LOWER(A2)
+    reject:
+      - formula: =UPPER(A2)
+        rule: required-function
+      - formula: =LOWER(LEFT(A2,3))
+        rule: value
+      - formula: ="inv-204"
+        rule: required-function
+      - formula: =LOWER(A2
+        rule: syntax

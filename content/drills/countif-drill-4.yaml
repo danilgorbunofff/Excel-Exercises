@@ -1,0 +1,45 @@
+id: countif-drill-4
+slug: countif-drill-4
+level: 2
+title: Count prices over a limit in a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTIF
+screens:
+  - prompt: In D4, use COUNTIF to count the prices in B2:B8 that are over the limit in D2.
+    rows:
+      - [Item, Price, null, Limit]
+      - [A, 12, null, 20]
+      - [B, 25, null, Over]
+      - [C, 18, null, null]
+      - [D, 40, null, null]
+      - [E, 20, null, null]
+      - [F, 31, null, null]
+      - [G, 9, null, null]
+    answerCell: D4
+    expected: 3
+    variants:
+      - { set: { D2: 30 }, expected: 2 }
+      - { set: { B2: 25, B8: 25 }, expected: 5 }
+    answer: =COUNTIF(B2:B8,">"&D2)
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: 'Join the sign to the cell with &: ">"&D2.'
+      rule: COUNTIF(range,">"&D2) builds the test from the limit in D2.
+    misses:
+      value: 3 prices are over 20. A price of exactly 20 is not over.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTIF(B2:B8,">"&D2)
+    reject:
+      - formula: =COUNTIF(B2:B8,">20")
+        rule: fragile
+      - formula: =COUNTIF(B2:B8,">="&D2)
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =COUNTIF(B2:B8,">"&D2
+        rule: syntax

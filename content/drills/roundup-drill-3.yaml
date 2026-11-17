@@ -1,0 +1,41 @@
+id: roundup-drill-3
+slug: roundup-drill-3
+level: 1
+title: Price up to the next cent
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ROUNDUP
+screens:
+  - prompt: In C2, use ROUNDUP to round the price in B2 up to 2 decimal places.
+    rows:
+      - [Item, Price, Charged]
+      - [Fee, 2.341, null]
+    answerCell: C2
+    expected: 2.35
+    variants:
+      - set: { B2: 2.35 }
+        expected: 2.35
+      - set: { B2: 5.001 }
+        expected: 5.01
+    answer: =ROUNDUP(B2,2)
+    requiredFunctions:
+      - ROUNDUP
+    hints:
+      nudge: 2 places keeps cents.
+      rule: ROUNDUP(number,2) goes up to the next cent.
+    misses:
+      value: 2.341 goes up to 2.35.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ROUNDUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ROUNDUP(B2,2)
+    reject:
+      - formula: =ROUND(B2,2)
+        rule: required-function
+      - formula: =ROUNDUP(B2,1)
+        rule: value
+      - formula: =2.35
+        rule: required-function
+      - formula: =ROUNDUP(B2,2
+        rule: syntax

@@ -1,0 +1,37 @@
+id: search-drill-2
+slug: search-drill-2
+level: 1
+title: A wildcard for one character
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SEARCH
+screens:
+  - prompt: In B2, use SEARCH with "b?t" to find the first three-letter word in A2 that starts with b and ends with t.
+    rows:
+      - [Text, Result]
+      - [a bat and a bit, null]
+    answerCell: B2
+    expected: 3
+    variants:
+      - set: { A2: one bit }
+        expected: 5
+    answer: =SEARCH("b?t",A2)
+    requiredFunctions:
+      - SEARCH
+    hints:
+      nudge: A question mark stands for any single character.
+      rule: SEARCH("b?t",A2) matches bat, bit, but and so on.
+    misses:
+      value: The first match, bat, starts at character 3.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SEARCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SEARCH("b?t",A2)
+    reject:
+      - formula: =SEARCH("bit",A2)
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =SEARCH("b?t",A2
+        rule: syntax

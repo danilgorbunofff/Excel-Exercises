@@ -1,0 +1,39 @@
+id: mid-drill-1
+slug: mid-drill-1
+level: 1
+title: The middle of a code
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MID
+screens:
+  - prompt: In B2, use MID to take 3 characters from the code in A2, starting at character 5.
+    rows:
+      - [Code, Result]
+      - [INV-204-81, null]
+    answerCell: B2
+    expected: "204"
+    variants:
+      - set: { A2: CRD-917-02 }
+        expected: "917"
+    answer: =MID(A2,5,3)
+    requiredFunctions:
+      - MID
+    hints:
+      nudge: MID takes the text, where to start, and how many characters.
+      rule: MID(text,5,3) returns characters 5, 6 and 7.
+    misses:
+      value: Characters 5 to 7 of INV-204-81 are 204.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MID.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MID(A2,5,3)
+    reject:
+      - formula: =MID(A2,4,3)
+        rule: value
+      - formula: =LEFT(A2,3)
+        rule: required-function
+      - formula: ="204"
+        rule: required-function
+      - formula: =MID(A2,5,3
+        rule: syntax

@@ -1,0 +1,45 @@
+id: rank-drill-4
+slug: rank-drill-4
+level: 2
+title: Equal scores share a rank
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: RANK
+screens:
+  - prompt: In C4, use RANK to find where the score in B4 ranks in B2:B8, highest first. Two students have the same score.
+    rows:
+      - [Student, Score, Rank]
+      - [Ann, 72, null]
+      - [Bo, 88, null]
+      - [Cy, 85, null]
+      - [Di, 91, null]
+      - [Ed, 85, null]
+      - [Flo, 59, null]
+      - [Gus, 78, null]
+    answerCell: C4
+    expected: 3
+    variants:
+      - { set: { B6: 80 }, expected: 3 }
+      - { set: { B3: 70 }, expected: 2 }
+      - { set: { B4: 59 }, expected: 6 }
+    answer: =RANK(B4,B2:B8)
+    requiredFunctions:
+      - RANK
+    hints:
+      nudge: Tied values get the same rank.
+      rule: RANK gives equal values the same, best rank, and skips the next one.
+    misses:
+      value: Two scores beat 85 and two students share it, so both rank 3.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for RANK.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =RANK(B4,B2:B8)
+      - =RANK(B4,$B$2:$B$8)
+    reject:
+      - formula: =RANK(B4,B2:B8,1)
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =RANK(B4,B2:B8
+        rule: syntax

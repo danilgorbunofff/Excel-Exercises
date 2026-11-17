@@ -1,0 +1,44 @@
+id: isna-drill-5
+slug: isna-drill-5
+level: 2
+title: New or known customer
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISNA
+screens:
+  - prompt: In E3, use IF, ISNA and MATCH to show "New" when the code in E2 is not in A2:A5, and "Known" when it is.
+    rows:
+      - [Code, Price, null, Find, null]
+      - [D40, 2, null, Code, Z99]
+      - [A10, 1.5, null, Status, null]
+      - [F60, 12, null, null, null]
+      - [B20, 3, null, null, null]
+    answerCell: E3
+    expected: New
+    variants:
+      - { set: { E2: D40 }, expected: Known }
+      - { set: { E2: B20 }, expected: Known }
+    answer: =IF(ISNA(MATCH(E2,A2:A5,0)),"New","Known")
+    requiredFunctions:
+      - ISNA
+      - IF
+      - MATCH
+    hints:
+      nudge: ISNA says whether MATCH failed; IF turns that into a word.
+      rule: IF(ISNA(MATCH(...)),"New","Known") labels the code.
+    misses:
+      value: Z99 is not in the list, so it is New.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISNA, IF and MATCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IF(ISNA(MATCH(E2,A2:A5,0)),"New","Known")
+    reject:
+      - formula: =IF(ISERROR(MATCH(E2,A2:A5,0)),"New","Known")
+        rule: required-function
+      - formula: =IF(ISNA(MATCH(E2,A2:A5,0)),"Known","New")
+        rule: value
+      - formula: ="New"
+        rule: required-function
+      - formula: =IF(ISNA(MATCH(E2,A2:A5,0)),"New","Known"
+        rule: syntax

@@ -1,0 +1,37 @@
+id: upper-drill-4
+slug: upper-drill-4
+level: 2
+title: Digits and signs stay
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: UPPER
+screens:
+  - prompt: In B2, use UPPER to turn the note in A2 into capitals.
+    rows:
+      - [Note, Result]
+      - ["order #12b, due 3pm", null]
+    answerCell: B2
+    expected: "ORDER #12B, DUE 3PM"
+    variants:
+      - set: { A2: box 7-a }
+        expected: BOX 7-A
+    answer: =UPPER(A2)
+    requiredFunctions:
+      - UPPER
+    hints:
+      nudge: Digits, spaces and signs do not change.
+      rule: UPPER changes letters only.
+    misses:
+      value: "In capitals, the note reads ORDER #12B, DUE 3PM."
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for UPPER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =UPPER(A2)
+    reject:
+      - formula: =PROPER(A2)
+        rule: required-function
+      - formula: '="ORDER #12B, DUE 3PM"'
+        rule: required-function
+      - formula: =UPPER(A2
+        rule: syntax

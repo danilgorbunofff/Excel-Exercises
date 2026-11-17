@@ -1,0 +1,35 @@
+id: isblank-drill-3
+slug: isblank-drill-3
+level: 2
+title: A space is not blank
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISBLANK
+screens:
+  - prompt: In C2, use ISBLANK to test whether B2 is empty. It looks empty but holds a single space.
+    rows:
+      - [Task, Owner, Empty]
+      - [Plan, " ", null]
+    answerCell: C2
+    expected: false
+    variants:
+      - set: { B2: null }
+        expected: true
+    answer: =ISBLANK(B2)
+    requiredFunctions:
+      - ISBLANK
+    hints:
+      nudge: A space is a character, so the cell is not empty.
+      rule: ISBLANK is FALSE for a cell that holds only a space.
+    misses:
+      value: B2 holds a space, so it is not empty and the result is FALSE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISBLANK.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ISBLANK(B2)
+    reject:
+      - formula: =TRIM(B2)=""
+        rule: required-function
+      - formula: =ISBLANK(B2
+        rule: syntax

@@ -1,0 +1,37 @@
+id: substitute-drill-1
+slug: substitute-drill-1
+level: 1
+title: Remove the dashes
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUBSTITUTE
+screens:
+  - prompt: In B2, use SUBSTITUTE to remove every "-" from the code in A2.
+    rows:
+      - [Code, Result]
+      - [INV-204-81, null]
+    answerCell: B2
+    expected: INV20481
+    variants:
+      - set: { A2: CR-9-17-02 }
+        expected: CR91702
+    answer: =SUBSTITUTE(A2,"-","")
+    requiredFunctions:
+      - SUBSTITUTE
+    hints:
+      nudge: SUBSTITUTE takes the text, what to replace, and what to put in its place. "" means nothing.
+      rule: SUBSTITUTE(A2,"-","") replaces every dash with nothing.
+    misses:
+      value: Without dashes, the code reads INV20481.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUBSTITUTE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUBSTITUTE(A2,"-","")
+    reject:
+      - formula: =SUBSTITUTE(A2,"-"," ")
+        rule: value
+      - formula: ="INV20481"
+        rule: required-function
+      - formula: =SUBSTITUTE(A2,"-",""
+        rule: syntax

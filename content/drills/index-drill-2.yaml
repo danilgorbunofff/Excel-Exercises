@@ -1,0 +1,46 @@
+id: index-drill-2
+slug: index-drill-2
+level: 1
+title: A position typed in a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: INDEX
+screens:
+  - prompt: In E3, use INDEX to return the name in B2:B7 at the position typed in E2.
+    rows:
+      - [Rank, Name, null, Pick, null]
+      - [1, Ann, null, Position, 2]
+      - [2, Bo, null, Name, null]
+      - [3, Cy, null, null, null]
+      - [4, Di, null, null, null]
+      - [5, Ed, null, null, null]
+      - [6, Flo, null, null, null]
+    answerCell: E3
+    expected: Bo
+    variants:
+      - set: { E2: 6 }
+        expected: Flo
+      - set: { E2: 1 }
+        expected: Ann
+    answer: =INDEX(B2:B7,E2)
+    requiredFunctions:
+      - INDEX
+    hints:
+      nudge: The position can come from a cell.
+      rule: INDEX(range,E2) returns the cell at whatever position E2 holds.
+    misses:
+      value: Position 2 holds Bo.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for INDEX.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =INDEX(B2:B7,E2)
+    reject:
+      - formula: =INDEX(B2:B7,2)
+        rule: fragile
+      - formula: =INDEX(A2:A7,E2)
+        rule: value
+      - formula: ="Bo"
+        rule: required-function
+      - formula: =INDEX(B2:B7,E2
+        rule: syntax

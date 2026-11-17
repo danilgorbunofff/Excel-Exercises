@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIFS($C$2:$C$8,$B$2:$B$8,"<>Done")
+      - =SUMIFS(C$2:C$8,B2:B8,"<>Done")
+      - =sumifs(c2:c8, b2:b8, "<>Done")
+      - =LET(data,C2:C8,SUMIFS(data,B2:B8,"<>Done"))
+    wrong: []
+    equivalent: []

@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFERROR(XLOOKUP($E$2,$A$2:$A$5,$B$2:$B$5)*$E$3,0)
+      - =IFERROR(XLOOKUP(E$2,A2:A5,B2:B5)*E3,0)
+      - =iferror(xlookup(e2, a2:a5, b2:b5)*e3, 0)
+      - =LET(data,A2:A5,IFERROR(XLOOKUP(E2,data,B2:B5)*E3,0))
+    wrong: []
+    equivalent: []

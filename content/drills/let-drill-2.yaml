@@ -1,0 +1,41 @@
+id: let-drill-2
+slug: let-drill-2
+level: 1
+title: Name a line total
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LET
+screens:
+  - prompt: In E2, use LET to name B2*C2 as line, then return line minus the discount in D2.
+    rows:
+      - [Item, Price, Qty, Discount, Net]
+      - [Desk, 220, 3, 40, null]
+    answerCell: E2
+    expected: 620
+    variants:
+      - set: { C2: 5 }
+        expected: 1060
+      - set: { D2: 0 }
+        expected: 660
+    answer: =LET(line,B2*C2,line-D2)
+    requiredFunctions:
+      - LET
+    hints:
+      nudge: The name can stand for a calculation.
+      rule: LET(line,B2*C2,line-D2) names the line total, then uses it.
+    misses:
+      value: 3 desks at 220 make 660, minus 40 is 620.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LET.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LET(line,B2*C2,line-D2)
+    reject:
+      - formula: =B2*C2-D2
+        rule: required-function
+      - formula: =LET(line,B2*C2,line+D2)
+        rule: value
+      - formula: =620
+        rule: required-function
+      - formula: =LET(line,B2*C2,line-D2
+        rule: syntax

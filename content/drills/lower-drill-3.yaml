@@ -1,0 +1,41 @@
+id: lower-drill-3
+slug: lower-drill-3
+level: 1
+title: Build an address in small letters
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LOWER
+screens:
+  - prompt: In C2, use LOWER to join the name in A2, "@" and the domain in B2, all in small letters.
+    rows:
+      - [Name, Domain, Result]
+      - [ROSA, Example.com, null]
+    answerCell: C2
+    expected: rosa@example.com
+    variants:
+      - set: { A2: Al, B2: SHOP.ORG }
+        expected: al@shop.org
+    answer: =LOWER(A2&"@"&B2)
+    requiredFunctions:
+      - LOWER
+    hints:
+      nudge: Join the parts with &, then wrap the whole thing in LOWER.
+      rule: LOWER(A2&"@"&B2) lowers the joined address.
+    misses:
+      value: The address is rosa@example.com.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LOWER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LOWER(A2&"@"&B2)
+      - =LOWER(A2)&"@"&LOWER(B2)
+      - =LOWER(CONCAT(A2,"@",B2))
+    reject:
+      - formula: =LOWER(A2)&"@"&B2
+        rule: value
+      - formula: =LOWER(A2&B2)
+        rule: value
+      - formula: ="rosa@example.com"
+        rule: required-function
+      - formula: =LOWER(A2&"@"&B2
+        rule: syntax

@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =TAKE($A$2:$A$7,$I$1)
+      - =TAKE(A$2:A$7,I1)
+      - =take(a2:a7, i1)
+      - =LET(data,A2:A7,TAKE(data,I1))
+    wrong: []
+    equivalent: []

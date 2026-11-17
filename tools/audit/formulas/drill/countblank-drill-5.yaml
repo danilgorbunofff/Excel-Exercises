@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTBLANK($B$2:$B$8)/COUNTA($A$2:$A$8)
+      - =COUNTBLANK(B$2:B$8)/COUNTA(A2:A8)
+      - =countblank(b2:b8)/counta(a2:a8)
+      - =LET(data,B2:B8,COUNTBLANK(data)/COUNTA(A2:A8))
+    wrong:
+      - formula: =COUNTBLANK(B2:B7)/COUNTA(A2:A8)
+        rule: fragile
+        why: range B2:B8 one row short at the end
+      - formula: =COUNTBLANK(B3:B8)/COUNTA(A2:A8)
+        rule: fragile
+        why: range B2:B8 skips its first row
+    equivalent: []

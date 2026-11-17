@@ -1,0 +1,43 @@
+id: switch-drill-5
+slug: switch-drill-5
+level: 2
+title: Region from the first letter of a code
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SWITCH
+screens:
+  - prompt: 'In B2, use SWITCH and LEFT to turn the first letter of the code in A2 into a region: "N" North, "S" South, "E" East, "W" West.'
+    rows:
+      - [Code, Region]
+      - [S-220, null]
+    answerCell: B2
+    expected: South
+    variants:
+      - set: { A2: W-310 }
+        expected: West
+      - set: { A2: N-104 }
+        expected: North
+    answer: =SWITCH(LEFT(A2,1),"N","North","S","South","E","East","W","West")
+    requiredFunctions:
+      - SWITCH
+      - LEFT
+    hints:
+      nudge: LEFT(A2,1) takes the first letter; SWITCH then turns it into a name.
+      rule: "A function can feed SWITCH: SWITCH(LEFT(A2,1),...)."
+    misses:
+      value: S-220 starts with S, which stands for South.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SWITCH and LEFT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SWITCH(LEFT(A2,1),"N","North","S","South","E","East","W","West")
+      - =SWITCH(LEFT(A2),"N","North","S","South","E","East","W","West")
+    reject:
+      - formula: =SWITCH(A2,"N","North","S","South","E","East","W","West")
+        rule: required-function
+      - formula: =SWITCH(LEFT(A2,1),"N","North","S","East","E","South","W","West")
+        rule: value
+      - formula: ="South"
+        rule: required-function
+      - formula: =SWITCH(LEFT(A2,1),"N","North","S","South","E","East","W","West"
+        rule: syntax

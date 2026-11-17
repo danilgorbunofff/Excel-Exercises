@@ -1,0 +1,39 @@
+id: concat-drill-1
+slug: concat-drill-1
+level: 1
+title: Join a prefix and a number
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: CONCAT
+screens:
+  - prompt: In C2, use CONCAT to join the prefix in A2 and the number in B2.
+    rows:
+      - [Prefix, Number, Result]
+      - [INV, 204, null]
+    answerCell: C2
+    expected: INV204
+    variants:
+      - set: { A2: CRD, B2: 7 }
+        expected: CRD7
+    answer: =CONCAT(A2,B2)
+    requiredFunctions:
+      - CONCAT
+    hints:
+      nudge: CONCAT joins its arguments in order.
+      rule: CONCAT(A2,B2) puts B2 straight after A2.
+    misses:
+      value: INV and 204 join to INV204.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for CONCAT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =CONCAT(A2,B2)
+    reject:
+      - formula: =A2&B2
+        rule: required-function
+      - formula: =CONCAT(B2,A2)
+        rule: value
+      - formula: ="INV204"
+        rule: required-function
+      - formula: =CONCAT(A2,B2
+        rule: syntax

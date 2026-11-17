@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =UNIQUE($A$2:$A$9)
+      - =UNIQUE(A$2:A$9)
+      - =unique(a2:a9)
+      - =LET(data,A2:A9,UNIQUE(data))
+    wrong: []
+    equivalent: []

@@ -1,0 +1,39 @@
+id: left-drill-1
+slug: left-drill-1
+level: 1
+title: The prefix of a code
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LEFT
+screens:
+  - prompt: In B2, use LEFT to take the first 3 characters of the code in A2.
+    rows:
+      - [Code, Prefix]
+      - [INV-20481, null]
+    answerCell: B2
+    expected: INV
+    variants:
+      - set: { A2: CRD-11002 }
+        expected: CRD
+    answer: =LEFT(A2,3)
+    requiredFunctions:
+      - LEFT
+    hints:
+      nudge: LEFT takes the text, then how many characters to keep.
+      rule: LEFT(text,3) returns the first three characters.
+    misses:
+      value: The first three characters of INV-20481 are INV.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LEFT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LEFT(A2,3)
+    reject:
+      - formula: =LEFT(A2,4)
+        rule: value
+      - formula: =RIGHT(A2,3)
+        rule: required-function
+      - formula: ="INV"
+        rule: required-function
+      - formula: =LEFT(A2,3
+        rule: syntax

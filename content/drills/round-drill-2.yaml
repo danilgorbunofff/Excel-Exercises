@@ -1,0 +1,41 @@
+id: round-drill-2
+slug: round-drill-2
+level: 1
+title: Round to a whole number
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ROUND
+screens:
+  - prompt: In C2, use ROUND to round the hours in B2 to a whole number.
+    rows:
+      - [Job, Hours, Rounded]
+      - [Repair, 7.5, null]
+    answerCell: C2
+    expected: 8
+    variants:
+      - set: { B2: 7.49 }
+        expected: 7
+      - set: { B2: 2.5 }
+        expected: 3
+    answer: =ROUND(B2,0)
+    requiredFunctions:
+      - ROUND
+    hints:
+      nudge: 0 decimal places gives a whole number.
+      rule: ROUND(number,0) rounds to the nearest whole number; a half goes up.
+    misses:
+      value: 7.5 rounds up to 8.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ROUND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ROUND(B2,0)
+    reject:
+      - formula: =ROUND(B2,1)
+        rule: value
+      - formula: =ROUNDDOWN(B2,0)
+        rule: required-function
+      - formula: =8
+        rule: required-function
+      - formula: =ROUND(B2,0
+        rule: syntax

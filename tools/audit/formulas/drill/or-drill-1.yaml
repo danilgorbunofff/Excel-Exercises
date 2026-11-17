@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =OR($B$2>=1000,$C$2>=5)
+      - =OR(B$2>=1000,C2>=5)
+      - =or(b2>=1000, c2>=5)
+    wrong:
+      - formula: =OR(B2>=999,C2>=5)
+        rule: fragile
+        why: 1000 written as 999
+      - formula: =OR(B2>=1000,C2>=4)
+        rule: fragile
+        why: 5 written as 4
+    equivalent: []

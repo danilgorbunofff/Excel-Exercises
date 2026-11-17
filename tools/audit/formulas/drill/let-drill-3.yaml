@@ -1,0 +1,19 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LET(avg,AVERAGE($B$2:$B$6),COUNTIF($B$2:$B$6,">"&avg))
+      - =LET(avg,AVERAGE(B$2:B$6),COUNTIF(B2:B6,">"&avg))
+      - =let(avg, average(b2:b6), countif(b2:b6, ">"&avg))
+      - =LET(data,B2:B6,LET(avg,AVERAGE(data),COUNTIF(data,">"&avg)))
+    wrong:
+      - formula: =LET(avg,AVERAGE(B3:B6),COUNTIF(B2:B6,">"&avg))
+        rule: fragile
+        why: range B2:B6 skips its first row
+      - formula: =LET(avg,AVERAGE(B2:B6),COUNTIF(B2:B6,">="&avg))
+        rule: fragile
+        why: criteria ">" written with >=
+    equivalent:
+      - formula: =LET(avg,AVERAGE(B2:B7),COUNTIF(B2:B6,">"&avg))
+        why: "range B2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =LET(avg,AVERAGE(B2:B6),COUNTIF(B2:B7,">"&avg))
+        why: "range B2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

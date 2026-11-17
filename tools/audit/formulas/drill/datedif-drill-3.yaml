@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =DATEDIF($B$2,$C$2,"d")
+      - =DATEDIF(B$2,C2,"d")
+      - =datedif(b2, c2, "d")
+    wrong: []
+    equivalent: []

@@ -1,0 +1,48 @@
+id: sumif-drill-5
+slug: sumif-drill-5
+level: 2
+title: East's share of all sales
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUMIF
+screens:
+  - prompt: In B9, use SUMIF and SUM to find the share of all sales in B2:B8 that comes from "East" rows.
+    rows:
+      - [Region, Sales]
+      - [East, 400]
+      - [West, 250]
+      - [East, 310]
+      - [North, 520]
+      - [East, 190]
+      - [West, 330]
+      - [North, 450]
+      - [East share, null]
+    answerCell: B9
+    expected: 0.367346938776
+    variants:
+      - { set: { A3: East }, expected: 0.469387755102 }
+      - { set: { B5: 100 }, expected: 0.443349753695 }
+      - { set: { A8: East }, expected: 0.5510204081632653 }
+    answer: =SUMIF(A2:A8,"East",B2:B8)/SUM(B2:B8)
+    requiredFunctions:
+      - SUMIF
+      - SUM
+    hints:
+      nudge: Divide the East total by the total of everything.
+      rule: SUMIF gives the East part; SUM gives the whole.
+    misses:
+      value: East sells 900 of 2450, a share of about 0.37.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUMIF and SUM.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUMIF(A2:A8,"East",B2:B8)/SUM(B2:B8)
+    reject:
+      - formula: =SUMIF(A2:A8,"East",B2:B8)/SUMIF(A2:A8,"West",B2:B8)
+        rule: required-function
+      - formula: =SUM(B2:B8)/SUMIF(A2:A8,"East",B2:B8)
+        rule: value
+      - formula: =0.367346938776
+        rule: required-function
+      - formula: =SUMIF(A2:A8,"East",B2:B8)/SUM(B2:B8
+        rule: syntax

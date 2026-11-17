@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($B$2:$B$8,COUNTA($B$2:$B$8))
+      - =INDEX(B$2:B$8,COUNTA(B2:B8))
+      - =index(b2:b8, counta(b2:b8))
+      - =LET(data,B2:B8,INDEX(data,COUNTA(data)))
+    wrong:
+      - formula: =INDEX(B2:B7,COUNTA(B2:B8))
+        rule: fragile
+        why: range B2:B8 one row short at the end
+      - formula: =INDEX(B2:B8,COUNTA(B2:B7))
+        rule: fragile
+        why: range B2:B8 one row short at the end
+    equivalent: []

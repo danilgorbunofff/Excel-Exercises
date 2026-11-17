@@ -1,0 +1,37 @@
+id: trim-drill-1
+slug: trim-drill-1
+level: 1
+title: Spaces at the ends
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TRIM
+screens:
+  - prompt: In C2, use TRIM to remove the spaces before and after the name in B2.
+    rows:
+      - [ID, Name, Result]
+      - [R1, "   Rosa Diaz  ", null]
+    answerCell: C2
+    expected: Rosa Diaz
+    variants:
+      - set: { B2: " Al Brook" }
+        expected: Al Brook
+    answer: =TRIM(B2)
+    requiredFunctions:
+      - TRIM
+    hints:
+      nudge: TRIM takes one piece of text.
+      rule: TRIM(text) removes spaces at the start and the end.
+    misses:
+      value: Trimmed, the name reads Rosa Diaz.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TRIM.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TRIM(B2)
+    reject:
+      - formula: =SUBSTITUTE(B2," ","")
+        rule: required-function
+      - formula: ="Rosa Diaz"
+        rule: required-function
+      - formula: =TRIM(B2
+        rule: syntax

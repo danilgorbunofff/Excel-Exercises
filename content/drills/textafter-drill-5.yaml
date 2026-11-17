@@ -1,0 +1,40 @@
+id: textafter-drill-5
+slug: textafter-drill-5
+level: 2
+title: The name of an email domain
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TEXTAFTER
+screens:
+  - prompt: In B2, use TEXTBEFORE and TEXTAFTER to take the domain name in A2 between "@" and the next ".".
+    rows:
+      - [Email, Result]
+      - [rosa.diaz@example.com, null]
+    answerCell: B2
+    expected: example
+    variants:
+      - set: { A2: al@shop.co.uk }
+        expected: shop
+    answer: =TEXTBEFORE(TEXTAFTER(A2,"@"),".")
+    requiredFunctions:
+      - TEXTAFTER
+      - TEXTBEFORE
+    hints:
+      nudge: Take what is after the at sign, then what is before its first dot.
+      rule: 'A function''s result can feed another: TEXTBEFORE(TEXTAFTER(...),".").'
+    misses:
+      value: Between the at sign and the dot is example.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TEXTAFTER and TEXTBEFORE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TEXTBEFORE(TEXTAFTER(A2,"@"),".")
+    reject:
+      - formula: =TEXTAFTER(A2,"@")
+        rule: required-function
+      - formula: =TEXTBEFORE(TEXTAFTER(A2,"@"),".",-1)
+        rule: fragile
+      - formula: ="example"
+        rule: required-function
+      - formula: =TEXTBEFORE(TEXTAFTER(A2,"@"),"."
+        rule: syntax

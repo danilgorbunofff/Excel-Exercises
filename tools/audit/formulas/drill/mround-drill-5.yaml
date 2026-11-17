@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MROUND(AVERAGE($B$2:$B$6),5)
+      - =MROUND(AVERAGE(B$2:B$6),5)
+      - =mround(average(b2:b6), 5)
+      - =LET(data,B2:B6,MROUND(AVERAGE(data),5))
+    wrong: []
+    equivalent:
+      - formula: =MROUND(AVERAGE(B2:B7),5)
+        why: "range B2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

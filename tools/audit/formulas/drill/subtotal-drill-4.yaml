@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUBTOTAL(4,$C$2:$C$7)
+      - =SUBTOTAL(4,C$2:C$7)
+      - =subtotal(4, c2:c7)
+      - =LET(data,C2:C7,SUBTOTAL(4,data))
+    wrong:
+      - formula: =SUBTOTAL(4,C2:C6)
+        rule: fragile
+        why: range C2:C7 one row short at the end
+      - formula: =SUBTOTAL(4,C3:C7)
+        rule: fragile
+        why: range C2:C7 skips its first row
+    equivalent: []

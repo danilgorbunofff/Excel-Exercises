@@ -1,0 +1,41 @@
+id: search-drill-3
+slug: search-drill-3
+level: 1
+title: Search from a start position
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SEARCH
+screens:
+  - prompt: In C2, use SEARCH to find "a" in A2, starting at the character in B2.
+    rows:
+      - [Text, Start, Result]
+      - [Banana bread, 5, null]
+    answerCell: C2
+    expected: 6
+    variants:
+      - set: { B2: 1 }
+        expected: 2
+      - set: { B2: 7 }
+        expected: 11
+    answer: =SEARCH("a",A2,B2)
+    requiredFunctions:
+      - SEARCH
+    hints:
+      nudge: SEARCH's third argument says where to start looking.
+      rule: SEARCH("a",A2,5) skips the first four characters.
+    misses:
+      value: From character 5 on, the next a is at 6.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SEARCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SEARCH("a",A2,B2)
+    reject:
+      - formula: =SEARCH("a",A2)
+        rule: value
+      - formula: =SEARCH("a",A2,5)
+        rule: fragile
+      - formula: =6
+        rule: required-function
+      - formula: =SEARCH("a",A2,B2
+        rule: syntax

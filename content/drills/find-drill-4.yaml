@@ -1,0 +1,41 @@
+id: find-drill-4
+slug: find-drill-4
+level: 2
+title: Find text typed in a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: FIND
+screens:
+  - prompt: In C2, use FIND to find the position of the text in B2 within A2.
+    rows:
+      - [Sentence, Find, Result]
+      - [Pay the invoice by Friday, invoice, null]
+    answerCell: C2
+    expected: 9
+    variants:
+      - set: { B2: Friday }
+        expected: 20
+      - set: { B2: Pay }
+        expected: 1
+    answer: =FIND(B2,A2)
+    requiredFunctions:
+      - FIND
+    hints:
+      nudge: What to find goes first, then where to look.
+      rule: FIND(B2,A2) returns where the text in B2 starts in A2.
+    misses:
+      value: The word invoice starts at character 9.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for FIND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =FIND(B2,A2)
+    reject:
+      - formula: =FIND(A2,B2)
+        rule: value
+      - formula: =FIND("invoice",A2)
+        rule: fragile
+      - formula: =9
+        rule: required-function
+      - formula: =FIND(B2,A2
+        rule: syntax

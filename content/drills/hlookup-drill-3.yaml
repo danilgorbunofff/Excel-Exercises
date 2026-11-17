@@ -1,0 +1,47 @@
+id: hlookup-drill-3
+slug: hlookup-drill-3
+level: 2
+title: Postage rate from weight bands
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: HLOOKUP
+screens:
+  - prompt: In B5, use HLOOKUP with TRUE to find the rate in row 2 of B1:E2 for the weight in B4. Row 1 holds where each band starts.
+    rows:
+      - [From, 0, 1, 5, 10]
+      - [Rate, 4, 7, 12, 20]
+      - [null, null, null, null, null]
+      - [Weight, 6.5, null, null, null]
+      - [Rate, null, null, null, null]
+    answerCell: B5
+    expected: 12
+    variants:
+      - set: { B4: 5 }
+        expected: 12
+      - set: { B4: 4.9 }
+        expected: 7
+      - set: { B4: 10 }
+        expected: 20
+      - set: { B4: 0.5 }
+        expected: 4
+    answer: =HLOOKUP(B4,B1:E2,2,TRUE)
+    requiredFunctions:
+      - HLOOKUP
+    hints:
+      nudge: TRUE finds the largest band start that is not more than the weight.
+      rule: HLOOKUP(value,bands,2,TRUE) needs the starts sorted from small to large.
+    misses:
+      value: 6.5 falls in the band that starts at 5, so the rate is 12.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for HLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =HLOOKUP(B4,B1:E2,2,TRUE)
+      - =HLOOKUP(B4,B1:E2,2)
+    reject:
+      - formula: =HLOOKUP(B4,B1:E2,2,FALSE)
+        rule: value
+      - formula: =12
+        rule: required-function
+      - formula: =HLOOKUP(B4,B1:E2,2,TRUE
+        rule: syntax

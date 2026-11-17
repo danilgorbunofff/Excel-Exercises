@@ -1,0 +1,44 @@
+id: countif-drill-3
+slug: countif-drill-3
+level: 1
+title: Count a region picked in a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTIF
+screens:
+  - prompt: In D4, use COUNTIF to count the reps in B2:B8 from the region typed in D2.
+    rows:
+      - [Rep, Region, null, Pick]
+      - [Ann, East, null, West]
+      - [Bo, West, null, Count]
+      - [Cy, East, null, null]
+      - [Di, West, null, null]
+      - [Ed, North, null, null]
+      - [Flo, West, null, null]
+      - [Gus, East, null, null]
+    answerCell: D4
+    expected: 3
+    variants:
+      - { set: { D2: North }, expected: 1 }
+      - { set: { B2: West, B8: West }, expected: 5 }
+    answer: =COUNTIF(B2:B8,D2)
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: Point the criteria at D2, so the count changes when D2 does.
+      rule: COUNTIF(range,D2) counts the cells equal to whatever D2 holds.
+    misses:
+      value: 3 reps are from West.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTIF(B2:B8,D2)
+      - =COUNTIF($B$2:$B$8,$D$2)
+    reject:
+      - formula: =COUNTIF(B2:B8,"West")
+        rule: fragile
+      - formula: =3
+        rule: required-function
+      - formula: =COUNTIF(B2:B8,D2
+        rule: syntax

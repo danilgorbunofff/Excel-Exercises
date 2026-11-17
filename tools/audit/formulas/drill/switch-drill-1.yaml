@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SWITCH($A$2,"N","North","S","South","E","East","W","West")
+      - =SWITCH(A$2,"N","North","S","South","E","East","W","West")
+      - =switch(a2, "N", "North", "S", "South", "E", "East", "W", "West")
+    wrong: []
+    equivalent: []

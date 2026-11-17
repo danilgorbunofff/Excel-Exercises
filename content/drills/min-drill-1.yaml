@@ -1,0 +1,45 @@
+id: min-drill-1
+slug: min-drill-1
+level: 1
+title: Find the cheapest quote
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MIN
+screens:
+  - prompt: In B7, use MIN to find the lowest quote in B2:B6.
+    rows:
+      - [Builder, Quote]
+      - [Ash, 8200]
+      - [Birch, 7650]
+      - [Cedar, 9100]
+      - [Elm, 7900]
+      - [Fir, 8450]
+      - [Lowest, null]
+    answerCell: B7
+    expected: 7650
+    variants:
+      - { set: { B5: 7000 }, expected: 7000 }
+      - { set: { B2: 4100 }, expected: 4100 }
+      - { set: { B6: 4225 }, expected: 4225 }
+    answer: =MIN(B2:B6)
+    requiredFunctions:
+      - MIN
+    hints:
+      nudge: One function returns the smallest number in a range.
+      rule: MIN(range) gives the smallest number in the range.
+    misses:
+      value: The lowest quote is 7650.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MIN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MIN(B2:B6)
+    reject:
+      - formula: =MAX(B2:B6)
+        rule: required-function
+      - formula: =MIN(B2:B4)
+        rule: fragile
+      - formula: =7650
+        rule: required-function
+      - formula: =MIN(B2:B6
+        rule: syntax

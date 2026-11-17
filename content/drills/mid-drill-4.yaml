@@ -1,0 +1,41 @@
+id: mid-drill-4
+slug: mid-drill-4
+level: 2
+title: One character at a position
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MID
+screens:
+  - prompt: In C2, use MID to take the single character of A2 at the position in B2.
+    rows:
+      - [Word, Position, Result]
+      - [Spreadsheet, 4, null]
+    answerCell: C2
+    expected: e
+    variants:
+      - set: { B2: 1 }
+        expected: S
+      - set: { B2: 11 }
+        expected: t
+    answer: =MID(A2,B2,1)
+    requiredFunctions:
+      - MID
+    hints:
+      nudge: A length of 1 takes one character.
+      rule: MID(A2,B2,1) returns the character at position B2.
+    misses:
+      value: The 4th letter of Spreadsheet is e.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MID.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MID(A2,B2,1)
+    reject:
+      - formula: =MID(A2,B2,2)
+        rule: value
+      - formula: =MID(A2,4,1)
+        rule: fragile
+      - formula: ="e"
+        rule: required-function
+      - formula: =MID(A2,B2,1
+        rule: syntax

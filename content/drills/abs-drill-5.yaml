@@ -1,0 +1,45 @@
+id: abs-drill-5
+slug: abs-drill-5
+level: 2
+title: Flag a big difference
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ABS
+screens:
+  - prompt: In E2, use IF and ABS to compare the actual in C2 with the budget in B2. Show "Check" when they differ by more than the limit in D2, and "OK" otherwise.
+    rows:
+      - [Item, Budget, Actual, Limit, Flag]
+      - [Travel, 500, 380, 100, null]
+    answerCell: E2
+    expected: Check
+    variants:
+      - set: { C2: 620 }
+        expected: Check
+      - set: { C2: 450 }
+        expected: OK
+      - set: { C2: 600 }
+        expected: OK
+    answer: =IF(ABS(C2-B2)>D2,"Check","OK")
+    requiredFunctions:
+      - ABS
+      - IF
+    hints:
+      nudge: Test the gap with ABS, so a difference up or down counts.
+      rule: IF(ABS(actual-budget)>limit,...) flags a gap either way.
+    misses:
+      value: 380 is 120 under the budget, more than the limit of 100, so the flag is Check.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ABS and IF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IF(ABS(C2-B2)>D2,"Check","OK")
+      - =IF(ABS(B2-C2)>D2,"Check","OK")
+    reject:
+      - formula: =IF(C2-B2>D2,"Check","OK")
+        rule: required-function
+      - formula: =IF(ABS(C2-B2)>=D2,"Check","OK")
+        rule: fragile
+      - formula: ="Check"
+        rule: required-function
+      - formula: =IF(ABS(C2-B2)>D2,"Check","OK"
+        rule: syntax

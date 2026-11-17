@@ -1,0 +1,45 @@
+id: subtotal-drill-3
+slug: subtotal-drill-3
+level: 1
+title: Count entries with SUBTOTAL
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUBTOTAL
+screens:
+  - prompt: In B8, use SUBTOTAL with function number 2 to count how many cells in B2:B7 hold a number.
+    rows:
+      - [Box, Weight]
+      - [B1, 4.2]
+      - [B2, lost]
+      - [B3, 3.8]
+      - [B4, null]
+      - [B5, 5.1]
+      - [B6, 2.9]
+      - [Weighed, null]
+    answerCell: B8
+    expected: 4
+    variants:
+      - set: { B5: 4 }
+        expected: 5
+    answer: =SUBTOTAL(2,B2:B7)
+    requiredFunctions:
+      - SUBTOTAL
+    hints:
+      nudge: Function number 2 counts the cells that hold numbers.
+      rule: SUBTOTAL(2,range) counts numbers; 3 would also count text.
+    misses:
+      value: Four boxes have a weight.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUBTOTAL.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUBTOTAL(2,B2:B7)
+    reject:
+      - formula: =COUNT(B2:B7)
+        rule: required-function
+      - formula: =SUBTOTAL(3,B2:B7)
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =SUBTOTAL(2,B2:B7
+        rule: syntax

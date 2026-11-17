@@ -1,0 +1,42 @@
+id: trim-drill-5
+slug: trim-drill-5
+level: 2
+title: Count the extra spaces
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TRIM
+screens:
+  - prompt: "In B2, use LEN and TRIM to count how many extra spaces A2 has: its length minus the length once trimmed."
+    rows:
+      - [Name, Result]
+      - ["  Rosa   Diaz ", null]
+    answerCell: B2
+    expected: 5
+    variants:
+      - set: { A2: Al Brook }
+        expected: 0
+      - set: { A2: "     Al" }
+        expected: 5
+    answer: =LEN(A2)-LEN(TRIM(A2))
+    requiredFunctions:
+      - TRIM
+      - LEN
+    hints:
+      nudge: Every extra space TRIM removes makes the text one shorter.
+      rule: LEN(A2)-LEN(TRIM(A2)) counts the spaces TRIM removed.
+    misses:
+      value: TRIM removes 5 spaces.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TRIM and LEN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LEN(A2)-LEN(TRIM(A2))
+    reject:
+      - formula: =LEN(A2)
+        rule: required-function
+      - formula: =LEN(TRIM(A2))-LEN(A2)
+        rule: value
+      - formula: =5
+        rule: required-function
+      - formula: =LEN(A2)-LEN(TRIM(A2)
+        rule: syntax

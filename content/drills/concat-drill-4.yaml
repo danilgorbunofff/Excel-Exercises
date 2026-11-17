@@ -1,0 +1,42 @@
+id: concat-drill-4
+slug: concat-drill-4
+level: 2
+title: A label from text and a number
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: CONCAT
+screens:
+  - prompt: In C2, use CONCAT to make a label from the letter in A2, a "-" and the number in B2.
+    rows:
+      - [Letter, Number, Result]
+      - [Q, 7, null]
+    answerCell: C2
+    expected: Q-7
+    variants:
+      - set: { B2: 12 }
+        expected: Q-12
+      - set: { A2: Z }
+        expected: Z-7
+    answer: =CONCAT(A2,"-",B2)
+    requiredFunctions:
+      - CONCAT
+    hints:
+      nudge: A number joined to text becomes part of the text.
+      rule: CONCAT(A2,"-",B2) makes Q-7.
+    misses:
+      value: The label reads Q-7.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      required-function: This drill asks for CONCAT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =CONCAT(A2,"-",B2)
+    reject:
+      - formula: =CONCAT(A2,B2)
+        rule: value
+      - formula: =CONCAT(A2,"-",7)
+        rule: reference
+      - formula: ="Q-7"
+        rule: required-function
+      - formula: =CONCAT(A2,"-",B2
+        rule: syntax

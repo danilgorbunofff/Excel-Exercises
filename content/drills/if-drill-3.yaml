@@ -1,0 +1,44 @@
+id: if-drill-3
+slug: if-drill-3
+level: 1
+title: Reorder below a level in a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IF
+screens:
+  - prompt: In D2, use IF to show "Reorder" when the stock in B2 is below the reorder level in C2, and "OK" otherwise.
+    rows:
+      - [Item, Stock, Reorder at, Action]
+      - [Bolts, 40, 50, null]
+    answerCell: D2
+    expected: Reorder
+    variants:
+      - set: { C2: 30 }
+        expected: OK
+      - set: { B2: 80 }
+        expected: OK
+      - set: { B2: 50 }
+        expected: OK
+    answer: =IF(B2<C2,"Reorder","OK")
+    requiredFunctions:
+      - IF
+    hints:
+      nudge: Compare the two cells in the test.
+      rule: "The test can compare two cells: IF(B2<C2,...)."
+    misses:
+      value: 40 is below 50, so the action is Reorder.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IF(B2<C2,"Reorder","OK")
+      - =IF(B2>=C2,"OK","Reorder")
+    reject:
+      - formula: =IF(B2<50,"Reorder","OK")
+        rule: fragile
+      - formula: =IF(B2<C2,"OK","Reorder")
+        rule: value
+      - formula: ="Reorder"
+        rule: required-function
+      - formula: =IF(B2<C2,"Reorder","OK"
+        rule: syntax

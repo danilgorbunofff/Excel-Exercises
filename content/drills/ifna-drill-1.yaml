@@ -1,0 +1,45 @@
+id: ifna-drill-1
+slug: ifna-drill-1
+level: 1
+title: "Missing instead of #N/A"
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IFNA
+screens:
+  - prompt: In E3, use IFNA and VLOOKUP to find the price for the code in E2, and show "Missing" if the code is not found.
+    rows:
+      - [Code, Price, null, Find, null]
+      - [D40, 2, null, Code, Z99]
+      - [A10, 1.5, null, Price, null]
+      - [F60, 12, null, null, null]
+      - [B20, 3, null, null, null]
+    answerCell: E3
+    expected: Missing
+    variants:
+      - { set: { E2: A10 }, expected: 1.5 }
+      - { set: { E2: D40 }, expected: 2 }
+      - { set: { E2: B20 }, expected: 3 }
+    answer: =IFNA(VLOOKUP(E2,A2:B5,2,FALSE),"Missing")
+    requiredFunctions:
+      - IFNA
+      - VLOOKUP
+    hints:
+      nudge: "IFNA catches only #N/A, the error a lookup gives when nothing matches."
+      rule: 'IFNA(VLOOKUP(...),"Missing") replaces #N/A with your text.'
+    misses:
+      value: Z99 is not in the list, so the cell shows Missing.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IFNA and VLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IFNA(VLOOKUP(E2,A2:B5,2,FALSE),"Missing")
+      - =IFNA(VLOOKUP(E2,A2:B5,2,0),"Missing")
+    reject:
+      - formula: =IFERROR(VLOOKUP(E2,A2:B5,2,FALSE),"Missing")
+        rule: required-function
+      - formula: =VLOOKUP(E2,A2:B5,2,FALSE)
+        rule: required-function
+      - formula: ="Missing"
+        rule: required-function
+      - formula: =IFNA(VLOOKUP(E2,A2:B5,2,FALSE),"Missing"
+        rule: syntax

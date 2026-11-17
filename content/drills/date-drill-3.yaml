@@ -1,0 +1,44 @@
+id: date-drill-3
+slug: date-drill-3
+level: 2
+title: The last day of a month
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: DATE
+screens:
+  - prompt: In C2, use DATE to find the last day of the month in B2 of the year in A2. Day 0 of the next month is the last day of this one.
+    rows:
+      - [Year, Month, Last day]
+      - [2028, 2, null]
+    answerCell: C2
+    expected: 46812
+    variants:
+      - set: { B2: 4 }
+        expected: 46873
+      - set: { A2: 2027 }
+        expected: 46446
+      - set: { B2: 12 }
+        expected: 47118
+    answer: =DATE(A2,B2+1,0)
+    requiredFunctions:
+      - DATE
+    hints:
+      nudge: "Go to the next month, then one day back: day 0."
+      rule: DATE(A2,B2+1,0) works for every month and leap years too.
+    misses:
+      value: 2028 is a leap year, so February ends on the 29th, date number 46812.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for DATE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =DATE(A2,B2+1,0)
+      - =DATE(A2,B2+1,1)-1
+    reject:
+      - formula: =DATE(A2,B2,28)
+        rule: value
+      - formula: =DATE(A2,B2,0)
+        rule: value
+      - formula: =46812
+        rule: required-function
+      - formula: =DATE(A2,B2+1,0
+        rule: syntax

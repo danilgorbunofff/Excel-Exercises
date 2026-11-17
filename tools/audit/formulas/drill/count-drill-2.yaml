@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNT($B$2:$H$2)
+      - =COUNT(B$2:H$2)
+      - =count(b2:h2)
+      - =LET(data,B2:H2,COUNT(data))
+    wrong: []
+    equivalent: []

@@ -81,6 +81,51 @@ export async function dailyTasks(): Promise<(Placed & { tier: number })[]> {
   }));
 }
 
+export type Drill = Placed & { fn: string };
+
+/**
+ * The PRO function drills from content/drills/, shaped like a placed exercise
+ * so the workbench can show them. Sorted by function, then level, then id, so
+ * a session runs each function from easy to hard. No list, search or sitemap
+ * includes them.
+ */
+export async function drillTasks(): Promise<Drill[]> {
+  const topic = {
+    slug: "drills",
+    title: "Function drills",
+    summary: "",
+    group: "skill" as const,
+    learn: [],
+  };
+  const all = (await getCollection("drills"))
+    .map((e) => e.data)
+    .sort(
+      (a, b) =>
+        a.function.localeCompare(b.function) || a.level - b.level || a.id.localeCompare(b.id),
+    );
+  return all.map((data) => {
+    const same = all.filter((d) => d.function === data.function);
+    return {
+      exercise: {
+        ...data,
+        topic: "drills",
+        notes: { summary: "", syntax: "", example: "", commonErrors: [] },
+      },
+      fn: data.function,
+      number: same.indexOf(data) + 1,
+      total: same.length,
+      topic,
+      topicNumber: 1,
+      topicTotal: 1,
+      next: null,
+    };
+  });
+}
+
+/** Where a drill session starts: one function, or a single drill by id. */
+export const drillsPath = (fn?: string) =>
+  fn ? `/exercises/drills/?fn=${encodeURIComponent(fn)}` : "/exercises/drills/";
+
 export const LEVELS = { 1: "Beginner", 2: "Intermediate", 3: "Advanced" } as const;
 
 export const exercisePath = (slug: string) => `/exercises/${slug}/`;

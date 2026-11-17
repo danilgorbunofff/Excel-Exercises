@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LET(east,FILTER($A$2:$A$7,$B$2:$B$7="East"),SORT(east))
+      - =LET(east,FILTER(A$2:A$7,B2:B7="East"),SORT(east))
+      - =let(east, filter(a2:a7, b2:b7="East"), sort(east))
+      - =LET(data,A2:A7,LET(east,FILTER(data,B2:B7="East"),SORT(east)))
+    wrong: []
+    equivalent: []

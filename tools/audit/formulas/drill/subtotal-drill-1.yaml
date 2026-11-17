@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUBTOTAL(9,$B$2:$B$6)
+      - =SUBTOTAL(9,B$2:B$6)
+      - =subtotal(9, b2:b6)
+      - =LET(data,B2:B6,SUBTOTAL(9,data))
+    wrong: []
+    equivalent: []

@@ -1,0 +1,47 @@
+id: large-drill-2
+slug: large-drill-2
+level: 1
+title: The kth highest from a cell
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LARGE
+screens:
+  - prompt: In E3, use LARGE to find the score in B2:B8 at the place typed in E2, counting from the highest.
+    rows:
+      - [Student, Score, null, Pick, null]
+      - [Ann, 72, null, Place, 3]
+      - [Bo, 85, null, Score, null]
+      - [Cy, 64, null, null, null]
+      - [Di, 91, null, null, null]
+      - [Ed, 78, null, null, null]
+      - [Flo, 59, null, null, null]
+      - [Gus, 88, null, null, null]
+    answerCell: E3
+    expected: 85
+    variants:
+      - set: { E2: 1 }
+        expected: 91
+      - set: { E2: 7 }
+        expected: 59
+    answer: =LARGE(B2:B8,E2)
+    requiredFunctions:
+      - LARGE
+    hints:
+      nudge: k can come from a cell.
+      rule: LARGE(range,E2) returns the value at whatever place E2 holds.
+    misses:
+      value: In order, the scores go 91, 88, 85, so the third is 85.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LARGE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LARGE(B2:B8,E2)
+    reject:
+      - formula: =LARGE(B2:B8,3)
+        rule: fragile
+      - formula: =SMALL(B2:B8,E2)
+        rule: required-function
+      - formula: =85
+        rule: required-function
+      - formula: =LARGE(B2:B8,E2
+        rule: syntax

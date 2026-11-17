@@ -51,7 +51,8 @@ async function signIn(page: Page, pro: boolean) {
 test("the sample is marked only at the end, with every miss explained", async ({ page }) => {
   const posts: string[] = [];
   page.on("request", (r) => {
-    if (r.method() === "POST") posts.push(r.url());
+    // Usage counts are not results: the sample saves nothing until the end.
+    if (r.method() === "POST" && !r.url().endsWith("/api/events/")) posts.push(r.url());
   });
   await page.goto(SAMPLE);
   await page.getByRole("button", { name: /^Start: \d+ minutes$/u }).click();

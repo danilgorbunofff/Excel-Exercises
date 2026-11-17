@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MATCH("Lon*",$A$2:$A$7,0)
+      - =MATCH("Lon*",A$2:A$7,0)
+      - =match("Lon*", a2:a7, 0)
+      - =LET(data,A2:A7,MATCH("Lon*",data,0))
+    wrong: []
+    equivalent:
+      - formula: =MATCH("Lon*",A2:A6,0)
+        why: "range A2:A7 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

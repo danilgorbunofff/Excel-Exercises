@@ -1,0 +1,49 @@
+id: median-drill-5
+slug: median-drill-5
+level: 2
+title: How far the average sits above the median
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MEDIAN
+screens:
+  - prompt: In B9, use AVERAGE and MEDIAN to find how far the average of B2:B7 is above the median.
+    rows:
+      - [Staff, Salary]
+      - [A, 41000]
+      - [B, 38000]
+      - [C, 45000]
+      - [D, 39000]
+      - [E, 250000]
+      - [F, 43000]
+      - [null, null]
+      - [Gap, null]
+    answerCell: B9
+    expected: 34000
+    variants:
+      - set: { B6: 47000 }
+        expected: 166.666666667
+      - set: { B2: 20000 }
+        expected: 31500
+    answer: =AVERAGE(B2:B7)-MEDIAN(B2:B7)
+    requiredFunctions:
+      - MEDIAN
+      - AVERAGE
+    hints:
+      nudge: Subtract the median from the average.
+      rule: A large gap between AVERAGE and MEDIAN shows that a few big values pull the average up.
+    misses:
+      value: The average is 76000 and the median 42000, a gap of 34000.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MEDIAN and AVERAGE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AVERAGE(B2:B7)-MEDIAN(B2:B7)
+    reject:
+      - formula: =MEDIAN(B2:B7)-AVERAGE(B2:B7)
+        rule: value
+      - formula: =AVERAGE(B2:B7)-42000
+        rule: required-function
+      - formula: =34000
+        rule: required-function
+      - formula: =AVERAGE(B2:B7)-MEDIAN(B2:B7
+        rule: syntax

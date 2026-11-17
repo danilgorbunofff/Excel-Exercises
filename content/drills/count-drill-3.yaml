@@ -1,0 +1,42 @@
+id: count-drill-3
+slug: count-drill-3
+level: 1
+title: Count the entries in a block
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNT
+screens:
+  - prompt: In B7, use COUNT to find how many cells in B2:D5 hold a number.
+    rows:
+      - [Rep, Jan, Feb, Mar]
+      - [Ann, 5, n/a, 7]
+      - [Bob, 4, 6, null]
+      - [Cy, n/a, 8, 9]
+      - [Di, 3, 5, 6]
+      - [null, null, null, null]
+      - [Entries, null, null, null]
+    answerCell: B7
+    expected: 9
+    variants:
+      - set: { C2: 4 }
+        expected: 10
+    answer: =COUNT(B2:D5)
+    requiredFunctions:
+      - COUNT
+    hints:
+      nudge: The range can cover the whole block.
+      rule: COUNT(B2:D5) counts the numbers in all twelve cells.
+    misses:
+      value: 9 cells in the block hold a number.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNT(B2:D5)
+    reject:
+      - formula: =COUNT(B2:B5)
+        rule: value
+      - formula: =9
+        rule: required-function
+      - formula: =COUNT(B2:D5
+        rule: syntax

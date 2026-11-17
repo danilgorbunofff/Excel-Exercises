@@ -1,0 +1,38 @@
+id: trim-drill-3
+slug: trim-drill-3
+level: 1
+title: Match after trimming
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TRIM
+screens:
+  - prompt: In C2, use TRIM to test whether A2, once trimmed, is the same as B2.
+    rows:
+      - [Typed, Expected, Result]
+      - ["  Pens ", Pens, null]
+    answerCell: C2
+    expected: true
+    variants:
+      - set: { B2: Pads }
+        expected: false
+      - set: { A2: Pens }
+        expected: true
+    answer: =TRIM(A2)=B2
+    requiredFunctions:
+      - TRIM
+    hints:
+      nudge: Compare the trimmed text with B2.
+      rule: TRIM(A2)=B2 is TRUE when only spaces were in the way.
+    misses:
+      value: Without the spaces, A2 is Pens, so the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TRIM.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TRIM(A2)=B2
+      - =B2=TRIM(A2)
+    reject:
+      - formula: =A2=B2
+        rule: required-function
+      - formula: =TRIM(A2)=B2,
+        rule: syntax

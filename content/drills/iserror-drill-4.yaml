@@ -1,0 +1,37 @@
+id: iserror-drill-4
+slug: iserror-drill-4
+level: 2
+title: A number that works
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISERROR
+screens:
+  - prompt: In D2, use ISERROR to test whether B2 divided by C2 gives an error. Here both cells hold numbers.
+    rows:
+      - [Item, Total, Count, Error]
+      - [Pads, 90, 30, null]
+    answerCell: D2
+    expected: false
+    variants:
+      - set: { C2: 0 }
+        expected: true
+      - set: { B2: n/a, C2: 4 }
+        expected: true
+    answer: =ISERROR(B2/C2)
+    requiredFunctions:
+      - ISERROR
+    hints:
+      nudge: A division that works gives FALSE.
+      rule: ISERROR returns FALSE when the formula gives a normal result.
+    misses:
+      value: 90 divided by 30 is 3, so there is no error and the result is FALSE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISERROR.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ISERROR(B2/C2)
+    reject:
+      - formula: =ISNUMBER(B2/C2)
+        rule: required-function
+      - formula: =ISERROR(B2/C2
+        rule: syntax

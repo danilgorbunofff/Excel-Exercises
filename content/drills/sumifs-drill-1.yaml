@@ -1,0 +1,49 @@
+id: sumifs-drill-1
+slug: sumifs-drill-1
+level: 1
+title: Total units for a region and a product
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SUMIFS
+screens:
+  - prompt: In C9, use SUMIFS to add up the units in C2:C8 where the region is "East" and the product is "Pens".
+    rows:
+      - [Region, Product, Units]
+      - [East, Pens, 40]
+      - [West, Pens, 25]
+      - [East, Pads, 30]
+      - [East, Pens, 15]
+      - [North, Pens, 50]
+      - [East, Pads, 20]
+      - [West, Pads, 35]
+      - [null, East pens, null]
+    answerCell: C9
+    expected: 55
+    variants:
+      - set: { B4: Pens }
+        expected: 85
+      - set: { A3: East }
+        expected: 80
+    answer: =SUMIFS(C2:C8,A2:A8,"East",B2:B8,"Pens")
+    requiredFunctions:
+      - SUMIFS
+    hints:
+      nudge: SUMIFS starts with the range to add, then pairs of a range and what it must match.
+      rule: SUMIFS(sum_range,range1,criteria1,range2,criteria2) adds rows that meet every pair.
+    misses:
+      value: The East rows with Pens hold 40 and 15, so 55.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SUMIFS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SUMIFS(C2:C8,A2:A8,"East",B2:B8,"Pens")
+      - =SUMIFS(C2:C8,B2:B8,"Pens",A2:A8,"East")
+    reject:
+      - formula: =SUMIF(A2:A8,"East",C2:C8)
+        rule: required-function
+      - formula: =SUMIFS(C2:C8,A2:A8,"East")
+        rule: value
+      - formula: =55
+        rule: required-function
+      - formula: =SUMIFS(C2:C8,A2:A8,"East",B2:B8,"Pens"
+        rule: syntax

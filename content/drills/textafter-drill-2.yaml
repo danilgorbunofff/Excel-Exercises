@@ -1,0 +1,37 @@
+id: textafter-drill-2
+slug: textafter-drill-2
+level: 1
+title: Surname after the space
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TEXTAFTER
+screens:
+  - prompt: In B2, use TEXTAFTER to take everything in A2 after the first space.
+    rows:
+      - [Name, Result]
+      - [Rosa Diaz, null]
+    answerCell: B2
+    expected: Diaz
+    variants:
+      - set: { A2: Christopher Lane }
+        expected: Lane
+    answer: =TEXTAFTER(A2," ")
+    requiredFunctions:
+      - TEXTAFTER
+    hints:
+      nudge: 'The delimiter here is a space: " ".'
+      rule: TEXTAFTER(A2," ") returns everything after the first word.
+    misses:
+      value: The surname is Diaz.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for TEXTAFTER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TEXTAFTER(A2," ")
+    reject:
+      - formula: =RIGHT(A2,4)
+        rule: required-function
+      - formula: ="Diaz"
+        rule: required-function
+      - formula: =TEXTAFTER(A2," "
+        rule: syntax

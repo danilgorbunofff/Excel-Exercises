@@ -91,3 +91,27 @@ Move lines in the `order` list of `content/track.yaml`. Topics can be reordered 
 ## Not yet checked
 
 Nothing here has been opened in Excel. Every expected value was worked out by hand and agrees with the grader. That is two derivations, not a check against Excel. When an exercise is confirmed in Excel, set `checkedInExcel` to that date.
+
+## Drills
+
+PRO function drills live in `content/drills/`, one file per drill, named
+`<function>-drill-<n>.yaml`. Each is a `mocks`-style task (no topic, no notes)
+with exactly one screen and a `function` field naming one function from
+`content/function-index.yaml`. A drill names its function in the prompt and
+lists it in `requiredFunctions`, at any level: drills are about one function,
+so the level-3 rule does not apply. Every function in the index has exactly five (the validator checks), easy to hard:
+
+1. the plain call;
+2. a different range shape (a row or a block);
+3. a criterion or value held in a cell, or a second argument;
+4. an edge case: blanks, text, negatives;
+5. combined with another function.
+
+They are not in `track.yaml`. `/exercises/drills/` plays them in a row, and
+`/api/exercises/<slug>/` gives their answers only to PRO.
+
+Write a batch as a compact spec and run `node tools/new-drills.ts <batch.mjs>`: it fills
+in expected values from the grader and checks every accept and reject. Add `--write` to
+create the files. Then: `npm run content:validate`, then `node tools/audit-tasks.ts --kind=drill`
+and `node tools/write-audit-fixtures.ts` with Excel open, set `checkedInExcel`,
+then `npx vitest run src/content -u` and read the new lines in `verdicts.txt`.

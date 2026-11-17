@@ -1,0 +1,49 @@
+id: large-drill-4
+slug: large-drill-4
+level: 2
+title: Total of the top three
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LARGE
+screens:
+  - prompt: In B10, use LARGE three times to add up the three highest scores in B2:B8.
+    rows:
+      - [Student, Score]
+      - [Ann, 72]
+      - [Bo, 85]
+      - [Cy, 64]
+      - [Di, 91]
+      - [Ed, 78]
+      - [Flo, 59]
+      - [Gus, 88]
+      - [null, null]
+      - [Top three, null]
+    answerCell: B10
+    expected: 264
+    variants:
+      - { set: { B3: 70 }, expected: 257 }
+      - { set: { B7: 99 }, expected: 278 }
+      - { set: { B2: 99 }, expected: 278 }
+      - { set: { B5: 72 }, expected: 251 }
+    answer: =LARGE(B2:B8,1)+LARGE(B2:B8,2)+LARGE(B2:B8,3)
+    requiredFunctions:
+      - LARGE
+    hints:
+      nudge: Add the first, second and third largest.
+      rule: LARGE(range,1)+LARGE(range,2)+LARGE(range,3) totals the top three.
+    misses:
+      value: 91 + 88 + 85 is 264.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LARGE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LARGE(B2:B8,1)+LARGE(B2:B8,2)+LARGE(B2:B8,3)
+    reject:
+      - formula: =LARGE(B2:B8,3)*3
+        rule: value
+      - formula: =MAX(B2:B8)+LARGE(B2:B8,2)
+        rule: value
+      - formula: =264
+        rule: required-function
+      - formula: =LARGE(B2:B8,1)+LARGE(B2:B8,2)+LARGE(B2:B8,3
+        rule: syntax

@@ -1,0 +1,47 @@
+id: hlookup-drill-4
+slug: hlookup-drill-4
+level: 2
+title: Exact match across unsorted headings
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: HLOOKUP
+screens:
+  - prompt: In B5, use HLOOKUP to find the score in row 2 of B1:F2 for the subject in B4. The subjects are not sorted, so ask for an exact match.
+    rows:
+      - [Subject, Maths, Art, Physics, Biology, English]
+      - [Score, 82, 74, 91, 68, 77]
+      - [null, null, null, null, null, null]
+      - [Find, Biology, null, null, null, null]
+      - [Score, null, null, null, null, null]
+    answerCell: B5
+    expected: 68
+    variants:
+      - set: { B4: Art }
+        expected: 74
+      - set: { B4: English }
+        expected: 77
+      - set: { B4: Maths }
+        expected: 82
+    answer: =HLOOKUP(B4,B1:F2,2,FALSE)
+    requiredFunctions:
+      - HLOOKUP
+    hints:
+      nudge: Leaving out the last argument asks for an approximate match, which needs sorted headings.
+      rule: HLOOKUP(value,table,row,FALSE) finds the exact heading wherever it is.
+    misses:
+      value: The Biology score is 68.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for HLOOKUP.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =HLOOKUP(B4,B1:F2,2,FALSE)
+      - =HLOOKUP(B4,B1:F2,2,0)
+    reject:
+      - formula: =HLOOKUP(B4,B1:F2,2)
+        rule: value
+      - formula: =HLOOKUP(B4,B1:F2,2,TRUE)
+        rule: value
+      - formula: =68
+        rule: required-function
+      - formula: =HLOOKUP(B4,B1:F2,2,FALSE
+        rule: syntax

@@ -1,0 +1,48 @@
+id: hlookup-drill-5
+slug: hlookup-drill-5
+level: 2
+title: Row chosen by its label
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: HLOOKUP
+screens:
+  - prompt: In B6, use HLOOKUP and MATCH to find the value for the month in B5, from the row of B1:F3 whose label in A1:A3 is typed in B4.
+    rows:
+      - [Month, Jan, Feb, Mar, Apr, May]
+      - [Sales, 120, 95, 140, 110, 135]
+      - [Costs, 80, 70, 90, 85, 75]
+      - [Want, Costs, null, null, null, null]
+      - [Month, Mar, null, null, null, null]
+      - [Result, null, null, null, null, null]
+    answerCell: B6
+    expected: 90
+    variants:
+      - set: { B4: Sales }
+        expected: 140
+      - set: { B5: Jan }
+        expected: 80
+      - set: { B5: May }
+        expected: 75
+    answer: =HLOOKUP(B5,B1:F3,MATCH(B4,A1:A3,0),FALSE)
+    requiredFunctions:
+      - HLOOKUP
+      - MATCH
+    hints:
+      nudge: MATCH(B4,A1:A3,0) gives the row number of the label.
+      rule: Put MATCH where HLOOKUP wants the row number, so the label picks the row.
+    misses:
+      value: March costs are 90.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for HLOOKUP and MATCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =HLOOKUP(B5,B1:F3,MATCH(B4,A1:A3,0),FALSE)
+    reject:
+      - formula: =HLOOKUP(B5,B1:F3,3,FALSE)
+        rule: required-function
+      - formula: =HLOOKUP(B5,B1:F3,MATCH(B4,A2:A3,0),FALSE)
+        rule: value
+      - formula: =90
+        rule: required-function
+      - formula: =HLOOKUP(B5,B1:F3,MATCH(B4,A1:A3,0),FALSE
+        rule: syntax

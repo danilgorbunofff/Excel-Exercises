@@ -1,0 +1,43 @@
+id: search-drill-5
+slug: search-drill-5
+level: 2
+title: Flag urgent notes
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SEARCH
+screens:
+  - prompt: In B2, use IF, ISNUMBER and SEARCH to show "Yes" when the note in A2 contains "urgent" in any case, and "No" otherwise.
+    rows:
+      - [Note, Result]
+      - ["Call back, URGENT please", null]
+    answerCell: B2
+    expected: Yes
+    variants:
+      - set: { A2: Call back later }
+        expected: No
+      - set: { A2: "urgent: invoice" }
+        expected: Yes
+    answer: =IF(ISNUMBER(SEARCH("urgent",A2)),"Yes","No")
+    requiredFunctions:
+      - SEARCH
+      - ISNUMBER
+      - IF
+    hints:
+      nudge: SEARCH finds the word in any case; ISNUMBER says whether it did.
+      rule: IF(ISNUMBER(SEARCH("urgent",A2)),"Yes","No") flags the note.
+    misses:
+      value: The note contains URGENT, so the result is Yes.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SEARCH, ISNUMBER and IF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IF(ISNUMBER(SEARCH("urgent",A2)),"Yes","No")
+    reject:
+      - formula: =IF(ISNUMBER(FIND("urgent",A2)),"Yes","No")
+        rule: required-function
+      - formula: =IF(ISNUMBER(SEARCH("urgent",A2)),"No","Yes")
+        rule: value
+      - formula: ="Yes"
+        rule: required-function
+      - formula: =IF(ISNUMBER(SEARCH("urgent",A2)),"Yes","No"
+        rule: syntax

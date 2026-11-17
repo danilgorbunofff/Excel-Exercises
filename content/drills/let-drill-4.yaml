@@ -1,0 +1,47 @@
+id: let-drill-4
+slug: let-drill-4
+level: 2
+title: Name a range
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LET
+screens:
+  - prompt: In B8, use LET to name B2:B6 as r, then return MAX(r) minus MIN(r).
+    rows:
+      - [Supplier, Price]
+      - [Acme, 14.5]
+      - [Bolt, 12.75]
+      - [Core, 16]
+      - [Dyne, 13.2]
+      - [Edge, 15.1]
+      - [null, null]
+      - [Spread, null]
+    answerCell: B8
+    expected: 3.25
+    variants:
+      - { set: { B3: 11 }, expected: 5 }
+      - { set: { B2: 18, B6: 11.6 }, expected: 6.4 }
+    answer: =LET(r,B2:B6,MAX(r)-MIN(r))
+    requiredFunctions:
+      - LET
+      - MAX
+      - MIN
+    hints:
+      nudge: A name can stand for a range, so you write it once.
+      rule: LET(r,B2:B6,MAX(r)-MIN(r)) uses r twice.
+    misses:
+      value: The prices run from 12.75 to 16, a spread of 3.25.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LET, MAX and MIN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LET(r,B2:B6,MAX(r)-MIN(r))
+    reject:
+      - formula: =MAX(B2:B6)-MIN(B2:B6)
+        rule: required-function
+      - formula: =LET(r,B2:B6,MIN(r)-MAX(r))
+        rule: value
+      - formula: =3.25
+        rule: required-function
+      - formula: =LET(r,B2:B6,MAX(r)-MIN(r)
+        rule: syntax

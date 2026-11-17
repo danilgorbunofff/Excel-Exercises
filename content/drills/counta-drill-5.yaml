@@ -1,0 +1,46 @@
+id: counta-drill-5
+slug: counta-drill-5
+level: 2
+title: Count the tasks with no owner
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTA
+screens:
+  - prompt: In B9, use COUNTA twice to find how many tasks in A2:A8 have no owner in B2:B8.
+    rows:
+      - [Task, Owner]
+      - [Plan, Ann]
+      - [Build, null]
+      - [Test, Raj]
+      - [Docs, null]
+      - [Ship, null]
+      - [Review, Tom]
+      - [Launch, Lea]
+      - [No owner, null]
+    answerCell: B9
+    expected: 3
+    variants:
+      - set: { B3: Ivy }
+        expected: 2
+    answer: =COUNTA(A2:A8)-COUNTA(B2:B8)
+    requiredFunctions:
+      - COUNTA
+    hints:
+      nudge: Count the tasks, then take away the tasks that have an owner.
+      rule: COUNTA(all tasks) minus COUNTA(owners) leaves the tasks with no owner.
+    misses:
+      value: Seven tasks and four owners leave 3 tasks with no owner.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTA.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTA(A2:A8)-COUNTA(B2:B8)
+    reject:
+      - formula: =COUNTA(B2:B8)
+        rule: value
+      - formula: =COUNTA(A2:A8)-COUNT(B2:B8)
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =COUNTA(A2:A8)-COUNTA(B2:B8
+        rule: syntax

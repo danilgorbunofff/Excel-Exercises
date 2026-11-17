@@ -1,0 +1,41 @@
+id: and-drill-3
+slug: and-drill-3
+level: 1
+title: A reading within its limits
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: AND
+screens:
+  - prompt: In E2, use AND to test that the value in B2 is from the low limit in C2 to the high limit in D2.
+    rows:
+      - [Reading, Value, Low, High, In range]
+      - [T1, 22, 18, 25, null]
+    answerCell: E2
+    expected: true
+    variants:
+      - { set: { B2: 30 }, expected: false }
+      - { set: { D2: 20 }, expected: false }
+      - { set: { B2: 18 }, expected: true }
+      - { set: { B2: 15 }, expected: false }
+      - set: { B2: 25 }
+        expected: true
+    answer: =AND(B2>=C2,B2<=D2)
+    requiredFunctions:
+      - AND
+    hints:
+      nudge: One test for the low limit and one for the high.
+      rule: AND(B2>=C2,B2<=D2) is TRUE when the value sits between the limits, ends included.
+    misses:
+      value: 22 is between 18 and 25, so the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AND(B2>=C2,B2<=D2)
+      - =AND(C2<=B2,B2<=D2)
+    reject:
+      - formula: =AND(B2>=18,B2<=25)
+        rule: fragile
+      - formula: =AND(B2>C2,B2<D2)
+        rule: fragile
+      - formula: =AND(B2>=C2,B2<=D2
+        rule: syntax

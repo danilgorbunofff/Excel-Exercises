@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIFS($C$2:$C$8,$A$2:$A$8,"East",$B$2:$B$8,"Pens")/SUM($C$2:$C$8)
+      - =SUMIFS(C$2:C$8,A2:A8,"East",B2:B8,"Pens")/SUM(C2:C8)
+      - =sumifs(c2:c8, a2:a8, "East", b2:b8, "Pens")/sum(c2:c8)
+      - =LET(data,C2:C8,SUMIFS(data,A2:A8,"East",B2:B8,"Pens")/SUM(data))
+    wrong: []
+    equivalent: []

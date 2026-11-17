@@ -8,7 +8,7 @@ import { grade } from "@practice/grader";
 import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
 import { lintText } from "../../tools/lib/copy-lint.ts";
-import { dailySchema, exerciseSchema, mockSchema } from "./schema.ts";
+import { dailySchema, drillSchema, exerciseSchema, mockSchema } from "./schema.ts";
 
 const dir = "content/exercises";
 const exercises = [
@@ -31,6 +31,13 @@ const exercises = [
     .map((f) => ({
       file: `mocks/${f}`,
       exercise: mockSchema.parse(parse(readFileSync(`content/mocks/${f}`, "utf8"))),
+    })),
+  // PRO function drills, labelled drills/.
+  ...readdirSync("content/drills")
+    .filter((f) => f.endsWith(".yaml"))
+    .map((f) => ({
+      file: `drills/${f}`,
+      exercise: drillSchema.parse(parse(readFileSync(`content/drills/${f}`, "utf8"))),
     })),
 ];
 

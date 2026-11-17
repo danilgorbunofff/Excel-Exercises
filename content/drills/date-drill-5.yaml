@@ -1,0 +1,43 @@
+id: date-drill-5
+slug: date-drill-5
+level: 2
+title: A due date
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: DATE
+screens:
+  - prompt: In E2, use DATE to build the invoice date from A2, B2 and C2, then add the days in D2.
+    rows:
+      - [Year, Month, Day, Days, Due]
+      - [2026, 11, 20, 30, null]
+    answerCell: E2
+    expected: 46376
+    variants:
+      - set: { D2: 14 }
+        expected: 46360
+      - set: { B2: 12 }
+        expected: 46406
+    answer: =DATE(A2,B2,C2)+D2
+    requiredFunctions:
+      - DATE
+    hints:
+      nudge: A date is a number of days, so you can add days to it.
+      rule: DATE(...)+D2 moves the date D2 days on.
+    misses:
+      value: 30 days after 20 November 2026 is 20 December 2026, date number 46376.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      required-function: This drill asks for DATE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =DATE(A2,B2,C2)+D2
+      - =DATE(A2,B2,C2+D2)
+    reject:
+      - formula: =DATE(A2,B2,C2)
+        rule: value
+      - formula: =DATE(A2,B2,C2)+30
+        rule: reference
+      - formula: =46376
+        rule: required-function
+      - formula: =DATE(A2,B2,C2)+D2,
+        rule: syntax

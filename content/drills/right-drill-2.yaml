@@ -1,0 +1,38 @@
+id: right-drill-2
+slug: right-drill-2
+level: 1
+title: The last letter
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: RIGHT
+screens:
+  - prompt: In B2, use RIGHT to take the last character of the code in A2.
+    rows:
+      - [Code, Result]
+      - [SKU-7734-K, null]
+    answerCell: B2
+    expected: K
+    variants:
+      - set: { A2: SKU-1209-B }
+        expected: B
+    answer: =RIGHT(A2)
+    requiredFunctions:
+      - RIGHT
+    hints:
+      nudge: With no number, RIGHT takes one character.
+      rule: RIGHT(text) is the same as RIGHT(text,1).
+    misses:
+      value: SKU-7734-K ends with K.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for RIGHT.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =RIGHT(A2)
+      - =RIGHT(A2,1)
+    reject:
+      - formula: =RIGHT(A2,2)
+        rule: value
+      - formula: ="K"
+        rule: required-function
+      - formula: =RIGHT(A2
+        rule: syntax

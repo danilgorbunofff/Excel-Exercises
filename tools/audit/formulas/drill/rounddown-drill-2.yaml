@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUNDDOWN($B$2,2)
+      - =ROUNDDOWN(B$2,2)
+      - =rounddown(b2, 2)
+    wrong: []
+    equivalent: []

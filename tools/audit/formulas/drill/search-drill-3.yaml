@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SEARCH("a",$A$2,$B$2)
+      - =SEARCH("a",A$2,B2)
+      - =search("a", a2, b2)
+    wrong: []
+    equivalent: []

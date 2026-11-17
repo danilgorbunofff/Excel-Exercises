@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =FILTER($A$2:$A$7,($B$2:$B$7="East")*($C$2:$C$7>300))
+      - =FILTER(A$2:A$7,(B2:B7="East")*(C2:C7>300))
+      - =filter(a2:a7, (b2:b7="East")*(c2:c7>300))
+      - =LET(data,A2:A7,FILTER(data,(B2:B7="East")*(C2:C7>300)))
+    wrong:
+      - formula: =FILTER(A2:A7,(B2:B7="East")*(C2:C7>=300))
+        rule: fragile
+        why: "> written as >="
+      - formula: =FILTER(A2:A7,(B2:B7="East")*(C2:C7>301))
+        rule: fragile
+        why: 300 written as 301
+      - formula: =FILTER(A2:A7,(B2:B7="East")*(C2:C7>299))
+        rule: fragile
+        why: 300 written as 299
+    equivalent: []

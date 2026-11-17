@@ -1,0 +1,37 @@
+id: lower-drill-4
+slug: lower-drill-4
+level: 2
+title: Digits and signs stay
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LOWER
+screens:
+  - prompt: In B2, use LOWER to turn the label in A2 into small letters.
+    rows:
+      - [Label, Result]
+      - ["ROOM 12B, FLOOR 3", null]
+    answerCell: B2
+    expected: room 12b, floor 3
+    variants:
+      - set: { A2: BOX 7-A }
+        expected: box 7-a
+    answer: =LOWER(A2)
+    requiredFunctions:
+      - LOWER
+    hints:
+      nudge: Digits, spaces and signs do not change.
+      rule: LOWER changes letters only.
+    misses:
+      value: In small letters, the label reads room 12b, floor 3.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LOWER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LOWER(A2)
+    reject:
+      - formula: =PROPER(A2)
+        rule: required-function
+      - formula: ="room 12b, floor 3"
+        rule: required-function
+      - formula: =LOWER(A2
+        rule: syntax

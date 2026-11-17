@@ -1,0 +1,39 @@
+id: iserror-drill-1
+slug: iserror-drill-1
+level: 1
+title: Does the division fail
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: ISERROR
+screens:
+  - prompt: In D2, use ISERROR to test whether B2 divided by C2 gives an error.
+    rows:
+      - [Item, Total, Count, Error]
+      - [Pens, 120, 0, null]
+    answerCell: D2
+    expected: true
+    variants:
+      - set: { C2: 4 }
+        expected: false
+      - set: { B2: n/a, C2: 4 }
+        expected: true
+    answer: =ISERROR(B2/C2)
+    requiredFunctions:
+      - ISERROR
+    hints:
+      nudge: ISERROR is TRUE for any error at all.
+      rule: ISERROR(B2/C2) is TRUE when C2 is 0.
+    misses:
+      value: C2 is 0, so the division fails and the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for ISERROR.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ISERROR(B2/C2)
+    reject:
+      - formula: =ISNA(B2/C2)
+        rule: required-function
+      - formula: =ISERROR(B2/4)
+        rule: value
+      - formula: =ISERROR(B2/C2
+        rule: syntax

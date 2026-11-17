@@ -1,0 +1,37 @@
+id: max-drill-2
+slug: max-drill-2
+level: 1
+title: Find the busiest month in a row
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MAX
+screens:
+  - prompt: In H2, use MAX to find the largest number of orders in B2:G2.
+    rows:
+      - [Shop, Jan, Feb, Mar, Apr, May, Jun, Peak]
+      - [Leeds, 410, 385, 520, 470, 505, 390, null]
+    answerCell: H2
+    expected: 520
+    variants:
+      - set: { G2: 600 }
+        expected: 600
+    answer: =MAX(B2:G2)
+    requiredFunctions:
+      - MAX
+    hints:
+      nudge: The months run along row 2.
+      rule: "MAX works on a row range: MAX(B2:G2)."
+    misses:
+      value: The busiest month had 520 orders.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MAX.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MAX(B2:G2)
+    reject:
+      - formula: =MAX(B2:F2)
+        rule: fragile
+      - formula: =520
+        rule: required-function
+      - formula: =MAX(B2:G2
+        rule: syntax

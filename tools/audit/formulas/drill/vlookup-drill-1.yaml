@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =VLOOKUP($F$2,$A$2:$C$7,3,FALSE)
+      - =VLOOKUP(F$2,A2:C7,3,FALSE)
+      - =vlookup(f2, a2:c7, 3, false)
+      - =LET(data,A2:C7,VLOOKUP(F2,data,3,FALSE))
+    wrong:
+      - formula: =VLOOKUP(F2,A2:C6,3,FALSE)
+        rule: fragile
+        why: range A2:C7 one row short at the end
+      - formula: =VLOOKUP(F2,A3:C7,3,FALSE)
+        rule: fragile
+        why: range A2:C7 skips its first row
+    equivalent: []

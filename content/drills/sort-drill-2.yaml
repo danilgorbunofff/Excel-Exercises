@@ -1,0 +1,53 @@
+id: sort-drill-2
+slug: sort-drill-2
+level: 1
+title: Sales from largest
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SORT
+screens:
+  - prompt: In E2, use SORT with -1 to list the sales in C2:C7 from largest to smallest.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, null]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [520]
+      - [400]
+      - [330]
+      - [310]
+      - [250]
+      - [190]
+    variants:
+      - set: { C3: 600 }
+        expected:
+          - - 600
+          - - 520
+          - - 400
+          - - 330
+          - - 310
+          - - 190
+    answer: =SORT(C2:C7,1,-1)
+    requiredFunctions:
+      - SORT
+    hints:
+      nudge: "The third argument is the order: -1 means largest first."
+      rule: SORT(range,1,-1) sorts descending.
+    misses:
+      value: Largest first, the sales are 520, 400, 330, 310, 250, 190.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SORT(C2:C7,1,-1)
+      - =SORT(C2:C7,,-1)
+    reject:
+      - formula: =SORT(C2:C7)
+        rule: value
+      - formula: =SORT(C2:C7,1,-1
+        rule: syntax

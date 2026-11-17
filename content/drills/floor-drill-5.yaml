@@ -1,0 +1,48 @@
+id: floor-drill-5
+slug: floor-drill-5
+level: 2
+title: A total down to the nearest 10
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: FLOOR
+screens:
+  - prompt: In B8, use FLOOR and SUM to round the total of B2:B6 down to a multiple of 10.
+    rows:
+      - [Day, Units]
+      - [Mon, 23]
+      - [Tue, 18]
+      - [Wed, 27]
+      - [Thu, 21]
+      - [Fri, 19]
+      - [null, null]
+      - [Total, null]
+    answerCell: B8
+    expected: 100
+    variants:
+      - set: { B2: 25 }
+        expected: 110
+      - set: { B3: 12 }
+        expected: 100
+    answer: =FLOOR(SUM(B2:B6),10)
+    requiredFunctions:
+      - FLOOR
+      - SUM
+    hints:
+      nudge: Put the SUM inside FLOOR.
+      rule: FLOOR(SUM(range),10) rounds the total down to tens.
+    misses:
+      value: The total of 108 goes down to 100.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for FLOOR and SUM.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =FLOOR(SUM(B2:B6),10)
+    reject:
+      - formula: =ROUNDDOWN(SUM(B2:B6),-1)
+        rule: required-function
+      - formula: =FLOOR(SUM(B2:B5),10)
+        rule: value
+      - formula: =100
+        rule: required-function
+      - formula: =FLOOR(SUM(B2:B6),10
+        rule: syntax

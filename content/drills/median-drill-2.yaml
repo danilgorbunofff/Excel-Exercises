@@ -1,0 +1,48 @@
+id: median-drill-2
+slug: median-drill-2
+level: 1
+title: The middle of an even count
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: MEDIAN
+screens:
+  - prompt: In B9, use MEDIAN to find the middle wait in B2:B7. There are six waits.
+    rows:
+      - [Patient, Wait]
+      - [P1, 25]
+      - [P2, 40]
+      - [P3, 15]
+      - [P4, 30]
+      - [P5, 20]
+      - [P6, 35]
+      - [null, null]
+      - [Median, null]
+    answerCell: B9
+    expected: 27.5
+    variants:
+      - set: { B3: 50 }
+        expected: 27.5
+      - set: { B4: 28 }
+        expected: 29
+    answer: =MEDIAN(B2:B7)
+    requiredFunctions:
+      - MEDIAN
+    hints:
+      nudge: With an even count, MEDIAN averages the two middle values.
+      rule: For six values, MEDIAN takes the mean of the 3rd and 4th once sorted.
+    misses:
+      value: Sorted, the middle two waits are 25 and 30, so the median is 27.5.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for MEDIAN.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =MEDIAN(B2:B7)
+    reject:
+      - formula: =MEDIAN(B2:B6)
+        rule: value
+      - formula: =AVERAGE(B2:B7)
+        rule: required-function
+      - formula: =27.5
+        rule: required-function
+      - formula: =MEDIAN(B2:B7
+        rule: syntax

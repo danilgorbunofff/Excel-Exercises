@@ -1,0 +1,41 @@
+id: iferror-drill-1
+slug: iferror-drill-1
+level: 1
+title: Zero instead of a division error
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IFERROR
+screens:
+  - prompt: In D2, use IFERROR to divide B2 by C2, and show 0 when that gives an error.
+    rows:
+      - [Item, Total, Count, Average]
+      - [Pens, 120, 0, null]
+    answerCell: D2
+    expected: 0
+    variants:
+      - set: { C2: 4 }
+        expected: 30
+      - set: { C2: 3 }
+        expected: 40
+    answer: =IFERROR(B2/C2,0)
+    requiredFunctions:
+      - IFERROR
+    hints:
+      nudge: IFERROR takes a formula, then what to show if it fails.
+      rule: "IFERROR(B2/C2,0) shows 0 instead of #DIV/0."
+    misses:
+      value: C2 is 0, so the division fails and the cell shows 0.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IFERROR.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IFERROR(B2/C2,0)
+    reject:
+      - formula: =B2/C2
+        rule: required-function
+      - formula: =IFERROR(B2/C2,1)
+        rule: value
+      - formula: =0
+        rule: required-function
+      - formula: =IFERROR(B2/C2,0
+        rule: syntax

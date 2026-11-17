@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($B$2:$B$7,$E$2)
+      - =INDEX(B$2:B$7,E2)
+      - =index(b2:b7, e2)
+      - =LET(data,B2:B7,INDEX(data,E2))
+    wrong: []
+    equivalent: []

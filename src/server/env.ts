@@ -25,5 +25,15 @@ export const env = {
     createHmac("sha256", read("SUPABASE_SERVICE_ROLE_KEY", "SUPABASE_SECRET_KEY"))
       .update("assessment-start")
       .digest("base64url"),
+  /** Signs the unsubscribe links in emails. Derived from the service key, like the start key. */
+  unsubscribeKey: () =>
+    createHmac("sha256", read("SUPABASE_SERVICE_ROLE_KEY", "SUPABASE_SECRET_KEY"))
+      .update("email-unsubscribe")
+      .digest("base64url"),
+  resendKey: () => read("RESEND_API_KEY"),
+  /** The sender, such as "Excel Exercises <hello@example.com>", on a domain verified with Resend. */
+  emailFrom: () => read("EMAIL_FROM"),
+  /** Vercel sends it as a Bearer token with each cron call. */
+  cronSecret: () => read("CRON_SECRET"),
   // The plan price ids are read in plans.ts.
 };

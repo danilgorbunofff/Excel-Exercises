@@ -1,0 +1,39 @@
+id: if-drill-4
+slug: if-drill-4
+level: 2
+title: Open until a date is filled in
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: IF
+screens:
+  - prompt: In C2, use IF to show "Open" when B2 is empty, and "Closed" when it holds a date.
+    rows:
+      - [Task, Done on, Status]
+      - [Plan, null, null]
+    answerCell: C2
+    expected: Open
+    variants:
+      - set: { B2: 46160 }
+        expected: Closed
+    answer: =IF(B2="","Open","Closed")
+    requiredFunctions:
+      - IF
+    hints:
+      nudge: Test whether B2 is empty with B2="".
+      rule: B2="" is true when the cell holds nothing.
+    misses:
+      value: B2 is empty, so the task is Open.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IF(B2="","Open","Closed")
+      - =IF(B2<>"","Closed","Open")
+      - =IF(ISBLANK(B2),"Open","Closed")
+    reject:
+      - formula: =IF(B2="","Closed","Open")
+        rule: value
+      - formula: ="Open"
+        rule: required-function
+      - formula: =IF(B2="","Open","Closed"
+        rule: syntax

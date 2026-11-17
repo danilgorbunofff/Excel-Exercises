@@ -1,0 +1,51 @@
+id: let-drill-3
+slug: let-drill-3
+level: 2
+title: Count above a named average
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: LET
+screens:
+  - prompt: In B8, use LET, AVERAGE and COUNTIF to name the average of B2:B6 as avg, then count the values in B2:B6 above it.
+    rows:
+      - [Day, Visitors]
+      - [Mon, 132]
+      - [Tue, 148]
+      - [Wed, 121]
+      - [Thu, 139]
+      - [Fri, 156]
+      - [null, null]
+      - [Above, null]
+    answerCell: B8
+    expected: 2
+    variants:
+      - set: { B2: 160 }
+        expected: 3
+      - set: { B2: 100, B3: 100, B4: 100, B5: 100, B6: 100 }
+        expected: 0
+      - set: { B2: 300 }
+        expected: 1
+    answer: =LET(avg,AVERAGE(B2:B6),COUNTIF(B2:B6,">"&avg))
+    requiredFunctions:
+      - LET
+      - AVERAGE
+      - COUNTIF
+    hints:
+      nudge: Name the average first, then use the name in the COUNTIF test.
+      rule: LET(avg,AVERAGE(range),COUNTIF(range,">"&avg)) reads clearly.
+    misses:
+      value: The average is 139.2, and 2 days are above it.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for LET, AVERAGE and COUNTIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =LET(avg,AVERAGE(B2:B6),COUNTIF(B2:B6,">"&avg))
+    reject:
+      - formula: =COUNTIF(B2:B6,">"&AVERAGE(B2:B6))
+        rule: required-function
+      - formula: =LET(avg,AVERAGE(B2:B6),COUNTIF(B2:B6,"<"&avg))
+        rule: value
+      - formula: =2
+        rule: required-function
+      - formula: =LET(avg,AVERAGE(B2:B6),COUNTIF(B2:B6,">"&avg)
+        rule: syntax

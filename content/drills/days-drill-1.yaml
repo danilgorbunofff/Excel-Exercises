@@ -1,0 +1,41 @@
+id: days-drill-1
+slug: days-drill-1
+level: 1
+title: Days between start and end
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: DAYS
+screens:
+  - prompt: In D2, use DAYS to count the days from the start date in B2 to the end date in C2.
+    rows:
+      - [Task, Start, End, Days]
+      - [T1, 46083, 46101, null]
+    answerCell: D2
+    expected: 18
+    variants:
+      - set: { C2: 46113 }
+        expected: 30
+      - set: { B2: 46073 }
+        expected: 28
+    answer: =DAYS(C2,B2)
+    requiredFunctions:
+      - DAYS
+    hints:
+      nudge: DAYS takes the end date first, then the start date.
+      rule: DAYS(end,start) counts the days between them.
+    misses:
+      value: From 2 March to 20 March is 18 days.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for DAYS.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =DAYS(C2,B2)
+    reject:
+      - formula: =DAYS(B2,C2)
+        rule: value
+      - formula: =C2-B2
+        rule: required-function
+      - formula: =18
+        rule: required-function
+      - formula: =DAYS(C2,B2
+        rule: syntax

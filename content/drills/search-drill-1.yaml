@@ -1,0 +1,39 @@
+id: search-drill-1
+slug: search-drill-1
+level: 1
+title: SEARCH ignores case
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SEARCH
+screens:
+  - prompt: In B2, use SEARCH to find the position of "york" in A2, in any case.
+    rows:
+      - [City, Result]
+      - [New York, null]
+    answerCell: B2
+    expected: 5
+    variants:
+      - set: { A2: Old YORK Road }
+        expected: 5
+    answer: =SEARCH("york",A2)
+    requiredFunctions:
+      - SEARCH
+    hints:
+      nudge: SEARCH does not care about capital letters.
+      rule: SEARCH("york",A2) finds York, YORK or york.
+    misses:
+      value: York starts at character 5 of New York.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SEARCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SEARCH("york",A2)
+    reject:
+      - formula: =FIND("york",A2)
+        rule: required-function
+      - formula: =SEARCH("york",A2)+1
+        rule: value
+      - formula: =5
+        rule: required-function
+      - formula: =SEARCH("york",A2
+        rule: syntax

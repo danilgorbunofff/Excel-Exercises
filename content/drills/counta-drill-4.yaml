@@ -1,0 +1,47 @@
+id: counta-drill-4
+slug: counta-drill-4
+level: 2
+title: Count answers, zeros included
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: COUNTA
+screens:
+  - prompt: In B8, use COUNTA to find how many questions in B2:B7 have an answer. Some answers are numbers and some are words.
+    rows:
+      - [Survey, Answer]
+      - [Q1, 4]
+      - [Q2, Yes]
+      - [Q3, null]
+      - [Q4, 0]
+      - [Q5, No]
+      - [Q6, null]
+      - [Answered, null]
+    answerCell: B8
+    expected: 4
+    variants:
+      - set: { B4: Maybe }
+        expected: 5
+      - set: { B7: Yes }
+        expected: 5
+    answer: =COUNTA(B2:B7)
+    requiredFunctions:
+      - COUNTA
+    hints:
+      nudge: COUNTA counts numbers and text alike, and a 0 is still an answer.
+      rule: COUNTA(range) counts every cell that is not empty.
+    misses:
+      value: 4 questions have an answer. A 0 counts as an answer too.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for COUNTA.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =COUNTA(B2:B7)
+    reject:
+      - formula: =COUNT(B2:B7)
+        rule: required-function
+      - formula: =COUNTA(B2:B4)
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =COUNTA(B2:B7
+        rule: syntax

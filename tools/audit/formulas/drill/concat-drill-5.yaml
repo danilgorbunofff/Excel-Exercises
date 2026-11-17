@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =CONCAT(LEFT($A$2,1),". ",$B$2)
+      - =CONCAT(LEFT(A$2,1),". ",B2)
+      - =concat(left(a2, 1), ". ", b2)
+    wrong: []
+    equivalent: []

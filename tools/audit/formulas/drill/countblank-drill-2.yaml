@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTBLANK($B$2:$G$2)
+      - =COUNTBLANK(B$2:G$2)
+      - =countblank(b2:g2)
+      - =LET(data,B2:G2,COUNTBLANK(data))
+    wrong:
+      - formula: =COUNTBLANK(A2:F2)
+        rule: fragile
+        why: range B2:G2 one column left
+    equivalent: []

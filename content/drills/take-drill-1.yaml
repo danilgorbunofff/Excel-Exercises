@@ -1,0 +1,48 @@
+id: take-drill-1
+slug: take-drill-1
+level: 1
+title: The first three
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: TAKE
+screens:
+  - prompt: In E2, use TAKE to return the first 3 reps in A2:A7.
+    rows:
+      - [Rep, Region, Sales, null, Result, null, null, null, null]
+      - [Ann, East, 400, null, null, null, null, null, null]
+      - [Bo, West, 250, null, null, null, null, null, null]
+      - [Cy, East, 310, null, null, null, null, null, null]
+      - [Di, North, 520, null, null, null, null, null, null]
+      - [Ed, East, 190, null, null, null, null, null, null]
+      - [Flo, West, 330, null, null, null, null, null, null]
+      - [null, null, null, null, null, null, null, null, null]
+    answerCell: E2
+    expected:
+      - [Ann]
+      - [Bo]
+      - [Cy]
+    variants:
+      - set: { A3: Raj }
+        expected:
+          - - Ann
+          - - Raj
+          - - Cy
+    answer: =TAKE(A2:A7,3)
+    requiredFunctions:
+      - TAKE
+    hints:
+      nudge: TAKE takes a range and how many rows to keep.
+      rule: TAKE(range,3) keeps the first three rows.
+    misses:
+      value: The first three reps are Ann, Bo, Cy.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =TAKE(A2:A7,3)
+    reject:
+      - formula: =TAKE(A2:A7,2)
+        rule: value
+      - formula: =TAKE(A2:A7,-3)
+        rule: value
+      - formula: =TAKE(A2:A7,3
+        rule: syntax

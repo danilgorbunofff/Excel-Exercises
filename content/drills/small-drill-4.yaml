@@ -1,0 +1,46 @@
+id: small-drill-4
+slug: small-drill-4
+level: 2
+title: Lowest with runners who did not finish
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SMALL
+screens:
+  - prompt: In B10, use SMALL to find the third fastest time in B2:B8. Two runners did not finish and have DNF instead of a time.
+    rows:
+      - [Runner, Time]
+      - [Ann, 41.2]
+      - [Bo, DNF]
+      - [Cy, 44.5]
+      - [Di, 37.6]
+      - [Ed, DNF]
+      - [Flo, 39.4]
+      - [Gus, 42.8]
+      - [null, null]
+      - [Third, null]
+    answerCell: B10
+    expected: 41.2
+    variants:
+      - { set: { B3: 38 }, expected: 39.4 }
+      - { set: { B4: 40 }, expected: 40 }
+      - { set: { B2: 44.5 }, expected: 42.8 }
+    answer: =SMALL(B2:B8,3)
+    requiredFunctions:
+      - SMALL
+    hints:
+      nudge: SMALL skips text such as DNF.
+      rule: SMALL looks only at the numbers in the range.
+    misses:
+      value: The finishers' times go 37.6, 39.4, 41.2, so the third is 41.2.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SMALL.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SMALL(B2:B8,3)
+    reject:
+      - formula: =SMALL(B2:B8,2)
+        rule: value
+      - formula: =41.2
+        rule: required-function
+      - formula: =SMALL(B2:B8,3
+        rule: syntax

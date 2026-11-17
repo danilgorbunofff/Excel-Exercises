@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIFS($B$2:$B$8,">=10",$B$2:$B$8,"<=20")
+      - =COUNTIFS(B$2:B$8,">=10",B2:B8,"<=20")
+      - =countifs(b2:b8, ">=10", b2:b8, "<=20")
+      - =LET(data,B2:B8,COUNTIFS(data,">=10",data,"<=20"))
+    wrong: []
+    equivalent: []

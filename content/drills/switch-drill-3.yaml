@@ -1,0 +1,39 @@
+id: switch-drill-3
+slug: switch-drill-3
+level: 1
+title: Shipping price by method
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: SWITCH
+screens:
+  - prompt: 'In B2, use SWITCH to price the method in A2: "Standard" 4.5, "Express" 9.9, "Pickup" 0.'
+    rows:
+      - [Method, Price]
+      - [Express, null]
+    answerCell: B2
+    expected: 9.9
+    variants:
+      - set: { A2: Pickup }
+        expected: 0
+      - set: { A2: Standard }
+        expected: 4.5
+    answer: =SWITCH(A2,"Standard",4.5,"Express",9.9,"Pickup",0)
+    requiredFunctions:
+      - SWITCH
+    hints:
+      nudge: The results can be numbers too.
+      rule: SWITCH returns whatever is paired with the match, here a price.
+    misses:
+      value: Express costs 9.9.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for SWITCH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =SWITCH(A2,"Standard",4.5,"Express",9.9,"Pickup",0)
+    reject:
+      - formula: =SWITCH(A2,"Standard",4.5,"Express",4.5,"Pickup",0)
+        rule: value
+      - formula: =9.9
+        rule: required-function
+      - formula: =SWITCH(A2,"Standard",4.5,"Express",9.9,"Pickup",0
+        rule: syntax

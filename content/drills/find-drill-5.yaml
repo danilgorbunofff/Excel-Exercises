@@ -1,0 +1,38 @@
+id: find-drill-5
+slug: find-drill-5
+level: 2
+title: Does the address have an at sign
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: FIND
+screens:
+  - prompt: In B2, use ISNUMBER and FIND to test whether A2 contains "@".
+    rows:
+      - [Email, Result]
+      - [rosa@example.com, null]
+    answerCell: B2
+    expected: true
+    variants:
+      - set: { A2: rosa.example.com }
+        expected: false
+    answer: =ISNUMBER(FIND("@",A2))
+    requiredFunctions:
+      - FIND
+      - ISNUMBER
+    hints:
+      nudge: FIND gives a number when it finds the text and an error when not.
+      rule: ISNUMBER(FIND(...)) turns that into TRUE or FALSE.
+    misses:
+      value: The address contains an at sign, so the result is TRUE.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for FIND and ISNUMBER.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ISNUMBER(FIND("@",A2))
+    reject:
+      - formula: =FIND("@",A2)
+        rule: required-function
+      - formula: =ISNUMBER(FIND(".",A2))
+        rule: fragile
+      - formula: =ISNUMBER(FIND("@",A2)
+        rule: syntax

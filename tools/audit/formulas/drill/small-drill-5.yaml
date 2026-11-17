@@ -1,0 +1,27 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($A$2:$A$8,MATCH(SMALL($B$2:$B$8,1),$B$2:$B$8,0))
+      - =INDEX(A$2:A$8,MATCH(SMALL(B2:B8,1),B2:B8,0))
+      - =index(a2:a8, match(small(b2:b8, 1), b2:b8, 0))
+      - =LET(data,A2:A8,INDEX(data,MATCH(SMALL(B2:B8,1),B2:B8,0)))
+    wrong:
+      - formula: =INDEX(A2:A7,MATCH(SMALL(B2:B8,1),B2:B8,0))
+        rule: fragile
+        why: range A2:A8 one row short at the end
+      - formula: =INDEX(A2:A8,MATCH(SMALL(B2:B7,1),B2:B8,0))
+        rule: fragile
+        why: range B2:B8 one row short at the end
+      - formula: =INDEX(A2:A8,MATCH(SMALL(B3:B8,1),B2:B8,0))
+        rule: fragile
+        why: range B2:B8 skips its first row
+      - formula: =INDEX(A2:A8,MATCH(SMALL(B2:B8,1),B2:B7,0))
+        rule: fragile
+        why: range B2:B8 one row short at the end
+    equivalent:
+      - formula: =INDEX(A2:A9,MATCH(SMALL(B2:B8,1),B2:B8,0))
+        why: "range A2:A8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(A2:A8,MATCH(SMALL(B2:B9,1),B2:B8,0))
+        why: "range B2:B8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(A2:A8,MATCH(SMALL(B2:B8,1),B2:B9,0))
+        why: "range B2:B8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

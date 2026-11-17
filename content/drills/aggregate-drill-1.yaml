@@ -1,0 +1,44 @@
+id: aggregate-drill-1
+slug: aggregate-drill-1
+level: 1
+title: Total with AGGREGATE
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
+function: AGGREGATE
+screens:
+  - prompt: In B7, use AGGREGATE with function 9 and option 6 to add up the hours in B2:B6.
+    rows:
+      - [Task, Hours]
+      - [Plan, 6]
+      - [Build, 14]
+      - [Test, 8]
+      - [Fix, 5]
+      - [Ship, 2]
+      - [Total, null]
+    answerCell: B7
+    expected: 35
+    variants:
+      - set: { B3: 20 }
+        expected: 41
+    answer: =AGGREGATE(9,6,B2:B6)
+    requiredFunctions:
+      - AGGREGATE
+    hints:
+      nudge: AGGREGATE takes a function number, an options number, then the range.
+      rule: AGGREGATE(9,6,range) adds the range and would skip any cell holding an error.
+    misses:
+      value: The tasks take 35 hours in all.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AGGREGATE.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AGGREGATE(9,6,B2:B6)
+    reject:
+      - formula: =SUM(B2:B6)
+        rule: required-function
+      - formula: =AGGREGATE(1,6,B2:B6)
+        rule: value
+      - formula: =35
+        rule: required-function
+      - formula: =AGGREGATE(9,6,B2:B6
+        rule: syntax

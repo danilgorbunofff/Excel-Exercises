@@ -13,6 +13,7 @@ import {
   type AuditScreen,
   candidatesOf,
   judgeCandidate,
+  loadAuditFixture,
   loadTasks,
   sheetsOf,
   type TaskScreen,
@@ -47,7 +48,7 @@ const sheetCases = (t: TaskScreen, formula: string): ExcelCase[] =>
 // First pass: mutants Excel has seen on the base sheet but not on every variant.
 const missing: ExcelCase[] = [];
 for (const t of tasks)
-  for (const c of candidatesOf(t)) {
+  for (const c of candidatesOf(t, { correct: loadAuditFixture(t).correct ?? [] })) {
     if (c.source !== "mutant") continue;
     const cases = sheetCases(t, c.formula);
     const got = runInExcel(cases, CACHE, { cacheOnly: true });
@@ -63,7 +64,7 @@ const files = new Map<string, { kind: string; screens: AuditScreen[] }>();
 let counts = { correct: 0, wrong: 0, equivalent: 0 };
 for (const t of tasks) {
   const screen: AuditScreen = { correct: [], wrong: [], equivalent: [] };
-  for (const c of candidatesOf(t)) {
+  for (const c of candidatesOf(t, { correct: loadAuditFixture(t).correct ?? [] })) {
     if (c.source === "reference" || c.source === "accept" || c.source === "reject") continue;
     const excel = runInExcel(sheetCases(t, c.formula), CACHE, { cacheOnly: true });
     if (excel.some((e) => e.invalid === "not cached")) continue;

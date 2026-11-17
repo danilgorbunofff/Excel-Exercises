@@ -9,15 +9,18 @@ Brief: `docs/exercise-reverification-prompt.md`. Report: `docs/reverification-re
 - Phase 3 (access, daily, mocks): done earlier; leak scan 0 leaks.
 - Checks passing now: typecheck, `npm run test` (59 files, 5238 tests), content:validate, build (299 pages), lint:copy, budgets, motion. Lint: only the 3 baseline errors.
 
-## Left to do
+## Left to do (updated 2026-11-17)
 
-1. **e2e**: a full run (`E2E_PORT=4331 npx playwright test --workers=4 --reporter=line`) was at 1766 of 4128 when the session stopped. Rerun it, compare the failures with the baseline (45 failures: axe on `/pricing/` and six articles, duplicate title ageing-buckets). Put the result in place of `E2E_RESULT` in section 5 of the report.
-2. **Fixture regeneration check**: content changed after `node tools/write-audit-fixtures.ts` ran (lead-conversion-rate 1 got `misses.reference`, switch-match-a-list-of-values 1 got 3 accepts, `checkedInExcel` set). `npm run test` passes, so fixtures still hold; optionally rerun the generator (needs Excel open) to pick up the new SWITCH accepts as correct forms.
-3. **Final review of the report**: read `docs/reverification-report.md` once end to end; findings 22 to 31 and sections 4 and 5 are new. Copy rules: no dashes, no exclamation marks, sentences under 30 words.
-4. **Owner decisions still open** (deferred table in section 2): track order (ROUND, AVERAGEIFS, TRIM taught late), mock phone-extension-for-a-name vs exercise extension-for-a-colleague near twins, reading-error-values 2 level 3 without variants.
-5. **Needs an en-US Excel check** (cannot be done on this en_CZ Mac): card-payments-of-500-or-more, filter-amounts-stored-as-text, gross-margin-by-product 2, the 7 locale Phase 1 cases, `=HSTACK(A2:A3,B2:B4)` (crashes Excel under automation).
-6. **Environment**: `node_modules/.cache/stale-dist/` holds 19 iCloud placeholder folders moved out of `dist/client` (they hung any walk of `dist`). Delete in Finder when iCloud sync works. Empty folders `test-results 2`, `3`, `4` at the root are iCloud copies too.
-7. **Wrap up**: tell the owner the outcome; no commit, push or deploy unless asked.
+Done since the first handoff: full e2e (44 failures, all baseline), lint at 0 errors, fixtures regenerated with Excel, browser spot check, report section 5. Commit `c5b1b34` is on `origin/main`.
+
+Done on 2026-11-17 (findings 32 to 39, not committed): five Excel-checked correct forms on every screen apart from 2 locale screens, every screen read by hand, by-hand workbench runs, SLN and FV, criteria thresholds, daily tasks without required functions, case-sensitive function names, the week strip at 375 px.
+
+Only items the owner or another machine can close:
+
+1. **Owner decisions** (deferred table in section 2): track order (ROUND, AVERAGEIFS, TRIM taught late), the near twins `phone-extension-for-a-name` (mock) and `extension-for-a-colleague` (exercise), `reading-error-values` screen 2 at level 3 without variants, rounding on mock `average-sale-without-zeros`.
+2. **Needs an en-US Excel check** (this Mac reads separators by en_CZ, and scripts cannot switch them): card-payments-of-500-or-more and filter-amounts-stored-as-text (both still short of five Excel-checked correct forms), gross-margin-by-product 2, the 7 locale Phase 1 cases, `=HSTACK(A2:A3,B2:B4)` (crashes Excel under automation).
+3. **Environment**: delete `node_modules/.cache/stale-dist/` and the empty `test-results 2`, `3`, `4` folders in Finder.
+4. **Deploy**: check whether the push to `main` started a Vercel production deploy. `npm run lhci` was not rerun; its baseline failure is `/pricing/` contrast.
 
 ## Rerun commands
 

@@ -4,5 +4,7 @@ screens:
       - =LEFT($A$2,3)
       - =LEFT(A$2,3)
       - =left(a2, 3)
+      - =MID(A2,1,3)
+      - =TEXTBEFORE(A2,"-")
     wrong: []
     equivalent: []

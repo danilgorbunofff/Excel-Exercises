@@ -76,6 +76,18 @@ export interface Verdict {
 }
 
 /** Arguments that set how a function works. Typed numbers there are not data. */
+/** Where each criteria argument sits: the first index, then every step after it. */
+const CRITERIA_ARGS: Record<string, { first: number; step: number }> = {
+  COUNTIF: { first: 1, step: 99 },
+  SUMIF: { first: 1, step: 99 },
+  AVERAGEIF: { first: 1, step: 99 },
+  COUNTIFS: { first: 1, step: 2 },
+  SUMIFS: { first: 2, step: 2 },
+  AVERAGEIFS: { first: 2, step: 2 },
+  MAXIFS: { first: 2, step: 2 },
+  MINIFS: { first: 2, step: 2 },
+};
+
 const SETTING_ARGS: Record<string, number[]> = {
   VLOOKUP: [2, 3],
   HLOOKUP: [2, 3],
@@ -301,6 +313,13 @@ function typedDataNumber(
         const a = n.args[i];
         if (a) walkAst(a, (x) => settings.add(x));
       }
+      // A criteria is the task's condition, so ">"&100 is as fair as ">100".
+      const criteria = CRITERIA_ARGS[n.name];
+      if (criteria)
+        for (let i = criteria.first; i < n.args.length; i += criteria.step) {
+          const a = n.args[i];
+          if (a) walkAst(a, (x) => settings.add(x));
+        }
       // SWITCH's case values sit at 1, 3, 5 and so on; a last odd one is the default.
       if (n.name === "SWITCH") {
         for (let i = 1; i + 1 < n.args.length; i += 2) {

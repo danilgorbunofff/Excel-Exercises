@@ -3,8 +3,8 @@ slug: count-over-a-limit
 level: 2
 title: Count values over a limit
 topic: conditions
-updated: 2026-11-16
-checkedInExcel: 2026-11-16
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
 screens:
   - prompt: In B8, count the invoices for more than 100. An invoice for exactly 100 does not count. Use COUNTIF.
     rows:
@@ -32,6 +32,7 @@ screens:
     accept:
       - '=COUNTIF(B2:B7,">100")'
       - '=COUNTIF(B2:B7,"> 100")'
+      - '=COUNTIF(B2:B7,">"&100)'
     reject:
       - { formula: "=COUNTIF(B2:B7,>100)", rule: syntax }
       - { formula: "=COUNT(B2:B7)", rule: required-function }

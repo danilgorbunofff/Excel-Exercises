@@ -4,6 +4,8 @@ screens:
       - =ROUND($C$2/$B$2*100,1)
       - =ROUND(C$2/B2*100,1)
       - =round(c2/b2*100, 1)
+      - =ROUND(C2*100/B2,1)
+      - =LET(rate,C2/B2*100,ROUND(rate,1))
     wrong:
       - formula: =ROUNDDOWN(C2/B2*100,1)
         rule: required-function

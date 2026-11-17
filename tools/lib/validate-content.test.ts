@@ -24,7 +24,7 @@ const exercise = (id: string, topic = "basics") => ({
     id,
     slug: id,
     level: 1,
-    title: "Sum two cells",
+    title: "SUM two cells",
     topic,
     updated: "2026-11-10",
     checkedInExcel: null,
@@ -156,6 +156,26 @@ describe("validateContent", () => {
     ]);
     (quiet.data as { title: string }).title = "SUM: total the sales";
     expect(validateContent([quiet, exercise("b")], track)).toEqual([]);
+    // A plain word is not the function's name: "sum of" or "and a" names nothing.
+    (quiet.data as { title: string }).title = "The sum of the sales";
+    expect(validateContent([quiet, exercise("b")], track)).toEqual([
+      "a.yaml: screens.0.requiredFunctions: SUM is required but neither the prompt nor the title names it",
+    ]);
+  });
+
+  it("lets a daily task require no function", () => {
+    const day = exercise("d").data as Record<string, unknown>;
+    delete day["topic"];
+    day["tier"] = 1;
+    const daily = [1, 2, 3, 4, 5, 6, 7].map((tier) => ({
+      file: `d${tier}.yaml`,
+      data: { ...structuredClone(day), id: `d${tier}`, slug: `d${tier}`, tier },
+    }));
+    const errors = validateContent([exercise("a"), exercise("b")], track, [], daily);
+    expect(errors).toHaveLength(7);
+    expect(errors[0]).toBe(
+      "d1.yaml: screens.0.requiredFunctions: a daily task requires no function, so drop SUM",
+    );
   });
 
   it("reports a topic with no exercises", () => {

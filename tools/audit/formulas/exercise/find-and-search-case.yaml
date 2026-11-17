@@ -18,6 +18,7 @@ screens:
     equivalent: []
   - correct:
       - =search("N", a2)
+      - =SEARCH("N",A2,1)
     wrong:
       - formula: =SEARCH("N",A3)
         rule: fragile

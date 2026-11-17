@@ -2,9 +2,13 @@
 screens:
   - correct:
       - =substitute(a2, "-", "/")
+      - =SUBSTITUTE(SUBSTITUTE(A2,"-","/",1),"-","/")
+      - =LET(ref,A2,SUBSTITUTE(ref,"-","/"))
     wrong: []
     equivalent: []
   - correct:
       - =substitute(a2, "-", "/", 2)
+      - =LET(ref,A2,SUBSTITUTE(ref,"-","/",2))
+      - =SUBSTITUTE(A2,"-","/",1+1)
     wrong: []
     equivalent: []

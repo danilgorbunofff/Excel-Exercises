@@ -3,5 +3,7 @@ screens:
   - correct:
       - =$B$3/$B$2
       - =B$3/B2
+      - =LET(spent,B3,budget,B2,spent/budget)
+      - =B3*B2^-1
     wrong: []
     equivalent: []

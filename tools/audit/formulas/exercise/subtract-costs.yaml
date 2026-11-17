@@ -4,5 +4,7 @@ screens:
       - =$B$2-$C$2
       - =B$2-C2
       - =b2-c2
+      - =SUM(B2,-C2)
+      - =B2+(-C2)
     wrong: []
     equivalent: []

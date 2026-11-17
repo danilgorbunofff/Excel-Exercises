@@ -3,6 +3,9 @@ screens:
   - correct:
       - =COUNTBLANK(B$2:B$8)
       - =LET(data,B2:B8,COUNTBLANK(data))
+      - =COUNTIF(B2:B8,"")
+      - =SUMPRODUCT(--(B2:B8=""))
+      - =ROWS(B2:B8)-COUNTA(B2:B8)
     wrong:
       - formula: =COUNTBLANK(B2:B7)
         rule: fragile

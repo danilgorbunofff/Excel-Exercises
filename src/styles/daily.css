@@ -113,6 +113,20 @@ a.d-cell:focus-visible {
   color: var(--muted);
   overflow-wrap: anywhere;
 }
+/* At phone width a day is about 44 px: 11 px keeps Medium and Hardest whole. */
+@media (max-width: 39.99rem) {
+  .d-tier {
+    font-size: 0.6875rem;
+  }
+}
+/* One row height per line across the week, so a label that wraps at 375 px does not lift its date. */
+.d-strip.d-week {
+  grid-template-rows: repeat(3, auto);
+}
+.d-week .d-day {
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+}
 .d-day.is-future .d-cell {
   color: var(--muted);
 }

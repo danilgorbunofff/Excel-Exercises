@@ -3,5 +3,7 @@ screens:
   - correct:
       - =$B$2*$B$3
       - =B$2*B3
+      - =PRODUCT(B2,B3)
+      - =PRODUCT(B2:B3)
     wrong: []
     equivalent: []

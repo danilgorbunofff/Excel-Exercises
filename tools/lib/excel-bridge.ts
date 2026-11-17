@@ -115,15 +115,11 @@ function run(argv) {
     let c0 = 0; for (const ch of m[1]) c0 = c0 * 26 + ch.charCodeAt(0) - 64;
     const r0 = Number(m[2]);
     lastBlock = rows * cols > 1 ? c.cell + ":" + col(c0 - 1 + cols - 1) + (r0 + rows - 1) : c.cell;
-    // A result Excel formatted as a date reads back as a Date: set General and read
-    // again, so it comes back as its serial. A format left on a cell is harmless,
-    // since every read that meets a Date resets its own block.
-    const isDate = (v) => v instanceof Date || (Array.isArray(v) && v.some((r) => r.some((x) => x instanceof Date)));
-    let raw = ws.ranges[lastBlock].value();
-    if (isDate(raw)) {
-      ws.ranges[lastBlock].numberFormat = "General";
-      raw = ws.ranges[lastBlock].value();
-    }
+    // Excel formats some results on its own: a date reads back as a Date, and a
+    // currency result (FV, PMT) reads back cut to 4 decimals. General first, so
+    // every value comes back as its full number or serial.
+    ws.ranges[lastBlock].numberFormat = "General";
+    const raw = ws.ranges[lastBlock].value();
     if (rows * cols > 1) {
       const block = raw;
       out.push({ value: block.map((line, i) => line.map((v, j) => (v === null || v === undefined || v === "")

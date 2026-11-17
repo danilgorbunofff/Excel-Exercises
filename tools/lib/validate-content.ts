@@ -34,8 +34,9 @@ export function unstatedRequirements(ex: {
 }): string[] {
   const out: string[] = [];
   ex.screens.forEach((s, i) => {
+    // Case matters: the word "and" or "sum" in a sentence does not name AND or SUM.
     for (const name of s.requiredFunctions)
-      if (!new RegExp(`\\b${name}\\b`, "iu").test(`${s.prompt} ${ex.title}`))
+      if (!new RegExp(`\\b${name}\\b`, "u").test(`${s.prompt} ${ex.title}`))
         out.push(
           `screens.${i}.requiredFunctions: ${name} is required but neither the prompt nor the title names it`,
         );
@@ -110,7 +111,13 @@ export function validateContent(
     }
     const task = parsed.data;
     errors.push(...advancedProblems(task).map((e) => `${file}: ${e}`));
-    errors.push(...unstatedRequirements(task).map((e) => `${file}: ${e}`));
+    // Owner rule: a daily task stands alone, so any correct formula passes.
+    task.screens.forEach((sc, i) => {
+      for (const name of sc.requiredFunctions)
+        errors.push(
+          `${file}: screens.${i}.requiredFunctions: a daily task requires no function, so drop ${name}`,
+        );
+    });
     if (ids.has(task.id))
       errors.push(`${file}: id "${task.id}" is also used by ${ids.get(task.id)}`);
     ids.set(task.id, file);

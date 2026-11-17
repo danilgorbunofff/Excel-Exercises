@@ -1,9 +1,9 @@
 # Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
 screens:
   - correct:
-      - =SWITCH($A$2,"W-01","Widget","G-02","Gadget","S-03","Screw","Unknown")
       - =SWITCH(A$2,"W-01","Widget","G-02","Gadget","S-03","Screw","Unknown")
       - =switch(a2, "W-01", "Widget", "G-02", "Gadget", "S-03", "Screw", "Unknown")
+      - =LET(code,A2,SWITCH(code,"W-01","Widget","G-02","Gadget","S-03","Screw","Unknown"))
     wrong:
       - formula: =SWITCH(A2,"W-01","Widget","W-01","Gadget","S-03","Screw","Unknown")
         rule: fragile

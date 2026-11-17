@@ -55,6 +55,30 @@ export const MATH: Record<string, FunctionSpec> = {
     255,
     safe((args) => sum(numbersFrom(args))),
   ),
+  // Straight-line depreciation per period: (cost - salvage) / life.
+  SLN: fn(
+    3,
+    3,
+    safe((args) => {
+      const life = num(args[2]);
+      return life === 0 ? fail("#DIV/0!") : (num(args[0]) - num(args[1])) / life;
+    }),
+  ),
+  // Future value, Excel's sign rule: money paid out is negative, so FV(r,n,0,-pv) is positive.
+  FV: fn(
+    3,
+    5,
+    safe((args) => {
+      const rate = num(args[0]);
+      const n = num(args[1]);
+      const pmt = num(args[2]);
+      const pv = num(args[3], 0);
+      const due = num(args[4], 0) !== 0 ? 1 : 0;
+      if (rate === 0) return -(pv + pmt * n);
+      const g = (1 + rate) ** n;
+      return -(pv * g + (pmt * (1 + rate * due) * (g - 1)) / rate);
+    }),
+  ),
   AVERAGE: fn(
     1,
     255,

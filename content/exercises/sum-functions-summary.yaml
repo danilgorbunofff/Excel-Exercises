@@ -3,10 +3,10 @@ slug: sum-functions-summary
 level: 2
 title: Sum functions summary
 topic: conditions
-updated: 2026-11-16
-checkedInExcel: 2026-11-16
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
 screens:
-  - prompt: In B7, total everything sold, and then be ready for the question that follows.
+  - prompt: In B7, total everything sold, and then be ready for the question that follows. Use SUM.
     rows:
       - [Region, Amount]
       - [North, 320]

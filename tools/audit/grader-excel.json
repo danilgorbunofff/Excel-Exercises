@@ -1696,6 +1696,38 @@
  },
  {
   "area": "rounding",
+  "formula": "=SLN(32000,4000,5)",
+  "excel": 5600,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=SLN(1000,0,0)",
+  "excel": {
+   "error": "#DIV/0!"
+  },
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=FV(0.04,5,0,-10000)",
+  "excel": 12166.529024000003,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=FV(0,5,-100)",
+  "excel": 500,
+  "match": true
+ },
+ {
+  "area": "rounding",
+  "formula": "=FV(0.05,3,-100,0,1)",
+  "excel": 331.0125,
+  "match": true
+ },
+ {
+  "area": "rounding",
   "formula": "=INT(-2.5)",
   "excel": -3,
   "match": true

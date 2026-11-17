@@ -3,6 +3,8 @@ screens:
   - correct:
       - =EOMONTH(C$2,0)
       - =eomonth(c2, 0)
+      - =DATE(YEAR(C2),MONTH(C2)+1,0)
+      - =EOMONTH(C2-DAY(C2)+1,0)
     wrong: []
     equivalent: []
   - correct:

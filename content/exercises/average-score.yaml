@@ -3,10 +3,10 @@ slug: average-score
 level: 1
 title: Average score
 topic: totals
-updated: 2026-11-11
-checkedInExcel: 2026-11-16
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
 screens:
-  - prompt: In B7, work out the average score. Chen missed the test, so B4 is empty and should not count.
+  - prompt: In B7, work out the average score. Chen missed the test, so B4 is empty and should not count. Use AVERAGE.
     rows:
       - [Student, Score]
       - [Ana, 72]

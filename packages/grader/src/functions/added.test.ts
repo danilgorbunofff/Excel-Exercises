@@ -214,6 +214,23 @@ describe("date differences", () => {
   });
 });
 
+describe("finance: SLN and FV", () => {
+  it.each([
+    ["=SLN(32000,4000,5)", 5600],
+    ["=SLN(1000,0,4)", 250],
+    ["=ROUND(FV(0.04,5,0,-10000),2)", 12166.53],
+    ["=FV(0,5,-100)", 500],
+    ["=ROUND(FV(0.05,3,-100),2)", 315.25],
+    ["=ROUND(FV(0.05,3,-100,0,1),2)", 331.01],
+  ])("%s is %j", (f, v) => {
+    expect(ev(f)).toBe(v);
+  });
+
+  it("SLN over a zero life is #DIV/0!", () => {
+    expect(ev("=SLN(1000,0,0)")).toBe(E("#DIV/0!"));
+  });
+});
+
 describe("SUBTOTAL and AGGREGATE", () => {
   it.each([
     ["=SUBTOTAL(9,B1:B5)", 23],

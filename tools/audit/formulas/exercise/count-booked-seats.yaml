@@ -5,5 +5,7 @@ screens:
       - =COUNTA(B$2:B$7)
       - =counta(b2:b7)
       - =LET(data,B2:B7,COUNTA(data))
+      - =COUNTA(B2,B3,B4,B5,B6,B7)
+      - =COUNTA(B2:B4)+COUNTA(B5:B7)
     wrong: []
     equivalent: []

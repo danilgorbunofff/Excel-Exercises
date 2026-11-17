@@ -5,6 +5,7 @@ screens:
       - =COUNTIF(B$2:B$7,">100")
       - =countif(b2:b7, ">100")
       - =LET(data,B2:B7,COUNTIF(data,">100"))
+      - =COUNT(B2:B7)-COUNTIF(B2:B7,"<=100")
     wrong:
       - formula: =COUNTIF(B2:B6,">100")
         rule: fragile

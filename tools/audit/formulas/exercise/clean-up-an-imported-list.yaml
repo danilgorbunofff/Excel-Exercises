@@ -1,9 +1,14 @@
 # Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
 screens:
-  - correct: []
+  - correct:
+      - =PROPER(TRIM(LOWER(A2)))
+      - =TRIM(PROPER(A2))
+      - =LET(name,TRIM(A2),PROPER(name))
     wrong: []
     equivalent: []
   - correct:
       - =lower(substitute(trim(a2), " ", "."))
+      - =SUBSTITUTE(LOWER(TRIM(A2))," ",".")
+      - =LET(t,TRIM(A2),LOWER(SUBSTITUTE(t," ",".")))
     wrong: []
     equivalent: []

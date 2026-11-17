@@ -3,10 +3,10 @@ slug: rank-a-list-without-sorting-it
 level: 2
 title: Rank a list without sorting it
 topic: statistics
-updated: 2026-11-16
-checkedInExcel: 2026-11-16
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
 screens:
-  - prompt: Put Ada's place in the team into C2 using the default order, without sorting the sheet.
+  - prompt: Put Ada's place in the team into C2 using the default order, without sorting the sheet. Use RANK.
     rows:
       - [Swimmer, Seconds, Place (slowest first)]
       - [Ada, 58, null]
@@ -43,7 +43,7 @@ screens:
       - { formula: =RANK(B2 B2:B6), rule: syntax }
     variants:
       - { set: { B2: 29 }, expected: 5 }
-  - prompt: Flip the order argument so the smallest time takes place 1, and put Ada's place in C2.
+  - prompt: Flip the order argument so the smallest time takes place 1, and put Ada's place in C2. Use RANK.
     rows:
       - [Swimmer, Seconds, Place (fastest first)]
       - [Ada, 58, null]

@@ -29,14 +29,7 @@
    "locale: =LET(data,D2:D6,COUNTIF(data,\"<0.3\"))  [rewrite (LET naming the first range)] grader=correct",
    "locale: =COUNTIF(D3:D6,\"<0.3\")  [mutant (range D2:D6 skips its first row)] grader=correct",
    "locale: =COUNTIF(D2:D6,\"<=0.3\")  [mutant (criteria \"<0.3\" written with <=)] grader=correct",
-   "coverage: only 2 correct formulas checked in Excel"
-  ]
- },
- {
-  "screen": "exercise/lead-conversion-rate#1",
-  "file": "content/exercises/lead-conversion-rate.yaml",
-  "problems": [
-   "misses: no text for rule reference"
+   "coverage: only 4 correct formulas checked in Excel"
   ]
  },
  {

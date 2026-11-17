@@ -5,5 +5,6 @@ screens:
       - =COUNTIF(B$2:B$7,"North")
       - =countif(b2:b7, "North")
       - =LET(data,B2:B7,COUNTIF(data,"North"))
+      - =COUNTIF(B2:B7,"=North")
     wrong: []
     equivalent: []

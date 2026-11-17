@@ -3,8 +3,8 @@ slug: average-delivery-days
 level: 1
 tier: 2
 title: Average delivery time
-updated: 2026-11-16
-checkedInExcel: 2026-11-16
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
 screens:
   - prompt: In B9, find the average delivery time in days, rounded to one decimal place.
     rows:
@@ -23,14 +23,13 @@ screens:
       - set: { B2: 7 }
         expected: 6.7
     answer: "=ROUND(AVERAGE(B2:B8),1)"
-    requiredFunctions: [AVERAGE]
     hints:
       nudge: Take the average first, then round it.
       rule: Put AVERAGE inside ROUND. The last argument of ROUND is how many decimal places to keep.
     misses:
       value: The average is 6.2857..., which rounds to 6.3.
+      reference: Point at the cells, so the result follows the data when it changes.
       syntax: Check the brackets, commas and quotes.
-      required-function: This task needs ROUND and AVERAGE.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - "=ROUND(AVERAGE(B2:B8),1)"
@@ -44,4 +43,4 @@ screens:
       - formula: =ROUND(AVERAGE(B2:B8),1
         rule: syntax
       - formula: =6.3
-        rule: required-function
+        rule: reference

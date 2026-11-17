@@ -4,6 +4,8 @@ screens:
       - =IF($B$2>=50,"Pass","Fail")
       - =IF(B$2>=50,"Pass","Fail")
       - =if(b2>=50, "Pass", "Fail")
+      - =IF(NOT(B2<50),"Pass","Fail")
+      - =IF(B2-50>=0,"Pass","Fail")
     wrong:
       - formula: =IF(B2>50,"Pass","Fail")
         rule: fragile

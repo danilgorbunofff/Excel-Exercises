@@ -4,5 +4,7 @@ screens:
       - =ROUND($B$2/$C$2*100,0)
       - =ROUND(B$2/C2*100,0)
       - =round(b2/c2*100, 0)
+      - =ROUND(B2*100/C2,0)
+      - =LET(share,B2/C2,ROUND(share*100,0))
     wrong: []
     equivalent: []

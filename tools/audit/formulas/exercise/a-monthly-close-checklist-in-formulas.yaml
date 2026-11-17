@@ -2,6 +2,8 @@
 screens:
   - correct:
       - =if(b2=0, "ready", "check")
+      - =IF(B2<>0,"check","ready")
+      - =IF(NOT(B2<>0),"ready","check")
     wrong:
       - formula: =IF(B1=0,"ready","check")
         rule: value

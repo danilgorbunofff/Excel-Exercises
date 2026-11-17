@@ -4,6 +4,8 @@ screens:
       - =ROUND($B$2*(1+$B$3)^$B$4,2)
       - =ROUND(B$2*(1+B3)^B4,2)
       - =round(b2*(1+b3)^b4, 2)
+      - =ROUND(B2*POWER(1+B3,B4),2)
+      - =ROUND(FV(B3,B4,0,-B2),2)
     wrong:
       - formula: =ROUNDDOWN(B2*(1+B3)^B4,2)
         rule: value

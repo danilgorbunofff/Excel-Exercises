@@ -3,8 +3,8 @@ slug: count-functions-summary
 level: 3
 title: Count functions summary
 topic: counting
-updated: 2026-11-16
-checkedInExcel: 2026-11-16
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
 screens:
   - prompt: In B10, count only the rows whose unit value is a number.
     rows:
@@ -79,7 +79,7 @@ screens:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Eight items and six numbers leave two rows without a quantity.
       syntax: "Check the brackets, commas and quote marks. COUNTA follows the pattern `=COUNTA(value1, [value2], ...)`."
-      reference: Start both ranges on row 2 so the header never enters either count.
+      reference: Count the items and the numbers from the grid rather than typing 8 or 6.
     accept:
       - =COUNTA(A2:A9)-COUNT(B2:B9)
       - =counta(a2:a9)-count(b2:b9)
@@ -94,6 +94,8 @@ screens:
         rule: value
       - formula: =COUNTA(B2:B9)-COUNT(B2:B9)
         rule: value
+      - formula: =8-COUNT(B2:B9)
+        rule: reference
       - formula: =COUNTA(A2:A9)-COUNT(A2:A9)
         rule: value
       - formula: =COUNTA(A2:A9)-COUNT(B2:B9)/0

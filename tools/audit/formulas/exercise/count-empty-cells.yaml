@@ -4,6 +4,7 @@ screens:
       - =COUNTBLANK($B$2:$B$7)
       - =COUNTBLANK(B$2:B$7)
       - =LET(data,B2:B7,COUNTBLANK(data))
+      - =COUNTBLANK(B2:B4)+COUNTBLANK(B5:B7)
     wrong:
       - formula: =COUNTBLANK(B3:B7)
         rule: fragile

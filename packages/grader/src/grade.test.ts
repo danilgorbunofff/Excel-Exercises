@@ -239,6 +239,29 @@ describe("grade: rules in their fixed order", () => {
     expect(g('=IF(70>=70,"Pass","Fail")', scores).rule).toBe("reference");
   });
 
+  it("4. a number in a criteria argument is a threshold, as when typed inside the string", () => {
+    const invoices: GradeSpec = {
+      rows: [
+        ["Month", "Amount", "Closed", "Answer"],
+        [1, 100, 2, null],
+        [2, 140, null, null],
+        [3, 90, null, null],
+      ],
+      answerCell: "D2",
+      expected: 1,
+      requiredFunctions: [],
+      forbiddenFunctions: [],
+      requireReference: true,
+    };
+    expect(g('=COUNTIF(B2:B4,">100")', invoices)).toMatchObject({ correct: true });
+    expect(g('=COUNTIF(B2:B4,">"&100)', invoices)).toMatchObject({ correct: true });
+    const closed = { ...invoices, expected: 240 };
+    expect(g('=SUMIFS(B2:B4,A2:A4,"<"&C2+1)', closed)).toMatchObject({ correct: true });
+    expect(g('=SUMIF(A2:A4,"<="&C2,B2:B4)', closed)).toMatchObject({ correct: true });
+    // The sum range is still data: a typed amount there is not a criteria.
+    expect(g('=SUMIFS(B2:B4,A2:A4,"<"&C2+1)+0*140', closed).rule).toBe("reference");
+  });
+
   it("4. codes, positions and SWITCH cases are settings, not data", () => {
     const spec = (expected: number | string): GradeSpec => ({
       rows: [

@@ -4,6 +4,8 @@ screens:
       - =LARGE(B$2:B$9,2)
       - =large(b2:b9, 2)
       - =LET(data,B2:B9,LARGE(data,2))
+      - =INDEX(SORT(B2:B9,,-1),2)
+      - =LARGE(B2:B9,1+1)
     wrong:
       - formula: =LARGE(B2:B8,2)
         rule: fragile

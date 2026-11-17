@@ -3,10 +3,10 @@ slug: both-scores-pass
 level: 2
 title: Check that both scores pass
 topic: logic
-updated: 2026-11-16
-checkedInExcel: 2026-11-16
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
 screens:
-  - prompt: A candidate passes when both scores are at least 60. In D2, show TRUE if Lee passed and FALSE if not.
+  - prompt: A candidate passes when both scores are at least 60. In D2, show TRUE if Lee passed and FALSE if not. Use AND.
     rows:
       - [Candidate, Written, Practical, Passed]
       - [Lee, 72, 58, null]

@@ -2,8 +2,12 @@
 screens:
   - correct:
       - =(B$2-C2)/B2
+      - =LET(revenue,B2,cost,C2,(revenue-cost)/revenue)
+      - =-(C2-B2)/B2
     wrong: []
     equivalent: []
-  - correct: []
+  - correct:
+      - =COUNTIF(D2:D6,"<"&30%)
+      - =COUNTIF(D2:D6,"<"&30/100)
     wrong: []
     equivalent: []

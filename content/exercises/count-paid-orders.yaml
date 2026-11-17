@@ -3,10 +3,10 @@ slug: count-paid-orders
 level: 1
 title: Count the paid orders
 topic: counting
-updated: 2026-11-11
-checkedInExcel: 2026-11-16
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
 screens:
-  - prompt: Unpaid orders show the word pending instead of an amount. In B8, count the paid orders.
+  - prompt: Unpaid orders show the word pending instead of an amount. In B8, count the paid orders. Use COUNT.
     rows:
       - [Order, Amount]
       - [A-101, 120]

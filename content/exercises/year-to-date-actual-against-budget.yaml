@@ -3,8 +3,8 @@ slug: year-to-date-actual-against-budget
 level: 2
 title: Year to date actual against budget
 topic: interview-fpa
-updated: 2026-11-16
-checkedInExcel: 2026-11-16
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
 screens:
   - prompt: Four months are closed, as D2 says. In E2, add up the budget for the closed months only. Use SUMIFS.
     rows:
@@ -32,6 +32,7 @@ screens:
       - =sumifs(c2:c7,a2:a7,"<="&d2)
       - =SUMIFS($C$2:$C$7,$A$2:$A$7,"<="&$D$2)
       - =SUMIFS( C2:C7 , A2:A7 , "<="&D2 )
+      - =SUMIFS(C2:C7,A2:A7,"<"&D2+1)
     reject:
       - { formula: "=SUM(C2:C7)", rule: required-function }
       - { formula: '=SUMIFS(C2:C7,A2:A7,"<"&D2)', rule: value }

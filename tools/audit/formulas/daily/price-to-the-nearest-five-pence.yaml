@@ -4,5 +4,7 @@ screens:
       - =MROUND($B$2,0.05)
       - =MROUND(B$2,0.05)
       - =mround(b2, 0.05)
+      - =ROUND(B2*20,0)/20
+      - =MROUND(B2,1/20)
     wrong: []
     equivalent: []

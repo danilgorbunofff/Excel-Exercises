@@ -3,8 +3,8 @@ slug: average-functions-summary
 level: 2
 title: Average functions summary
 topic: statistics
-updated: 2026-11-16
-checkedInExcel: 2026-11-16
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
 screens:
   - prompt: Put the average of the two slowest (highest) times into C2, taking the values from the unsorted column. Use LARGE.
     rows:
@@ -45,7 +45,7 @@ screens:
     variants:
       - { set: { B6: 69 }, expected: 65 }
       - { set: { B2: 65 }, expected: 63 }
-  - prompt: Put the place the middle time earns into C2, so the row shows where the median sits. Use RANK.
+  - prompt: Put the place the middle time earns into C2, so the row shows where the median sits. Use RANK and MEDIAN.
     rows:
       - [Swimmer, Seconds, Median's place]
       - [Ada, 58, null]

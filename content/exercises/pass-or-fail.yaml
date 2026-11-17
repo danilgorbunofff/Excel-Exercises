@@ -3,10 +3,10 @@ slug: pass-or-fail
 level: 1
 title: Pass or fail
 topic: logic
-updated: 2026-11-16
-checkedInExcel: 2026-11-16
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
 screens:
-  - prompt: The pass mark is 50. In C2, show Pass if the score is at least 50, and Fail if it is not.
+  - prompt: The pass mark is 50. In C2, show Pass if the score is at least 50, and Fail if it is not. Use IF.
     rows:
       - [Student, Score, Result]
       - [Ana, 64, null]

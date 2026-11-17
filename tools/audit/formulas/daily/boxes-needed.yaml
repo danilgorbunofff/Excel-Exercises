@@ -4,5 +4,8 @@ screens:
       - =ROUNDUP($B$2/$C$2,0)
       - =ROUNDUP(B$2/C2,0)
       - =roundup(b2/c2, 0)
+      - =CEILING(B2/C2,1)
+      - =-INT(-B2/C2)
+      - =INT((B2+C2-1)/C2)
     wrong: []
     equivalent: []

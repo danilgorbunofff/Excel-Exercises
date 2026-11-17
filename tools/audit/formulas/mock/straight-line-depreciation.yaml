@@ -3,6 +3,8 @@ screens:
   - correct:
       - =($B$2-$B$3)/$B$4
       - =(B$2-B3)/B4
+      - =SLN(B2,B3,B4)
+      - =(B2-B3)*(1/B4)
     wrong:
       - formula: =(B3-B3)/B4
         rule: value

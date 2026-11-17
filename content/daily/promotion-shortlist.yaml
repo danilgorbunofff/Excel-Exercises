@@ -3,8 +3,8 @@ slug: promotion-shortlist
 level: 2
 tier: 3
 title: Promotion shortlist
-updated: 2026-11-16
-checkedInExcel: 2026-11-16
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
 screens:
   - prompt: In D2, show Yes when the person has at least 3 years of service and a rating of 4 or more, otherwise No.
     rows:
@@ -17,14 +17,13 @@ screens:
       - { set: { B2: 3, C2: 4 }, expected: Yes }
       - { set: { B2: 2, C2: 4 }, expected: No }
     answer: '=IF(AND(B2>=3,C2>=4),"Yes","No")'
-    requiredFunctions: [AND]
     hints:
       nudge: Both tests must pass for a Yes.
       rule: AND(test1, test2) is TRUE only when every test is TRUE. Put it inside IF as the test.
     misses:
       value: Iris has 5 years but a rating of 3, so the answer is No.
+      reference: Point at the cells, so the result follows the data when it changes.
       syntax: Check the brackets, commas and quotes.
-      required-function: This task needs IF and AND.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - '=IF(AND(B2>=3,C2>=4),"Yes","No")'
@@ -33,10 +32,10 @@ screens:
       - '=IF(NOT(AND(B2>=3,C2>=4)),"No","Yes")'
     reject:
       - formula: =IF(OR(B2>=3,C2>=4),"Yes","No")
-        rule: required-function
+        rule: value
       - formula: =IF(AND(B2>=3,C2>=3),"Yes","No")
         rule: value
       - formula: =IF(AND(B2>=3,C2>=4),"Yes","No"
         rule: syntax
       - formula: ="No"
-        rule: required-function
+        rule: reference

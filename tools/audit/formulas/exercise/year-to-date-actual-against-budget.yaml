@@ -4,6 +4,7 @@ screens:
       - =SUMIFS(C$2:C$7,A2:A7,"<="&D2)
       - =sumifs(c2:c7, a2:a7, "<="&d2)
       - =LET(data,C2:C7,SUMIFS(data,A2:A7,"<="&D2))
+      - =SUMIFS(C2:C7,A2:A7,">=1",A2:A7,"<="&D2)
     wrong: []
     equivalent: []
   - correct:

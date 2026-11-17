@@ -263,6 +263,7 @@ count-functions-summary.yaml 1 | =COUNT(B2:B9)+1 | value | B10 shows 7, which is
 count-functions-summary.yaml 2 | =COUNT(B2:B9) | value | B10 shows 6, which is not the result this exercise expects. | Eight items and six numbers leave two rows without a quantity.
 count-functions-summary.yaml 2 | =COUNTA(A2:A9) | value | B10 shows 8, which is not the result this exercise expects. | Eight items and six numbers leave two rows without a quantity.
 count-functions-summary.yaml 2 | =COUNTA(B2:B9)-COUNT(B2:B9) | value | B10 shows 1, which is not the result this exercise expects. | Eight items and six numbers leave two rows without a quantity.
+count-functions-summary.yaml 2 | =8-COUNT(B2:B9) | reference | You typed 8, the value in B3. Point at B3 instead, so the result updates when the data changes. | Count the items and the numbers from the grid rather than typing 8 or 6.
 count-functions-summary.yaml 2 | =COUNTA(A2:A9)-COUNT(A2:A9) | value | B10 shows 8, which is not the result this exercise expects. | Eight items and six numbers leave two rows without a quantity.
 count-functions-summary.yaml 2 | =COUNTA(A2:A9)-COUNT(B2:B9)/0 | value | B10 shows `#DIV/0!`: the formula divides by zero or by an empty cell. | Eight items and six numbers leave two rows without a quantity.
 count-functions-summary.yaml 2 | =COUNTA(A2:A9)-COUNT(B2:B9 | syntax | Add ) to close COUNT(. | Check the brackets, commas and quote marks. COUNTA follows the pattern `=COUNTA(value1, [value2], ...)`.
@@ -1240,15 +1241,16 @@ year-to-date-actual-against-budget.yaml 2 | =SUMIFS(B2:B7,A2:A7,"<="&D2)-SUMIFS(
 daily/average-delivery-days.yaml 1 | =AVERAGE(B2:B8) | value | B9 shows 6.28571428571429, which is not the result this exercise expects. | The average is 6.2857..., which rounds to 6.3.
 daily/average-delivery-days.yaml 1 | =ROUND(AVERAGE(B2:B8),0) | value | B9 shows 6, which is not the result this exercise expects. | The average is 6.2857..., which rounds to 6.3.
 daily/average-delivery-days.yaml 1 | =ROUND(AVERAGE(B2:B8),1 | syntax | Add ) to close ROUND(. | Check the brackets, commas and quotes.
-daily/average-delivery-days.yaml 1 | =6.3 | required-function | This exercise asks for AVERAGE, and the formula does not use it. | This task needs ROUND and AVERAGE.
+daily/average-delivery-days.yaml 1 | =6.3 | reference | The formula uses no cells. Point at the data, so the result updates when it changes. | Point at the cells, so the result follows the data when it changes.
 daily/average-for-one-team.yaml 1 | =AVERAGE(C2:C8) | value | F2 shows 78, which is not the result this exercise expects. | The four Blue players average 80.
 daily/average-for-one-team.yaml 1 | =AVERAGEIF(B2:B8,"Red",C2:C8) | value | F2 shows 75.3333333333333, which is not the result this exercise expects. | The four Blue players average 80.
 daily/average-for-one-team.yaml 1 | =AVERAGEIF(B2:B8,E2,C2:C8 | syntax | Add ) to close AVERAGEIF(. | Check the brackets, commas and quotes.
 daily/average-for-one-team.yaml 1 | =80 | reference | The formula uses no cells. Point at the data, so the result updates when it changes. | Point at the cells, so the result follows the data when it changes.
 daily/average-temperature.yaml 1 | =AVERAGE(B2:B7) | value | B9 shows 20.6666666666667, which is not the result this exercise expects. | The seven temperatures average 20.
-daily/average-temperature.yaml 1 | =SUM(B2:B8) | required-function | This exercise asks for AVERAGE, and the formula does not use it. | This task needs AVERAGE.
+daily/average-temperature.yaml 1 | =MEDIAN(B2:B8) | fragile | Right for this data, but not when the data changes. B9 would show 20 instead of 21. Make the formula work from the cells, not from values you can see. | The data can change, so the formula has to work the result out from the cells, not from values you can see.
+daily/average-temperature.yaml 1 | =SUM(B2:B8) | value | B9 shows 140, which is not the result this exercise expects. | The seven temperatures average 20.
 daily/average-temperature.yaml 1 | =AVERAGE(B2:B8 | syntax | Add ) to close AVERAGE(. | Check the brackets, commas and quotes.
-daily/average-temperature.yaml 1 | =20 | required-function | This exercise asks for AVERAGE, and the formula does not use it. | This task needs AVERAGE.
+daily/average-temperature.yaml 1 | =20 | reference | You typed 20, the value in B6. Point at B6 instead, so the result updates when the data changes. | Point at the cells, so the result follows the data when it changes.
 daily/best-quarter-for-a-product.yaml 1 | =INDEX(B1:E1,MATCH(MAX(B2:E5),B4:E4,0)) | value | H2 shows `#N/A`: a lookup did not find a match. | Blender's best quarter is Q2, with 118.
 daily/best-quarter-for-a-product.yaml 1 | =INDEX(B1:E1,2) | fragile | Right for this data, but not when the data changes. H2 would show Q2 instead of Q1. Make the formula work from the cells, not from values you can see. | The data can change, so the formula has to work the result out from the cells, not from values you can see.
 daily/best-quarter-for-a-product.yaml 1 | =INDEX(B1:E1,MATCH(MAX(INDEX(B2:E5,MATCH(G2,A2:A5,0),0)),INDEX(B2:E5,MATCH(G2,A2:A5,0),0),0) | syntax | Add ) to close INDEX(. | Check the brackets, commas and quotes.
@@ -1294,10 +1296,10 @@ daily/count-late-deliveries.yaml 1 | =COUNTIF(C2:C9,"On time") | value | D10 sho
 daily/count-late-deliveries.yaml 1 | =COUNTA(C2:C9) | value | D10 shows 8, which is not the result this exercise expects. | 5 runs are marked Late.
 daily/count-late-deliveries.yaml 1 | =COUNTIF(C2:C9,"Late" | syntax | Add ) to close COUNTIF(. | Check the brackets, commas and quotes.
 daily/count-late-deliveries.yaml 1 | =5 | reference | The formula uses no cells. Point at the data, so the result updates when it changes. | Point at the cells, so the result follows the data when it changes.
-daily/count-priced-orders.yaml 1 | =COUNTA(B2:B7) | required-function | This exercise asks for COUNT, and the formula does not use it. | This task needs COUNT.
+daily/count-priced-orders.yaml 1 | =COUNTA(B2:B7) | value | B8 shows 6, which is not the result this exercise expects. | 4 of the orders have a number in the Price column.
 daily/count-priced-orders.yaml 1 | =COUNT(B2:B6) | value | B8 shows 3, which is not the result this exercise expects. | 4 of the orders have a number in the Price column.
 daily/count-priced-orders.yaml 1 | =COUNT(B2:B7 | syntax | Add ) to close COUNT(. | Check the brackets, commas and quotes.
-daily/count-priced-orders.yaml 1 | =4 | required-function | This exercise asks for COUNT, and the formula does not use it. | This task needs COUNT.
+daily/count-priced-orders.yaml 1 | =4 | reference | The formula uses no cells. Point at the data, so the result updates when it changes. | Point at the cells, so the result follows the data when it changes.
 daily/count-the-sign-ups.yaml 1 | =COUNT(B2:B9) | value | B10 shows 0, which is not the result this exercise expects. | 6 of the eight places have a name.
 daily/count-the-sign-ups.yaml 1 | =COUNTA(A2:A9) | value | B10 shows 8, which is not the result this exercise expects. | 6 of the eight places have a name.
 daily/count-the-sign-ups.yaml 1 | =COUNTA(B2:B9 | syntax | Add ) to close COUNTA(. | Check the brackets, commas and quotes.
@@ -1388,14 +1390,14 @@ daily/price-with-tax.yaml 1 | =B2*B3 | value | B4 shows 16, which is not the res
 daily/price-with-tax.yaml 1 | =B2+B3 | value | B4 shows 80.2, which is not the result this exercise expects. | 80 plus 20 per cent is 96.
 daily/price-with-tax.yaml 1 | =B2*(1+B3 | syntax | A closing bracket ) is missing. | Check the brackets, commas and quotes.
 daily/price-with-tax.yaml 1 | =96 | reference | The formula uses no cells. Point at the data, so the result updates when it changes. | Point at the cells, so the result follows the data when it changes.
-daily/promotion-shortlist.yaml 1 | =IF(OR(B2>=3,C2>=4),"Yes","No") | required-function | This exercise asks for AND, and the formula does not use it. | This task needs IF and AND.
+daily/promotion-shortlist.yaml 1 | =IF(OR(B2>=3,C2>=4),"Yes","No") | value | D2 shows Yes, which is not the result this exercise expects. | Iris has 5 years but a rating of 3, so the answer is No.
 daily/promotion-shortlist.yaml 1 | =IF(AND(B2>=3,C2>=3),"Yes","No") | value | D2 shows Yes, which is not the result this exercise expects. | Iris has 5 years but a rating of 3, so the answer is No.
 daily/promotion-shortlist.yaml 1 | =IF(AND(B2>=3,C2>=4),"Yes","No" | syntax | Add ) to close IF(. | Check the brackets, commas and quotes.
-daily/promotion-shortlist.yaml 1 | ="No" | required-function | This exercise asks for AND, and the formula does not use it. | This task needs IF and AND.
+daily/promotion-shortlist.yaml 1 | ="No" | reference | The formula uses no cells. Point at the data, so the result updates when it changes. | Point at the cells, so the result follows the data when it changes.
 daily/rank-of-one-rep.yaml 1 | =RANK(B4,B2:B7,1) | value | C4 shows 3, which is not the result this exercise expects. | Three reps sold more than Cyd, so Cyd ranks 4.
 daily/rank-of-one-rep.yaml 1 | =RANK(B3,B2:B7) | value | C4 shows 1, which is not the result this exercise expects. | Three reps sold more than Cyd, so Cyd ranks 4.
 daily/rank-of-one-rep.yaml 1 | =RANK(B4,B2:B7 | syntax | Add ) to close RANK(. | Check the brackets, commas and quotes.
-daily/rank-of-one-rep.yaml 1 | =4 | required-function | This exercise asks for RANK, and the formula does not use it. | This task needs RANK.
+daily/rank-of-one-rep.yaml 1 | =4 | reference | The formula uses no cells. Point at the data, so the result updates when it changes. | Point at the cells, so the result follows the data when it changes.
 daily/runner-up-sales.yaml 1 | =MAX(B2:B9) | fragile | Right for this data, but not when the data changes. B10 would show 7200 instead of 6900. Make the formula work from the cells, not from values you can see. | The data can change, so the formula has to work the result out from the cells, not from values you can see.
 daily/runner-up-sales.yaml 1 | =SMALL(B2:B9,2) | value | B10 shows 5300, which is not the result this exercise expects. | Two reps sold 7200, so the second highest is also 7200.
 daily/runner-up-sales.yaml 1 | =LARGE(B2:B9,2 | syntax | Add ) to close LARGE(. | Check the brackets, commas and quotes.

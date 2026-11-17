@@ -3,8 +3,8 @@ slug: true-and-false-what-a-comparison-returns
 level: 2
 title: "TRUE and FALSE: what a comparison returns"
 topic: logic
-updated: 2026-11-16
-checkedInExcel: 2026-11-16
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
 screens:
   - prompt: In B9, answer TRUE when the total units are over 100. Use SUM.
     rows:
@@ -45,7 +45,7 @@ screens:
     variants:
       - { set: { B5: 10, B7: 1, B8: 100 }, expected: false }
       - { set: { B5: 10, B7: 2, B8: 101 }, expected: true }
-  - prompt: In B9, answer TRUE when the average units are at least 20.
+  - prompt: In B9, answer TRUE when the average units are at least 20. Use AVERAGE.
     rows:
       - [Item, Units]
       - [Bolt, 18]

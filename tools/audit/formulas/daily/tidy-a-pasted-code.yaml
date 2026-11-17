@@ -3,5 +3,7 @@ screens:
   - correct:
       - =UPPER(TRIM($A$2))
       - =UPPER(TRIM(A$2))
+      - =LET(code,TRIM(A2),UPPER(code))
+      - =UPPER(TRIM(LOWER(A2)))
     wrong: []
     equivalent: []

@@ -3,5 +3,7 @@ screens:
   - correct:
       - =PROPER(TRIM($A$2))
       - =PROPER(TRIM(A$2))
+      - =PROPER(TRIM(LOWER(A2)))
+      - =LET(t,TRIM(A2),PROPER(t))
     wrong: []
     equivalent: []

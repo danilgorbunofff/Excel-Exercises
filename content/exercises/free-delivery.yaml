@@ -3,10 +3,10 @@ slug: free-delivery
 level: 2
 title: Free delivery when either test passes
 topic: logic
-updated: 2026-11-16
-checkedInExcel: 2026-11-16
+updated: 2026-11-17
+checkedInExcel: 2026-11-17
 screens:
-  - prompt: Delivery is free when the order is over 50 or the customer is a member. In D2, show TRUE if Ola gets free delivery.
+  - prompt: Delivery is free when the order is over 50 or the customer is a member. In D2, show TRUE if Ola gets free delivery. Use OR.
     rows:
       - [Customer, Order, Member, Free delivery]
       - [Ola, 38, "Yes", null]

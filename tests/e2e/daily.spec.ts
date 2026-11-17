@@ -197,6 +197,30 @@ test("days still to come this week cannot be opened", async ({ page }) => {
   await expect(page.locator(".d-day.is-today")).toContainText("Steady");
 });
 
+test("at phone width the week keeps whole step names and level dates", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await setDay(page, "2026-11-18");
+  await page.goto("/daily/");
+  const layout = await page.locator(".d-week .d-day").evaluateAll((days) =>
+    days.map((d) => {
+      const tier = d.querySelector(".d-tier") as HTMLElement;
+      const cell = d.querySelector(".d-cell") as HTMLElement;
+      // One rectangle per line of text, so a word broken inside counts two.
+      const range = document.createRange();
+      range.selectNodeContents(tier);
+      return {
+        cellTop: Math.round(cell.getBoundingClientRect().top),
+        cellHeight: Math.round(cell.getBoundingClientRect().height),
+        lines: range.getClientRects().length,
+        text: tier.textContent ?? "",
+      };
+    }),
+  );
+  expect(new Set(layout.map((d) => d.cellTop)).size).toBe(1);
+  expect(new Set(layout.map((d) => d.cellHeight)).size).toBe(1);
+  for (const d of layout.filter((x) => !x.text.includes("-"))) expect(d.lines, d.text).toBe(1);
+});
+
 test("the daily works from the keyboard alone", async ({ page, browserName }) => {
   await setDay(page, "2026-11-20");
   await page.goto("/daily/");

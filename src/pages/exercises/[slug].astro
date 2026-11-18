@@ -201,7 +201,7 @@ const description = `Practise ${functions.length > 0 ? list(functions) : "Excel 
       }
     </ul>
     <p class="back">
-      <a href="/exercises/">Back to the exercise list</a>
+      <a href="/exercises/"><span aria-hidden="true">←</span> Back to the exercise list</a>
     </p>
   </div>
 
@@ -501,6 +501,36 @@ const description = `Practise ${functions.length > 0 ? list(functions) : "Excel 
 
   .back {
     margin-top: var(--space-5);
+  }
+  .back a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--shadow-card);
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .back a:hover {
+    border-color: var(--line);
+    background: var(--bg);
+  }
+  .back a:hover span {
+    transform: translateX(-2px);
+  }
+  .back a span {
+    transition: transform 0.15s;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .back a,
+    .back a span {
+      transition: none;
+    }
   }
   .answer-block pre {
     font-size: var(--size-base);

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C · Progress</title>
+<link rel="stylesheet" href="style.css" />
+<script src="data.js"></script>
+</head>
+<body data-tab="progress">
+<main class="container">
+  <p class="crumb">Exercises / Progress</p>
+  <div class="head" style="padding-bottom: var(--space-5)">
+    <h1>Your progress</h1>
+    <p class="lead">Saved in this browser. <a href="#">Sign up free</a> to keep it on every device.</p>
+    <div class="actions"><span class="button button-primary">Continue: Add two cells</span><span class="button button-outline">Review 1 due</span></div>
+  </div>
+  <dl class="card stat-strip">
+    <div><dt>solved of 128</dt><dd>1</dd></div>
+    <div><dt>on your own</dt><dd>0</dd></div>
+    <div><dt>with help</dt><dd>1</dd></div>
+    <div><dt>due for review</dt><dd>1</dd></div>
+  </dl>
+  <section class="group">
+    <div class="group-head"><div><h2>By track</h2><p>Where you are in each learning track.</p></div><a class="link" href="#">All exercises</a></div>
+    <ul class="cards cards-3" id="tracks"></ul>
+  </section>
+  <p class="page-end">Want a fresh start? <a class="danger-link" href="#">Clear my progress</a> removes every solve and review from this browser. You'll be asked to confirm.</p>
+</main>
+<script src="mock.js"></script>
+<script>
+  fill(
+    "tracks",
+    D.tracks
+      .map(
+        (t) => `<li class="card tcard">
+          <div class="tcard-top">${box(t.icon)}<b style="color: var(--heading)">${t.done} / ${t.n}</b></div>
+          <h3>${t.title}</h3>
+          <span class="bar" style="margin-top:auto"><span style="width:${(t.done / t.n) * 100}%"></span></span>
+          <a class="link" href="#">${t.done ? "Continue" : "Start"} ${icon("arrow", 14)}</a>
+        </li>`,
+      )
+      .join(""),
+  );
+</script>
+</body>
+</html>

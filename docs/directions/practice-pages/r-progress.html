@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>R · Progress</title>
+<link rel="stylesheet" href="style.css" />
+<script src="data.js"></script>
+</head>
+<body data-tab="progress">
+<main class="container">
+  <p class="crumb">Exercises / Progress</p>
+  <div class="head" style="padding-bottom: var(--space-5)">
+    <h1>Your progress</h1>
+    <p class="lead">Saved in this browser. <a href="#">Sign up free</a> to keep it on every device.</p>
+    <div class="actions"><span class="button button-primary">Continue: Add two cells</span><span class="button button-outline">Review 1 due</span></div>
+  </div>
+  <dl class="card stat-strip">
+    <div><dt>solved of 128</dt><dd>1</dd></div>
+    <div><dt>on your own</dt><dd>0</dd></div>
+    <div><dt>with help</dt><dd>1</dd></div>
+    <div><dt>due for review</dt><dd>1</dd></div>
+  </dl>
+  <div class="page-grid">
+    <section class="card rows">
+      <div class="rows-head"><div><h2>All exercises</h2><p>1 of 128 solved</p></div>
+        <span class="input" style="max-width: 12rem">Show: all</span></div>
+      <div id="rows"></div>
+    </section>
+    <aside class="side">
+      <section class="card rows">
+        <div class="rows-head"><h2>Due for review</h2><span class="status-pill now">1</span></div>
+        <div class="row row-2"><div><strong>Add up a column</strong><small>Solved with help</small></div><a class="link" href="#">Review</a></div>
+      </section>
+      <section class="card rows">
+        <div class="rows-head"><h2>By track</h2><a class="link" href="#">All tracks</a></div>
+        <div id="tracks"></div>
+      </section>
+    </aside>
+  </div>
+  <p class="page-end">Want a fresh start? <a class="danger-link" href="#">Clear my progress</a> removes every solve and review from this browser. You'll be asked to confirm.</p>
+</main>
+<script src="mock.js"></script>
+<script>
+  const words = { "": "Not started", helped: "Solved with help" };
+  fill(
+    "rows",
+    D.exercises
+      .map(
+        ([st, t, meta, lvl, pro]) => `<div class="row">
+          <span class="status-pill ${st ? "done" : ""}">${words[st]}</span>
+          <div><div class="row-head"><strong>${t}</strong>${pro ? '<span class="badge-pro">PRO</span>' : ""}</div><small>${meta}</small></div>
+          <span class="badge badge-${lvl}">${D.levels[lvl]}</span></div>`,
+      )
+      .join(""),
+  );
+  fill(
+    "tracks",
+    D.tracks
+      .map(
+        (t) => `<div class="row row-2" style="padding-block: var(--space-3)">
+          <div><div class="row-head"><strong style="font-size: var(--size-s)">${t.title}</strong></div>
+          <span class="bar" style="margin-top: var(--space-2)"><span style="width:${(t.done / t.n) * 100}%"></span></span></div>
+          <small style="margin:0">${t.done} / ${t.n}</small></div>`,
+      )
+      .join(""),
+  );
+</script>
+</body>
+</html>

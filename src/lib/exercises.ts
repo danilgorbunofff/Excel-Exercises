@@ -92,7 +92,7 @@ export type Drill = Placed & { fn: string };
 export async function drillTasks(): Promise<Drill[]> {
   const topic = {
     slug: "drills",
-    title: "Function drills",
+    title: "Function practice",
     summary: "",
     group: "skill" as const,
     learn: [],

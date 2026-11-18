@@ -98,9 +98,7 @@ test("a correct answer turns Check into Next, in track order, and is remembered"
   // The completion dialog opens with the next exercise focused.
   const dialog = page.getByRole("dialog", { name: "Exercise completed" });
   await expect(dialog).toBeVisible();
-  await expect(
-    dialog.getByRole("link", { name: "Next exercise: Average score" }),
-  ).toBeFocused();
+  await expect(dialog.getByRole("link", { name: "Next exercise: Average score" })).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(dialog).toBeHidden();
   const next = page.getByRole("link", { name: "Next: Average score" });

@@ -1,9 +1,9 @@
 ---
 import { getCollection } from "astro:content";
-// Why this exists: the mock assessments, in the same cards as a set's cover
-// and its result: a summary of what there is, every set with its size, time,
-// functions, level and your best, and your past attempts beside them. The
-// sample is free; the other sets are PRO.
+// Why this exists: the mock assessments as cards you can compare: every set
+// with its size, time, level, functions and your best, then your past
+// attempts. The sample is free; the other sets are PRO.
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import Icon from "../../components/Icon.astro";
 import PracticeTabs from "../../components/PracticeTabs.astro";
 import Base from "../../layouts/Base.astro";
@@ -27,16 +27,6 @@ const sets = loadAssessments().sets.map((set) => {
   return { ...set, functions: cover.functions, level, levelName: levelWord(level) };
 });
 const titles = Object.fromEntries(sets.map((s) => [s.slug, s.title]));
-const span = (values: number[], unit = "") => {
-  const lo = Math.min(...values);
-  const hi = Math.max(...values);
-  return lo === hi ? `${lo}${unit}` : `${lo} to ${hi}${unit}`;
-};
-const taskSpan = span(sets.map((s) => s.tasks.length));
-const timeSpan = span(
-  sets.map((s) => s.minutes),
-  " min",
-);
 ---
 
 <Base
@@ -46,93 +36,88 @@ const timeSpan = span(
 >
   <PracticeTabs />
   <div class="a-page index">
-    <div class="ruled a-card">
-      <div class="a-head">
+    <header class="open-head">
+      <Breadcrumbs items={[{ label: "Exercises", href: "/exercises/" }]} />
+      <h1>Mock assessments</h1>
+      <p class="lead">
+        Timed sets of tasks like an employer's Excel test. There are no hints while you work, and
+        every answer is marked when you finish.
+      </p>
+      <p class="actions">
+        <a class="button button-primary" href={assessmentPath("sample")}>Try the free sample</a>
+        <a class="button button-outline" href="/pricing/">See PRO plans</a>
+      </p>
+    </header>
+
+    <section class="p-section" aria-labelledby="sets-title">
+      <div class="p-section-head">
         <div>
-          <h1 class="a-title">Mock assessments</h1>
-          <p class="a-lead">
-            Timed sets of tasks like an employer's Excel test. There are no hints while you work, and
-            every answer is marked when you finish.
-          </p>
-        </div>
-        <div class="a-actions">
-          <a class="button button-outline" href="/pricing/">See PRO plans</a>
-          <a class="button button-primary" href={assessmentPath("sample")}>Try the free sample</a>
+          <h2 id="sets-title">Pick an assessment</h2>
         </div>
       </div>
-      <dl class="a-stats">
-        <div>
-          <dt><Icon name="file" size={16} class="a-icon" />Assessments</dt>
-          <dd>{sets.length}</dd>
-        </div>
-        <div>
-          <dt><Icon name="check" size={16} class="a-icon" />Free</dt>
-          <dd>{sets.filter((s) => s.sample).length}</dd>
-        </div>
-        <div>
-          <dt><Icon name="grid" size={16} class="a-icon" />Tasks</dt>
-          <dd>{taskSpan}</dd>
-        </div>
-        <div>
-          <dt><Icon name="clock" size={16} class="a-icon" />Time</dt>
-          <dd>{timeSpan}</dd>
-        </div>
-      </dl>
-    </div>
+      <ul class="p-cards sets">
+        {
+          sets.map((set) => (
+            <li class="card set-card">
+              <div class="set-top">
+                <a class="title" id={`set-${set.slug}`} href={assessmentPath(set.slug)}>
+                  {set.title}
+                </a>
+                {set.sample ? <span class="free">Free</span> : <span class="tag">PRO</span>}
+              </div>
+              <p class="summary">{set.summary}</p>
+              <p class="nums">
+                <span>
+                  <strong>{set.tasks.length}</strong> tasks
+                </span>
+                <span>
+                  <strong>{set.minutes}</strong> min
+                </span>
+                <span class={`level level-${set.level}`}>{set.levelName}</span>
+              </p>
+              <p class="chips fn-chips">
+                {set.functions.slice(0, SHOWN).map((f) => <span class="chip">{f}</span>)}
+                {set.functions.length > SHOWN && (
+                  <span class="more">+{set.functions.length - SHOWN} more</span>
+                )}
+              </p>
+              <p class="best" data-when="in" hidden>
+                Your best: <strong data-best={set.slug}>Not taken</strong>
+              </p>
+              {set.sample ? (
+                <a class="button button-primary start" href={assessmentPath(set.slug)}>
+                  Start the sample
+                </a>
+              ) : (
+                <a
+                  class="button button-secondary start"
+                  href={assessmentPath(set.slug)}
+                  aria-describedby={`set-${set.slug}`}
+                >
+                  <Icon name="lock" size={16} />
+                  Start
+                </a>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
 
-    <div class="a-grid">
-      <section class="ruled" aria-labelledby="sets-title">
-        <div class="list-head">
-          <h2 id="sets-title">Assessments</h2>
-        </div>
-        <ul class="a-list sets">
-          {
-            sets.map((set) => (
-              <li class="a-item no-num">
-                <div class="body">
-                  <a class="title" href={assessmentPath(set.slug)}>
-                    {set.title}
-                  </a>
-                  <p class="line">{set.summary}</p>
-                  <p class="line with-icon">
-                    <Icon name="clock" size={16} class="a-icon" />
-                    {set.tasks.length} tasks in {set.minutes} minutes.
-                  </p>
-                  <p class="chips fn-chips">
-                    {set.functions.slice(0, SHOWN).map((f) => <span class="chip">{f}</span>)}
-                    {set.functions.length > SHOWN && (
-                      <span class="more">and {set.functions.length - SHOWN} more</span>
-                    )}
-                  </p>
-                  <p class="line" data-when="in" hidden>
-                    Your best: <strong data-best={set.slug}>Not taken</strong>
-                  </p>
-                </div>
-                <div class="a-tags split">
-                  {set.sample ? <span class="mark-tag free">Free</span> : <span class="tag">PRO</span>}
-                  <span class={`level level-${set.level}`}>{set.levelName}</span>
-                </div>
-              </li>
-            ))
-          }
-        </ul>
-      </section>
-
-      <section class="ruled a-side" aria-labelledby="history-title">
-        <div class="list-head">
-          <h2 id="history-title">Your attempts</h2>
-        </div>
-        <p class="a-pad" data-when="out">
-          <a href={`${ACCOUNT_NAV.login.href}?next=${encodeURIComponent("/mock-assessments/")}`}>Log in</a> or
-          <a href={ACCOUNT_NAV.register.href}>sign up</a> to keep your results here and see your best for each
-          assessment.
-        </p>
-        <div data-when="in" hidden>
-          <p class="a-pad" data-history-empty>No attempts yet. Your results appear here when you finish an assessment.</p>
-          <ol class="a-list" aria-label="Your latest attempts, newest first" data-history hidden></ol>
-        </div>
-      </section>
-    </div>
+    <section class="ruled a-side attempts" aria-labelledby="history-title">
+      <div class="list-head">
+        <h2 id="history-title">Your attempts</h2>
+      </div>
+      <p class="a-pad" data-when="out">
+        <a href={`${ACCOUNT_NAV.login.href}?next=${encodeURIComponent("/mock-assessments/")}`}>Log in</a> or
+        <a href={ACCOUNT_NAV.register.href}>sign up</a> to keep your results here and see your best for each
+        assessment.
+      </p>
+      <div data-when="in" hidden>
+        <p class="a-pad" data-history-empty>No attempts yet. Your results appear here when you finish an assessment.</p>
+        <ol class="a-list" aria-label="Your latest attempts, newest first" data-history hidden></ol>
+      </div>
+    </section>
   </div>
 
   <script type="application/json" data-titles set:html={JSON.stringify(titles).replaceAll("<", "\\u003c")} />
@@ -205,23 +190,73 @@ const timeSpan = span(
 </script>
 
 <style>
-  .index {
-    padding-top: var(--space-5);
-  }
-  /* Free or PRO stays top right; the level drops to the bottom right corner. */
-  .a-tags.split {
+  .set-card {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+  .set-top {
+    display: flex;
+    align-items: start;
     justify-content: space-between;
-    align-self: stretch;
+    gap: var(--space-3);
+  }
+  .set-top .title {
+    font-size: var(--size-l);
+    font-weight: 700;
+    color: var(--heading);
+    text-decoration: none;
+  }
+  .set-top .title:hover {
+    text-decoration: underline;
+  }
+  /* Free is a price, not a level: a plain outline, so it never reads as Beginner green. */
+  .free {
+    padding: 0.125rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    font-size: var(--size-xs);
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--text);
+  }
+  .set-card p {
+    margin: 0;
+  }
+  .summary {
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .nums {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-5);
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .nums strong {
+    font-size: var(--size-xl);
+    font-variant-numeric: tabular-nums;
+    color: var(--heading);
   }
   .fn-chips {
-    margin-top: var(--space-1);
     align-items: center;
   }
   .fn-chips .more {
     font-size: var(--size-s);
     color: var(--muted);
+  }
+  .best {
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .start {
+    width: 100%;
+    margin-top: auto;
+  }
+  .attempts {
+    max-width: 40rem;
   }
 </style>

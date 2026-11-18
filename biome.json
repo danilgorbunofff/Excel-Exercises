@@ -16,6 +16,7 @@
       "!**/test-results",
       "!**/playwright-report",
       "!docs/design/contrast.md",
+      "!docs/directions/practice-pages",
       "!tools/audit/*.json"
     ]
   },

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>R · Daily exercise</title>
+<link rel="stylesheet" href="style.css" />
+<script src="data.js"></script>
+</head>
+<body data-tab="daily">
+<main class="container">
+  <p class="crumb">Exercises / Daily exercise</p>
+  <div class="head" style="padding-bottom: var(--space-5)">
+    <h1>Daily exercise</h1>
+    <p class="lead">Wednesday 18 November. A new task every day, the same for everyone. Monday is the easiest; each day is a step harder.</p>
+  </div>
+  <div class="page-grid">
+    <article class="card tcard">
+      <div class="tcard-top" id="top"></div>
+      <h3>Average for one team</h3>
+      <p>In F2, find the average score of the Blue team.</p>
+      <div id="sheet"></div>
+    </article>
+    <aside class="side sticky">
+      <div class="card sum-panel">
+        <div class="card-head"><h3>This week</h3><span class="faint" style="font-size: var(--size-s)">Day 3 of 7</span></div>
+        <div id="week"></div>
+        <div class="nums">
+          <div><b>0</b> <span>day streak</span></div>
+          <div><b>1</b> <span>best</span></div>
+        </div>
+        <p>Solve today's task to start a new streak.</p>
+      </div>
+      <p class="faint" style="font-size: var(--size-s)">Saved in this browser. <a href="#">Sign up free</a> to keep your streak on every device.</p>
+    </aside>
+  </div>
+</main>
+<script src="mock.js"></script>
+<script>
+  fill("top", `${box("sigma")}<span class="day-badge">Steady</span>`);
+  fill("sheet", SHEET);
+  fill("week", weekStrip());
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<title>Practice page mocks</title>
+<meta name="claude:viewport-fit-sides" content="cover" />
+<style>
+  /* Gallery chrome is deliberately dark-only; each mock inside follows the Theme switch. */
+  :root { color-scheme: dark; --g-bg: #0a0d12; --g-bar: #161c26; --g-line: #2b3442; --g-text: #e6e9ec; --g-muted: #a3abb8; --g-btn: #0f141c; --g-on: #18804f; }
+  body { margin: 0; background: var(--g-bg); color: var(--g-text); font-family: system-ui, sans-serif; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--g-bar); }
+  header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 1; display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center;
+    padding-block: 12px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    background: var(--g-bar); border-bottom: 1px solid var(--g-line); }
+  fieldset { display: flex; flex-wrap: wrap; gap: 4px; margin: 0; padding: 0; border: 0; min-width: 0; }
+  legend { float: left; margin-right: 8px; font-size: 13px; color: var(--g-muted); line-height: 32px; }
+  button { min-height: 32px; padding: 0 12px; border: 1px solid var(--g-line); border-radius: 6px; background: var(--g-btn);
+    color: var(--g-text); font: inherit; font-size: 14px; cursor: pointer; }
+  button:focus-visible { outline: 2px solid var(--g-text); outline-offset: 2px; }
+  button[aria-pressed="true"] { border-color: var(--g-on); background: var(--g-on); color: #fff; }
+  p.desc { margin: 0; padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    font-size: 14px; color: var(--g-muted); border-bottom: 1px solid var(--g-line); }
+  p.desc b { color: var(--g-text); }
+  p.desc .note { display: block; margin-top: 4px; }
+  .stage { display: flex; justify-content: center; padding-block: 16px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  iframe { width: 100%; max-width: 1400px; height: calc(100vh - 160px); min-height: 480px; border: 1px solid var(--g-line); border-radius: 8px; background: var(--g-bg); }
+  .phone iframe { max-width: 375px; }
+</style>
+<header>
+  <fieldset data-key="page"><legend>Page</legend>
+    <button type="button" value="drills">Function practice</button><button type="button" value="daily">Daily</button>
+    <button type="button" value="mock">Mock assessments</button><button type="button" value="progress">Progress</button></fieldset>
+  <fieldset data-key="dir"><legend>Option</legend>
+    <button type="button" value="r">R · Recommended</button><button type="button" value="a">A · Track cards</button><button type="button" value="b">B · Catalogue rows</button><button type="button" value="c">C · Stat tiles</button></fieldset>
+  <fieldset data-key="theme"><legend>Theme</legend>
+    <button type="button" value="dark">Dark</button><button type="button" value="light">Light</button></fieldset>
+  <fieldset data-key="width"><legend>Width</legend>
+    <button type="button" value="desktop">Desktop</button><button type="button" value="phone">Phone</button></fieldset>
+</header>
+<p class="desc" id="desc"></p>
+<div class="stage" id="stage"><iframe title="Mock page" id="frame"></iframe></div>
+<script>
+  const PAGES = /*PAGES*/{};
+  const DESC = {
+    r: "<b>R · Recommended.</b> The best of A, B and C for each page, after the design review.",
+    a: "<b>A · Track cards.</b> Same as Learning tracks: open header, sections of cards with icon, status, facts and a full-width button.",
+    b: "<b>B · Catalogue rows.</b> Same as the Exercises catalogue: one bordered list of rows with a side column that stays in view.",
+    c: "<b>C · Stat tiles.</b> The numbers as one strip up top, then cards. More weight on streaks, scores and counts.",
+  };
+  const NOTES = {
+    "r-drills": "Rows from B: all 66 functions fit about one screen, and the set panel stays in view while you pick. Picked functions show in the panel and can be removed there.",
+    "r-daily": "The task comes first and gets the most room. The week, the streak and the best streak sit together in one small card beside it (below the task on a phone, so the task is on the first screen).",
+    "r-mock": "Cards from C, two per row, so six assessments make three even rows. Tasks and minutes are big numbers you can compare. PRO cards also offer a task preview.",
+    "r-progress": "Continue and Review come first, then the four numbers as one strip, then the full exercise list (kept from today's page), with review and tracks beside it.",
+    "a-drills": "Fixed: the set panel now stays in view for the whole page. Still the longest option: 11 tall cards.",
+    "a-daily": "Fixed: hints added, week shown as a compact strip, streak data made consistent (best streak 1).",
+    "a-mock": "Fixed: two columns (no gap in the last row), buttons line up, and the attempts panel now shows one signed-out state.",
+    "a-progress": "Fixed: Clear progress is now a red link at the end of the page. The full exercise list is still missing in this option.",
+    "b-drills": "Fixed: header aligned left with the list, and the column of plain counts removed.",
+    "b-daily": "The week list is tall next to the task. Today's task is the only real action on the page.",
+    "b-mock": "Fixed: each row has an action, and on a phone the free sample comes first. Rows are harder to compare than cards.",
+    "b-progress": "Fixed: the two buttons no longer touch, and Review moved to the top of the side column.",
+    "c-drills": "Fixed: the four number tiles are gone (they didn't help anyone choose). 66 checkbox cards still make a very long page.",
+    "c-daily": "Fixed: the numbers are one strip, which is a 2×2 block on a phone instead of four full-screen tiles.",
+    "c-mock": "This is the base for R. Dots show the level; R uses the coloured level badge instead, to match the rest of the site.",
+    "c-progress": "Fixed: the numbers come after Continue and Review. No per-exercise list; R adds it back.",
+  };
+  const state = { page: "drills", dir: "r", theme: "dark", width: "desktop" };
+  try { Object.assign(state, JSON.parse(localStorage.getItem("mocks2") || "{}")); } catch {}
+  const frame = document.getElementById("frame");
+  function render() {
+    for (const fs of document.querySelectorAll("fieldset")) {
+      for (const b of fs.querySelectorAll("button")) b.setAttribute("aria-pressed", String(b.value === state[fs.dataset.key]));
+    }
+    const html = PAGES[`${state.dir}-${state.page}`] || "<p>Missing mock</p>";
+    frame.srcdoc = html.replace('<html lang="en">', `<html lang="en" data-theme="${state.theme}">`);
+    document.getElementById("stage").className = `stage ${state.width}`;
+    document.getElementById("desc").innerHTML = `${DESC[state.dir]} <span class="note">${NOTES[`${state.dir}-${state.page}`] || ""}</span>`;
+    try { localStorage.setItem("mocks2", JSON.stringify(state)); } catch {}
+  }
+  document.querySelector("header").addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    state[b.closest("fieldset").dataset.key] = b.value;
+    render();
+  });
+  render();
+</script>

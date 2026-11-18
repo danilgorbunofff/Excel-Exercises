@@ -5,6 +5,7 @@
 // so daily.ts picks the exercise in the browser and fetches its workbench
 // from /daily/task/. The build day's pick is rendered here, hidden: it brings
 // the workbench styles and saves a fetch on the day it matches.
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import Icon from "../../components/Icon.astro";
 import LiveExercise from "../../components/LiveExercise.astro";
 import PracticeTabs from "../../components/PracticeTabs.astro";
@@ -33,65 +34,70 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
     <script type="application/json" data-daily-pool set:html={poolJson} />
     <template data-check-icon><Icon name="check" size={16} /></template>
 
-    <section class="ruled a-card" aria-labelledby="daily-title">
-      <div class="a-head">
-        <div>
-          <p class="a-context" data-date>Today</p>
-          <h1 id="daily-title" class="a-title">Daily exercise</h1>
-          <p class="a-lead" role="status" data-state>
-            One free exercise a day, easiest on Monday and hardest on Sunday.
-          </p>
-        </div>
-      </div>
-      <dl class="a-stats">
-        <div>
-          <dt><Icon name="check" size={16} class="a-icon" />Today</dt>
-          <dd data-today>Not yet</dd>
-        </div>
-        <div>
-          <dt><Icon name="chart" size={16} class="a-icon" />Current streak</dt>
-          <dd data-current>0 days</dd>
-        </div>
-        <div>
-          <dt><Icon name="clock" size={16} class="a-icon" />Best streak</dt>
-          <dd data-best>0 days</dd>
-        </div>
-      </dl>
-      <div class="d-strip-wrap">
-        <h2 class="d-week-title" id="strip-title">This week</h2>
-        <ol class="d-strip d-week" aria-labelledby="strip-title" data-strip data-week></ol>
-      </div>
-    </section>
-
-    <div class="a-grid">
-      <div class="d-task" data-task-slot hidden>
-        <LiveExercise placed={shown} heading="Today's exercise" defer daily />
-      </div>
-      <noscript>
-        <p class="ruled d-noscript">
-          The daily exercise is picked from your date, so it needs JavaScript. Every exercise also
-          works on its own page: <a href="/exercises/">see all exercises</a>.
-        </p>
-      </noscript>
-      <p class="ruled d-noscript" role="alert" data-task-error hidden>
-        The exercise did not load. Reload the page, or <a href="/exercises/">pick one from the list</a>.
+    <header class="open-head">
+      <Breadcrumbs items={[{ label: "Exercises", href: "/exercises/" }]} />
+      <h1 id="daily-title">Daily exercise</h1>
+      <p class="lead">
+        <span data-date>Today</span>. A new exercise every day, the same for everyone.
       </p>
-      <section class="ruled a-side" aria-labelledby="rules-title">
-        <div class="list-head">
-          <h2 id="rules-title">How it works</h2>
+      <p class="lead d-state" role="status" data-state>
+        One free exercise a day, easiest on Monday and hardest on Sunday.
+      </p>
+    </header>
+
+    <dl class="a-stats stat-strip">
+      <div>
+        <dt>today</dt>
+        <dd data-today>Not yet</dd>
+      </div>
+      <div>
+        <dt>current streak</dt>
+        <dd data-current>0 days</dd>
+      </div>
+      <div>
+        <dt>best streak</dt>
+        <dd data-best>0 days</dd>
+      </div>
+      <div>
+        <dt>solved this week</dt>
+        <dd data-week-solved>0 of 7</dd>
+      </div>
+    </dl>
+
+    <div class="a-grid d-grid">
+      <!-- First in the page order, so Tab reaches the week before the sheet;
+           on wide screens it sits in the right-hand column. -->
+      <aside class="d-side">
+        <section class="card d-week-card" aria-labelledby="strip-title">
+          <h2 class="d-week-title" id="strip-title">This week</h2>
+          <ol class="d-strip d-week" aria-labelledby="strip-title" data-strip data-week></ol>
+          <p class="d-note">Monday is the easiest. Each day is a step harder, up to Sunday.</p>
+        </section>
+      </aside>
+      <div class="d-main">
+        <div class="d-task" data-task-slot hidden>
+          <LiveExercise placed={shown} heading="Today's exercise" defer daily />
         </div>
+        <noscript>
+          <p class="ruled d-noscript">
+            The daily exercise is picked from your date, so it needs JavaScript. Every exercise also
+            works on its own page: <a href="/exercises/">see all exercises</a>.
+          </p>
+        </noscript>
+        <p class="ruled d-noscript" role="alert" data-task-error hidden>
+          The exercise did not load. Reload the page, or <a href="/exercises/">pick one from the list</a>.
+        </p>
+      </div>
+      <section class="card d-how" aria-labelledby="rules-title">
+        <h2 id="rules-title">How it works</h2>
         <ul class="a-rows">
           <li>
             <span class="a-icon"><Icon name="grid" size={18} /></span>
             <p>A new exercise every day, the same for everyone.</p>
           </li>
           <li>
-            <span class="a-icon"><Icon name="chart" size={18} /></span>
-            <p>Monday is the easiest. Each day is a step harder, up to Sunday. Monday starts again.</p>
-          </li>
-          <li>
             <span class="a-icon"><Icon name="check" size={18} /></span>
-            <p>Solve it on the day to keep your streak.</p>
+            <p>Solve it on the day to keep your streak. Earlier days are practice.</p>
           </li>
           <li>
             <span class="a-icon"><Icon name="user" size={18} /></span>

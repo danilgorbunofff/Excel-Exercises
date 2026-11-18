@@ -2,7 +2,7 @@
 // that day's exercise on the page, and counts the streak. A solve of today's
 // exercise adds today to the streak; an earlier day is practice only. Signed
 // in, the days are merged with the account's and each new one is sent once.
-import { type DailyEntry, isDay, LADDER_START, pickFor } from "../lib/daily.ts";
+import { type DailyEntry, isDay, LADDER_START, pickFor, weekDays } from "../lib/daily.ts";
 import { readDaily, writeDaily } from "./daily-store.ts";
 import { type DailySync, postDaily, syncDaily } from "./daily-sync.ts";
 import { longDate, renderStreak } from "./daily-view.ts";
@@ -42,6 +42,11 @@ function start(root: HTMLElement, pool: DailyEntry[]) {
     if (todayBox) {
       todayBox.textContent = solved(now) ? "Solved" : "Not yet";
       todayBox.classList.toggle("correct", solved(now));
+    }
+    const weekBox = q<HTMLElement>(root, "[data-week-solved]");
+    if (weekBox) {
+      const week = weekDays(new Set(Object.keys(sync.days)), now);
+      weekBox.textContent = `${week.filter((d) => d.solved).length} of ${week.length}`;
     }
     renderStreak(root, sync.days, day);
   };

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>A · Function practice</title>
+<link rel="stylesheet" href="style.css" />
+<script src="data.js"></script>
+</head>
+<body data-tab="drills">
+<main class="container">
+  <p class="crumb">Exercises / Function practice</p>
+  <div class="head">
+    <span class="badge-pro">PRO</span>
+    <h1>Drill the functions you want to get fast at</h1>
+    <p class="lead">Short tasks one after another, each function from easy to hard, with instant marking.</p>
+  </div>
+
+  <div class="page-grid">
+    <div>
+      <div class="group-head">
+        <div><h2>Choose functions</h2><p>66 functions in 11 groups, 5 tasks each.</p></div>
+        <span class="input" style="max-width: 16rem">Filter, e.g. LOOKUP</span>
+      </div>
+      <ul class="cards cards-2" id="groups"></ul>
+    </div>
+    <aside class="sticky phone-first" style="display: grid; gap: var(--space-4)">
+      <div class="dark-panel">
+        <h3>Your set</h3>
+        <dl>
+          <div><dt>tasks</dt><dd>15</dd></div>
+          <div><dt>functions</dt><dd>3</dd></div>
+        </dl>
+        <p>SUM, AVERAGE, XLOOKUP</p>
+        <span class="button button-primary">Start 15 tasks</span>
+      </div>
+      <div class="card sum-panel">
+        <h3>Not sure what to pick?</h3>
+        <p>Let us choose a mix from all 66 functions.</p>
+        <span class="button button-outline">10 random tasks</span>
+        <span class="button button-secondary">All 330, shuffled</span>
+      </div>
+    </aside>
+  </div>
+</main>
+<script src="mock.js"></script>
+<script>
+  fill(
+    "groups",
+    D.groups
+      .map((g) => {
+        const n = g.fns.filter((f) => D.picked.includes(f)).length;
+        return `<li class="card tcard">
+          <div class="tcard-top">${box(g.icon)}${n ? `<span class="status-pill done">${n} picked</span>` : ""}
+            <a class="link" href="#">Select all</a></div>
+          <h3>${g.title}</h3>
+          <p>${g.fns.length} functions · ${g.fns.length * 5} tasks</p>
+          <div class="chips">${fnButtons(g.fns)}</div>
+        </li>`;
+      })
+      .join(""),
+  );
+</script>
+</body>
+</html>

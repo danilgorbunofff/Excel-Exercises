@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>R · Mock assessments</title>
+<link rel="stylesheet" href="style.css" />
+<script src="data.js"></script>
+</head>
+<body data-tab="mock">
+<main class="container">
+  <p class="crumb">Exercises / Mock assessments</p>
+  <div class="head">
+    <h1>Mock assessments</h1>
+    <p class="lead">Timed sets of tasks like an employer's Excel test. No hints while you work; every answer is marked when you finish.</p>
+  </div>
+  <section class="group">
+    <div class="group-head">
+      <div><h2>Pick an assessment</h2><p>Easiest first. The sample is free; the rest come with PRO.</p></div>
+      <a class="link" href="#">See PRO plans</a>
+    </div>
+    <ul class="cards cards-2" id="sets"></ul>
+  </section>
+  <section class="card sum-panel" style="max-width: 40rem">
+    <h3>Your attempts</h3>
+    <p><a href="#">Log in</a> or <a href="#">sign up</a> to keep your scores and see your best for each assessment.</p>
+  </section>
+</main>
+<script src="mock.js"></script>
+<script>
+  fill(
+    "sets",
+    D.sets
+      .map(
+        (s) => `<li class="card tcard" ${s.free ? 'style="border-color: var(--chip-line)"' : ""}>
+          <div class="tcard-top"><h3 style="margin-right:auto">${s.title}</h3>
+            ${s.free ? '<span class="pill-free">Free</span>' : '<span class="badge-pro">PRO</span>'}</div>
+          <p>${s.summary}</p>
+          <div class="nums">
+            <div><b>${s.tasks}</b> <span>tasks</span></div>
+            <div><b>${s.min}</b> <span>min</span></div>
+            <div><span class="badge badge-${s.level}">${D.levels[s.level]}</span></div>
+          </div>
+          <div class="chips">${chips(s.fns, 5)}</div>
+          ${
+            s.free
+              ? '<span class="button button-primary">Start the sample</span>'
+              : `<div class="actions" style="margin-top:auto"><span class="button button-secondary" style="flex:1">${icon("lock", 16)} Unlock with PRO</span><a class="link" href="#" style="align-self:center">Preview tasks</a></div>`
+          }
+        </li>`,
+      )
+      .join(""),
+  );
+</script>
+</body>
+</html>

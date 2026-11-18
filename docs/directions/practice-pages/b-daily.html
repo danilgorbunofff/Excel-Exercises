@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>B · Daily exercise</title>
+<link rel="stylesheet" href="style.css" />
+<script src="data.js"></script>
+</head>
+<body data-tab="daily">
+<main class="container">
+  <p class="crumb">Exercises / Daily exercise</p>
+  <div class="head">
+    <h1>Daily exercise</h1>
+    <p class="lead">Wednesday 18 November. A new task every day, the same for everyone. Monday is the easiest; each day is a step harder up to Sunday.</p>
+  </div>
+  <div class="page-grid">
+    <section class="card rows">
+      <div class="rows-head">
+        <div><h2>Average for one team</h2><p>In F2, find the average score of the Blue team.</p></div>
+        <span class="day-badge">Steady · day 3 of 7</span>
+      </div>
+      <div style="padding: var(--space-5)" id="sheet"></div>
+    </section>
+    <aside class="side">
+      <section class="card rows">
+        <div class="rows-head"><h2>This week</h2><p><b style="color: var(--heading)">0</b> day streak · best <b style="color: var(--heading)">1</b></p></div>
+        <div id="week"></div>
+      </section>
+      <p class="faint" style="font-size: var(--size-s)">Saved in this browser. <a href="#">Sign up free</a> to keep your streak on every device.</p>
+    </aside>
+  </div>
+</main>
+<script src="mock.js"></script>
+<script>
+  fill("sheet", SHEET);
+  const cls = { done: "done", now: "now", miss: "", "": "" };
+  fill(
+    "week",
+    D.week
+      .map(
+        ([d, n, label, s]) => `<div class="row row-2" style="padding-block: var(--space-2)">
+          <div class="row-head"><strong>${d} ${n}</strong><small>${label}</small></div>
+          <span class="status-pill ${cls[s]}">${D.dayWords[s]}</span></div>`,
+      )
+      .join(""),
+  );
+</script>
+</body>
+</html>

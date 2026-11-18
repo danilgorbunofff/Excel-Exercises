@@ -6,7 +6,7 @@
 import { type DrillRef, drillQueue } from "../lib/drills.ts";
 import { mountExercise } from "./exercise.ts";
 import { unlock } from "./locked-exercise.ts";
-import { readProgress } from "./progress.ts";
+import { isSolved, readProgress } from "./progress.ts";
 import { track } from "./track.ts";
 
 const root = document.querySelector<HTMLElement>("[data-drills]");
@@ -54,7 +54,7 @@ function summary(outcomes: readonly Outcome[]): void {
   const solved = outcomes.filter((o) => o.solved).length;
   const line = q<HTMLElement>("[data-summary-line]");
   if (line)
-    line.textContent = `You solved ${solved} of ${outcomes.length} ${outcomes.length === 1 ? "drill" : "drills"}.`;
+    line.textContent = `You solved ${solved} of ${outcomes.length} ${outcomes.length === 1 ? "task" : "tasks"}.`;
   const weak = [...new Set(outcomes.filter((o) => o.missed || !o.solved).map((o) => o.drill.fn))];
   const list = q<HTMLUListElement>("[data-missed-list]");
   const wrap = q<HTMLElement>("[data-summary-missed]");
@@ -65,7 +65,7 @@ function summary(outcomes: readonly Outcome[]): void {
         li.append(
           Object.assign(document.createElement("a"), {
             href: `/exercises/drills/?fn=${encodeURIComponent(fn)}`,
-            textContent: `Drill ${fn} again`,
+            textContent: `Practise ${fn} again`,
           }),
           " or ",
           Object.assign(document.createElement("a"), {
@@ -119,7 +119,7 @@ async function run(): Promise<void> {
   const show = async () => {
     const drill = queue[index];
     if (!drill) return;
-    title.textContent = `Drill ${index + 1} of ${queue.length}: ${drill.fn}`;
+    title.textContent = `Task ${index + 1} of ${queue.length}: ${drill.fn}`;
     const node = await load(drill);
     if (!node) {
       if (error) error.hidden = false;
@@ -158,16 +158,129 @@ async function run(): Promise<void> {
   await show();
 }
 
-// The picker: Start needs at least one function ticked.
+// The picker: "Your set" follows the ticked functions, each group can be ticked
+// at once, a filter narrows the list, a dot marks a function whose tasks are
+// all solved, and Start needs at least one function ticked.
 const picker = q<HTMLFormElement>("[data-picker]");
-picker?.addEventListener("submit", (e) => {
-  const submitter = (e as SubmitEvent).submitter as HTMLButtonElement | null;
-  if (submitter?.name === "fn") return;
-  if (!picker.querySelector("input[name=fn]:checked")) {
-    e.preventDefault();
-    q<HTMLElement>("[data-pick-hint]")?.setAttribute("role", "alert");
-    picker.querySelector<HTMLInputElement>("input[name=fn]")?.focus();
+const byFn = new Map<string, string[]>();
+for (const d of pool) byFn.set(d.fn, [...(byFn.get(d.fn) ?? []), d.id]);
+const SET_SHOWN = 8;
+const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? "" : "s"}`;
+
+function paintSet(form: HTMLFormElement): void {
+  const boxes = [...form.querySelectorAll<HTMLInputElement>("input[name=fn]")];
+  const chosen = boxes.filter((b) => b.checked).map((b) => b.value);
+  const tasks = chosen.reduce((n, fn) => n + (byFn.get(fn)?.length ?? 0), 0);
+  const chips = q<HTMLUListElement>("[data-set-chips]");
+  const line = q<HTMLElement>("[data-set-count]");
+  const total = q<HTMLElement>("[data-set-tasks]");
+  const unit = q<HTMLElement>("[data-set-unit]");
+  const clear = q<HTMLButtonElement>("[data-clear]");
+  const start = q<HTMLButtonElement>("[data-start]");
+  if (total) total.textContent = String(tasks);
+  if (unit) unit.textContent = tasks === 1 ? "task" : "tasks";
+  if (clear) clear.hidden = chosen.length === 0;
+  if (start) {
+    start.toggleAttribute("data-empty", chosen.length === 0);
+    start.textContent = chosen.length === 0 ? "Start" : `Start ${plural(tasks, "task")}`;
   }
-});
+  if (chips) {
+    chips.hidden = chosen.length === 0;
+    const items = chosen
+      .slice(0, SET_SHOWN)
+      .map((fn) =>
+        Object.assign(document.createElement("li"), { className: "chip", textContent: fn }),
+      );
+    if (chosen.length > SET_SHOWN)
+      items.push(
+        Object.assign(document.createElement("li"), {
+          className: "more",
+          textContent: `and ${chosen.length - SET_SHOWN} more`,
+        }),
+      );
+    chips.replaceChildren(...items);
+  }
+  if (line) {
+    line.removeAttribute("role");
+    line.textContent =
+      chosen.length === 0
+        ? "Tick one or more functions."
+        : `from ${plural(chosen.length, "function")}`;
+  }
+  for (const group of form.querySelectorAll<HTMLElement>("[data-group]")) {
+    const toggle = group.querySelector<HTMLButtonElement>("[data-group-toggle]");
+    const inGroup = [...group.querySelectorAll<HTMLInputElement>("input[name=fn]")];
+    if (toggle) toggle.textContent = inGroup.every((b) => b.checked) ? "Clear" : "Select all";
+    const count = group.querySelector<HTMLElement>("[data-group-count]");
+    const picked = inGroup.filter((b) => b.checked).length;
+    if (count) {
+      count.hidden = picked === 0;
+      count.textContent = `${picked} picked`;
+    }
+  }
+}
+
+/** Shows only the functions whose name holds the text, and hides empty groups. */
+function filterPicks(form: HTMLFormElement, text: string): void {
+  const needle = text.trim().toUpperCase();
+  let shown = 0;
+  for (const group of form.querySelectorAll<HTMLElement>("[data-group]")) {
+    let inGroup = 0;
+    for (const pick of group.querySelectorAll<HTMLElement>("[data-pick]")) {
+      pick.hidden = !(pick.dataset.pick ?? "").includes(needle);
+      if (!pick.hidden) inGroup += 1;
+    }
+    group.hidden = inGroup === 0;
+    shown += inGroup;
+  }
+  const none = q<HTMLElement>("[data-no-match]");
+  if (none) none.hidden = shown > 0;
+}
+
+if (picker) {
+  for (const group of picker.querySelectorAll<HTMLElement>("[data-group]")) {
+    const toggle = group.querySelector<HTMLButtonElement>("[data-group-toggle]");
+    if (!toggle) continue;
+    toggle.hidden = false;
+    toggle.addEventListener("click", () => {
+      const inGroup = [...group.querySelectorAll<HTMLInputElement>("input[name=fn]")];
+      const tick = !inGroup.every((b) => b.checked);
+      for (const b of inGroup) b.checked = tick;
+      paintSet(picker);
+    });
+  }
+  q<HTMLButtonElement>("[data-clear]")?.addEventListener("click", () => {
+    for (const b of picker.querySelectorAll<HTMLInputElement>("input[name=fn]")) b.checked = false;
+    paintSet(picker);
+  });
+  const filter = q<HTMLInputElement>("[data-filter]");
+  const wrap = q<HTMLElement>("[data-filter-wrap]");
+  if (filter && wrap) {
+    wrap.hidden = false;
+    filter.addEventListener("input", () => filterPicks(picker, filter.value));
+    // Enter in the filter must not start a session.
+    filter.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") e.preventDefault();
+    });
+  }
+  const progress = readProgress();
+  for (const pick of picker.querySelectorAll<HTMLElement>("[data-pick]")) {
+    const ids = byFn.get(pick.dataset.pick ?? "") ?? [];
+    const dot = pick.querySelector<HTMLElement>("[data-done]");
+    if (dot) dot.hidden = ids.length === 0 || !ids.every((id) => isSolved(progress[id]));
+  }
+  picker.addEventListener("change", () => paintSet(picker));
+  // Back from a session, the browser may have kept the ticks.
+  paintSet(picker);
+  picker.addEventListener("submit", (e) => {
+    const submitter = (e as SubmitEvent).submitter as HTMLButtonElement | null;
+    if (submitter?.name === "fn") return;
+    if (!picker.querySelector("input[name=fn]:checked")) {
+      e.preventDefault();
+      q<HTMLElement>("[data-pick-hint]")?.setAttribute("role", "alert");
+      picker.querySelector<HTMLInputElement>("input[name=fn]:not([hidden] *)")?.focus();
+    }
+  });
+}
 
 if (root && queue.length > 0) void run();

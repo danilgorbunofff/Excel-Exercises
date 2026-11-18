@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>A · Mock assessments</title>
+<link rel="stylesheet" href="style.css" />
+<script src="data.js"></script>
+</head>
+<body data-tab="mock">
+<main class="container">
+  <p class="crumb">Exercises / Mock assessments</p>
+  <div class="head">
+    <h1>Practise for an employer's Excel test</h1>
+    <p class="lead">Timed sets of tasks. No hints while you work, and every answer is marked when you finish.</p>
+  </div>
+
+  <section class="group">
+    <div class="split">
+      <div id="sample"></div>
+      <aside class="card sum-panel">
+        <h3>Your attempts</h3>
+        <p><a href="#">Log in</a> or <a href="#">sign up</a> to keep your scores and see your best for each assessment.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="group">
+    <div class="group-head"><div><h2>Full assessments</h2><p>Ten tasks each, matched to the kind of job you are applying for.</p></div>
+      <span class="button button-outline">See PRO plans</span></div>
+    <ul class="cards cards-2" id="sets"></ul>
+  </section>
+</main>
+<script src="mock.js"></script>
+<script>
+  const card = (s) => `<article class="card tcard">
+    <div class="tcard-top"><h3 style="margin-right:auto">${s.title}</h3>
+      ${s.free ? '<span class="pill-free">Free</span>' : '<span class="badge-pro">PRO</span>'}
+      ${s.title === D.levels[s.level] ? "" : `<span class="badge badge-${s.level}">${D.levels[s.level]}</span>`}</div>
+    <p>${s.summary}</p>
+    <p class="facts"><span>${s.tasks} tasks</span><span>${s.min} min</span></p>
+    <div class="chips">${chips(s.fns, 4)}</div>
+    <span class="button ${s.free ? "button-primary" : "button-secondary"}">${s.free ? "Start the sample" : `${icon("lock", 16)} Unlock with PRO`}</span>
+  </article>`;
+  const [sample, ...rest] = D.sets;
+  fill("sample", card(sample));
+  fill("sets", rest.map((s) => `<li>${card(s)}</li>`).join(""));
+</script>
+</body>
+</html>

@@ -14,6 +14,15 @@ describe("nav", () => {
     for (const { href } of all) expect(routes.has(href.split("#")[0] ?? ""), href).toBe(true);
   });
 
+  it("keeps Interview prep out of the header but in the tabs", () => {
+    const hidden = PRACTICE_NAV.filter((i) => i.inHeader === false).map((i) => i.label);
+    expect(hidden).toEqual(["Interview prep"]);
+    expect(PRACTICE_NAV.slice(0, 2).map((i) => i.label)).toEqual([
+      "Exercises",
+      "Function practice",
+    ]);
+  });
+
   it("leaves no public section out", () => {
     const linked = new Set(all.map((i) => i.href.split("#")[0]));
     // The home page, search (in the header box) and contact (in the footer) are reached otherwise.

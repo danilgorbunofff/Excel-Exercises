@@ -5,17 +5,9 @@
 import Breadcrumbs from "../../../components/Breadcrumbs.astro";
 import Icon from "../../../components/Icon.astro";
 import PracticeTabs from "../../../components/PracticeTabs.astro";
-import TrackIcon from "../../../components/TrackIcon.astro";
+import TrackCard from "../../../components/TrackCard.astro";
 import Base from "../../../layouts/Base.astro";
-import { isLocked } from "../../../lib/access.ts";
-import {
-  formatMinutes,
-  LEVELS,
-  placedExercises,
-  type TrackSummary,
-  topicPath,
-  trackSummaries,
-} from "../../../lib/exercises.ts";
+import { formatMinutes, placedExercises, trackSummaries } from "../../../lib/exercises.ts";
 
 const placed = await placedExercises();
 const tracks = trackSummaries(placed);
@@ -37,7 +29,6 @@ const groups = [
 const essentialMinutes = essentials.reduce((s, t) => s + t.minutes, 0);
 const essentialCount = essentials.reduce((s, t) => s + t.exercises.length, 0);
 const essentialFunctions = [...new Set(essentials.flatMap((t) => t.functions))];
-const idsOf = (t: TrackSummary) => t.exercises.map((p) => p.exercise.id).join(" ");
 const how = [
   {
     icon: "route" as const,
@@ -84,30 +75,7 @@ const how = [
         {
           essentials.map((t) => (
             <li>
-              <article class="card track" data-track-progress={idsOf(t)}>
-                <div class="track-top">
-                  <TrackIcon slug={t.topic.slug} />
-                  <span class="status-pill" data-track-state>
-                    Not started
-                  </span>
-                  <span class={`badge badge-${t.level}`}>{LEVELS[t.level]}</span>
-                </div>
-                <h3>{t.topic.title}</h3>
-                <p>{t.topic.summary}</p>
-                <p class="facts">
-                  <span>{t.exercises.length} exercises</span>
-                  <span>{formatMinutes(t.minutes)}</span>
-                </p>
-                <span class="progress-bar" aria-hidden="true">
-                  <span data-bar />
-                </span>
-                <span class="visually-hidden" data-bar-text>
-                  0 of {t.exercises.length} done
-                </span>
-                <a class="button button-primary" href={topicPath(t.topic.slug)}>
-                  <span aria-hidden="true" data-track-action>Start track</span><span class="visually-hidden"><span data-track-action>Start track</span>: {t.topic.title}</span>
-                </a>
-              </article>
+              <TrackCard track={t} />
             </li>
           ))
         }
@@ -140,42 +108,11 @@ const how = [
           <p>{g.text}</p>
         </div>
         <ul class="cards cards-3">
-          {g.tracks.map((t) => {
-            const locked = t.exercises.filter((p) => isLocked(p)).length;
-            return (
-              <li>
-                <article class="card track" data-track-progress={idsOf(t)}>
-                  <div class="track-top">
-                    <TrackIcon slug={t.topic.slug} />
-                    <span class="status-pill" data-track-state>
-                      Not started
-                    </span>
-                    <span class={`badge badge-${t.level}`}>{LEVELS[t.level]}</span>
-                  </div>
-                  <h3>{t.topic.title}</h3>
-                  <p>{t.topic.summary}</p>
-                  <p class="facts">
-                    <span>{t.exercises.length} exercises</span>
-                    <span>{formatMinutes(t.minutes)}</span>
-                    {locked > 0 && (
-                      <span>
-                        {t.exercises.length - locked} free, {locked} with PRO
-                      </span>
-                    )}
-                  </p>
-                  <span class="progress-bar" aria-hidden="true">
-                    <span data-bar />
-                  </span>
-                  <span class="visually-hidden" data-bar-text>
-                    0 of {t.exercises.length} done
-                  </span>
-                  <a class="button button-primary" href={topicPath(t.topic.slug)}>
-                    <span aria-hidden="true" data-track-action>Start track</span><span class="visually-hidden"><span data-track-action>Start track</span>: {t.topic.title}</span>
-                  </a>
-                </article>
-              </li>
-            );
-          })}
+          {g.tracks.map((t) => (
+            <li>
+              <TrackCard track={t} showLocked />
+            </li>
+          ))}
         </ul>
       </section>
     ))
@@ -263,55 +200,6 @@ const how = [
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     min-width: 0;
-  }
-  .track {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
-  .track-top {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-  }
-  .track-top :global(.track-icon) {
-    margin-right: auto;
-  }
-  .status-pill {
-    padding: 0.125rem 0.5rem;
-    border: 1px solid var(--rule);
-    border-radius: var(--radius-pill);
-    font-size: var(--size-xs);
-    color: var(--muted);
-  }
-  .status-pill[data-state="done"] {
-    border-color: var(--chip-line);
-    background: var(--chip-bg);
-    color: var(--chip);
-  }
-  .track h3 {
-    margin: 0;
-    font-size: var(--size-l);
-    color: var(--heading);
-  }
-  .track p {
-    margin: 0;
-    font-size: var(--size-s);
-    color: var(--muted);
-  }
-  .facts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-  }
-  .facts span {
-    padding: 0.125rem 0.5rem;
-    border-radius: var(--radius-s);
-    background: var(--header);
-    font-size: var(--size-xs);
-  }
-  .track .button {
-    margin-top: auto;
   }
   .practise-panel {
     padding: var(--space-6);

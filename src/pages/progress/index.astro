@@ -1,20 +1,25 @@
 ---
 // Why this exists: what you have done, what is next, and what is due for
 // review. It reads progress from this browser, which a signed-in visitor's
-// account keeps in step (session.ts). The look is the shared summary card,
-// numbers band, main card and side card of the daily and assessment pages.
+// account keeps in step (session.ts). An open head with what to do next, the
+// numbers in one strip, then review, the learning tracks as cards and the
+// full list of exercises.
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import ExerciseTable from "../../components/ExerciseTable.astro";
 import Icon from "../../components/Icon.astro";
 import PracticeTabs from "../../components/PracticeTabs.astro";
+import TrackCard from "../../components/TrackCard.astro";
 import Base from "../../layouts/Base.astro";
 import { isLocked } from "../../lib/access.ts";
-import { drillTasks, exercisePath, placedExercises } from "../../lib/exercises.ts";
+import { drillTasks, exercisePath, placedExercises, trackSummaries } from "../../lib/exercises.ts";
 import { ACCOUNT_NAV } from "../../lib/nav.ts";
 import "../../styles/assessments.css";
 
 const placed = await placedExercises();
 const first = placed[0];
 if (!first) throw new Error("The track has no exercises");
+// Interview tracks have their own page; here, the tracks you learn from.
+const tracks = trackSummaries(placed).filter((t) => t.topic.group !== "interview");
 const list = placed.map((p) => ({
   id: p.exercise.id,
   number: p.number,
@@ -26,7 +31,7 @@ const list = placed.map((p) => ({
 const drills = (await drillTasks()).map((d) => ({
   id: d.exercise.id,
   number: 0,
-  title: `${d.fn} drill: ${d.exercise.title}`,
+  title: `${d.fn} practice: ${d.exercise.title}`,
   href: `/exercises/drills/?id=${encodeURIComponent(d.exercise.id)}`,
   locked: true,
 }));
@@ -39,84 +44,96 @@ const drills = (await drillTasks()).map((d) => ({
 >
   <PracticeTabs />
   <div class="a-page">
-    <section class="ruled a-card" aria-labelledby="progress-title">
-      <div class="a-head">
-        <div>
-          <h1 id="progress-title" class="a-title">Progress</h1>
-          <p class="a-lead" data-when="out">
-            Saved in this browser. <a href={ACCOUNT_NAV.register.href}>Sign up free</a> to keep it on
-            every device.
-          </p>
-          <p class="a-lead" data-when="in" hidden>Saved to your account, on every device.</p>
-        </div>
-        <div class="a-actions">
-          <a class="button button-outline" href="/daily/">Today's exercise</a>
-          <a class="button button-primary" href={exercisePath(first.exercise.slug)} data-next>
-            Start: {first.exercise.title}
-          </a>
-        </div>
+    <header class="open-head">
+      <Breadcrumbs items={[{ label: "Exercises", href: "/exercises/" }]} />
+      <h1 id="progress-title">Your progress</h1>
+      <p class="lead" data-when="out">
+        Saved in this browser. <a href={ACCOUNT_NAV.register.href}>Sign up free</a> to keep it on
+        every device.
+      </p>
+      <p class="lead" data-when="in" hidden>Saved to your account, on every device.</p>
+      <p class="actions">
+        <a class="button button-primary" href={exercisePath(first.exercise.slug)} data-next>
+          Start: {first.exercise.title}
+        </a>
+        <a class="button button-outline" href="/daily/" data-review-next>Today's exercise</a>
+      </p>
+    </header>
+
+    <dl class="a-stats stat-strip" aria-label="Your numbers">
+      <div>
+        <dt>solved of {placed.length}</dt>
+        <dd data-stat="solved">0</dd>
       </div>
-      <dl class="a-stats">
-        <div>
-          <dt><Icon name="check" size={16} class="a-icon" />Solved</dt>
-          <dd data-stat="solved">0 of {placed.length}</dd>
-        </div>
-        <div>
-          <dt><Icon name="bolt" size={16} class="a-icon" />On your own</dt>
-          <dd data-stat="own">0</dd>
-        </div>
-        <div>
-          <dt><Icon name="hint" size={16} class="a-icon" />With help</dt>
-          <dd data-stat="helped">0</dd>
-        </div>
-        <div>
-          <dt><Icon name="clock" size={16} class="a-icon" />Due for review</dt>
-          <dd data-stat="due">0</dd>
-        </div>
-      </dl>
-    </section>
+      <div>
+        <dt>on your own</dt>
+        <dd data-stat="own">0</dd>
+      </div>
+      <div>
+        <dt>with help</dt>
+        <dd data-stat="helped">0</dd>
+      </div>
+      <div>
+        <dt>due for review</dt>
+        <dd data-stat="due">0</dd>
+      </div>
+    </dl>
     <noscript>
       <p class="ruled a-pad">This page needs JavaScript to read your progress from this browser.</p>
     </noscript>
 
-    <div class="a-grid">
-      <section class="ruled" aria-labelledby="all">
-        <div class="list-head">
-          <h2 id="all">All exercises</h2>
-          <p class="count" data-summary>You have not solved an exercise yet.</p>
+    <section class="p-section" aria-labelledby="review-title">
+      <div class="p-section-head">
+        <div>
+          <h2 id="review-title">Due for review</h2>
+          <p class="p-sub">Exercises you got wrong, and solved ones due again.</p>
         </div>
-        <ExerciseTable rows={placed} labelledby="all" />
-      </section>
-
-      <div class="side">
-        <section class="ruled a-side" aria-labelledby="review-title">
-          <div class="list-head">
-            <h2 id="review-title">To review</h2>
-          </div>
-          <div class="a-pad review">
-            <p data-review-empty>
-              Nothing to review. Exercises you got wrong, and solved ones due again, come back here.
-            </p>
-            <ol class="review-list" data-review hidden></ol>
-          </div>
-        </section>
-
-        <section class="ruled a-side" aria-labelledby="clear-title">
-          <div class="list-head">
-            <h2 id="clear-title">Clear your progress</h2>
-          </div>
-          <div class="a-pad clear" data-clear>
-            <p>This removes every solve and review from this browser. It cannot be undone.</p>
-            <button class="button button-secondary" type="button" data-clear-ask>Clear my progress</button>
-            <p class="confirm" data-clear-confirm hidden>
-              <span>Clear all progress in this browser?</span>
-              <button class="button button-primary" type="button" data-clear-yes>Yes, clear it</button>
-              <button class="link-button" type="button" data-clear-no>Keep it</button>
-            </p>
-            <p role="status" data-clear-status></p>
-          </div>
-        </section>
       </div>
+      <p class="card review-empty" data-review-empty>
+        Nothing to review. Exercises you got wrong, and solved ones due again, come back here.
+      </p>
+      <ol class="p-cards p-cards-3" data-review hidden></ol>
+      <template data-review-icon><Icon name="reset" size={22} /></template>
+    </section>
+
+    <section class="p-section" aria-labelledby="tracks-title">
+      <div class="p-section-head">
+        <div>
+          <h2 id="tracks-title">By track</h2>
+          <p class="p-sub">Where you are in each learning track.</p>
+        </div>
+        <a class="arrow-link" href="/exercises/tracks/">All learning tracks</a>
+      </div>
+      <ul class="p-cards p-cards-3">
+        {
+          tracks.map((t) => (
+            <li>
+              <TrackCard track={t} quietStart />
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="ruled" aria-labelledby="all">
+      <div class="list-head">
+        <h2 id="all">All exercises</h2>
+        <p class="count" data-summary>You have not solved an exercise yet.</p>
+      </div>
+      <ExerciseTable rows={placed} labelledby="all" />
+    </section>
+
+    <div class="clear" data-clear>
+      <p>
+        Want a fresh start?
+        <button class="link-button danger" type="button" data-clear-ask>Clear my progress</button>
+      </p>
+      <p class="confirm" data-clear-confirm hidden>
+        <span>This removes every solve and review from this browser, and cannot be undone.</span>
+        <button class="button button-primary" type="button" data-clear-yes>Yes, clear it</button>
+        <button class="link-button" type="button" data-clear-no>Keep it</button>
+      </p>
+      <p role="status" data-clear-status></p>
     </div>
 
     <script type="application/json" data-exercises set:html={JSON.stringify(list).replaceAll("<", "\\u003c")} />
@@ -131,18 +148,9 @@ const drills = (await drillTasks()).map((d) => ({
 
 <style>
   /* The table is wider than a phone: it scrolls inside its card, not the page. */
-  .a-page,
-  .a-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  /* No breadcrumbs above the card: the page sets its own gap under the tabs. */
   .a-page {
-    padding-top: var(--space-5);
-  }
-  @media (min-width: 64rem) {
-    .a-grid {
-      grid-template-columns: minmax(0, 2fr) minmax(16rem, 1fr);
-    }
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
   }
   /* The card already draws the frame. */
   .ruled :global(.table-wrap) {
@@ -154,35 +162,69 @@ const drills = (await drillTasks()).map((d) => ({
     font-size: var(--size-s);
     color: var(--muted);
   }
-  .side {
-    display: grid;
-    align-content: start;
-    gap: var(--space-5);
-  }
-  .review p {
+  .review-empty {
+    max-width: 48rem;
     margin: 0;
     color: var(--muted);
   }
-  .review-list {
-    display: grid;
+  /* Review cards are built by progress-page.ts, so these rules are global. */
+  [data-review] :global(.review-card) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+  [data-review] :global(.review-top) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: var(--space-2);
+  }
+  [data-review] :global(.icon-box) {
+    border: 1px solid var(--chip-line);
+  }
+  [data-review] :global(.why) {
+    padding: 0.125rem 0.5rem;
+    border: 1px solid var(--read);
+    border-radius: var(--radius-pill);
+    font-size: var(--size-xs);
+    color: var(--read);
+    text-align: right;
+  }
+  [data-review] :global(h3) {
     margin: 0;
-    padding-left: var(--space-5);
+    font-size: var(--size-l);
+    color: var(--heading);
   }
-  .review-list :global(.why) {
-    display: block;
-    font-size: var(--size-s);
-    color: var(--muted);
+  [data-review] :global(.button) {
+    width: 100%;
+    margin-top: auto;
   }
+  /* Clearing is rare and cannot be undone: a quiet line at the end, in red. */
   .clear {
     display: grid;
-    justify-items: start;
     gap: var(--space-3);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--rule);
+    font-size: var(--size-s);
+    color: var(--muted);
   }
   .clear p {
     margin: 0;
   }
   .clear p:empty {
+    display: none;
+  }
+  .danger {
+    min-height: 0;
+    font-weight: 600;
+    color: var(--miss);
+    text-decoration: underline;
+  }
+  [data-review][hidden],
+  [data-review-empty][hidden],
+  [data-review-next][hidden],
+  .danger[hidden] {
     display: none;
   }
   .confirm {

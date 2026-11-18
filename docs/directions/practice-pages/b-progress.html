@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>B · Progress</title>
+<link rel="stylesheet" href="style.css" />
+<script src="data.js"></script>
+</head>
+<body data-tab="progress">
+<main class="container">
+  <p class="crumb">Exercises / Progress</p>
+  <div class="head">
+    <h1>Your progress</h1>
+    <p class="lead">1 of 128 solved. Saved in this browser; <a href="#">sign up free</a> to keep it on every device.</p>
+    <div class="actions"><span class="button button-primary">Continue: Add two cells</span><span class="button button-outline">Today's exercise</span></div>
+  </div>
+  <div class="page-grid">
+    <section class="card rows">
+      <div class="rows-head"><div><h2>All exercises</h2><p>1 solved, with help</p></div>
+        <span class="input" style="max-width: 12rem">Show: all</span></div>
+      <div id="rows"></div>
+    </section>
+    <aside class="side phone-first">
+      <section class="card rows">
+        <div class="rows-head"><h2>Due for review</h2><span class="status-pill now">1</span></div>
+        <div class="row row-2"><div><strong>Add up a column</strong><small>Solved with help</small></div><span class="button button-outline">Review</span></div>
+      </section>
+      <div class="card sum-panel">
+        <h3>So far</h3>
+        <p>Solved 1 · On your own 0 · With help 1</p>
+        <span class="bar"><span style="width: 1%"></span></span>
+      </div>
+    </aside>
+  </div>
+  <p class="page-end">Want a fresh start? <a class="danger-link" href="#">Clear my progress</a> removes every solve and review from this browser. You'll be asked to confirm.</p>
+</main>
+<script src="mock.js"></script>
+<script>
+  const words = { "": "Not started", helped: "Solved with help", solved: "Solved" };
+  fill(
+    "rows",
+    D.exercises
+      .map(
+        ([st, t, meta, lvl, pro]) => `<div class="row">
+          <span class="status-pill ${st ? "done" : ""}">${words[st]}</span>
+          <div><div class="row-head"><strong>${t}</strong>${pro ? '<span class="badge-pro">PRO</span>' : ""}</div><small>${meta}</small></div>
+          <span class="badge badge-${lvl}">${D.levels[lvl]}</span></div>`,
+      )
+      .join(""),
+  );
+</script>
+</body>
+</html>

@@ -43,7 +43,7 @@ const next = (page: Page) => page.locator("[data-drill-slot] [data-next]");
 test("with PRO, chosen drills play in a row and end on a summary", async ({ page }) => {
   await signIn(page, true);
   await page.goto("/exercises/drills/?id=sum-drill-1");
-  await expect(page.locator("[data-session-title]")).toHaveText("Drill 1 of 1: SUM");
+  await expect(page.locator("[data-session-title]")).toHaveText("Task 1 of 1: SUM");
   await expect(page.locator("[data-paywall]")).toBeHidden();
   await formula(page).fill("=SUM(B2:B5)");
   await check(page).click();
@@ -51,19 +51,19 @@ test("with PRO, chosen drills play in a row and end on a summary", async ({ page
   await check(page).click();
   await expect(next(page)).toHaveText("See your results");
   await next(page).click();
-  await expect(page.locator("[data-summary-line]")).toHaveText("You solved 1 of 1 drill.");
-  await expect(page.locator("[data-missed-list]")).toContainText("Drill SUM again");
+  await expect(page.locator("[data-summary-line]")).toHaveText("You solved 1 of 1 task.");
+  await expect(page.locator("[data-missed-list]")).toContainText("Practise SUM again");
 
   // Missed and solved on the same day: it comes back with the normal review gap, not at once.
   await page.goto("/progress/");
   await expect(page.locator("[data-review]")).toBeHidden();
 
   await page.goto("/exercises/drills/?fn=MAX&fn=MIN");
-  await expect(page.locator("[data-session-title]")).toHaveText("Drill 1 of 10: MAX");
+  await expect(page.locator("[data-session-title]")).toHaveText("Task 1 of 10: MAX");
   await page.locator("[data-skip]").click();
-  await expect(page.locator("[data-session-title]")).toHaveText("Drill 2 of 10: MAX");
+  await expect(page.locator("[data-session-title]")).toHaveText("Task 2 of 10: MAX");
   await page.locator("[data-finish]").click();
-  await expect(page.locator("[data-summary-line]")).toHaveText("You solved 0 of 2 drills.");
+  await expect(page.locator("[data-summary-line]")).toHaveText("You solved 0 of 2 tasks.");
 });
 
 test("without PRO, the first drill is a locked preview under the paywall", async ({ page }) => {
@@ -71,7 +71,7 @@ test("without PRO, the first drill is a locked preview under the paywall", async
   await page.goto("/exercises/drills/?fn=AVERAGE");
   await expect(page.locator("[data-paywall]")).toBeVisible();
   await expect(page.locator("[data-paywall-text]")).toContainText(
-    "Function drills are part of PRO",
+    "Function practice is part of PRO",
   );
   await expect(page.locator("[data-drill-slot] .work").first()).toHaveJSProperty("inert", true);
   await expect(page.locator("[data-skip]")).toBeHidden();
@@ -83,7 +83,9 @@ test("a wrong check on an unsolved drill puts it on the review list", async ({ p
   await formula(page).fill("=MIN(B2:B3)");
   await check(page).click();
   await page.goto("/progress/");
-  await expect(page.locator("[data-review]")).toContainText("MIN drill: Find the cheapest quote");
+  await expect(page.locator("[data-review]")).toContainText(
+    "MIN practice: Find the cheapest quote",
+  );
   await expect(page.locator("[data-review]")).toContainText("Not solved yet, 1 wrong check");
 });
 
@@ -92,4 +94,16 @@ test("the picker asks for a function before it starts", async ({ page }) => {
   await page.locator("[data-start]").click();
   await expect(page).toHaveURL(/\/exercises\/drills\/$/u);
   await expect(page.locator("[data-pick-hint]")).toHaveAttribute("role", "alert");
+});
+
+test("the picker shows the chosen set and starts it", async ({ page }) => {
+  await page.goto("/exercises/drills/");
+  const set = page.locator("[data-set-count]");
+  await expect(set).toHaveText("Tick one or more functions.");
+  await page.locator(".pick:has(input[value=SUM])").click();
+  await page.locator(".pick:has(input[value=IF])").click();
+  await expect(set).toHaveText("from 2 functions");
+  await expect(page.locator("[data-start]")).toHaveText("Start 10 tasks");
+  await page.locator("[data-start]").click();
+  await expect(page).toHaveURL(/\?fn=SUM&fn=IF$/u);
 });

@@ -11,6 +11,8 @@ export interface NavItem {
   href: string;
   /** One plain line saying what the page is for, shown in the header panels. */
   description: string;
+  /** false: left out of the header menus, kept in the tabs and the footer. */
+  inHeader?: false;
 }
 
 /** Ways to practise. The Practice tabs and the Practice header panel. */
@@ -20,6 +22,12 @@ export const PRACTICE_NAV: readonly NavItem[] = [
     icon: "grid",
     href: "/exercises/",
     description: "Every exercise, with filters for level, function and track.",
+  },
+  {
+    label: "Function practice",
+    icon: "bolt",
+    href: "/exercises/drills/",
+    description: "PRO: short tasks for one function or many, easy to hard.",
   },
   {
     label: "Learning tracks",
@@ -32,12 +40,7 @@ export const PRACTICE_NAV: readonly NavItem[] = [
     icon: "briefcase",
     href: "/exercises/tracks/#g-interview",
     description: "Tracks built around the tasks Excel interviews tend to ask for.",
-  },
-  {
-    label: "Function drills",
-    icon: "bolt",
-    href: "/exercises/drills/",
-    description: "PRO: short drills for one function or many, one after another.",
+    inHeader: false,
   },
   {
     label: "Daily exercise",

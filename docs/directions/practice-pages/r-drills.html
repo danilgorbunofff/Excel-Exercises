@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>R · Function practice</title>
+<link rel="stylesheet" href="style.css" />
+<script src="data.js"></script>
+</head>
+<body data-tab="drills">
+<main class="container">
+  <p class="crumb">Exercises / Function practice</p>
+  <div class="head">
+    <span class="badge-pro">PRO</span>
+    <h1>Function practice</h1>
+    <p class="lead">Pick the functions you want to get fast at. Short tasks come one after another, each function from easy to hard, with instant marking.</p>
+  </div>
+  <div class="page-grid">
+    <section class="card rows">
+      <div class="rows-head">
+        <div><h2>Choose functions</h2><p>66 functions in 11 groups · 5 tasks each</p></div>
+        <span class="input" style="max-width: 16rem">Filter, e.g. LOOKUP</span>
+      </div>
+      <div id="rows"></div>
+    </section>
+    <aside class="side sticky phone-first">
+      <div class="card sum-panel">
+        <h3>Your set</h3>
+        <p><span class="big">15</span> tasks</p>
+        <div class="chips" id="picked"></div>
+        <span class="button button-primary">Start 15 tasks</span>
+        <p>Each function runs from easy to hard. Skip or stop whenever you like.</p>
+      </div>
+      <div class="card sum-panel">
+        <h3>Not sure what to pick?</h3>
+        <p>We'll mix tasks from all 66 functions.</p>
+        <span class="button button-outline">10 random tasks</span>
+        <a class="link" href="#" style="justify-self: center">or all 330, shuffled</a>
+      </div>
+    </aside>
+  </div>
+</main>
+<script src="mock.js"></script>
+<script>
+  fill("picked", D.picked.map((f) => `<button class="fn" aria-pressed="true" aria-label="Remove ${f}">${f} ✕</button>`).join(""));
+  fill(
+    "rows",
+    D.groups
+      .map((g) => {
+        const n = g.fns.filter((f) => D.picked.includes(f)).length;
+        return `<div class="row row-ic">
+          ${box(g.icon)}
+          <div><div class="row-head"><strong>${g.title}</strong><small>${n ? `<b style="color:var(--correct)">${n} of ${g.fns.length} picked</b>` : `${g.fns.length} functions`}</small></div>
+          <div class="chips">${fnButtons(g.fns)}</div></div>
+          <a class="link" href="#">${n === g.fns.length ? "Clear" : "Select all"}</a>
+        </div>`;
+      })
+      .join(""),
+  );
+</script>
+</body>
+</html>

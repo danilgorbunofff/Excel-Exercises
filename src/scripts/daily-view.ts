@@ -20,8 +20,8 @@ export const longDate = (day: string) =>
     month: "long",
     timeZone: "UTC",
   });
-const weekdayLetter = (day: string) =>
-  new Date(`${day}T00:00:00Z`).toLocaleDateString("en-GB", { weekday: "narrow", timeZone: "UTC" });
+const weekdayName = (day: string, weekday: "narrow" | "short") =>
+  new Date(`${day}T00:00:00Z`).toLocaleDateString("en-GB", { weekday, timeZone: "UTC" });
 export const dayCount = (n: number) => `${n} ${n === 1 ? "day" : "days"}`;
 
 /**
@@ -53,7 +53,8 @@ export function renderStreak(root: Element, days: DailyDays, shown?: string): vo
       const head = document.createElement("span");
       head.className = "d-head";
       head.setAttribute("aria-hidden", "true");
-      head.textContent = weekdayLetter(d.day);
+      // The week ladder has room for "Mon"; the longer strip shows "M".
+      head.textContent = weekdayName(d.day, week ? "short" : "narrow");
       const step = d.tier ? `, ${TIER_NAMES[d.tier]?.toLowerCase()}` : "";
       const state = d.future ? "to come" : d.solved ? "solved" : "not solved";
       const label = `${longDate(d.day)}${d.today ? ", today" : ""}${step}, ${state}`;

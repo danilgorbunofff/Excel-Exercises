@@ -4,29 +4,61 @@
    a sheet: weekday letters as column headers, solved days filled in, and
    today outlined like the active cell. */
 
-/* No breadcrumbs above the card here, so the page sets its own gap under the header. */
-.a-page.daily {
-  padding-top: var(--space-5);
+/* The task on the left, the week and how it works on the right. The week
+   comes first in the page order (Tab reaches it before the sheet), so wide
+   screens move it to the second column; how it works follows the task. */
+.d-side {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+  min-width: 0;
 }
-.daily .a-head {
-  padding-bottom: var(--space-4);
+.d-main {
+  min-width: 0;
 }
-/* Three numbers in a two-column band: today takes the whole first row. */
-@media (max-width: 39.99rem) {
-  .daily .a-stats > div:first-child {
-    grid-column: 1 / -1;
+@media (min-width: 64rem) {
+  /* The task spans both rows; its extra height goes to the second one, so
+     the two side cards stay together at the top. */
+  .d-grid {
+    grid-template-rows: auto 1fr;
   }
+  .d-grid > .d-side {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .d-grid > .d-main {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+  .d-grid > .d-how {
+    grid-column: 2;
+    grid-row: 2;
+  }
+}
+.d-week-card,
+.d-how {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.d-week-card {
+  padding: var(--space-4);
+}
+.d-how {
+  padding: var(--space-4) 0 var(--space-2);
+}
+.d-how h2 {
+  margin: 0;
+  padding: 0 var(--space-4);
+  font-size: var(--size-base);
+  color: var(--heading);
+}
+.d-note {
+  margin: 0;
+  font-size: var(--size-s);
+  color: var(--muted);
 }
 
-/* Narrow padding on phones keeps each day close to a 44 px target. */
-.d-strip-wrap {
-  padding: 0 var(--space-3) var(--space-4);
-}
-@media (min-width: 48rem) {
-  .d-strip-wrap {
-    padding: 0 var(--space-5) var(--space-5);
-  }
-}
 .d-strip {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -99,10 +131,10 @@ a.d-cell:focus-visible {
   }
 }
 .d-week-title {
-  margin: var(--space-3) 0 var(--space-2);
-  font-size: var(--size-s);
+  margin: 0;
+  font-size: var(--size-base);
   font-weight: 600;
-  color: var(--muted);
+  color: var(--heading);
 }
 .d-tier {
   padding: 0.125rem 0;
@@ -134,6 +166,89 @@ a.d-cell:focus-visible {
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 3px;
+}
+
+/* On /daily/ the week reads as seven small cards: the day, the date and a
+   ring that fills with a tick once solved; today is outlined. The step names
+   stay for screen readers (in each day's label) but are not shown. Scoped to
+   .daily, so the strip on /account/ keeps its sheet look. */
+.daily .d-strip.d-week {
+  gap: var(--space-1);
+  border: 0;
+}
+.daily .d-week .d-day {
+  row-gap: var(--space-1);
+  padding: var(--space-2) 0;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-m);
+  background: var(--surface);
+}
+.daily .d-week .d-head {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: var(--size-s);
+  font-weight: 400;
+  color: var(--muted);
+}
+.daily .d-week .d-cell {
+  gap: var(--space-1);
+  min-height: 0;
+  border: 0;
+  border-radius: var(--radius-s);
+  background: none;
+  font-size: var(--size-l);
+  font-weight: 700;
+  color: var(--heading);
+}
+/* The ring: empty for a day not solved, green with a tick once it is. */
+.daily .d-week .d-day:not(.is-solved) .d-cell::after {
+  content: "";
+  width: 1.375rem;
+  height: 1.375rem;
+  border: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
+  border-radius: 50%;
+}
+.daily .d-week .is-solved .d-cell {
+  background: none;
+  color: var(--heading);
+}
+.daily .d-week .is-solved .d-cell svg {
+  width: 1.375rem;
+  height: 1.375rem;
+  padding: 0.25rem;
+  border-radius: 50%;
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.daily .d-week .d-day.is-today {
+  border: 2px solid var(--read);
+}
+.daily .d-week .is-today .d-head {
+  background: none;
+  font-weight: 400;
+  color: var(--text);
+}
+.daily .d-week .is-today .d-cell {
+  box-shadow: none;
+}
+.daily .d-week .d-day.is-today:not(.is-solved) .d-cell::after {
+  border-color: var(--read);
+}
+/* A past day not solved: its date is quieter. */
+.daily .d-week .d-day:not(.is-solved, .is-today, .is-future) .d-num {
+  color: var(--faint);
+}
+.daily .d-week .is-today .d-cell[aria-current="page"] .d-num {
+  text-decoration: none;
+}
+.daily .d-week .d-tier {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* The workbench sits in the main column, not under a hero. */

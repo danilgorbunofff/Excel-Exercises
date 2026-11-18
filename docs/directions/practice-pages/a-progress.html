@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>A · Progress</title>
+<link rel="stylesheet" href="style.css" />
+<script src="data.js"></script>
+</head>
+<body data-tab="progress">
+<main class="container">
+  <p class="crumb">Exercises / Progress</p>
+  <div class="head">
+    <h1>Your progress</h1>
+    <p class="lead">Saved in this browser. <a href="#">Sign up free</a> to keep it on every device.</p>
+  </div>
+
+  <section class="group">
+    <div class="split">
+      <ul class="cards cards-2" id="next"></ul>
+      <aside class="dark-panel">
+        <h3>So far</h3>
+        <dl>
+          <div><dt>solved of 128</dt><dd>1</dd></div>
+          <div><dt>on your own</dt><dd>0</dd></div>
+          <div><dt>with help</dt><dd>1</dd></div>
+          <div><dt>due for review</dt><dd>1</dd></div>
+        </dl>
+      </aside>
+    </div>
+  </section>
+
+  <section class="group">
+    <div class="group-head"><div><h2>By track</h2><p>Where you are in each learning track.</p></div><a class="link" href="#">See every exercise ${icon("arrow", 14)}</a></div>
+    <ul class="cards cards-3" id="tracks"></ul>
+  </section>
+
+  <p class="page-end">Want a fresh start? <a class="danger-link" href="#">Clear my progress</a> removes every solve and review from this browser. You'll be asked to confirm.</p>
+</main>
+<script src="mock.js"></script>
+<script>
+  document.querySelector(".group-head .link").innerHTML = `See every exercise ${icon("arrow", 14)}`;
+  fill(
+    "next",
+    `<li class="card tcard"><div class="tcard-top">${box("play")}<span class="badge badge-1">Beginner</span></div>
+      <h3>Continue: Add two cells</h3><p>Next in Cells and arithmetic. About 3 minutes.</p>
+      <span class="button button-primary">Continue</span></li>
+     <li class="card tcard"><div class="tcard-top">${box("reset")}<span class="status-pill now">1 due</span></div>
+      <h3>Review: Add up a column</h3><p>You solved it with help. One more go makes it stick.</p>
+      <span class="button button-outline">Review now</span></li>`,
+  );
+  fill(
+    "tracks",
+    D.tracks
+      .map(
+        (t) => `<li class="card tcard">
+          <div class="tcard-top">${box(t.icon)}
+            ${t.done ? '<span class="status-pill done">In progress</span>' : ""}</div>
+          <h3>${t.title}</h3>
+          <p class="facts"><span>${t.done} of ${t.n} done</span></p>
+          <span class="bar" style="margin-top:auto"><span style="width:${(t.done / t.n) * 100}%"></span></span>
+          <span class="button ${t.done ? "button-primary" : "button-secondary"}" style="margin-top:0">${t.done ? "Continue track" : "Start track"}</span>
+        </li>`,
+      )
+      .join(""),
+  );
+</script>
+</body>
+</html>

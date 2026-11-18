@@ -19,7 +19,11 @@ import Logo from "./Logo.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 
 const path = Astro.url.pathname;
-const groups = NAV_GROUPS.map((g) => ({ ...g, here: currentHref(g.items, path) }));
+const groups = NAV_GROUPS.map((g) => ({
+  ...g,
+  items: g.items.filter((item) => item.inHeader !== false),
+  here: currentHref(g.items, path),
+}));
 const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
   item.href === path ? "page" : item.href === here ? "true" : undefined;
 ---

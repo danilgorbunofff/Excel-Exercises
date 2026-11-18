@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C · Daily exercise</title>
+<link rel="stylesheet" href="style.css" />
+<script src="data.js"></script>
+</head>
+<body data-tab="daily">
+<main class="container">
+  <p class="crumb">Exercises / Daily exercise</p>
+  <div class="head" style="padding-bottom: var(--space-5)">
+    <h1>Daily exercise</h1>
+    <p class="lead">Wednesday 18 November. A new task every day, the same for everyone.</p>
+  </div>
+  <dl class="card stat-strip">
+    <div><dt>today</dt><dd>Not yet</dd></div>
+    <div><dt>current streak</dt><dd>0 days</dd></div>
+    <div><dt>best streak</dt><dd>1 day</dd></div>
+    <div><dt>solved this week</dt><dd>1 of 7</dd></div>
+  </dl>
+  <div class="page-grid">
+    <section class="card tcard">
+      <div class="tcard-top" id="top"></div>
+      <h3>Average for one team</h3>
+      <p>In F2, find the average score of the Blue team.</p>
+      <div id="sheet"></div>
+    </section>
+    <section class="card">
+      <h3 style="color: var(--heading); margin-bottom: var(--space-1)">This week</h3>
+      <p class="faint" style="font-size: var(--size-s); margin-bottom: var(--space-5)">Each day is a step harder.</p>
+      <ol class="ladder" id="ladder"></ol>
+    </section>
+  </div>
+</main>
+<script src="mock.js"></script>
+<script>
+  fill("top", `${box("sigma")}<span class="day-badge">Steady · day 3 of 7</span>`);
+  fill("sheet", SHEET);
+  fill(
+    "ladder",
+    D.week
+      .map(([d, n, label, s], i) => `<li class="${s === "miss" ? "" : s}" title="${label}: ${D.dayWords[s]}"><i style="height:${20 + i * 12}%"></i><b>${d[0]}</b>${n}<span class="visually-hidden">${label}, ${D.dayWords[s]}</span></li>`)
+      .join(""),
+  );
+</script>
+</body>
+</html>

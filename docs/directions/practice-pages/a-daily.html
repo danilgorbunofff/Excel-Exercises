@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>A · Daily exercise</title>
+<link rel="stylesheet" href="style.css" />
+<script src="data.js"></script>
+</head>
+<body data-tab="daily">
+<main class="container">
+  <p class="crumb">Exercises / Daily exercise</p>
+  <div class="head">
+    <h1>Daily exercise</h1>
+    <p class="lead">Wednesday 18 November. One new task a day, the same for everyone. Monday is the easiest, Sunday the hardest.</p>
+  </div>
+
+  <div class="page-grid">
+    <article class="card tcard">
+      <div class="tcard-top">${box}<span class="day-badge">Steady · day 3 of 7</span></div>
+      <h3>Average for one team</h3>
+      <p>In F2, find the average score of the Blue team.</p>
+      <div id="sheet"></div>
+    </article>
+    <aside class="sticky" style="display: grid; gap: var(--space-4)">
+      <div class="card sum-panel">
+        <h3>This week</h3>
+        <div id="week"></div>
+        <p>Solve it today to start a new streak. Past days don't count.</p>
+      </div>
+      <div class="card sum-panel">
+        <dl class="nums" style="margin: 0">
+          <div><b>0</b> <span>day streak</span></div>
+          <div><b>1</b> <span>best</span></div>
+        </dl>
+        <p>Saved in this browser. <a href="#">Sign up free</a> to keep your streak on every device.</p>
+      </div>
+    </aside>
+  </div>
+</main>
+<script src="mock.js"></script>
+<script>
+  document.querySelector(".tcard-top").innerHTML = `${box("sigma")}<span class="day-badge">Steady · day 3 of 7</span>`;
+  fill("sheet", SHEET);
+  fill("week", weekStrip());
+</script>
+</body>
+</html>

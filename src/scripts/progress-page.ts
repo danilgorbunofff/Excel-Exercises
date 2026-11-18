@@ -1,5 +1,5 @@
 // Why this exists: fills the progress page from this browser's storage: the
-// numbers band, the next exercise, the review list and the counts, and clears
+// numbers strip, the next exercise, the review cards and the counts, and clears
 // progress on request. It paints again when a solve lands or when a signed-in
 // visitor's account progress has been merged in, so the page is never stale.
 import {
@@ -59,16 +59,46 @@ function reviewItems(progress: Progress, today: string): Item[] {
     );
 }
 
+// The head's second button: "Review N due" while anything is due, else today's exercise.
+const reviewNext = q<HTMLAnchorElement>("[data-review-next]");
+const today0 = reviewNext
+  ? { href: reviewNext.getAttribute("href") ?? "", text: reviewNext.textContent ?? "" }
+  : null;
+const reviewIcon = q<HTMLTemplateElement>("template[data-review-icon]");
+
 function paintReview(progress: Progress, today: string): void {
   const list = q<HTMLOListElement>("[data-review]");
   const empty = q<HTMLElement>("[data-review-empty]");
   if (!list || !empty) return;
   const due = reviewItems(progress, today);
+  if (reviewNext && today0) {
+    const first = due[0];
+    reviewNext.href = first ? first.href : today0.href;
+    reviewNext.textContent = first ? `Review ${due.length} due` : today0.text;
+  }
   list.replaceChildren(
     ...due.slice(0, REVIEW_MAX).map((i) => {
       const e = progress[i.id];
+      // A card like a track's: icon and why on top, the title, a Review button.
       const li = document.createElement("li");
-      const a = Object.assign(document.createElement("a"), { href: i.href, textContent: i.title });
+      li.className = "card review-card";
+      const top = document.createElement("div");
+      top.className = "review-top";
+      const box = document.createElement("span");
+      box.className = "icon-box";
+      if (reviewIcon) box.append(reviewIcon.content.cloneNode(true));
+      const title = Object.assign(document.createElement("h3"), { textContent: i.title });
+      const a = Object.assign(document.createElement("a"), {
+        href: i.href,
+        className: "button button-primary",
+        textContent: "Review",
+      });
+      a.append(
+        Object.assign(document.createElement("span"), {
+          className: "visually-hidden",
+          textContent: `: ${i.title}`,
+        }),
+      );
       const why = document.createElement("span");
       why.className = "why";
       const misses = e?.misses ?? 0;
@@ -77,7 +107,8 @@ function paintReview(progress: Progress, today: string): void {
         : (e?.missed ?? "") > (e?.last ?? "")
           ? "Wrong on your last try"
           : "Due for review";
-      li.append(a, why);
+      top.append(box, why);
+      li.append(top, title, a);
       return li;
     }),
   );
@@ -102,7 +133,7 @@ function paint(): void {
       ),
     );
 
-  stat("solved", `${solved.length} of ${items.length}`);
+  stat("solved", String(solved.length));
   stat("own", String(solved.length - helped));
   stat("helped", String(helped));
   stat("due", String(due.length));
@@ -138,7 +169,11 @@ void loadMe().then((me) => {
   pro = me?.pro === true;
   if (pro) paint();
 });
-document.addEventListener(PROGRESS_EVENT, paint);
+// A solve repaints the numbers and the track cards and table marks.
+document.addEventListener(PROGRESS_EVENT, () => {
+  paint();
+  paintStatus();
+});
 document.addEventListener(SYNCED_EVENT, () => {
   paint();
   paintStatus();

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C · Mock assessments</title>
+<link rel="stylesheet" href="style.css" />
+<script src="data.js"></script>
+</head>
+<body data-tab="mock">
+<main class="container">
+  <p class="crumb">Exercises / Mock assessments</p>
+  <div class="head">
+    <h1>Mock assessments</h1>
+    <p class="lead">Timed sets of tasks like an employer's Excel test. No hints while you work; every answer is marked when you finish.</p>
+    <div class="actions"><span class="button button-primary">Try the free sample</span><span class="button button-outline">See PRO plans</span></div>
+  </div>
+  <section class="group">
+    <div class="group-head"><div><h2>Pick an assessment</h2><p>Dots show the level: one is a first Excel test, three is an analyst screen.</p></div></div>
+    <ul class="cards cards-2" id="sets"></ul>
+  </section>
+  <section class="card sum-panel">
+    <h3>Your attempts</h3>
+    <p><a href="#">Log in</a> or <a href="#">sign up</a> to keep your scores and see your best for each assessment.</p>
+  </section>
+</main>
+<script src="mock.js"></script>
+<script>
+  fill(
+    "sets",
+    D.sets
+      .map(
+        (s) => `<li class="card tcard">
+          <div class="tcard-top"><h3 style="margin-right:auto">${s.title}</h3>
+            ${s.free ? '<span class="pill-free">Free</span>' : '<span class="badge-pro">PRO</span>'}</div>
+          <p>${s.summary}</p>
+          <div class="nums">
+            <div><b>${s.tasks}</b> <span>tasks</span></div>
+            <div><b>${s.min}</b> <span>min</span></div>
+            <div><span class="pips l${s.level}" aria-hidden="true"><i></i><i></i><i></i></span> <span>${D.levels[s.level]}</span></div>
+          </div>
+          <div class="chips">${chips(s.fns, 5)}</div>
+          <span class="button ${s.free ? "button-primary" : "button-secondary"}">${s.free ? "Start the sample" : `${icon("lock", 16)} Unlock with PRO`}</span>
+        </li>`,
+      )
+      .join(""),
+  );
+</script>
+</body>
+</html>

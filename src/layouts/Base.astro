@@ -85,7 +85,7 @@ const noindex = hiddenFromSearch(Astro.url.pathname, siteConfig.accountsOpen);
     <main id="main" tabindex="-1" class={layout}>
       <slot />
     </main>
-    <SiteFooter />
+    {layout !== "exercise" && <SiteFooter />}
   </body>
 </html>
 

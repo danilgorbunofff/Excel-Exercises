@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C · Function practice</title>
+<link rel="stylesheet" href="style.css" />
+<script src="data.js"></script>
+</head>
+<body data-tab="drills">
+<main class="container">
+  <p class="crumb">Exercises / Function practice</p>
+  <div class="head">
+    <span class="badge-pro">PRO</span>
+    <h1>Function practice</h1>
+    <p class="lead">Tick the functions you want to get fast at. Each has 5 tasks, from easy to hard, with instant marking.</p>
+    <div class="actions"><span class="button button-outline">10 random tasks</span><span class="button button-secondary">All 330, shuffled</span></div>
+  </div>
+  <div id="groups"></div>
+</main>
+<div class="dock"><div class="container">
+  <div><b>15 tasks</b> <span>· SUM, AVERAGE, XLOOKUP</span></div>
+  <span class="button button-primary button-l">Start</span>
+</div></div>
+<script src="mock.js"></script>
+<script>
+  fill(
+    "groups",
+    D.groups
+      .map(
+        (g) => `<section class="group" style="margin-bottom: var(--space-6)">
+          <div class="group-head" style="margin-bottom: var(--space-3)"><div class="row-head">${box(g.icon)}<h2 style="margin:0">${g.title}</h2></div><a class="link" href="#">Select all ${g.fns.length}</a></div>
+          <ul class="cards cards-4">${g.fns
+            .map((f) => `<li class="card fncard ${D.picked.includes(f) ? "on" : ""}"><code>${f}</code><span class="box"></span></li>`)
+            .join("")}</ul></section>`,
+      )
+      .join(""),
+  );
+</script>
+</body>
+</html>

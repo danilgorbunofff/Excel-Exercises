@@ -1,0 +1,112 @@
+---
+// Why this exists: one learning track as a card (icon, state, level, size,
+// progress bar and start button), shared by the tracks page and the progress
+// page. src/scripts/status.ts paints the state, bar and button label.
+import { isLocked } from "../lib/access.ts";
+import { formatMinutes, LEVELS, type TrackSummary, topicPath } from "../lib/exercises.ts";
+import TrackIcon from "./TrackIcon.astro";
+
+interface Props {
+  track: TrackSummary;
+  /** Show the "N free, M with PRO" fact. */
+  showLocked?: boolean;
+  /** Not-started tracks get a quiet outline button, in-progress ones the green one. */
+  quietStart?: boolean;
+}
+const { track: t, showLocked = false, quietStart = false } = Astro.props;
+const ids = t.exercises.map((p) => p.exercise.id).join(" ");
+const locked = showLocked ? t.exercises.filter((p) => isLocked(p)).length : 0;
+---
+
+<article class:list={["card", "track", { "quiet-start": quietStart }]} data-track-progress={ids}>
+  <div class="track-top">
+    <TrackIcon slug={t.topic.slug} />
+    <span class="status-pill" data-track-state>Not started</span>
+    <span class={`badge badge-${t.level}`}>{LEVELS[t.level]}</span>
+  </div>
+  <h3>{t.topic.title}</h3>
+  <p>{t.topic.summary}</p>
+  <p class="facts">
+    <span>{t.exercises.length} exercises</span>
+    <span>{formatMinutes(t.minutes)}</span>
+    {
+      locked > 0 && (
+        <span>
+          {t.exercises.length - locked} free, {locked} with PRO
+        </span>
+      )
+    }
+  </p>
+  <span class="progress-bar" aria-hidden="true">
+    <span data-bar></span>
+  </span>
+  <span class="visually-hidden" data-bar-text>0 of {t.exercises.length} done</span>
+  <a class="button button-primary" href={topicPath(t.topic.slug)}>
+    <span aria-hidden="true" data-track-action>Start track</span><span class="visually-hidden"
+      ><span data-track-action>Start track</span>: {t.topic.title}</span
+    >
+  </a>
+</article>
+
+<style>
+  .track {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    height: 100%;
+  }
+  .track-top {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .track-top :global(.track-icon) {
+    margin-right: auto;
+  }
+  .status-pill {
+    padding: 0.125rem 0.5rem;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-pill);
+    font-size: var(--size-xs);
+    color: var(--muted);
+  }
+  .status-pill[data-state="done"],
+  .quiet-start .status-pill[data-state="doing"] {
+    border-color: var(--chip-line);
+    background: var(--chip-bg);
+    color: var(--chip);
+  }
+  .track h3 {
+    margin: 0;
+    font-size: var(--size-l);
+    color: var(--heading);
+  }
+  .track p {
+    margin: 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  .facts span {
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-s);
+    background: var(--header);
+    font-size: var(--size-xs);
+  }
+  .track .button {
+    margin-top: auto;
+  }
+  /* Start reads as secondary until the track is under way. */
+  .quiet-start:has([data-track-state]:not([data-state="doing"])) .button {
+    border-color: var(--line);
+    background: var(--surface);
+    color: var(--text);
+  }
+  .quiet-start:has([data-track-state]:not([data-state="doing"])) .button:hover {
+    background: var(--header);
+  }
+</style>

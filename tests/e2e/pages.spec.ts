@@ -214,7 +214,7 @@ test("the progress page shows what is next, what is due, and clears", async ({ p
   // Exercise 3 needs PRO, so a free visitor continues with the next free one.
   await expect(page.locator("[data-next]")).toHaveText("Continue: Add up a column");
   await expect(page.locator("[data-next]")).toHaveAttribute("href", "/exercises/sum-a-column/");
-  await expect(page.locator('[data-stat="solved"]')).toHaveText("2 of 128");
+  await expect(page.locator('[data-stat="solved"]')).toHaveText("2");
   await expect(page.locator('[data-stat="own"]')).toHaveText("1");
   await expect(page.locator('[data-stat="helped"]')).toHaveText("1");
   await expect(page.locator('[data-stat="due"]')).toHaveText("1");
@@ -230,7 +230,7 @@ test("the progress page shows what is next, what is due, and clears", async ({ p
   await page.getByRole("button", { name: "Yes, clear it" }).click();
   await expect(page.getByText("Your progress is cleared.")).toBeVisible();
   await expect(page.locator("[data-summary]")).toHaveText("You have not solved an exercise yet.");
-  await expect(page.locator('[data-stat="solved"]')).toHaveText("0 of 128");
+  await expect(page.locator('[data-stat="solved"]')).toHaveText("0");
   await expect(page.locator("[data-next]")).toHaveText("Start: Add two cells");
   await page.reload();
   await expect(page.locator("[data-summary]")).toHaveText("You have not solved an exercise yet.");
@@ -249,8 +249,13 @@ test("every page shares the footer, keeps breadcrumbs honest and has valid struc
     ]
       .map((m) => m[1])
       .join("|");
-    footer ??= links;
-    expect(links, route).toBe(footer);
+    // Exercise pages drop the footer so scrolling the task never lands in it.
+    const exercise = /^\/exercises\/(?!drills\/|tracks\/)[^/]+\/$/u.test(route);
+    if (exercise) expect(links, route).toBe("");
+    else {
+      footer ??= links;
+      expect(links, route).toBe(footer);
+    }
 
     const crumbs = [
       ...(/<nav[^>]*aria-label="Breadcrumb"[\s\S]*?<\/nav>/u.exec(html)?.[0] ?? "").matchAll(
@@ -268,7 +273,7 @@ test("every page shares the footer, keeps breadcrumbs honest and has valid struc
     }
   }
   expect(footer).toBe(
-    "Exercises|Learning tracks|Interview prep|Function drills|Daily exercise|Mock assessments|Progress|Functions|Articles|Formula explainer|Keyboard shortcuts|Resources|Pricing|Terms|Privacy|Contact",
+    "Exercises|Function practice|Learning tracks|Interview prep|Daily exercise|Mock assessments|Progress|Functions|Articles|Formula explainer|Keyboard shortcuts|Resources|Pricing|Terms|Privacy|Contact",
   );
 });
 

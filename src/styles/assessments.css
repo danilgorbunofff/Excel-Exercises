@@ -469,3 +469,103 @@
 .cert-form input[aria-invalid="true"] {
   border-color: var(--miss);
 }
+
+/* Open page head, as on the learning tracks page: the trail, the title and
+   the lead sit on the page itself, with no card around them. */
+.open-head {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 52rem;
+  padding-top: var(--space-5);
+}
+.open-head h1 {
+  margin: 0;
+  font-size: var(--size-xxl);
+  line-height: 1.2;
+  color: var(--heading);
+}
+.open-head .lead {
+  margin: 0;
+  font-size: var(--size-l);
+  color: var(--muted);
+}
+.open-head .lead + .lead {
+  margin-top: calc(-1 * var(--space-2));
+}
+.open-head .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: var(--space-2) 0 0;
+}
+.open-head .tag {
+  justify-self: start;
+}
+
+/* The numbers as one strip: a value over its label, four across, two by two
+   on phones. Goes on the same element as .a-stats, so this wins. */
+.a-stats.stat-strip {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-l);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+@media (min-width: 48rem) {
+  .a-stats.stat-strip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.stat-strip > div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-5);
+}
+.stat-strip dd {
+  margin: 0;
+  font-size: var(--size-xl);
+  line-height: 1.2;
+}
+
+/* A section of cards with its heading, as on the learning tracks page. */
+.p-section {
+  display: grid;
+  gap: var(--space-4);
+}
+.p-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+}
+.p-section-head h2 {
+  margin: 0 0 var(--space-1);
+  font-size: var(--size-xl);
+  color: var(--heading);
+}
+.p-sub {
+  margin: 0;
+  color: var(--muted);
+}
+.p-cards {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.p-cards > * {
+  display: grid;
+  min-width: 0;
+}
+@media (min-width: 48rem) {
+  .p-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 64rem) {
+  .p-cards-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

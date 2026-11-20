@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Completion dialog variants</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /* Copied from src/styles/tokens.css so the variants match the site. */
+  :root {
+    color-scheme: light;
+    --bg: #f9fafb; --surface: #fff; --header: #f3f4f6; --text: #101828; --muted: #4a5565;
+    --rule: #e5e7eb; --line: #6a7282; --heading: #1e1e1e; --faint: #6a7282;
+    --primary: #18804f; --primary-hover: #126a41; --on-primary: #fff;
+    --correct: #18804f; --correct-tint: #e9f9ef; --read: #0063b1; --read-tint: #e3f0fd;
+    --chip: #126a41; --chip-bg: #ecfdf3; --chip-line: #a6e3bf;
+    --footer-bg: #1e1e1e; --on-footer: #f3f4f6; --on-footer-muted: #b8bec8;
+    --shadow-pop: 0 8px 24px rgb(16 24 40 / 0.14);
+    --font-text: "Inter", system-ui, sans-serif; --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+    --radius-m: 6px; --radius-l: 8px; --radius-xl: 16px; --radius-pill: 999px;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 var(--font-text); }
+  main { max-width: 1100px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 28px; margin: 0 0 4px; color: var(--heading); }
+  .intro { color: var(--muted); margin: 0 0 32px; }
+  section { margin-bottom: 48px; }
+  .label { display: flex; gap: 12px; align-items: baseline; margin-bottom: 12px; }
+  .label b { font-size: 20px; color: var(--heading); }
+  .label span { color: var(--muted); }
+
+  /* Fake exercise page behind each dialog */
+  .stage { position: relative; height: 460px; border-radius: var(--radius-l); overflow: hidden;
+    border: 1px solid var(--rule); background: var(--surface); display: grid; grid-template-columns: 30% 1fr; }
+  .stage .task { padding: 20px; border-right: 1px solid var(--rule); color: var(--muted); }
+  .stage .task i { display: block; height: 10px; background: var(--header); border-radius: 4px; margin: 10px 0; }
+  .sheet { background-image: linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+    background-size: 120px 32px; }
+  .stage.dim::after { content: ""; position: absolute; inset: 0; background: rgb(0 0 0 / 0.45); }
+  .center { position: absolute; inset: 0; display: grid; place-items: center; z-index: 1; padding: 16px; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 18px;
+    border-radius: var(--radius-m); font: 600 15px/1 var(--font-text); text-decoration: none; border: 0; cursor: pointer; }
+  .btn-primary { background: var(--primary); color: var(--on-primary); }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--rule); }
+  .btn-ghost:hover { background: var(--header); }
+  .x { position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; border: 0; background: none; color: var(--muted);
+    border-radius: var(--radius-m); font-size: 20px; cursor: pointer; }
+  .x:hover { background: var(--header); }
+  a { color: var(--primary); }
+  svg { flex: none; }
+
+  /* A — Quiet */
+  .a { position: relative; width: min(24rem, 100%); background: var(--surface); border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-pop); padding: 36px 28px 24px; text-align: center; }
+  .a .ring { width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%; background: var(--primary); color: #fff;
+    display: grid; place-items: center; box-shadow: 0 0 0 8px var(--correct-tint); }
+  .a h2 { margin: 0 0 6px; font-size: 24px; color: var(--heading); }
+  .a p { margin: 0 0 24px; color: var(--muted); }
+  .a .btn { width: 100%; }
+  .a .sub { display: block; margin-top: 14px; font-size: 14px; color: var(--muted); }
+
+  /* B — Split */
+  .b { position: relative; width: min(38rem, 100%); display: grid; grid-template-columns: 200px 1fr; background: var(--surface);
+    border-radius: var(--radius-l); overflow: hidden; box-shadow: var(--shadow-pop); }
+  .b .side { background: var(--primary); color: #fff; padding: 28px 22px; display: flex; flex-direction: column; justify-content: space-between; }
+  .b .side .big { font-size: 26px; font-weight: 800; line-height: 1.15; margin-top: 12px; }
+  .b .side small { opacity: 0.85; font-size: 13px; }
+  .b .main { padding: 28px 24px 22px; display: grid; gap: 16px; }
+  .b .eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--faint); font-weight: 600; }
+  .b .next-title { font-size: 20px; font-weight: 700; color: var(--heading); margin: 2px 0 0; }
+  .b .row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .b .foot { font-size: 13px; color: var(--muted); border-top: 1px solid var(--rule); padding-top: 12px; }
+
+  /* C — Formula receipt */
+  .c { position: relative; width: min(30rem, 100%); background: var(--surface); border-radius: var(--radius-l);
+    box-shadow: var(--shadow-pop); padding: 24px; display: grid; gap: 16px; }
+  .c .top { display: flex; align-items: center; gap: 10px; color: var(--correct); font-weight: 600; font-size: 14px; }
+  .c h2 { margin: 0; font-size: 22px; color: var(--heading); }
+  .c .formula { font: 500 15px/1.4 var(--font-mono); background: var(--header); border-radius: var(--radius-m); padding: 12px 14px;
+    border-left: 3px solid var(--correct); }
+  .c .formula .fn { color: var(--read); font-weight: 600; }
+  .c .formula .cell { background: var(--read-tint); color: var(--read); border-radius: 3px; padding: 0 2px; }
+  .c .meta { display: flex; gap: 8px; flex-wrap: wrap; font-size: 13px; }
+  .c .chip { border: 1px solid var(--chip-line); background: var(--chip-bg); color: var(--chip); border-radius: var(--radius-pill);
+    padding: 2px 10px; font-weight: 500; text-decoration: none; }
+  .c .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .c .row .muted { font-size: 13px; color: var(--muted); }
+
+  /* D — Toast, no backdrop */
+  .d { position: absolute; right: 20px; bottom: 20px; z-index: 1; width: min(22rem, calc(100% - 40px));
+    background: var(--footer-bg); color: var(--on-footer); border-radius: var(--radius-l); box-shadow: 0 12px 32px rgb(0 0 0 / 0.3);
+    padding: 16px; display: grid; gap: 12px; }
+  .d .head { display: flex; gap: 10px; align-items: center; font-weight: 700; }
+  .d .dot { width: 24px; height: 24px; border-radius: 50%; background: #5ad08a; color: #0e2a1b; display: grid; place-items: center; }
+  .d p { margin: 0; font-size: 14px; color: var(--on-footer-muted); }
+  .d .row { display: flex; gap: 8px; }
+  .d .row .btn { flex: 1; min-height: 40px; font-size: 14px; }
+  .d .btn-dark { background: transparent; color: var(--on-footer); border: 1px solid #3a3f47; }
+  .d .x { color: var(--on-footer-muted); top: 8px; right: 8px; }
+  .d .x:hover { background: #2d2d2d; }
+  .stage .solved { position: absolute; left: calc(30% + 121px); top: 33px; width: 119px; height: 31px; background: var(--correct-tint);
+    outline: 2px solid var(--correct); font: 500 14px/31px var(--font-text); text-align: right; padding-right: 8px; color: var(--correct); }
+
+  /* E — Track progress */
+  .e { position: relative; width: min(30rem, 100%); background: var(--surface); border-radius: var(--radius-l);
+    box-shadow: var(--shadow-pop); overflow: hidden; }
+  .e .hero { background: var(--correct-tint); padding: 24px 24px 20px; }
+  .e .hero .k { font-size: 13px; font-weight: 600; color: var(--correct); }
+  .e .hero h2 { margin: 4px 0 14px; font-size: 22px; color: var(--heading); }
+  .e .steps { display: flex; gap: 4px; }
+  .e .steps i { flex: 1; height: 6px; border-radius: 3px; background: #cfe9da; }
+  .e .steps i.on { background: var(--primary); }
+  .e .steps i.now { background: var(--primary); box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--primary); }
+  .e .count { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .e .body { padding: 20px 24px 24px; display: grid; gap: 12px; }
+  .e .next { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 1px solid var(--rule); border-radius: var(--radius-m);
+    text-decoration: none; color: inherit; transition: border-color 150ms, background 150ms; }
+  .e .next:hover { border-color: var(--primary); background: var(--correct-tint); }
+  .e .next .n { width: 32px; height: 32px; border-radius: 50%; background: var(--header); display: grid; place-items: center; font-weight: 700; font-size: 14px; }
+  .e .next .t { flex: 1; }
+  .e .next .t small { display: block; color: var(--faint); font-size: 12px; }
+  .e .next .t b { color: var(--heading); }
+  .e .next .arr { color: var(--primary); }
+  .e .foot { font-size: 13px; color: var(--muted); text-align: center; }
+
+  @media (max-width: 640px) {
+    .stage { grid-template-columns: 1fr; height: 520px; }
+    .stage .task { display: none; }
+    .b { grid-template-columns: 1fr; }
+    .b .side { flex-direction: row; align-items: center; gap: 12px; padding: 16px 20px; }
+    .b .side .big { margin: 0; font-size: 20px; }
+    .stage .solved { display: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Completion dialog: 5 variants</h1>
+  <p class="intro">Same content as today (IF practised, next is "Work out a sales bonus", sign-up nudge). Pick a letter.</p>
+
+  <section>
+    <div class="label"><b>A · Quiet</b><span>Centered, one big check, one button. Least to read.</span></div>
+    <div class="stage dim"><div class="task">Return Pass if the score is at least 60…<i></i><i></i><i></i></div><div class="sheet"></div>
+      <div class="center">
+        <div class="a" role="dialog" aria-label="Exercise completed">
+          <button class="x" aria-label="Close">×</button>
+          <div class="ring"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+          <h2>Nice work!</h2>
+          <p>You used IF to pick a value from a test.</p>
+          <a class="btn btn-primary" href="#">Next: Work out a sales bonus <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <span class="sub"><a href="#">Create an account</a> to save your progress</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label"><b>B · Split</b><span>Green panel says "done", right side is all about what's next.</span></div>
+    <div class="stage dim"><div class="task">Return Pass if the score is at least 60…<i></i><i></i><i></i></div><div class="sheet"></div>
+      <div class="center">
+        <div class="b" role="dialog" aria-label="Exercise completed">
+          <div class="side">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-6.5"/></svg>
+            <div class="big">Solved.</div>
+            <small>IF · 4 of 12 in Logic</small>
+          </div>
+          <div class="main">
+            <button class="x" aria-label="Close">×</button>
+            <div>
+              <div class="eyebrow">Up next</div>
+              <p class="next-title">Work out a sales bonus</p>
+              <p style="margin:4px 0 0;color:var(--muted);font-size:14px">IF with a number result instead of text.</p>
+            </div>
+            <div class="row">
+              <a class="btn btn-primary" href="#">Start next <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+              <button class="btn btn-ghost">Stay here</button>
+            </div>
+            <div class="foot"><a href="#">Create an account</a> to keep progress on every device.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label"><b>C · Formula receipt</b><span>Shows the formula they wrote back to them. Most "Excel" feel.</span></div>
+    <div class="stage dim"><div class="task">Return Pass if the score is at least 60…<i></i><i></i><i></i></div><div class="sheet"></div>
+      <div class="center">
+        <div class="c" role="dialog" aria-label="Exercise completed">
+          <button class="x" aria-label="Close">×</button>
+          <div class="top"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>All 8 rows correct</div>
+          <h2>Your formula works</h2>
+          <div class="formula">=<span class="fn">IF</span>(<span class="cell">B2</span>&gt;=60,"Pass","Fail")</div>
+          <div class="meta"><a class="chip" href="#">IF</a><span style="color:var(--muted)">returns one value when a test is true, another when false.</span></div>
+          <div class="row">
+            <span class="muted"><a href="#">Create an account</a> to save it</span>
+            <a class="btn btn-primary" href="#">Next exercise <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label"><b>D · Toast</b><span>No backdrop. Sheet stays visible so they can admire the result.</span></div>
+    <div class="stage"><div class="task">Return Pass if the score is at least 60…<i></i><i></i><i></i></div><div class="sheet"></div>
+      <div class="solved">Pass</div>
+      <div class="d" role="dialog" aria-label="Exercise completed">
+        <button class="x" aria-label="Close">×</button>
+        <div class="head"><span class="dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Exercise completed</div>
+        <p>Next: <b style="color:var(--on-footer)">Work out a sales bonus</b></p>
+        <div class="row">
+          <button class="btn btn-dark">Review</button>
+          <a class="btn btn-primary" href="#">Next →</a>
+        </div>
+        <p style="font-size:12px"><a href="#" style="color:#7ee2a8">Create an account</a> to save progress</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label"><b>E · Track progress</b><span>Frames the win as a step in the track. Pulls them forward.</span></div>
+    <div class="stage dim"><div class="task">Return Pass if the score is at least 60…<i></i><i></i><i></i></div><div class="sheet"></div>
+      <div class="center">
+        <div class="e" role="dialog" aria-label="Exercise completed">
+          <button class="x" aria-label="Close">×</button>
+          <div class="hero">
+            <div class="k">✓ Exercise completed</div>
+            <h2>You practised IF</h2>
+            <div class="steps"><i class="on"></i><i class="on"></i><i class="on"></i><i class="now"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="count"><span>Logic track</span><span>4 of 12</span></div>
+          </div>
+          <div class="body">
+            <a class="next" href="#">
+              <span class="n">5</span>
+              <span class="t"><small>Up next</small><b>Work out a sales bonus</b></span>
+              <svg class="arr" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+            <div class="foot"><a href="#">Create an account</a> to keep progress on every device.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

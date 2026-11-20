@@ -291,17 +291,29 @@ test("a blank task shows its answer when opened", async ({ page }) => {
   await expect(page.locator("[data-results] .why").nth(1)).toContainText("Answer: =IF(");
 });
 
-test("the index lists the assessments, and Your best only when signed in", async ({ page }) => {
+test("the index shows the general sets, then one per job, and Your best only when signed in", async ({
+  page,
+}) => {
   await page.goto("/mock-assessments/");
-  const rows = page.locator(".sets > li");
-  await expect(rows).toHaveCount(6);
+  await expect(page.locator(".set-grid > li h2")).toHaveText([
+    "Sample assessment",
+    "Beginner",
+    "Intermediate",
+    "Office or admin",
+    "Data analyst",
+    "Finance or accounting",
+  ]);
+  await expect(page.getByRole("link", { name: "Office or admin" })).toHaveAttribute(
+    "href",
+    "/mock-assessments/office-essentials/",
+  );
   for (const name of [
     "Sample assessment",
     "Beginner",
     "Intermediate",
-    "Office essentials",
+    "Office or admin",
     "Data analyst",
-    "Finance",
+    "Finance or accounting",
   ])
     await expect(page.getByRole("link", { name })).toBeVisible();
   await expect(page.getByRole("figure")).toHaveCount(0);

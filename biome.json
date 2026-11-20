@@ -17,6 +17,9 @@
       "!**/playwright-report",
       "!docs/design/contrast.md",
       "!docs/directions/practice-pages",
+      "!docs/directions/paywall",
+      "!docs/directions/drills-done",
+      "!docs/directions/track-page",
       "!tools/audit/*.json"
     ]
   },

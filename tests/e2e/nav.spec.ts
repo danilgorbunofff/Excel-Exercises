@@ -22,9 +22,10 @@ test("the Practice and Learn panels open by mouse and close on Escape or a click
   await practice.click();
   await expect(panel(page, "practice")).toBeVisible();
   await expect(practice).toHaveAttribute("aria-expanded", "true");
-  const inHeader = PRACTICE_NAV.filter((i) => i.inHeader !== false);
-  await expect(panel(page, "practice").getByRole("link")).toHaveText(inHeader.map((i) => i.label));
-  for (const item of inHeader) {
+  await expect(panel(page, "practice").getByRole("link")).toHaveText(
+    PRACTICE_NAV.map((i) => i.label),
+  );
+  for (const item of PRACTICE_NAV) {
     await expect(panel(page, "practice").getByRole("link", { name: item.label })).toHaveAttribute(
       "href",
       item.href,
@@ -117,9 +118,7 @@ test("the phone menu shows the Practice and Learn groups", async ({ page }) => {
   await expect(dialog.getByRole("heading", { name: "Practice" })).toBeVisible();
   await expect(dialog.getByRole("heading", { name: "Learn" })).toBeVisible();
   for (const item of [...PRACTICE_NAV, ...LEARN_NAV]) {
-    const link = dialog.getByRole("link", { name: item.label, exact: true });
-    if (item.inHeader === false) await expect(link).toHaveCount(0);
-    else await expect(link).toBeAttached();
+    await expect(dialog.getByRole("link", { name: item.label, exact: true })).toBeAttached();
   }
   await expect(dialog.getByRole("link", { name: "Daily exercise" })).toHaveAttribute(
     "aria-current",

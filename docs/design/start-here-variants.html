@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Start here variants</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  /* Values copied from src/styles/tokens.css. */
+  :root {
+    color-scheme: light;
+    --bg: #f9fafb; --surface: #fff; --header: #f3f4f6; --text: #101828; --muted: #4a5565; --rule: #e5e7eb;
+    --line: #6a7282; --heading: #1e1e1e; --faint: #6a7282; --primary: #18804f; --primary-hover: #126a41;
+    --chip: #126a41; --chip-bg: #ecfdf3; --chip-line: #a6e3bf; --correct-tint: #e9f9ef; --panel: #e9f5ee;
+    --beginner: #016630; --beginner-bg: #dbfce7; --footer-bg: #1e1e1e;
+    --shadow-card: 0 1px 2px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.08);
+    --font: "Inter", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #eceef1; color: var(--text); font: 15px/1.5 var(--font); }
+  main { max-width: 1180px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1.page { margin: 0 0 4px; font-size: 28px; }
+  .intro { margin: 0 0 32px; color: var(--muted); }
+  section.v { margin-bottom: 56px; }
+  .v-label { font-size: 20px; font-weight: 700; }
+  .v-why { margin: 2px 0 12px; color: var(--muted); }
+  .frame { background: var(--bg); border: 1px solid var(--rule); border-radius: 10px; padding: 32px 28px; box-shadow: 0 4px 16px rgb(0 0 0 / .06); }
+  h2, h3 { margin: 0; color: var(--heading); }
+  p { margin: 0; }
+  .muted { color: var(--muted); }
+  .small { font-size: 13px; }
+  .shead h2 { font-size: 22px; } .shead p { color: var(--muted); margin-top: 4px; }
+  .card { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow-card); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 42px; padding: 0 18px; border-radius: 6px;
+    border: 1px solid var(--primary); background: var(--primary); color: #fff; font: 600 15px/1 var(--font); white-space: nowrap; }
+  .btn.ghost { background: var(--surface); color: var(--text); border-color: var(--line); }
+  .icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--chip-line); background: var(--chip-bg); color: var(--chip); font-size: 18px; flex: none; }
+  .pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .lvl { background: var(--beginner-bg); color: var(--beginner); }
+  .st { border: 1px solid var(--rule); color: var(--muted); font-weight: 500; }
+  .bar { height: 6px; border-radius: 3px; background: var(--header); overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--primary); border-radius: 3px; }
+  .meta { font-size: 14px; color: var(--muted); }
+
+  /* 1 Path */
+  .p1 .path { display: grid; grid-template-columns: 1fr 48px 1fr 48px 220px; align-items: stretch; margin-top: 20px; }
+  .p1 .step { padding: 20px; display: grid; gap: 10px; align-content: start; }
+  .p1 .num { font: 700 12px/1 var(--mono); letter-spacing: .12em; color: var(--primary); text-transform: uppercase; }
+  .p1 .arrow { display: grid; place-items: center; color: var(--line); font-size: 24px; }
+  .p1 .then { padding: 20px; border-radius: 8px; border: 2px dashed var(--line); display: grid; gap: 8px; align-content: center; color: var(--muted); }
+  .p1 .then b { color: var(--text); font-size: 16px; }
+  .p1 .foot { display: flex; gap: 28px; margin-top: 16px; font-size: 14px; color: var(--muted); }
+  .p1 .foot b { color: var(--text); }
+
+  /* 2 One banner */
+  .p2 .banner { margin-top: 20px; border-radius: 14px; background: var(--primary); color: #fff; padding: 26px; display: grid; grid-template-columns: 1fr 1.4fr; gap: 28px; }
+  .p2 .banner h3 { color: #fff; font-size: 24px; line-height: 1.2; }
+  .p2 .banner .stats { display: flex; gap: 28px; margin: 16px 0 20px; }
+  .p2 .banner .stats b { display: block; font-size: 30px; line-height: 1; }
+  .p2 .banner .stats span { font-size: 13px; opacity: .85; }
+  .p2 .banner .btn { background: #fff; color: var(--primary); border-color: #fff; }
+  .p2 .rows { display: grid; gap: 10px; }
+  .p2 .row { display: grid; grid-template-columns: 40px 1fr auto; gap: 14px; align-items: center; padding: 14px 16px; border-radius: 10px; background: var(--surface); color: var(--text); }
+  .p2 .row .bar { margin-top: 8px; }
+  .p2 .row .n { font: 700 13px/1 var(--mono); color: var(--muted); }
+
+  /* 3 Split */
+  .p3 .grid { display: grid; grid-template-columns: 340px 1fr; gap: 24px; margin-top: 0; }
+  .p3 .left { display: grid; gap: 14px; align-content: start; }
+  .p3 .left h2 { font-size: 26px; line-height: 1.2; }
+  .p3 .big { display: flex; gap: 24px; }
+  .p3 .big b { display: block; font-size: 28px; line-height: 1; color: var(--heading); }
+  .p3 .big span { font-size: 13px; color: var(--muted); }
+  .p3 .right { display: grid; gap: 12px; }
+  .p3 .tr { display: grid; grid-template-columns: 40px 1fr 180px auto; gap: 16px; align-items: center; padding: 18px 20px; }
+  .p3 .tr h3 { font-size: 17px; }
+  .p3 .prog { display: grid; gap: 4px; font-size: 12px; color: var(--muted); }
+
+  /* 4 Timeline */
+  .p4 .tl { position: relative; margin-top: 20px; padding-left: 40px; display: grid; gap: 18px; }
+  .p4 .tl::before { content: ""; position: absolute; left: 15px; top: 16px; bottom: 16px; width: 2px; background: var(--rule); }
+  .p4 .stop { position: relative; padding: 18px 20px; display: grid; gap: 10px; }
+  .p4 .stop .dot { position: absolute; left: -40px; top: 18px; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 14px; background: var(--primary); color: #fff; box-shadow: 0 0 0 4px var(--bg); }
+  .p4 .stop .head { display: flex; align-items: center; gap: 12px; }
+  .p4 .stop .head h3 { font-size: 18px; flex: 1; }
+  .p4 .exs { display: flex; flex-wrap: wrap; gap: 6px; }
+  .p4 .ex { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--rule); font-size: 13px; background: var(--surface); }
+  .p4 .ex i { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--line); }
+  .p4 .ex.done i { background: var(--primary); border-color: var(--primary); }
+  .p4 .ex.next { border-color: var(--primary); color: var(--chip); font-weight: 600; }
+  .p4 .end { position: relative; color: var(--muted); font-size: 14px; }
+  .p4 .end::before { content: ""; position: absolute; left: -32px; top: 3px; width: 16px; height: 16px; border-radius: 50%; border: 2px dashed var(--line); background: var(--bg); }
+
+  /* 5 Checklists */
+  .p5 .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+  .p5 .tc { padding: 20px; display: grid; gap: 12px; align-content: start; }
+  .p5 .tc .top { display: flex; align-items: center; gap: 12px; }
+  .p5 .tc .top h3 { font-size: 18px; flex: 1; }
+  .p5 ol { margin: 0; padding: 0; list-style: none; display: grid; border-top: 1px solid var(--rule); }
+  .p5 li { display: flex; align-items: center; gap: 12px; padding: 9px 2px; border-bottom: 1px solid var(--rule); font-size: 14px; }
+  .p5 li .ck { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; font-size: 11px; color: #fff; flex: none; }
+  .p5 li.done .ck { background: var(--primary); border-color: var(--primary); }
+  .p5 li.done span { color: var(--muted); text-decoration: line-through; }
+  .p5 li.next { font-weight: 700; }
+  .p5 li.next .ck { border-color: var(--primary); }
+  .p5 li em { margin-left: auto; font-style: normal; font-size: 12px; color: var(--faint); }
+  .p5 li.next em { color: var(--primary); font-weight: 700; }
+
+  @media (max-width: 860px) {
+    .p1 .path { grid-template-columns: 1fr; } .p1 .arrow { transform: rotate(90deg); height: 40px; }
+    .p2 .banner, .p3 .grid, .p5 .grid { grid-template-columns: 1fr; }
+    .p3 .tr { grid-template-columns: 40px 1fr; } .p3 .tr .prog, .p3 .tr .btn { grid-column: 1 / -1; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1 class="page">"Start here" section: 5 versions</h1>
+  <p class="intro">Same content as today: the two beginner tracks (in progress, 1 of 4 and 1 of 7 done), 11 exercises, about 1 hr 7 min, and "every later track builds on these".</p>
+
+  <!-- 1 -->
+  <section class="v">
+    <div class="v-label">1 · A path</div>
+    <p class="v-why">Step 1 → Step 2 → everything else, joined by arrows. Says "do these in order" without a word of text. The green panel becomes a one-line footer.</p>
+    <div class="frame p1">
+      <div class="shead"><h2>Start here if formulas are new to you</h2><p>These tracks lay the groundwork for everything else.</p></div>
+      <div class="path">
+        <div class="card step"><span class="num">Step 1</span><div style="display:flex;align-items:center;gap:10px"><span class="icon">▦</span><span class="pill lvl">Beginner</span></div><h3>Cells and arithmetic</h3><p class="meta">4 exercises · 23 min · 2 free</p><div class="bar"><i style="width:25%"></i></div><span class="btn">Continue track</span></div>
+        <div class="arrow">→</div>
+        <div class="card step"><span class="num">Step 2</span><div style="display:flex;align-items:center;gap:10px"><span class="icon">Σ</span><span class="pill lvl">Beginner</span></div><h3>SUM, AVERAGE, MIN and MAX</h3><p class="meta">7 exercises · 44 min · 2 free</p><div class="bar"><i style="width:14%"></i></div><span class="btn ghost">Continue track</span></div>
+        <div class="arrow">→</div>
+        <div class="then"><b>Then any track</b><span class="small">Counting, logic, lookups, text, dates and more all build on these two.</span></div>
+      </div>
+      <div class="foot"><span><b>11</b> exercises with hints</span><span><b>1 hr 7 min</b> of practice, roughly</span></div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="v">
+    <div class="v-label">2 · One green banner</div>
+    <p class="v-why">The whole section is one green block: the pitch and numbers on the left, both tracks as white rows on the right, one Continue button for the next exercise.</p>
+    <div class="frame p2">
+      <div class="shead"><h2>Start here if formulas are new to you</h2></div>
+      <div class="banner">
+        <div><h3>Cell references, arithmetic and brackets, then SUM, AVERAGE, MAX, MIN.</h3>
+          <div class="stats"><div><b>11</b><span>exercises with hints</span></div><div><b>1 hr 7 min</b><span>of practice, roughly</span></div></div>
+          <span class="btn">Continue: Subtract the costs →</span></div>
+        <div class="rows">
+          <div class="row"><span class="icon">▦</span><div><b>Cells and arithmetic</b><p class="small muted">4 exercises · 23 min · 2 free</p><div class="bar"><i style="width:25%"></i></div></div><span class="n">1/4</span></div>
+          <div class="row"><span class="icon">Σ</span><div><b>SUM, AVERAGE, MIN and MAX</b><p class="small muted">7 exercises · 44 min · 2 free</p><div class="bar"><i style="width:14%"></i></div></div><span class="n">1/7</span></div>
+          <p class="small" style="opacity:.9">Every later track builds on these.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="v">
+    <div class="v-label">3 · Intro beside two rows</div>
+    <p class="v-why">Heading, numbers and the reason on the left; the two tracks as wide rows on the right with their progress and a button each. Calm and compact.</p>
+    <div class="frame p3">
+      <div class="grid">
+        <div class="left">
+          <h2>Start here if formulas are new to you</h2>
+          <p class="muted">Cell references, arithmetic and brackets, then SUM, AVERAGE, MAX and MIN. Every later track builds on these.</p>
+          <div class="big"><div><b>11</b><span>exercises</span></div><div><b>1 hr 7 min</b><span>roughly</span></div></div>
+        </div>
+        <div class="right">
+          <div class="card tr"><span class="icon">▦</span><div><h3>Cells and arithmetic</h3><p class="meta">4 exercises · 23 min · 2 free</p></div><div class="prog"><div class="bar"><i style="width:25%"></i></div>1 of 4 done</div><span class="btn">Continue</span></div>
+          <div class="card tr"><span class="icon">Σ</span><div><h3>SUM, AVERAGE, MIN and MAX</h3><p class="meta">7 exercises · 44 min · 2 free</p></div><div class="prog"><div class="bar"><i style="width:14%"></i></div>1 of 7 done</div><span class="btn ghost">Continue</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="v">
+    <div class="v-label">4 · Timeline with every exercise</div>
+    <p class="v-why">A vertical line with two stops. Each stop lists its exercises as small pills: filled when done, outlined green for the next one. You see the whole beginner journey.</p>
+    <div class="frame p4">
+      <div class="shead"><h2>Start here if formulas are new to you</h2><p>11 exercises, about 1 hr 7 min. Every later track builds on these.</p></div>
+      <div class="tl">
+        <div class="card stop"><span class="dot">1</span>
+          <div class="head"><h3>Cells and arithmetic</h3><span class="pill lvl">Beginner</span><span class="btn" style="min-height:34px">Continue</span></div>
+          <div class="exs"><span class="ex done"><i></i>Add two cells</span><span class="ex next"><i></i>Subtract the costs</span><span class="ex"><i></i>Multiply price by quantity</span><span class="ex"><i></i>Price after discount</span></div>
+        </div>
+        <div class="card stop"><span class="dot">2</span>
+          <div class="head"><h3>SUM, AVERAGE, MIN and MAX</h3><span class="pill lvl">Beginner</span><span class="btn ghost" style="min-height:34px">Continue</span></div>
+          <div class="exs"><span class="ex done"><i></i>Sum a column</span><span class="ex"><i></i>Average score</span><span class="ex"><i></i>Largest sale</span><span class="ex"><i></i>Lowest temperature</span><span class="ex"><i></i>Sum across several blocks</span><span class="ex"><i></i>Running total</span><span class="ex"><i></i>Debug a total</span></div>
+        </div>
+        <p class="end">Then pick any track below.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="v">
+    <div class="v-label">5 · Two checklists</div>
+    <p class="v-why">Each track card is its own to-do list: done ones crossed out, the next one in bold with "Next". The green panel goes; its numbers move into the heading line.</p>
+    <div class="frame p5">
+      <div class="shead"><h2>Start here if formulas are new to you</h2><p>2 tracks · 11 exercises · about 1 hr 7 min. Every later track builds on these.</p></div>
+      <div class="grid">
+        <div class="card tc">
+          <div class="top"><span class="icon">▦</span><h3>Cells and arithmetic</h3><span class="pill st">1 of 4</span></div>
+          <ol>
+            <li class="done"><span class="ck">✓</span><span>Add two cells</span><em>5 min</em></li>
+            <li class="next"><span class="ck"></span><span>Subtract the costs</span><em>Next</em></li>
+            <li><span class="ck"></span><span>Multiply price by quantity</span><em>6 min</em></li>
+            <li><span class="ck"></span><span>Price after discount</span><em>7 min</em></li>
+          </ol>
+          <span class="btn">Continue track</span>
+        </div>
+        <div class="card tc">
+          <div class="top"><span class="icon">Σ</span><h3>SUM, AVERAGE, MIN and MAX</h3><span class="pill st">1 of 7</span></div>
+          <ol>
+            <li class="done"><span class="ck">✓</span><span>Sum a column</span><em>5 min</em></li>
+            <li class="next"><span class="ck"></span><span>Average score</span><em>Next</em></li>
+            <li><span class="ck"></span><span>Largest sale</span><em>6 min</em></li>
+            <li><span class="ck"></span><span>Lowest temperature</span><em>6 min</em></li>
+            <li><span class="ck"></span><span>+3 more</span><em></em></li>
+          </ol>
+          <span class="btn ghost">Continue track</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

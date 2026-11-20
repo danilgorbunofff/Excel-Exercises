@@ -30,6 +30,12 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["tools/serve-static.ts", "4395"],
       "port": 4395
+    },
+    {
+      "name": "docs-preview",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4390", "--bind", "127.0.0.1"],
+      "port": 4390
     }
   ]
 }

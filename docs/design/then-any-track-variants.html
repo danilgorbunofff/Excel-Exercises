@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Then any track variants</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* Values copied from src/styles/tokens.css. */
+  :root {
+    color-scheme: light;
+    --bg: #f9fafb; --surface: #fff; --header: #f3f4f6; --text: #101828; --muted: #4a5565; --rule: #e5e7eb;
+    --line: #6a7282; --heading: #1e1e1e; --faint: #6a7282; --primary: #18804f; --on-primary: #fff;
+    --chip: #126a41; --chip-bg: #ecfdf3; --chip-line: #a6e3bf; --panel: #e9f5ee;
+    --beginner: #016630; --beginner-bg: #dbfce7; --intermediate: #894b00; --intermediate-bg: #fef9c2;
+    --shadow-card: 0 1px 2px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.08);
+    --font: "Inter", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #eceef1; color: var(--text); font: 15px/1.5 var(--font); }
+  main { max-width: 1180px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1.page { margin: 0 0 4px; font-size: 28px; }
+  .intro { margin: 0 0 32px; color: var(--muted); }
+  section.v { margin-bottom: 48px; }
+  .v-label { font-size: 20px; font-weight: 700; }
+  .v-why { margin: 2px 0 12px; color: var(--muted); }
+  .frame { background: var(--bg); border: 1px solid var(--rule); border-radius: 10px; padding: 28px; }
+  h3 { margin: 0; color: var(--heading); }
+  p { margin: 0; }
+  /* The real page's path: two track cards, then the third box. */
+  .path { display: grid; grid-template-columns: 1fr 1fr 14rem; gap: 48px; }
+  .path > div { position: relative; display: grid; grid-template-rows: auto 1fr; gap: 8px; }
+  .path > div:not(:last-child)::after { content: "→"; position: absolute; top: 55%; right: -24px; transform: translate(50%, -50%); font-size: 24px; color: var(--line); }
+  .num { font: 700 12px/1 var(--mono); letter-spacing: .12em; color: var(--primary); }
+  .card { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow-card); padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+  .card .top { display: flex; justify-content: space-between; align-items: center; }
+  .ic { width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--chip-line); background: var(--chip-bg); color: var(--chip); display: grid; place-items: center; font-size: 17px; flex: none; }
+  .pill { padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: var(--beginner-bg); color: var(--beginner); }
+  .meta { font-size: 14px; color: var(--muted); }
+  .bar { height: 6px; border-radius: 3px; background: var(--header); }
+  .btn { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; border-radius: 6px; background: var(--primary); color: #fff; font-weight: 600; text-decoration: none; margin-top: auto; }
+  .btn.ghost { background: var(--surface); color: var(--text); border: 1px solid var(--line); }
+  a { color: var(--primary); }
+
+  /* A: list of next tracks */
+  .a { border: 2px dashed var(--line); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .a ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .a li a { display: flex; align-items: center; gap: 10px; padding: 6px 4px; border-radius: 6px; color: var(--text); text-decoration: none; font-size: 13px; font-weight: 600; }
+  .a li a:hover { background: var(--surface); }
+  .a .ic { width: 28px; height: 28px; font-size: 13px; }
+  .a .all { margin-top: auto; font-size: 13px; font-weight: 700; text-decoration: none; }
+
+  /* B: ghost deck */
+  .b { position: relative; display: grid; place-items: center; }
+  .b .g { position: absolute; inset: 0; border: 1px solid var(--rule); border-radius: 8px; background: var(--surface); }
+  .b .g1 { transform: translate(14px, -14px) rotate(4deg); opacity: .5; }
+  .b .g2 { transform: translate(7px, -7px) rotate(2deg); opacity: .8; }
+  .b .face { position: relative; inset: 0; width: 100%; height: 100%; border: 1px solid var(--rule); border-radius: 8px; background: var(--surface); box-shadow: var(--shadow-card); padding: 24px; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+  .b .face b { font: 800 44px/1 var(--font); color: var(--heading); }
+
+  /* C: solid green */
+  .c { border-radius: 8px; background: var(--primary); color: #fff; padding: 24px; display: flex; flex-direction: column; gap: 10px; }
+  .c h3 { color: #fff; font-size: 18px; }
+  .c p { font-size: 14px; opacity: .9; }
+  .c .btn { background: #fff; color: var(--primary); }
+
+  /* D: function chips */
+  .d { border: 2px dashed var(--line); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .d .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .d .chips span { padding: 3px 8px; border: 1px solid var(--rule); border-radius: 4px; background: var(--surface); font: 600 12px/1.4 var(--mono); }
+  .d .chips em { font-style: normal; font-size: 12px; color: var(--muted); align-self: center; }
+
+  /* E: two ways onward */
+  .e { border-radius: 8px; background: var(--panel); border: 1px solid var(--chip-line); padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .e .flag { width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: #fff; display: grid; place-items: center; font-size: 18px; }
+  .e .way { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 14px; border-radius: 8px; background: var(--surface); border: 1px solid var(--rule); color: var(--text); text-decoration: none; font-size: 14px; font-weight: 600; }
+  .e .way span { font-weight: 500; font-size: 12px; color: var(--muted); }
+
+  @media (max-width: 900px) { .path { grid-template-columns: 1fr; } .path > div::after { display: none; } .b { min-height: 220px; } }
+</style>
+</head>
+<body>
+<main>
+  <h1 class="page">"Then any track" box: 5 versions</h1>
+  <p class="intro">Each one sits in the real spot: Step 1 and Step 2 cards on the left, the third box on the right.</p>
+
+  <template id="cards">
+    <div><span class="num">STEP 1</span><div class="card"><div class="top"><span class="ic">▦</span><span class="pill">Beginner</span></div><h3>Cells and arithmetic</h3><p class="meta">4 exercises · 23 min · 2 free</p><p class="meta">Point at cells, then add, subtract, multiply and use brackets.</p><div class="bar"></div><a class="btn" href="#">Start track</a></div></div>
+    <div><span class="num">STEP 2</span><div class="card"><div class="top"><span class="ic">Σ</span><span class="pill">Beginner</span></div><h3>SUM, AVERAGE, MIN and MAX</h3><p class="meta">7 exercises · 44 min · 2 free</p><p class="meta">Total a column, and find its average, largest and smallest values.</p><div class="bar"></div><a class="btn" href="#">Start track</a></div></div>
+  </template>
+
+  <section class="v">
+    <div class="v-label">A · Next tracks, listed</div>
+    <p class="v-why">Keeps the dashed box but fills it: the first four skill tracks as links with their icons, then "See all 15 tracks". Useful, not just a caption.</p>
+    <div class="frame"><div class="path" data-cards>
+      <div><span class="num">STEP 3</span><div class="a"><h3>Then pick a skill</h3>
+        <ul><li><a href="#"><span class="ic">⁘</span>COUNT, COUNTA and COUNTBLANK</a></li><li><a href="#"><span class="ic">↳</span>IF, AND and OR</a></li><li><a href="#"><span class="ic">▽</span>COUNTIF, SUMIF and SUMIFS</a></li><li><a href="#"><span class="ic">⌕</span>Lookups</a></li></ul>
+        <a class="all" href="#">See all 15 tracks ↓</a></div></div>
+    </div></div>
+  </section>
+
+  <section class="v">
+    <div class="v-label">B · A deck of more tracks</div>
+    <p class="v-why">Looks like a stack of track cards fanned behind each other with a big "15" on top. Says "lots more like these" at a glance.</p>
+    <div class="frame"><div class="path" data-cards>
+      <div><span class="num">STEP 3</span><div class="b"><span class="g g1"></span><span class="g g2"></span><div class="face"><b>15</b><h3>more tracks</h3><p class="meta">Counting, logic, lookups, text, dates and more, all built on these two.</p><a href="#" style="font-weight:700;font-size:14px;margin-top:8px">Browse them ↓</a></div></div></div>
+    </div></div>
+  </section>
+
+  <section class="v">
+    <div class="v-label">C · Solid green finish</div>
+    <p class="v-why">The last step is a green block, so the row ends on a strong colour like the old summary panel. One clear button down to the other tracks.</p>
+    <div class="frame"><div class="path" data-cards>
+      <div><span class="num">STEP 3</span><div class="c"><h3>Then any track</h3><p>Counting, logic, lookups, text, dates and more all build on these two.</p><p><b style="font-size:28px">15</b> tracks to choose from</p><a class="btn" href="#">Browse tracks ↓</a></div></div>
+    </div></div>
+  </section>
+
+  <section class="v">
+    <div class="v-label">D · What you will learn next</div>
+    <p class="v-why">The dashed box shows the functions waiting in later tracks as small code chips. Concrete, and it reads as "this is where formulas get interesting".</p>
+    <div class="frame"><div class="path" data-cards>
+      <div><span class="num">STEP 3</span><div class="d"><h3>Then any track</h3><p class="meta">Every later track builds on these two:</p>
+        <div class="chips"><span>COUNTIF</span><span>IF</span><span>AND</span><span>SUMIFS</span><span>XLOOKUP</span><span>INDEX</span><span>MATCH</span><span>LEFT</span><span>TEXT</span><span>DATE</span><span>FILTER</span><span>ROUND</span><em>+ more</em></div>
+        <a href="#" style="margin-top:auto;font-weight:700;font-size:14px">See all tracks ↓</a></div></div>
+    </div></div>
+  </section>
+
+  <section class="v">
+    <div class="v-label">E · Two ways onward</div>
+    <p class="v-why">A finish flag and two choices: go deeper on a skill, or prepare for an interview. Each jumps to its group lower on the page.</p>
+    <div class="frame"><div class="path" data-cards>
+      <div><span class="num">STEP 3</span><div class="e"><span class="flag">⚑</span><h3>Then choose your way</h3>
+        <a class="way" href="#">Go deeper on a skill <span>15 tracks ↓</span></a>
+        <a class="way" href="#">Prepare for an interview <span>6 tracks ↓</span></a>
+        <p class="meta" style="margin-top:auto">All of them build on these two.</p></div></div>
+    </div></div>
+  </section>
+</main>
+<script>
+  // Put the same two track cards before each version's third box.
+  const cards = document.getElementById("cards").content;
+  for (const path of document.querySelectorAll("[data-cards]")) path.prepend(cards.cloneNode(true));
+</script>
+</body>
+</html>

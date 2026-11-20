@@ -1,0 +1,1458 @@
+<!doctype html>
+<!-- Why this exists: five takes on the learning-track detail page
+     (src/pages/exercises/tracks/[slug].astro), to pick one before it is built.
+     Uses the site's own tokens and base styles and the real rounding track copy.
+     Open the file in a browser; the button top right switches light and dark. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Track page options</title>
+    <link rel="stylesheet" href="../../../src/styles/tokens.css" />
+    <link rel="stylesheet" href="../../../src/styles/base.css" />
+    <style>
+      body {
+        background: var(--bg);
+        color: var(--text);
+        margin: 0;
+      }
+      .page {
+        max-width: 76rem;
+        margin: 0 auto;
+        padding: var(--space-6) var(--space-4) var(--space-8, 4rem);
+      }
+      .page > header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: end;
+        justify-content: space-between;
+        gap: var(--space-3);
+        margin-bottom: var(--space-6);
+      }
+      .page h1 {
+        margin: 0;
+        font-size: var(--size-xxl);
+        color: var(--heading);
+      }
+      .page > header p {
+        margin: var(--space-1) 0 0;
+        color: var(--muted);
+        max-width: 48rem;
+      }
+      .option {
+        margin-bottom: var(--space-8, 4rem);
+      }
+      .option > h2 {
+        display: flex;
+        align-items: baseline;
+        gap: var(--space-3);
+        margin: 0 0 var(--space-1);
+        font-size: var(--size-l);
+        color: var(--heading);
+      }
+      .option > h2 b {
+        display: inline-grid;
+        place-items: center;
+        flex: none;
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: 50%;
+        background: var(--primary);
+        color: var(--on-primary);
+        font-size: var(--size-s);
+      }
+      .option > p {
+        margin: 0 0 var(--space-3);
+        color: var(--muted);
+        max-width: 48rem;
+      }
+
+      /* The stage: a slice of the site page the take sits in. */
+      .stage {
+        padding: var(--space-4) var(--space-4) var(--space-6);
+        border: 1px solid var(--rule);
+        border-radius: var(--radius-l);
+        background: var(--bg);
+      }
+      @media (min-width: 48rem) {
+        .stage {
+          padding: var(--space-5) var(--space-6) var(--space-7);
+        }
+      }
+      .crumbs {
+        margin: 0 0 var(--space-4);
+        font-size: var(--size-xs);
+        color: var(--faint);
+      }
+      .crumbs a {
+        color: var(--muted);
+      }
+
+      /* Shared bits. */
+      ul,
+      ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .ico {
+        width: 1.25rem;
+        height: 1.25rem;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.75;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        flex: none;
+      }
+      .ico.s {
+        width: 1rem;
+        height: 1rem;
+      }
+      .ico.l {
+        width: 1.625rem;
+        height: 1.625rem;
+      }
+      .tile-icon {
+        display: inline-grid;
+        place-items: center;
+        flex: none;
+        width: 3rem;
+        height: 3rem;
+        border: 1px solid var(--chip-line);
+        border-radius: var(--radius-l);
+        background: var(--chip-bg);
+        color: var(--chip);
+      }
+      .eyebrow {
+        margin: 0;
+        font-size: var(--size-xs);
+        font-weight: 600;
+        color: var(--faint);
+      }
+      .label {
+        margin: 0;
+        font-size: var(--size-xs);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .title {
+        margin: 0;
+        font-size: var(--size-xxl);
+        line-height: var(--leading-tight);
+        color: var(--heading);
+        overflow-wrap: anywhere;
+      }
+      .lead {
+        margin: 0;
+        font-size: var(--size-l);
+        font-weight: 600;
+        color: var(--text);
+      }
+      .facts {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-2) var(--space-4);
+        margin: 0;
+        font-size: var(--size-s);
+        color: var(--muted);
+      }
+      .facts > span:not(.badge) {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-1);
+      }
+      .learn {
+        display: grid;
+        gap: var(--space-2) var(--space-6);
+      }
+      .learn li {
+        display: flex;
+        gap: var(--space-2);
+        font-size: var(--size-s);
+      }
+      .learn .ico {
+        margin-top: 0.1em;
+        color: var(--correct);
+      }
+      .ex-title {
+        margin: 0;
+        font-size: var(--size-base);
+        line-height: var(--leading-tight);
+      }
+      .ex-title a {
+        color: var(--heading);
+        text-decoration: none;
+      }
+      .ex-title a:hover {
+        color: var(--correct);
+        text-decoration: underline;
+      }
+      .prompt {
+        margin: 0;
+        font-size: var(--size-s);
+        color: var(--muted);
+      }
+      .up-next {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.125rem 0.5rem;
+        border-radius: var(--radius-pill);
+        background: var(--primary);
+        color: var(--on-primary);
+        font-size: var(--size-xs);
+        font-weight: 600;
+        line-height: 1.4;
+        white-space: nowrap;
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-2);
+      }
+      .progress-text {
+        margin: 0;
+        font-size: var(--size-xs);
+        color: var(--faint);
+      }
+      .progress-text b {
+        color: var(--text);
+      }
+      .button .ico {
+        width: 1rem;
+        height: 1rem;
+      }
+      .small-head {
+        margin: 0 0 var(--space-3);
+        font-size: var(--size-s);
+        font-weight: 600;
+        color: var(--muted);
+      }
+      @media (min-width: 48rem) {
+        .learn.two {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      /* A phone: titles one step down, so a long track name wraps less. */
+      @media (max-width: 29.99rem) {
+        .title {
+          font-size: var(--size-xl);
+        }
+        .t1 .hero-top .tile-icon {
+          align-self: start;
+        }
+      }
+
+      /* 1. Hero card + sticky side panel. */
+      .t1 {
+        display: grid;
+        gap: var(--space-5);
+        align-items: start;
+      }
+      .t1 .hero {
+        display: grid;
+        gap: var(--space-4);
+        padding: var(--space-5);
+        background: linear-gradient(135deg, var(--hero-tint), var(--hero-tint-2));
+        border-color: var(--chip-line);
+      }
+      .t1 .hero-top {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+      }
+      .t1 .hero .learn {
+        padding-top: var(--space-4);
+        border-top: 1px solid var(--chip-line);
+      }
+      .t1 .list {
+        display: grid;
+        gap: var(--space-3);
+      }
+      .t1 .list h2,
+      .t2 .list-head h2,
+      .t3 .list-head h2 {
+        margin: 0;
+        font-size: var(--size-xl);
+        color: var(--heading);
+      }
+      .t1 .row {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: var(--space-2) var(--space-4);
+        padding: var(--space-4);
+      }
+      .t1 .row .n {
+        display: grid;
+        place-items: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 50%;
+        background: var(--header);
+        font-weight: 700;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+      .t1 .row.done .n {
+        background: var(--correct-tint);
+        color: var(--correct);
+      }
+      .t1 .row.next {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 1px var(--primary), var(--shadow-card);
+      }
+      .t1 .row.next .n {
+        background: var(--primary);
+        color: var(--on-primary);
+      }
+      .t1 .row-body {
+        display: grid;
+        gap: var(--space-2);
+        min-width: 0;
+      }
+      .t1 .row-foot {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-3);
+      }
+      .t1 .side {
+        display: grid;
+        gap: var(--space-4);
+        padding: var(--space-5);
+      }
+      .t1 .ring {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+      }
+      .t1 .ring svg {
+        width: 3.5rem;
+        height: 3.5rem;
+        transform: rotate(-90deg);
+      }
+      .t1 .ring circle {
+        fill: none;
+        stroke-width: 4;
+      }
+      .t1 .ring .track {
+        stroke: var(--header);
+      }
+      .t1 .ring .fill {
+        stroke: var(--primary);
+        stroke-linecap: round;
+        stroke-dasharray: 33.3 100;
+      }
+      .t1 .ring p {
+        margin: 0;
+        font-size: var(--size-s);
+        color: var(--muted);
+      }
+      .t1 .ring strong {
+        display: block;
+        font-size: var(--size-l);
+        color: var(--heading);
+      }
+      .t1 .side .button {
+        width: 100%;
+      }
+      .t1 dl {
+        display: grid;
+        margin: 0;
+        border-top: 1px solid var(--rule);
+      }
+      .t1 dl div {
+        display: flex;
+        justify-content: space-between;
+        gap: var(--space-3);
+        padding: var(--space-2) 0;
+        border-bottom: 1px solid var(--rule);
+        font-size: var(--size-s);
+      }
+      .t1 dt {
+        color: var(--muted);
+      }
+      .t1 dd {
+        margin: 0;
+        font-weight: 600;
+        text-align: right;
+      }
+      .t1 .next-track {
+        display: grid;
+        gap: var(--space-1);
+        font-size: var(--size-s);
+        color: var(--muted);
+        text-decoration: none;
+      }
+      .t1 .next-track strong {
+        color: var(--heading);
+      }
+      .t1 .next-track:hover strong {
+        color: var(--correct);
+        text-decoration: underline;
+      }
+      @media (min-width: 60rem) {
+        .t1 {
+          grid-template-columns: 1fr 18rem;
+        }
+        .t1 .main {
+          grid-column: 1;
+          grid-row: 1;
+        }
+        .t1 .side {
+          position: sticky;
+          top: var(--space-4);
+          grid-column: 2;
+          grid-row: 1 / span 2;
+        }
+        .t1 .list {
+          grid-column: 1;
+        }
+      }
+
+      /* 2. Vertical stepper. */
+      .t2 {
+        display: grid;
+        gap: var(--space-6);
+        max-width: 52rem;
+      }
+      .t2 .head {
+        display: grid;
+        gap: var(--space-4);
+      }
+      .t2 .title-row {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+      }
+      .t2 .head-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-4);
+      }
+      .t2 .list-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-3);
+        margin-bottom: var(--space-5);
+      }
+      .t2 .list-head .progress-bar {
+        width: 10rem;
+      }
+      .t2 .stepper > li {
+        position: relative;
+        display: grid;
+        grid-template-columns: 2.5rem 1fr;
+        gap: var(--space-4);
+        padding-bottom: var(--space-6);
+      }
+      .t2 .stepper > li:last-child {
+        padding-bottom: 0;
+      }
+      /* The connector runs from under one marker to the next. */
+      .t2 .stepper > li:not(:last-child)::before {
+        content: "";
+        position: absolute;
+        top: 2.75rem;
+        bottom: var(--space-1);
+        left: calc(1.25rem - 1px);
+        width: 2px;
+        border-radius: 1px;
+        background: var(--rule);
+      }
+      .t2 .stepper > li.done::before {
+        background: var(--primary);
+      }
+      .t2 .marker {
+        display: grid;
+        place-items: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border: 2px solid var(--rule);
+        border-radius: 50%;
+        background: var(--surface);
+        font-weight: 700;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+      }
+      .t2 .done .marker {
+        border-color: var(--primary);
+        background: var(--primary);
+        color: var(--on-primary);
+      }
+      .t2 .next .marker {
+        border-color: var(--primary);
+        color: var(--correct);
+        box-shadow: 0 0 0 4px var(--correct-tint);
+      }
+      .t2 .step-body {
+        display: grid;
+        gap: var(--space-2);
+        min-width: 0;
+        padding-top: var(--space-2);
+      }
+      .t2 .next .step-body {
+        padding: var(--space-4);
+        border: 1px solid var(--chip-line);
+        border-radius: var(--radius-l);
+        background: var(--surface);
+        box-shadow: var(--shadow-card);
+      }
+      .t2 .step-meta {
+        margin: 0;
+        font-size: var(--size-xs);
+        font-weight: 600;
+        color: var(--faint);
+      }
+      .t2 .done .step-meta {
+        color: var(--correct);
+      }
+      .t2 .step-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-3);
+        margin-top: var(--space-1);
+      }
+      .t2 .arrow-link {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-1);
+        font-size: var(--size-s);
+      }
+
+      /* 3. Banner header + fact tiles. */
+      .t3 {
+        display: grid;
+        gap: var(--space-5);
+      }
+      .t3 .banner {
+        position: relative;
+        display: grid;
+        gap: var(--space-4);
+        padding: var(--space-5);
+        overflow: hidden;
+        border: 1px solid var(--chip-line);
+        border-radius: var(--radius-xl);
+        background:
+          radial-gradient(circle at 100% 0%, var(--hero-tint-2), transparent 60%),
+          var(--hero-tint);
+      }
+      /* A faint sheet grid in the banner's corner, as on the sheet panel. */
+      .t3 .banner::after {
+        content: "";
+        position: absolute;
+        inset: 0 0 0 55%;
+        background:
+          linear-gradient(var(--chip-line) 1px, transparent 1px) 0 0 / 100% 1.75rem,
+          linear-gradient(90deg, var(--chip-line) 1px, transparent 1px) 0 0 / 5rem 100%;
+        opacity: 0.5;
+        mask-image: linear-gradient(90deg, transparent, var(--text) 70%); /* the mask reads alpha only */
+        pointer-events: none;
+      }
+      .t3 .banner > * {
+        position: relative;
+        z-index: 1;
+      }
+      .t3 .banner .title {
+        font-size: var(--size-page);
+      }
+      .t3 .banner-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-3) var(--space-4);
+      }
+      .t3 .banner-actions .progress-bar {
+        width: 8rem;
+        background: var(--surface);
+      }
+      .t3 .tiles {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-3);
+      }
+      .t3 .tile {
+        display: grid;
+        gap: var(--space-1);
+        padding: var(--space-4);
+      }
+      .t3 .tile .ico {
+        color: var(--chip);
+      }
+      .t3 .tile strong {
+        font-size: var(--size-xxl);
+        line-height: 1.1;
+        color: var(--heading);
+        font-variant-numeric: tabular-nums;
+      }
+      .t3 .tile strong.word {
+        font-size: var(--size-l);
+        line-height: 2.5rem;
+        color: var(--intermediate);
+      }
+      .t3 .tile span {
+        font-size: var(--size-xs);
+        color: var(--muted);
+      }
+      .t3 .two-col {
+        display: grid;
+        gap: var(--space-5);
+      }
+      .t3 .list-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: var(--space-2);
+        margin-bottom: var(--space-3);
+      }
+      .t3 .table {
+        border: 1px solid var(--rule);
+        border-radius: var(--radius-l);
+        background: var(--surface);
+        overflow: hidden;
+      }
+      .t3 .table > li {
+        display: grid;
+        grid-template-columns: 2rem 1fr;
+        gap: var(--space-2) var(--space-3);
+        padding: var(--space-4);
+      }
+      .t3 .table > li + li {
+        border-top: 1px solid var(--rule);
+      }
+      .t3 .table > li.next {
+        background: var(--correct-tint);
+        box-shadow: inset 3px 0 0 var(--primary);
+      }
+      .t3 .table .n {
+        font-family: var(--font-mono);
+        font-size: var(--size-s);
+        font-weight: 600;
+        color: var(--faint);
+        padding-top: 0.1em;
+      }
+      .t3 .table .cell {
+        display: grid;
+        gap: var(--space-2);
+        min-width: 0;
+      }
+      .t3 .table .end {
+        grid-column: 2;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-3);
+      }
+      .t3 aside {
+        display: grid;
+        gap: var(--space-5);
+        align-content: start;
+      }
+      @media (min-width: 48rem) {
+        .t3 .banner {
+          padding: var(--space-6) var(--space-6);
+        }
+        .t3 .tiles {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .t3 .table > li {
+          grid-template-columns: 2rem 1fr auto;
+          align-items: center;
+        }
+        .t3 .table .end {
+          grid-column: 3;
+          justify-content: end;
+        }
+      }
+      @media (min-width: 60rem) {
+        .t3 .two-col {
+          grid-template-columns: 1fr 20rem;
+        }
+      }
+
+      /* 4. Roadmap: what you learn, stop by stop. */
+      .t4 {
+        display: grid;
+        gap: var(--space-6);
+      }
+      .t4 .head {
+        display: grid;
+        gap: var(--space-3);
+        text-align: center;
+        justify-items: center;
+        max-width: 40rem;
+        margin: 0 auto;
+      }
+      .t4 .head .facts {
+        justify-content: center;
+      }
+      .t4 .road {
+        position: relative;
+        display: grid;
+        gap: var(--space-5);
+      }
+      .t4 .stop {
+        position: relative;
+        display: grid;
+        grid-template-columns: 2.75rem 1fr;
+        gap: var(--space-4);
+      }
+      /* Mobile: the road runs down the left. */
+      .t4 .stop:not(:last-child)::before {
+        content: "";
+        position: absolute;
+        top: 3rem;
+        bottom: calc(-1 * var(--space-5) + var(--space-1));
+        left: calc(1.375rem - 1px);
+        border-left: 2px dashed var(--line);
+      }
+      .t4 .stop.done:not(:last-child)::before {
+        border-left-style: solid;
+        border-color: var(--primary);
+      }
+      .t4 .pin {
+        display: grid;
+        place-items: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 50%;
+        background: var(--header);
+        color: var(--muted);
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+      }
+      .t4 .done .pin {
+        background: var(--primary);
+        color: var(--on-primary);
+      }
+      .t4 .next .pin {
+        background: var(--surface);
+        border: 2px solid var(--primary);
+        color: var(--correct);
+        box-shadow: 0 0 0 4px var(--correct-tint);
+      }
+      .t4 .finish .pin {
+        background: var(--chip-bg);
+        border: 1px solid var(--chip-line);
+        color: var(--chip);
+      }
+      .t4 .stop-card {
+        display: grid;
+        gap: var(--space-3);
+        padding: var(--space-4);
+        min-width: 0;
+      }
+      .t4 .next .stop-card {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 1px var(--primary), var(--shadow-card);
+      }
+      .t4 .skills {
+        display: grid;
+        gap: var(--space-2);
+      }
+      .t4 .skills li {
+        display: flex;
+        gap: var(--space-2);
+        font-size: var(--size-base);
+        font-weight: 600;
+        line-height: var(--leading-tight);
+        color: var(--heading);
+      }
+      .t4 .skills .ico {
+        color: var(--faint);
+      }
+      .t4 .done .skills .ico {
+        color: var(--correct);
+      }
+      .t4 .via {
+        display: grid;
+        gap: var(--space-1);
+        padding-top: var(--space-3);
+        border-top: 1px solid var(--rule);
+      }
+      .t4 .via .ex-title {
+        font-size: var(--size-s);
+      }
+      .t4 .stop-foot {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-2);
+      }
+      .t4 .finish .stop-card {
+        background: var(--chip-bg);
+        border-color: var(--chip-line);
+        box-shadow: none;
+      }
+      .t4 .finish p {
+        margin: 0;
+        font-size: var(--size-s);
+        color: var(--muted);
+      }
+      .t4 .finish strong {
+        color: var(--heading);
+      }
+      .t4 .foot {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-3) var(--space-5);
+      }
+      .t4 .foot .progress-bar {
+        width: 10rem;
+      }
+      /* Desktop: the road runs across, one column per stop. */
+      @media (min-width: 60rem) {
+        .t4 .road {
+          grid-template-columns: repeat(4, 1fr);
+          gap: var(--space-4);
+        }
+        .t4 .stop {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto 1fr;
+          justify-items: center;
+        }
+        .t4 .stop:not(:last-child)::before {
+          top: calc(1.375rem - 1px);
+          bottom: auto;
+          left: calc(50% + 1.75rem);
+          right: calc(-50% - var(--space-4) + 1.75rem);
+          border-left: 0;
+          border-top: 2px dashed var(--line);
+        }
+        .t4 .stop.done:not(:last-child)::before {
+          border-top-style: solid;
+          border-color: var(--primary);
+        }
+        .t4 .stop-card {
+          align-self: stretch;
+          width: 100%;
+          align-content: start;
+        }
+      }
+
+      /* 5. Card grid under a slim header. */
+      .t5 {
+        display: grid;
+        gap: var(--space-5);
+      }
+      .t5 .slim {
+        display: grid;
+        gap: var(--space-4);
+        padding-bottom: var(--space-5);
+        border-bottom: 1px solid var(--rule);
+      }
+      .t5 .slim-main {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        min-width: 0;
+      }
+      .t5 .slim .title {
+        font-size: var(--size-xl);
+      }
+      .t5 .slim .tile-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+      .t5 .slim-end {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--space-3) var(--space-4);
+      }
+      .t5 .meter {
+        display: grid;
+        gap: var(--space-1);
+        min-width: 8rem;
+      }
+      .t5 .grid {
+        display: grid;
+        gap: var(--space-4);
+      }
+      .t5 .ex-card {
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        gap: var(--space-3);
+        padding: 0;
+        overflow: hidden;
+      }
+      .t5 .ex-card > :not(.band) {
+        padding-inline: var(--space-5);
+      }
+      .t5 .ex-card > :last-child {
+        padding-bottom: var(--space-5);
+      }
+      .t5 .band {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-2);
+        padding: var(--space-3) var(--space-5);
+        border-bottom: 1px solid var(--rule);
+        background: var(--header);
+      }
+      .t5 .big-n {
+        font-family: var(--font-mono);
+        font-size: var(--size-xl);
+        font-weight: 600;
+        line-height: 1;
+        color: var(--faint);
+      }
+      .t5 .done .band {
+        background: var(--correct-tint);
+        border-color: var(--chip-line);
+      }
+      .t5 .done .big-n {
+        color: var(--correct);
+      }
+      .t5 .next {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 1px var(--primary), var(--shadow-card);
+      }
+      .t5 .next .band {
+        background: var(--primary);
+        border-color: var(--primary);
+      }
+      .t5 .next .big-n {
+        color: var(--on-primary);
+      }
+      .t5 .next .up-next {
+        background: var(--on-primary);
+        color: var(--primary-hover);
+      }
+      .t5 .ex-card .ex-title {
+        font-size: var(--size-l);
+      }
+      .t5 .card-foot {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-3);
+      }
+      .t5 .covers {
+        display: grid;
+        gap: var(--space-3);
+        padding: var(--space-4) var(--space-5);
+        border: 1px solid var(--rule);
+        border-radius: var(--radius-l);
+        background: var(--surface);
+      }
+      @media (min-width: 48rem) {
+        .t5 .grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .t5 .covers .learn {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (min-width: 60rem) {
+        .t5 .slim {
+          grid-template-columns: 1fr auto;
+          align-items: center;
+        }
+        .t5 .covers {
+          grid-template-columns: auto 1fr;
+          align-items: center;
+          gap: var(--space-5);
+        }
+        .t5 .covers .learn {
+          grid-template-columns: repeat(4, auto);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="check" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10" /></symbol>
+      <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></symbol>
+      <symbol id="clock" viewBox="0 0 24 24"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2" /></symbol>
+      <symbol id="grid" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 10h16M4 15h16M10 4v16M15 4v16" /></symbol>
+      <symbol id="formula" viewBox="0 0 24 24"><path d="M8 20c2 0 2-2 3-8s1-8 3-8M7 10h7M14 13l5 6M19 13l-5 6" /></symbol>
+      <symbol id="bars" viewBox="0 0 24 24"><path d="M5 20v-6M12 20V9M19 20V4" /></symbol>
+      <symbol id="flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h12l-2 4 2 4H5" /></symbol>
+    </svg>
+
+    <div class="page">
+      <header>
+        <div>
+          <h1>Learning track page: five options</h1>
+          <p>The rounding track, with its real copy. Shown part way through so the states are visible: exercise 1 solved, exercise 2 up next, 1 of 3 done, so the button reads "Continue track". A new visitor sees "Start track" and 0 of 3 done.</p>
+        </div>
+        <button class="button button-secondary" type="button" id="theme">Switch light / dark</button>
+      </header>
+
+      <!-- 1 -->
+      <section class="option">
+        <h2><b>1</b> Hero card, sticky side panel</h2>
+        <p>The track's pitch sits in a tinted hero card; progress, the main button and the facts stay in a panel on the right while you scroll the list. On a phone the panel sits between the hero and the list.</p>
+        <div class="stage">
+          <p class="crumbs"><a href="#">Exercises</a> / <a href="#">Learning tracks</a></p>
+          <div class="t1">
+            <div class="main card hero">
+              <div class="hero-top">
+                <span class="tile-icon"><svg class="ico l"><use href="#formula" /></svg></span>
+                <div>
+                  <p class="eyebrow">Learning track 6 of 23</p>
+                  <h3 class="title">ROUND, ROUNDUP and MROUND</h3>
+                </div>
+              </div>
+              <p class="lead">Round money and quantities the way the task asks for.</p>
+              <div>
+                <h4 class="small-head">Functions in this track</h4>
+                <ul class="chips">
+                  <li><a class="chip" href="#">ROUND</a></li>
+                  <li><a class="chip" href="#">SUM</a></li>
+                  <li><a class="chip" href="#">ROUNDUP</a></li>
+                  <li><a class="chip" href="#">ROUNDDOWN</a></li>
+                  <li><a class="chip" href="#">MROUND</a></li>
+                  <li><a class="chip" href="#">FLOOR</a></li>
+                </ul>
+              </div>
+              <ul class="learn two">
+                <li><svg class="ico s"><use href="#check" /></svg>Round a price to two decimal places</li>
+                <li><svg class="ico s"><use href="#check" /></svg>Round always up or always down</li>
+                <li><svg class="ico s"><use href="#check" /></svg>Round to the nearest multiple, such as 5</li>
+                <li><svg class="ico s"><use href="#check" /></svg>Round down to a whole pack or crate</li>
+              </ul>
+            </div>
+
+            <aside class="card side">
+              <div class="ring">
+                <svg viewBox="0 0 36 36" aria-hidden="true"><circle class="track" cx="18" cy="18" r="15.9" /><circle class="fill" cx="18" cy="18" r="15.9" pathLength="100" /></svg>
+                <p><strong>1 of 3 done</strong>Next: ROUNDUP and ROUNDDOWN</p>
+              </div>
+              <a class="button button-primary" href="#">Continue track <svg class="ico"><use href="#arrow" /></svg></a>
+              <dl>
+                <div><dt>Level</dt><dd><span class="badge badge-2">Intermediate</span></dd></div>
+                <div><dt>Time</dt><dd>24 min</dd></div>
+                <div><dt>Exercises</dt><dd>3</dd></div>
+                <div><dt>Functions</dt><dd>6</dd></div>
+              </dl>
+              <a class="next-track" href="#">
+                <span class="label">Then</span>
+                <strong>LARGE, SMALL, MEDIAN, MODE and RANK</strong>
+                <span>Pick the second highest, the middle, the most common and a rank.</span>
+              </a>
+            </aside>
+
+            <div class="list">
+              <h2>The exercises, in order</h2>
+              <ol class="list">
+                <li class="card row done">
+                  <span class="n"><svg class="ico s"><use href="#check" /></svg></span>
+                  <div class="row-body">
+                    <div class="tags">
+                      <h3 class="ex-title"><a href="#">ROUND: money to two decimals</a></h3>
+                      <span class="badge badge-2">Intermediate</span>
+                    </div>
+                    <p class="prompt">In B6, total the three costs, add 8% markup, and round the result to 2 decimals. Use SUM.</p>
+                    <div class="row-foot">
+                      <ul class="chips"><li class="chip">ROUND</li><li class="chip">SUM</li></ul>
+                      <div class="tags"><span class="state-tag" data-state="solved"><span>Solved</span></span><a class="button button-secondary" href="#">Review</a></div>
+                    </div>
+                  </div>
+                </li>
+                <li class="card row next">
+                  <span class="n">2</span>
+                  <div class="row-body">
+                    <div class="tags">
+                      <h3 class="ex-title"><a href="#">ROUNDUP and ROUNDDOWN: one direction only</a></h3>
+                      <span class="badge badge-2">Intermediate</span>
+                      <span class="up-next">Up next</span>
+                    </div>
+                    <p class="prompt">In B6, work out the crates needed: twelve units to a crate, and a part crate still ships.</p>
+                    <div class="row-foot">
+                      <ul class="chips"><li class="chip">ROUNDUP</li><li class="chip">ROUNDDOWN</li></ul>
+                      <div class="tags"><span class="state-tag"><span>Not started</span></span><a class="button button-primary" href="#">Start</a></div>
+                    </div>
+                  </div>
+                </li>
+                <li class="card row">
+                  <span class="n">3</span>
+                  <div class="row-body">
+                    <div class="tags">
+                      <h3 class="ex-title"><a href="#">MROUND and FLOOR: round to a multiple</a></h3>
+                      <span class="badge badge-2">Intermediate</span>
+                    </div>
+                    <p class="prompt">Round each pallet's unit count to the nearest five and put the first one in C2.</p>
+                    <div class="row-foot">
+                      <ul class="chips"><li class="chip">MROUND</li><li class="chip">FLOOR</li></ul>
+                      <div class="tags"><span class="state-tag"><span>Not started</span></span><a class="button button-secondary" href="#">Start</a></div>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 -->
+      <section class="option">
+        <h2><b>2</b> Vertical stepper</h2>
+        <p>The exercises become a numbered timeline. The line fills green as you go, the current step opens into a card with its button, and the others stay light. Reads as a path, not a list.</p>
+        <div class="stage">
+          <p class="crumbs"><a href="#">Exercises</a> / <a href="#">Learning tracks</a></p>
+          <div class="t2">
+            <div class="head">
+              <div class="title-row">
+                <span class="tile-icon"><svg class="ico l"><use href="#formula" /></svg></span>
+                <div>
+                  <p class="eyebrow">Learning track 6 of 23</p>
+                  <h3 class="title">ROUND, ROUNDUP and MROUND</h3>
+                </div>
+              </div>
+              <p class="facts">
+                <span class="badge badge-2">Intermediate</span>
+                <span><svg class="ico s"><use href="#clock" /></svg> 24 min</span>
+                <span><svg class="ico s"><use href="#grid" /></svg> 3 exercises</span>
+              </p>
+              <p class="lead">Round money and quantities the way the task asks for.</p>
+              <ul class="learn two">
+                <li><svg class="ico s"><use href="#check" /></svg>Round a price to two decimal places</li>
+                <li><svg class="ico s"><use href="#check" /></svg>Round always up or always down</li>
+                <li><svg class="ico s"><use href="#check" /></svg>Round to the nearest multiple, such as 5</li>
+                <li><svg class="ico s"><use href="#check" /></svg>Round down to a whole pack or crate</li>
+              </ul>
+              <ul class="chips">
+                <li><a class="chip" href="#">ROUND</a></li>
+                <li><a class="chip" href="#">SUM</a></li>
+                <li><a class="chip" href="#">ROUNDUP</a></li>
+                <li><a class="chip" href="#">ROUNDDOWN</a></li>
+                <li><a class="chip" href="#">MROUND</a></li>
+                <li><a class="chip" href="#">FLOOR</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <div class="list-head">
+                <h2>Your path</h2>
+                <div class="head-actions">
+                  <p class="progress-text"><b>1 of 3</b> done</p>
+                  <span class="progress-bar" aria-hidden="true"><span style="width: 33.3%"></span></span>
+                </div>
+              </div>
+              <ol class="stepper">
+                <li class="done">
+                  <span class="marker"><svg class="ico s"><use href="#check" /></svg></span>
+                  <div class="step-body">
+                    <p class="step-meta">Step 1 · Solved</p>
+                    <div class="tags">
+                      <h3 class="ex-title"><a href="#">ROUND: money to two decimals</a></h3>
+                      <span class="badge badge-2">Intermediate</span>
+                    </div>
+                    <p class="prompt">In B6, total the three costs, add 8% markup, and round the result to 2 decimals. Use SUM.</p>
+                    <div class="step-actions">
+                      <ul class="chips"><li class="chip">ROUND</li><li class="chip">SUM</li></ul>
+                      <a class="arrow-link" href="#">Review <svg class="ico s"><use href="#arrow" /></svg></a>
+                    </div>
+                  </div>
+                </li>
+                <li class="next">
+                  <span class="marker">2</span>
+                  <div class="step-body">
+                    <p class="step-meta">Step 2 · <span class="up-next">Up next</span></p>
+                    <div class="tags">
+                      <h3 class="ex-title"><a href="#">ROUNDUP and ROUNDDOWN: one direction only</a></h3>
+                      <span class="badge badge-2">Intermediate</span>
+                    </div>
+                    <p class="prompt">In B6, work out the crates needed: twelve units to a crate, and a part crate still ships.</p>
+                    <div class="step-actions">
+                      <a class="button button-primary" href="#">Continue track <svg class="ico"><use href="#arrow" /></svg></a>
+                      <ul class="chips"><li class="chip">ROUNDUP</li><li class="chip">ROUNDDOWN</li></ul>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <span class="marker">3</span>
+                  <div class="step-body">
+                    <p class="step-meta">Step 3 · Not started</p>
+                    <div class="tags">
+                      <h3 class="ex-title"><a href="#">MROUND and FLOOR: round to a multiple</a></h3>
+                      <span class="badge badge-2">Intermediate</span>
+                    </div>
+                    <p class="prompt">Round each pallet's unit count to the nearest five and put the first one in C2.</p>
+                    <div class="step-actions">
+                      <ul class="chips"><li class="chip">MROUND</li><li class="chip">FLOOR</li></ul>
+                      <a class="arrow-link" href="#">Start <svg class="ico s"><use href="#arrow" /></svg></a>
+                    </div>
+                  </div>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3 -->
+      <section class="option">
+        <h2><b>3</b> Banner header, fact tiles</h2>
+        <p>A wide tinted banner with a faint sheet grid carries the title and the button. Four tiles give the facts at a glance; the list is one ruled table with the current row lit, and what the track covers sits beside it.</p>
+        <div class="stage">
+          <p class="crumbs"><a href="#">Exercises</a> / <a href="#">Learning tracks</a></p>
+          <div class="t3">
+            <div class="banner">
+              <p class="eyebrow">Learning track 6 of 23</p>
+              <h3 class="title">ROUND, ROUNDUP and MROUND</h3>
+              <p class="lead">Round money and quantities the way the task asks for.</p>
+              <div class="banner-actions">
+                <a class="button button-primary button-l" href="#">Continue track <svg class="ico"><use href="#arrow" /></svg></a>
+                <span class="progress-bar" aria-hidden="true"><span style="width: 33.3%"></span></span>
+                <p class="progress-text"><b>1 of 3</b> done</p>
+              </div>
+            </div>
+
+            <ul class="tiles">
+              <li class="card tile"><svg class="ico"><use href="#bars" /></svg><strong class="word">Intermediate</strong><span>Level</span></li>
+              <li class="card tile"><svg class="ico"><use href="#clock" /></svg><strong>24</strong><span>Minutes</span></li>
+              <li class="card tile"><svg class="ico"><use href="#grid" /></svg><strong>3</strong><span>Exercises</span></li>
+              <li class="card tile"><svg class="ico"><use href="#formula" /></svg><strong>6</strong><span>Functions</span></li>
+            </ul>
+
+            <div class="two-col">
+              <div>
+                <div class="list-head">
+                  <h2>The exercises, in order</h2>
+                </div>
+                <ol class="table">
+                  <li>
+                    <span class="n">01</span>
+                    <div class="cell">
+                      <div class="tags"><h3 class="ex-title"><a href="#">ROUND: money to two decimals</a></h3></div>
+                      <p class="prompt">In B6, total the three costs, add 8% markup, and round the result to 2 decimals. Use SUM.</p>
+                      <ul class="chips"><li class="chip">ROUND</li><li class="chip">SUM</li></ul>
+                    </div>
+                    <div class="end"><span class="state-tag" data-state="solved"><span>Solved</span></span><a class="button button-secondary" href="#">Review</a></div>
+                  </li>
+                  <li class="next">
+                    <span class="n">02</span>
+                    <div class="cell">
+                      <div class="tags"><h3 class="ex-title"><a href="#">ROUNDUP and ROUNDDOWN: one direction only</a></h3><span class="up-next">Up next</span></div>
+                      <p class="prompt">In B6, work out the crates needed: twelve units to a crate, and a part crate still ships.</p>
+                      <ul class="chips"><li class="chip">ROUNDUP</li><li class="chip">ROUNDDOWN</li></ul>
+                    </div>
+                    <div class="end"><span class="state-tag"><span>Not started</span></span><a class="button button-primary" href="#">Start</a></div>
+                  </li>
+                  <li>
+                    <span class="n">03</span>
+                    <div class="cell">
+                      <div class="tags"><h3 class="ex-title"><a href="#">MROUND and FLOOR: round to a multiple</a></h3></div>
+                      <p class="prompt">Round each pallet's unit count to the nearest five and put the first one in C2.</p>
+                      <ul class="chips"><li class="chip">MROUND</li><li class="chip">FLOOR</li></ul>
+                    </div>
+                    <div class="end"><span class="state-tag"><span>Not started</span></span><a class="button button-secondary" href="#">Start</a></div>
+                  </li>
+                </ol>
+              </div>
+              <aside>
+                <div>
+                  <h4 class="small-head">What this track covers</h4>
+                  <ul class="learn">
+                    <li><svg class="ico s"><use href="#check" /></svg>Round a price to two decimal places</li>
+                    <li><svg class="ico s"><use href="#check" /></svg>Round always up or always down</li>
+                    <li><svg class="ico s"><use href="#check" /></svg>Round to the nearest multiple, such as 5</li>
+                    <li><svg class="ico s"><use href="#check" /></svg>Round down to a whole pack or crate</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="small-head">Functions in this track</h4>
+                  <ul class="chips">
+                    <li><a class="chip" href="#">ROUND</a></li>
+                    <li><a class="chip" href="#">SUM</a></li>
+                    <li><a class="chip" href="#">ROUNDUP</a></li>
+                    <li><a class="chip" href="#">ROUNDDOWN</a></li>
+                    <li><a class="chip" href="#">MROUND</a></li>
+                    <li><a class="chip" href="#">FLOOR</a></li>
+                  </ul>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4 -->
+      <section class="option">
+        <h2><b>4</b> Roadmap</h2>
+        <p>"What this track covers" stops being a separate list: each skill is the headline of the stop that teaches it, with the exercise underneath. The road runs across on desktop and down on a phone, and ends at the next track.</p>
+        <div class="stage">
+          <p class="crumbs"><a href="#">Exercises</a> / <a href="#">Learning tracks</a></p>
+          <div class="t4">
+            <div class="head">
+              <span class="tile-icon"><svg class="ico l"><use href="#formula" /></svg></span>
+              <p class="eyebrow">Learning track 6 of 23</p>
+              <h3 class="title">ROUND, ROUNDUP and MROUND</h3>
+              <p class="lead">Round money and quantities the way the task asks for.</p>
+              <p class="facts">
+                <span class="badge badge-2">Intermediate</span>
+                <span><svg class="ico s"><use href="#clock" /></svg> 24 min</span>
+                <span><svg class="ico s"><use href="#grid" /></svg> 3 exercises</span>
+                <span><svg class="ico s"><use href="#formula" /></svg> 6 functions</span>
+              </p>
+            </div>
+
+            <ol class="road">
+              <li class="stop done">
+                <span class="pin"><svg class="ico s"><use href="#check" /></svg></span>
+                <div class="card stop-card">
+                  <p class="label">You can now</p>
+                  <ul class="skills"><li><svg class="ico s"><use href="#check" /></svg>Round a price to two decimal places</li></ul>
+                  <div class="via">
+                    <h4 class="ex-title"><a href="#">ROUND: money to two decimals</a></h4>
+                    <p class="prompt">In B6, total the three costs, add 8% markup, and round the result to 2 decimals. Use SUM.</p>
+                  </div>
+                  <div class="stop-foot">
+                    <ul class="chips"><li class="chip">ROUND</li><li class="chip">SUM</li></ul>
+                    <span class="state-tag" data-state="solved"><span>Solved</span></span>
+                  </div>
+                </div>
+              </li>
+              <li class="stop next">
+                <span class="pin">2</span>
+                <div class="card stop-card">
+                  <div class="tags"><p class="label">You will learn to</p><span class="up-next">Up next</span></div>
+                  <ul class="skills"><li><svg class="ico s"><use href="#check" /></svg>Round always up or always down</li></ul>
+                  <div class="via">
+                    <h4 class="ex-title"><a href="#">ROUNDUP and ROUNDDOWN: one direction only</a></h4>
+                    <p class="prompt">In B6, work out the crates needed: twelve units to a crate, and a part crate still ships.</p>
+                  </div>
+                  <div class="stop-foot">
+                    <ul class="chips"><li class="chip">ROUNDUP</li><li class="chip">ROUNDDOWN</li></ul>
+                  </div>
+                  <a class="button button-primary" href="#">Continue track <svg class="ico"><use href="#arrow" /></svg></a>
+                </div>
+              </li>
+              <li class="stop">
+                <span class="pin">3</span>
+                <div class="card stop-card">
+                  <p class="label">You will learn to</p>
+                  <ul class="skills">
+                    <li><svg class="ico s"><use href="#check" /></svg>Round to the nearest multiple, such as 5</li>
+                    <li><svg class="ico s"><use href="#check" /></svg>Round down to a whole pack or crate</li>
+                  </ul>
+                  <div class="via">
+                    <h4 class="ex-title"><a href="#">MROUND and FLOOR: round to a multiple</a></h4>
+                    <p class="prompt">Round each pallet's unit count to the nearest five and put the first one in C2.</p>
+                  </div>
+                  <div class="stop-foot">
+                    <ul class="chips"><li class="chip">MROUND</li><li class="chip">FLOOR</li></ul>
+                    <span class="state-tag"><span>Not started</span></span>
+                  </div>
+                </div>
+              </li>
+              <li class="stop finish">
+                <span class="pin"><svg class="ico s"><use href="#flag" /></svg></span>
+                <a class="card stop-card" href="#">
+                  <p class="label">Then</p>
+                  <p><strong>LARGE, SMALL, MEDIAN, MODE and RANK</strong></p>
+                  <p>Pick the second highest, the middle, the most common and a rank.</p>
+                </a>
+              </li>
+            </ol>
+
+            <div class="foot">
+              <p class="progress-text"><b>1 of 3</b> done</p>
+              <span class="progress-bar" aria-hidden="true"><span style="width: 33.3%"></span></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5 -->
+      <section class="option">
+        <h2><b>5</b> Card grid, slim header</h2>
+        <p>The header shrinks to one band: title, facts, progress and the button. The three exercises get the space as equal cards, each with a coloured band that says its state. What the track covers sits in one strip underneath.</p>
+        <div class="stage">
+          <p class="crumbs"><a href="#">Exercises</a> / <a href="#">Learning tracks</a></p>
+          <div class="t5">
+            <div class="slim">
+              <div class="slim-main">
+                <span class="tile-icon"><svg class="ico"><use href="#formula" /></svg></span>
+                <div>
+                  <p class="eyebrow">Learning track 6 of 23 · Round money and quantities the way the task asks for.</p>
+                  <h3 class="title">ROUND, ROUNDUP and MROUND</h3>
+                </div>
+              </div>
+              <div class="slim-end">
+                <p class="facts">
+                  <span class="badge badge-2">Intermediate</span>
+                  <span><svg class="ico s"><use href="#clock" /></svg> 24 min</span>
+                </p>
+                <div class="meter">
+                  <p class="progress-text"><b>1 of 3</b> done</p>
+                  <span class="progress-bar" aria-hidden="true"><span style="width: 33.3%"></span></span>
+                </div>
+                <a class="button button-primary" href="#">Continue track <svg class="ico"><use href="#arrow" /></svg></a>
+              </div>
+            </div>
+
+            <ol class="grid">
+              <li class="card ex-card done">
+                <div class="band"><span class="big-n">01</span><span class="state-tag" data-state="solved"><span>Solved</span></span></div>
+                <h4 class="ex-title"><a href="#">ROUND: money to two decimals</a></h4>
+                <p class="prompt">In B6, total the three costs, add 8% markup, and round the result to 2 decimals. Use SUM.</p>
+                <div class="card-foot">
+                  <ul class="chips"><li class="chip">ROUND</li><li class="chip">SUM</li></ul>
+                  <a class="button button-secondary" href="#">Review</a>
+                </div>
+              </li>
+              <li class="card ex-card next">
+                <div class="band"><span class="big-n">02</span><span class="up-next">Up next</span></div>
+                <h4 class="ex-title"><a href="#">ROUNDUP and ROUNDDOWN: one direction only</a></h4>
+                <p class="prompt">In B6, work out the crates needed: twelve units to a crate, and a part crate still ships.</p>
+                <div class="card-foot">
+                  <ul class="chips"><li class="chip">ROUNDUP</li><li class="chip">ROUNDDOWN</li></ul>
+                  <a class="button button-primary" href="#">Start</a>
+                </div>
+              </li>
+              <li class="card ex-card">
+                <div class="band"><span class="big-n">03</span><span class="state-tag"><span>Not started</span></span></div>
+                <h4 class="ex-title"><a href="#">MROUND and FLOOR: round to a multiple</a></h4>
+                <p class="prompt">Round each pallet's unit count to the nearest five and put the first one in C2.</p>
+                <div class="card-foot">
+                  <ul class="chips"><li class="chip">MROUND</li><li class="chip">FLOOR</li></ul>
+                  <a class="button button-secondary" href="#">Start</a>
+                </div>
+              </li>
+            </ol>
+
+            <div class="covers">
+              <p class="label">This track covers</p>
+              <ul class="learn">
+                <li><svg class="ico s"><use href="#check" /></svg>Round a price to two decimal places</li>
+                <li><svg class="ico s"><use href="#check" /></svg>Round always up or always down</li>
+                <li><svg class="ico s"><use href="#check" /></svg>Round to the nearest multiple, such as 5</li>
+                <li><svg class="ico s"><use href="#check" /></svg>Round down to a whole pack or crate</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      document.getElementById("theme").addEventListener("click", () => {
+        const root = document.documentElement;
+        const dark = root.dataset.theme
+          ? root.dataset.theme === "dark"
+          : matchMedia("(prefers-color-scheme: dark)").matches;
+        root.dataset.theme = dark ? "light" : "dark";
+      });
+    </script>
+  </body>
+</html>

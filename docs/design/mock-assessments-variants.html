@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mock assessment variants</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  /* Values copied from src/styles/tokens.css. */
+  :root {
+    color-scheme: light;
+    --bg: #f9fafb; --surface: #fff; --header: #f3f4f6; --text: #101828; --muted: #4a5565; --rule: #e5e7eb;
+    --line: #6a7282; --heading: #1e1e1e; --faint: #6a7282; --primary: #18804f;
+    --chip: #126a41; --chip-bg: #ecfdf3; --chip-line: #a6e3bf; --correct-tint: #e9f9ef; --panel: #e9f5ee;
+    --pro: #5b21b6; --pro-bg: #ede9fe; --offer-blue: #1d5fbf;
+    --beginner: #016630; --beginner-bg: #dbfce7; --intermediate: #894b00; --intermediate-bg: #fef9c2; --advanced: #9f0712; --advanced-bg: #ffe2e2;
+    --footer-bg: #1e1e1e; --on-dark: #f3f4f6; --on-dark-muted: #b8bec8;
+    --shadow-card: 0 1px 2px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.08);
+    --font: "Inter", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #eceef1; color: var(--text); font: 15px/1.5 var(--font); }
+  main { max-width: 1180px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1.page { margin: 0 0 4px; font-size: 28px; }
+  .intro { margin: 0 0 32px; color: var(--muted); }
+  section.v { margin-bottom: 56px; }
+  .v-label { font-size: 20px; font-weight: 700; }
+  .v-why { margin: 2px 0 12px; color: var(--muted); }
+  .frame { background: var(--bg); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; box-shadow: 0 4px 16px rgb(0 0 0 / .06); }
+  .site { display: flex; align-items: center; gap: 10px; padding: 10px 20px; background: var(--surface); border-bottom: 1px solid var(--rule); font-weight: 700; font-size: 14px; }
+  .site i { width: 20px; height: 20px; border-radius: 4px; background: var(--primary); }
+  .site span { margin-left: auto; font-weight: 500; color: var(--muted); font-size: 13px; }
+  .pad { padding: 28px; }
+  h1, h2, h3 { color: var(--heading); margin: 0; }
+  p { margin: 0; }
+  .muted { color: var(--muted); }
+  .small { font-size: 13px; }
+  .card { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow-card); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 40px; padding: 0 16px; border-radius: 6px;
+    border: 1px solid var(--primary); background: var(--primary); color: #fff; font: 600 14px/1 var(--font); white-space: nowrap; }
+  .btn.ghost { background: var(--surface); color: var(--text); border-color: var(--line); }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .b1 { background: var(--beginner-bg); color: var(--beginner); }
+  .b2 { background: var(--intermediate-bg); color: var(--intermediate); }
+  .b3 { background: var(--advanced-bg); color: var(--advanced); }
+  .pro { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; background: var(--pro-bg); color: var(--pro); }
+  .free { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; background: var(--chip-bg); color: var(--chip); }
+  .fn { display: inline-block; padding: 2px 8px; border: 1px solid var(--rule); border-radius: 4px; font: 600 12px/1.4 var(--mono); background: var(--surface); margin: 0 4px 4px 0; }
+
+  /* 1 Exam table */
+  .m1 .banner { display: flex; align-items: center; gap: 20px; padding: 20px 24px; border-radius: 12px; background: var(--footer-bg); color: var(--on-dark); margin-bottom: 24px; }
+  .m1 .banner h2 { color: #fff; font-size: 20px; }
+  .m1 .banner p { color: var(--on-dark-muted); font-size: 14px; }
+  .m1 .banner .btn { margin-left: auto; }
+  .m1 table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; font-size: 14px; }
+  .m1 th { text-align: left; padding: 10px 16px; background: var(--header); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--faint); }
+  .m1 td { padding: 14px 16px; border-top: 1px solid var(--rule); vertical-align: middle; }
+  .m1 td b { display: block; }
+  .m1 .num { font-family: var(--mono); }
+
+  /* 2 Levels */
+  .m2 .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .m2 .col { display: grid; gap: 12px; align-content: start; }
+  .m2 .col > h2 { display: flex; align-items: center; gap: 8px; font-size: 15px; padding-bottom: 8px; border-bottom: 3px solid; }
+  .m2 .col.c1 > h2 { border-color: var(--beginner); } .m2 .col.c2 > h2 { border-color: var(--intermediate); } .m2 .col.c3 > h2 { border-color: var(--advanced); }
+  .m2 .ex { padding: 16px; display: grid; gap: 6px; }
+  .m2 .ex .meta { font-size: 13px; color: var(--muted); }
+  .m2 .ex .row { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+  .m2 .arrow { text-align: center; color: var(--faint); font-size: 13px; }
+
+  /* 3 By job */
+  .m3 h1 { font-size: 30px; text-align: center; }
+  .m3 .q { text-align: center; margin: 6px 0 24px; color: var(--muted); }
+  .m3 .roles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+  .m3 .role { padding: 22px; border-radius: 14px; display: grid; gap: 10px; align-content: start; border: 1px solid var(--rule); background: var(--surface); }
+  .m3 .role .ic { width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; font-size: 22px; background: var(--chip-bg); color: var(--chip); }
+  .m3 .role h3 { font-size: 19px; }
+  .m3 .role .meta { font-size: 13px; color: var(--muted); }
+  .m3 .role.sel { border: 2px solid var(--primary); box-shadow: 0 0 0 5px var(--correct-tint); }
+  .m3 .gen { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; padding: 16px 20px; border-radius: 10px; background: var(--surface); border: 1px dashed var(--line); }
+
+  /* 4 Preview */
+  .m4 .grid { display: grid; grid-template-columns: 280px 1fr; min-height: 500px; }
+  .m4 .list { border-right: 1px solid var(--rule); background: var(--surface); }
+  .m4 .item { display: grid; gap: 4px; padding: 14px 18px; border-bottom: 1px solid var(--rule); }
+  .m4 .item.on { background: var(--chip-bg); box-shadow: inset 3px 0 var(--primary); }
+  .m4 .item .t { display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
+  .m4 .item .meta { font-size: 13px; color: var(--muted); }
+  .m4 .detail { padding: 28px; display: grid; gap: 16px; align-content: start; }
+  .m4 .facts { display: flex; gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; }
+  .m4 .facts div { flex: 1; background: var(--surface); padding: 12px 16px; }
+  .m4 .facts strong { display: block; font-size: 22px; }
+  .m4 .rules { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; display: grid; gap: 4px; }
+  .m4 .sample { border: 1px solid var(--rule); border-radius: 8px; padding: 14px; background: var(--surface); font-size: 14px; }
+
+  /* 5 Exam paper */
+  .m5 { background: #e8e6df; }
+  .m5 .papers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; padding: 28px; }
+  .m5 .paper { position: relative; background: #fffdf7; padding: 22px 20px 18px; box-shadow: 0 1px 0 #d8d4c8, 0 8px 18px rgb(0 0 0 / .08); display: grid; gap: 10px; }
+  .m5 .paper::before { content: ""; position: absolute; inset: 8px; border: 1px solid #d8d4c8; pointer-events: none; }
+  .m5 .paper .hd { text-align: center; font: 600 11px/1 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+  .m5 .paper h3 { text-align: center; font-size: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--heading); }
+  .m5 .paper dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; font: 500 13px/1.4 var(--mono); }
+  .m5 .paper dt { color: var(--muted); } .m5 .paper dd { margin: 0; }
+  .m5 .paper .stamp { position: absolute; top: 18px; right: 16px; transform: rotate(8deg); border: 2px solid var(--pro); color: var(--pro); font: 700 11px/1 var(--mono); padding: 3px 6px; border-radius: 3px; }
+  .m5 .paper .stamp.f { border-color: var(--primary); color: var(--primary); }
+  .m5 .paper .btn { margin-top: 4px; }
+  .m5 .sign { border-top: 1px dotted var(--line); padding-top: 8px; font: 500 12px/1 var(--mono); color: var(--faint); }
+
+  /* 6 Tickets */
+  .m6 .tickets { display: grid; gap: 14px; }
+  .m6 .tk { display: grid; grid-template-columns: 1fr 190px; background: var(--surface); border-radius: 12px; box-shadow: var(--shadow-card); border: 1px solid var(--rule); overflow: hidden; }
+  .m6 .tk .l { padding: 18px 22px; display: grid; grid-template-columns: repeat(4, auto); gap: 4px 28px; align-items: end; justify-content: start; }
+  .m6 .tk .l h3 { grid-column: 1 / -1; font-size: 20px; margin-bottom: 6px; }
+  .m6 .tk .l small { display: block; font: 600 10px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+  .m6 .tk .l strong { font: 600 16px/1.3 var(--mono); }
+  .m6 .tk .r { position: relative; padding: 18px; display: grid; gap: 8px; align-content: center; justify-items: center; border-left: 2px dashed var(--rule); background: var(--bg); text-align: center; }
+  .m6 .tk .r::before, .m6 .tk .r::after { content: ""; position: absolute; left: -11px; width: 20px; height: 20px; border-radius: 50%; background: #eceef1; }
+  .m6 .tk .r::before { top: -10px; } .m6 .tk .r::after { bottom: -10px; }
+  .m6 .tk.free .r { background: var(--primary); color: #fff; border-left-color: #fff; }
+
+  /* 7 Sample hero + shelf */
+  .m7 .hero { display: grid; grid-template-columns: 1fr 220px; gap: 24px; align-items: center; padding: 32px; border-radius: 14px; background: var(--panel); margin-bottom: 24px; }
+  .m7 .clock { width: 180px; height: 180px; border-radius: 50%; background: conic-gradient(var(--primary) 0 75%, #cfe9da 0); display: grid; place-items: center; justify-self: center; }
+  .m7 .clock div { width: 146px; height: 146px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; text-align: center; line-height: 1.1; }
+  .m7 .clock b { font: 700 34px/1 var(--mono); }
+  .m7 .shelf { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px; }
+  .m7 .sh { flex: 0 0 210px; padding: 16px; display: grid; gap: 6px; }
+  .m7 .sh .t { font: 700 26px/1 var(--mono); }
+
+  /* 8 Matrix */
+  .m8 table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--rule); font-size: 14px; }
+  .m8 th, .m8 td { padding: 10px 12px; border-bottom: 1px solid var(--rule); text-align: center; }
+  .m8 th:first-child, .m8 td:first-child { text-align: left; }
+  .m8 thead th { vertical-align: bottom; background: var(--header); }
+  .m8 thead th b { display: block; font-size: 14px; color: var(--heading); }
+  .m8 thead th span { font-size: 12px; font-weight: 500; color: var(--muted); }
+  .m8 .y { color: var(--primary); font-weight: 800; }
+  .m8 .n { color: #c3c8cf; }
+  .m8 tr.foot td { border-bottom: 0; padding-top: 14px; }
+  .m8 .hl { background: var(--chip-bg); }
+
+  /* 9 Scoreboard */
+  .m9 .top { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .m9 .next { padding: 22px; border-radius: 12px; background: var(--footer-bg); color: var(--on-dark); display: grid; gap: 8px; }
+  .m9 .next h2 { color: #fff; font-size: 22px; }
+  .m9 .next p { color: var(--on-dark-muted); font-size: 14px; }
+  .m9 .scores { padding: 18px 20px; display: grid; gap: 10px; }
+  .m9 .sc { display: grid; grid-template-columns: 130px 1fr 52px; gap: 12px; align-items: center; font-size: 14px; }
+  .m9 .sc .bar { height: 10px; border-radius: 5px; background: var(--header); overflow: hidden; }
+  .m9 .sc .bar i { display: block; height: 100%; background: var(--primary); }
+  .m9 .sc .v { font-family: var(--mono); text-align: right; }
+  .m9 .rows { display: grid; gap: 8px; }
+  .m9 .row { display: grid; grid-template-columns: 1fr auto auto auto; gap: 16px; align-items: center; padding: 12px 16px; }
+
+  /* 10 Exam room */
+  .m10 { background: #11161d; color: #e6e9ec; padding: 32px 28px; }
+  .m10 h1 { color: #fff; font-size: 30px; }
+  .m10 .sub { color: #a3abb8; margin: 4px 0 24px; }
+  .m10 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .m10 .cl { padding: 20px; border-radius: 10px; background: #19202a; border: 1px solid #2b3442; display: grid; gap: 8px; }
+  .m10 .cl .t { font: 600 46px/1 var(--mono); color: #fff; letter-spacing: -0.02em; }
+  .m10 .cl .t span { color: #5ad08a; }
+  .m10 .cl h3 { color: #fff; font-size: 17px; }
+  .m10 .cl p { color: #a3abb8; font-size: 13px; }
+  .m10 .cl .btn.ghost { background: transparent; color: #fff; border-color: #4a5463; }
+  .m10 .cl.free { border-color: #5ad08a; }
+
+  @media (max-width: 760px) {
+    .m6 .tk, .m7 .hero, .m9 .top, .m10 .grid { grid-template-columns: 1fr; }
+    .m6 .tk .r { border-left: 0; border-top: 2px dashed var(--rule); }
+    .m6 .tk .l { grid-template-columns: repeat(2, auto); }
+    .m8 { overflow-x: auto; }
+    .m2 .cols, .m3 .roles, .m4 .grid, .m5 .papers { grid-template-columns: 1fr; }
+    .m1 table .hide { display: none; }
+    .m1 .banner { flex-direction: column; align-items: start; } .m1 .banner .btn { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1 class="page">Mock assessments: 5 new designs</h1>
+  <p class="intro">Same content as today: a free 3-task sample, then 5 PRO assessments (Beginner, Intermediate, Office essentials, Data analyst, Finance) with tasks, time, level and functions, and your attempts.</p>
+
+  <!-- 1 -->
+  <section class="v">
+    <div class="v-label">1 · Exam timetable</div>
+    <p class="v-why">The free sample is a dark banner on top; every assessment is one row in a clean table with time, tasks, level, your best and Start. Easy to compare.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="pad m1">
+        <h1 style="font-size:28px">Mock assessments</h1>
+        <p class="muted" style="margin:4px 0 20px">Timed like an employer's Excel test. No hints; every answer is marked at the end.</p>
+        <div class="banner"><div><span class="free">Free</span><h2 style="margin-top:6px">Try the sample: 3 tasks, 10 minutes</h2><p>SUM, COUNT and IF. See how a timed test feels before you pick one.</p></div><span class="btn">Start the sample</span></div>
+        <table>
+          <tr><th>Assessment</th><th>Level</th><th class="hide">Tasks</th><th>Time</th><th class="hide">Your best</th><th></th></tr>
+          <tr><td><b>Beginner</b><span class="small muted">Totals, counts, a first IF</span></td><td><span class="badge b1">Beginner</span></td><td class="num hide">10</td><td class="num">25 min</td><td class="num hide">–</td><td><span class="btn ghost" style="min-height:34px">Start</span></td></tr>
+          <tr><td><b>Intermediate</b><span class="small muted">Conditional totals, lookups, bands</span></td><td><span class="badge b2">Intermediate</span></td><td class="num hide">10</td><td class="num">35 min</td><td class="num hide">7/10</td><td><span class="btn ghost" style="min-height:34px">Retake</span></td></tr>
+          <tr><td><b>Office essentials</b><span class="small muted">Everyday office formulas</span></td><td><span class="badge b2">Intermediate</span></td><td class="num hide">10</td><td class="num">30 min</td><td class="num hide">–</td><td><span class="btn ghost" style="min-height:34px">Start</span></td></tr>
+          <tr><td><b>Data analyst</b><span class="small muted">Lookups, ranking, dynamic arrays</span></td><td><span class="badge b3">Advanced</span></td><td class="num hide">10</td><td class="num">40 min</td><td class="num hide">–</td><td><span class="btn ghost" style="min-height:34px">Start</span></td></tr>
+          <tr><td><b>Finance</b><span class="small muted">Margins, variances, tax bands</span></td><td><span class="badge b3">Advanced</span></td><td class="num hide">10</td><td class="num">40 min</td><td class="num hide">–</td><td><span class="btn ghost" style="min-height:34px">Start</span></td></tr>
+        </table>
+        <p class="small muted" style="margin-top:12px"><span class="pro">PRO</span> All but the sample need PRO. <a href="#" style="color:var(--primary)">See plans</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="v">
+    <div class="v-label">2 · By level</div>
+    <p class="v-why">Three columns, Beginner → Intermediate → Advanced, each with its own colour. Shows where to start and where to go next.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="pad m2">
+        <div style="display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:24px"><div><h1 style="font-size:28px">Mock assessments</h1><p class="muted">Start on the left, move right as you pass.</p></div><span class="btn">Try the free sample</span></div>
+        <div class="cols">
+          <div class="col c1"><h2>Beginner</h2>
+            <div class="card ex"><div style="display:flex;justify-content:space-between"><b>Sample</b><span class="free">Free</span></div><p class="meta">3 tasks · 10 min</p><div class="row"><span class="small muted">SUM, COUNT, IF</span><span class="btn" style="min-height:32px">Start</span></div></div>
+            <div class="card ex"><div style="display:flex;justify-content:space-between"><b>Beginner</b><span class="pro">PRO</span></div><p class="meta">10 tasks · 25 min</p><div class="row"><span class="small muted">SUM, AVERAGE +6</span><span class="btn ghost" style="min-height:32px">Start</span></div></div>
+          </div>
+          <div class="col c2"><h2>Intermediate</h2>
+            <div class="card ex"><div style="display:flex;justify-content:space-between"><b>Intermediate</b><span class="pro">PRO</span></div><p class="meta">10 tasks · 35 min · best 7/10</p><div class="row"><span class="small muted">COUNTIF, XLOOKUP +10</span><span class="btn ghost" style="min-height:32px">Retake</span></div></div>
+            <div class="card ex"><div style="display:flex;justify-content:space-between"><b>Office essentials</b><span class="pro">PRO</span></div><p class="meta">10 tasks · 30 min</p><div class="row"><span class="small muted">SUMIF, SUMPRODUCT +6</span><span class="btn ghost" style="min-height:32px">Start</span></div></div>
+          </div>
+          <div class="col c3"><h2>Advanced</h2>
+            <div class="card ex"><div style="display:flex;justify-content:space-between"><b>Data analyst</b><span class="pro">PRO</span></div><p class="meta">10 tasks · 40 min</p><div class="row"><span class="small muted">INDEX, MATCH +15</span><span class="btn ghost" style="min-height:32px">Start</span></div></div>
+            <div class="card ex"><div style="display:flex;justify-content:space-between"><b>Finance</b><span class="pro">PRO</span></div><p class="meta">10 tasks · 40 min</p><div class="row"><span class="small muted">ROUND, SUMIF +7</span><span class="btn ghost" style="min-height:32px">Start</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="v">
+    <div class="v-label">3 · By job</div>
+    <p class="v-why">Starts from the visitor's goal: "What job is the test for?" Role tiles first; the general Beginner and Intermediate tests sit in a strip below.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="pad m3">
+        <h1>What job is your Excel test for?</h1>
+        <p class="q">Pick the closest. Each mock is 10 timed tasks, marked at the end, with no hints.</p>
+        <div class="roles">
+          <div class="role"><span class="ic">▤</span><h3>Office or admin</h3><p class="muted small">Totals, counts, a first lookup.</p><p class="meta">Office essentials · 30 min · Intermediate</p><span class="btn ghost">Start <span class="pro">PRO</span></span></div>
+          <div class="role sel"><span class="ic">◔</span><h3>Data analyst</h3><p class="muted small">Lookups, ranking, text and dynamic arrays.</p><p class="meta">Data analyst · 40 min · Advanced</p><span class="btn">Start <span class="pro" style="background:#fff">PRO</span></span></div>
+          <div class="role"><span class="ic">£</span><h3>Finance or accounting</h3><p class="muted small">Margins, run rates, variances, tax bands.</p><p class="meta">Finance · 40 min · Advanced</p><span class="btn ghost">Start <span class="pro">PRO</span></span></div>
+        </div>
+        <div class="gen"><b>Not for a job?</b><span class="small muted">General tests:</span><span class="badge b1">Beginner · 25 min</span><span class="badge b2">Intermediate · 35 min</span><span style="margin-left:auto" class="btn ghost">Free 3-task sample</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="v">
+    <div class="v-label">4 · List and preview</div>
+    <p class="v-why">A short list on the left; the selected assessment opens on the right with its rules, every function it tests and a sample task. Fewer surprises before Start.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="m4"><div class="grid">
+        <div class="list">
+          <div class="item"><div class="t">Sample<span class="free">Free</span></div><span class="meta">3 tasks · 10 min · Beginner</span></div>
+          <div class="item"><div class="t">Beginner<span class="pro">PRO</span></div><span class="meta">10 tasks · 25 min</span></div>
+          <div class="item"><div class="t">Intermediate<span class="pro">PRO</span></div><span class="meta">10 tasks · 35 min · best 7/10</span></div>
+          <div class="item"><div class="t">Office essentials<span class="pro">PRO</span></div><span class="meta">10 tasks · 30 min</span></div>
+          <div class="item on"><div class="t">Data analyst<span class="pro">PRO</span></div><span class="meta">10 tasks · 40 min</span></div>
+          <div class="item"><div class="t">Finance<span class="pro">PRO</span></div><span class="meta">10 tasks · 40 min</span></div>
+        </div>
+        <div class="detail">
+          <div style="display:flex;justify-content:space-between;align-items:start;gap:16px"><div><span class="badge b3">Advanced</span><h1 style="font-size:28px;margin-top:6px">Data analyst</h1><p class="muted">Conditional counts, lookups, ranking, text and dynamic arrays, as in an analyst screening test.</p></div><span class="btn">Start</span></div>
+          <div class="facts"><div><strong>10</strong><span class="small muted">tasks</span></div><div><strong>40 min</strong><span class="small muted">time limit</span></div><div><strong>0</strong><span class="small muted">hints</span></div><div><strong>–</strong><span class="small muted">your best</span></div></div>
+          <div><h3 style="font-size:15px;margin-bottom:8px">Functions it tests</h3><span class="fn">COUNTIFS</span><span class="fn">AVERAGEIF</span><span class="fn">INDEX</span><span class="fn">MATCH</span><span class="fn">XLOOKUP</span><span class="fn">RANK.EQ</span><span class="fn">FILTER</span><span class="fn">SORT</span><span class="fn">UNIQUE</span><span class="fn">TEXTJOIN</span><span class="fn">LEFT</span><span class="fn">+6</span></div>
+          <div><h3 style="font-size:15px;margin-bottom:8px">How it works</h3><ol class="rules"><li>The clock starts when you open the first task.</li><li>Move between tasks freely; nothing is marked until you finish.</li><li>At the end you see every answer and what was expected.</li></ol></div>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="v">
+    <div class="v-label">5 · Exam papers</div>
+    <p class="v-why">Each assessment is a printed exam cover: header, title, a typed fact list and a rubber stamp for Free or PRO. Feels like a real test, distinct from practice pages.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="m5">
+        <div style="padding:28px 28px 0"><h1 style="font-size:28px">Mock assessments</h1><p class="muted">Timed. No hints. Marked when you finish.</p></div>
+        <div class="papers">
+          <div class="paper"><span class="stamp f">FREE</span><span class="hd">Excel assessment</span><h3>Sample paper</h3><dl><dt>Tasks</dt><dd>3</dd><dt>Time</dt><dd>10 minutes</dd><dt>Level</dt><dd>Beginner</dd><dt>Covers</dt><dd>SUM, COUNT, IF</dd></dl><span class="sign">Candidate: ________</span><span class="btn">Begin</span></div>
+          <div class="paper"><span class="stamp">PRO</span><span class="hd">Excel assessment</span><h3>Beginner</h3><dl><dt>Tasks</dt><dd>10</dd><dt>Time</dt><dd>25 minutes</dd><dt>Level</dt><dd>Beginner</dd><dt>Covers</dt><dd>SUM, AVERAGE, MAX +5</dd></dl><span class="sign">Best: –</span><span class="btn ghost">Begin</span></div>
+          <div class="paper"><span class="stamp">PRO</span><span class="hd">Excel assessment</span><h3>Intermediate</h3><dl><dt>Tasks</dt><dd>10</dd><dt>Time</dt><dd>35 minutes</dd><dt>Level</dt><dd>Intermediate</dd><dt>Covers</dt><dd>COUNTIF, XLOOKUP +10</dd></dl><span class="sign">Best: 7 / 10</span><span class="btn ghost">Begin</span></div>
+          <div class="paper"><span class="stamp">PRO</span><span class="hd">Excel assessment</span><h3>Office essentials</h3><dl><dt>Tasks</dt><dd>10</dd><dt>Time</dt><dd>30 minutes</dd><dt>Level</dt><dd>Intermediate</dd><dt>Covers</dt><dd>SUMIF, SUMPRODUCT +6</dd></dl><span class="sign">Best: –</span><span class="btn ghost">Begin</span></div>
+          <div class="paper"><span class="stamp">PRO</span><span class="hd">Excel assessment</span><h3>Data analyst</h3><dl><dt>Tasks</dt><dd>10</dd><dt>Time</dt><dd>40 minutes</dd><dt>Level</dt><dd>Advanced</dd><dt>Covers</dt><dd>INDEX, MATCH +15</dd></dl><span class="sign">Best: –</span><span class="btn ghost">Begin</span></div>
+          <div class="paper"><span class="stamp">PRO</span><span class="hd">Excel assessment</span><h3>Finance</h3><dl><dt>Tasks</dt><dd>10</dd><dt>Time</dt><dd>40 minutes</dd><dt>Level</dt><dd>Advanced</dd><dt>Covers</dt><dd>ROUND, SUMIF +7</dd></dl><span class="sign">Best: –</span><span class="btn ghost">Begin</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <h1 class="page" style="margin-top:72px">5 more</h1>
+  <p class="intro">Same content again, five different ideas.</p>
+
+  <!-- 6 -->
+  <section class="v">
+    <div class="v-label">6 · Tickets</div>
+    <p class="v-why">Each assessment is a ticket: the facts in typed fields on the left, a tear-off stub with Start on the right. The free sample's stub is green.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="pad m6">
+        <h1 style="font-size:28px;margin-bottom:16px">Mock assessments</h1>
+        <div class="tickets">
+          <div class="tk free"><div class="l"><h3>Sample assessment</h3><span><small>Tasks</small><strong>3</strong></span><span><small>Time</small><strong>10 min</strong></span><span><small>Level</small><strong>Beginner</strong></span><span><small>Covers</small><strong>SUM COUNT IF</strong></span></div><div class="r"><b>Free</b><span class="btn" style="background:#fff;color:var(--primary);border-color:#fff">Start</span></div></div>
+          <div class="tk"><div class="l"><h3>Intermediate</h3><span><small>Tasks</small><strong>10</strong></span><span><small>Time</small><strong>35 min</strong></span><span><small>Level</small><strong>Intermediate</strong></span><span><small>Your best</small><strong>7/10</strong></span></div><div class="r"><span class="pro">PRO</span><span class="btn ghost">Retake</span></div></div>
+          <div class="tk"><div class="l"><h3>Data analyst</h3><span><small>Tasks</small><strong>10</strong></span><span><small>Time</small><strong>40 min</strong></span><span><small>Level</small><strong>Advanced</strong></span><span><small>Covers</small><strong>INDEX MATCH +15</strong></span></div><div class="r"><span class="pro">PRO</span><span class="btn ghost">Start</span></div></div>
+          <div class="tk"><div class="l"><h3>Finance</h3><span><small>Tasks</small><strong>10</strong></span><span><small>Time</small><strong>40 min</strong></span><span><small>Level</small><strong>Advanced</strong></span><span><small>Covers</small><strong>ROUND SUMIF +7</strong></span></div><div class="r"><span class="pro">PRO</span><span class="btn ghost">Start</span></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="v">
+    <div class="v-label">7 · Sample first</div>
+    <p class="v-why">The free sample takes the whole top with a big clock showing its 10 minutes. The paid tests sit on a scrolling shelf underneath, each led by its time.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="pad m7">
+        <div class="hero">
+          <div><span class="free">Free · no sign-up</span><h1 style="font-size:32px;margin:8px 0">Can you pass a timed Excel test?</h1><p class="muted" style="margin-bottom:16px">Three tasks, ten minutes, no hints. You see every answer when you finish.</p><span class="btn" style="min-height:48px;padding:0 24px">Start the sample</span></div>
+          <div class="clock"><div><b>10:00</b><span class="small muted">3 tasks</span></div></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h2 style="font-size:18px">Full assessments <span class="pro" style="vertical-align:middle">PRO</span></h2><a href="#" class="small" style="color:var(--primary)">See plans</a></div>
+        <div class="shelf">
+          <div class="card sh"><span class="t">25:00</span><b>Beginner</b><span class="small muted">10 tasks · SUM, IF, %</span><span class="badge b1" style="justify-self:start">Beginner</span></div>
+          <div class="card sh"><span class="t">35:00</span><b>Intermediate</b><span class="small muted">10 tasks · best 7/10</span><span class="badge b2" style="justify-self:start">Intermediate</span></div>
+          <div class="card sh"><span class="t">30:00</span><b>Office essentials</b><span class="small muted">10 tasks · SUMIF, lookups</span><span class="badge b2" style="justify-self:start">Intermediate</span></div>
+          <div class="card sh"><span class="t">40:00</span><b>Data analyst</b><span class="small muted">10 tasks · arrays, ranking</span><span class="badge b3" style="justify-self:start">Advanced</span></div>
+          <div class="card sh"><span class="t">40:00</span><b>Finance</b><span class="small muted">10 tasks · margins, tax</span><span class="badge b3" style="justify-self:start">Advanced</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="v">
+    <div class="v-label">8 · Compare</div>
+    <p class="v-why">A comparison table: assessments across the top, topics down the side, ticks where a test covers a topic. Pick the one that matches the job ad.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="pad m8">
+        <h1 style="font-size:28px">Which assessment covers what</h1>
+        <p class="muted" style="margin:4px 0 16px">Match the topics in the job ad, then start that test.</p>
+        <table>
+          <thead><tr><th style="text-align:left">Topic</th><th><b>Sample</b><span>3 · 10 min</span></th><th><b>Beginner</b><span>10 · 25 min</span></th><th><b>Intermediate</b><span>10 · 35 min</span></th><th class="hl"><b>Office</b><span>10 · 30 min</span></th><th><b>Analyst</b><span>10 · 40 min</span></th><th><b>Finance</b><span>10 · 40 min</span></th></tr></thead>
+          <tr><td>Totals and averages</td><td class="y">✓</td><td class="y">✓</td><td class="n">–</td><td class="y hl">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>IF and conditions</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y hl">✓</td><td class="n">–</td><td class="y">✓</td></tr>
+          <tr><td>COUNTIF / SUMIF</td><td class="n">–</td><td class="n">–</td><td class="y">✓</td><td class="y hl">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>Lookups</td><td class="n">–</td><td class="n">–</td><td class="y">✓</td><td class="y hl">✓</td><td class="y">✓</td><td class="n">–</td></tr>
+          <tr><td>Text</td><td class="n">–</td><td class="n">–</td><td class="y">✓</td><td class="n hl">–</td><td class="y">✓</td><td class="n">–</td></tr>
+          <tr><td>Dynamic arrays</td><td class="n">–</td><td class="n">–</td><td class="n">–</td><td class="n hl">–</td><td class="y">✓</td><td class="n">–</td></tr>
+          <tr><td>Rounding and percentages</td><td class="n">–</td><td class="y">✓</td><td class="n">–</td><td class="n hl">–</td><td class="n">–</td><td class="y">✓</td></tr>
+          <tr class="foot"><td></td><td><span class="btn" style="min-height:32px">Free</span></td><td><span class="btn ghost" style="min-height:32px">Start</span></td><td><span class="btn ghost" style="min-height:32px">Start</span></td><td class="hl"><span class="btn" style="min-height:32px">Start</span></td><td><span class="btn ghost" style="min-height:32px">Start</span></td><td><span class="btn ghost" style="min-height:32px">Start</span></td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="v">
+    <div class="v-label">9 · Your scores first</div>
+    <p class="v-why">For returning visitors: a "do this next" card and your best score on each test come first, the full list after. New visitors see the sample in the dark card instead.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="pad m9">
+        <h1 style="font-size:28px;margin-bottom:16px">Mock assessments</h1>
+        <div class="top">
+          <div class="next"><span class="small" style="color:#5ad08a;font-weight:700">Next up for you</span><h2>Office essentials</h2><p>You scored 7/10 on Intermediate. This one is the same level with everyday office tasks. 10 tasks, 30 minutes.</p><span class="btn" style="justify-self:start">Start</span></div>
+          <div class="card scores"><h3 style="font-size:15px">Your best</h3>
+            <div class="sc"><span>Sample</span><span class="bar"><i style="width:100%"></i></span><span class="v">3/3</span></div>
+            <div class="sc"><span>Beginner</span><span class="bar"><i style="width:90%"></i></span><span class="v">9/10</span></div>
+            <div class="sc"><span>Intermediate</span><span class="bar"><i style="width:70%"></i></span><span class="v">7/10</span></div>
+            <div class="sc"><span>Office</span><span class="bar"><i style="width:0"></i></span><span class="v">–</span></div>
+            <div class="sc"><span>Data analyst</span><span class="bar"><i style="width:0"></i></span><span class="v">–</span></div>
+            <div class="sc"><span>Finance</span><span class="bar"><i style="width:0"></i></span><span class="v">–</span></div>
+          </div>
+        </div>
+        <h2 style="font-size:18px;margin-bottom:10px">All assessments</h2>
+        <div class="rows">
+          <div class="card row"><span><b>Data analyst</b> <span class="small muted">· lookups, ranking, arrays</span></span><span class="badge b3">Advanced</span><span class="small muted">40 min</span><span class="btn ghost" style="min-height:32px">Start</span></div>
+          <div class="card row"><span><b>Finance</b> <span class="small muted">· margins, variances, tax</span></span><span class="badge b3">Advanced</span><span class="small muted">40 min</span><span class="btn ghost" style="min-height:32px">Start</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="v">
+    <div class="v-label">10 · Exam room</div>
+    <p class="v-why">A dark, quiet page that feels like the test itself. Each card leads with its countdown in big digits. Sets it apart from relaxed practice.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="m10">
+        <h1>Mock assessments</h1>
+        <p class="sub">The clock runs. No hints. Marked when time is up or you finish.</p>
+        <div class="grid">
+          <div class="cl free"><span class="t"><span>10</span>:00</span><h3>Sample <span class="free" style="vertical-align:middle">Free</span></h3><p>3 tasks · Beginner · SUM, COUNT, IF</p><span class="btn">Start the clock</span></div>
+          <div class="cl"><span class="t">25:00</span><h3>Beginner</h3><p>10 tasks · totals, counts, a first IF</p><span class="btn ghost">Start <span class="pro">PRO</span></span></div>
+          <div class="cl"><span class="t">35:00</span><h3>Intermediate</h3><p>10 tasks · best 7/10</p><span class="btn ghost">Retake <span class="pro">PRO</span></span></div>
+          <div class="cl"><span class="t">30:00</span><h3>Office essentials</h3><p>10 tasks · everyday office formulas</p><span class="btn ghost">Start <span class="pro">PRO</span></span></div>
+          <div class="cl"><span class="t">40:00</span><h3>Data analyst</h3><p>10 tasks · lookups, ranking, arrays</p><span class="btn ghost">Start <span class="pro">PRO</span></span></div>
+          <div class="cl"><span class="t">40:00</span><h3>Finance</h3><p>10 tasks · margins, variances, tax</p><span class="btn ghost">Start <span class="pro">PRO</span></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,862 @@
+<!doctype html>
+<!-- Why this exists: five takes on the "Tasks done" results screen that ends a
+     function practice run (/exercises/drills/?done), to pick one. Shows only
+     what the run records: per task its title, function, level, solved or not,
+     and wrong checks (no time is recorded). Uses the site's own tokens and base
+     styles. Open the file in a browser; the button top right switches light and dark. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Function practice results options</title>
+    <link rel="stylesheet" href="../../../src/styles/tokens.css" />
+    <link rel="stylesheet" href="../../../src/styles/base.css" />
+    <style>
+      body {
+        background: var(--bg);
+        color: var(--text);
+        margin: 0;
+      }
+      .page {
+        max-width: 72rem;
+        margin: 0 auto;
+        padding: var(--space-6) var(--space-4) 4rem;
+      }
+      .page > header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: end;
+        justify-content: space-between;
+        gap: var(--space-3);
+        margin-bottom: var(--space-6);
+      }
+      .page h1 {
+        margin: 0;
+        font-size: var(--size-xxl);
+        color: var(--heading);
+      }
+      .page > header p {
+        margin: var(--space-1) 0 0;
+        color: var(--muted);
+      }
+      .option {
+        margin-bottom: 4rem;
+      }
+      .option > h2 {
+        display: flex;
+        align-items: baseline;
+        gap: var(--space-3);
+        margin: 0 0 var(--space-1);
+        font-size: var(--size-l);
+        color: var(--heading);
+      }
+      .option > h2 b {
+        display: inline-grid;
+        place-items: center;
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: 50%;
+        background: var(--primary);
+        color: var(--on-primary);
+        font-size: var(--size-s);
+      }
+      .option > p {
+        margin: 0 0 var(--space-3);
+        color: var(--muted);
+        max-width: 48rem;
+      }
+      .stage {
+        padding: var(--space-5);
+        border: 1px dashed var(--rule);
+        border-radius: var(--radius-l);
+        background: var(--bg);
+      }
+      @media (max-width: 40rem) {
+        .stage {
+          padding: var(--space-3);
+        }
+      }
+
+      /* Shared bits. */
+      .ico {
+        width: 1.25rem;
+        height: 1.25rem;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        flex-shrink: 0;
+      }
+      .ico.s {
+        width: 1rem;
+        height: 1rem;
+      }
+      .card {
+        border: 1px solid var(--rule);
+        border-radius: var(--radius-l);
+        background: var(--surface);
+        box-shadow: var(--shadow-card);
+      }
+      .eyebrow {
+        margin: 0;
+        font-size: var(--size-xs);
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+      }
+      .actions .button {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+      }
+      .fn {
+        font-family: var(--font-mono);
+        font-size: var(--size-xs);
+        font-weight: 700;
+        padding: 0.15rem 0.5rem;
+        border-radius: var(--radius-pill);
+        background: var(--chip-bg);
+        color: var(--chip);
+        border: 1px solid var(--chip-line);
+        white-space: nowrap;
+      }
+      .ok {
+        color: var(--correct);
+      }
+      .no {
+        color: var(--miss);
+      }
+      .dot {
+        display: inline-grid;
+        place-items: center;
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .dot.ok {
+        background: var(--correct-tint);
+      }
+      .dot.no {
+        background: var(--miss-tint);
+      }
+      .num {
+        font-variant-numeric: tabular-nums;
+      }
+      .muted {
+        color: var(--muted);
+      }
+
+      /* 1. Score ring. */
+      .o1 {
+        overflow: hidden;
+      }
+      .o1 .top {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: var(--space-5);
+        align-items: center;
+        padding: var(--space-5);
+        border-bottom: 1px solid var(--rule);
+      }
+      .ring {
+        --p: 60;
+        position: relative;
+        width: 7.5rem;
+        height: 7.5rem;
+        border-radius: 50%;
+        background: conic-gradient(var(--primary) calc(var(--p) * 1%), var(--panel) 0);
+        display: grid;
+        place-items: center;
+      }
+      .ring::before {
+        content: "";
+        position: absolute;
+        inset: 0.65rem;
+        border-radius: 50%;
+        background: var(--surface);
+      }
+      .ring span {
+        position: relative;
+        display: grid;
+        text-align: center;
+        line-height: 1.1;
+      }
+      .ring b {
+        font-size: var(--size-xxl);
+        color: var(--heading);
+      }
+      .ring small {
+        color: var(--muted);
+        font-size: var(--size-xs);
+      }
+      .o1 h3 {
+        margin: var(--space-1) 0;
+        font-size: var(--size-xl);
+        color: var(--heading);
+      }
+      .o1 .top p {
+        margin: 0 0 var(--space-3);
+        color: var(--muted);
+      }
+      .rows {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .rows li {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto auto;
+        gap: var(--space-3);
+        align-items: center;
+        padding: var(--space-3) var(--space-5);
+        border-bottom: 1px solid var(--rule);
+      }
+      .rows li:last-child {
+        border-bottom: 0;
+      }
+      .rows .t {
+        display: grid;
+        gap: 0.2rem;
+        min-width: 0;
+      }
+      .rows .t strong {
+        color: var(--heading);
+      }
+      .rows .meta {
+        display: flex;
+        gap: var(--space-2);
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .rows .res {
+        font-size: var(--size-s);
+        font-weight: 600;
+        text-align: right;
+      }
+      @media (max-width: 40rem) {
+        .o1 .top {
+          grid-template-columns: 1fr;
+          justify-items: start;
+        }
+        .rows li {
+          grid-template-columns: auto minmax(0, 1fr);
+          padding: var(--space-3);
+        }
+        .rows .res,
+        .rows .redo {
+          grid-column: 2;
+          text-align: left;
+        }
+      }
+
+      /* 2. Stat tiles + function cards. */
+      .o2 {
+        display: grid;
+        gap: var(--space-5);
+      }
+      .o2 .head {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: end;
+        gap: var(--space-3);
+      }
+      .o2 h3 {
+        margin: var(--space-1) 0 0;
+        font-size: var(--size-xl);
+        color: var(--heading);
+      }
+      .tiles {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: var(--space-3);
+      }
+      .tile {
+        padding: var(--space-4);
+        display: grid;
+        gap: var(--space-1);
+      }
+      .tile .k {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        color: var(--muted);
+        font-size: var(--size-s);
+      }
+      .tile .v {
+        font-size: var(--size-xxl);
+        font-weight: 700;
+        color: var(--heading);
+        line-height: 1.1;
+      }
+      .tile .v small {
+        font-size: var(--size-m);
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .tile.accent {
+        background: var(--correct-tint);
+        border-color: var(--chip-line);
+      }
+      .fcards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+        gap: var(--space-3);
+      }
+      .fcard {
+        padding: var(--space-4);
+        display: grid;
+        gap: var(--space-3);
+      }
+      .fcard .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--space-2);
+      }
+      .bar {
+        height: 0.5rem;
+        border-radius: var(--radius-pill);
+        background: var(--panel);
+        overflow: hidden;
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+        background: var(--primary);
+        border-radius: inherit;
+      }
+      .fcard a {
+        font-weight: 600;
+        color: var(--primary);
+      }
+      @media (max-width: 48rem) {
+        .tiles {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      /* 3. Report table. */
+      .o3 {
+        overflow: hidden;
+      }
+      .o3 .head {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--space-3);
+        padding: var(--space-4) var(--space-5);
+        border-bottom: 1px solid var(--rule);
+        background: var(--panel);
+      }
+      .o3 h3 {
+        margin: 0;
+        font-size: var(--size-l);
+        color: var(--heading);
+      }
+      .o3 .sums {
+        display: flex;
+        gap: var(--space-4);
+        font-size: var(--size-s);
+        color: var(--muted);
+      }
+      .o3 .sums b {
+        color: var(--heading);
+      }
+      .o3 table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: var(--size-s);
+      }
+      .o3 th {
+        text-align: left;
+        font-size: var(--size-xs);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+        font-weight: 700;
+        padding: var(--space-2) var(--space-5);
+        border-bottom: 1px solid var(--rule);
+      }
+      .o3 td {
+        padding: var(--space-3) var(--space-5);
+        border-bottom: 1px solid var(--rule);
+        vertical-align: middle;
+      }
+      .o3 td.n {
+        color: var(--muted);
+        width: 2rem;
+      }
+      .o3 td strong {
+        color: var(--heading);
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.15rem 0.55rem;
+        border-radius: var(--radius-pill);
+        font-size: var(--size-xs);
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .pill.ok {
+        background: var(--correct-tint);
+      }
+      .pill.no {
+        background: var(--miss-tint);
+      }
+      .o3 .foot {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--space-3);
+        padding: var(--space-4) var(--space-5);
+      }
+      @media (max-width: 40rem) {
+        .o3 .hide-s {
+          display: none;
+        }
+        .o3 th,
+        .o3 td {
+          padding-inline: var(--space-3);
+        }
+      }
+
+      /* 4. Verdict banner. */
+      .o4 {
+        overflow: hidden;
+      }
+      .o4 .banner {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: var(--space-4);
+        align-items: center;
+        padding: var(--space-6) var(--space-5);
+        background: linear-gradient(135deg, var(--hero-tint), var(--hero-tint-2));
+        border-bottom: 1px solid var(--rule);
+      }
+      .o4 h3 {
+        margin: var(--space-1) 0;
+        font-size: var(--size-xxl);
+        color: var(--heading);
+        line-height: 1.15;
+      }
+      .o4 .banner p {
+        margin: 0;
+        color: var(--muted);
+      }
+      .big {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: var(--heading);
+        line-height: 1;
+        text-align: right;
+      }
+      .big small {
+        display: block;
+        font-size: var(--size-s);
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .o4 .split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .o4 .col {
+        padding: var(--space-5);
+        display: grid;
+        gap: var(--space-3);
+        align-content: start;
+      }
+      .o4 .col + .col {
+        border-left: 1px solid var(--rule);
+      }
+      .o4 h4 {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-size: var(--size-m);
+        color: var(--heading);
+      }
+      .o4 ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: var(--space-2);
+      }
+      .o4 li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--space-2);
+        padding: var(--space-2) var(--space-3);
+        border: 1px solid var(--rule);
+        border-radius: var(--radius-m);
+        font-size: var(--size-s);
+      }
+      .o4 li a {
+        font-weight: 600;
+        color: var(--primary);
+        white-space: nowrap;
+      }
+      .o4 .foot {
+        padding: var(--space-4) var(--space-5);
+        border-top: 1px solid var(--rule);
+        background: var(--panel);
+      }
+      @media (max-width: 40rem) {
+        .o4 .banner,
+        .o4 .split {
+          grid-template-columns: 1fr;
+        }
+        .big {
+          text-align: left;
+        }
+        .o4 .col + .col {
+          border-left: 0;
+          border-top: 1px solid var(--rule);
+        }
+      }
+
+      /* 5. Split: score left, timeline right. */
+      .o5 {
+        display: grid;
+        grid-template-columns: 18rem minmax(0, 1fr);
+        overflow: hidden;
+      }
+      .o5 aside {
+        padding: var(--space-5);
+        background: var(--panel);
+        border-right: 1px solid var(--rule);
+        display: grid;
+        gap: var(--space-4);
+        align-content: start;
+      }
+      .o5 h3 {
+        margin: var(--space-1) 0 0;
+        font-size: var(--size-xl);
+        color: var(--heading);
+      }
+      .o5 .score {
+        font-size: 3rem;
+        font-weight: 800;
+        color: var(--heading);
+        line-height: 1;
+      }
+      .o5 .score small {
+        font-size: var(--size-l);
+        color: var(--muted);
+      }
+      .o5 dl {
+        margin: 0;
+        display: grid;
+        gap: var(--space-2);
+        font-size: var(--size-s);
+      }
+      .o5 dl div {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: var(--space-2);
+      }
+      .o5 dt {
+        color: var(--muted);
+      }
+      .o5 dd {
+        margin: 0;
+        font-weight: 700;
+        color: var(--heading);
+      }
+      .o5 aside .actions {
+        display: grid;
+      }
+      .o5 aside .button {
+        justify-content: center;
+      }
+      .timeline {
+        list-style: none;
+        margin: 0;
+        padding: var(--space-5);
+      }
+      .timeline li {
+        position: relative;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: var(--space-3);
+        padding-bottom: var(--space-4);
+      }
+      .timeline li:not(:last-child)::before {
+        content: "";
+        position: absolute;
+        left: 0.875rem;
+        top: 1.9rem;
+        bottom: 0.1rem;
+        width: 2px;
+        background: var(--rule);
+      }
+      .timeline .t {
+        display: grid;
+        gap: 0.25rem;
+        padding-top: 0.15rem;
+      }
+      .timeline strong {
+        color: var(--heading);
+      }
+      .timeline .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+        align-items: center;
+        font-size: var(--size-s);
+      }
+      .timeline a {
+        font-size: var(--size-s);
+        font-weight: 600;
+        color: var(--primary);
+      }
+      @media (max-width: 48rem) {
+        .o5 {
+          grid-template-columns: 1fr;
+        }
+        .o5 aside {
+          border-right: 0;
+          border-bottom: 1px solid var(--rule);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="check" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10" /></symbol>
+      <symbol id="x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" /></symbol>
+      <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></symbol>
+      <symbol id="redo" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4" /></symbol>
+      <symbol id="target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" /><circle cx="12" cy="12" r="3" /></symbol>
+      <symbol id="bolt" viewBox="0 0 24 24"><path d="M13 3L5 14h6l-1 7 8-11h-6z" /></symbol>
+      <symbol id="alert" viewBox="0 0 24 24"><path d="M12 8v5M12 16.5v.5M10.3 3.9L2.6 17.5A2 2 0 0 0 4.3 20.5h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z" /></symbol>
+      <symbol id="sigma" viewBox="0 0 24 24"><path d="M17 5H7l6 7-6 7h10" /></symbol>
+    </svg>
+
+    <div class="page">
+      <header>
+        <div>
+          <h1>Function practice results: five options</h1>
+          <p>One sample run: 5 tasks on XLOOKUP and SUMIFS, 3 solved, 6 wrong checks. Only data the run records.</p>
+        </div>
+        <button class="button button-secondary" type="button" id="theme">Switch light / dark</button>
+      </header>
+
+      <section class="option">
+        <h2><b>1</b> Score ring</h2>
+        <p>A ring with the score and a one-line verdict, then every task as a row: title, function, level, result and a redo link for the ones not solved. Clear and complete.</p>
+        <div class="stage">
+          <div class="card o1">
+            <div class="top">
+              <div class="ring" style="--p: 60"><span><b>3/5</b><small>solved</small></span></div>
+              <div>
+                <p class="eyebrow">Run finished · XLOOKUP, SUMIFS</p>
+                <h3>Good run. Two tasks to practise again.</h3>
+                <p>2 solved on the first try · 6 wrong checks in all</p>
+                <div class="actions">
+                  <a class="button button-primary" href="#"><svg class="ico s"><use href="#redo" /></svg>Practise again</a>
+                  <a class="button button-outline" href="#">Pick other functions</a>
+                </div>
+              </div>
+            </div>
+            <ol class="rows">
+              <li>
+                <span class="dot ok"><svg class="ico s ok"><use href="#check" /></svg></span>
+                <span class="t"><strong>Find a price by product code</strong><span class="meta"><span class="fn">XLOOKUP</span><span class="level level-1">Beginner</span></span></span>
+                <span class="res ok">First try</span><span></span>
+              </li>
+              <li>
+                <span class="dot ok"><svg class="ico s ok"><use href="#check" /></svg></span>
+                <span class="t"><strong>Return a default when not found</strong><span class="meta"><span class="fn">XLOOKUP</span><span class="level level-2">Intermediate</span></span></span>
+                <span class="res ok">Solved · 2 wrong checks</span><span></span>
+              </li>
+              <li>
+                <span class="dot no"><svg class="ico s no"><use href="#x" /></svg></span>
+                <span class="t"><strong>Look up the last match</strong><span class="meta"><span class="fn">XLOOKUP</span><span class="level level-3">Advanced</span></span></span>
+                <span class="res no">Not solved · 3 wrong checks</span><a class="redo" href="#">Try again</a>
+              </li>
+              <li>
+                <span class="dot ok"><svg class="ico s ok"><use href="#check" /></svg></span>
+                <span class="t"><strong>Total sales for one region</strong><span class="meta"><span class="fn">SUMIFS</span><span class="level level-1">Beginner</span></span></span>
+                <span class="res ok">First try</span><span></span>
+              </li>
+              <li>
+                <span class="dot no"><svg class="ico s no"><use href="#x" /></svg></span>
+                <span class="t"><strong>Total between two dates</strong><span class="meta"><span class="fn">SUMIFS</span><span class="level level-2">Intermediate</span></span></span>
+                <span class="res no">Not solved · 1 wrong check</span><a class="redo" href="#">Try again</a>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="option">
+        <h2><b>2</b> Stat tiles</h2>
+        <p>Four numbers up top, then one card per function with its own score bar and the next step. Reads like a small dashboard; best when a run mixes several functions.</p>
+        <div class="stage">
+          <div class="o2">
+            <div class="head">
+              <div>
+                <p class="eyebrow">Function practice · results</p>
+                <h3>You solved 3 of 5 tasks</h3>
+              </div>
+              <div class="actions">
+                <a class="button button-primary" href="#"><svg class="ico s"><use href="#redo" /></svg>Practise again</a>
+                <a class="button button-outline" href="#">Pick other functions</a>
+              </div>
+            </div>
+            <div class="tiles">
+              <div class="card tile accent"><span class="k"><svg class="ico s"><use href="#check" /></svg>Solved</span><span class="v num">3<small> / 5</small></span></div>
+              <div class="card tile"><span class="k"><svg class="ico s"><use href="#bolt" /></svg>First try</span><span class="v num">2</span></div>
+              <div class="card tile"><span class="k"><svg class="ico s"><use href="#alert" /></svg>Wrong checks</span><span class="v num">6</span></div>
+              <div class="card tile"><span class="k"><svg class="ico s"><use href="#sigma" /></svg>Functions</span><span class="v num">2</span></div>
+            </div>
+            <div class="fcards">
+              <div class="card fcard">
+                <div class="row"><span class="fn">XLOOKUP</span><span class="num muted">2 of 3 solved</span></div>
+                <div class="bar"><i style="width: 67%"></i></div>
+                <div class="row"><span class="muted">Missed: Look up the last match</span></div>
+                <div class="row"><a href="#">Practise XLOOKUP again</a><a href="#">Exercises</a></div>
+              </div>
+              <div class="card fcard">
+                <div class="row"><span class="fn">SUMIFS</span><span class="num muted">1 of 2 solved</span></div>
+                <div class="bar"><i style="width: 50%"></i></div>
+                <div class="row"><span class="muted">Missed: Total between two dates</span></div>
+                <div class="row"><a href="#">Practise SUMIFS again</a><a href="#">Exercises</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="option">
+        <h2><b>3</b> Report table</h2>
+        <p>One table, styled like the review table on the progress page: totals in the head, a row per task, actions in the foot. Most compact and businesslike.</p>
+        <div class="stage">
+          <div class="card o3">
+            <div class="head">
+              <h3>Tasks done</h3>
+              <div class="sums"><span><b class="num">3/5</b> solved</span><span><b class="num">2</b> first try</span><span><b class="num">6</b> wrong checks</span></div>
+            </div>
+            <table>
+              <thead>
+                <tr><th>#</th><th>Task</th><th class="hide-s">Function</th><th class="hide-s">Level</th><th>Result</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="n num">1</td><td><strong>Find a price by product code</strong></td><td class="hide-s"><span class="fn">XLOOKUP</span></td><td class="hide-s"><span class="level level-1">Beginner</span></td><td><span class="pill ok"><svg class="ico s"><use href="#check" /></svg>First try</span></td></tr>
+                <tr><td class="n num">2</td><td><strong>Return a default when not found</strong></td><td class="hide-s"><span class="fn">XLOOKUP</span></td><td class="hide-s"><span class="level level-2">Intermediate</span></td><td><span class="pill ok"><svg class="ico s"><use href="#check" /></svg>2 wrong</span></td></tr>
+                <tr><td class="n num">3</td><td><strong>Look up the last match</strong></td><td class="hide-s"><span class="fn">XLOOKUP</span></td><td class="hide-s"><span class="level level-3">Advanced</span></td><td><span class="pill no"><svg class="ico s"><use href="#x" /></svg>Not solved</span></td></tr>
+                <tr><td class="n num">4</td><td><strong>Total sales for one region</strong></td><td class="hide-s"><span class="fn">SUMIFS</span></td><td class="hide-s"><span class="level level-1">Beginner</span></td><td><span class="pill ok"><svg class="ico s"><use href="#check" /></svg>First try</span></td></tr>
+                <tr><td class="n num">5</td><td><strong>Total between two dates</strong></td><td class="hide-s"><span class="fn">SUMIFS</span></td><td class="hide-s"><span class="level level-2">Intermediate</span></td><td><span class="pill no"><svg class="ico s"><use href="#x" /></svg>Not solved</span></td></tr>
+              </tbody>
+            </table>
+            <div class="foot">
+              <span class="muted">Practise again: <a href="#">XLOOKUP</a>, <a href="#">SUMIFS</a></span>
+              <div class="actions">
+                <a class="button button-primary" href="#"><svg class="ico s"><use href="#redo" /></svg>Practise again</a>
+                <a class="button button-outline" href="#">Pick other functions</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="option">
+        <h2><b>4</b> Verdict banner</h2>
+        <p>A tinted banner with a plain-words verdict and the big score, then two columns: what went well and what to practise, each function with its link. Warmest and most motivating.</p>
+        <div class="stage">
+          <div class="card o4">
+            <div class="banner">
+              <div>
+                <p class="eyebrow">Run finished</p>
+                <h3>Good run. Two tasks to practise.</h3>
+                <p>2 of your 3 solved tasks went right on the first try.</p>
+              </div>
+              <div class="big num">3/5<small>tasks solved</small></div>
+            </div>
+            <div class="split">
+              <div class="col">
+                <h4><svg class="ico ok"><use href="#check" /></svg>Solved</h4>
+                <ul>
+                  <li><span>Find a price by product code</span><span class="fn">XLOOKUP</span></li>
+                  <li><span>Return a default when not found</span><span class="fn">XLOOKUP</span></li>
+                  <li><span>Total sales for one region</span><span class="fn">SUMIFS</span></li>
+                </ul>
+              </div>
+              <div class="col">
+                <h4><svg class="ico no"><use href="#target" /></svg>Practise these again</h4>
+                <ul>
+                  <li><span><span class="fn">XLOOKUP</span> Look up the last match</span><a href="#">Practise</a></li>
+                  <li><span><span class="fn">SUMIFS</span> Total between two dates</span><a href="#">Practise</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="foot actions">
+              <a class="button button-primary" href="#"><svg class="ico s"><use href="#redo" /></svg>Practise again</a>
+              <a class="button button-outline" href="#">Pick other functions</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="option">
+        <h2><b>5</b> Score panel and timeline</h2>
+        <p>A side panel holds the score, three totals and the actions; the tasks run down the right as a timeline in the order you did them. Feels like a finished session report.</p>
+        <div class="stage">
+          <div class="card o5">
+            <aside>
+              <div>
+                <p class="eyebrow">Function practice</p>
+                <h3>Results</h3>
+              </div>
+              <div class="score num">3<small> / 5 solved</small></div>
+              <dl>
+                <div><dt>First try</dt><dd class="num">2</dd></div>
+                <div><dt>Wrong checks</dt><dd class="num">6</dd></div>
+                <div><dt>Functions</dt><dd>XLOOKUP, SUMIFS</dd></div>
+              </dl>
+              <div class="actions">
+                <a class="button button-primary" href="#"><svg class="ico s"><use href="#redo" /></svg>Practise again</a>
+                <a class="button button-outline" href="#">Pick other functions</a>
+              </div>
+            </aside>
+            <ol class="timeline">
+              <li><span class="dot ok"><svg class="ico s ok"><use href="#check" /></svg></span><span class="t"><strong>Find a price by product code</strong><span class="meta"><span class="fn">XLOOKUP</span><span class="level level-1">Beginner</span><span class="ok">First try</span></span></span></li>
+              <li><span class="dot ok"><svg class="ico s ok"><use href="#check" /></svg></span><span class="t"><strong>Return a default when not found</strong><span class="meta"><span class="fn">XLOOKUP</span><span class="level level-2">Intermediate</span><span class="ok">Solved after 2 wrong checks</span></span></span></li>
+              <li><span class="dot no"><svg class="ico s no"><use href="#x" /></svg></span><span class="t"><strong>Look up the last match</strong><span class="meta"><span class="fn">XLOOKUP</span><span class="level level-3">Advanced</span><span class="no">Not solved</span></span><a href="#">Try it again <svg class="ico s"><use href="#arrow" /></svg></a></span></li>
+              <li><span class="dot ok"><svg class="ico s ok"><use href="#check" /></svg></span><span class="t"><strong>Total sales for one region</strong><span class="meta"><span class="fn">SUMIFS</span><span class="level level-1">Beginner</span><span class="ok">First try</span></span></span></li>
+              <li><span class="dot no"><svg class="ico s no"><use href="#x" /></svg></span><span class="t"><strong>Total between two dates</strong><span class="meta"><span class="fn">SUMIFS</span><span class="level level-2">Intermediate</span><span class="no">Not solved</span></span><a href="#">Try it again <svg class="ico s"><use href="#arrow" /></svg></a></span></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      document.getElementById("theme").addEventListener("click", () => {
+        const root = document.documentElement;
+        const dark = root.dataset.theme
+          ? root.dataset.theme === "dark"
+          : matchMedia("(prefers-color-scheme: dark)").matches;
+        root.dataset.theme = dark ? "light" : "dark";
+      });
+    </script>
+  </body>
+</html>

@@ -165,11 +165,15 @@ test("pricing shows Free beside PRO with a billing switch and a comparison", asy
   await expect(page.getByText("6 months")).toHaveCount(0);
 });
 
-test("a PRO exercise shows the paywall over an inert sheet, not the answer", async ({ page }) => {
+test("a PRO exercise shows the paywall over a made-up sheet, not the task or the answer", async ({
+  page,
+}) => {
   await page.goto("/exercises/find-a-code/");
-  await expect(page.getByRole("heading", { name: "This is a PRO exercise" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Solve this exercise with PRO" })).toBeVisible();
+  await expect(page.locator("[data-paywall] .mock-sheet")).toBeVisible();
+  // The task's own sheet stays out of view, and inert, until PRO opens it.
   const sheet = page.locator(".work[data-screen='0']");
-  await expect(sheet).toBeVisible();
+  await expect(sheet).toBeHidden();
   await expect(sheet).toHaveAttribute("inert", "");
   await expect(page.getByRole("tab", { name: "Answer" })).toBeHidden();
   await expect(page.locator("[data-answer]").first()).toBeEmpty();
@@ -190,6 +194,101 @@ test("a function page has working contents, a checked date and a live exercise",
   await expect(meta).toContainText("11 November 2026");
   await check(page, "=VLOOKUP(B8,A2:D6,4,FALSE)");
   await expect(page.locator("[data-status]").first()).toContainText("Correct. B9 shows 218.");
+});
+
+test("a Review link opens a run through the due list, with Previous and Next", async ({ page }) => {
+  await page.addInitScript(
+    (value) => {
+      if (!sessionStorage.getItem("seeded")) {
+        localStorage.setItem("formula-practice:progress:v1", value);
+        sessionStorage.setItem("seeded", "1");
+      }
+    },
+    JSON.stringify({
+      "add-two-cells": { state: "tried", date: "2026-01-01", misses: 2, missed: "2026-01-01" },
+      "subtract-costs": { state: "tried", date: "2026-01-01", misses: 1, missed: "2026-01-01" },
+    }),
+  );
+  await page.goto("/progress/");
+  const rows = page.locator("[data-review-rows] tr");
+  await expect(rows).toHaveCount(2);
+  await expect(page.locator("[data-review-count]")).toHaveText("2 due");
+  await expect(rows.first()).toContainText("Not solved yet, 2 wrong checks");
+  // The filter narrows the table; clearing it brings both back.
+  await page.getByLabel("Find an exercise").fill("subtract");
+  await expect(rows).toHaveCount(1);
+  await expect(page.locator("[data-review-count]")).toHaveText("Showing 1 of 2 due");
+  await page.getByRole("button", { name: "Clear filters" }).click();
+  await expect(rows).toHaveCount(2);
+  await rows.nth(1).getByRole("link").click();
+  const count = page.locator("[data-session-title]");
+  await expect(count).toHaveText("Task 2 of 2");
+  await expect(page.locator("[data-session-more-title]")).toBeHidden();
+  await expect(page.locator("[data-session-next]")).toHaveAttribute("href", "/progress/");
+  await page.locator("[data-session-prev]").click();
+  await expect(count).toHaveText("Task 1 of 2");
+  await expect(page.locator("[data-session-more-title]")).toHaveText("Next to review");
+  await expect(page.locator("[data-session-finish]")).toBeHidden();
+  await expect(page.locator("[data-session-back]")).toHaveText("← Back to your progress");
+  await page.locator("[data-session-back]").click();
+  await expect(page).toHaveURL(/\/progress\/$/u);
+});
+
+test("signed in, Clear my progress clears the account first, and keeps everything if it cannot", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page.context().addCookies([{ name: "signed_in", value: "1", url: page.url() }]);
+  await page.route("**/api/me/", (r) =>
+    r.fulfill({
+      json: {
+        email: "learner@example.com",
+        pro: false,
+        proStatus: null,
+        proUntil: null,
+        news: false,
+        hasPassword: true,
+      },
+    }),
+  );
+  await page.route("**/api/daily/", (r) => r.fulfill({ json: [] }));
+  await page.route("**/api/events/", (r) => r.fulfill({ status: 204 }));
+  let deleteOk = false;
+  const deletes: string[] = [];
+  await page.route("**/api/progress/", (r) => {
+    const method = r.request().method();
+    if (method === "DELETE") {
+      deletes.push(method);
+      return deleteOk
+        ? r.fulfill({ json: { cleared: true } })
+        : r.fulfill({ status: 500, json: {} });
+    }
+    return method === "GET"
+      ? r.fulfill({ json: { "add-two-cells": { state: "solved", date: "2026-11-01" } } })
+      : r.fulfill({ json: { saved: 1 } });
+  });
+  await page.goto("/progress/");
+  await expect(page.locator('[data-stat="solved"]')).toHaveText("1");
+  await expect(page.getByText("from your account, on every device.")).toBeVisible();
+
+  await page.getByRole("button", { name: "Clear my progress" }).click();
+  const ask = page.getByRole("dialog", { name: "Clear all your progress?" });
+  await expect(ask).toContainText("your account, on every device you use");
+  await page.getByRole("button", { name: "Yes, clear it" }).click();
+  await expect(page.getByRole("alert")).toHaveText(
+    "Your account could not be reached, so nothing was cleared. Try again in a moment.",
+  );
+  await expect(ask).toBeVisible();
+  await expect(page.locator('[data-stat="solved"]')).toHaveText("1");
+
+  deleteOk = true;
+  await page.getByRole("button", { name: "Yes, clear it" }).click();
+  await expect(ask).toBeHidden();
+  await expect(
+    page.getByText("Your progress is cleared, on this and every other device."),
+  ).toBeVisible();
+  await expect(page.locator('[data-stat="solved"]')).toHaveText("0");
+  expect(deletes).toHaveLength(2);
 });
 
 test("the progress page shows what is next, what is due, and clears", async ({ page }) => {
@@ -218,22 +317,21 @@ test("the progress page shows what is next, what is due, and clears", async ({ p
   await expect(page.locator('[data-stat="own"]')).toHaveText("1");
   await expect(page.locator('[data-stat="helped"]')).toHaveText("1");
   await expect(page.locator('[data-stat="due"]')).toHaveText("1");
-  await expect(page.locator("[data-summary]")).toHaveText(
-    "You have solved 2 of 128, 1 of them with help.",
-  );
-  await expect(page.locator('[data-status-for="subtract-costs"]')).toHaveText("Solved with help");
 
   await page.getByRole("button", { name: "Clear my progress" }).click();
+  const ask = page.getByRole("dialog", { name: "Clear all your progress?" });
+  await expect(ask).toBeVisible();
+  await expect(page.getByRole("button", { name: "Keep it" })).toBeFocused();
   await page.getByRole("button", { name: "Keep it" }).click();
-  await expect(page.locator("[data-summary]")).toContainText("You have solved 2");
+  await expect(ask).toBeHidden();
+  await expect(page.locator('[data-stat="solved"]')).toHaveText("2");
   await page.getByRole("button", { name: "Clear my progress" }).click();
   await page.getByRole("button", { name: "Yes, clear it" }).click();
   await expect(page.getByText("Your progress is cleared.")).toBeVisible();
-  await expect(page.locator("[data-summary]")).toHaveText("You have not solved an exercise yet.");
   await expect(page.locator('[data-stat="solved"]')).toHaveText("0");
   await expect(page.locator("[data-next]")).toHaveText("Start: Add two cells");
   await page.reload();
-  await expect(page.locator("[data-summary]")).toHaveText("You have not solved an exercise yet.");
+  await expect(page.locator('[data-stat="solved"]')).toHaveText("0");
 });
 
 test("every page shares the footer, keeps breadcrumbs honest and has valid structured data", async ({
@@ -273,7 +371,7 @@ test("every page shares the footer, keeps breadcrumbs honest and has valid struc
     }
   }
   expect(footer).toBe(
-    "Exercises|Function practice|Learning tracks|Interview prep|Daily exercise|Mock assessments|Progress|Functions|Articles|Formula explainer|Keyboard shortcuts|Resources|Pricing|Terms|Privacy|Contact",
+    "Exercises|Function practice|Learning tracks|Daily exercise|Mock assessments|Progress|Functions|Articles|Keyboard shortcuts|Pricing|Terms|Privacy|Contact",
   );
 });
 
@@ -309,11 +407,7 @@ test("a function link lists only the exercises that use that function", async ({
   await expect(page.getByText("Showing 2 of 128 exercises.")).toBeVisible();
 });
 
-test("search finds formula walkthroughs and tool pages", async ({ page }) => {
-  await page.goto("/search/?q=fallback");
-  await expect(page.locator("[data-kind='Walkthrough'] li:not([hidden]) a")).toHaveText([
-    "XLOOKUP with a fallback",
-  ]);
+test("search finds reference pages", async ({ page }) => {
   await page.goto("/search/?q=shortcuts");
   await expect(page.locator("[data-kind='Page'] li:not([hidden]) a")).toHaveText([
     "Keyboard shortcuts",
@@ -329,7 +423,7 @@ test("the tracks page has three groups, the last for interviews", async ({ page 
   ]);
   const interview = page.getByRole("region", { name: "Prepare for a job interview" });
   await expect(interview.locator("article.track")).toHaveCount(6);
-  await expect(interview.getByText("2 free, 3 with PRO")).toHaveCount(6);
+  await expect(interview.getByText("· 2 free")).toHaveCount(6);
   await expect(
     interview.getByRole("link", { name: "Start track: Accounting interview" }),
   ).toHaveAttribute("href", "/exercises/tracks/interview-accounting/");
@@ -351,9 +445,6 @@ test("an interview track lists its exercises, locks and mock assessment", async 
     "href",
     "/mock-assessments/finance/",
   );
-  await page.goto("/exercises/");
-  const list = page.getByRole("region", { name: "Practice for job interviews" });
-  await expect(list.locator(".pick")).toHaveCount(6);
 });
 
 test("a started track says Continue, and a solved exercise says Review", async ({ page }) => {
@@ -389,12 +480,7 @@ test("a function page explains the function and its header example can be edited
 }) => {
   await page.setViewportSize({ width: 1280, height: 900 });
   await page.goto("/functions/vlookup/");
-  for (const name of [
-    "About VLOOKUP",
-    "See a VLOOKUP formula step by step",
-    "Tips and notes",
-    "Common questions",
-  ]) {
+  for (const name of ["About VLOOKUP", "Tips and notes", "Common questions"]) {
     await expect(page.getByRole("heading", { name, exact: true })).toBeVisible();
   }
   const out = page.locator("[data-explainer-out]");
@@ -403,6 +489,4 @@ test("a function page explains the function and its header example can be edited
   await expect(out).toHaveValue("30");
   await page.locator(".fn-head").getByRole("button", { name: "Reset" }).click();
   await expect(out).toHaveValue("85");
-  await page.getByRole("link", { name: /VLOOKUP with an exact match/u }).click();
-  await expect(page).toHaveURL(/\/formula-explainer\/vlookup-exact-match\/$/u);
 });

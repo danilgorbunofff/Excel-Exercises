@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Card unify variants</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  /* Values copied from src/styles/tokens.css. */
+  :root {
+    color-scheme: light;
+    --bg: #f9fafb; --surface: #fff; --header: #f3f4f6; --text: #101828; --muted: #4a5565; --rule: #e5e7eb;
+    --line: #6a7282; --heading: #1e1e1e; --faint: #6a7282; --primary: #18804f; --primary-hover: #126a41;
+    --chip: #126a41; --chip-bg: #ecfdf3; --chip-line: #a6e3bf; --beginner: #016630; --beginner-bg: #dbfce7;
+    --shadow-card: 0 1px 2px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.08);
+    --font: "Inter", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 var(--font); }
+  main { max-width: 980px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { margin: 0 0 4px; font-size: 28px; color: var(--heading); }
+  .intro { margin: 0 0 32px; color: var(--muted); }
+  section { margin-bottom: 48px; }
+  .label { margin-bottom: 4px; font-size: 20px; font-weight: 700; color: var(--heading); }
+  .why { margin: 0 0 16px; color: var(--muted); }
+  .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+  .pair > div > small { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--faint); }
+  @media (max-width: 700px) { .pair { grid-template-columns: 1fr; } }
+
+  .card { display: flex; flex-direction: column; gap: 12px; height: calc(100% - 24px); padding: 20px; border: 1px solid var(--rule);
+    border-radius: 8px; background: var(--surface); box-shadow: var(--shadow-card); }
+  .top { display: flex; align-items: center; gap: 8px; }
+  .icon { display: grid; place-items: center; width: 36px; height: 36px; margin-right: auto; border: 1px solid var(--chip-line);
+    border-radius: 6px; background: var(--chip-bg); color: var(--chip); font-size: 17px; }
+  h3 { margin: 0; font-size: 18px; color: var(--heading); }
+  p { margin: 0; font-size: 14px; color: var(--muted); }
+  .pill { padding: 2px 8px; border: 1px solid var(--rule); border-radius: 999px; font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .pill.lvl { border-color: transparent; background: var(--beginner-bg); color: var(--beginner); }
+  .facts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .facts span { padding: 2px 8px; border-radius: 4px; background: var(--header); font-size: 12px; }
+  .meta { font-size: 13px; color: var(--muted); }
+  .fns { display: flex; flex-wrap: wrap; gap: 6px; }
+  .fn { padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; font: 600 12px/1 var(--mono); background: var(--surface); }
+  .fn.on { border-color: var(--primary); background: var(--chip-bg); color: var(--chip); }
+  .link { font-size: 13px; font-weight: 600; color: var(--primary); text-decoration: underline; }
+  .bar { height: 6px; border-radius: 3px; background: var(--header); overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--primary); }
+  .progress { display: grid; gap: 4px; }
+  .btn { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 40px; margin-top: auto; border: 1px solid var(--primary);
+    border-radius: 6px; background: var(--primary); color: #fff; font: 600 14px/1 var(--font); text-decoration: none; }
+  .btn.quiet { border-color: var(--line); background: var(--surface); color: var(--text); }
+  .foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: auto -20px -20px; padding: 12px 20px;
+    border-top: 1px solid var(--rule); background: var(--bg); border-radius: 0 0 8px 8px; font-size: 13px; color: var(--muted); }
+  .foot .link { text-decoration: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Track and function cards: 3 options</h1>
+  <p class="intro">Left: a learning track card. Right: a function practice card. Each option gives both the same parts in the same order.</p>
+
+  <section>
+    <div class="label">Today</div>
+    <p class="why">Different top-right (pills vs link), meta (grey boxes vs plain text), and only tracks have a progress bar and button.</p>
+    <div class="pair">
+      <div><small>Learning track</small>
+        <div class="card">
+          <div class="top"><span class="icon">▦</span><span class="pill">Not started</span><span class="pill lvl">Beginner</span></div>
+          <h3>Cells and arithmetic</h3>
+          <p>Point at cells, then add, subtract, multiply and use brackets.</p>
+          <div class="facts"><span>4 exercises</span><span>23 min</span><span>2 free, 2 with PRO</span></div>
+          <a class="btn" href="#">Start track</a>
+        </div></div>
+      <div><small>Function practice</small>
+        <div class="card">
+          <div class="top"><span class="icon">Σ</span><a class="link" href="#">Select all</a></div>
+          <h3>Totals and averages</h3>
+          <div class="meta">7 functions · 35 tasks</div>
+          <div class="fns"><span class="fn">SUM</span><span class="fn">AVERAGE</span><span class="fn">MAX</span><span class="fn">MIN</span><span class="fn">SUMPRODUCT</span><span class="fn">SUBTOTAL</span><span class="fn">AGGREGATE</span></div>
+        </div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">1 · Same header, same meta</div>
+    <p class="why">Smallest change. Both use a status pill top-right and a plain "a · b · c" meta line. Function cards keep chips, tracks keep the button.</p>
+    <div class="pair">
+      <div><small>Learning track</small>
+        <div class="card">
+          <div class="top"><span class="icon">▦</span><span class="pill lvl">Beginner</span></div>
+          <h3>Cells and arithmetic</h3>
+          <div class="meta">4 exercises · 23 min · 2 free</div>
+          <p>Point at cells, then add, subtract, multiply and use brackets.</p>
+          <a class="btn quiet" href="#">Start track</a>
+        </div></div>
+      <div><small>Function practice</small>
+        <div class="card">
+          <div class="top"><span class="icon">Σ</span><span class="pill">2 picked</span></div>
+          <h3>Totals and averages</h3>
+          <div class="meta">7 functions · 35 tasks</div>
+          <div class="fns"><span class="fn on">SUM</span><span class="fn on">AVERAGE</span><span class="fn">MAX</span><span class="fn">MIN</span><span class="fn">SUMPRODUCT</span><span class="fn">SUBTOTAL</span><span class="fn">AGGREGATE</span></div>
+          <a class="btn quiet" href="#">Select all 7</a>
+        </div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">2 · Shared footer band</div>
+    <p class="why">Same body as 1, plus a grey footer on both: progress on the left, the action on the right. The button is gone, so cards are calmer.</p>
+    <div class="pair">
+      <div><small>Learning track</small>
+        <div class="card">
+          <div class="top"><span class="icon">▦</span><span class="pill lvl">Beginner</span></div>
+          <h3>Cells and arithmetic</h3>
+          <div class="meta">4 exercises · 23 min · 2 free</div>
+          <p>Point at cells, then add, subtract, multiply and use brackets.</p>
+          <div class="foot"><span>0 of 4 done</span><a class="link" href="#">Start track →</a></div>
+        </div></div>
+      <div><small>Function practice</small>
+        <div class="card">
+          <div class="top"><span class="icon">Σ</span><span class="pill">2 picked</span></div>
+          <h3>Totals and averages</h3>
+          <div class="meta">7 functions · 35 tasks</div>
+          <div class="fns"><span class="fn on">SUM</span><span class="fn on">AVERAGE</span><span class="fn">MAX</span><span class="fn">MIN</span><span class="fn">SUMPRODUCT</span><span class="fn">SUBTOTAL</span><span class="fn">AGGREGATE</span></div>
+          <div class="foot"><span>12 of 35 done</span><a class="link" href="#">Select all →</a></div>
+        </div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">3 · Tracks list their functions too</div>
+    <p class="why">Closest match. Track cards show the functions they cover as the same mono chips (read-only), and both get a progress bar above the button.</p>
+    <div class="pair">
+      <div><small>Learning track</small>
+        <div class="card">
+          <div class="top"><span class="icon">Σ</span><span class="pill lvl">Beginner</span></div>
+          <h3>SUM, AVERAGE, MIN and MAX</h3>
+          <div class="meta">7 exercises · 44 min · 2 free</div>
+          <div class="fns"><span class="fn">SUM</span><span class="fn">AVERAGE</span><span class="fn">MIN</span><span class="fn">MAX</span></div>
+          <div class="progress"><div class="bar"><i style="width:28%"></i></div><span class="meta">2 of 7 done</span></div>
+          <a class="btn" href="#">Continue track</a>
+        </div></div>
+      <div><small>Function practice</small>
+        <div class="card">
+          <div class="top"><span class="icon">Σ</span><span class="pill">2 picked</span></div>
+          <h3>Totals and averages</h3>
+          <div class="meta">7 functions · 35 tasks</div>
+          <div class="fns"><span class="fn on">SUM</span><span class="fn on">AVERAGE</span><span class="fn">MAX</span><span class="fn">MIN</span><span class="fn">SUMPRODUCT</span><span class="fn">SUBTOTAL</span><span class="fn">AGGREGATE</span></div>
+          <div class="progress"><div class="bar"><i style="width:34%"></i></div><span class="meta">12 of 35 done</span></div>
+          <a class="btn quiet" href="#">Select all 7</a>
+        </div></div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

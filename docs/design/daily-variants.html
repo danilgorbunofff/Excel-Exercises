@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Daily page variants</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  /* Values copied from src/styles/tokens.css. */
+  :root {
+    color-scheme: light;
+    --bg: #f9fafb; --surface: #fff; --header: #f3f4f6; --text: #101828; --muted: #4a5565; --rule: #e5e7eb;
+    --line: #6a7282; --heading: #1e1e1e; --faint: #6a7282; --primary: #18804f; --primary-hover: #126a41;
+    --chip: #126a41; --chip-bg: #ecfdf3; --chip-line: #a6e3bf; --correct-tint: #e9f9ef; --panel: #e9f5ee;
+    --read: #0063b1; --read-tint: #e3f0fd; --footer-bg: #1e1e1e; --on-dark: #f3f4f6; --on-dark-muted: #b8bec8;
+    --intermediate: #894b00; --intermediate-bg: #fef9c2;
+    --shadow-card: 0 1px 2px rgb(16 24 40 / 0.06), 0 1px 3px rgb(16 24 40 / 0.08);
+    --font: "Inter", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #eceef1; color: var(--text); font: 15px/1.5 var(--font); }
+  main { max-width: 1180px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1.page { margin: 0 0 4px; font-size: 28px; }
+  .intro { margin: 0 0 32px; color: var(--muted); }
+  section.v { margin-bottom: 56px; }
+  .v-label { font-size: 20px; font-weight: 700; }
+  .v-why { margin: 2px 0 12px; color: var(--muted); }
+  .frame { background: var(--bg); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; box-shadow: 0 4px 16px rgb(0 0 0 / .06); }
+  .site { display: flex; align-items: center; gap: 10px; padding: 10px 20px; background: var(--surface); border-bottom: 1px solid var(--rule); font-weight: 700; font-size: 14px; }
+  .site i { width: 20px; height: 20px; border-radius: 4px; background: var(--primary); }
+  .site span { margin-left: auto; font-weight: 500; color: var(--muted); font-size: 13px; }
+  .pad { padding: 28px; }
+  h1, h2, h3 { color: var(--heading); margin: 0; }
+  p { margin: 0; }
+  .muted { color: var(--muted); }
+  .small { font-size: 13px; }
+  .card { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; box-shadow: var(--shadow-card); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 40px; padding: 0 16px; border-radius: 6px;
+    border: 1px solid var(--primary); background: var(--primary); color: #fff; font: 600 14px/1 var(--font); }
+  .btn.ghost { background: var(--surface); color: var(--text); border-color: var(--line); }
+  .pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: var(--intermediate-bg); color: var(--intermediate); }
+
+  /* Shared fake sheet */
+  .sheet { border: 1px solid var(--rule); border-radius: 6px; overflow: hidden; background: var(--surface); font-size: 14px; }
+  .sheet .fx { display: flex; border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: 13px; }
+  .sheet .fx b { width: 52px; padding: 8px; border-right: 1px solid var(--rule); font-weight: 500; }
+  .sheet .fx span { padding: 8px; color: var(--faint); }
+  .sheet table { width: 100%; border-collapse: collapse; }
+  .sheet td, .sheet th { border: 1px solid var(--rule); padding: 7px 10px; text-align: left; }
+  .sheet th { background: var(--header); font-weight: 500; color: var(--muted); font-size: 12px; text-align: center; }
+  .sheet td:first-child { width: 36px; background: var(--header); color: var(--muted); text-align: center; font-size: 12px; }
+  .sheet .num { text-align: right; }
+  .sheet .target { outline: 2px solid var(--primary); outline-offset: -2px; background: var(--correct-tint); }
+  .checkrow { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+  .checkrow .muted { margin-right: auto; font-size: 13px; }
+
+  /* 1 Staircase */
+  .s1 .head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 20px; }
+  .s1 h1 { font-size: 32px; }
+  .stairs { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; align-items: end; height: 150px; margin-bottom: 24px; }
+  .stairs div { display: flex; flex-direction: column; justify-content: flex-end; gap: 4px; height: 100%; text-align: center; font-size: 12px; color: var(--muted); }
+  .stairs b { display: block; border-radius: 6px 6px 0 0; background: var(--header); border: 1px solid var(--rule); border-bottom: 0; }
+  .stairs .missed b { background: repeating-linear-gradient(135deg, var(--header) 0 6px, #e7e9ec 6px 12px); }
+  .stairs .today b { background: var(--primary); border-color: var(--primary); }
+  .stairs .today { color: var(--primary); font-weight: 700; }
+  .stairs .future b { background: transparent; border-style: dashed; }
+  .s1 .stats { display: flex; gap: 28px; }
+  .s1 .stats div { text-align: right; }
+  .s1 .stats strong { display: block; font-size: 24px; line-height: 1.1; }
+  .s1 .task { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+
+  /* 2 Focus column */
+  .s2 .col { max-width: 640px; margin: 0 auto; padding: 48px 0 40px; }
+  .s2 .date { font: 500 13px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+  .s2 h1 { margin: 14px 0 10px; font-size: 34px; line-height: 1.15; }
+  .s2 .lede { font-size: 18px; color: var(--muted); margin-bottom: 24px; }
+  .s2 .meter { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; font-size: 13px; color: var(--muted); }
+  .s2 .meter i { width: 26px; height: 6px; border-radius: 3px; background: var(--rule); }
+  .s2 .meter i.on { background: var(--primary); }
+  .s2 .streakline { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--rule); display: flex; gap: 24px; font-size: 14px; color: var(--muted); }
+  .s2 .streakline b { color: var(--text); }
+
+  /* 3 Puzzle paper */
+  .s3 { background: #fbfaf6; }
+  .s3 .mast { text-align: center; padding: 28px 0 16px; border-bottom: 3px double var(--heading); margin: 0 28px; }
+  .s3 .mast .k { font: 600 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+  .s3 .mast h1 { font-size: 44px; font-weight: 800; letter-spacing: -0.02em; margin: 6px 0; }
+  .s3 .mast .line { display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: space-between; font: 500 12px/1 var(--mono); color: var(--muted); margin-top: 12px; }
+  .s3 .body { display: grid; grid-template-columns: 220px 1fr; gap: 28px; padding: 24px 28px 32px; }
+  .s3 .side h3 { font: 600 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 10px; color: var(--muted); }
+  .s3 .side ol { list-style: none; margin: 0 0 24px; padding: 0; font-size: 14px; }
+  .s3 .side li { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dotted var(--line); }
+  .s3 .side li.today { font-weight: 700; color: var(--primary); }
+  .s3 .side li s { color: var(--faint); }
+  .s3 .clue { font-size: 20px; line-height: 1.45; margin-bottom: 18px; }
+  .s3 .clue b { font-family: var(--mono); }
+  .s3 .sheet { border-color: var(--heading); }
+
+  /* 4 Streak rail */
+  .s4 .grid { display: grid; grid-template-columns: 260px 1fr; min-height: 520px; }
+  .s4 .rail { background: var(--footer-bg); color: var(--on-dark); padding: 28px 24px; display: flex; flex-direction: column; gap: 20px; }
+  .s4 .rail .big { font-size: 64px; font-weight: 800; line-height: 1; }
+  .s4 .rail .muted { color: var(--on-dark-muted); }
+  .s4 .days { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .s4 .days li { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 6px; font-size: 14px; }
+  .s4 .days li i { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #4a4f57; flex: none; }
+  .s4 .days li.done i { background: #5ad08a; border-color: #5ad08a; }
+  .s4 .days li.today { background: #2d2d2d; outline: 1px solid #5ad08a; }
+  .s4 .days li span { margin-left: auto; color: var(--on-dark-muted); font-size: 12px; }
+  .s4 .main { padding: 28px; display: grid; gap: 16px; align-content: start; }
+  .s4 .main h1 { font-size: 26px; }
+
+  /* 5 Workbench */
+  .s5 .bar { display: flex; align-items: center; gap: 16px; padding: 12px 20px; background: var(--surface); border-bottom: 1px solid var(--rule); }
+  .s5 .bar h1 { font-size: 18px; }
+  .s5 .seg { display: flex; gap: 3px; }
+  .s5 .seg i { width: 16px; height: 16px; border-radius: 3px; background: var(--rule); }
+  .s5 .seg i.on { background: var(--primary); }
+  .s5 .seg i.now { background: var(--primary); outline: 2px solid var(--chip-line); outline-offset: 1px; }
+  .s5 .chip { margin-left: auto; padding: 4px 10px; border: 1px solid var(--rule); border-radius: 999px; font-size: 13px; }
+  .s5 .work { display: grid; grid-template-columns: 1fr 340px; min-height: 440px; }
+  .s5 .work .left { padding: 20px; background: var(--panel); }
+  .s5 .work .right { padding: 24px; background: var(--surface); border-left: 1px solid var(--rule); display: flex; flex-direction: column; gap: 16px; }
+  .s5 .hint { padding: 10px 12px; border: 1px solid var(--rule); border-radius: 6px; font-size: 14px; display: flex; justify-content: space-between; }
+
+  /* 6 Month calendar */
+  .s6 .wrap { display: grid; grid-template-columns: 340px 1fr; gap: 24px; }
+  .s6 .cal { padding: 20px; }
+  .s6 .cal .mhead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .s6 .cal .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; font-size: 13px; }
+  .s6 .cal .dow { font-size: 11px; color: var(--faint); font-weight: 600; padding-bottom: 4px; }
+  .s6 .cal .d { aspect-ratio: 1; display: grid; place-items: center; border-radius: 6px; color: var(--muted); }
+  .s6 .cal .d.solved { background: var(--correct-tint); color: var(--chip); font-weight: 700; }
+  .s6 .cal .d.today { background: var(--primary); color: #fff; font-weight: 700; }
+  .s6 .cal .d.future { color: #c3c8cf; }
+  .s6 .cal .d.blank { visibility: hidden; }
+  .s6 .cal .foot { display: flex; justify-content: space-between; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 13px; }
+
+  /* 7 Tear-off page */
+  .s7 .wrap { display: grid; grid-template-columns: 260px 1fr; gap: 0; }
+  .s7 .leaf { background: var(--primary); color: #fff; padding: 32px 28px; display: flex; flex-direction: column; gap: 6px; position: relative; }
+  .s7 .leaf::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 10px; background: radial-gradient(circle at 8px 0, var(--bg) 5px, transparent 5.5px) 0 0 / 16px 10px repeat-x; }
+  .s7 .leaf .wd { font: 600 13px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
+  .s7 .leaf .num { font-size: 120px; font-weight: 800; line-height: .9; letter-spacing: -0.04em; }
+  .s7 .leaf .mo { font-size: 20px; font-weight: 600; }
+  .s7 .leaf .lvl { margin-top: auto; display: grid; gap: 6px; font-size: 13px; }
+  .s7 .leaf .dots { display: flex; gap: 5px; }
+  .s7 .leaf .dots i { width: 10px; height: 10px; border-radius: 50%; background: rgb(255 255 255 / .3); }
+  .s7 .leaf .dots i.on { background: #fff; }
+  .s7 .main { padding: 32px; display: grid; gap: 14px; align-content: start; background: var(--surface); }
+
+  /* 8 Formula first */
+  .s8 { padding: 48px 28px; text-align: center; }
+  .s8 .k { font-size: 13px; color: var(--muted); }
+  .s8 h1 { font-size: 30px; margin: 6px 0 8px; }
+  .s8 .q { max-width: 560px; margin: 0 auto 28px; color: var(--muted); font-size: 17px; }
+  .s8 .bigbar { display: flex; max-width: 640px; margin: 0 auto; border: 2px solid var(--primary); border-radius: 10px; overflow: hidden; background: var(--surface);
+    box-shadow: 0 0 0 6px var(--correct-tint); text-align: left; }
+  .s8 .bigbar b { padding: 16px 18px; font: 600 18px/1 var(--mono); border-right: 1px solid var(--rule); color: var(--muted); }
+  .s8 .bigbar span { flex: 1; padding: 16px 18px; font: 500 22px/1 var(--mono); color: var(--faint); }
+  .s8 .bigbar button { border: 0; padding: 0 22px; background: var(--primary); color: #fff; font: 600 15px var(--font); }
+  .s8 .mini { max-width: 420px; margin: 20px auto 0; text-align: left; }
+  .s8 .under { display: flex; justify-content: center; gap: 28px; margin-top: 28px; font-size: 13px; color: var(--muted); }
+  .s8 .under b { color: var(--text); }
+
+  /* 9 Timeline */
+  .s9 .tl { position: relative; max-width: 760px; margin: 0 auto; padding: 28px 28px 28px 64px; }
+  .s9 .tl::before { content: ""; position: absolute; left: 40px; top: 36px; bottom: 36px; width: 2px; background: var(--rule); }
+  .s9 .step { position: relative; padding: 10px 0; display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 14px; }
+  .s9 .step::before { content: ""; position: absolute; left: -30px; width: 14px; height: 14px; border-radius: 50%; background: var(--surface); border: 2px solid var(--line); }
+  .s9 .step.future { opacity: .5; }
+  .s9 .step span { margin-left: auto; font-size: 12px; }
+  .s9 .now { position: relative; margin: 8px 0; padding: 20px; }
+  .s9 .now::before { content: ""; position: absolute; left: -34px; top: 24px; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 5px var(--chip-line); }
+
+  /* 10 Card + tomorrow */
+  .s10 { padding: 40px 28px 48px; display: grid; place-items: center; background: radial-gradient(circle at 50% 0, var(--panel), var(--bg) 70%); }
+  .s10 .stack { position: relative; width: min(560px, 100%); }
+  .s10 .behind { position: absolute; inset: 18px -18px -36px 18px; border-radius: 16px; background: var(--surface); border: 1px dashed var(--line);
+    display: flex; align-items: end; justify-content: end; padding: 10px 16px; font-size: 12px; color: var(--faint); }
+  .s10 .front { position: relative; border-radius: 16px; background: var(--surface); border: 1px solid var(--rule); box-shadow: 0 12px 32px rgb(16 24 40 / .12); padding: 24px; display: grid; gap: 14px; }
+  .s10 .row1 { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--muted); }
+  .s10 .row2 { display: flex; justify-content: center; gap: 18px; margin-top: 36px; font-size: 13px; color: var(--muted); }
+  .s10 .row2 b { display: block; font-size: 22px; color: var(--text); text-align: center; }
+
+  @media (max-width: 760px) {
+    .s6 .wrap, .s7 .wrap { grid-template-columns: 1fr; }
+    .s7 .leaf .num { font-size: 80px; }
+    .s1 .task, .s3 .body, .s4 .grid, .s5 .work { grid-template-columns: 1fr; }
+    .s1 .head { flex-direction: column; align-items: start; }
+    .stairs { height: 110px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1 class="page">Daily exercise: 5 new designs</h1>
+  <p class="intro">Each one has the same content: today's date, the Mon→Sun difficulty steps, streaks, and today's task (Boxes needed, Tricky). Pick a number.</p>
+
+  <!-- 1 -->
+  <section class="v">
+    <div class="v-label">1 · Staircase</div>
+    <p class="v-why">The week is the hero: seven bars that rise from Monday to Sunday, so "it gets harder each day" is seen, not read.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="pad s1">
+        <div class="head">
+          <div><p class="muted small">Friday 20 November</p><h1>Today is step 5: Tricky</h1></div>
+          <div class="stats"><div><strong>0</strong><span class="small muted">day streak</span></div><div><strong>0</strong><span class="small muted">best</span></div><div><strong>0/7</strong><span class="small muted">this week</span></div></div>
+        </div>
+        <div class="stairs">
+          <div class="missed"><b style="height:20%"></b>Mon</div>
+          <div class="missed"><b style="height:32%"></b>Tue</div>
+          <div class="missed"><b style="height:44%"></b>Wed</div>
+          <div class="missed"><b style="height:56%"></b>Thu</div>
+          <div class="today"><b style="height:68%"></b>Today</div>
+          <div class="future"><b style="height:84%"></b>Sat</div>
+          <div class="future"><b style="height:100%"></b>Sun</div>
+        </div>
+        <div class="task">
+          <div class="card pad" style="padding:20px">
+            <h2 style="font-size:18px;margin-bottom:6px">Boxes needed</h2>
+            <p class="muted" style="margin-bottom:14px">In <b>D2</b>, work out how many boxes are needed to pack every item. A part-full box still counts.</p>
+            <div class="sheet"><div class="fx"><b>D2</b><span>=</span></div><table><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><td>1</td><td>Order</td><td>Items</td><td>Per box</td><td>Boxes</td></tr><tr><td>2</td><td>O-12</td><td class="num">53</td><td class="num">12</td><td class="target"></td></tr></table></div>
+            <div class="checkrow"><span class="muted">Type a formula for D2</span><button class="btn ghost">Hint</button><button class="btn">Check</button></div>
+          </div>
+          <div class="card" style="padding:20px;display:grid;gap:10px;align-content:start">
+            <h3 style="font-size:15px">How it works</h3>
+            <p class="small muted">Same exercise for everyone, new each day.</p>
+            <p class="small muted">Solve it today to keep your streak. Earlier days are practice.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="v">
+    <div class="v-label">2 · Focus</div>
+    <p class="v-why">One narrow column, nothing beside it. Reads like a single puzzle of the day; streaks drop to one quiet line at the bottom.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="s2"><div class="col">
+        <p class="date">Friday · 20 November</p>
+        <h1>Boxes needed</h1>
+        <p class="lede">Work out how many boxes are needed to pack every item. A part-full box still counts.</p>
+        <div class="meter"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><span>Difficulty: Tricky, step 5 of 7</span></div>
+        <div class="sheet"><div class="fx"><b>D2</b><span>=</span></div><table><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><td>1</td><td>Order</td><td>Items</td><td>Per box</td><td>Boxes</td></tr><tr><td>2</td><td>O-12</td><td class="num">53</td><td class="num">12</td><td class="target"></td></tr></table></div>
+        <div class="checkrow"><span class="muted">Your formula goes in D2</span><button class="btn ghost">Hint</button><button class="btn">Check</button></div>
+        <div class="streakline"><span>Streak <b>0 days</b></span><span>Best <b>0</b></span><span>This week <b>0 of 7</b></span><a href="#" style="margin-left:auto;color:var(--primary)">Earlier days</a></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="v">
+    <div class="v-label">3 · Puzzle paper</div>
+    <p class="v-why">Styled like a newspaper puzzle: masthead, issue number, a clue. Gives the daily its own character apart from the rest of the site.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="s3">
+        <div class="mast">
+          <div class="k">The daily formula</div>
+          <h1>Boxes needed</h1>
+          <div class="line"><span>No. 312</span><span>Friday 20 November 2026</span><span>Difficulty: Tricky (5/7)</span></div>
+        </div>
+        <div class="body">
+          <div class="side">
+            <h3>This week</h3>
+            <ol>
+              <li><s>Mon · Warm-up</s><span>–</span></li>
+              <li><s>Tue · Easy</s><span>–</span></li>
+              <li><s>Wed · Steady</s><span>–</span></li>
+              <li><s>Thu · Medium</s><span>–</span></li>
+              <li class="today"><span>Fri · Tricky</span><span>today</span></li>
+              <li><span>Sat · Hard</span><span></span></li>
+              <li><span>Sun · Hardest</span><span></span></li>
+            </ol>
+            <h3>Your record</h3>
+            <p class="small">Streak 0 · Best 0</p>
+          </div>
+          <div>
+            <p class="clue">In <b>D2</b>, work out how many boxes are needed to pack every item. A part-full box still counts.</p>
+            <div class="sheet"><div class="fx"><b>D2</b><span>=</span></div><table><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><td>1</td><td>Order</td><td>Items</td><td>Per box</td><td>Boxes</td></tr><tr><td>2</td><td>O-12</td><td class="num">53</td><td class="num">12</td><td class="target"></td></tr></table></div>
+            <div class="checkrow"><span class="muted">Same puzzle for everyone today</span><button class="btn ghost">Hint</button><button class="btn">Check</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="v">
+    <div class="v-label">4 · Streak rail</div>
+    <p class="v-why">A dark left rail owns the streak and the week as a checklist; the exercise gets the rest. Most motivating, like a habit app.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="s4"><div class="grid">
+        <aside class="rail">
+          <div><div class="big">0</div><p class="muted">day streak · best 0</p></div>
+          <ul class="days">
+            <li><i></i>Mon<span>Warm-up</span></li>
+            <li><i></i>Tue<span>Easy</span></li>
+            <li><i></i>Wed<span>Steady</span></li>
+            <li><i></i>Thu<span>Medium</span></li>
+            <li class="today"><i></i>Fri, today<span>Tricky</span></li>
+            <li style="opacity:.5"><i></i>Sat<span>Hard</span></li>
+            <li style="opacity:.5"><i></i>Sun<span>Hardest</span></li>
+          </ul>
+          <p class="muted small">Solve today's to start a streak.</p>
+        </aside>
+        <div class="main">
+          <p class="muted small">Daily exercise · Friday 20 November <span class="pill" style="margin-left:6px">Tricky</span></p>
+          <h1>Boxes needed</h1>
+          <p class="muted">In <b>D2</b>, work out how many boxes are needed to pack every item. A part-full box still counts.</p>
+          <div class="sheet"><div class="fx"><b>D2</b><span>=</span></div><table><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><td>1</td><td>Order</td><td>Items</td><td>Per box</td><td>Boxes</td></tr><tr><td>2</td><td>O-12</td><td class="num">53</td><td class="num">12</td><td class="target"></td></tr></table></div>
+          <div class="checkrow"><span class="muted"></span><button class="btn ghost">Hint</button><button class="btn">Check</button></div>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="v">
+    <div class="v-label">5 · Workbench</div>
+    <p class="v-why">Looks like an app, not a page: a slim top bar with the week as 7 squares, the sheet big on the left, the brief and hints on the right.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="s5">
+        <div class="bar">
+          <h1>Daily · Fri 20 Nov</h1>
+          <div class="seg" title="Mon to Sun"><i></i><i></i><i></i><i></i><i class="now"></i><i></i><i></i></div>
+          <span class="small muted">Tricky, 5 of 7</span>
+          <span class="chip">0-day streak</span>
+        </div>
+        <div class="work">
+          <div class="left">
+            <div class="sheet"><div class="fx"><b>D2</b><span>=</span></div><table><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><td>1</td><td>Order</td><td>Items</td><td>Per box</td><td>Boxes</td></tr><tr><td>2</td><td>O-12</td><td class="num">53</td><td class="num">12</td><td class="target"></td></tr><tr><td>3</td><td></td><td></td><td></td><td></td></tr><tr><td>4</td><td></td><td></td><td></td><td></td></tr></table></div>
+          </div>
+          <div class="right">
+            <h2 style="font-size:20px">Boxes needed</h2>
+            <p class="muted">In <b>D2</b>, work out how many boxes are needed to pack every item. A part-full box still counts.</p>
+            <div class="hint"><span>Hint 1</span><span class="muted">Show</span></div>
+            <div class="hint"><span>Hint 2</span><span class="muted">Show</span></div>
+            <button class="btn" style="margin-top:auto">Check</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <h1 class="page" style="margin-top:72px">5 more</h1>
+  <p class="intro">Same content again. Design 6 shows a few earlier solved days so the calendar has something in it.</p>
+
+  <!-- 6 -->
+  <section class="v">
+    <div class="v-label">6 · Month calendar</div>
+    <p class="v-why">A real month calendar on the left, with solved days filled in. Today is the green square; the exercise sits on the right.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="pad s6"><div class="wrap">
+        <div class="card cal">
+          <div class="mhead"><h2 style="font-size:17px">November 2026</h2><span class="small muted">‹ ›</span></div>
+          <div class="grid" id="cal"></div>
+          <div class="foot"><span class="muted">Streak <b style="color:var(--text)">0</b></span><span class="muted">Best <b style="color:var(--text)">3</b></span><span class="muted">This month <b style="color:var(--text)">6</b></span></div>
+        </div>
+        <div class="card" style="padding:24px;display:grid;gap:12px;align-content:start">
+          <p class="small muted">Today · Friday 20 November <span class="pill" style="margin-left:6px">Tricky</span></p>
+          <h1 style="font-size:24px">Boxes needed</h1>
+          <p class="muted">In <b>D2</b>, work out how many boxes are needed to pack every item. A part-full box still counts.</p>
+          <div class="sheet"><div class="fx"><b>D2</b><span>=</span></div><table><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><td>1</td><td>Order</td><td>Items</td><td>Per box</td><td>Boxes</td></tr><tr><td>2</td><td>O-12</td><td class="num">53</td><td class="num">12</td><td class="target"></td></tr></table></div>
+          <div class="checkrow"><span class="muted">Mondays are easiest, Sundays hardest.</span><button class="btn ghost">Hint</button><button class="btn">Check</button></div>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="v">
+    <div class="v-label">7 · Tear-off page</div>
+    <p class="v-why">A big green desk-calendar leaf with the date number, torn edge on top and difficulty dots at the bottom. Strong, simple, memorable.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="s7"><div class="wrap">
+        <div class="leaf">
+          <span class="wd">Friday</span>
+          <span class="num">20</span>
+          <span class="mo">November</span>
+          <div class="lvl"><span>Tricky · 5 of 7</span><div class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></div><span style="opacity:.85">Streak 0 · best 0</span></div>
+        </div>
+        <div class="main">
+          <p class="small muted">Today's exercise, the same for everyone</p>
+          <h1 style="font-size:26px">Boxes needed</h1>
+          <p class="muted">In <b>D2</b>, work out how many boxes are needed to pack every item. A part-full box still counts.</p>
+          <div class="sheet"><div class="fx"><b>D2</b><span>=</span></div><table><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><td>1</td><td>Order</td><td>Items</td><td>Per box</td><td>Boxes</td></tr><tr><td>2</td><td>O-12</td><td class="num">53</td><td class="num">12</td><td class="target"></td></tr></table></div>
+          <div class="checkrow"><span class="muted"></span><button class="btn ghost">Hint</button><button class="btn">Check</button></div>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- 8 -->
+  <section class="v">
+    <div class="v-label">8 · Formula first</div>
+    <p class="v-why">The formula bar is the hero, big and centred, like a search box. The sheet is a small reference under it. Fastest to start.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="s8">
+        <p class="k">Daily exercise · Friday 20 November · <span class="pill">Tricky</span></p>
+        <h1>Boxes needed</h1>
+        <p class="q">How many boxes are needed to pack every item? A part-full box still counts.</p>
+        <div class="bigbar"><b>D2</b><span>=</span><button>Check</button></div>
+        <div class="mini sheet"><table><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><td>1</td><td>Order</td><td>Items</td><td>Per box</td><td>Boxes</td></tr><tr><td>2</td><td>O-12</td><td class="num">53</td><td class="num">12</td><td class="target"></td></tr></table></div>
+        <div class="under"><span>Streak <b>0</b></span><span>Best <b>0</b></span><span>This week <b>0 of 7</b></span><a href="#" style="color:var(--primary)">Show a hint</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="v">
+    <div class="v-label">9 · Timeline</div>
+    <p class="v-why">The week runs top to bottom as a line. Past days are small rows, today opens up in place with the exercise, the weekend waits below.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="s9"><div class="tl">
+        <div class="step">Mon 16 · Warm-up<span>Not solved · practise</span></div>
+        <div class="step">Tue 17 · Easy<span>Not solved · practise</span></div>
+        <div class="step">Wed 18 · Steady<span>Not solved · practise</span></div>
+        <div class="step">Thu 19 · Medium<span>Not solved · practise</span></div>
+        <div class="card now">
+          <p class="small" style="color:var(--primary);font-weight:600">Today · Fri 20 · Tricky</p>
+          <h2 style="font-size:22px;margin:4px 0 8px">Boxes needed</h2>
+          <p class="muted" style="margin-bottom:14px">In <b>D2</b>, work out how many boxes are needed to pack every item. A part-full box still counts.</p>
+          <div class="sheet"><div class="fx"><b>D2</b><span>=</span></div><table><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><td>1</td><td>Order</td><td>Items</td><td>Per box</td><td>Boxes</td></tr><tr><td>2</td><td>O-12</td><td class="num">53</td><td class="num">12</td><td class="target"></td></tr></table></div>
+          <div class="checkrow"><span class="muted">Streak 0 · best 0</span><button class="btn ghost">Hint</button><button class="btn">Check</button></div>
+        </div>
+        <div class="step future">Sat 21 · Hard<span>Opens tomorrow</span></div>
+        <div class="step future">Sun 22 · Hardest<span>Opens Sunday</span></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="v">
+    <div class="v-label">10 · Card with tomorrow behind</div>
+    <p class="v-why">Today is one floating card; tomorrow's card peeks out behind it, dashed. Feels like a deck you work through, one a day.</p>
+    <div class="frame"><div class="site"><i></i>Excel Exercises<span>Practice · Learn · Pricing</span></div>
+      <div class="s10">
+        <div class="stack">
+          <div class="behind">Tomorrow · Hard</div>
+          <div class="front">
+            <div class="row1"><span>Friday 20 November</span><span class="pill">Tricky · 5 of 7</span></div>
+            <h1 style="font-size:24px">Boxes needed</h1>
+            <p class="muted">In <b>D2</b>, work out how many boxes are needed to pack every item. A part-full box still counts.</p>
+            <div class="sheet"><div class="fx"><b>D2</b><span>=</span></div><table><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr><tr><td>1</td><td>Order</td><td>Items</td><td>Per box</td><td>Boxes</td></tr><tr><td>2</td><td>O-12</td><td class="num">53</td><td class="num">12</td><td class="target"></td></tr></table></div>
+            <div class="checkrow"><span class="muted"></span><button class="btn ghost">Hint</button><button class="btn">Check</button></div>
+          </div>
+        </div>
+        <div class="row2"><span><b>0</b>streak</span><span><b>0</b>best</span><span><b>0/7</b>this week</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+  // November 2026 starts on a Sunday; the week starts on Monday.
+  const cal = document.getElementById("cal");
+  for (const d of ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]) cal.insertAdjacentHTML("beforeend", `<span class="dow">${d}</span>`);
+  for (let i = 0; i < 6; i++) cal.insertAdjacentHTML("beforeend", `<span class="d blank"></span>`);
+  const solved = [3, 4, 5, 10, 11, 12];
+  for (let d = 1; d <= 30; d++) {
+    const c = d === 20 ? "today" : d > 20 ? "future" : solved.includes(d) ? "solved" : "";
+    cal.insertAdjacentHTML("beforeend", `<span class="d ${c}">${d}</span>`);
+  }
+</script>
+</body>
+</html>

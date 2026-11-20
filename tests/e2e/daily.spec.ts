@@ -176,49 +176,50 @@ test("the week climbs from Monday's easiest task to Sunday's hardest", async ({ 
     levels.push(task?.level ?? 0);
   }
   expect(levels).toEqual([...levels].sort());
-  // On Sunday the whole week is on the strip, each day with its step.
-  await expect(page.locator(".d-tier")).toHaveText([
-    "Warm-up",
-    "Easy",
-    "Steady",
-    "Medium",
-    "Tricky",
-    "Hard",
-    "Hardest",
-  ]);
+  // On Sunday the calendar names each day of the week with its step.
+  const steps = ["warm-up", "easy", "steady", "medium", "tricky", "hard", "hardest"];
+  for (const [i, step] of steps.entries()) {
+    await expect(page.locator(".d-day").nth(15 + i)).toContainText(`, ${step}, `);
+  }
 });
 
-test("days still to come this week cannot be opened", async ({ page }) => {
+test("the calendar shows the month and days to come cannot be opened", async ({ page }) => {
   await setDay(page, "2026-11-18");
   await page.goto("/daily/");
-  await expect(page.locator(".d-day")).toHaveCount(7);
+  await expect(page.locator("[data-month-title]")).toHaveText("November 2026");
+  await expect(page.locator(".d-day")).toHaveCount(30);
   await expect(page.locator(".d-day.is-future a")).toHaveCount(0);
-  await expect(page.locator(".d-day.is-future")).toHaveCount(4);
-  await expect(page.locator(".d-day.is-today")).toContainText("Steady");
+  await expect(page.locator(".d-day.is-future")).toHaveCount(12);
+  await expect(page.locator(".d-day.is-today")).toContainText("steady");
+  // November 2026 starts on a Sunday, the last column.
+  await expect(page.locator(".d-day").first()).toHaveCSS("grid-column-start", "7");
+  await expect(page.locator("[data-month-prev]")).toBeDisabled();
+  await expect(page.locator("[data-month-next]")).toBeDisabled();
 });
 
-test("at phone width the week keeps whole step names and level dates", async ({ page }) => {
+test("the calendar pages back to earlier months", async ({ page }) => {
+  await setDay(page, "2026-12-02");
+  await page.goto("/daily/");
+  await expect(page.locator("[data-month-title]")).toHaveText("December 2026");
+  await page.locator("[data-month-prev]").click();
+  await expect(page.locator("[data-month-title]")).toHaveText("November 2026");
+  await expect(page.locator(".d-day.is-future")).toHaveCount(0);
+  await expect(page.locator("[data-month-prev]")).toBeDisabled();
+  await page.locator("[data-month-next]").click();
+  await expect(page.locator("[data-month-title]")).toHaveText("December 2026");
+});
+
+test("at phone width the calendar fits without scrolling sideways", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await setDay(page, "2026-11-18");
   await page.goto("/daily/");
-  const layout = await page.locator(".d-week .d-day").evaluateAll((days) =>
-    days.map((d) => {
-      const tier = d.querySelector(".d-tier") as HTMLElement;
-      const cell = d.querySelector(".d-cell") as HTMLElement;
-      // One rectangle per line of text, so a word broken inside counts two.
-      const range = document.createRange();
-      range.selectNodeContents(tier);
-      return {
-        cellTop: Math.round(cell.getBoundingClientRect().top),
-        cellHeight: Math.round(cell.getBoundingClientRect().height),
-        lines: range.getClientRects().length,
-        text: tier.textContent ?? "",
-      };
-    }),
-  );
-  expect(new Set(layout.map((d) => d.cellTop)).size).toBe(1);
-  expect(new Set(layout.map((d) => d.cellHeight)).size).toBe(1);
-  for (const d of layout.filter((x) => !x.text.includes("-"))) expect(d.lines, d.text).toBe(1);
+  await expect(page.locator(".d-day")).toHaveCount(30);
+  const widths = await page
+    .locator(".d-month .d-cell")
+    .evaluateAll((cells) => cells.map((c) => Math.round(c.getBoundingClientRect().width)));
+  expect(new Set(widths).size).toBe(1);
+  expect(widths[0]).toBeGreaterThanOrEqual(40);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(375);
 });
 
 test("the daily works from the keyboard alone", async ({ page, browserName }) => {
@@ -226,7 +227,7 @@ test("the daily works from the keyboard alone", async ({ page, browserName }) =>
   await page.goto("/daily/");
   await expect(page.locator("[data-task-slot]")).toBeVisible();
   const { screens } = await exerciseData(page);
-  // Tab through the page: the strip comes first, then the formula. Safari
+  // Tab through the page: the calendar comes first, then the formula. Safari
   // skips links on Tab by default; Option+Tab reaches them, as a user would.
   const tab = browserName === "webkit" ? "Alt+Tab" : "Tab";
   let reachedStrip = false;
@@ -236,7 +237,7 @@ test("the daily works from the keyboard alone", async ({ page, browserName }) =>
       const el = document.activeElement as HTMLElement | null;
       return {
         id: el?.id ?? "",
-        strip: Boolean(el?.closest("[data-strip]")),
+        strip: Boolean(el?.closest("[data-month]")),
         outline: el ? getComputedStyle(el).outlineStyle : "none",
       };
     });

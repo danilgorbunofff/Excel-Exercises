@@ -1,0 +1,604 @@
+<!doctype html>
+<!-- Why this exists: five takes on the PRO paywall card that sits over the
+     blurred sheet on locked exercise and function practice pages, to pick one.
+     Uses the site's own tokens and base styles. Open the file in a browser; the
+     button top right switches light and dark. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PRO paywall options</title>
+    <link rel="stylesheet" href="../../../src/styles/tokens.css" />
+    <link rel="stylesheet" href="../../../src/styles/base.css" />
+    <style>
+      body {
+        background: var(--bg);
+        color: var(--text);
+        margin: 0;
+      }
+      .page {
+        max-width: 72rem;
+        margin: 0 auto;
+        padding: var(--space-6) var(--space-4) var(--space-8, 4rem);
+      }
+      .page > header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: end;
+        justify-content: space-between;
+        gap: var(--space-3);
+        margin-bottom: var(--space-6);
+      }
+      .page h1 {
+        margin: 0;
+        font-size: var(--size-xxl);
+        color: var(--heading);
+      }
+      .page > header p {
+        margin: var(--space-1) 0 0;
+        color: var(--muted);
+      }
+      .option {
+        margin-bottom: var(--space-8, 4rem);
+      }
+      .option > h2 {
+        display: flex;
+        align-items: baseline;
+        gap: var(--space-3);
+        margin: 0 0 var(--space-1);
+        font-size: var(--size-l);
+        color: var(--heading);
+      }
+      .option > h2 b {
+        display: inline-grid;
+        place-items: center;
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: 50%;
+        background: var(--primary);
+        color: var(--on-primary);
+        font-size: var(--size-s);
+      }
+      .option > p {
+        margin: 0 0 var(--space-3);
+        color: var(--muted);
+        max-width: 48rem;
+      }
+
+      /* The stage: the sheet panel with a fake, blurred sheet behind the card. */
+      .stage {
+        position: relative;
+        display: grid;
+        place-items: start center;
+        min-height: 34rem;
+        padding: var(--space-6) var(--space-4);
+        overflow: hidden;
+        border: 1px solid var(--rule);
+        border-radius: var(--radius-l);
+        background: var(--panel);
+      }
+      .sheet {
+        position: absolute;
+        inset: var(--space-4);
+        border-radius: var(--radius-m);
+        background: var(--surface);
+        opacity: 0.5;
+        filter: blur(1.5px);
+        overflow: hidden;
+      }
+      .sheet .bar {
+        height: 2.5rem;
+        background: var(--primary);
+      }
+      .sheet .grid {
+        height: 100%;
+        background:
+          linear-gradient(var(--rule) 1px, transparent 1px) 0 0 / 100% 2rem,
+          linear-gradient(90deg, var(--rule) 1px, transparent 1px) 0 0 / 7rem 100%;
+      }
+      .stage > :not(.sheet) {
+        position: relative;
+      }
+
+      /* Shared bits. */
+      .ico {
+        width: 1.25rem;
+        height: 1.25rem;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.75;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        flex: none;
+      }
+      .ico.s {
+        width: 1rem;
+        height: 1rem;
+      }
+      .eyebrow {
+        margin: 0;
+        font-size: var(--size-xs);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--correct);
+      }
+      .muted-label {
+        margin: 0;
+        font-size: var(--size-xs);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .checks {
+        display: grid;
+        gap: var(--space-2);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .checks li {
+        display: flex;
+        gap: var(--space-2);
+        align-items: flex-start;
+        font-size: var(--size-s);
+      }
+      .checks .ico {
+        margin-top: 0.15em;
+        color: var(--correct);
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-3);
+      }
+      .row .button-primary {
+        flex: 1 1 auto;
+      }
+      .fine {
+        margin: 0;
+        font-size: var(--size-xs);
+        color: var(--muted);
+      }
+      .box {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: var(--radius-l);
+        box-shadow: var(--shadow-pop);
+        overflow: hidden;
+      }
+      h3 {
+        margin: 0;
+        font-size: var(--size-xl);
+        line-height: 1.2;
+        color: var(--heading);
+      }
+
+      /* 1. Stat grid (what is on the page now). */
+      .o1 {
+        width: min(30rem, 100%);
+      }
+      .o1 .head {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: var(--space-4);
+        padding: var(--space-5);
+        background: var(--chip-bg);
+        border-bottom: 1px solid var(--rule);
+      }
+      .o1 .lock {
+        display: grid;
+        place-items: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: var(--radius-m);
+        background: var(--surface);
+        color: var(--correct);
+        box-shadow: var(--shadow-card);
+      }
+      .o1 .head p:last-child {
+        margin: var(--space-2) 0 0;
+      }
+      .o1 .body {
+        display: grid;
+        gap: var(--space-3);
+        padding: var(--space-5);
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-2);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .stats li {
+        display: grid;
+        padding: var(--space-3);
+        border: 1px solid var(--rule);
+        border-radius: var(--radius-m);
+      }
+      .stats strong {
+        font-size: var(--size-xl);
+        line-height: 1.1;
+        color: var(--heading);
+        font-variant-numeric: tabular-nums;
+      }
+      .stats span {
+        font-size: var(--size-s);
+        color: var(--muted);
+      }
+      .o1 .foot {
+        display: grid;
+        gap: var(--space-3);
+        padding: var(--space-4) var(--space-5);
+        background: var(--header);
+        border-top: 1px solid var(--rule);
+      }
+      .o1 .foot .fine {
+        text-align: center;
+      }
+
+      /* 2. Split: a green pitch side and a "what you get" side. */
+      .o2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: min(46rem, 100%);
+      }
+      .o2 .pitch {
+        display: grid;
+        align-content: start;
+        gap: var(--space-3);
+        padding: var(--space-6);
+        background: var(--primary);
+        color: var(--on-primary);
+      }
+      .o2 .pitch h3,
+      .o2 .pitch .eyebrow {
+        color: var(--on-primary);
+      }
+      .o2 .pitch .eyebrow {
+        opacity: 0.85;
+      }
+      .o2 .pitch p {
+        margin: 0;
+      }
+      .o2 .pitch .lock {
+        display: grid;
+        place-items: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: var(--radius-m);
+        background: rgb(255 255 255 / 0.16);
+      }
+      .o2 .get {
+        display: grid;
+        align-content: start;
+        gap: var(--space-4);
+        padding: var(--space-6);
+      }
+      .o2 .get .row {
+        flex-direction: column;
+      }
+      .o2 .get .button {
+        width: 100%;
+      }
+      @media (max-width: 44rem) {
+        .o2 {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* 3. Price-led: the plan up front, perks under it. */
+      .o3 {
+        width: min(28rem, 100%);
+        padding: var(--space-6);
+        display: grid;
+        gap: var(--space-4);
+        text-align: center;
+      }
+      .o3 .tag {
+        justify-self: center;
+      }
+      .o3 .lead {
+        margin: 0;
+        color: var(--muted);
+      }
+      .price {
+        display: grid;
+        gap: var(--space-1);
+        padding: var(--space-4);
+        border: 1px solid var(--rule);
+        border-radius: var(--radius-m);
+        background: var(--header);
+      }
+      .price .amount {
+        font-size: var(--size-xxl);
+        font-weight: 700;
+        line-height: 1;
+        color: var(--heading);
+      }
+      .price .amount small {
+        font-size: var(--size-base);
+        font-weight: 500;
+        color: var(--muted);
+      }
+      .price .fine {
+        font-size: var(--size-s);
+      }
+      .o3 .checks {
+        text-align: left;
+        justify-self: center;
+      }
+      .o3 .row {
+        flex-direction: column;
+      }
+
+      /* 4. Banner: a slim bar on top of the sheet, the sheet stays the hero. */
+      .stage.wide {
+        place-items: start stretch;
+      }
+      .o4 {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: var(--space-4);
+        padding: var(--space-4) var(--space-5);
+        border-color: var(--primary);
+      }
+      .o4 .lock {
+        display: grid;
+        place-items: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: var(--chip-bg);
+        color: var(--correct);
+      }
+      .o4 strong {
+        display: block;
+        color: var(--heading);
+      }
+      .o4 span {
+        font-size: var(--size-s);
+        color: var(--muted);
+      }
+      .o4 .row {
+        flex-wrap: nowrap;
+      }
+      @media (max-width: 44rem) {
+        .o4 {
+          grid-template-columns: auto 1fr;
+        }
+        .o4 .row {
+          grid-column: 1 / -1;
+        }
+      }
+
+      /* 5. Set preview: what this function's set holds, tasks locked. */
+      .o5 {
+        width: min(32rem, 100%);
+      }
+      .o5 .head {
+        display: grid;
+        gap: var(--space-2);
+        padding: var(--space-5) var(--space-5) var(--space-4);
+      }
+      .o5 .head p:last-child {
+        margin: 0;
+        color: var(--muted);
+      }
+      .tasks {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        border-block: 1px solid var(--rule);
+      }
+      .tasks li {
+        display: grid;
+        grid-template-columns: 1.75rem 1fr auto auto;
+        align-items: center;
+        gap: var(--space-3);
+        padding: var(--space-3) var(--space-5);
+        font-size: var(--size-s);
+      }
+      .tasks li + li {
+        border-top: 1px solid var(--rule);
+      }
+      .tasks li.on {
+        background: var(--chip-bg);
+        font-weight: 600;
+        color: var(--heading);
+      }
+      .tasks .n {
+        display: grid;
+        place-items: center;
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: 50%;
+        background: var(--header);
+        font-size: var(--size-xs);
+        font-weight: 700;
+        color: var(--muted);
+      }
+      .tasks li.on .n {
+        background: var(--primary);
+        color: var(--on-primary);
+      }
+      .tasks .lockmini {
+        color: var(--muted);
+      }
+      .o5 .foot {
+        display: grid;
+        gap: var(--space-3);
+        padding: var(--space-4) var(--space-5) var(--space-5);
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="lock" viewBox="0 0 24 24"><path d="M6 11h12v9H6zM8 11V8a4 4 0 0 1 8 0v3" /></symbol>
+      <symbol id="check" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10" /></symbol>
+      <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></symbol>
+    </svg>
+
+    <div class="page">
+      <header>
+        <div>
+          <h1>PRO paywall: five options</h1>
+          <p>Each sits on the blurred sheet of a locked function practice task. Numbers are the site's real counts.</p>
+        </div>
+        <button class="button button-secondary" type="button" id="theme">Switch light / dark</button>
+      </header>
+
+      <section class="option">
+        <h2><b>1</b> Stat grid</h2>
+        <p>What is on the page now. A tinted head with what is locked, four PRO numbers as tiles, actions in a grey foot. Structured and dense.</p>
+        <div class="stage">
+          <div class="sheet"><div class="bar"></div><div class="grid"></div></div>
+          <div class="box o1">
+            <div class="head">
+              <span class="lock"><svg class="ico"><use href="#lock" /></svg></span>
+              <div>
+                <p class="eyebrow">PRO</p>
+                <h3>Unlock function practice</h3>
+                <p>Get fast at 66 Excel functions with 330 short tasks, each checked the moment you press Enter.</p>
+              </div>
+            </div>
+            <div class="body">
+              <p class="muted-label">Everything in PRO</p>
+              <ul class="stats">
+                <li><strong>82</strong><span>PRO exercises</span></li>
+                <li><strong>330</strong><span>practice tasks</span></li>
+                <li><strong>66</strong><span>functions to drill</span></li>
+                <li><strong>5</strong><span>mock assessments</span></li>
+              </ul>
+              <ul class="checks"><li><svg class="ico s"><use href="#check" /></svg>Hints and full answers for every step</li></ul>
+            </div>
+            <div class="foot">
+              <div class="row">
+                <a class="button button-primary" href="#">See PRO plans <svg class="ico s"><use href="#arrow" /></svg></a>
+                <a class="button button-secondary" href="#">Log in</a>
+              </div>
+              <p class="fine">Cancel anytime · Secure checkout by Stripe</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="option">
+        <h2><b>2</b> Split pitch</h2>
+        <p>Two columns: a solid green side that sells, a plain side that lists what you get and holds the buttons. Bold, landing-page feel; on a phone it stacks.</p>
+        <div class="stage">
+          <div class="sheet"><div class="bar"></div><div class="grid"></div></div>
+          <div class="box o2">
+            <div class="pitch">
+              <span class="lock"><svg class="ico"><use href="#lock" /></svg></span>
+              <p class="eyebrow">PRO</p>
+              <h3>Unlock function practice</h3>
+              <p>Get fast at 66 Excel functions with 330 short tasks, each checked the moment you press Enter.</p>
+            </div>
+            <div class="get">
+              <p class="muted-label">What you get</p>
+              <ul class="checks">
+                <li><svg class="ico s"><use href="#check" /></svg>82 PRO exercises across every track</li>
+                <li><svg class="ico s"><use href="#check" /></svg>330 practice tasks for 66 functions</li>
+                <li><svg class="ico s"><use href="#check" /></svg>5 timed mock assessments</li>
+                <li><svg class="ico s"><use href="#check" /></svg>Hints and full answers for every step</li>
+              </ul>
+              <div class="row">
+                <a class="button button-primary" href="#">See PRO plans <svg class="ico s"><use href="#arrow" /></svg></a>
+                <a class="button button-secondary" href="#">Log in</a>
+              </div>
+              <p class="fine">Cancel anytime · Secure checkout by Stripe</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="option">
+        <h2><b>3</b> Price first</h2>
+        <p>Leads with the cost per month on the yearly plan, so the step feels small. Needs the price at build time: list price from plans.ts, or one Stripe call cached for the whole build.</p>
+        <div class="stage">
+          <div class="sheet"><div class="bar"></div><div class="grid"></div></div>
+          <div class="box o3">
+            <span class="tag">PRO</span>
+            <h3>Unlock function practice</h3>
+            <p class="lead">330 short tasks for 66 functions, checked the moment you press Enter.</p>
+            <div class="price">
+              <span class="amount">$4.92 <small>/ month</small></span>
+              <span class="fine">$59 billed yearly, or $15 month to month</span>
+            </div>
+            <ul class="checks">
+              <li><svg class="ico s"><use href="#check" /></svg>82 PRO exercises and 5 mock assessments</li>
+              <li><svg class="ico s"><use href="#check" /></svg>Hints and full answers for every step</li>
+            </ul>
+            <div class="row">
+              <a class="button button-primary" href="#">Get PRO <svg class="ico s"><use href="#arrow" /></svg></a>
+              <a class="link-button" href="#">I already have PRO: log in</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="option">
+        <h2><b>4</b> Slim banner</h2>
+        <p>One line across the top of the sheet. The blurred task stays the main thing you see; the ask is quiet. Least pushy, least selling.</p>
+        <div class="stage wide">
+          <div class="sheet"><div class="bar"></div><div class="grid"></div></div>
+          <div class="box o4">
+            <span class="lock"><svg class="ico"><use href="#lock" /></svg></span>
+            <div>
+              <strong>Function practice is part of PRO</strong>
+              <span>330 tasks for 66 functions, with hints and answers. Cancel anytime.</span>
+            </div>
+            <div class="row">
+              <a class="button button-secondary" href="#">Log in</a>
+              <a class="button button-primary" href="#">See PRO plans</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="option">
+        <h2><b>5</b> Your set, locked</h2>
+        <p>Shows the tasks of the set you just picked, with the current one marked, so you see exactly what you would open. Most specific to function practice; exercise pages would list the track's next exercises.</p>
+        <div class="stage">
+          <div class="sheet"><div class="bar"></div><div class="grid"></div></div>
+          <div class="box o5">
+            <div class="head">
+              <p class="eyebrow">PRO · RANK</p>
+              <h3>Your 5 RANK tasks are ready</h3>
+              <p>Get PRO to solve them on the sheet, with instant checks, hints and answers.</p>
+            </div>
+            <ol class="tasks">
+              <li class="on"><span class="n">1</span>Rank a score, highest first<span class="level level-1">Beginner</span><svg class="ico s lockmini"><use href="#lock" /></svg></li>
+              <li><span class="n">2</span>Rank a time, lowest first<span class="level level-1">Beginner</span><svg class="ico s lockmini"><use href="#lock" /></svg></li>
+              <li><span class="n">3</span>Rank a value picked in a cell<span class="level level-1">Beginner</span><svg class="ico s lockmini"><use href="#lock" /></svg></li>
+              <li><span class="n">4</span>Equal scores share a rank<span class="level level-2">Intermediate</span><svg class="ico s lockmini"><use href="#lock" /></svg></li>
+              <li><span class="n">5</span>Rank out of the field<span class="level level-2">Intermediate</span><svg class="ico s lockmini"><use href="#lock" /></svg></li>
+            </ol>
+            <div class="foot">
+              <div class="row">
+                <a class="button button-primary" href="#">Unlock with PRO <svg class="ico s"><use href="#arrow" /></svg></a>
+                <a class="button button-secondary" href="#">Log in</a>
+              </div>
+              <p class="fine">Plus 82 PRO exercises and 5 mock assessments · Cancel anytime</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      document.getElementById("theme").addEventListener("click", () => {
+        const root = document.documentElement;
+        const dark = root.dataset.theme
+          ? root.dataset.theme === "dark"
+          : matchMedia("(prefers-color-scheme: dark)").matches;
+        root.dataset.theme = dark ? "light" : "dark";
+      });
+    </script>
+  </body>
+</html>

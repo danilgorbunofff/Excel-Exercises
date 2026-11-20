@@ -34,7 +34,20 @@ export const GET: APIRoute = async (ctx) => {
     .select("pro_status, pro_until")
     .eq("id", user.id)
     .maybeSingle();
-  if (!hasPro(profile)) return json({ error: "PRO needed" }, 403);
+  if (!hasPro(profile)) {
+    // A Free account may read the answers of a drill in today's free run.
+    const { data: run } = drill
+      ? await supabase
+          .from("free_drill_runs")
+          .select("day")
+          .eq("user_id", user.id)
+          .eq("day", new Date().toISOString().slice(0, 10))
+          .contains("slugs", [slug])
+          .maybeSingle()
+      : { data: null };
+    if (!run) return json({ error: "PRO needed" }, 403);
+    return json({ answers });
+  }
   if (mock) {
     // A held-out task's answers come only after a set that holds it is finished
     // and saved, so a timed attempt cannot read them while it runs.

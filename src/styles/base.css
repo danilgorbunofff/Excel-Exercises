@@ -150,6 +150,18 @@ kbd {
 .button-primary:active {
   background: var(--primary-active);
 }
+/* A white button on a green panel. */
+.button-on-primary {
+  background: var(--on-primary);
+  color: var(--primary-hover);
+  box-shadow: var(--shadow-pop);
+}
+.button-on-primary:hover {
+  background: var(--correct-tint-solid);
+}
+.button-on-primary:focus-visible {
+  outline-color: var(--on-primary);
+}
 .button-secondary {
   border-color: var(--line);
   background: var(--surface);
@@ -354,6 +366,10 @@ kbd {
       animation: read-progress linear both;
       animation-timeline: scroll(root);
     }
+    /* The exercise workbench does not scroll as a page to read, so no progress line. */
+    body:has(> main.exercise) .site-header::after {
+      content: none;
+    }
   }
 }
 
@@ -477,9 +493,21 @@ ol.ruled {
   letter-spacing: -0.01em;
   color: var(--heading);
 }
-.pill-note {
-  display: inline-block;
-  padding: var(--space-1) var(--space-4);
+/* The formula tools: what a tool is, in three short facts, and the way to the other tool. */
+.tool-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.tool-fact {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2rem;
+  padding: 0 var(--space-3);
   border: 1px solid var(--chip-line);
   border-radius: var(--radius-pill);
   background: var(--chip-bg);
@@ -487,8 +515,16 @@ ol.ruled {
   font-size: var(--size-s);
   font-weight: 600;
 }
-.page-head .pill-note {
-  margin-top: var(--space-4);
+.page-head .tool-facts {
+  justify-content: center;
+}
+.tool-other {
+  margin: var(--space-3) 0 0;
+  font-size: var(--size-s);
+  color: var(--muted);
+}
+.tool-other a {
+  font-weight: 600;
 }
 /* Difficulty: a coloured pill with the word. .level-N and .badge-N agree. */
 .level,
@@ -705,8 +741,10 @@ select {
   border-radius: 0;
   background: none;
   color: var(--heading);
-  overflow-x: auto;
-  white-space: pre;
+  /* Long formulas wrap rather than scroll: a scrolling box needs keyboard
+     focus to read, and the copy button still copies the formula whole. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 .formula-line .copy {
   display: grid;

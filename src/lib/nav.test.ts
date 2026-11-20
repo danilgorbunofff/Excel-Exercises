@@ -14,9 +14,7 @@ describe("nav", () => {
     for (const { href } of all) expect(routes.has(href.split("#")[0] ?? ""), href).toBe(true);
   });
 
-  it("keeps Interview prep out of the header but in the tabs", () => {
-    const hidden = PRACTICE_NAV.filter((i) => i.inHeader === false).map((i) => i.label);
-    expect(hidden).toEqual(["Interview prep"]);
+  it("starts the practice tabs with Exercises and Function practice", () => {
     expect(PRACTICE_NAV.slice(0, 2).map((i) => i.label)).toEqual([
       "Exercises",
       "Function practice",

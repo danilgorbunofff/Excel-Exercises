@@ -2,8 +2,7 @@
 // Why this exists: a working exercise inside another page. The home page runs
 // the first exercise this way, and each function page ends with one.
 import { isLocked } from "../lib/access.ts";
-import { TIER_NAMES } from "../lib/daily.ts";
-import { drillsPath, exercisePath, LEVELS, nextAction, type Placed } from "../lib/exercises.ts";
+import { exercisePath, LEVELS, nextAction, type Placed } from "../lib/exercises.ts";
 import ExerciseData from "./ExerciseData.astro";
 import HintLadder from "./HintLadder.astro";
 import RichText from "./RichText.astro";
@@ -19,12 +18,10 @@ interface Props {
   defer?: boolean;
   /** A daily-only task: no page of its own, and its number is its step of the week. */
   daily?: boolean;
-  /** A PRO function drill: always locked, and its number is its place among the drills of its function. */
-  drill?: string;
 }
-const { placed, heading, intro, defer = false, daily = false, drill } = Astro.props;
-// An embed would put a PRO answer in a free page. Daily tasks are always free; drills always PRO.
-const locked = drill !== undefined || (!daily && isLocked(placed));
+const { placed, heading, intro, defer = false, daily = false } = Astro.props;
+// An embed would put a PRO answer in a free page. Daily tasks are always free.
+const locked = !daily && isLocked(placed);
 if (locked && !defer) {
   throw new Error(
     `${Astro.url.pathname} embeds ${placed.exercise.id}, a PRO exercise. Embed a free one.`,
@@ -32,9 +29,8 @@ if (locked && !defer) {
 }
 // An embedded sheet shows only its data, without the empty rows around it.
 const { exercise, number, total } = placed;
-const path = drill ? drillsPath(drill) : exercisePath(exercise.slug);
-const nextOf = (i: number) =>
-  drill ? { href: drillsPath(), label: "Next task", isStep: false } : nextAction(placed, i);
+const path = exercisePath(exercise.slug);
+const nextOf = (i: number) => nextAction(placed, i);
 ---
 
 <section
@@ -64,17 +60,7 @@ const nextOf = (i: number) =>
     ))
   }
   {
-    drill ? (
-      <p class="meta">
-        {drill} task {number} of {total}, {LEVELS[exercise.level as 1 | 2 | 3].toLowerCase()}.
-        <span data-progress hidden></span>
-      </p>
-    ) : daily ? (
-      <p class="meta">
-        {TIER_NAMES[number]}: step {number} of {total} this week.
-        <span data-progress hidden></span>
-      </p>
-    ) : (
+    !daily && (
       <p class="meta">
         Exercise {number} of {total}, {LEVELS[exercise.level as 1 | 2 | 3].toLowerCase()}.
         <span data-progress hidden></span>

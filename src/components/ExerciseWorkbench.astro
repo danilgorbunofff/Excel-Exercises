@@ -1,0 +1,892 @@
+---
+// Why this exists: the exercise workbench: tabs, task, sheet, verdict line,
+// hints and answer. The task, the sheet and the verdict line render on the
+// server; the exercise script grades in the browser and draws what the formula
+// read. A locked exercise is built without its answers and shows a paywall
+// instead of the sheet; locked-exercise.ts opens it for a PRO visitor. The
+// exercise pages and the function drill pages both use it; on any of them
+// drill-session.ts fills the Previous/Next bar when the page is part of a run
+// (a function practice set, or the review list).
+import { isLocked } from "../lib/access.ts";
+import { loadAssessments } from "../lib/assessments.ts";
+import {
+  drillsPath,
+  drillTasks,
+  exercisePath,
+  functionsOf,
+  LEVELS,
+  listWords as list,
+  nextAction,
+  type Placed,
+  placedExercises,
+  stepsFor,
+  topicPath,
+} from "../lib/exercises.ts";
+import Breadcrumbs from "./Breadcrumbs.astro";
+import CompletionDialog from "./CompletionDialog.astro";
+import ExerciseData from "./ExerciseData.astro";
+import ExerciseTimer from "./ExerciseTimer.astro";
+import HintLadder from "./HintLadder.astro";
+import Icon from "./Icon.astro";
+import RichText from "./RichText.astro";
+import Sheet from "./Sheet.astro";
+import SplitDivider from "./SplitDivider.astro";
+import StatusBar from "./StatusBar.astro";
+
+interface Props {
+  placed: Placed;
+  /** The next few exercises, listed under the task. */
+  more?: Placed[];
+  /** A PRO function drill: always locked, with the session bar. Its function's name. */
+  drill?: string;
+}
+const { placed, more = [], drill } = Astro.props;
+const { exercise, topic } = placed;
+const locked = drill !== undefined || isLocked(placed);
+const proCount = (await placedExercises()).filter((p) => isLocked(p)).length;
+// Real counts for the paywall, the same ones the pricing page uses.
+const drills = locked ? await drillTasks() : [];
+const drillCount = drills.length;
+const fnCount = new Set(drills.map((d) => d.fn)).size;
+const mockCount = locked ? loadAssessments().sets.filter((s) => !s.sample).length : 0;
+// The made-up sheet: 16 rows of five cells, the first 8 rows filled but the last column.
+const MOCK_CELLS = Array.from({ length: 16 * 5 }, (_, i) => i < 8 * 5 && i % 5 !== 4);
+const perks = [
+  `${proCount} PRO exercises across every track`,
+  `${drillCount} practice tasks for ${fnCount} functions`,
+  `${mockCount} timed mock assessments`,
+  "Hints and full answers for every step",
+];
+const { screens, notes } = exercise;
+const path = drill ? `/exercises/drills/${exercise.slug}/` : exercisePath(exercise.slug);
+const functions = drill ? [drill] : functionsOf(exercise);
+// Outside a session a drill leads back to the picker; drill-session.ts points it at the next task.
+const nextOf = (i: number) =>
+  drill && i === screens.length - 1
+    ? { href: drillsPath(), label: "Next: Pick other functions", isStep: false }
+    : nextAction(placed, i);
+---
+
+  <div class="exercise-root" data-exercise data-locked={locked ? exercise.slug : undefined} data-drill={drill}>
+  <div class="tabs-row">
+    <div class="tabs" role="tablist" aria-label="Exercise and answer" data-tabs>
+      <button type="button" role="tab" id="tab-exercise" aria-controls="panel-exercise" aria-selected="true" data-tab="exercise">
+        Exercise
+      </button>
+      <button type="button" role="tab" id="tab-answer" aria-controls="panel-answer" aria-selected="false" tabindex="-1" data-tab="answer">
+        Answer
+      </button>
+    </div>
+    <div class="row-tools">
+      {/* Hidden until drill-session.ts finds this page in a run: function practice or review. */}
+      <nav class="pager" aria-label="Tasks in this set" data-session hidden>
+            <a class="pager-step" href="" data-session-prev>
+              <Icon name="chevron-down" size={16} class="prev" />
+              <span class="pager-word" aria-hidden="true">Previous</span>
+              <span class="visually-hidden">Previous task</span>
+            </a>
+            <span class="pager-count" data-session-title />
+            <a class="pager-step" href="" data-session-next>
+              <span class="pager-word" aria-hidden="true" data-session-next-word>Next</span>
+              <span class="visually-hidden" data-session-next-label>Next task</span>
+              <Icon name="chevron-down" size={16} class="next" />
+            </a>
+          </nav>
+      <ExerciseTimer />
+    </div>
+  </div>
+
+  <div class="task">
+    <Breadcrumbs
+      items={
+        drill
+          ? [
+              { label: "Exercises", href: "/exercises/" },
+              { label: "Function practice", href: drillsPath() },
+              { label: drill, href: drillsPath(drill) },
+            ]
+          : [
+              { label: "Exercises", href: "/exercises/" },
+              { label: topic.title, href: topicPath(topic.slug) },
+            ]
+      }
+      hideOnPhone
+    />
+    <div class="title-row">
+      <h1>{exercise.title}</h1>
+      <span class={`level level-${exercise.level}`}>{LEVELS[exercise.level as 1 | 2 | 3]}</span>
+      {locked && <span class="tag">PRO</span>}
+    </div>
+    {
+      screens.map((s, i) => (
+        <p class="prompt" data-prompt={i} hidden={i > 0}>
+          {screens.length > 1 && (
+            <span class="step">
+              Step {i + 1} of {screens.length}.{" "}
+            </span>
+          )}
+          <RichText text={s.prompt} />
+        </p>
+      ))
+    }
+  </div>
+
+  <SplitDivider />
+
+  {
+    locked && (
+      <section class="work paywall" aria-labelledby="paywall-title" data-paywall>
+        {/* A made-up sheet behind the card, so the real task sheet stays hidden until PRO opens it. */}
+        <div class="mock-sheet" aria-hidden="true">
+          <div class="mock-bar" />
+          <div class="mock-fx" />
+          <div class="mock-grid">
+            {MOCK_CELLS.map((filled) => (
+              <span class="mock-cell">{filled && <i />}</span>
+            ))}
+          </div>
+        </div>
+        <div class="card">
+          <div class="pitch">
+            <span class="lock" aria-hidden="true"><Icon name="lock" size={20} /></span>
+            <div>
+              <p class="eyebrow">PRO</p>
+              <h2 id="paywall-title">{drill ? "Practise every function with PRO" : "Solve this exercise with PRO"}</h2>
+            </div>
+            <p class="pay-lead" data-paywall-text>
+              {
+                drill
+                  ? `Get fast at ${fnCount} Excel functions with ${drillCount} short tasks, each checked the moment you press Enter.`
+                  : "Solve it on the live sheet, check your formula instantly and see the full answer."
+              }
+            </p>
+          </div>
+          <div class="get">
+            <p class="pay-label">What you get</p>
+            <ul class="perks">
+              {perks.map((line) => (
+                <li>
+                  <Icon name="check" size={16} />
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+            <div class="actions">
+              <a class="button button-primary" href="/pricing/">
+                See PRO plans <Icon name="arrow" size={16} />
+              </a>
+              <a class="button button-secondary" href={`/login/?next=${encodeURIComponent(path)}`} data-when="out">Log in</a>
+            </div>
+            <p class="pay-note">Cancel anytime · Secure checkout by Stripe</p>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    screens.map((s, i) => (
+      <section class="work" aria-label="Sheet" data-screen={i} hidden={i > 0} inert={locked}>
+        <Sheet screen={s} index={i} action={path} />
+        <StatusBar index={i} answerCell={s.answerCell} next={nextOf(i)} />
+      </section>
+    ))
+  }
+
+  <div class="details" role="tabpanel" id="panel-exercise" aria-labelledby="tab-exercise">
+    <h2>Your task</h2>
+    {
+      screens.map((s, i) => (
+        <ol class="todo step-list" data-prompt={i} hidden={i > 0}>
+          {stepsFor(s).map((line) => (
+            <li>
+              <RichText text={line} />
+            </li>
+          ))}
+        </ol>
+      ))
+    }
+    <p class="progress" data-progress hidden></p>
+
+    <section class="note note-hints" aria-labelledby="hints">
+      <h2 id="hints"><Icon name="hint" size={18} />Stuck?</h2>
+      <p class="count">The last hint shows the answer, and the exercise counts as solved with help.</p>
+      {screens.map((s, i) => <HintLadder screen={s} index={i} locked={locked} />)}
+    </section>
+
+    {/* Background on the function stays folded, so the task and its hints come first. */}
+    {/* A drill has no notes of its own, so no background and no list of more exercises. */}
+    {!drill && (<>
+    <details class="learn">
+      <summary>
+        <Icon name="book" size={18} />
+        <span>About {functions.length > 0 ? list(functions) : "this formula"}</span>
+        <Icon name="chevron-down" size={18} class="chev" />
+      </summary>
+      <div class="learn-body">
+        <p><RichText text={notes.summary} /></p>
+        <div class="formula-line">
+          <span class="fx" aria-hidden="true">fx</span>
+          <code>{notes.syntax}</code>
+        </div>
+        <p><RichText text={notes.example} /></p>
+        <section class="note note-warn" aria-labelledby="errors">
+          <h3 id="errors"><Icon name="warn" size={18} />What goes wrong</h3>
+          <ul class="errors">
+            {
+              notes.commonErrors.map((e) => (
+                <li>
+                  <RichText text={e} />
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+      </div>
+    </details>
+
+    <h2>More exercises</h2>
+    <ul class="more">
+      {
+        more.map((p) => (
+          <li>
+            <span class="go" aria-hidden="true">
+              <Icon name="play" size={14} />
+            </span>
+            <a href={exercisePath(p.exercise.slug)}>{p.exercise.title}</a>
+            <span class={`level level-${p.exercise.level}`}>
+              {LEVELS[p.exercise.level as 1 | 2 | 3]}
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+    </>)}
+    <section data-session-more hidden>
+          <h2 data-session-more-title>Next in your set</h2>
+          <ul class="more" data-session-list />
+          <template data-session-item>
+            <li>
+              <span class="go" aria-hidden="true">
+                <Icon name="play" size={14} />
+              </span>
+              <a href="" />
+              <span class="level" />
+            </li>
+          </template>
+        </section>
+    <p class="back">
+      {
+        drill ? (
+          <a href={drillsPath()}><span aria-hidden="true">←</span> Back to function practice</a>
+        ) : (
+          <a href="/exercises/" data-session-back>
+            <span aria-hidden="true">←</span> Back to the exercise list
+          </a>
+        )
+      }
+      <a class="finish" href="/exercises/drills/?done" data-session-finish hidden>
+        <Icon name="check" size={16} />
+        Finish and see results
+      </a>
+    </p>
+  </div>
+
+  <div class="details answer-panel" role="tabpanel" id="panel-answer" aria-labelledby="tab-answer" hidden>
+    <h2>The answer</h2>
+    <p>Seeing the answer marks this exercise as solved with help. Solve it again on a later day to count it as solved.</p>
+    {
+      screens.map((s, i) => (
+        <div class="answer-block">
+          {screens.length > 1 && <h3>Step {i + 1}</h3>}
+          <p>
+            In <strong>{s.answerCell}</strong>, type:
+          </p>
+          <div class="formula-line">
+            <span class="fx" aria-hidden="true">fx</span>
+            <code data-answer={i}>{locked ? "" : s.answer}</code>
+          </div>
+          <p>
+            <RichText text={s.hints.rule} />
+          </p>
+        </div>
+      ))
+    }
+    {
+      !drill && (
+        <>
+          <h2>Why it works</h2>
+          <p><RichText text={notes.summary} /></p>
+          <p><RichText text={notes.example} /></p>
+        </>
+      )
+    }
+  </div>
+
+    <ExerciseData exercise={exercise} locked={locked} />
+    <CompletionDialog
+      next={nextOf(screens.length - 1)}
+    />
+  </div>
+
+<script>
+  import "../scripts/workbench.ts";
+  import "../scripts/locked-exercise.ts";
+  import "../scripts/drill-session.ts";
+</script>
+
+<style is:global>
+  /* Until a PRO visitor opens it, a locked exercise shows its task, but its
+     sheet stays hidden (and inert): the paywall shows a made-up sheet instead,
+     with no hints or answers. unlock() drops data-locked and the real one shows. */
+  [data-locked] .work:not(.paywall) {
+    display: none;
+  }
+  /* The made-up sheet fills the sheet area and the card sits on it, centred. */
+  .exercise .work.paywall {
+    display: grid;
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+    min-height: 34rem;
+  }
+  .paywall > * {
+    grid-area: 1 / 1;
+  }
+  .paywall .mock-sheet {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    overflow: hidden;
+    border-radius: var(--radius-m);
+    background: var(--surface);
+    opacity: 0.5;
+    filter: blur(1.5px);
+    user-select: none;
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .paywall .mock-sheet {
+      filter: none;
+      opacity: 0.35;
+    }
+  }
+  .paywall .mock-bar {
+    height: 2.75rem;
+    background: var(--primary);
+  }
+  .paywall .mock-fx {
+    height: 2.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .paywall .mock-grid {
+    display: grid;
+    grid-template-columns: 2fr repeat(4, 1fr);
+    grid-auto-rows: 2.25rem;
+    align-content: start;
+  }
+  .paywall .mock-cell {
+    display: flex;
+    align-items: center;
+    padding: 0 var(--space-2);
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  /* Bars of a few widths, so the rows read as labels and numbers, not stripes. */
+  .paywall .mock-cell i {
+    width: 40%;
+    height: 0.5rem;
+    border-radius: var(--radius-pill);
+    background: var(--line);
+    opacity: 0.45;
+  }
+  .paywall .mock-cell:nth-child(5n + 1) i {
+    width: 70%;
+  }
+  .paywall .mock-cell:nth-child(5n + 1):nth-child(3n) i {
+    width: 55%;
+  }
+  .paywall .mock-cell:nth-child(5n + 3) i,
+  .paywall .mock-cell:nth-child(7n) i {
+    width: 30%;
+  }
+  [data-locked] [data-tabs],
+  [data-locked] .hints,
+  [data-locked] .note-hints,
+  [data-locked] .answer-panel {
+    display: none !important;
+  }
+  /* The card: a solid green side that sells, a plain side with what PRO holds
+     and the actions. It stacks when the sheet column is narrow. */
+  .exercise .work.paywall {
+    container-type: inline-size;
+  }
+  .paywall .card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    place-self: center;
+    width: 100%;
+    max-width: 46rem;
+    margin: var(--space-4) 0;
+    /* The shared .card padding would inset the green side. */
+    padding: 0;
+    overflow: hidden;
+    pointer-events: auto;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-l);
+    box-shadow: var(--shadow-pop);
+  }
+  .paywall .pitch,
+  .paywall .get {
+    display: grid;
+    align-content: start;
+    gap: var(--space-4);
+    padding: var(--space-6);
+  }
+  .paywall .pitch {
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+  .paywall .lock {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-m);
+    background: rgb(255 255 255 / 0.16);
+  }
+  .paywall .eyebrow {
+    margin: 0 0 var(--space-1);
+    font-size: var(--size-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+  .paywall h2 {
+    margin: 0;
+    font-size: var(--size-xl);
+    line-height: 1.2;
+    color: inherit;
+  }
+  .paywall .pay-lead {
+    margin: 0;
+  }
+  .paywall .pay-label {
+    margin: 0;
+    font-size: var(--size-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .paywall .perks {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .paywall .perks li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    font-size: var(--size-s);
+    color: var(--text);
+  }
+  .paywall .perks .icon {
+    flex: none;
+    margin-top: 0.15em;
+    color: var(--correct);
+  }
+  .paywall .actions {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .paywall .actions .button {
+    width: 100%;
+  }
+  .paywall .pay-note {
+    margin: 0;
+    font-size: var(--size-xs);
+    text-align: center;
+    color: var(--muted);
+  }
+  @container (max-width: 40rem) {
+    .paywall .card {
+      grid-template-columns: 1fr;
+      max-width: 28rem;
+      margin: var(--space-2) auto;
+    }
+    .paywall .pitch,
+    .paywall .get {
+      padding: var(--space-5);
+    }
+  }
+  .exercise-root {
+    display: contents;
+  }
+  main.exercise {
+    --pane: 40%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "tabs" "task" "work" "details" "answer";
+    align-content: start;
+    background: var(--surface);
+  }
+  .exercise .tabs-row {
+    grid-area: tabs;
+  }
+  .exercise .task {
+    grid-area: task;
+    padding: var(--space-3) var(--space-4) var(--space-2);
+    background: var(--surface);
+  }
+  .exercise .work {
+    grid-area: work;
+    padding: var(--space-3);
+    background: var(--panel);
+  }
+  .exercise .work[hidden],
+  .exercise .details[hidden] {
+    display: none;
+  }
+  .exercise .details {
+    grid-area: details;
+    padding: var(--space-2) var(--space-4) var(--space-6);
+    background: var(--surface);
+  }
+  .exercise .answer-panel {
+    grid-area: answer;
+  }
+  @media (min-width: 64rem) {
+    main.exercise {
+      grid-template-columns: minmax(20rem, var(--pane)) 0.75rem minmax(0, 1fr);
+      grid-template-areas:
+        "tabs divider work"
+        "task divider work"
+        "details divider work"
+        "answer divider work";
+      grid-template-rows: auto auto auto 1fr;
+    }
+    .exercise .task {
+      padding: var(--space-5) var(--space-5) 0;
+    }
+    .exercise .details {
+      padding: 0 var(--space-5) var(--space-6);
+    }
+    .exercise .work {
+      position: sticky;
+      top: 4rem;
+      align-self: start;
+      height: calc(100dvh - 4rem);
+      overflow: auto;
+      padding: var(--space-5) var(--space-5) var(--space-5) var(--space-3);
+    }
+    /* The verdict stays in view at 1280 by 800; the empty padding rows slide under it. */
+    .exercise .work .status {
+      position: sticky;
+      bottom: 0;
+    }
+  }
+</style>
+
+<style>
+  /* The tab row's right side: the set pager (drills only), then the timer. */
+  .row-tools {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-left: auto;
+  }
+  /* Previous, the count and Next, in the same type as the tabs beside them. */
+  .pager {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-4);
+    font-size: var(--size-s);
+    font-weight: 600;
+  }
+  .pager[hidden],
+  [data-session-more][hidden],
+  .finish[hidden] {
+    display: none;
+  }
+  .pager-count {
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .pager-count :global(b) {
+    color: var(--heading);
+    font-weight: 700;
+  }
+  .pager-step {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: 2.75rem;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .pager-step:hover {
+    color: var(--text);
+  }
+  .pager-step[aria-disabled="true"] {
+    opacity: 0.4;
+    cursor: default;
+  }
+  .pager-step[aria-disabled="true"]:hover {
+    color: var(--muted);
+  }
+  .pager :global(.prev) {
+    rotate: 90deg;
+  }
+  .pager :global(.next) {
+    rotate: -90deg;
+  }
+  @media (max-width: 40rem) {
+    .pager-word {
+      display: none;
+    }
+  }
+  .back:has(.finish) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  /* Finish sits beside Back in the same size, in the outline style of the site. */
+  .back a.finish {
+    border-color: var(--primary);
+    color: var(--correct);
+  }
+  .back a.finish:hover {
+    border-color: var(--primary);
+    background: var(--chip-bg);
+  }
+  .title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1) var(--space-3);
+    margin-top: var(--space-1);
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--size-xl);
+    font-weight: 700;
+    color: var(--heading);
+  }
+  .tabs-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    /* A tab's height plus the border, kept when the tabs are hidden. */
+    min-height: calc(3rem + 1px);
+    padding: 0 var(--space-4);
+    border-bottom: 1px solid var(--rule);
+    background: var(--surface);
+  }
+  /* After .tabs-row, so it wins: with the tabs hidden, the timer stays on the
+     right, where it is once the exercise is open. */
+  [data-locked] .tabs-row {
+    justify-content: flex-end;
+  }
+  .tabs {
+    display: flex;
+    gap: var(--space-5);
+  }
+  [role="tab"] {
+    min-height: 3rem;
+    padding: 0 var(--space-1);
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: var(--muted);
+    font-size: var(--size-s);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  [role="tab"]:hover {
+    color: var(--text);
+  }
+  [role="tab"][aria-selected="true"] {
+    border-bottom-color: var(--tab-active);
+    color: var(--tab-active);
+  }
+  [role="tab"]:focus-visible {
+    outline-offset: -2px;
+  }
+  .todo {
+    margin: 0 0 var(--space-3);
+  }
+  .todo li {
+    margin-bottom: var(--space-2);
+  }
+  .todo[hidden] {
+    display: none;
+  }
+  .more {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0 0 var(--space-4);
+    padding: 0;
+    list-style: none;
+  }
+  .more li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .more a {
+    flex: 1;
+    font-weight: 500;
+  }
+  .go {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--correct-tint);
+    color: var(--correct);
+  }
+  .details .note {
+    margin: var(--space-5) 0;
+  }
+  .details .note > :is(h2, h3) {
+    margin-top: 0;
+    font-size: var(--size-l);
+  }
+  .details .note .count {
+    margin: 0 0 var(--space-3);
+  }
+  .details .note .count:last-child {
+    margin-bottom: 0;
+  }
+  .learn {
+    margin: var(--space-5) 0;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+  }
+  .learn > summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 3rem;
+    padding: 0 var(--space-4);
+    font-weight: 600;
+    color: var(--heading);
+    cursor: pointer;
+    list-style: none;
+  }
+  .learn > summary::-webkit-details-marker {
+    display: none;
+  }
+  .learn > summary :global(.icon) {
+    flex: none;
+    color: var(--muted);
+  }
+  .learn > summary :global(.chev) {
+    margin-left: auto;
+  }
+  .learn[open] > summary :global(.chev) {
+    rotate: 180deg;
+  }
+  .learn-body {
+    padding: 0 var(--space-4) var(--space-4);
+  }
+  .learn-body .note {
+    margin: var(--space-4) 0;
+  }
+
+  .back {
+    margin-top: var(--space-5);
+  }
+  .back a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: var(--shadow-card);
+  }
+  .back a:hover {
+    border-color: var(--line);
+    background: var(--bg);
+  }
+  .back a:hover span {
+    transform: translateX(-2px);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .back a {
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .back a span {
+      transition: transform 0.15s;
+    }
+  }
+  .answer-block pre {
+    font-size: var(--size-base);
+  }
+  .prompt {
+    margin: var(--space-2) 0 0;
+  }
+  .prompt[hidden] {
+    display: none;
+  }
+  .step {
+    font-weight: 600;
+  }
+  .count,
+  .progress {
+    margin: var(--space-3) 0 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .progress[hidden] {
+    display: none;
+  }
+  h2 {
+    margin: var(--space-5) 0 var(--space-2);
+    font-size: var(--size-l);
+    font-weight: 600;
+  }
+  h3 {
+    margin: var(--space-4) 0 var(--space-1);
+    font-size: var(--size-base);
+    font-weight: 600;
+  }
+  .details p {
+    margin: 0 0 var(--space-3);
+  }
+  pre {
+    margin: 0 0 var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    white-space: pre-wrap;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-s);
+    background: var(--header);
+    font-size: var(--size-s);
+  }
+  .errors {
+    margin: 0;
+    padding-left: var(--space-5);
+  }
+  @media (min-width: 64rem) {
+    h1 {
+      font-size: var(--size-xxl);
+    }
+    .prompt {
+      font-size: var(--size-l);
+    }
+  }
+</style>

@@ -5,8 +5,9 @@
 
 export interface Query {
   table: string;
-  op: "select" | "insert" | "update";
+  op: "select" | "insert" | "upsert" | "update" | "delete" | "rpc";
   payload?: unknown;
+  options?: unknown;
   filters: Record<string, unknown>;
   single: boolean;
 }
@@ -37,8 +38,22 @@ export function fakeClient(handler: Handler, log: Query[] = []) {
         q.payload = payload;
         return chain;
       },
+      delete: () => {
+        q.op = "delete";
+        return chain;
+      },
       eq: (col: string, val: unknown) => {
         q.filters[col] = val;
+        return chain;
+      },
+      upsert: (payload: unknown, options?: unknown) => {
+        q.op = "upsert";
+        q.payload = payload;
+        q.options = options;
+        return chain;
+      },
+      contains: (col: string, vals: unknown[]) => {
+        q.filters[col] = vals;
         return chain;
       },
       in: (col: string, vals: unknown[]) => {
@@ -62,7 +77,13 @@ export function fakeClient(handler: Handler, log: Query[] = []) {
     };
     return chain;
   };
-  return { from };
+  /** A database function call, logged with the function name as its table. */
+  const rpc = (fn: string, args: unknown) => {
+    const q: Query = { table: fn, op: "rpc", payload: args, filters: {}, single: false };
+    log.push(q);
+    return Promise.resolve(handler(q));
+  };
+  return { from, rpc };
 }
 
 export const request = (method: string, body?: unknown) =>

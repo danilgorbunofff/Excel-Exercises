@@ -53,6 +53,16 @@ describe("catalogue sort", () => {
     expect([a, b].sort((x, y) => compare(x, y, "state", "ascending"))[0]).toBe(b);
     expect([b, a].sort((x, y) => compare(x, y, "order", "ascending"))[0]).toBe(a);
   });
+  it("ranks review reasons: not solved, then wrong last time, then due again", () => {
+    const due = row({ order: 1, state: "due" });
+    const missed = row({ order: 2, state: "missed" });
+    const unsolved = row({ order: 3, state: "unsolved" });
+    expect([due, missed, unsolved].sort((x, y) => compare(x, y, "state", "ascending"))).toEqual([
+      unsolved,
+      missed,
+      due,
+    ]);
+  });
   it("says how many rows show", () => {
     expect(countLine(3, 24, false)).toBe("");
     expect(countLine(2, 24, true)).toBe("Showing 2 of 24 exercises.");

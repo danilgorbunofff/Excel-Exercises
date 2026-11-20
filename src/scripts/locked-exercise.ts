@@ -14,7 +14,9 @@ export async function unlock(root: HTMLElement): Promise<UnlockResult> {
   const slug = root.dataset["locked"] ?? "";
   const text = root.querySelector<HTMLElement>("[data-paywall-text]");
   const me = await loadMe();
-  if (!me?.pro) {
+  // A Free account may hold a drill from today's free run: the server decides.
+  const tryFree = !!me && !me.pro && root.dataset["drill"] !== undefined;
+  if (!me?.pro && !tryFree) {
     track("paywall_seen");
     if (me && text)
       text.textContent =
@@ -24,6 +26,13 @@ export async function unlock(root: HTMLElement): Promise<UnlockResult> {
   const res = await fetch(`/api/exercises/${encodeURIComponent(slug)}/`, {
     credentials: "same-origin",
   }).catch(() => null);
+  if (tryFree && res?.status === 403) {
+    track("paywall_seen");
+    if (text)
+      text.textContent =
+        "Your plan is Free. Get PRO to open this exercise and every other PRO one.";
+    return "free";
+  }
   if (!res?.ok) {
     if (text) text.textContent = "This exercise could not be opened. Reload the page to try again.";
     return "error";

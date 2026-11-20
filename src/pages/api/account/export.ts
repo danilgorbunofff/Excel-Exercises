@@ -19,6 +19,7 @@ const TABLES = {
     "started_at",
   ],
   daily_solves: ["daily_solves", "day, exercise, solved_at", "day"],
+  free_drill_runs: ["free_drill_runs", "day, slugs, created_at", "day"],
   certificates: [
     "certificates",
     "id, assessment, assessment_title, name, score, total, time_limit_s, issued_at, revoked_at",

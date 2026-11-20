@@ -41,7 +41,7 @@ const faq = [
   },
   {
     q: "Where is my progress kept?",
-    a: "In this browser only. Accounts that sync progress across devices are on the way.",
+    a: "Without an account, in this browser. With a free account, it is saved to your account and follows you to every device you sign in on.",
   },
 ];
 
@@ -75,7 +75,7 @@ const offers: {
   {
     value: String(tracks.length),
     title: "Learning tracks",
-    text: "Guided paths from your first cell reference to capstone tasks, with the exercises in a sensible order.",
+    text: "Guided paths from your first cell reference to capstone tasks and interview practice, with the exercises in a sensible order.",
     href: tracksPath,
     link: "View the tracks",
   },
@@ -103,7 +103,7 @@ const different: { icon: IconName; title: string; text: string }[] = [
   {
     icon: "bolt",
     title: "No setup",
-    text: "There is nothing to install and no account to make. Your progress is saved in this browser.",
+    text: "There is nothing to install, and you can start without an account. Sign up free to keep your progress on every device.",
   },
   {
     icon: "check",
@@ -173,7 +173,7 @@ const audiences: { title: string; text: string }[] = [
     <div class="container">
       <div class="section-head">
         <h2>Ways to practise</h2>
-        <p>Solve exercises, look up a function, follow a track, or test yourself against the clock.</p>
+        <p>Solve exercises, look up a function or follow a track.</p>
       </div>
       <ul class="grid-3">
         {
@@ -263,7 +263,7 @@ const audiences: { title: string; text: string }[] = [
     <div class="container">
       <div class="section-head">
         <h2>Who uses it</h2>
-        <p>The tracks start from zero and end with capstone tasks, so there is a place to begin for everyone.</p>
+        <p>The tracks start from zero and end with capstone tasks and interview practice, so there is a place to begin for everyone.</p>
       </div>
       <ul class="grid-2">
         {
@@ -597,17 +597,6 @@ const audiences: { title: string; text: string }[] = [
     margin: 0 0 var(--space-6);
     font-size: var(--size-l);
     color: inherit;
-  }
-  .button-on-primary {
-    background: var(--on-primary);
-    color: var(--primary-hover);
-    box-shadow: var(--shadow-pop);
-  }
-  .button-on-primary:hover {
-    background: var(--correct-tint-solid);
-  }
-  .button-on-primary:focus-visible {
-    outline-color: var(--on-primary);
   }
   @media (min-width: 48rem) {
     h1 {

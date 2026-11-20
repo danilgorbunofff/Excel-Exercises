@@ -6,6 +6,7 @@ export interface DrillRef {
   slug: string;
   fn: string;
   level: number;
+  title?: string;
 }
 
 /** Drills in a "random" session. */
@@ -18,6 +19,23 @@ function shuffle<T>(items: readonly T[], random: () => number): T[] {
     [out[i], out[j]] = [out[j] as T, out[i] as T];
   }
   return out;
+}
+
+/** The slugs of a "random" session: the ten a Free account runs once a day. */
+export const freeRunSlugs = (pool: readonly DrillRef[], random: () => number = Math.random) =>
+  drillQueue(pool, { fns: ["random"], id: null }, random).map((d) => d.slug);
+
+/**
+ * Where a drill page sits in its session: its place, and the slugs before and
+ * after it. index is -1 when the page is not in the session.
+ */
+export function sessionStep(
+  slugs: readonly string[],
+  slug: string,
+): { index: number; prev: string | null; next: string | null } {
+  const index = slugs.indexOf(slug);
+  if (index < 0) return { index, prev: null, next: null };
+  return { index, prev: slugs[index - 1] ?? null, next: slugs[index + 1] ?? null };
 }
 
 /**

@@ -163,18 +163,6 @@ export function stripDays(
   });
 }
 
-/** This week's ladder, Monday to Sunday, with each day's step and whether it has come yet. */
-export function weekDays(
-  days: ReadonlySet<string>,
-  today: string,
-): { day: string; tier: number; solved: boolean; today: boolean; future: boolean }[] {
-  const monday = mondayOf(today);
-  return Array.from({ length: 7 }, (_, i) => {
-    const day = addDays(monday, i);
-    return { day, tier: i + 1, solved: days.has(day), today: day === today, future: day > today };
-  });
-}
-
 export interface DailySolve {
   day: string;
   exercise: string;

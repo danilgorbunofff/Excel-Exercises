@@ -1,28 +1,22 @@
 ---
 // Why this exists: PRO function practice. Pick one function, several, all of
 // them or ten at random, and short tasks play one after another, each
-// function from easy to hard. The page follows the learning tracks layout:
-// an open head, the function groups as cards, and "Your set" beside them
-// with the Start button. drills.ts reads the choice from the
-// address, fetches each task from /exercises/drills/task/ and opens it for
-// PRO. The first task is rendered here, hidden: it brings the workbench
-// styles and is the preview a visitor without PRO sees.
-import Breadcrumbs from "../../../components/Breadcrumbs.astro";
+// function from easy to hard. Three panes: the function groups on the left,
+// the chosen group's functions with their syntax in the middle, and "Your
+// set" with the Start button on the right. drills.ts reads the choice from the
+// address and opens the first drill page (/exercises/drills/<slug>/), each in
+// the exercise layout; ?done shows the summary of the session.
 import Icon, { type IconName } from "../../../components/Icon.astro";
-import LiveExercise from "../../../components/LiveExercise.astro";
 import PracticeTabs from "../../../components/PracticeTabs.astro";
 import Base from "../../../layouts/Base.astro";
 import { drillTasks, exercisesForFunction } from "../../../lib/exercises.ts";
 import { loadFunctionIndex } from "../../../lib/functions.ts";
-import { PRICING_NAV } from "../../../lib/nav.ts";
 import "../../../styles/assessments.css";
 
 const drills = await drillTasks();
-const first = drills[0];
-if (!first) throw new Error("content/drills/ has no drills.");
+if (drills.length === 0) throw new Error("content/drills/ has no drills.");
 const count = new Map<string, number>();
 for (const d of drills) count.set(d.fn, (count.get(d.fn) ?? 0) + 1);
-const perFunction = Math.max(...count.values());
 const index = loadFunctionIndex();
 const groups = index.groups
   .map((g) => ({
@@ -49,6 +43,7 @@ const pool = drills.map((d) => ({
   slug: d.exercise.slug,
   fn: d.fn,
   level: d.exercise.level,
+  title: d.exercise.title,
 }));
 const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
 ---
@@ -63,44 +58,11 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
     <script type="application/json" data-drill-pool set:html={poolJson} />
 
     <header class="open-head">
-      <Breadcrumbs items={[{ label: "Exercises", href: "/exercises/" }]} />
-      <span class="tag">PRO</span>
       <h1>Function practice</h1>
       <p class="lead">
-        Pick the functions you want to get fast at. Short tasks come one after another, each
-        function from easy to hard, with instant marking.
+        Pick the functions you want to get fast at.
       </p>
     </header>
-
-    <section class="ruled drill-session" aria-labelledby="session-title" data-session hidden>
-      <div class="list-head session-head">
-        <h2 id="session-title" data-session-title>Task 1</h2>
-        <div class="session-actions">
-          <button class="link-button" type="button" data-skip>Skip</button>
-          <button class="link-button" type="button" data-finish>Finish</button>
-        </div>
-      </div>
-      <div class="a-pad">
-        <div class="a-notice" data-paywall hidden>
-          <p data-paywall-text>
-            Function practice is part of PRO. Below is the first task of your choice, so you can see
-            what they are like.
-          </p>
-          <p>
-            <a class="button button-primary" href={PRICING_NAV.href}>See PRO plans</a>
-            <a class="button button-outline" href="/login/?next=/exercises/drills/" data-when="out"
-              >Log in</a
-            >
-          </p>
-        </div>
-        <p role="alert" data-drill-error hidden>
-          The task did not load. Reload the page to try again.
-        </p>
-        <div data-drill-slot>
-          <LiveExercise placed={first} heading={first.exercise.title} defer drill={first.fn} />
-        </div>
-      </div>
-    </section>
 
     <section class="ruled" aria-labelledby="done-title" data-summary hidden>
       <div class="list-head">
@@ -120,60 +82,78 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
     </section>
 
     <form
-      class="a-grid picker"
+      class="picker"
       id="picker"
       method="get"
       action="/exercises/drills/"
       aria-labelledby="pick-title"
       data-picker
     >
-      <section class="board" aria-labelledby="pick-title">
-        <div class="board-head">
-          <div>
-            <h2 id="pick-title">Choose functions</h2>
-            <p>{count.size} functions in {groups.length} groups, {perFunction} tasks each.</p>
-          </div>
-          <label class="filter" data-filter-wrap hidden>
-            <Icon name="filter" size={16} />
-            <span class="visually-hidden">Filter functions</span>
-            <input type="search" placeholder="Filter, e.g. LOOKUP" autocomplete="off" data-filter />
-          </label>
-        </div>
-        <div class="rows">
+      <nav class="groups-nav" aria-labelledby="pick-title">
+        <h2 id="pick-title">Choose functions</h2>
+        <label class="filter" data-filter-wrap hidden>
+          <Icon name="filter" size={16} />
+          <span class="visually-hidden">Filter functions</span>
+          <input type="search" placeholder="Filter, e.g. LOOKUP" autocomplete="off" data-filter />
+        </label>
+        <ul class="nav-list" data-group-nav hidden>
           {
             groups.map((g) => (
-              <div class="card group-card" role="group" aria-labelledby={`g-${g.slug}`} data-group>
-                <div class="group-top">
-                  <span class="icon-box">
-                    <Icon name={GROUP_ICONS[g.slug] ?? "grid"} size={22} />
+              <li>
+                <button type="button" class="nav-item" aria-pressed="false" data-show-group={g.slug}>
+                  <Icon name={GROUP_ICONS[g.slug] ?? "grid"} size={16} />
+                  <span class="nav-title">{g.title}</span>
+                  <span class="nav-count" data-nav-count>
+                    {g.functions.length}
                   </span>
-                  <span class="picked" data-group-count hidden />
-                  <button class="link-button toggle" type="button" data-group-toggle hidden>
-                    Select all
-                  </button>
-                </div>
-                <h3 id={`g-${g.slug}`}>{g.title}</h3>
-                <p class="group-meta">
-                  {g.functions.length} functions <span aria-hidden="true">·</span>{" "}
-                  {g.functions.reduce((n, f) => n + (count.get(f.name) ?? 0), 0)} tasks
-                </p>
-                <div class="picks">
-                  {g.functions.map((f) => (
-                    <label class="pick" data-pick={f.name}>
-                      <input class="visually-hidden" type="checkbox" name="fn" value={f.name} />
-                      <Icon name="check" size={14} class="tick" />
-                      <span>{f.name}</span>
-                      <span class="done" data-done hidden title={`All ${f.name} tasks solved`}>
-                        <span class="visually-hidden">, all solved</span>
-                      </span>
-                    </label>
-                  ))}
-                </div>
-              </div>
+                </button>
+              </li>
             ))
           }
-          <p class="no-match" data-no-match hidden>No function matches that. Clear the filter to see them all.</p>
-        </div>
+        </ul>
+      </nav>
+
+      <section class="board" aria-label="Functions">
+        {
+          groups.map((g) => (
+            <div class="group-pane" role="group" aria-labelledby={`g-${g.slug}`} data-group={g.slug}>
+              <div class="group-top">
+                <div>
+                  <h3 id={`g-${g.slug}`}>{g.title}</h3>
+                  <p class="group-meta">
+                    {g.summary} {g.functions.length} functions{" "}
+                    <span aria-hidden="true">·</span>{" "}
+                    {g.functions.reduce((n, f) => n + (count.get(f.name) ?? 0), 0)} tasks.
+                  </p>
+                </div>
+                <span class="picked" data-group-count hidden />
+                <button class="link-button toggle" type="button" data-group-toggle hidden>
+                  Select all
+                </button>
+              </div>
+              <div class="picks">
+                {g.functions.map((f) => (
+                  <label class="card pick" data-pick={f.name}>
+                    <input class="visually-hidden" type="checkbox" name="fn" value={f.name} />
+                    <span class="box" aria-hidden="true">
+                      <Icon name="check" size={14} />
+                    </span>
+                    <span class="pick-text">
+                      <span class="pick-name">{f.name}</span>
+                      <code class="pick-syntax">{f.syntax}</code>
+                    </span>
+                    <span class="done" data-done hidden title={`All ${f.name} tasks solved`}>
+                      <Icon name="check" size={12} />
+                      <span class="visually-hidden">, all solved</span>
+                    </span>
+                    <span class="pick-tasks">{count.get(f.name)} tasks</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))
+        }
+        <p class="no-match" data-no-match hidden>No function matches that. Clear the filter to see them all.</p>
       </section>
 
       <div class="side-col">
@@ -189,7 +169,7 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
             </p>
             <p class="set-count" data-set-count data-pick-hint>Tick one or more functions.</p>
             <ul class="chips set-chips" data-set-chips hidden></ul>
-            <button class="button button-primary set-start" type="submit" data-start data-empty>
+            <button class="button button-on-primary set-start" type="submit" data-start data-empty>
               Start
             </button>
             <p class="set-note">Each function runs from easy to hard. Skip or finish whenever you like.</p>
@@ -205,8 +185,9 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
           <h2 id="quick-title">Not sure what to pick?</h2>
           <p>We mix tasks from all {count.size} functions.</p>
           <button class="button button-outline" type="submit" name="fn" value="random">
-            <Icon name="bolt" size={16} />10 random tasks
+            <Icon name="bolt" size={16} /><span data-random-label>10 random tasks</span>
           </button>
+          <p class="set-note" data-free-note role="status" hidden></p>
           <button class="button button-secondary" type="submit" name="fn" value="all">
             All {drills.length}, shuffled
           </button>
@@ -221,23 +202,6 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
 </script>
 
 <style>
-  .practice {
-    padding-top: var(--space-5);
-  }
-  .session-head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-2);
-  }
-  .session-actions {
-    display: flex;
-    gap: var(--space-4);
-  }
-  .drill-session :global(.live) {
-    margin: 0;
-  }
   .summary-actions {
     display: flex;
     flex-wrap: wrap;
@@ -255,30 +219,33 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
     padding-left: var(--space-5);
   }
 
-  /* The board: a heading with the filter, then one card per function group. */
-  .board {
+  /* Three panes on wide screens: groups, the chosen group's functions, your set.
+     On narrower screens the groups become a scrolling row above the functions. */
+  .picker {
     display: grid;
-    gap: var(--space-4);
+    gap: var(--space-5);
+    align-items: start;
+  }
+  @media (min-width: 64rem) {
+    .picker {
+      grid-template-columns: 15rem minmax(0, 1fr) 17rem;
+    }
+    .groups-nav {
+      position: sticky;
+      top: 5rem;
+    }
+  }
+  .groups-nav {
+    display: grid;
+    gap: var(--space-3);
     min-width: 0;
   }
-  .board-head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: end;
-    justify-content: space-between;
-    gap: var(--space-3) var(--space-4);
-  }
-  .board-head h2 {
-    margin: 0 0 var(--space-1);
-    font-size: var(--size-xl);
+  .groups-nav h2 {
+    margin: 0;
+    font-size: var(--size-l);
     color: var(--heading);
   }
-  .board-head p {
-    margin: 0;
-    color: var(--muted);
-  }
   .filter {
-    flex: 0 1 16rem;
     display: flex;
     align-items: center;
     gap: var(--space-2);
@@ -303,37 +270,102 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
     font-size: var(--size-s);
     outline: none;
   }
-  @media (max-width: 39.99rem) {
-    .filter {
-      flex-basis: 100%;
-    }
-  }
-  .rows {
+  .nav-list {
     display: grid;
-    gap: var(--space-4);
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
-  @media (min-width: 48rem) {
-    .rows {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+  @media (max-width: 63.99rem) {
+    .nav-list {
+      display: flex;
+      gap: var(--space-2);
+      overflow-x: auto;
+      padding-bottom: var(--space-1);
     }
-    .no-match {
-      grid-column: 1 / -1;
+    .nav-item {
+      white-space: nowrap;
+      border: 1px solid var(--rule);
     }
   }
-  .group-card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    min-width: 0;
-  }
-  .group-top {
+  .nav-item {
     display: flex;
     align-items: center;
     gap: var(--space-2);
+    width: 100%;
+    min-height: 2.5rem;
+    padding: 0 var(--space-3);
+    border: 0;
+    border-radius: var(--radius-m);
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: var(--size-s);
+    text-align: left;
+    cursor: pointer;
   }
-  .group-top .icon-box {
-    margin-right: auto;
-    border: 1px solid var(--chip-line);
+  .nav-item:hover {
+    background: var(--header);
+  }
+  .nav-item[aria-pressed="true"] {
+    background: var(--chip-bg);
+    color: var(--chip);
+    font-weight: 700;
+  }
+  .nav-item :global(svg) {
+    flex: none;
+    color: var(--muted);
+  }
+  .nav-item[aria-pressed="true"] :global(svg) {
+    color: var(--chip);
+  }
+  .nav-title {
+    flex: 1;
+  }
+  /* A fixed box, so the number stays put when it turns into the green badge. */
+  .nav-count {
+    display: grid;
+    flex: none;
+    place-items: center;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    padding: 0 0.25rem;
+    border-radius: var(--radius-pill);
+    font-size: var(--size-xs);
+    font-weight: 600;
+    color: var(--faint);
+  }
+  .nav-count.has-picks {
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+  .board {
+    display: grid;
+    gap: var(--space-6);
+    min-width: 0;
+  }
+  .group-pane {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .group-top {
+    display: flex;
+    align-items: start;
+    gap: var(--space-3);
+  }
+  .group-top > div {
+    flex: 1;
+  }
+  .group-pane h3 {
+    margin: 0;
+    font-size: var(--size-xl);
+    color: var(--heading);
+  }
+  .group-meta {
+    margin: var(--space-1) 0 0;
+    font-size: var(--size-s);
+    color: var(--muted);
   }
   .picked {
     padding: 0.125rem 0.5rem;
@@ -345,83 +377,96 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
     font-weight: 600;
     white-space: nowrap;
   }
-  .group-card h3 {
-    margin: 0;
-    font-size: var(--size-l);
-    color: var(--heading);
-  }
-  .group-meta {
-    margin: 0;
-    font-size: var(--size-s);
-    color: var(--muted);
-  }
   .toggle {
     min-height: 1.5rem;
     font-size: var(--size-s);
     font-weight: 600;
+    white-space: nowrap;
     color: var(--correct);
   }
   .toggle:hover {
     text-decoration: underline;
   }
   .picks {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
     gap: var(--space-2);
   }
-  /* A function: a quiet pill that fills in when ticked. The box itself is
+  /* A function: a row with a tick box, its name and syntax. The real box is
      hidden but still takes the focus and the clicks through its label. */
   .pick {
-    position: relative;
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: var(--space-1);
-    min-height: 2.25rem;
-    padding: 0 var(--space-3);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-m);
-    background: var(--surface);
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: var(--size-s);
-    font-weight: 600;
+    gap: var(--space-3);
+    min-width: 0;
+    padding: var(--space-3) var(--space-4);
     cursor: pointer;
     user-select: none;
   }
   .pick:hover {
     border-color: var(--muted);
   }
-  .pick :global(.tick) {
-    display: none;
-  }
   .pick:has(input:checked) {
     border-color: var(--primary);
-    background: var(--primary);
-    color: var(--on-primary);
-  }
-  .pick:has(input:checked) :global(.tick) {
-    display: block;
+    box-shadow: inset 3px 0 var(--primary);
   }
   .pick:has(input:focus-visible) {
     outline: 2px solid var(--focus);
     outline-offset: 2px;
   }
-  .done {
-    width: 0.4rem;
-    height: 0.4rem;
-    margin-left: var(--space-1);
-    border-radius: 50%;
-    background: var(--correct);
+  .box {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid var(--line);
+    border-radius: var(--radius-s);
+    color: transparent;
   }
-  .pick:has(input:checked) .done {
-    background: var(--on-primary);
+  .pick:has(input:checked) .box {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+  .pick-text {
+    display: grid;
+    flex: 1;
+    min-width: 0;
+  }
+  .pick-name {
+    font-family: var(--font-mono);
+    font-weight: 600;
+  }
+  .pick-syntax {
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--muted);
+  }
+  .pick-tasks {
+    flex: none;
+    font-size: var(--size-xs);
+    color: var(--faint);
+  }
+  .done {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background: var(--correct-tint);
+    color: var(--correct);
   }
   .pick[hidden],
-  .group-card[hidden],
+  .group-pane[hidden],
   .picked[hidden],
   .done[hidden],
   .no-match[hidden],
-  .filter[hidden] {
+  .filter[hidden],
+  .nav-list[hidden] {
     display: none;
   }
   .no-match {
@@ -430,7 +475,7 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
     color: var(--muted);
   }
 
-  /* Your set: a dark panel beside the board, like the learning tracks
+  /* Your set: a green panel beside the board, like the learning tracks
      summary; on phones a bar that stays at the bottom of the screen. */
   .side-col {
     display: grid;
@@ -441,8 +486,8 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
     gap: var(--space-3);
     padding: var(--space-5);
     border-radius: var(--radius-l);
-    background: var(--footer-bg);
-    color: var(--on-footer-muted);
+    background: var(--primary);
+    color: var(--on-primary);
   }
   .set-head {
     display: flex;
@@ -453,12 +498,12 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
   .set-head h2 {
     margin: 0;
     font-size: var(--size-base);
-    color: var(--on-footer);
+    color: var(--on-primary);
   }
   .set-head .link-button {
     min-height: 1.5rem;
     font-size: var(--size-s);
-    color: var(--on-footer);
+    color: var(--on-primary);
   }
   .set-body {
     display: grid;
@@ -468,7 +513,7 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
     margin: 0;
   }
   .set a {
-    color: var(--on-footer);
+    color: var(--on-primary);
   }
   .set-total {
     display: flex;
@@ -479,7 +524,7 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
     font-size: var(--size-xxl);
     line-height: 1;
     font-variant-numeric: tabular-nums;
-    color: var(--on-footer);
+    color: var(--on-primary);
   }
   .set-count,
   .set-note {
@@ -495,9 +540,12 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
   .set-start {
     width: 100%;
   }
+  /* Nothing ticked yet: an outline, so the white button reads as not ready. */
   .set-start[data-empty] {
-    background: var(--on-dark-card);
-    color: var(--on-footer-muted);
+    border-color: var(--on-primary);
+    background: transparent;
+    box-shadow: none;
+    color: var(--on-primary);
     cursor: not-allowed;
   }
   .quick {
@@ -557,7 +605,6 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
       padding-inline: var(--space-5);
     }
   }
-  [data-session][hidden],
   [data-summary][hidden],
   [data-picker][hidden],
   [data-set-chips][hidden],

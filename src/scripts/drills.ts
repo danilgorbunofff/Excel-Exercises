@@ -1,12 +1,11 @@
-// Why this exists: runs a function drill session. It reads the choice from the
-// address, fetches each drill's workbench from /exercises/drills/task/, opens
-// it for PRO through locked-exercise.ts and moves on when the drill is solved
-// or skipped. At the end it lists the functions that needed more than one try.
-// Without PRO the first drill stays a locked preview with the paywall above it.
+// Why this exists: the function practice picker. Start (or any address with
+// ?fn= or ?id=) saves the chosen tasks as a session and opens the first drill
+// page; drill-session.ts moves through them. ?done shows the summary: how many
+// were solved, and the functions that needed more than one try.
 import { type DrillRef, drillQueue } from "../lib/drills.ts";
-import { mountExercise } from "./exercise.ts";
-import { unlock } from "./locked-exercise.ts";
+import { DONE_HREF, drillHref, misses, readSession, saveSession } from "./drill-session.ts";
 import { isSolved, readProgress } from "./progress.ts";
+import { loadMe } from "./session.ts";
 import { track } from "./track.ts";
 
 const root = document.querySelector<HTMLElement>("[data-drills]");
@@ -17,45 +16,28 @@ const params = new URLSearchParams(location.search);
 const pool: DrillRef[] = poolNode?.textContent ? JSON.parse(poolNode.textContent) : [];
 const queue = drillQueue(pool, { fns: params.getAll("fn"), id: params.get("id") });
 
-interface Outcome {
-  drill: DrillRef;
-  solved: boolean;
-  missed: boolean;
-}
-
-const misses = (id: string) => readProgress()[id]?.misses ?? 0;
-
-async function load(drill: DrillRef): Promise<HTMLElement | null> {
-  const slot = q<HTMLElement>("[data-drill-slot]");
-  const current = slot?.querySelector<HTMLElement>("[data-exercise]");
-  if (!slot || !current) return null;
-  const data = current.querySelector("script[data-exercise-data]")?.textContent ?? "";
-  if (data.includes(`"id":${JSON.stringify(drill.id)}`)) return current;
-  try {
-    const res = await fetch(`/exercises/drills/task/${drill.slug}/`);
-    if (!res.ok) return null;
-    const doc = new DOMParser().parseFromString(await res.text(), "text/html");
-    const fresh = doc.querySelector<HTMLElement>("[data-exercise]");
-    if (!fresh) return null;
-    const node = document.importNode(fresh, true);
-    current.replaceWith(node);
-    return node;
-  } catch {
-    return null;
-  }
-}
-
-function summary(outcomes: readonly Outcome[]): void {
-  const session = q<HTMLElement>("[data-session]");
+function summary(): void {
+  const found = readSession();
+  // The summary is for a function practice run, not a review run.
+  const session = found?.kind === "drills" ? found : null;
   const box = q<HTMLElement>("[data-summary]");
-  if (!session || !box) return;
-  session.hidden = true;
+  const picker = q<HTMLElement>("[data-picker]");
+  if (!session || !box || !picker) return;
+  picker.hidden = true;
   box.hidden = false;
+  const outcomes = session.ids
+    .map((id, i) => ({ id, fn: session.fns[i] ?? "", result: session.results[id] }))
+    .filter((o) => o.result !== undefined)
+    .map((o) => ({
+      fn: o.fn,
+      solved: o.result?.solved === true,
+      missed: misses(o.id) > (o.result?.before ?? 0),
+    }));
   const solved = outcomes.filter((o) => o.solved).length;
   const line = q<HTMLElement>("[data-summary-line]");
   if (line)
     line.textContent = `You solved ${solved} of ${outcomes.length} ${outcomes.length === 1 ? "task" : "tasks"}.`;
-  const weak = [...new Set(outcomes.filter((o) => o.missed || !o.solved).map((o) => o.drill.fn))];
+  const weak = [...new Set(outcomes.filter((o) => o.missed || !o.solved).map((o) => o.fn))];
   const list = q<HTMLUListElement>("[data-missed-list]");
   const wrap = q<HTMLElement>("[data-summary-missed]");
   if (list && wrap) {
@@ -79,83 +61,27 @@ function summary(outcomes: readonly Outcome[]): void {
     wrap.hidden = weak.length === 0;
   }
   const again = q<HTMLAnchorElement>("[data-again]");
-  if (again) again.href = location.pathname + location.search;
+  if (again) again.href = `/exercises/drills/${session.search}`;
   track("drill_finish");
   q<HTMLElement>("#done-title")?.focus();
 }
 
-async function run(): Promise<void> {
-  const session = q<HTMLElement>("[data-session]");
-  const picker = q<HTMLElement>("[data-picker]");
-  const title = q<HTMLElement>("[data-session-title]");
-  const skip = q<HTMLButtonElement>("[data-skip]");
-  const finish = q<HTMLButtonElement>("[data-finish]");
-  const error = q<HTMLElement>("[data-drill-error]");
-  const paywall = q<HTMLElement>("[data-paywall]");
-  if (!session || !picker || !title || !skip || !finish) return;
-  picker.hidden = true;
-  session.hidden = false;
-
-  const outcomes: Outcome[] = [];
-  let index = 0;
-  let current: { drill: DrillRef; before: number; solved: boolean } | null = null;
-
-  const close = () => {
-    if (!current) return;
-    outcomes.push({
-      drill: current.drill,
-      solved: current.solved,
-      missed: misses(current.drill.id) > current.before,
-    });
-    current = null;
-  };
-  const advance = () => {
-    close();
-    index += 1;
-    if (index >= queue.length) summary(outcomes);
-    else void show();
-  };
-
-  const show = async () => {
-    const drill = queue[index];
-    if (!drill) return;
-    title.textContent = `Task ${index + 1} of ${queue.length}: ${drill.fn}`;
-    const node = await load(drill);
-    if (!node) {
-      if (error) error.hidden = false;
-      return;
-    }
-    if (error) error.hidden = true;
-    // Locked until the answers arrive, so a visitor without PRO cannot type into the preview.
-    for (const work of node.querySelectorAll<HTMLElement>(".work")) work.inert = true;
-    mountExercise(node);
-    current = { drill, before: misses(drill.id), solved: false };
-    const next = node.querySelector<HTMLAnchorElement>("a[data-next]");
-    if (next && index === queue.length - 1) next.textContent = "See your results";
-    next?.addEventListener("click", (e) => {
-      e.preventDefault();
-      advance();
-    });
-    node.addEventListener("exercise-solved", () => {
-      if (current) current.solved = true;
-    });
-    const opened = await unlock(node);
-    if (opened !== "open") {
-      // No PRO: the drill stays a preview and the session ends here.
-      if (paywall) paywall.hidden = false;
-      skip.hidden = finish.hidden = true;
-      return;
-    }
-    if (index === 0) track("drill_start");
-    node.querySelector<HTMLInputElement>("[data-input]")?.focus();
-  };
-
-  skip.addEventListener("click", advance);
-  finish.addEventListener("click", () => {
-    close();
-    summary(outcomes);
+/** Saves the chosen tasks and opens the first; replace, so Back returns to the picker. */
+function start(chosen: DrillRef[] = queue): void {
+  const first = chosen[0];
+  if (!first) return;
+  saveSession({
+    kind: "drills",
+    hrefs: chosen.map((d) => drillHref(d.slug)),
+    ids: chosen.map((d) => d.id),
+    fns: chosen.map((d) => d.fn),
+    titles: chosen.map((d) => d.title ?? ""),
+    levels: chosen.map((d) => d.level),
+    search: location.search,
+    results: {},
+    doneHref: DONE_HREF,
   });
-  await show();
+  location.replace(drillHref(first.slug));
 }
 
 // The picker: "Your set" follows the ticked functions, each group can be ticked
@@ -217,12 +143,51 @@ function paintSet(form: HTMLFormElement): void {
       count.hidden = picked === 0;
       count.textContent = `${picked} picked`;
     }
+    // The group's line in the left list shows its picks once there are any.
+    const nav = q<HTMLElement>(`[data-show-group="${group.dataset.group}"] [data-nav-count]`);
+    if (nav) {
+      nav.dataset.total ??= nav.textContent?.trim() ?? "";
+      nav.classList.toggle("has-picks", picked > 0);
+      // Just the number on screen; screen readers also hear "picked".
+      if (picked > 0)
+        nav.replaceChildren(
+          String(picked),
+          Object.assign(document.createElement("span"), {
+            className: "visually-hidden",
+            textContent: " picked",
+          }),
+        );
+      else nav.textContent = nav.dataset.total ?? "";
+    }
   }
 }
 
-/** Shows only the functions whose name holds the text, and hides empty groups. */
+/** The group shown in the middle pane while nothing is typed in the filter. */
+let activeGroup = "";
+
+/** Shows only the chosen group, or every group while the filter has text. */
+function showGroups(form: HTMLFormElement): void {
+  const filtering = (q<HTMLInputElement>("[data-filter]")?.value.trim() ?? "") !== "";
+  for (const group of form.querySelectorAll<HTMLElement>("[data-group]")) {
+    if (!filtering) {
+      group.hidden = group.dataset.group !== activeGroup;
+      for (const pick of group.querySelectorAll<HTMLElement>("[data-pick]")) pick.hidden = false;
+    }
+  }
+  for (const b of form.querySelectorAll<HTMLButtonElement>("[data-show-group]")) {
+    b.setAttribute("aria-pressed", String(!filtering && b.dataset.showGroup === activeGroup));
+  }
+}
+
+/** Shows only the functions whose name holds the text, across every group, and hides empty groups. */
 function filterPicks(form: HTMLFormElement, text: string): void {
   const needle = text.trim().toUpperCase();
+  const none = q<HTMLElement>("[data-no-match]");
+  if (!needle) {
+    if (none) none.hidden = true;
+    showGroups(form);
+    return;
+  }
   let shown = 0;
   for (const group of form.querySelectorAll<HTMLElement>("[data-group]")) {
     let inGroup = 0;
@@ -233,11 +198,26 @@ function filterPicks(form: HTMLFormElement, text: string): void {
     group.hidden = inGroup === 0;
     shown += inGroup;
   }
-  const none = q<HTMLElement>("[data-no-match]");
   if (none) none.hidden = shown > 0;
+  showGroups(form);
 }
 
 if (picker) {
+  // With JavaScript the groups become a list on the left and one shows at a time.
+  const navList = q<HTMLElement>("[data-group-nav]");
+  activeGroup = picker.querySelector<HTMLElement>("[data-group]")?.dataset.group ?? "";
+  if (navList) {
+    navList.hidden = false;
+    for (const b of navList.querySelectorAll<HTMLButtonElement>("[data-show-group]")) {
+      b.addEventListener("click", () => {
+        activeGroup = b.dataset.showGroup ?? "";
+        const filter = q<HTMLInputElement>("[data-filter]");
+        if (filter) filter.value = "";
+        filterPicks(picker, "");
+      });
+    }
+    showGroups(picker);
+  }
   for (const group of picker.querySelectorAll<HTMLElement>("[data-group]")) {
     const toggle = group.querySelector<HTMLButtonElement>("[data-group-toggle]");
     if (!toggle) continue;
@@ -283,4 +263,77 @@ if (picker) {
   });
 }
 
-if (root && queue.length > 0) void run();
+// "10 random tasks": PRO picks in the browser; a Free account runs the ten the
+// server keeps for today; a signed out visitor is sent to sign up.
+const wantsRandom =
+  !params.get("id") &&
+  !params.getAll("fn").includes("all") &&
+  params.getAll("fn").includes("random");
+const randomLabel = q<HTMLElement>("[data-random-label]");
+const freeNote = q<HTMLElement>("[data-free-note]");
+const todaysRun = (slugs: readonly string[]) =>
+  slugs.map((s) => pool.find((d) => d.slug === s)).filter((d): d is DrillRef => d !== undefined);
+const allSolved = (run: DrillRef[]) => {
+  const progress = readProgress();
+  return run.length > 0 && run.every((d) => isSolved(progress[d.id]));
+};
+
+async function startRandom(): Promise<void> {
+  const me = await loadMe();
+  if (me?.pro) return start();
+  if (!me) {
+    location.replace("/register/?next=/exercises/drills/");
+    return;
+  }
+  const res = await fetch("/api/drills/free-run/", {
+    method: "POST",
+    credentials: "same-origin",
+  }).catch(() => null);
+  const body = (await res?.json().catch(() => null)) as { slugs?: string[]; pro?: boolean } | null;
+  if (body?.pro) return start();
+  const run = todaysRun(body?.slugs ?? []);
+  history.replaceState(null, "", location.pathname);
+  if (run.length === 0 || allSolved(run)) {
+    if (freeNote) {
+      freeNote.hidden = false;
+      freeNote.replaceChildren(
+        run.length === 0
+          ? "Today's 10 tasks could not be loaded. Try again in a minute."
+          : "You've had today's 10 tasks. New ones tomorrow, or go PRO for unlimited. ",
+        ...(run.length === 0
+          ? []
+          : [
+              Object.assign(document.createElement("a"), {
+                href: "/pricing/",
+                textContent: "See PRO",
+              }),
+            ]),
+      );
+    }
+    return;
+  }
+  track("drill_free_run");
+  start(run);
+}
+
+/** Labels the random button for a signed-in Free account from today's run. */
+async function labelRandom(): Promise<void> {
+  const me = await loadMe();
+  if (!me || me.pro || !randomLabel) return;
+  const res = await fetch("/api/drills/free-run/", { credentials: "same-origin" }).catch(
+    () => null,
+  );
+  const body = (await res?.json().catch(() => null)) as { today?: string[] | null } | null;
+  const run = todaysRun(body?.today ?? []);
+  randomLabel.textContent =
+    run.length === 0
+      ? "10 random tasks · free today"
+      : allSolved(run)
+        ? "Today's 10 tasks · done"
+        : "Continue today's 10 tasks";
+}
+
+if (root && wantsRandom) void startRandom();
+else if (root && queue.length > 0) start();
+else if (root && params.has("done")) summary();
+if (root && !wantsRandom && !params.has("done")) void labelRandom();

@@ -1,10 +1,10 @@
 ---
 import { getCollection } from "astro:content";
-// Why this exists: the mock assessments as cards you can compare: every set
-// with its size, time, level, functions and your best, then your past
-// attempts. The sample is free; the other sets are PRO.
-import Breadcrumbs from "../../components/Breadcrumbs.astro";
-import Icon from "../../components/Icon.astro";
+// Why this exists: the mock assessments, picked by the job the test is for:
+// one grid of cards, the sample and general sets first and then one per job,
+// each with its size, time, level and your best, then your past attempts.
+// The sample is free; the other sets are PRO.
+import Icon, { type IconName } from "../../components/Icon.astro";
 import PracticeTabs from "../../components/PracticeTabs.astro";
 import Base from "../../layouts/Base.astro";
 import { assessmentPath, coverOf, loadAssessments } from "../../lib/assessments.ts";
@@ -12,7 +12,6 @@ import { LEVELS } from "../../lib/exercises.ts";
 import { ACCOUNT_NAV } from "../../lib/nav.ts";
 import "../../styles/assessments.css";
 
-const SHOWN = 5;
 const byId = new Map(
   [...(await getCollection("exercises")), ...(await getCollection("mocks"))].map((e) => [
     e.data.id,
@@ -24,9 +23,26 @@ const levelWord = (l: number) => LEVELS[l as 1 | 2 | 3];
 const sets = loadAssessments().sets.map((set) => {
   const cover = coverOf(set, byId);
   const level = cover.levels.at(-1) ?? 1;
-  return { ...set, functions: cover.functions, level, levelName: levelWord(level) };
+  return { ...set, level, levelName: levelWord(level) };
 });
 const titles = Object.fromEntries(sets.map((s) => [s.slug, s.title]));
+// The job sets go under the job's name; every set is the same card.
+const CARDS: Record<string, { name?: string; icon: IconName }> = {
+  "office-essentials": { name: "Office or admin", icon: "briefcase" },
+  "data-analyst": { name: "Data analyst", icon: "chart" },
+  finance: { name: "Finance or accounting", icon: "percent" },
+  sample: { icon: "play" },
+  beginner: { icon: "sigma" },
+  intermediate: { icon: "formula" },
+};
+const cards = sets.map((s) => ({
+  ...s,
+  name: CARDS[s.slug]?.name ?? s.title,
+  icon: CARDS[s.slug]?.icon ?? ("grid" satisfies IconName),
+  job: CARDS[s.slug]?.name !== undefined,
+}));
+// The sample and the general sets first, then the job ones, in one grid.
+const ordered = [...cards.filter((c) => !c.job), ...cards.filter((c) => c.job)];
 ---
 
 <Base
@@ -35,74 +51,54 @@ const titles = Object.fromEntries(sets.map((s) => [s.slug, s.title]));
   layout="wide"
 >
   <PracticeTabs />
+  <header class="page-head">
+    <h1>Mock assessments</h1>
+    <p class="lead">What job is your Excel test for?</p>
+  </header>
   <div class="a-page index">
-    <header class="open-head">
-      <Breadcrumbs items={[{ label: "Exercises", href: "/exercises/" }]} />
-      <h1>Mock assessments</h1>
-      <p class="lead">
-        Timed sets of tasks like an employer's Excel test. There are no hints while you work, and
-        every answer is marked when you finish.
-      </p>
-      <p class="actions">
-        <a class="button button-primary" href={assessmentPath("sample")}>Try the free sample</a>
-        <a class="button button-outline" href="/pricing/">See PRO plans</a>
-      </p>
-    </header>
-
-    <section class="p-section" aria-labelledby="sets-title">
-      <div class="p-section-head">
-        <div>
-          <h2 id="sets-title">Pick an assessment</h2>
-        </div>
-      </div>
-      <ul class="p-cards sets">
-        {
-          sets.map((set) => (
-            <li class="card set-card">
-              <div class="set-top">
-                <a class="title" id={`set-${set.slug}`} href={assessmentPath(set.slug)}>
-                  {set.title}
-                </a>
-                {set.sample ? <span class="free">Free</span> : <span class="tag">PRO</span>}
-              </div>
-              <p class="summary">{set.summary}</p>
-              <p class="nums">
-                <span>
-                  <strong>{set.tasks.length}</strong> tasks
-                </span>
-                <span>
-                  <strong>{set.minutes}</strong> min
-                </span>
-                <span class={`level level-${set.level}`}>{set.levelName}</span>
-              </p>
-              <p class="chips fn-chips">
-                {set.functions.slice(0, SHOWN).map((f) => <span class="chip">{f}</span>)}
-                {set.functions.length > SHOWN && (
-                  <span class="more">+{set.functions.length - SHOWN} more</span>
-                )}
-              </p>
-              <p class="best" data-when="in" hidden>
-                Your best: <strong data-best={set.slug}>Not taken</strong>
-              </p>
-              {set.sample ? (
-                <a class="button button-primary start" href={assessmentPath(set.slug)}>
-                  Start the sample
-                </a>
-              ) : (
-                <a
-                  class="button button-secondary start"
-                  href={assessmentPath(set.slug)}
-                  aria-describedby={`set-${set.slug}`}
-                >
-                  <Icon name="lock" size={16} />
-                  Start
-                </a>
-              )}
-            </li>
-          ))
-        }
+    <section aria-label="Assessments">
+      <ul class="set-grid sets">
+        {ordered.map((set) => (
+          <li class="card set">
+            <div class="set-top">
+              <span class="icon-box" aria-hidden="true">
+                <Icon name={set.icon} size={22} />
+              </span>
+              {set.sample ? <span class="free">Free</span> : <span class="tag">PRO</span>}
+            </div>
+            <h2>
+              <a class="title" id={`set-${set.slug}`} href={assessmentPath(set.slug)}>
+                {set.name}
+              </a>
+            </h2>
+            <p class="summary">{set.summary}</p>
+            <p class="meta">
+              {set.job && <>{set.title} · </>}
+              {set.tasks.length} tasks · {set.minutes} min ·{" "}
+              <span class={`level level-${set.level}`}>{set.levelName}</span>
+            </p>
+            <p class="best" data-when="in" hidden>
+              Your best: <strong data-best={set.slug}>Not taken</strong>
+            </p>
+            {set.sample ? (
+              <a class="button button-primary start" href={assessmentPath(set.slug)}>
+                Start the sample
+              </a>
+            ) : (
+              <a
+                class="button button-secondary start"
+                href={assessmentPath(set.slug)}
+                aria-describedby={`set-${set.slug}`}
+              >
+                <Icon name="lock" size={16} />
+                Start
+              </a>
+            )}
+          </li>
+        ))}
       </ul>
     </section>
+    <p class="pro-note">Only the sample is free. <a href="/pricing/">See PRO plans</a></p>
 
     <section class="ruled a-side attempts" aria-labelledby="history-title">
       <div class="list-head">
@@ -190,11 +186,25 @@ const titles = Object.fromEntries(sets.map((s) => [s.slug, s.title]));
 </script>
 
 <style>
-  .set-card {
+  .set-grid {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 52rem) {
+    .set-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .set {
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
     min-width: 0;
+    padding: var(--space-5);
+    border-radius: var(--radius-xl);
   }
   .set-top {
     display: flex;
@@ -202,14 +212,39 @@ const titles = Object.fromEntries(sets.map((s) => [s.slug, s.title]));
     justify-content: space-between;
     gap: var(--space-3);
   }
-  .set-top .title {
+  .set .icon-box {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--chip-line);
+  }
+  .set h2 {
+    margin: 0;
     font-size: var(--size-l);
-    font-weight: 700;
+  }
+  .set .title {
     color: var(--heading);
     text-decoration: none;
   }
-  .set-top .title:hover {
+  .set .title:hover {
     text-decoration: underline;
+  }
+  .set p {
+    margin: 0;
+  }
+  .summary,
+  .meta,
+  .best {
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .start {
+    width: 100%;
+    margin-top: auto;
+  }
+  .pro-note {
+    margin: calc(var(--space-3) * -1) 0 0;
+    font-size: var(--size-s);
+    color: var(--muted);
   }
   /* Free is a price, not a level: a plain outline, so it never reads as Beginner green. */
   .free {
@@ -220,41 +255,6 @@ const titles = Object.fromEntries(sets.map((s) => [s.slug, s.title]));
     font-weight: 600;
     white-space: nowrap;
     color: var(--text);
-  }
-  .set-card p {
-    margin: 0;
-  }
-  .summary {
-    font-size: var(--size-s);
-    color: var(--muted);
-  }
-  .nums {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-2) var(--space-5);
-    font-size: var(--size-s);
-    color: var(--muted);
-  }
-  .nums strong {
-    font-size: var(--size-xl);
-    font-variant-numeric: tabular-nums;
-    color: var(--heading);
-  }
-  .fn-chips {
-    align-items: center;
-  }
-  .fn-chips .more {
-    font-size: var(--size-s);
-    color: var(--muted);
-  }
-  .best {
-    font-size: var(--size-s);
-    color: var(--muted);
-  }
-  .start {
-    width: 100%;
-    margin-top: auto;
   }
   .attempts {
     max-width: 40rem;

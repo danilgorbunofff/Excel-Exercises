@@ -16,6 +16,12 @@ describe("routesFromPageFiles", () => {
 });
 
 describe("hiddenFromSearch", () => {
+  it("hides the drill pages but not the function practice picker", () => {
+    expect(hiddenFromSearch("/exercises/drills/sum-drill-1/", true)).toBe(true);
+    expect(hiddenFromSearch("/exercises/drills/", true)).toBe(false);
+    expect(hiddenFromSearch("/exercises/sum-basics/", true)).toBe(false);
+  });
+
   it("hides every account page while accounts are closed", () => {
     for (const path of ACCOUNT_PATHS) expect(hiddenFromSearch(path, false), path).toBe(true);
     expect(ACCOUNT_PATHS).toEqual([

@@ -1,17 +1,14 @@
 ---
 // Why this exists: the catalogue, laid out as on Spreadsheet Center: a
 // centred head with a green note, learning track cards, one sortable table of
-// every exercise, a start card and filters on the right, then picks for
-// beginners and for work, and common questions.
+// every exercise, a start card and filters on the right, and common questions.
 import { siteConfig } from "../../../site.config.ts";
 import ExerciseTable from "../../components/ExerciseTable.astro";
 import Icon from "../../components/Icon.astro";
 import PracticeTabs from "../../components/PracticeTabs.astro";
 import TrackList from "../../components/TrackList.astro";
 import Base from "../../layouts/Base.astro";
-import { isLocked } from "../../lib/access.ts";
 import {
-  exercisePath,
   functionsOf,
   LEVELS,
   placedExercises,
@@ -24,14 +21,8 @@ import { ACCOUNT_NAV } from "../../lib/nav.ts";
 const placed = await placedExercises();
 const tracks = trackSummaries(placed);
 const total = placed.length;
-const free = placed.filter((p) => !isLocked(p)).length;
 const firstTrack = tracks[0];
 const functionNames = [...new Set(placed.flatMap((p) => functionsOf(p.exercise)))].sort();
-const beginners = placed.filter((p) => p.exercise.level === 1).slice(0, 3);
-const forWork = placed
-  .filter((p) => p.exercise.level >= 2 && p.topic.group !== "interview")
-  .slice(-6);
-const interview = tracks.filter((t) => t.topic.group === "interview");
 const faq = [
   {
     q: "I am new to Excel. Where do I begin?",
@@ -64,10 +55,8 @@ const faq = [
   <PracticeTabs />
   <header class="page-head">
     <h1>Excel formula exercises</h1>
-    <p class="pill-note">Runs in your browser. Free, with no account.</p>
     <p class="lead">
-      Work through {total} short spreadsheet tasks on totals, logic, lookups, text, dates and
-      more, with instant feedback. {free === total ? `All ${total} are free.` : `${free} of them are free.`}
+      Work through {total} short spreadsheet tasks.
     </p>
   </header>
 
@@ -88,64 +77,6 @@ const faq = [
     <div class="all">
       <h2 id="all" class="visually-hidden">All exercises</h2>
       <ExerciseTable rows={placed} labelledby="all" sortable />
-
-      <section class="picks" aria-labelledby="for-beginners">
-        <h2 id="for-beginners">Good first exercises</h2>
-        <p>New to formulas? These three are a good first sitting.</p>
-        <ul class="pick-grid">
-          {
-            beginners.map((p) => (
-              <li>
-                <a class="card pick" href={exercisePath(p.exercise.slug)}>
-                  <span class={`badge badge-${p.exercise.level}`}>
-                    {LEVELS[p.exercise.level as 1 | 2 | 3]}
-                  </span>
-                  <span class="pick-title">{p.exercise.title}</span>
-                  <span class="pick-text">{p.exercise.screens[0]?.prompt}</span>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </section>
-
-      <section class="picks" aria-labelledby="for-work">
-        <h2 id="for-work">Exercises for everyday work</h2>
-        <p>Conditions and lookups: the formulas reports and trackers use most.</p>
-        <ul class="pick-grid">
-          {
-            forWork.map((p) => (
-              <li>
-                <a class="card pick" href={exercisePath(p.exercise.slug)}>
-                  <span class={`badge badge-${p.exercise.level}`}>
-                    {LEVELS[p.exercise.level as 1 | 2 | 3]}
-                  </span>
-                  <span class="pick-title">{p.exercise.title}</span>
-                  <span class="pick-text">{p.exercise.screens[0]?.prompt}</span>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </section>
-
-      <section class="picks" aria-labelledby="for-interviews">
-        <h2 id="for-interviews">Practice for job interviews</h2>
-        <p>Short tracks built on the tasks office, sales, finance, accounting and analyst tests set.</p>
-        <ul class="pick-grid">
-          {
-            interview.map((t) => (
-              <li>
-                <a class="card pick" href={topicPath(t.topic.slug)}>
-                  <span class={`badge badge-${t.level}`}>{LEVELS[t.level]}</span>
-                  <span class="pick-title">{t.topic.title}</span>
-                  <span class="pick-text">{t.topic.summary}</span>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </section>
 
       <section class="faq" aria-labelledby="faq">
         <h2 id="faq">Frequently asked questions</h2>
@@ -358,43 +289,10 @@ const faq = [
   .filter .button {
     margin-top: var(--space-3);
   }
-  .picks {
-    margin-top: var(--space-7);
-  }
-  .picks h2,
   .faq h2 {
     margin: 0 0 var(--space-1);
     font-size: var(--size-xl);
     color: var(--heading);
-  }
-  .picks > p {
-    margin: 0 0 var(--space-4);
-    color: var(--muted);
-  }
-  .pick-grid {
-    display: grid;
-    gap: var(--space-3);
-  }
-  .pick-grid li {
-    display: grid;
-  }
-  .pick {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-2);
-  }
-  .pick-title {
-    font-weight: 600;
-    color: var(--heading);
-  }
-  .pick:hover .pick-title {
-    color: var(--correct);
-    text-decoration: underline;
-  }
-  .pick-text {
-    font-size: var(--size-s);
-    color: var(--muted);
   }
   .faq {
     margin-top: var(--space-7);
@@ -420,11 +318,6 @@ const faq = [
   @media (min-width: 40rem) {
     .track-grid :global(.tracks) {
       grid-template-columns: 1fr 1fr;
-    }
-  }
-  @media (min-width: 48rem) {
-    .pick-grid {
-      grid-template-columns: repeat(3, 1fr);
     }
   }
   @media (min-width: 64rem) {

@@ -69,6 +69,16 @@
   --correct: light-dark(#18804f, #5ad08a); /* correct */
   --correct-tint: light-dark(#e9f9ef, #0f2f1d);
 
+  /* Reference colours, as Excel uses while you edit a formula: each
+     reference and the cells it reads share one colour. The formula
+     explainer gives them out in order of first appearance. */
+  --ref-1: light-dark(#1d5fbf, #7cb3ff);
+  --ref-2: light-dark(#b42318, #ff8a80);
+  --ref-3: light-dark(#7a3fc2, #c8a2ff);
+  --ref-4: light-dark(#0e7490, #5fd4e6);
+  --ref-5: light-dark(#b4237a, #ff8fc8);
+  --ref-6: light-dark(#8a5300, #f0b45c);
+
   /* Type. Cells use the text face with tabular figures, as Excel does.
      Formulas, references and the name box use the mono face. */
   --font-text: "Inter", "Inter Fallback", system-ui, sans-serif;

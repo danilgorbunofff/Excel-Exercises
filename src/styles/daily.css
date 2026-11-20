@@ -1,64 +1,25 @@
 /* Why this exists: the daily page's own look, on top of assessments.css.
-   daily.ts builds the strip and swaps in the workbench, so these rules are
-   global: scoped styles would not reach that DOM. The strip reads as a row of
-   a sheet: weekday letters as column headers, solved days filled in, and
-   today outlined like the active cell. */
+   daily.ts builds the calendar and the account page's strip and swaps in the
+   workbench, so these rules are global: scoped styles would not reach that
+   DOM. The page is a month calendar beside the exercise: solved days filled
+   in green, today a solid green square. */
 
-/* The task on the left, the week and how it works on the right. The week
-   comes first in the page order (Tab reaches it before the sheet), so wide
-   screens move it to the second column; how it works follows the task. */
-.d-side {
+/* The calendar on the left, the exercise on the right; stacked on phones. */
+.d-grid {
   display: grid;
-  gap: var(--space-4);
-  align-content: start;
-  min-width: 0;
+  gap: var(--space-5);
+  align-items: start;
+}
+@media (min-width: 64rem) {
+  .d-grid {
+    grid-template-columns: 21rem minmax(0, 1fr);
+  }
 }
 .d-main {
   min-width: 0;
 }
-@media (min-width: 64rem) {
-  /* The task spans both rows; its extra height goes to the second one, so
-     the two side cards stay together at the top. */
-  .d-grid {
-    grid-template-rows: auto 1fr;
-  }
-  .d-grid > .d-side {
-    grid-column: 2;
-    grid-row: 1;
-  }
-  .d-grid > .d-main {
-    grid-column: 1;
-    grid-row: 1 / span 2;
-  }
-  .d-grid > .d-how {
-    grid-column: 2;
-    grid-row: 2;
-  }
-}
-.d-week-card,
-.d-how {
-  display: grid;
-  gap: var(--space-3);
-  min-width: 0;
-}
-.d-week-card {
-  padding: var(--space-4);
-}
-.d-how {
-  padding: var(--space-4) 0 var(--space-2);
-}
-.d-how h2 {
-  margin: 0;
-  padding: 0 var(--space-4);
-  font-size: var(--size-base);
-  color: var(--heading);
-}
-.d-note {
-  margin: 0;
-  font-size: var(--size-s);
-  color: var(--muted);
-}
 
+/* The strip of recent days on /account/: a row of a sheet. */
 .d-strip {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -124,41 +85,6 @@ a.d-cell:focus-visible {
   font-weight: 700;
   color: var(--on-primary);
 }
-/* This week's ladder: seven days at every width, each with its step. */
-@media (min-width: 64rem) {
-  .d-strip.d-week {
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-  }
-}
-.d-week-title {
-  margin: 0;
-  font-size: var(--size-base);
-  font-weight: 600;
-  color: var(--heading);
-}
-.d-tier {
-  padding: 0.125rem 0;
-  border-right: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-  font-size: var(--size-xs);
-  text-align: center;
-  color: var(--muted);
-  overflow-wrap: anywhere;
-}
-/* At phone width a day is about 44 px: 11 px keeps Medium and Hardest whole. */
-@media (max-width: 39.99rem) {
-  .d-tier {
-    font-size: 0.6875rem;
-  }
-}
-/* One row height per line across the week, so a label that wraps at 375 px does not lift its date. */
-.d-strip.d-week {
-  grid-template-rows: repeat(3, auto);
-}
-.d-week .d-day {
-  grid-row: span 3;
-  grid-template-rows: subgrid;
-}
 .d-day.is-future .d-cell {
   color: var(--muted);
 }
@@ -168,87 +94,131 @@ a.d-cell:focus-visible {
   text-underline-offset: 3px;
 }
 
-/* On /daily/ the week reads as seven small cards: the day, the date and a
-   ring that fills with a tick once solved; today is outlined. The step names
-   stay for screen readers (in each day's label) but are not shown. Scoped to
-   .daily, so the strip on /account/ keeps its sheet look. */
-.daily .d-strip.d-week {
-  gap: var(--space-1);
-  border: 0;
+.d-cal {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-5);
 }
-.daily .d-week .d-day {
-  row-gap: var(--space-1);
-  padding: var(--space-2) 0;
+.d-cal-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.d-cal-head h2 {
+  margin: 0 auto 0 0;
+  font-size: var(--size-l);
+  color: var(--heading);
+}
+.d-nav {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
   border: 1px solid var(--rule);
   border-radius: var(--radius-m);
   background: var(--surface);
-}
-.daily .d-week .d-head {
-  padding: 0;
-  border: 0;
-  background: none;
-  font-size: var(--size-s);
-  font-weight: 400;
-  color: var(--muted);
-}
-.daily .d-week .d-cell {
-  gap: var(--space-1);
-  min-height: 0;
-  border: 0;
-  border-radius: var(--radius-s);
-  background: none;
-  font-size: var(--size-l);
-  font-weight: 700;
-  color: var(--heading);
-}
-/* The ring: empty for a day not solved, green with a tick once it is. */
-.daily .d-week .d-day:not(.is-solved) .d-cell::after {
-  content: "";
-  width: 1.375rem;
-  height: 1.375rem;
-  border: 1px solid color-mix(in srgb, var(--line) 55%, transparent);
-  border-radius: 50%;
-}
-.daily .d-week .is-solved .d-cell {
-  background: none;
-  color: var(--heading);
-}
-.daily .d-week .is-solved .d-cell svg {
-  width: 1.375rem;
-  height: 1.375rem;
-  padding: 0.25rem;
-  border-radius: 50%;
-  background: var(--primary);
-  color: var(--on-primary);
-}
-.daily .d-week .d-day.is-today {
-  border: 2px solid var(--read);
-}
-.daily .d-week .is-today .d-head {
-  background: none;
-  font-weight: 400;
   color: var(--text);
+  cursor: pointer;
 }
-.daily .d-week .is-today .d-cell {
-  box-shadow: none;
+.d-nav:hover:not(:disabled) {
+  background: var(--header);
 }
-.daily .d-week .d-day.is-today:not(.is-solved) .d-cell::after {
-  border-color: var(--read);
+.d-nav:disabled {
+  color: var(--faint);
+  opacity: 0.5;
+  cursor: default;
 }
-/* A past day not solved: its date is quieter. */
-.daily .d-week .d-day:not(.is-solved, .is-today, .is-future) .d-num {
+.d-nav[data-month-prev] svg {
+  transform: scaleX(-1);
+}
+.d-dow,
+.d-month {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--space-1);
+}
+.d-dow {
+  font-size: var(--size-xs);
+  font-weight: 600;
+  text-align: center;
   color: var(--faint);
 }
-.daily .d-week .is-today .d-cell[aria-current="page"] .d-num {
+.d-month {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.d-month .d-day .d-cell {
+  aspect-ratio: 1;
+  min-height: 0;
+  border: 0;
+  border-radius: var(--radius-m);
+  background: none;
+  color: var(--muted);
+}
+/* Shown with the date only: the tick and the step name stay for screen readers. */
+.d-month .d-cell svg {
+  display: none;
+}
+.d-month a.d-cell:hover {
+  background: var(--header);
+}
+.d-month .is-solved .d-cell {
+  background: var(--correct-tint);
+  color: var(--chip);
+  font-weight: 700;
+}
+.d-month .is-today .d-cell {
+  box-shadow: none;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: 700;
+}
+.d-month .is-future .d-cell {
+  color: var(--faint);
+}
+/* An earlier day being played is outlined, like the active cell. */
+.d-month .d-cell[aria-current="page"]:not(:is(.is-today *)) {
+  box-shadow: inset 0 0 0 2px var(--primary);
+}
+.d-month .d-cell[aria-current="page"] .d-num {
   text-decoration: none;
 }
-.daily .d-week .d-tier {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+.d-cal-stats {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin: 0;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--rule);
+  font-size: var(--size-s);
+}
+.d-cal-stats div {
+  display: flex;
+  gap: var(--space-1);
+}
+.d-cal-stats dt {
+  color: var(--muted);
+}
+.d-cal-stats dd {
+  margin: 0;
+  font-weight: 700;
+}
+/* At phone width a smaller pad and gap keep each date close to a 44 px target. */
+@media (max-width: 39.99rem) {
+  .d-cal {
+    padding: var(--space-3);
+  }
+  .d-dow,
+  .d-month {
+    gap: 2px;
+  }
+}
+.d-note {
+  margin: 0;
+  font-size: var(--size-s);
+  color: var(--muted);
 }
 
 /* The workbench sits in the main column, not under a hero. */
@@ -258,4 +228,19 @@ a.d-cell:focus-visible {
 .d-noscript {
   margin: 0;
   padding: var(--space-4) var(--space-5);
+}
+
+/* The week card on /daily/ is a green panel, like the side panels of the
+   other practice pages; the day cards on it stay white. */
+.daily .d-week-card {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.daily .d-week-card .d-week-title,
+.daily .d-week-card .d-note {
+  color: var(--on-primary);
+}
+.daily .d-week-card .d-day {
+  border-color: transparent;
 }

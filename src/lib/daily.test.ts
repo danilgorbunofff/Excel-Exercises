@@ -15,7 +15,6 @@ import {
   pickFor,
   stripDays,
   tierOf,
-  weekDays,
 } from "./daily.ts";
 import { FIRST_PICKS, LEGACY_POOL } from "./daily-legacy.ts";
 
@@ -117,15 +116,6 @@ describe("the weekly ladder", () => {
         ladder.filter((e) => e.tier !== 1),
       ),
     ).toBeNull();
-  });
-
-  it("lists this week Monday to Sunday, marking today and the days to come", () => {
-    const week = weekDays(set("2026-11-16", "2026-11-18"), "2026-11-18");
-    expect(week.map((d) => d.day)).toEqual(daysFrom("2026-11-16", 7));
-    expect(week.map((d) => d.tier)).toEqual([1, 2, 3, 4, 5, 6, 7]);
-    expect(week.map((d) => d.solved)).toEqual([true, false, true, false, false, false, false]);
-    expect(week.filter((d) => d.today).map((d) => d.day)).toEqual(["2026-11-18"]);
-    expect(week.filter((d) => d.future)).toHaveLength(4);
   });
 });
 

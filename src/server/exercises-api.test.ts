@@ -44,7 +44,9 @@ const pro = { pro_status: "active", pro_until: null };
 const answer =
   (profile: unknown, attempts: unknown[]): Handler =>
   (q) =>
-    q.table === "profiles" ? { data: profile, error: null } : { data: attempts, error: null };
+    q.table === "profiles"
+      ? { data: profile, error: null }
+      : { data: q.table === "free_drill_runs" ? null : attempts, error: null };
 
 beforeEach(() => {
   mocks.user = { id: "user-1" };
@@ -77,6 +79,23 @@ describe("GET /api/exercises/[slug]", () => {
     mocks.handler = answer(pro, []);
     expect(await (await call("sum-1")).json()).toEqual({ answers: ["=SUM(B2:B5)"] });
     expect(mocks.log.some((q) => q.table === "assessment_attempts")).toBe(false);
+  });
+
+  it("gives a Free account a drill's answers only when it is in today's run", async () => {
+    // The fake answers the run lookup: a row only when the slug is asked for as in the run.
+    mocks.handler = (q) =>
+      q.table === "profiles"
+        ? { data: null, error: null }
+        : {
+            data: (q.filters["slugs"] as string[])?.includes("sum-1") ? { day: "today" } : null,
+            error: null,
+          };
+    expect(await (await call("sum-1")).json()).toEqual({ answers: ["=SUM(B2:B5)"] });
+    const asked = mocks.log.find((q) => q.table === "free_drill_runs");
+    expect(asked?.filters).toMatchObject({ user_id: "user-1", slugs: ["sum-1"] });
+    mocks.handler = () => ({ data: null, error: null });
+    expect((await call("sum-1")).status).toBe(403);
+    expect((await call("pro-one")).status).toBe(403);
   });
 
   it("keeps a mock task's answers until a set holding it is finished", async () => {

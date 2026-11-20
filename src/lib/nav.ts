@@ -11,8 +11,6 @@ export interface NavItem {
   href: string;
   /** One plain line saying what the page is for, shown in the header panels. */
   description: string;
-  /** false: left out of the header menus, kept in the tabs and the footer. */
-  inHeader?: false;
 }
 
 /** Ways to practise. The Practice tabs and the Practice header panel. */
@@ -36,13 +34,6 @@ export const PRACTICE_NAV: readonly NavItem[] = [
     description: "Exercises in a sensible order. Start here if formulas are new to you.",
   },
   {
-    label: "Interview prep",
-    icon: "briefcase",
-    href: "/exercises/tracks/#g-interview",
-    description: "Tracks built around the tasks Excel interviews tend to ask for.",
-    inHeader: false,
-  },
-  {
     label: "Daily exercise",
     icon: "calendar",
     href: "/daily/",
@@ -62,7 +53,7 @@ export const PRACTICE_NAV: readonly NavItem[] = [
   },
 ];
 
-/** Pages to look things up in. The Learn header panel. */
+/** Pages to look things up in, shown in the Learn header panel. */
 export const LEARN_NAV: readonly NavItem[] = [
   {
     label: "Functions",
@@ -77,22 +68,10 @@ export const LEARN_NAV: readonly NavItem[] = [
     description: "Short articles on references, lookups and errors.",
   },
   {
-    label: "Formula explainer",
-    icon: "formula",
-    href: "/formula-explainer/",
-    description: "Paste a formula and see every part worked out step by step.",
-  },
-  {
     label: "Keyboard shortcuts",
     icon: "keyboard",
     href: "/excel-shortcuts/",
     description: "Excel shortcuts for Windows and Mac, grouped by task.",
-  },
-  {
-    label: "Resources",
-    icon: "link",
-    href: "/resources/",
-    description: "Everything on the site in one place, plus outside references.",
   },
 ];
 

@@ -1,11 +1,26 @@
 // Why this exists: fills the progress page from this browser's storage: the
-// numbers strip, the next exercise, the review cards and the counts, and clears
+// grid of days practised, the numbers, the next exercise, the due-for-review table (filter, sort,
+// Show all; a title opens a run through what it shows) and clears
 // progress on request. It paints again when a solve lands or when a signed-in
 // visitor's account progress has been merged in, so the page is never stale.
+
 import {
+  type CatalogueFilter,
+  type CatalogueRow,
+  compare,
+  matches,
+  type SortDir,
+  type SortKey,
+} from "../lib/catalogue.ts";
+import { bestStreak, currentStreak } from "../lib/daily.ts";
+import { readDaily } from "./daily-store.ts";
+import { dayCount } from "./daily-view.ts";
+import { saveSession } from "./drill-session.ts";
+import {
+  activeDays,
+  addDays,
   clearProgress,
   dueDate,
-  isDue,
   isSolved,
   localDay,
   needsReview,
@@ -13,8 +28,7 @@ import {
   type Progress,
   readProgress,
 } from "./progress.ts";
-import { loadMe, SYNCED_EVENT } from "./session.ts";
-import { paintStatus } from "./status.ts";
+import { loadMe, SYNCED_EVENT, signedIn } from "./session.ts";
 
 interface Item {
   id: string;
@@ -23,7 +37,13 @@ interface Item {
   href: string;
   /** Needs PRO. "Continue" skips these until the visitor is known to have PRO. */
   locked: boolean;
+  level: number;
+  track: string;
+  trackTitle: string;
+  fns: string[];
 }
+// Same words as LEVELS in lib/exercises.ts, which cannot load in the browser.
+const LEVEL_NAMES: Record<number, string> = { 1: "Beginner", 2: "Intermediate", 3: "Advanced" };
 let pro = false;
 
 const node = document.querySelector("script[data-exercises]");
@@ -32,7 +52,6 @@ const drillNode = document.querySelector("script[data-drill-items]");
 const drills: Item[] = drillNode?.textContent ? JSON.parse(drillNode.textContent) : [];
 const q = <T extends HTMLElement>(selector: string) => document.querySelector<T>(selector);
 const next = q<HTMLAnchorElement>("[data-next]");
-const summary = q<HTMLElement>("[data-summary]");
 // The server-rendered first exercise, which is also the page with no progress.
 const start = next ? { href: next.getAttribute("href") ?? "", text: next.textContent ?? "" } : null;
 
@@ -41,8 +60,55 @@ const stat = (key: string, value: string) => {
   if (el) el.textContent = value;
 };
 
-/** How many review items to show; the rest wait until these are done. */
-const REVIEW_MAX = 10;
+/** Weeks in the grid of days practised: about six months. */
+const HEAT_WEEKS = 26;
+
+/**
+ * Draws the grid of days practised, a column per week from Monday, ending
+ * with this week, and the practice streak beside it.
+ */
+function paintActivity(progress: Progress, today: string): void {
+  const days = activeDays(progress, Object.keys(readDaily()));
+  const set = new Set(days.keys());
+  stat("streak", dayCount(currentStreak(set, today)));
+  stat("best", dayCount(bestStreak(set)));
+  const grid = q("[data-heat]");
+  const months = q("[data-heat-months]");
+  if (!grid || !months) return;
+  const weekday = (new Date(`${today}T00:00:00Z`).getUTCDay() + 6) % 7;
+  const first = addDays(today, -weekday - (HEAT_WEEKS - 1) * 7);
+  let practised = 0;
+  const cells = Array.from({ length: HEAT_WEEKS * 7 }, (_, i) => {
+    const day = addDays(first, i);
+    const n = day > today ? 0 : (days.get(day) ?? 0);
+    if (n) practised++;
+    const cell = document.createElement("i");
+    if (day > today) cell.className = "future";
+    else if (n) cell.className = `l${n >= 5 ? 4 : Math.min(n, 3)}`;
+    return cell;
+  });
+  grid.replaceChildren(...cells);
+  grid.setAttribute(
+    "aria-label",
+    practised ? `Practised on ${dayCount(practised)} in the last 6 months` : "No practice yet",
+  );
+  // A month name over the first week that starts in it, so labels never crowd.
+  months.replaceChildren(
+    ...Array.from({ length: HEAT_WEEKS }, (_, w) => {
+      const monday = addDays(first, w * 7);
+      const label = document.createElement("span");
+      if (Number(monday.slice(8)) <= 7)
+        label.textContent = new Date(`${monday}T00:00:00Z`).toLocaleDateString("en-GB", {
+          month: "short",
+          timeZone: "UTC",
+        });
+      return label;
+    }),
+  );
+}
+
+/** Rows shown before "Show all": a long due list stays a short table. */
+const REVIEW_SHOWN = 10;
 
 /** Missed and unsolved first (most misses on top), then the rest by due day. */
 function reviewItems(progress: Progress, today: string): Item[] {
@@ -59,84 +125,233 @@ function reviewItems(progress: Progress, today: string): Item[] {
     );
 }
 
+/** Why an item is on the list, as a sort key and the words shown for it. */
+function reasonOf(progress: Progress, id: string): { key: string; text: string } {
+  const e = progress[id];
+  const misses = e?.misses ?? 0;
+  if (!isSolved(e))
+    return {
+      key: "unsolved",
+      text: `Not solved yet, ${misses} wrong ${misses === 1 ? "check" : "checks"}`,
+    };
+  if ((e?.missed ?? "") > (e?.last ?? "")) return { key: "missed", text: "Wrong on your last try" };
+  return { key: "due", text: "Due for review" };
+}
+
 // The head's second button: "Review N due" while anything is due, else today's exercise.
 const reviewNext = q<HTMLAnchorElement>("[data-review-next]");
 const today0 = reviewNext
   ? { href: reviewNext.getAttribute("href") ?? "", text: reviewNext.textContent ?? "" }
   : null;
-const reviewIcon = q<HTMLTemplateElement>("template[data-review-icon]");
+
+interface ReviewRow {
+  item: Item;
+  row: CatalogueRow;
+  el: HTMLTableRowElement;
+}
+let dueNow: Item[] = [];
+let rowsNow: ReviewRow[] = [];
+let sortKey: SortKey = "order";
+let sortDir: SortDir = "ascending";
+let showAll = false;
+
+/** A run through these items, in this order: the page opened from the list
+ * gets Previous and Next through it, and the last one leads back here. Saved
+ * on the click, so a visit here does not end a function practice run. */
+function startReview(run: readonly Item[]): void {
+  if (run.length === 0) return;
+  saveSession({
+    kind: "review",
+    hrefs: run.map((i) => i.href),
+    ids: run.map((i) => i.id),
+    fns: run.map(() => ""),
+    titles: run.map((i) => i.title),
+    levels: run.map((i) => i.level),
+    search: "",
+    results: {},
+    doneHref: "/progress/",
+  });
+}
+reviewNext?.addEventListener("click", () => startReview(dueNow));
+
+const reviewForm = q<HTMLFormElement>("[data-review-filter]");
+const reviewBody = q<HTMLTableSectionElement>("[data-review-rows]");
+const reviewCount = q<HTMLElement>("[data-review-count]");
+const moreWrap = q<HTMLElement>("[data-review-more-wrap]");
+const moreButton = q<HTMLButtonElement>("[data-review-more]");
+const headers = [
+  ...document.querySelectorAll<HTMLTableCellElement>("[data-review-table] th[data-sort-key]"),
+];
+const field = (name: string) =>
+  reviewForm?.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | null;
+
+/** The rows that pass the filter, in the chosen order: what the table shows and the run follows. */
+function filteredRows(): ReviewRow[] {
+  const f: CatalogueFilter = {
+    q: field("q")?.value ?? "",
+    fn: "",
+    level: field("level")?.value ?? "",
+    track: field("track")?.value ?? "",
+    progress: "",
+  };
+  const why = field("why")?.value ?? "";
+  return rowsNow
+    .filter((r) => matches(r.row, f) && (!why || r.row.state === why))
+    .sort((a, b) => compare(a.row, b.row, sortKey, sortDir));
+}
+
+function paintTable(): void {
+  if (!reviewBody) return;
+  const shown = filteredRows();
+  const visible = showAll ? shown : shown.slice(0, REVIEW_SHOWN);
+  reviewBody.replaceChildren(...visible.map((r) => r.el));
+  for (const th of headers) {
+    if (th.dataset["sortKey"] === sortKey && sortKey !== "order")
+      th.setAttribute("aria-sort", sortDir);
+    else th.removeAttribute("aria-sort");
+  }
+  const total = rowsNow.length;
+  if (reviewCount)
+    reviewCount.textContent =
+      shown.length === total
+        ? `${total} due`
+        : shown.length === 0
+          ? "Nothing due matches. Clear the filters to see them all."
+          : `Showing ${shown.length} of ${total} due`;
+  const hiddenCount = shown.length - visible.length;
+  if (moreWrap && moreButton) {
+    moreWrap.hidden = hiddenCount <= 0;
+    moreButton.textContent = `Show all ${shown.length}`;
+  }
+}
+
+function buildRow(item: Item, progress: Progress, urgency: number): ReviewRow {
+  const reason = reasonOf(progress, item.id);
+  const tr = document.createElement("tr");
+  const whyCell = document.createElement("td");
+  whyCell.append(
+    Object.assign(document.createElement("span"), {
+      className: "why",
+      textContent: reason.text,
+    }),
+  );
+  whyCell.firstElementChild?.setAttribute("data-why", reason.key);
+  const titleCell = document.createElement("th");
+  titleCell.scope = "row";
+  titleCell.append(
+    Object.assign(document.createElement("a"), {
+      className: "r-title",
+      href: item.href,
+      textContent: item.title,
+    }),
+    Object.assign(document.createElement("span"), {
+      className: "r-meta",
+      textContent: [item.fns.join(", ") || "Cell references", item.trackTitle].join(" · "),
+    }),
+  );
+  const levelCell = document.createElement("td");
+  levelCell.append(
+    Object.assign(document.createElement("span"), {
+      className: `badge badge-${item.level}`,
+      textContent: LEVEL_NAMES[item.level] ?? "",
+    }),
+  );
+  tr.append(whyCell, titleCell, levelCell);
+  return {
+    item,
+    el: tr,
+    row: {
+      order: urgency,
+      title: item.title,
+      level: item.level,
+      track: item.track,
+      search: [item.title, ...item.fns].join(" ").toLowerCase(),
+      functions: item.fns,
+      state: reason.key,
+    },
+  };
+}
 
 function paintReview(progress: Progress, today: string): void {
-  const list = q<HTMLOListElement>("[data-review]");
+  const box = q<HTMLElement>("[data-review]");
   const empty = q<HTMLElement>("[data-review-empty]");
-  if (!list || !empty) return;
+  if (!box || !empty) return;
   const due = reviewItems(progress, today);
+  dueNow = due;
+  stat("due", String(due.length));
   if (reviewNext && today0) {
     const first = due[0];
     reviewNext.href = first ? first.href : today0.href;
     reviewNext.textContent = first ? `Review ${due.length} due` : today0.text;
   }
-  list.replaceChildren(
-    ...due.slice(0, REVIEW_MAX).map((i) => {
-      const e = progress[i.id];
-      // A card like a track's: icon and why on top, the title, a Review button.
-      const li = document.createElement("li");
-      li.className = "card review-card";
-      const top = document.createElement("div");
-      top.className = "review-top";
-      const box = document.createElement("span");
-      box.className = "icon-box";
-      if (reviewIcon) box.append(reviewIcon.content.cloneNode(true));
-      const title = Object.assign(document.createElement("h3"), { textContent: i.title });
-      const a = Object.assign(document.createElement("a"), {
-        href: i.href,
-        className: "button button-primary",
-        textContent: "Review",
-      });
-      a.append(
-        Object.assign(document.createElement("span"), {
-          className: "visually-hidden",
-          textContent: `: ${i.title}`,
-        }),
-      );
-      const why = document.createElement("span");
-      why.className = "why";
-      const misses = e?.misses ?? 0;
-      why.textContent = !isSolved(e)
-        ? `Not solved yet, ${misses} wrong ${misses === 1 ? "check" : "checks"}`
-        : (e?.missed ?? "") > (e?.last ?? "")
-          ? "Wrong on your last try"
-          : "Due for review";
-      top.append(box, why);
-      li.append(top, title, a);
-      return li;
-    }),
-  );
-  list.hidden = due.length === 0;
+  rowsNow = due.map((item, i) => buildRow(item, progress, i + 1));
+  // The track filter offers only the tracks that have something due.
+  const tracks = field("track");
+  if (tracks instanceof HTMLSelectElement) {
+    const chosen = tracks.value;
+    const seen = new Map(due.map((i) => [i.track, i.trackTitle]));
+    tracks.replaceChildren(
+      new Option("All", ""),
+      ...[...seen].map(([slug, title]) => new Option(title, slug, false, slug === chosen)),
+    );
+  }
+  paintTable();
+  box.hidden = due.length === 0;
   empty.hidden = due.length > 0;
 }
+
+if (reviewForm) {
+  const again = () => {
+    showAll = false;
+    paintTable();
+  };
+  reviewForm.addEventListener("input", again);
+  reviewForm.addEventListener("change", again);
+  reviewForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    again();
+  });
+  reviewForm.addEventListener("reset", () => setTimeout(again));
+}
+moreButton?.addEventListener("click", () => {
+  showAll = true;
+  paintTable();
+});
+for (const th of headers) {
+  th.querySelector("button")?.addEventListener("click", () => {
+    const k = th.dataset["sortKey"] as SortKey;
+    if (k === sortKey) {
+      // Third click goes back to the most urgent first.
+      if (sortDir === "descending") {
+        sortKey = "order";
+        sortDir = "ascending";
+      } else sortDir = "descending";
+    } else {
+      sortKey = k;
+      sortDir = "ascending";
+    }
+    paintTable();
+  });
+}
+// A title opens a run through what the table holds now, filtered and sorted,
+// starting from that row.
+reviewBody?.addEventListener("click", (e) => {
+  const link = (e.target as Element).closest("a");
+  if (!link) return;
+  startReview(filteredRows().map((r) => r.item));
+});
 
 function paint(): void {
   const progress = readProgress();
   const today = localDay();
   paintReview(progress, today);
+  paintActivity(progress, today);
   const solved = items.filter((i) => isSolved(progress[i.id]));
   const helped = solved.filter((i) => progress[i.id]?.state === "helped").length;
-  const due = solved
-    .filter((i) => {
-      const e = progress[i.id];
-      return e ? isDue(e, today) : false;
-    })
-    .sort((a, b) =>
-      (dueDate(progress[a.id] ?? { state: "solved", date: "" }) ?? "").localeCompare(
-        dueDate(progress[b.id] ?? { state: "solved", date: "" }) ?? "",
-      ),
-    );
 
   stat("solved", String(solved.length));
   stat("own", String(solved.length - helped));
   stat("helped", String(helped));
-  stat("due", String(due.length));
 
   const upNext = items.find((i) => !solved.includes(i) && (pro || !i.locked));
   if (next && start) {
@@ -151,16 +366,9 @@ function paint(): void {
       next.href = "/pricing/";
       next.textContent = "Get PRO for the next exercises";
     } else {
-      next.href = "#all";
+      next.href = "/exercises/";
       next.textContent = "Every exercise solved";
     }
-  }
-
-  if (summary) {
-    summary.textContent =
-      solved.length === 0
-        ? "You have not solved an exercise yet."
-        : `You have solved ${solved.length} of ${items.length}${helped > 0 ? `, ${helped} of them with help` : ""}.`;
   }
 }
 
@@ -169,41 +377,46 @@ void loadMe().then((me) => {
   pro = me?.pro === true;
   if (pro) paint();
 });
-// A solve repaints the numbers and the track cards and table marks.
-document.addEventListener(PROGRESS_EVENT, () => {
-  paint();
-  paintStatus();
-});
-document.addEventListener(SYNCED_EVENT, () => {
-  paint();
-  paintStatus();
-});
+// A solve, or progress merged from the account, repaints the numbers and the review list.
+document.addEventListener(PROGRESS_EVENT, paint);
+document.addEventListener(SYNCED_EVENT, paint);
 
+// Clearing asks first in a dialog; Keep it, Esc or a click outside closes it
+// with nothing cleared, and the browser puts focus back on the button. Signed
+// in, the account's copy goes first: clearing only this browser would come
+// back on the next sync, and stay on every other device.
 const ask = q<HTMLButtonElement>("[data-clear-ask]");
-const confirm = q<HTMLElement>("[data-clear-confirm]");
+const dialog = q<HTMLDialogElement>("[data-clear-dialog]");
 const yes = q<HTMLButtonElement>("[data-clear-yes]");
 const no = q<HTMLButtonElement>("[data-clear-no]");
 const status = q<HTMLElement>("[data-clear-status]");
+const failed = q<HTMLElement>("[data-clear-error]");
 ask?.addEventListener("click", () => {
-  if (!confirm || !yes) return;
-  confirm.hidden = false;
-  ask.hidden = true;
-  yes.focus();
+  if (status) status.textContent = "";
+  if (failed) failed.textContent = "";
+  dialog?.showModal();
 });
-no?.addEventListener("click", () => {
-  if (!confirm || !ask) return;
-  confirm.hidden = true;
-  ask.hidden = false;
-  ask.focus();
-});
-yes?.addEventListener("click", () => {
+no?.addEventListener("click", () => dialog?.close());
+yes?.addEventListener("click", async () => {
+  if (signedIn()) {
+    yes.disabled = true;
+    const res = await fetch("/api/progress/", {
+      method: "DELETE",
+      credentials: "same-origin",
+    }).catch(() => null);
+    yes.disabled = false;
+    if (!res?.ok) {
+      if (failed)
+        failed.textContent =
+          "Your account could not be reached, so nothing was cleared. Try again in a moment.";
+      return;
+    }
+  }
   clearProgress();
   paint();
-  paintStatus({});
-  if (confirm && ask) {
-    confirm.hidden = true;
-    ask.hidden = false;
-    ask.focus();
-  }
-  if (status) status.textContent = "Your progress is cleared.";
+  dialog?.close();
+  if (status)
+    status.textContent = signedIn()
+      ? "Your progress is cleared, on this and every other device."
+      : "Your progress is cleared.";
 });

@@ -40,6 +40,9 @@ const ROWS: Record<string, unknown> = {
   daily_solves: [
     { day: "2026-11-15", exercise: "add-two-cells", solved_at: "2026-11-15T09:00:00Z" },
   ],
+  free_drill_runs: [
+    { day: "2026-11-15", slugs: ["sum-drill-1"], created_at: "2026-11-15T09:00:00Z" },
+  ],
   certificates: [{ id: "AAAAAAAAAAAAAAAAAAAAAA", name: "Ada Lovelace", revoked_at: null }],
 };
 
@@ -76,7 +79,13 @@ describe("GET /api/account/export/", () => {
       digest: false,
       updatedAt: "2026-11-01T00:00:00Z",
     });
-    for (const key of ["progress", "assessment_attempts", "daily_solves", "certificates"]) {
+    for (const key of [
+      "progress",
+      "assessment_attempts",
+      "daily_solves",
+      "free_drill_runs",
+      "certificates",
+    ]) {
       expect(body[key]).toEqual(ROWS[key]);
     }
     expect(JSON.stringify(body)).not.toMatch(/stripe|user-1/u);
@@ -88,6 +97,7 @@ describe("GET /api/account/export/", () => {
       "assessment_attempts",
       "certificates",
       "daily_solves",
+      "free_drill_runs",
       "profiles",
       "progress",
     ]);

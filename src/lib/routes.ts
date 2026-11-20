@@ -43,6 +43,8 @@ export const PRIVATE_PATHS = [
 export function hiddenFromSearch(path: string, accountsOpen: boolean): boolean {
   // A certificate page is for whoever has the link, never for search.
   if (path.startsWith("/certificates/")) return true;
+  // A function drill page is a step of a practice session, not a landing page.
+  if (/^\/exercises\/drills\/[^/]+\/$/u.test(path)) return true;
   const list: readonly string[] = accountsOpen ? PRIVATE_PATHS : ACCOUNT_PATHS;
   return list.includes(path);
 }

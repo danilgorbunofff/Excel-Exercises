@@ -38,13 +38,14 @@ const host = siteConfig.host;
     <li>if you sign in with Google, the email address, name and picture Google shares with the site;</li>
     <li>a copy of your progress, so it follows you to other devices;</li>
     <li>the days you solved the daily exercise, for your streak;</li>
+    <li>the ten function practice tasks of your free daily run, and the day;</li>
     <li>your mock assessment results, with the formula you typed for each task, so the server can mark them;</li>
     <li>
       your certificates (the <code>certificates</code> table): the name you typed for it, the
       assessment, your score, the date, and whether you revoked it;
     </li>
     <li>whether you want an email when new exercises arrive, and whether you want the weekly email;</li>
-    <li>whether you have PRO, and until when.</li>
+    <li>whether you have PRO, and until when;</li>
   </ul>
   <p>
     Accounts are stored by <a href="https://supabase.com/privacy">Supabase</a>. You can change your
@@ -112,7 +113,10 @@ const host = siteConfig.host;
       checks every page for requests elsewhere. Google sign-in and Stripe Checkout are pages on
       Google's and Stripe's own sites, which you go to when you choose them.
     </li>
-    <li>The formulas you type are checked in your browser and are not sent anywhere.</li>
+    <li>
+      The formulas you type in exercises and on function pages are checked in your browser and are
+      not sent anywhere.
+    </li>
   </ul>
 
   <h2>What any web server receives</h2>

@@ -100,6 +100,24 @@ export function record(
   return entry;
 }
 
+/**
+ * The days with any practice, each with how many things happened on it: an
+ * exercise first reached, solved or got wrong, plus any extra days (the
+ * daily solves).
+ * shortcut: each exercise keeps only its first, latest-solve and latest-miss
+ * day, so older practice days drop out; store a day log if the full history
+ * ever matters.
+ */
+export function activeDays(progress: Progress, more: Iterable<string> = []): Map<string, number> {
+  const days = new Map<string, number>();
+  const add = (day: string) => days.set(day, (days.get(day) ?? 0) + 1);
+  for (const e of Object.values(progress)) {
+    for (const day of new Set([e.date, e.last, e.missed])) if (day) add(day);
+  }
+  for (const day of more) add(day);
+  return days;
+}
+
 /** The day a solved exercise is next due for review, or null if it is not solved. */
 export function dueDate(entry: ProgressEntry): string | null {
   if (entry.state === "revealed" || entry.state === "tried" || !entry.last) return null;
@@ -140,6 +158,22 @@ export function needsReview(entry: ProgressEntry | undefined, today = localDay()
  * each exercise it keeps the furthest state, the first day, the latest solve
  * and the most reviews, so merging never loses work.
  */
+/**
+ * Drops the entries last touched before `day` (YYYY-MM-DD): this device's
+ * copy of progress the account cleared since. An entry touched on the day
+ * itself stays.
+ * shortcut: day precision, so an old entry from the very day of the clear
+ * survives; store times on entries if that ever matters.
+ */
+export function dropClearedBefore(progress: Progress, day: string): Progress {
+  const touched = (e: ProgressEntry) =>
+    [e.date, e.last, e.missed]
+      .filter((d): d is string => d !== undefined)
+      .sort()
+      .at(-1) ?? e.date;
+  return Object.fromEntries(Object.entries(progress).filter(([, e]) => touched(e) >= day));
+}
+
 export function mergeProgress(a: Progress, b: Progress): Progress {
   const out: Progress = { ...a };
   for (const [id, y] of Object.entries(b)) {

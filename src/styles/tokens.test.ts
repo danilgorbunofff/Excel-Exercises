@@ -82,6 +82,11 @@ const PAIRS: [string, string, number, string][] = [
   ["on-footer-muted", "on-dark-card", TEXT, "card text on the dark home band"],
   ["primary-hover", "on-primary", TEXT, "label of the white button on the green last call"],
   ["primary-hover", "correct-tint-solid", TEXT, "that label on hover"],
+  ...[1, 2, 3, 4, 5, 6].flatMap((n): [string, string, number, string][] => [
+    [`ref-${n}`, "surface", TEXT, `reference ${n} in the explained formula`],
+    [`ref-${n}`, "header", TEXT, `reference ${n} on the grey formula bar`],
+    [`ref-${n}`, "surface", UI, `outline of the cells reference ${n} reads`],
+  ]),
 ];
 
 describe("design tokens", () => {

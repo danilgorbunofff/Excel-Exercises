@@ -2,7 +2,6 @@
 // Why this exists: every learning track, grouped by where you are: the
 // essentials first, then one skill at a time, then interview practice. Each
 // card shows its level, size, time and this browser's progress.
-import Breadcrumbs from "../../../components/Breadcrumbs.astro";
 import Icon from "../../../components/Icon.astro";
 import PracticeTabs from "../../../components/PracticeTabs.astro";
 import TrackCard from "../../../components/TrackCard.astro";
@@ -28,7 +27,7 @@ const groups = [
 ];
 const essentialMinutes = essentials.reduce((s, t) => s + t.minutes, 0);
 const essentialCount = essentials.reduce((s, t) => s + t.exercises.length, 0);
-const essentialFunctions = [...new Set(essentials.flatMap((t) => t.functions))];
+const skillCount = groups[0]?.tracks.length ?? 0;
 const how = [
   {
     icon: "route" as const,
@@ -43,7 +42,7 @@ const how = [
   {
     icon: "chart" as const,
     title: "Watch the track fill in",
-    text: "Solved exercises are ticked off on every track, and stay in this browser.",
+    text: "Solved exercises are ticked off on every track, so you always see what is left.",
   },
 ];
 ---
@@ -54,15 +53,9 @@ const how = [
   layout="wide"
 >
   <PracticeTabs />
-  <div class="crumbs-row">
-    <Breadcrumbs items={[{ label: "Exercises", href: "/exercises/" }]} />
-  </div>
-  <header class="intro">
-    <h1>Pick a track for the skill you need</h1>
-    <p class="lead">
-      A track is a short run of exercises on one skill. Do them all in order, or jump to the one
-      your work needs.
-    </p>
+  <header class="page-head">
+    <h1>Learning tracks</h1>
+    <p class="lead">Pick a track for the skill you need</p>
   </header>
 
   <section class="group" aria-labelledby="g-essentials">
@@ -70,34 +63,29 @@ const how = [
       <h2 id="g-essentials">Start here if formulas are new to you</h2>
       <p>These tracks lay the groundwork for everything else: references, arithmetic and totals.</p>
     </div>
-    <div class="essentials">
-      <ul class="cards">
-        {
-          essentials.map((t) => (
-            <li>
-              <TrackCard track={t} />
-            </li>
-          ))
-        }
-      </ul>
-      <aside class="practise-panel" aria-labelledby="practise-heading">
-        <h3 id="practise-heading">In these two tracks</h3>
-        <dl>
-          <div>
-            <dt>exercises with hints</dt>
-            <dd>{essentialCount}</dd>
-          </div>
-          <div>
-            <dt>of practice, roughly</dt>
-            <dd>{formatMinutes(essentialMinutes)}</dd>
-          </div>
-        </dl>
-        <p>
-          Cell references, arithmetic and brackets, then {essentialFunctions.join(", ")}.
-        </p>
-        <p class="faint">Every later track builds on these.</p>
-      </aside>
-    </div>
+    <ol class="path">
+      {
+        essentials.map((t, i) => (
+          <li class="path-step">
+            <span class="step-num">Step {i + 1}</span>
+            <TrackCard track={t} showLocked />
+          </li>
+        ))
+      }
+      <li class="path-step">
+        <span class="step-num">Step {essentials.length + 1}</span>
+        <div class="card then">
+          <strong class="then-num">{skillCount}</strong>
+          <h3>more tracks</h3>
+          <p>Counting, logic, lookups, text, dates and more, all built on these two.</p>
+          <a href="#g-skill">Browse them <Icon name="arrow" size={16} /></a>
+        </div>
+      </li>
+    </ol>
+    <p class="path-foot">
+      <span><strong>{essentialCount}</strong> exercises with hints</span>
+      <span><strong>{formatMinutes(essentialMinutes)}</strong> of practice, roughly</span>
+    </p>
   </section>
 
   {
@@ -149,24 +137,7 @@ const how = [
 </script>
 
 <style>
-  .crumbs-row {
-    padding-top: var(--space-5);
-  }
-  .intro {
-    max-width: 52rem;
-    padding: var(--space-5) 0 var(--space-6);
-  }
-  .intro h1 {
-    margin: 0 0 var(--space-4);
-    font-size: var(--size-xxl);
-    line-height: 1.2;
-    color: var(--heading);
-  }
-  .lead {
-    margin: 0;
-    font-size: var(--size-l);
-    color: var(--muted);
-  }
+  /* The title sits where it does on the other practice pages. */
   .group {
     margin-bottom: var(--space-7);
   }
@@ -186,11 +157,6 @@ const how = [
     margin: 0;
     padding: 0;
   }
-  .essentials {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-5);
-  }
   .cards {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -201,41 +167,102 @@ const how = [
     grid-template-columns: minmax(0, 1fr);
     min-width: 0;
   }
-  .practise-panel {
-    padding: var(--space-6);
-    border-radius: var(--radius-l);
-    background: var(--footer-bg);
-    color: var(--on-footer-muted);
-  }
-  .practise-panel h3 {
-    margin: 0 0 var(--space-4);
-    color: var(--on-footer);
-    font-size: var(--size-base);
-  }
-  .practise-panel dl {
+  /* The path: Step 1 → Step 2 → then any track, joined by arrows. */
+  .path {
     display: grid;
-    grid-template-columns: auto auto;
-    justify-content: start;
-    gap: var(--space-4) var(--space-6);
-    margin: 0 0 var(--space-4);
-  }
-  .practise-panel dl div {
-    display: flex;
-    flex-direction: column-reverse;
-  }
-  .practise-panel dd {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
     margin: 0;
-    white-space: nowrap;
-    font-size: var(--size-xxl);
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 64rem) {
+    .path {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 14rem;
+      gap: var(--space-7);
+    }
+  }
+  .path > li {
+    position: relative;
+    min-width: 0;
+  }
+  .path > li:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    left: 50%;
+    bottom: calc(var(--space-6) / -2);
+    transform: translate(-50%, 50%) rotate(90deg);
+    font-size: var(--size-xl);
+    color: var(--line);
+  }
+  @media (min-width: 64rem) {
+    .path > li:not(:last-child)::after {
+      top: 50%;
+      left: auto;
+      right: calc(var(--space-7) / -2);
+      bottom: auto;
+      transform: translate(50%, -50%);
+    }
+  }
+  /* The step label sits above the same track card the other groups use. */
+  .path-step {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: var(--space-2);
+  }
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: var(--size-xs);
     font-weight: 700;
-    color: var(--on-footer);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--primary);
   }
-  .practise-panel dt {
-    font-size: var(--size-s);
+  /* Step 3: how many tracks come next, and the way down to them. */
+  .then {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-2);
   }
-  .practise-panel p {
-    margin: 0 0 var(--space-3);
+  .then-num {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--heading);
+  }
+  .then h3 {
+    margin: 0;
+    font-size: var(--size-l);
+    color: var(--heading);
+  }
+  .then p {
+    margin: 0;
     font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .then a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin-top: var(--space-2);
+    font-size: var(--size-s);
+    font-weight: 700;
+    color: var(--correct);
+  }
+  .then a :global(svg) {
+    transform: rotate(90deg);
+  }
+  .path-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    margin: var(--space-5) 0 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .path-foot strong {
+    color: var(--heading);
   }
   .how-list {
     display: grid;
@@ -281,11 +308,6 @@ const how = [
     .cards-3,
     .how-list {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-  @media (min-width: 64rem) {
-    .essentials {
-      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
     }
   }
 </style>

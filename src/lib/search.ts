@@ -1,7 +1,7 @@
 // Why this exists: one ranking for the header suggestions and the search page,
 // so both show the same results in the same order. Pure, so it is unit-tested.
 
-export type SearchKind = "Exercise" | "Track" | "Function" | "Article" | "Walkthrough" | "Page";
+export type SearchKind = "Exercise" | "Track" | "Function" | "Article" | "Page";
 
 export interface SearchItem {
   title: string;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { drillQueue, RANDOM_SIZE } from "./drills.ts";
+import { drillQueue, freeRunSlugs, RANDOM_SIZE, sessionStep } from "./drills.ts";
 
 const pool = ["IF", "SUM", "XLOOKUP"].flatMap((fn) =>
   [1, 2, 3, 4, 5].map((n) => ({ id: `${fn}-${n}`, slug: `${fn}-${n}`, fn, level: n <= 2 ? 1 : 2 })),
@@ -41,5 +41,30 @@ describe("drillQueue", () => {
     const some = drillQueue(pool, { fns: ["random"], id: null }, random);
     expect(some).toHaveLength(RANDOM_SIZE);
     expect(new Set(ids(some)).size).toBe(RANDOM_SIZE);
+  });
+});
+
+describe("sessionStep", () => {
+  it("gives the place and the neighbours, or -1 outside the session", () => {
+    expect(sessionStep(["a", "b", "c"], "a")).toEqual({ index: 0, prev: null, next: "b" });
+    expect(sessionStep(["a", "b", "c"], "b")).toEqual({ index: 1, prev: "a", next: "c" });
+    expect(sessionStep(["a", "b", "c"], "c")).toEqual({ index: 2, prev: "b", next: null });
+    expect(sessionStep(["a"], "z")).toEqual({ index: -1, prev: null, next: null });
+    // A review run mixes exercise and drill pages, matched by address.
+    const run = ["/exercises/add-two-cells/", "/exercises/drills/sum-drill-1/"];
+    expect(sessionStep(run, "/exercises/drills/sum-drill-1/")).toEqual({
+      index: 1,
+      prev: "/exercises/add-two-cells/",
+      next: null,
+    });
+  });
+});
+
+describe("freeRunSlugs", () => {
+  it("takes ten distinct slugs from the pool", () => {
+    const slugs = freeRunSlugs(pool);
+    expect(slugs).toHaveLength(RANDOM_SIZE);
+    expect(new Set(slugs).size).toBe(RANDOM_SIZE);
+    for (const s of slugs) expect(pool.some((d) => d.slug === s)).toBe(true);
   });
 });

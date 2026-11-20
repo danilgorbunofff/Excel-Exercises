@@ -474,13 +474,18 @@
    the lead sit on the page itself, with no card around them. */
 .open-head {
   display: grid;
-  gap: var(--space-3);
-  max-width: 52rem;
-  padding-top: var(--space-5);
+  gap: var(--space-4);
+  max-width: 48rem;
+  margin: 0 auto;
+  /* Inside .a-page the grid gap (space-5) adds to this, making space-6 in all. */
+  padding: var(--space-7) 0 calc(var(--space-6) - var(--space-5));
+  text-align: center;
 }
 .open-head h1 {
   margin: 0;
   font-size: var(--size-xxl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
   line-height: 1.2;
   color: var(--heading);
 }
@@ -489,17 +494,23 @@
   font-size: var(--size-l);
   color: var(--muted);
 }
+@media (min-width: 48rem) {
+  .open-head h1 {
+    font-size: var(--size-page);
+  }
+}
 .open-head .lead + .lead {
   margin-top: calc(-1 * var(--space-2));
 }
 .open-head .actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: var(--space-3);
   margin: var(--space-2) 0 0;
 }
 .open-head .tag {
-  justify-self: start;
+  justify-self: center;
 }
 
 /* The numbers as one strip: a value over its label, four across, two by two

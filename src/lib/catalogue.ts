@@ -11,7 +11,8 @@ export interface CatalogueRow {
   search: string;
   /** The functions the exercise requires, such as "SUMIF". */
   functions: readonly string[];
-  /** "solved", "helped", "revealed", "tried" or "" when not started. */
+  /** "solved", "helped", "revealed", "tried" or "" when not started. On the
+   * review table, why it is due instead: "unsolved", "missed" or "due". */
   state: string;
 }
 
@@ -52,7 +53,17 @@ export function trackStatus(done: number, total: number) {
 /** The button beside one exercise in a track. */
 export const exerciseAction = (state: string) => (isDone(state) ? "Review" : "Start");
 
-const STATE_RANK: Record<string, number> = { solved: 0, helped: 1, revealed: 2, tried: 3, "": 4 };
+const STATE_RANK: Record<string, number> = {
+  solved: 0,
+  helped: 1,
+  revealed: 2,
+  tried: 3,
+  "": 4,
+  // The review table's reasons, most urgent first.
+  unsolved: 5,
+  missed: 6,
+  due: 7,
+};
 
 export function compare(a: CatalogueRow, b: CatalogueRow, key: SortKey, dir: SortDir): number {
   let d: number;

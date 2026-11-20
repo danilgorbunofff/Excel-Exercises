@@ -6,20 +6,19 @@ import Base from "../../layouts/Base.astro";
 import { searchItems } from "../../lib/search-items.ts";
 
 const items = await searchItems();
-const kinds = ["Function", "Exercise", "Track", "Walkthrough", "Article", "Page"] as const;
+const kinds = ["Function", "Exercise", "Track", "Article", "Page"] as const;
 const headings = {
   Function: "Functions",
   Exercise: "Exercises",
   Track: "Learning tracks",
-  Walkthrough: "Formula walkthroughs",
   Article: "Articles",
-  Page: "Tools and pages",
+  Page: "Pages",
 } as const;
 ---
 
 <Base
   title="Search"
-  description="Search the exercises, functions, learning tracks, formula walkthroughs and articles."
+  description="Search the exercises, functions, learning tracks and articles."
   layout="wide"
 >
   <header class="page-head">

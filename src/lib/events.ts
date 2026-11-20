@@ -12,6 +12,7 @@ export const EVENT_NAMES = [
   "paywall_seen",
   "drill_start",
   "drill_finish",
+  "drill_free_run",
   "checkout_start",
   "pro_active",
 ] as const;

@@ -5,6 +5,8 @@
 import type { Me } from "../pages/api/me.ts";
 import { syncDaily } from "./daily-sync.ts";
 import {
+  dropClearedBefore,
+  localDay,
   mergeProgress,
   PROGRESS_EVENT,
   type Progress,
@@ -51,7 +53,13 @@ async function syncOnce(): Promise<void> {
     if (sessionStorage.getItem(SYNCED_KEY)) return;
     const res = await fetch("/api/progress/", { credentials: "same-origin" });
     if (!res.ok) return;
-    const merged = mergeProgress(readProgress(), (await res.json()) as Progress);
+    // Cleared on another device since: drop this browser's older copy first,
+    // or the merge would send it back to the account.
+    const cleared = res.headers.get("X-Progress-Cleared");
+    const local = cleared
+      ? dropClearedBefore(readProgress(), localDay(new Date(cleared)))
+      : readProgress();
+    const merged = mergeProgress(local, (await res.json()) as Progress);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
     document.dispatchEvent(new Event(SYNCED_EVENT));
     if ((await putProgress(merged)).ok) sessionStorage.setItem(SYNCED_KEY, "1");

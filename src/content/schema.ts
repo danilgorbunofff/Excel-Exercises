@@ -375,29 +375,6 @@ export const articleSchema = z.object({
 
 export type Article = z.infer<typeof articleSchema>;
 
-/** Formula walkthroughs for the formula explainer. */
-export const explainersSchema = z.object({
-  walkthroughs: z
-    .array(
-      z.object({
-        slug: kebab,
-        title: sentence,
-        description: sentence,
-        /** Code, so the copy linter skips it. */
-        formula: z.string().startsWith("="),
-        rows: z.array(z.array(cellValue).min(1)).min(1),
-        how: z.array(sentence).min(1),
-        mistakes: z.array(z.object({ q: sentence, a: sentence })).default([]),
-        /** The exercise id to practise with. */
-        exercise: kebab,
-      }),
-    )
-    .min(1),
-});
-
-export type Explainers = z.infer<typeof explainersSchema>;
-export type Walkthrough = Explainers["walkthroughs"][number];
-
 /** Keyboard shortcuts, grouped, for Windows and Mac. Keys are code. */
 export const shortcutsSchema = z.object({
   groups: z

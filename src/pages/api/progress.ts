@@ -1,5 +1,6 @@
 // Why this exists: keeps a copy of the browser's progress in the account, so
 // it follows the user to other devices. The browser merges before it sends.
+// DELETE clears that copy, for "Clear my progress" on the progress page.
 import type { APIRoute } from "astro";
 import type { Progress, ProgressEntry } from "../../scripts/progress.ts";
 import { json } from "../../server/http.ts";
@@ -30,12 +31,23 @@ function clean(body: unknown): Progress {
   return out;
 }
 
+/** The header that carries when the account's progress was last cleared. */
+export const CLEARED_HEADER = "X-Progress-Cleared";
+
 export const GET: APIRoute = async (ctx) => {
   const { supabase, user } = await currentUser(ctx);
   if (!user) return json({ error: "signed out" }, 401);
   const { data, error } = await supabase.from("progress").select("exercise_id, entry");
   if (error) return json({ error: "read failed" }, 500);
-  return json(Object.fromEntries((data ?? []).map((r) => [r.exercise_id, r.entry])));
+  const res = json(Object.fromEntries((data ?? []).map((r) => [r.exercise_id, r.entry])));
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("progress_cleared_at")
+    .eq("id", user.id)
+    .maybeSingle();
+  const cleared = (profile as { progress_cleared_at?: string | null } | null)?.progress_cleared_at;
+  if (cleared) res.headers.set(CLEARED_HEADER, cleared);
+  return res;
 };
 
 export const PUT: APIRoute = async (ctx) => {
@@ -53,4 +65,17 @@ export const PUT: APIRoute = async (ctx) => {
     if (error) return json({ error: "save failed" }, 500);
   }
   return json({ saved: rows.length });
+};
+
+export const DELETE: APIRoute = async (ctx) => {
+  const { supabase, user } = await currentUser(ctx);
+  if (!user) return json({ error: "signed out" }, 401);
+  const { error } = await supabase.from("progress").delete().eq("user_id", user.id);
+  if (error) return json({ error: "clear failed" }, 500);
+  // Other devices read this on their next sync and drop their older copy.
+  await supabase
+    .from("profiles")
+    .update({ progress_cleared_at: new Date().toISOString() })
+    .eq("id", user.id);
+  return json({ cleared: true });
 };

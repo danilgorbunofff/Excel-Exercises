@@ -1,0 +1,30 @@
+---
+// Why this exists: one page per PRO function drill, in the exercise layout.
+// Built without its answers; locked-exercise.ts opens it for PRO, and
+// ExerciseWorkbench adds Previous and Next for the run the picker started.
+// Kept out of the sitemap and search (hiddenFromSearch).
+import ExerciseWorkbench from "../../../components/ExerciseWorkbench.astro";
+import Base from "../../../layouts/Base.astro";
+import { type Drill, drillTasks } from "../../../lib/exercises.ts";
+
+export async function getStaticPaths() {
+  return (await drillTasks()).map((d) => ({
+    params: { slug: d.exercise.slug },
+    props: { drill: d },
+  }));
+}
+
+interface Props {
+  drill: Drill;
+}
+const { drill } = Astro.props;
+---
+
+<Base
+  title={drill.exercise.title}
+  description={`A short ${drill.fn} task in PRO function practice.`}
+  skipTo={{ href: "#formula", label: "Skip to the formula" }}
+  layout="exercise"
+>
+  <ExerciseWorkbench placed={drill} drill={drill.fn} />
+</Base>

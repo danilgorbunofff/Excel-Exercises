@@ -5,7 +5,6 @@
 // so daily.ts picks the exercise in the browser and fetches its workbench
 // from /daily/task/. The build day's pick is rendered here, hidden: it brings
 // the workbench styles and saves a fetch on the day it matches.
-import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import Icon from "../../components/Icon.astro";
 import LiveExercise from "../../components/LiveExercise.astro";
 import PracticeTabs from "../../components/PracticeTabs.astro";
@@ -35,45 +34,38 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
     <template data-check-icon><Icon name="check" size={16} /></template>
 
     <header class="open-head">
-      <Breadcrumbs items={[{ label: "Exercises", href: "/exercises/" }]} />
       <h1 id="daily-title">Daily exercise</h1>
       <p class="lead">
-        <span data-date>Today</span>. A new exercise every day, the same for everyone.
-      </p>
-      <p class="lead d-state" role="status" data-state>
-        One free exercise a day, easiest on Monday and hardest on Sunday.
+        A new exercise every day
       </p>
     </header>
 
-    <dl class="a-stats stat-strip">
-      <div>
-        <dt>today</dt>
-        <dd data-today>Not yet</dd>
-      </div>
-      <div>
-        <dt>current streak</dt>
-        <dd data-current>0 days</dd>
-      </div>
-      <div>
-        <dt>best streak</dt>
-        <dd data-best>0 days</dd>
-      </div>
-      <div>
-        <dt>solved this week</dt>
-        <dd data-week-solved>0 of 7</dd>
-      </div>
-    </dl>
-
-    <div class="a-grid d-grid">
-      <!-- First in the page order, so Tab reaches the week before the sheet;
-           on wide screens it sits in the right-hand column. -->
-      <aside class="d-side">
-        <section class="card d-week-card" aria-labelledby="strip-title">
-          <h2 class="d-week-title" id="strip-title">This week</h2>
-          <ol class="d-strip d-week" aria-labelledby="strip-title" data-strip data-week></ol>
-          <p class="d-note">Monday is the easiest. Each day is a step harder, up to Sunday.</p>
-        </section>
-      </aside>
+    <div class="d-grid">
+      <!-- First in the page order, so Tab reaches the calendar before the sheet. -->
+      <section class="card d-cal" aria-labelledby="month-title">
+        <div class="d-cal-head">
+          <h2 id="month-title" data-month-title>This month</h2>
+          <button class="d-nav" type="button" data-month-prev>
+            <span class="visually-hidden">Previous month</span>
+            <Icon name="arrow" size={16} />
+          </button>
+          <button class="d-nav" type="button" data-month-next>
+            <span class="visually-hidden">Next month</span>
+            <Icon name="arrow" size={16} />
+          </button>
+        </div>
+        <div class="d-dow" aria-hidden="true">
+          <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span
+            >Su</span
+          >
+        </div>
+        <ol class="d-month" aria-labelledby="month-title" data-month></ol>
+        <dl class="d-cal-stats">
+          <div><dt>Streak</dt><dd data-current>0 days</dd></div>
+          <div><dt>Best</dt><dd data-best>0 days</dd></div>
+          <div><dt>This month</dt><dd data-month-solved>0</dd></div>
+        </dl>
+      </section>
       <div class="d-main">
         <div class="d-task" data-task-slot hidden>
           <LiveExercise placed={shown} heading="Today's exercise" defer daily />
@@ -88,24 +80,6 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
           The exercise did not load. Reload the page, or <a href="/exercises/">pick one from the list</a>.
         </p>
       </div>
-      <section class="card d-how" aria-labelledby="rules-title">
-        <h2 id="rules-title">How it works</h2>
-        <ul class="a-rows">
-          <li>
-            <span class="a-icon"><Icon name="grid" size={18} /></span>
-            <p>A new exercise every day, the same for everyone.</p>
-          </li>
-          <li>
-            <span class="a-icon"><Icon name="check" size={18} /></span>
-            <p>Solve it on the day to keep your streak. Earlier days are practice.</p>
-          </li>
-          <li>
-            <span class="a-icon"><Icon name="user" size={18} /></span>
-            <p data-when="out">Saved in this browser.</p>
-            <p data-when="in" hidden>Saved to your account.</p>
-          </li>
-        </ul>
-      </section>
     </div>
   </div>
 </Base>

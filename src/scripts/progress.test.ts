@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
+  activeDays,
   addDays,
   clearProgress,
+  dropClearedBefore,
   dueDate,
   isDue,
   mergeProgress,
@@ -208,5 +210,40 @@ describe("mergeProgress", () => {
       x: { state: "helped" as const, date: "2026-01-01", last: "2026-02-01", reviews: 3 },
     };
     expect(mergeProgress(a, b)).toEqual(mergeProgress(b, a));
+  });
+});
+
+describe("dropClearedBefore", () => {
+  it("drops entries last touched before the clear and keeps the day of the clear on", () => {
+    const local = {
+      old: { state: "solved" as const, date: "2026-11-01", last: "2026-11-10" },
+      missedLater: { state: "tried" as const, date: "2026-11-01", missed: "2026-11-19" },
+      sameDay: { state: "solved" as const, date: "2026-11-19" },
+      after: { state: "helped" as const, date: "2026-11-20" },
+    };
+    expect(Object.keys(dropClearedBefore(local, "2026-11-19")).sort()).toEqual([
+      "after",
+      "missedLater",
+      "sameDay",
+    ]);
+  });
+});
+
+describe("activeDays", () => {
+  it("counts each exercise once per day it touched, plus the extra days", () => {
+    const days = activeDays(
+      {
+        a: { state: "solved", date: "2026-11-10", last: "2026-11-12", reviews: 1 },
+        b: { state: "tried", date: "2026-11-12", misses: 2, missed: "2026-11-12" },
+        c: { state: "helped", date: "2026-11-11", last: "2026-11-11", missed: "2026-11-10" },
+      },
+      ["2026-11-12", "2026-11-13"],
+    );
+    expect(Object.fromEntries(days)).toEqual({
+      "2026-11-10": 2,
+      "2026-11-11": 1,
+      "2026-11-12": 3,
+      "2026-11-13": 1,
+    });
   });
 });

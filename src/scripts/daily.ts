@@ -2,10 +2,10 @@
 // that day's exercise on the page, and counts the streak. A solve of today's
 // exercise adds today to the streak; an earlier day is practice only. Signed
 // in, the days are merged with the account's and each new one is sent once.
-import { type DailyEntry, isDay, LADDER_START, pickFor, weekDays } from "../lib/daily.ts";
+import { DAILY_START, type DailyEntry, isDay, LADDER_START, pickFor } from "../lib/daily.ts";
 import { readDaily, writeDaily } from "./daily-store.ts";
 import { type DailySync, postDaily, syncDaily } from "./daily-sync.ts";
-import { longDate, renderStreak } from "./daily-view.ts";
+import { longDate, renderMonth, renderStreak } from "./daily-view.ts";
 import { mountExercise } from "./exercise.ts";
 import { localDay } from "./progress.ts";
 import { signedIn } from "./session.ts";
@@ -22,33 +22,24 @@ function start(root: HTMLElement, pool: DailyEntry[]) {
   const past = day !== today;
   const pick = pickFor(day, pool);
   let sync: DailySync = { days: readDaily(), server: new Set(), joined: false };
+  // The calendar opens on the month of the day shown and pages back to the first daily.
+  let month = day.slice(0, 7);
+  const prev = q<HTMLButtonElement>(root, "[data-month-prev]");
+  const next = q<HTMLButtonElement>(root, "[data-month-next]");
+  const shift = (by: number) => {
+    const [y, m] = month.split("-").map(Number) as [number, number];
+    month = new Date(Date.UTC(y, m - 1 + by)).toISOString().slice(0, 7);
+    render();
+  };
+  prev?.addEventListener("click", () => shift(-1));
+  next?.addEventListener("click", () => shift(1));
 
   const render = () => {
     const now = localDay();
-    const solved = (d: string) => sync.days[d] !== undefined;
-    const date = q<HTMLElement>(root, "[data-date]");
-    const state = q<HTMLElement>(root, "[data-state]");
-    if (date) date.textContent = longDate(day);
-    if (state) {
-      state.textContent = past
-        ? `This is the exercise for ${longDate(day)}. Earlier days are practice and do not change your streak.`
-        : now !== today
-          ? "A new day has started. Reload the page for its exercise."
-          : solved(today)
-            ? "Solved today. A new exercise comes tomorrow."
-            : "Not solved yet today.";
-    }
-    const todayBox = q<HTMLElement>(root, "[data-today]");
-    if (todayBox) {
-      todayBox.textContent = solved(now) ? "Solved" : "Not yet";
-      todayBox.classList.toggle("correct", solved(now));
-    }
-    const weekBox = q<HTMLElement>(root, "[data-week-solved]");
-    if (weekBox) {
-      const week = weekDays(new Set(Object.keys(sync.days)), now);
-      weekBox.textContent = `${week.filter((d) => d.solved).length} of ${week.length}`;
-    }
-    renderStreak(root, sync.days, day);
+    renderStreak(root, sync.days);
+    renderMonth(root, sync.days, month, day);
+    if (prev) prev.disabled = month <= DAILY_START.slice(0, 7);
+    if (next) next.disabled = month >= now.slice(0, 7);
   };
 
   render();

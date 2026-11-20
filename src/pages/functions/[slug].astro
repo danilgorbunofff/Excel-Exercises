@@ -1,7 +1,7 @@
 ---
 // Why this exists: a function reference page, the way most visitors arrive
 // from search. An example to edit in the header, then syntax, what the
-// function is for, exercises, walkthroughs, worked examples run through the
+// function is for, exercises, worked examples run through the
 // grader, what goes wrong, tips, questions, alternatives and a live exercise.
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import ExampleGrid from "../../components/ExampleGrid.astro";
@@ -19,14 +19,12 @@ import {
   type Placed,
   placedExercises,
 } from "../../lib/exercises.ts";
-import { loadExplainers, walkthroughPath } from "../../lib/explainers.ts";
 import {
   type FunctionEntry,
   functionPages,
   functionPath,
   loadFunctionIndex,
 } from "../../lib/functions.ts";
-import { walkthroughsFor } from "../../lib/walkthroughs.ts";
 
 export async function getStaticPaths() {
   const pages = await functionPages();
@@ -58,7 +56,6 @@ interface Props {
 const { page, exercise, linked, using } = Astro.props;
 const entry = loadFunctionIndex().functions.find((f) => f.name === page.name);
 const firstExample = page.examples[0];
-const walkthroughs = walkthroughsFor(page.name, loadExplainers().walkthroughs);
 const hasDrills = (await drillTasks()).some((d) => d.fn === page.name);
 const date = (iso: string) =>
   new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-GB", {
@@ -71,7 +68,6 @@ const sections = [
   ["syntax", "Syntax"],
   ["about", `About ${page.name}`],
   ["exercises", `Exercises using ${page.name}`],
-  ...(walkthroughs.length > 0 ? [["steps", `See a ${page.name} formula step by step`]] : []),
   ["examples", "Worked examples"],
   ["problems", "What goes wrong"],
   ["tips", "Tips and notes"],
@@ -124,7 +120,6 @@ const jsonLd = JSON.stringify({
             walkthrough={{ formula: firstExample.formula, rows: firstExample.rows }}
             resultCell={firstExample.cell}
             dataTitle="Try it: change a cell or the formula"
-            compact
           />
         </div>
       )
@@ -198,25 +193,6 @@ const jsonLd = JSON.stringify({
           ))
         }
       </ul>
-
-      {
-        walkthroughs.length > 0 && (
-          <>
-            <h2 id="steps">See a {page.name} formula step by step</h2>
-            <ul class="ex-grid">
-              {walkthroughs.map((w) => (
-                <li>
-                  <a class="card ex" href={walkthroughPath(w.slug)}>
-                    <span class="ex-title">{w.title}</span>
-                    <code class="walk-formula">{w.formula}</code>
-                    <span class="ex-text">{w.description}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </>
-        )
-      }
 
       <h2 id="examples">Worked examples</h2>
       {
@@ -390,10 +366,6 @@ const jsonLd = JSON.stringify({
     max-width: 44rem;
     margin: 0 0 var(--space-3);
     line-height: 1.7;
-  }
-  .walk-formula {
-    font-size: var(--size-s);
-    overflow-wrap: anywhere;
   }
   .tips {
     display: grid;

@@ -10,10 +10,9 @@ import {
   topicPath,
   trackSummaries,
 } from "./exercises.ts";
-import { loadExplainers } from "./explainers.ts";
 import { functionPages, functionPath, loadFunctionIndex } from "./functions.ts";
 import type { SearchItem } from "./search.ts";
-import { pageItems, walkthroughItems } from "./search-pages.ts";
+import { pageItems } from "./search-pages.ts";
 
 export async function searchItems(): Promise<SearchItem[]> {
   const placed = await placedExercises();
@@ -47,12 +46,5 @@ export async function searchItems(): Promise<SearchItem[]> {
     kind: "Article",
     keywords: `${a.data.description} ${a.data.functions.join(" ")}`,
   }));
-  return [
-    ...functions,
-    ...exercises,
-    ...tracks,
-    ...walkthroughItems(loadExplainers().walkthroughs),
-    ...articles,
-    ...pageItems(),
-  ];
+  return [...functions, ...exercises, ...tracks, ...articles, ...pageItems()];
 }

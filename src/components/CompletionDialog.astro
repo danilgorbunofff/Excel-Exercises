@@ -1,123 +1,80 @@
 ---
 // Why this exists: the "Exercise completed" dialog that opens when the last
-// step is solved, as on Spreadsheet Center. It says what was practised and
-// offers the next exercise. Closing it leaves Next in the status bar. It only
-// invites the visitor to sign up once accounts are open.
+// step is solved, as on Spreadsheet Center. It offers the next exercise.
+// Closing it leaves Next in the status bar. It only invites the visitor to
+// sign up once accounts are open.
 import { siteConfig } from "../../site.config.ts";
 import { ACCOUNT_NAV } from "../lib/nav.ts";
 import Icon from "./Icon.astro";
 
 interface Props {
-  practised: string;
   next: { href: string; label: string };
 }
-const { practised, next } = Astro.props;
+const { next } = Astro.props;
 const atEnd = next.label === "All exercises";
 const nextTitle = next.label.replace(/^Next: /u, "");
 ---
 
 <dialog class="done" aria-labelledby="done-title" closedby="any" data-done-dialog>
-  <div class="done-head">
-    <span class="badge" aria-hidden="true"><Icon name="check" size={20} /></span>
-    <h2 id="done-title">Exercise completed</h2>
-    <button class="close" type="button" data-done-close>
-      <span class="visually-hidden">Close</span>
-      <Icon name="close" size={18} />
-    </button>
-  </div>
-  <div class="done-body">
-    <p class="practised">{practised}</p>
-    <div class="up-next">
-      {
-        !atEnd && (
-          <p class="up-next-text">
-            <span class="up-next-label">Up next</span>
-            <span class="up-next-title">{nextTitle}</span>
-          </p>
-        )
-      }
-      <a
-        class="button button-primary next"
-        href={next.href}
-        aria-label={atEnd ? undefined : `Next exercise: ${nextTitle}`}
-        autofocus
-        data-done-next
-      >
-        {atEnd ? "Back to all exercises" : "Next exercise"}
-        <Icon name="arrow" size={18} />
-      </a>
-    </div>
-  </div>
+  <button class="close" type="button" data-done-close>
+    <span class="visually-hidden">Close</span>
+    <Icon name="close" size={18} />
+  </button>
+  <span class="badge" aria-hidden="true"><Icon name="check" size={30} /></span>
+  <h2 id="done-title">Exercise completed</h2>
+  <a
+    class="button button-primary next"
+    href={next.href}
+    aria-label={atEnd ? undefined : `Next exercise: ${nextTitle}`}
+    autofocus
+    data-done-next
+  >
+    {atEnd ? "Back to all exercises" : "Next exercise"}
+    <Icon name="arrow" size={18} />
+  </a>
   <p class="save">
-    <Icon name="user" size={16} />
-    <span>
-      {
-        siteConfig.accountsOpen ? (
-          <>
-            <span data-when="out">
-              <a href={ACCOUNT_NAV.register.href}>Create an account</a> to keep your progress on
-              every device.
-            </span>
-            <span data-when="in" hidden>
-              Your progress is saved to your account. <a href="/progress/">See what is next</a>.
-            </span>
-          </>
-        ) : (
-          <>
-            Your progress is saved in this browser. <a href="/progress/">See what is next</a>.
-          </>
-        )
-      }
-    </span>
+    {
+      siteConfig.accountsOpen ? (
+        <>
+          <span data-when="out">
+            <a href={ACCOUNT_NAV.register.href}>Create an account</a> to keep your progress on every
+            device.
+          </span>
+          <span data-when="in" hidden>
+            Your progress is saved to your account. <a href="/progress/">See what is next</a>.
+          </span>
+        </>
+      ) : (
+        <>
+          Your progress is saved in this browser. <a href="/progress/">See what is next</a>.
+        </>
+      )
+    }
   </p>
 </dialog>
 
 <style>
   .done {
-    width: min(30rem, calc(100vw - 2rem));
-    padding: 0;
+    width: min(24rem, calc(100vw - 2rem));
+    padding: var(--space-7) var(--space-5) var(--space-5);
     border: 0;
-    border-top: 4px solid var(--primary);
-    border-radius: var(--radius-l);
+    border-radius: var(--radius-xl);
     background: var(--surface);
     color: var(--text);
     box-shadow: var(--shadow-pop);
-    overflow: hidden;
+    text-align: center;
   }
   .done::backdrop {
     background: rgb(0 0 0 / 0.45);
   }
-  .done-head {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    padding: var(--space-5) var(--space-3) 0 var(--space-5);
-  }
-  .badge {
-    display: grid;
-    flex: none;
-    place-items: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: var(--radius-pill);
-    background: var(--correct-tint);
-    color: var(--correct);
-  }
-  h2 {
-    flex: 1;
-    margin: 0;
-    font-size: clamp(var(--size-l), 5vw, var(--size-xl));
-    line-height: var(--leading-tight);
-    color: var(--heading);
-  }
   .close {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
     display: grid;
-    flex: none;
     place-items: center;
-    align-self: flex-start;
     width: var(--target);
     height: var(--target);
-    margin-top: calc(var(--space-2) * -1);
     border: 0;
     border-radius: var(--radius-m);
     background: transparent;
@@ -128,62 +85,35 @@ const nextTitle = next.label.replace(/^Next: /u, "");
     background: var(--header);
     color: var(--text);
   }
-  .done-body {
+  .badge {
     display: grid;
-    gap: var(--space-5);
-    padding: var(--space-4) var(--space-5) var(--space-5);
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto var(--space-4);
+    border-radius: var(--radius-pill);
+    background: var(--primary);
+    color: var(--on-primary);
+    box-shadow: 0 0 0 8px var(--correct-tint);
   }
-  .done-body p {
+  h2 {
     margin: 0;
-  }
-  .practised {
-    font-size: var(--size-m);
-    line-height: var(--leading);
-  }
-  .up-next {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-3) var(--space-4);
-    padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
-    border: 1px solid var(--rule);
-    border-radius: var(--radius-m);
-  }
-  .up-next-text {
-    display: grid;
-    /* Takes the spare width beside the button; once the button wraps, it fills its own row. */
-    flex: 999 1 10rem;
-    gap: var(--space-1);
-    min-width: 0;
-  }
-  .up-next-label {
-    font-size: var(--size-xs);
-    font-weight: 600;
-    color: var(--muted);
-  }
-  .up-next-title {
-    font-weight: 600;
+    font-size: var(--size-xl);
     line-height: var(--leading-tight);
+    color: var(--heading);
+  }
+  .done p {
+    margin: 0;
   }
   .next {
-    flex: 1 0 auto;
+    width: 100%;
+    margin-top: var(--space-5);
     justify-content: center;
-    white-space: nowrap;
   }
-  .save {
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-2);
-    margin: 0;
-    padding: var(--space-3) var(--space-5);
-    border-top: 1px solid var(--rule);
-    background: var(--bg);
+  .done .save {
+    margin-top: var(--space-4);
     font-size: var(--size-s);
     color: var(--muted);
-  }
-  .save :global(svg) {
-    flex: none;
-    align-self: center;
   }
   .save a {
     color: var(--correct);

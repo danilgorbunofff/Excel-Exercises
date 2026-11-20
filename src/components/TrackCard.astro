@@ -8,7 +8,7 @@ import TrackIcon from "./TrackIcon.astro";
 
 interface Props {
   track: TrackSummary;
-  /** Show the "N free, M with PRO" fact. */
+  /** Show the "N free" fact. */
   showLocked?: boolean;
   /** Not-started tracks get a quiet outline button, in-progress ones the green one. */
   quietStart?: boolean;
@@ -25,18 +25,17 @@ const locked = showLocked ? t.exercises.filter((p) => isLocked(p)).length : 0;
     <span class={`badge badge-${t.level}`}>{LEVELS[t.level]}</span>
   </div>
   <h3>{t.topic.title}</h3>
-  <p>{t.topic.summary}</p>
   <p class="facts">
-    <span>{t.exercises.length} exercises</span>
-    <span>{formatMinutes(t.minutes)}</span>
+    {t.exercises.length} exercises <span aria-hidden="true">·</span> {formatMinutes(t.minutes)}
     {
       locked > 0 && (
-        <span>
-          {t.exercises.length - locked} free, {locked} with PRO
-        </span>
+        <>
+          <span aria-hidden="true">·</span> {t.exercises.length - locked} free
+        </>
       )
     }
   </p>
+  <p>{t.topic.summary}</p>
   <span class="progress-bar" aria-hidden="true">
     <span data-bar></span>
   </span>
@@ -70,6 +69,11 @@ const locked = showLocked ? t.exercises.filter((p) => isLocked(p)).length : 0;
     font-size: var(--size-xs);
     color: var(--muted);
   }
+  /* Like the "picked" pill on function cards, it only shows once there is something to say. */
+  .status-pill:not([data-state]),
+  .status-pill[data-state="todo"] {
+    display: none;
+  }
   .status-pill[data-state="done"],
   .quiet-start .status-pill[data-state="doing"] {
     border-color: var(--chip-line);
@@ -85,17 +89,6 @@ const locked = showLocked ? t.exercises.filter((p) => isLocked(p)).length : 0;
     margin: 0;
     font-size: var(--size-s);
     color: var(--muted);
-  }
-  .facts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-  }
-  .facts span {
-    padding: 0.125rem 0.5rem;
-    border-radius: var(--radius-s);
-    background: var(--header);
-    font-size: var(--size-xs);
   }
   .track .button {
     margin-top: auto;

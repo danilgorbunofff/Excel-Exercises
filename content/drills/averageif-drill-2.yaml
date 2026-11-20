@@ -1,0 +1,49 @@
+id: averageif-drill-2
+slug: averageif-drill-2
+level: 1
+title: Average of the large sales
+updated: 2026-11-19
+checkedInExcel: 2026-11-19
+function: AVERAGEIF
+screens:
+  - prompt: In B9, use AVERAGEIF to find the average of the sales in B2:B8 that are over 300.
+    rows:
+      - [Region, Sales]
+      - [East, 400]
+      - [West, 250]
+      - [East, 300]
+      - [North, 520]
+      - [East, 190]
+      - [West, 330]
+      - [North, 450]
+      - [Average over 300, null]
+    answerCell: B9
+    expected: 425
+    variants:
+      - set: {B3: 600}
+        expected: 460
+      - set: {B5: 100}
+        expected: 393.333333333
+    answer: =AVERAGEIF(B2:B8,">300")
+    requiredFunctions:
+      - AVERAGEIF
+    hints:
+      nudge: When the test and the average use the same cells, leave out the third argument.
+      rule: AVERAGEIF(B2:B8,">300") averages the sales over 300. 300 itself is not over 300.
+    misses:
+      value: 400, 520, 330 and 450 average 425.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AVERAGEIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AVERAGEIF(B2:B8,">300")
+      - =AVERAGEIF(B2:B8,">300",B2:B8)
+    reject:
+      - formula: =AVERAGEIF(B2:B8,">=300")
+        rule: value
+      - formula: =AVERAGE(B2:B8)
+        rule: required-function
+      - formula: =425
+        rule: required-function
+      - formula: =AVERAGEIF(B2:B8,">300"
+        rule: syntax

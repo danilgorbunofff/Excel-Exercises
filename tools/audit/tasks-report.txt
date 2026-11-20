@@ -55,7 +55,7 @@ ok exercise/count-booked-seats#1  L1  sheets=1  candidates=17 (Excel-right 8)  r
 ok exercise/count-bookings-for-a-room#1  L2  sheets=2  candidates=21 (Excel-right 10)  reference:1 accept:3 reject:4 audit-correct:4 rewrite:2 mutant:7
 ok exercise/count-empty-cells#1  L1  sheets=2  candidates=14 (Excel-right 6)  reference:1 accept:1 reject:5 audit-correct:4 audit-wrong:1 mutant:2
 ok exercise/count-functions-summary#1  L3  sheets=2  candidates=18 (Excel-right 7)  reference:1 accept:5 reject:7 audit-correct:1 mutant:4
-ok exercise/count-functions-summary#2  L3  sheets=2  candidates=24 (Excel-right 8)  reference:1 accept:5 reject:6 audit-correct:2 mutant:10
+ok exercise/count-functions-summary#2  L3  sheets=2  candidates=25 (Excel-right 8)  reference:1 accept:5 reject:7 audit-correct:2 mutant:10
 ok exercise/count-late-shipments#1  L2  sheets=2  candidates=19 (Excel-right 9)  reference:1 accept:3 reject:5 audit-correct:3 audit-wrong:1 rewrite:2 mutant:4
    note: derived numbers misses.value quotes 302,; misses.value quotes 304; misses.value quotes 306
 ok exercise/count-late-shipments#2  L2  sheets=2  candidates=24 (Excel-right 10)  reference:1 accept:3 reject:5 audit-correct:3 audit-wrong:1 rewrite:2 mutant:9
@@ -427,5 +427,608 @@ ok mock/vat-on-a-net-price#1  L1  sheets=2  candidates=18 (Excel-right 7)  refer
 ok mock/weighted-unit-cost#1  L3  sheets=3  candidates=32 (Excel-right 9)  reference:1 accept:2 reject:4 audit-correct:5 audit-wrong:19 mutant:1
    note: derived numbers misses.value quotes 24825; misses.value quotes 7400
 ok mock/year-to-date-sales#1  L3  sheets=4  candidates=25 (Excel-right 8)  reference:1 accept:3 reject:4 audit-correct:4 audit-wrong:1 mutant:12
+!! drill/abs-drill-1#1  L1  sheets=3  candidates=13 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:5
+   - shape: variant 1 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/abs-drill-2#1  L1  sheets=3  candidates=17 (Excel-right 5)  reference:1 accept:1 reject:4 audit-correct:3 mutant:8
+   - shape: variant 1 does not change the expected result
+ok drill/abs-drill-3#1  L1  sheets=4  candidates=21 (Excel-right 5)  reference:1 accept:1 reject:3 audit-correct:3 mutant:13
+   note: derived numbers misses.value quotes 0.4
+!! drill/abs-drill-4#1  L2  sheets=3  candidates=14 (Excel-right 6)  reference:1 reject:4 audit-correct:4 mutant:5
+   - shape: variant 1 does not change the expected result
+   note: derived numbers misses.value quotes 15
+!! drill/abs-drill-5#1  L2  sheets=4  candidates=22 (Excel-right 6)  reference:1 accept:1 reject:4 audit-correct:3 rewrite:1 mutant:12
+   - shape: variant 1 does not change the expected result
+   note: derived numbers misses.value quotes 120
+ok drill/aggregate-drill-1#1  L1  sheets=2  candidates=18 (Excel-right 7)  reference:1 reject:4 audit-correct:4 mutant:9
+   note: derived numbers hints.rule quotes 9,6
+ok drill/aggregate-drill-2#1  L1  sheets=3  candidates=18 (Excel-right 7)  reference:1 reject:4 audit-correct:4 audit-wrong:1 mutant:8
+   note: derived numbers hints.rule quotes 4,6
+ok drill/aggregate-drill-3#1  L1  sheets=2  candidates=19 (Excel-right 7)  reference:1 reject:4 audit-correct:4 mutant:10
+   note: derived numbers hints.rule quotes 1,6
+ok drill/aggregate-drill-4#1  L2  sheets=3  candidates=20 (Excel-right 7)  reference:1 reject:4 audit-correct:4 audit-wrong:2 mutant:9
+   note: derived numbers hints.rule quotes 14,6
+ok drill/aggregate-drill-5#1  L2  sheets=4  candidates=31 (Excel-right 9)  reference:1 reject:4 audit-correct:4 audit-wrong:3 mutant:19
+   note: derived numbers hints.nudge quotes 14; hints.nudge quotes 15; hints.rule quotes 14,6; hints.rule quotes 15,6
+ok drill/and-drill-1#1  L1  sheets=5  candidates=21 (Excel-right 5)  reference:1 accept:1 reject:4 audit-correct:3 audit-wrong:1 mutant:11
+!! drill/and-drill-2#1  L1  sheets=3  candidates=20 (Excel-right 5)  reference:1 reject:4 audit-correct:3 rewrite:1 mutant:11
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/and-drill-3#1  L1  sheets=6  candidates=28 (Excel-right 5)  reference:1 accept:1 reject:3 audit-correct:3 audit-wrong:6 mutant:14
+!! drill/and-drill-4#1  L2  sheets=6  candidates=27 (Excel-right 4)  reference:1 reject:3 audit-correct:3 audit-wrong:5 mutant:15
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/and-drill-5#1  L2  sheets=6  candidates=24 (Excel-right 5)  reference:1 reject:4 audit-correct:3 audit-wrong:9 rewrite:1 mutant:6
+   - shape: variant 2 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/average-drill-1#1  L1  sheets=2  candidates=17 (Excel-right 5)  reference:1 accept:1 reject:5 audit-correct:3 mutant:7
+ok drill/average-drill-2#1  L1  sheets=2  candidates=13 (Excel-right 5)  reference:1 reject:3 audit-correct:4 mutant:5
+ok drill/average-drill-3#1  L1  sheets=2  candidates=19 (Excel-right 6)  reference:1 reject:4 audit-correct:4 mutant:10
+ok drill/average-drill-4#1  L2  sheets=2  candidates=17 (Excel-right 6)  reference:1 reject:4 audit-correct:4 mutant:8
+ok drill/average-drill-5#1  L2  sheets=2  candidates=19 (Excel-right 5)  reference:1 reject:4 audit-correct:4 mutant:10
+!! drill/averageif-drill-1#1  L1  sheets=3  candidates=20 (Excel-right 10)  reference:1 reject:4 restyle:3 rewrite:3 mutant:9
+   - survivor: =AVERAGEIF(A2:A7,"East",B2:B8)  [mutant (range A2:A8 one row short at the end)] grader=correct
+   - survivor: =AVERAGEIF(A2:A9,"East",B2:B8)  [mutant (range A2:A8 one row long)] grader=correct
+   - survivor: =AVERAGEIF(A2:A8,"East",B2:B7)  [mutant (range B2:B8 one row short at the end)] grader=correct
+ok drill/averageif-drill-2#1  L1  sheets=3  candidates=17 (Excel-right 8)  reference:1 accept:1 reject:4 restyle:3 rewrite:3 mutant:5
+ok drill/averageif-drill-3#1  L2  sheets=3  candidates=22 (Excel-right 7)  reference:1 reject:4 restyle:3 rewrite:3 mutant:11
+!! drill/averageif-drill-4#1  L2  sheets=3  candidates=21 (Excel-right 7)  reference:1 reject:4 restyle:3 rewrite:3 mutant:10
+   - wrong-passes: =AVERAGEIF(A2:A9,"<>East",B2:B8)  [mutant (range A2:A8 one row long)] grader=correct
+!! drill/averageif-drill-5#1  L2  sheets=3  candidates=24 (Excel-right 10)  reference:1 reject:4 restyle:3 rewrite:3 mutant:13
+   - survivor: =ROUND(AVERAGEIF(A2:A7,"East",B2:B8),1)  [mutant (range A2:A8 one row short at the end)] grader=correct
+   - survivor: =ROUND(AVERAGEIF(A2:A9,"East",B2:B8),1)  [mutant (range A2:A8 one row long)] grader=correct
+   - survivor: =ROUND(AVERAGEIF(A2:A8,"East",B2:B7),1)  [mutant (range B2:B8 one row short at the end)] grader=correct
+   note: derived numbers misses.value quotes 301.67
+ok drill/averageifs-drill-1#1  L1  sheets=3  candidates=19 (Excel-right 6)  reference:1 reject:4 audit-correct:4 rewrite:1 mutant:9
+ok drill/averageifs-drill-2#1  L1  sheets=3  candidates=26 (Excel-right 6)  reference:1 reject:3 audit-correct:4 rewrite:1 mutant:17
+ok drill/averageifs-drill-3#1  L2  sheets=3  candidates=20 (Excel-right 6)  reference:1 reject:3 audit-correct:4 rewrite:1 mutant:11
+ok drill/averageifs-drill-4#1  L2  sheets=3  candidates=21 (Excel-right 6)  reference:1 reject:4 audit-correct:4 rewrite:1 mutant:11
+ok drill/averageifs-drill-5#1  L2  sheets=3  candidates=23 (Excel-right 6)  reference:1 reject:4 audit-correct:4 rewrite:1 mutant:13
+   note: derived numbers misses.value quotes 301.67
+ok drill/choosecols-drill-1#1  L1  sheets=2  candidates=12 (Excel-right 5)  reference:1 reject:2 restyle:3 rewrite:1 mutant:5
+ok drill/choosecols-drill-2#1  L1  sheets=2  candidates=15 (Excel-right 5)  reference:1 reject:3 restyle:3 rewrite:1 mutant:7
+   note: derived numbers hints.rule quotes 1,3
+ok drill/choosecols-drill-3#1  L2  sheets=3  candidates=14 (Excel-right 5)  reference:1 reject:2 restyle:3 rewrite:1 mutant:7
+ok drill/choosecols-drill-4#1  L2  sheets=2  candidates=14 (Excel-right 6)  reference:1 accept:1 reject:3 restyle:3 rewrite:1 mutant:5
+ok drill/choosecols-drill-5#1  L2  sheets=2  candidates=20 (Excel-right 5)  reference:1 reject:3 restyle:3 rewrite:1 mutant:12
+   note: derived numbers hints.rule quotes 3,1
+!! drill/concat-drill-1#1  L1  sheets=2  candidates=15 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:7
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/concat-drill-2#1  L1  sheets=2  candidates=15 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:7
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/concat-drill-3#1  L1  sheets=2  candidates=12 (Excel-right 6)  reference:1 accept:1 reject:4 audit-correct:4 mutant:2
+!! drill/concat-drill-4#1  L2  sheets=3  candidates=15 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:7
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/concat-drill-5#1  L2  sheets=2  candidates=19 (Excel-right 5)  reference:1 accept:1 reject:4 audit-correct:3 mutant:10
+ok drill/count-drill-1#1  L1  sheets=2  candidates=14 (Excel-right 5)  reference:1 accept:1 reject:4 audit-correct:3 mutant:5
+ok drill/count-drill-2#1  L1  sheets=2  candidates=11 (Excel-right 5)  reference:1 reject:3 audit-correct:4 mutant:3
+ok drill/count-drill-3#1  L1  sheets=2  candidates=15 (Excel-right 6)  reference:1 reject:3 audit-correct:4 mutant:7
+ok drill/count-drill-4#1  L2  sheets=2  candidates=13 (Excel-right 5)  reference:1 reject:3 audit-correct:4 mutant:5
+ok drill/count-drill-5#1  L2  sheets=2  candidates=18 (Excel-right 7)  reference:1 reject:4 audit-correct:4 mutant:9
+   note: derived numbers misses.value quotes 0.67
+ok drill/counta-drill-1#1  L1  sheets=2  candidates=14 (Excel-right 5)  reference:1 reject:4 audit-correct:4 mutant:5
+ok drill/counta-drill-2#1  L1  sheets=2  candidates=11 (Excel-right 5)  reference:1 reject:3 audit-correct:4 mutant:3
+ok drill/counta-drill-3#1  L1  sheets=2  candidates=14 (Excel-right 6)  reference:1 reject:3 audit-correct:4 mutant:6
+ok drill/counta-drill-4#1  L2  sheets=3  candidates=15 (Excel-right 5)  reference:1 reject:4 audit-correct:4 audit-wrong:1 mutant:5
+ok drill/counta-drill-5#1  L2  sheets=2  candidates=19 (Excel-right 5)  reference:1 reject:4 audit-correct:4 mutant:10
+ok drill/countblank-drill-1#1  L1  sheets=4  candidates=14 (Excel-right 5)  reference:1 reject:4 audit-correct:4 audit-wrong:2 mutant:3
+ok drill/countblank-drill-2#1  L1  sheets=3  candidates=10 (Excel-right 5)  reference:1 reject:3 audit-correct:4 audit-wrong:1 mutant:1
+ok drill/countblank-drill-3#1  L1  sheets=2  candidates=13 (Excel-right 5)  reference:1 reject:3 audit-correct:4 mutant:5
+ok drill/countblank-drill-4#1  L2  sheets=3  candidates=13 (Excel-right 5)  reference:1 reject:3 audit-correct:4 audit-wrong:1 mutant:4
+ok drill/countblank-drill-5#1  L2  sheets=4  candidates=18 (Excel-right 5)  reference:1 reject:4 audit-correct:4 audit-wrong:2 mutant:7
+   note: derived numbers misses.value quotes 0.43
+ok drill/countif-drill-1#1  L1  sheets=2  candidates=18 (Excel-right 9)  reference:1 accept:2 reject:4 audit-correct:4 rewrite:2 mutant:5
+ok drill/countif-drill-2#1  L1  sheets=3  candidates=15 (Excel-right 7)  reference:1 reject:3 audit-correct:4 audit-wrong:1 rewrite:2 mutant:4
+ok drill/countif-drill-3#1  L1  sheets=3  candidates=18 (Excel-right 7)  reference:1 accept:1 reject:3 audit-correct:3 audit-wrong:2 rewrite:2 mutant:6
+ok drill/countif-drill-4#1  L2  sheets=3  candidates=18 (Excel-right 6)  reference:1 reject:4 audit-correct:4 audit-wrong:2 rewrite:1 mutant:6
+ok drill/countif-drill-5#1  L2  sheets=3  candidates=23 (Excel-right 6)  reference:1 reject:4 audit-correct:4 audit-wrong:3 rewrite:1 mutant:10
+   note: derived numbers misses.value quotes 350,
+ok drill/countifs-drill-1#1  L1  sheets=2  candidates=22 (Excel-right 7)  reference:1 accept:1 reject:4 audit-correct:4 rewrite:1 mutant:11
+ok drill/countifs-drill-2#1  L1  sheets=2  candidates=22 (Excel-right 6)  reference:1 reject:3 audit-correct:4 rewrite:1 mutant:13
+!! drill/countifs-drill-3#1  L2  sheets=3  candidates=25 (Excel-right 6)  reference:1 reject:4 audit-correct:4 rewrite:1 mutant:15
+   - shape: variant 2 does not change the expected result
+ok drill/countifs-drill-4#1  L2  sheets=2  candidates=20 (Excel-right 6)  reference:1 reject:3 audit-correct:4 rewrite:1 mutant:11
+ok drill/countifs-drill-5#1  L2  sheets=3  candidates=28 (Excel-right 9)  reference:1 reject:4 audit-correct:4 audit-wrong:1 rewrite:3 mutant:15
+!! drill/date-drill-1#1  L1  sheets=3  candidates=19 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:11
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/date-drill-2#1  L1  sheets=3  candidates=16 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:8
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/date-drill-3#1  L2  sheets=4  candidates=19 (Excel-right 5)  reference:1 accept:1 reject:4 audit-correct:3 mutant:10
+ok drill/date-drill-4#1  L2  sheets=3  candidates=19 (Excel-right 5)  reference:1 accept:1 reject:3 audit-correct:3 mutant:11
+   note: derived numbers misses.value quotes 2027,; hints.rule quotes 2026,14,10; hints.rule quotes 2027
+ok drill/date-drill-5#1  L2  sheets=3  candidates=24 (Excel-right 5)  reference:1 accept:1 reject:4 audit-correct:3 mutant:15
+!! drill/datedif-drill-1#1  L1  sheets=3  candidates=17 (Excel-right 5)  reference:1 accept:1 reject:4 audit-correct:3 mutant:8
+   - shape: variant 2 does not change the expected result
+   note: derived numbers misses.value quotes 24; misses.value quotes 2026,
+!! drill/datedif-drill-2#1  L1  sheets=3  candidates=15 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:8
+   - shape: variant 2 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 15; misses.value quotes 2024; misses.value quotes 17; misses.value quotes 2026
+!! drill/datedif-drill-3#1  L1  sheets=2  candidates=16 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:8
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 20
+!! drill/datedif-drill-4#1  L2  sheets=3  candidates=16 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:8
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 24; misses.value quotes 17
+!! drill/datedif-drill-5#1  L2  sheets=2  candidates=24 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:16
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/day-drill-1#1  L1  sheets=3  candidates=10 (Excel-right 4)  reference:1 reject:3 restyle:3 mutant:3
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 2026
+!! drill/day-drill-2#1  L1  sheets=2  candidates=10 (Excel-right 4)  reference:1 reject:4 restyle:3 mutant:2
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 2026
+!! drill/day-drill-3#1  L2  sheets=3  candidates=15 (Excel-right 4)  reference:1 reject:4 restyle:3 mutant:7
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/day-drill-4#1  L2  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:3 restyle:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 2026
+!! drill/day-drill-5#1  L2  sheets=3  candidates=15 (Excel-right 6)  reference:1 accept:1 reject:3 restyle:3 rewrite:1 mutant:6
+   - shape: variant 2 does not change the expected result
+   note: derived numbers misses.value quotes 22
+!! drill/days-drill-1#1  L1  sheets=3  candidates=16 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:8
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 20
+!! drill/days-drill-2#1  L1  sheets=2  candidates=14 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:7
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 17; misses.value quotes 25
+!! drill/days-drill-3#1  L1  sheets=2  candidates=15 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:8
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/days-drill-4#1  L2  sheets=2  candidates=14 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:7
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 27; misses.value quotes 2028; misses.value quotes 29; hints.nudge quotes 2028; hints.nudge quotes 29
+!! drill/days-drill-5#1  L2  sheets=3  candidates=21 (Excel-right 4)  reference:1 reject:5 audit-correct:3 mutant:12
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 55
+!! drill/eomonth-drill-1#1  L1  sheets=3  candidates=12 (Excel-right 4)  reference:1 reject:3 restyle:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 30; misses.value quotes 2026
+!! drill/eomonth-drill-2#1  L1  sheets=3  candidates=13 (Excel-right 4)  reference:1 reject:4 restyle:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 28; misses.value quotes 2026
+!! drill/eomonth-drill-3#1  L2  sheets=3  candidates=17 (Excel-right 4)  reference:1 reject:4 restyle:3 mutant:9
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 2026; misses.value quotes 30; misses.value quotes 2026,
+!! drill/eomonth-drill-4#1  L2  sheets=3  candidates=15 (Excel-right 4)  reference:1 reject:4 restyle:3 mutant:7
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 2028
+!! drill/eomonth-drill-5#1  L2  sheets=3  candidates=13 (Excel-right 4)  reference:1 reject:4 restyle:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 2028; hints.rule quotes 31
+ok drill/filter-drill-1#1  L1  sheets=2  candidates=18 (Excel-right 5)  reference:1 reject:3 audit-correct:4 mutant:10
+ok drill/filter-drill-2#1  L1  sheets=3  candidates=19 (Excel-right 5)  reference:1 reject:3 audit-correct:4 mutant:11
+ok drill/filter-drill-3#1  L1  sheets=3  candidates=20 (Excel-right 5)  reference:1 reject:2 audit-correct:4 mutant:13
+ok drill/filter-drill-4#1  L2  sheets=2  candidates=18 (Excel-right 5)  reference:1 reject:3 audit-correct:4 mutant:10
+ok drill/filter-drill-5#1  L2  sheets=5  candidates=27 (Excel-right 5)  reference:1 reject:3 audit-correct:4 audit-wrong:3 mutant:16
+!! drill/find-drill-1#1  L1  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:3
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 204
+!! drill/find-drill-2#1  L1  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:3
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/find-drill-3#1  L1  sheets=3  candidates=16 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:8
+   - shape: variant 2 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/find-drill-4#1  L2  sheets=3  candidates=16 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:8
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/find-drill-5#1  L2  sheets=2  candidates=12 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/floor-drill-1#1  L1  sheets=3  candidates=16 (Excel-right 4)  reference:1 reject:5 audit-correct:3 mutant:7
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/floor-drill-2#1  L1  sheets=3  candidates=13 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:5
+   - shape: variant 1 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/floor-drill-3#1  L1  sheets=3  candidates=17 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:9
+   - shape: variant 2 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/floor-drill-4#1  L2  sheets=3  candidates=14 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:6
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/floor-drill-5#1  L2  sheets=3  candidates=18 (Excel-right 7)  reference:1 reject:4 audit-correct:4 rewrite:1 mutant:8
+   - shape: variant 2 does not change the expected result
+   note: derived numbers misses.value quotes 108
+ok drill/hlookup-drill-1#1  L1  sheets=3  candidates=23 (Excel-right 8)  reference:1 accept:2 reject:4 audit-correct:4 mutant:12
+ok drill/hlookup-drill-2#1  L1  sheets=4  candidates=21 (Excel-right 7)  reference:1 accept:1 reject:3 audit-correct:4 audit-wrong:1 mutant:11
+!! drill/hlookup-drill-3#1  L2  sheets=5  candidates=21 (Excel-right 7)  reference:1 accept:1 reject:3 audit-correct:4 mutant:12
+   - shape: variant 1 does not change the expected result
+ok drill/hlookup-drill-4#1  L2  sheets=4  candidates=22 (Excel-right 7)  reference:1 accept:1 reject:4 audit-correct:4 audit-wrong:1 mutant:11
+ok drill/hlookup-drill-5#1  L2  sheets=4  candidates=28 (Excel-right 7)  reference:1 reject:4 audit-correct:4 audit-wrong:1 mutant:18
+ok drill/if-drill-1#1  L1  sheets=4  candidates=16 (Excel-right 6)  reference:1 accept:1 reject:4 audit-correct:3 audit-wrong:1 rewrite:1 mutant:5
+ok drill/if-drill-2#1  L1  sheets=5  candidates=23 (Excel-right 7)  reference:1 accept:2 reject:4 audit-correct:3 audit-wrong:3 rewrite:1 mutant:9
+ok drill/if-drill-3#1  L1  sheets=4  candidates=19 (Excel-right 6)  reference:1 accept:1 reject:4 audit-correct:3 audit-wrong:1 rewrite:1 mutant:8
+ok drill/if-drill-4#1  L2  sheets=2  candidates=15 (Excel-right 7)  reference:1 accept:2 reject:3 audit-correct:3 rewrite:1 mutant:5
+!! drill/if-drill-5#1  L2  sheets=7  candidates=25 (Excel-right 7)  reference:1 accept:1 reject:4 audit-correct:5 audit-wrong:4 mutant:10
+   - shape: variant 3 does not change the expected result
+!! drill/iferror-drill-1#1  L1  sheets=3  candidates=18 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:10
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/iferror-drill-2#1  L1  sheets=4  candidates=23 (Excel-right 9)  reference:1 accept:1 reject:4 audit-correct:4 audit-wrong:1 rewrite:3 mutant:9
+!! drill/iferror-drill-3#1  L1  sheets=2  candidates=17 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:9
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/iferror-drill-4#1  L2  sheets=4  candidates=18 (Excel-right 6)  reference:1 reject:4 audit-correct:4 audit-wrong:1 rewrite:1 mutant:7
+ok drill/iferror-drill-5#1  L2  sheets=3  candidates=28 (Excel-right 7)  reference:1 reject:4 audit-correct:4 rewrite:2 mutant:17
+ok drill/ifna-drill-1#1  L1  sheets=4  candidates=23 (Excel-right 8)  reference:1 accept:1 reject:4 audit-correct:4 audit-wrong:2 rewrite:2 mutant:9
+ok drill/ifna-drill-2#1  L1  sheets=3  candidates=17 (Excel-right 5)  reference:1 reject:4 audit-correct:4 mutant:8
+ok drill/ifna-drill-3#1  L1  sheets=3  candidates=21 (Excel-right 7)  reference:1 reject:4 audit-correct:6 mutant:10
+ok drill/ifna-drill-4#1  L2  sheets=4  candidates=21 (Excel-right 6)  reference:1 reject:4 audit-correct:4 audit-wrong:2 rewrite:1 mutant:9
+ok drill/ifna-drill-5#1  L2  sheets=4  candidates=30 (Excel-right 9)  reference:1 accept:2 reject:4 audit-correct:4 audit-wrong:1 rewrite:2 mutant:16
+!! drill/ifs-drill-1#1  L1  sheets=7  candidates=24 (Excel-right 5)  reference:1 accept:1 reject:4 audit-correct:3 audit-wrong:4 mutant:11
+   - shape: variant 3 does not change the expected result
+ok drill/ifs-drill-2#1  L1  sheets=7  candidates=30 (Excel-right 5)  reference:1 accept:1 reject:4 audit-correct:3 audit-wrong:3 mutant:18
+   note: derived numbers hints.rule quotes 1,4; hints.rule quotes 5,7
+!! drill/ifs-drill-3#1  L2  sheets=5  candidates=28 (Excel-right 4)  reference:1 reject:4 audit-correct:3 audit-wrong:2 mutant:18
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/ifs-drill-4#1  L2  sheets=10  candidates=29 (Excel-right 4)  reference:1 reject:3 audit-correct:3 audit-wrong:9 mutant:13
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/ifs-drill-5#1  L2  sheets=6  candidates=31 (Excel-right 4)  reference:1 reject:4 audit-correct:3 audit-wrong:9 mutant:14
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/index-drill-1#1  L1  sheets=2  candidates=16 (Excel-right 7)  reference:1 accept:1 reject:4 audit-correct:4 mutant:6
+ok drill/index-drill-2#1  L1  sheets=3  candidates=17 (Excel-right 5)  reference:1 reject:4 audit-correct:4 mutant:8
+ok drill/index-drill-3#1  L1  sheets=4  candidates=22 (Excel-right 5)  reference:1 reject:4 audit-correct:4 audit-wrong:1 mutant:12
+ok drill/index-drill-4#1  L2  sheets=4  candidates=19 (Excel-right 5)  reference:1 reject:4 audit-correct:4 audit-wrong:2 mutant:8
+ok drill/index-drill-5#1  L2  sheets=4  candidates=21 (Excel-right 5)  reference:1 reject:4 audit-correct:4 audit-wrong:2 mutant:10
+!! drill/isblank-drill-1#1  L1  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/isblank-drill-2#1  L1  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:2 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/isblank-drill-3#1  L2  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:2 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/isblank-drill-4#1  L2  sheets=3  candidates=15 (Excel-right 6)  reference:1 accept:1 reject:4 audit-correct:4 mutant:5
+!! drill/isblank-drill-5#1  L2  sheets=2  candidates=13 (Excel-right 5)  reference:1 reject:4 audit-correct:3 rewrite:1 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/iserror-drill-1#1  L1  sheets=3  candidates=16 (Excel-right 4)  reference:1 reject:3 audit-correct:3 audit-wrong:2 mutant:7
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/iserror-drill-2#1  L1  sheets=4  candidates=16 (Excel-right 5)  reference:1 reject:3 audit-correct:4 audit-wrong:2 mutant:6
+!! drill/iserror-drill-3#1  L1  sheets=2  candidates=12 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 204
+!! drill/iserror-drill-4#1  L2  sheets=3  candidates=15 (Excel-right 4)  reference:1 reject:2 audit-correct:3 audit-wrong:2 mutant:7
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/iserror-drill-5#1  L2  sheets=3  candidates=25 (Excel-right 5)  reference:1 reject:4 audit-correct:3 audit-wrong:2 rewrite:1 mutant:14
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/isna-drill-1#1  L1  sheets=3  candidates=16 (Excel-right 5)  reference:1 reject:3 audit-correct:4 audit-wrong:1 mutant:7
+ok drill/isna-drill-2#1  L1  sheets=4  candidates=22 (Excel-right 9)  reference:1 accept:2 reject:2 audit-correct:4 audit-wrong:2 rewrite:2 mutant:9
+!! drill/isna-drill-3#1  L2  sheets=2  candidates=15 (Excel-right 11)  reference:1 reject:2 audit-correct:3 mutant:9
+   - shape: variant 1 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/isna-drill-4#1  L2  sheets=2  candidates=21 (Excel-right 9)  reference:1 accept:1 reject:2 audit-correct:4 rewrite:2 mutant:11
+ok drill/isna-drill-5#1  L2  sheets=3  candidates=18 (Excel-right 6)  reference:1 reject:4 audit-correct:4 audit-wrong:1 rewrite:1 mutant:7
+!! drill/isnumber-drill-1#1  L1  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/isnumber-drill-2#1  L1  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:2 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/isnumber-drill-3#1  L1  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 0.7
+ok drill/isnumber-drill-4#1  L2  sheets=3  candidates=15 (Excel-right 7)  reference:1 accept:1 reject:4 audit-correct:4 mutant:5
+!! drill/isnumber-drill-5#1  L2  sheets=2  candidates=19 (Excel-right 5)  reference:1 reject:4 audit-correct:3 rewrite:1 mutant:10
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/large-drill-1#1  L1  sheets=4  candidates=17 (Excel-right 6)  reference:1 reject:4 audit-correct:4 audit-wrong:1 mutant:7
+ok drill/large-drill-2#1  L1  sheets=3  candidates=18 (Excel-right 5)  reference:1 reject:4 audit-correct:4 mutant:9
+!! drill/large-drill-3#1  L1  sheets=4  candidates=17 (Excel-right 6)  reference:1 reject:3 audit-correct:4 audit-wrong:1 mutant:8
+   - shape: variant 2 does not change the expected result
+ok drill/large-drill-4#1  L2  sheets=5  candidates=33 (Excel-right 8)  reference:1 reject:4 audit-correct:4 audit-wrong:4 mutant:20
+ok drill/large-drill-5#1  L2  sheets=4  candidates=28 (Excel-right 9)  reference:1 reject:4 audit-correct:4 audit-wrong:1 rewrite:1 mutant:17
+!! drill/left-drill-1#1  L1  sheets=2  candidates=12 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 20481
+ok drill/left-drill-2#1  L1  sheets=2  candidates=12 (Excel-right 5)  reference:1 accept:1 reject:3 audit-correct:3 mutant:4
+!! drill/left-drill-3#1  L1  sheets=3  candidates=16 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:8
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/left-drill-4#1  L2  sheets=2  candidates=13 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/left-drill-5#1  L2  sheets=3  candidates=18 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:10
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/len-drill-1#1  L1  sheets=2  candidates=10 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:3
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/len-drill-2#1  L1  sheets=2  candidates=10 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:3
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/len-drill-3#1  L1  sheets=2  candidates=10 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:3
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/len-drill-4#1  L2  sheets=3  candidates=14 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:7
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/len-drill-5#1  L2  sheets=3  candidates=14 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:6
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/let-drill-1#1  L1  sheets=2  candidates=17 (Excel-right 8)  reference:1 accept:1 reject:4 audit-correct:5 mutant:6
+   note: derived numbers misses.value quotes 530,
+!! drill/let-drill-2#1  L1  sheets=3  candidates=20 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:12
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/let-drill-3#1  L2  sheets=4  candidates=23 (Excel-right 8)  reference:1 reject:4 audit-correct:4 audit-wrong:2 rewrite:1 mutant:11
+   note: derived numbers misses.value quotes 139.2
+ok drill/let-drill-4#1  L2  sheets=3  candidates=16 (Excel-right 6)  reference:1 reject:4 audit-correct:4 audit-wrong:2 mutant:5
+ok drill/let-drill-5#1  L2  sheets=2  candidates=20 (Excel-right 5)  reference:1 reject:4 audit-correct:4 mutant:11
+!! drill/lower-drill-1#1  L1  sheets=2  candidates=12 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 204
+!! drill/lower-drill-2#1  L1  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/lower-drill-3#1  L1  sheets=2  candidates=18 (Excel-right 6)  reference:1 accept:2 reject:4 audit-correct:3 mutant:8
+!! drill/lower-drill-4#1  L2  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/lower-drill-5#1  L2  sheets=2  candidates=20 (Excel-right 6)  reference:1 accept:2 reject:4 audit-correct:3 mutant:10
+ok drill/match-drill-1#1  L1  sheets=3  candidates=16 (Excel-right 5)  reference:1 reject:4 audit-correct:4 mutant:7
+ok drill/match-drill-2#1  L1  sheets=3  candidates=14 (Excel-right 6)  reference:1 accept:1 reject:3 audit-correct:4 audit-wrong:1 mutant:4
+!! drill/match-drill-3#1  L2  sheets=5  candidates=18 (Excel-right 7)  reference:1 accept:1 reject:4 audit-correct:4 mutant:8
+   - shape: variant 1 does not change the expected result
+ok drill/match-drill-4#1  L2  sheets=3  candidates=13 (Excel-right 6)  reference:1 reject:4 audit-correct:4 mutant:4
+ok drill/match-drill-5#1  L2  sheets=3  candidates=19 (Excel-right 5)  reference:1 reject:5 audit-correct:4 mutant:9
+ok drill/max-drill-1#1  L1  sheets=4  candidates=15 (Excel-right 5)  reference:1 reject:4 audit-correct:4 audit-wrong:2 mutant:4
+ok drill/max-drill-2#1  L1  sheets=2  candidates=12 (Excel-right 5)  reference:1 reject:3 audit-correct:4 mutant:4
+ok drill/max-drill-3#1  L1  sheets=3  candidates=15 (Excel-right 6)  reference:1 reject:3 audit-correct:4 audit-wrong:2 mutant:5
+ok drill/max-drill-4#1  L2  sheets=4  candidates=14 (Excel-right 6)  reference:1 reject:3 audit-correct:4 audit-wrong:2 mutant:4
+ok drill/max-drill-5#1  L2  sheets=4  candidates=21 (Excel-right 7)  reference:1 reject:4 audit-correct:4 audit-wrong:4 mutant:8
+!! drill/median-drill-1#1  L1  sheets=3  candidates=14 (Excel-right 6)  reference:1 reject:4 audit-correct:4 mutant:5
+   - shape: variant 1 does not change the expected result
+!! drill/median-drill-2#1  L1  sheets=3  candidates=13 (Excel-right 6)  reference:1 reject:4 audit-correct:4 mutant:4
+   - shape: variant 1 does not change the expected result
+ok drill/median-drill-3#1  L1  sheets=3  candidates=15 (Excel-right 6)  reference:1 reject:3 audit-correct:4 mutant:7
+ok drill/median-drill-4#1  L2  sheets=3  candidates=13 (Excel-right 6)  reference:1 reject:3 audit-correct:4 mutant:5
+ok drill/median-drill-5#1  L2  sheets=3  candidates=22 (Excel-right 7)  reference:1 reject:4 audit-correct:4 mutant:13
+   note: derived numbers misses.value quotes 76000; misses.value quotes 42000,
+!! drill/mid-drill-1#1  L1  sheets=2  candidates=14 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:6
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 81; hints.rule quotes 5,3
+!! drill/mid-drill-2#1  L1  sheets=3  candidates=19 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:11
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/mid-drill-3#1  L1  sheets=2  candidates=14 (Excel-right 6)  reference:1 reject:4 audit-correct:3 mutant:6
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/mid-drill-4#1  L2  sheets=3  candidates=16 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:8
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/mid-drill-5#1  L2  sheets=3  candidates=19 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:11
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 81
+ok drill/min-drill-1#1  L1  sheets=4  candidates=15 (Excel-right 5)  reference:1 reject:4 audit-correct:4 audit-wrong:2 mutant:4
+ok drill/min-drill-2#1  L1  sheets=2  candidates=12 (Excel-right 5)  reference:1 reject:3 audit-correct:4 mutant:4
+ok drill/min-drill-3#1  L1  sheets=3  candidates=15 (Excel-right 6)  reference:1 reject:3 audit-correct:4 audit-wrong:2 mutant:5
+ok drill/min-drill-4#1  L2  sheets=3  candidates=14 (Excel-right 7)  reference:1 reject:3 audit-correct:4 audit-wrong:1 mutant:5
+ok drill/min-drill-5#1  L2  sheets=4  candidates=22 (Excel-right 8)  reference:1 reject:4 audit-correct:4 audit-wrong:2 rewrite:1 mutant:10
+   note: derived numbers misses.value quotes 2000
+ok drill/mode-drill-1#1  L1  sheets=4  candidates=17 (Excel-right 6)  reference:1 reject:4 audit-correct:4 audit-wrong:1 mutant:7
+ok drill/mode-drill-2#1  L1  sheets=3  candidates=13 (Excel-right 5)  reference:1 reject:3 audit-correct:4 audit-wrong:1 mutant:4
+!! drill/mode-drill-3#1  L2  sheets=4  candidates=15 (Excel-right 6)  reference:1 reject:3 audit-correct:4 audit-wrong:1 mutant:6
+   - shape: variant 2 does not change the expected result
+!! drill/mode-drill-4#1  L2  sheets=3  candidates=16 (Excel-right 6)  reference:1 reject:4 audit-correct:4 mutant:7
+   - shape: variant 2 does not change the expected result
+ok drill/mode-drill-5#1  L2  sheets=4  candidates=21 (Excel-right 8)  reference:1 reject:5 audit-correct:4 audit-wrong:1 rewrite:1 mutant:9
+!! drill/mround-drill-1#1  L1  sheets=4  candidates=14 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:6
+   - shape: variant 2 does not change the expected result
+   - shape: variant 3 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/mround-drill-2#1  L1  sheets=3  candidates=12 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/mround-drill-3#1  L1  sheets=3  candidates=16 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:8
+   - shape: variant 2 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 60,
+!! drill/mround-drill-4#1  L2  sheets=3  candidates=13 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:6
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers hints.rule quotes -23,5
+ok drill/mround-drill-5#1  L2  sheets=3  candidates=18 (Excel-right 6)  reference:1 reject:5 audit-correct:4 mutant:8
+   note: derived numbers misses.value quotes 139.2
+!! drill/or-drill-1#1  L1  sheets=6  candidates=23 (Excel-right 5)  reference:1 accept:1 reject:3 audit-correct:3 audit-wrong:2 mutant:13
+   - shape: variant 2 does not change the expected result
+!! drill/or-drill-2#1  L1  sheets=3  candidates=20 (Excel-right 5)  reference:1 reject:4 audit-correct:3 rewrite:1 mutant:11
+   - shape: variant 2 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/or-drill-3#1  L1  sheets=6  candidates=26 (Excel-right 4)  reference:1 reject:3 audit-correct:3 audit-wrong:2 mutant:17
+   - shape: variant 3 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/or-drill-4#1  L2  sheets=4  candidates=23 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:16
+   - shape: variant 2 does not change the expected result
+   - shape: variant 3 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/or-drill-5#1  L2  sheets=6  candidates=27 (Excel-right 4)  reference:1 reject:3 audit-correct:3 audit-wrong:3 mutant:17
+   - shape: variant 3 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/proper-drill-1#1  L1  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/proper-drill-2#1  L1  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/proper-drill-3#1  L2  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/proper-drill-4#1  L2  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/proper-drill-5#1  L2  sheets=2  candidates=12 (Excel-right 5)  reference:1 accept:1 reject:4 audit-correct:3 mutant:3
+ok drill/rank-drill-1#1  L1  sheets=3  candidates=19 (Excel-right 7)  reference:1 accept:2 reject:4 audit-correct:4 mutant:8
+ok drill/rank-drill-2#1  L1  sheets=4  candidates=19 (Excel-right 7)  reference:1 accept:1 reject:3 audit-correct:4 audit-wrong:1 mutant:9
+ok drill/rank-drill-3#1  L1  sheets=3  candidates=17 (Excel-right 5)  reference:1 reject:4 audit-correct:4 mutant:8
+!! drill/rank-drill-4#1  L2  sheets=4  candidates=17 (Excel-right 6)  reference:1 accept:1 reject:3 audit-correct:4 audit-wrong:2 mutant:6
+   - shape: variant 1 does not change the expected result
+ok drill/rank-drill-5#1  L2  sheets=3  candidates=22 (Excel-right 5)  reference:1 reject:5 audit-correct:4 mutant:12
+!! drill/right-drill-1#1  L1  sheets=2  candidates=12 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 20481
+ok drill/right-drill-2#1  L1  sheets=2  candidates=12 (Excel-right 5)  reference:1 accept:1 reject:3 audit-correct:3 mutant:4
+   note: derived numbers misses.value quotes 7734
+!! drill/right-drill-3#1  L1  sheets=3  candidates=16 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:8
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/right-drill-4#1  L2  sheets=2  candidates=13 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers hints.rule quotes 2026,2
+!! drill/right-drill-5#1  L2  sheets=3  candidates=19 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:11
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/round-drill-1#1  L1  sheets=3  candidates=14 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:6
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/round-drill-2#1  L1  sheets=3  candidates=13 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/round-drill-3#1  L1  sheets=3  candidates=15 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:7
+   - shape: variant 2 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/round-drill-4#1  L2  sheets=3  candidates=18 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:10
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/round-drill-5#1  L2  sheets=4  candidates=19 (Excel-right 6)  reference:1 reject:4 audit-correct:4 audit-wrong:1 mutant:9
+!! drill/rounddown-drill-1#1  L1  sheets=3  candidates=13 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:5
+   - shape: variant 1 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/rounddown-drill-2#1  L1  sheets=3  candidates=14 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:6
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/rounddown-drill-3#1  L1  sheets=4  candidates=15 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:7
+   - shape: variant 2 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/rounddown-drill-4#1  L2  sheets=3  candidates=13 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/rounddown-drill-5#1  L2  sheets=3  candidates=21 (Excel-right 7)  reference:1 reject:4 audit-correct:4 rewrite:1 mutant:11
+   - shape: variant 1 does not change the expected result
+   note: derived numbers misses.value quotes 108
+!! drill/roundup-drill-1#1  L1  sheets=3  candidates=13 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/roundup-drill-2#1  L1  sheets=4  candidates=17 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:9
+   - shape: variant 1 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/roundup-drill-3#1  L1  sheets=3  candidates=14 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:6
+   - shape: variant 1 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/roundup-drill-4#1  L2  sheets=3  candidates=13 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/roundup-drill-5#1  L2  sheets=3  candidates=21 (Excel-right 7)  reference:1 reject:4 audit-correct:4 rewrite:1 mutant:11
+   - shape: variant 1 does not change the expected result
+   note: derived numbers misses.value quotes 54
+!! drill/search-drill-1#1  L1  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:3
+   - shape: variant 1 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/search-drill-2#1  L1  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/search-drill-3#1  L1  sheets=3  candidates=16 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:8
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/search-drill-4#1  L2  sheets=3  candidates=15 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:7
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/search-drill-5#1  L2  sheets=3  candidates=12 (Excel-right 5)  reference:1 reject:4 audit-correct:3 rewrite:1 mutant:3
+   - shape: variant 2 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/small-drill-1#1  L1  sheets=4  candidates=17 (Excel-right 6)  reference:1 reject:4 audit-correct:4 audit-wrong:1 mutant:7
+ok drill/small-drill-2#1  L1  sheets=4  candidates=16 (Excel-right 6)  reference:1 reject:4 audit-correct:4 audit-wrong:2 mutant:5
+ok drill/small-drill-3#1  L1  sheets=3  candidates=18 (Excel-right 5)  reference:1 reject:4 audit-correct:4 mutant:9
+ok drill/small-drill-4#1  L2  sheets=4  candidates=16 (Excel-right 6)  reference:1 reject:3 audit-correct:4 audit-wrong:1 mutant:7
+ok drill/small-drill-5#1  L2  sheets=5  candidates=28 (Excel-right 9)  reference:1 reject:4 audit-correct:4 audit-wrong:4 rewrite:1 mutant:14
+ok drill/sort-drill-1#1  L1  sheets=2  candidates=14 (Excel-right 6)  reference:1 accept:1 reject:3 audit-correct:4 mutant:5
+ok drill/sort-drill-2#1  L1  sheets=2  candidates=18 (Excel-right 6)  reference:1 accept:1 reject:2 audit-correct:4 mutant:10
+ok drill/sort-drill-3#1  L1  sheets=2  candidates=17 (Excel-right 5)  reference:1 reject:3 audit-correct:4 mutant:9
+ok drill/sort-drill-4#1  L2  sheets=2  candidates=16 (Excel-right 6)  reference:1 accept:1 reject:3 audit-correct:4 mutant:7
+ok drill/sort-drill-5#1  L2  sheets=2  candidates=19 (Excel-right 6)  reference:1 reject:3 audit-correct:4 mutant:11
+ok drill/sortby-drill-1#1  L1  sheets=2  candidates=18 (Excel-right 6)  reference:1 accept:1 reject:3 audit-correct:4 mutant:9
+ok drill/sortby-drill-2#1  L1  sheets=2  candidates=18 (Excel-right 5)  reference:1 reject:2 audit-correct:4 mutant:11
+ok drill/sortby-drill-3#1  L1  sheets=2  candidates=17 (Excel-right 6)  reference:1 accept:1 reject:3 audit-correct:4 mutant:8
+ok drill/sortby-drill-4#1  L2  sheets=2  candidates=26 (Excel-right 5)  reference:1 reject:3 audit-correct:4 mutant:18
+ok drill/sortby-drill-5#1  L2  sheets=2  candidates=21 (Excel-right 5)  reference:1 reject:3 audit-correct:4 mutant:13
+!! drill/substitute-drill-1#1  L1  sheets=2  candidates=10 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:3
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/substitute-drill-2#1  L1  sheets=2  candidates=10 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:3
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/substitute-drill-3#1  L1  sheets=2  candidates=12 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 204; misses.value quotes 81
+!! drill/substitute-drill-4#1  L2  sheets=2  candidates=10 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:3
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/substitute-drill-5#1  L2  sheets=2  candidates=13 (Excel-right 6)  reference:1 accept:2 reject:4 audit-correct:3 mutant:3
+ok drill/subtotal-drill-1#1  L1  sheets=2  candidates=16 (Excel-right 5)  reference:1 reject:4 audit-correct:4 mutant:7
+ok drill/subtotal-drill-2#1  L1  sheets=2  candidates=16 (Excel-right 5)  reference:1 reject:4 audit-correct:4 mutant:7
+ok drill/subtotal-drill-3#1  L1  sheets=2  candidates=15 (Excel-right 5)  reference:1 reject:4 audit-correct:4 mutant:6
+ok drill/subtotal-drill-4#1  L2  sheets=4  candidates=17 (Excel-right 6)  reference:1 accept:1 reject:4 audit-correct:4 audit-wrong:2 mutant:5
+   note: derived numbers hints.rule quotes 104
+ok drill/subtotal-drill-5#1  L2  sheets=4  candidates=23 (Excel-right 7)  reference:1 reject:4 audit-correct:4 audit-wrong:4 mutant:10
+ok drill/sum-drill-1#1  L1  sheets=2  candidates=15 (Excel-right 6)  reference:1 accept:2 reject:4 audit-correct:2 rewrite:1 mutant:5
+ok drill/sum-drill-2#1  L1  sheets=2  candidates=16 (Excel-right 8)  reference:1 accept:1 reject:3 audit-correct:4 rewrite:1 mutant:6
+ok drill/sum-drill-3#1  L1  sheets=2  candidates=13 (Excel-right 6)  reference:1 reject:4 audit-correct:4 rewrite:1 mutant:3
+ok drill/sum-drill-4#1  L2  sheets=2  candidates=16 (Excel-right 6)  reference:1 reject:4 audit-correct:4 rewrite:1 mutant:6
+ok drill/sum-drill-5#1  L2  sheets=3  candidates=21 (Excel-right 8)  reference:1 reject:4 audit-correct:4 audit-wrong:1 rewrite:1 mutant:10
+   note: derived numbers misses.value quotes 2110
+ok drill/sumif-drill-1#1  L1  sheets=4  candidates=25 (Excel-right 11)  reference:1 accept:2 reject:4 audit-correct:4 audit-wrong:1 rewrite:3 mutant:10
+ok drill/sumif-drill-2#1  L1  sheets=4  candidates=19 (Excel-right 9)  reference:1 accept:1 reject:3 audit-correct:4 audit-wrong:1 rewrite:3 mutant:6
+ok drill/sumif-drill-3#1  L1  sheets=3  candidates=24 (Excel-right 8)  reference:1 accept:1 reject:3 audit-correct:3 rewrite:3 mutant:13
+ok drill/sumif-drill-4#1  L2  sheets=3  candidates=24 (Excel-right 6)  reference:1 reject:4 audit-correct:4 rewrite:1 mutant:14
+ok drill/sumif-drill-5#1  L2  sheets=4  candidates=31 (Excel-right 10)  reference:1 reject:4 audit-correct:4 audit-wrong:1 rewrite:4 mutant:17
+   note: derived numbers misses.value quotes 900; misses.value quotes 2450,; misses.value quotes 0.37
+ok drill/sumifs-drill-1#1  L1  sheets=3  candidates=29 (Excel-right 8)  reference:1 accept:1 reject:4 audit-correct:4 rewrite:2 mutant:17
+!! drill/sumifs-drill-2#1  L1  sheets=3  candidates=29 (Excel-right 7)  reference:1 reject:3 audit-correct:4 rewrite:2 mutant:19
+   - shape: variant 2 does not change the expected result
+ok drill/sumifs-drill-3#1  L2  sheets=3  candidates=31 (Excel-right 7)  reference:1 reject:4 audit-correct:4 rewrite:2 mutant:20
+ok drill/sumifs-drill-4#1  L2  sheets=3  candidates=24 (Excel-right 8)  reference:1 reject:4 audit-correct:4 rewrite:3 mutant:12
+ok drill/sumifs-drill-5#1  L2  sheets=3  candidates=35 (Excel-right 8)  reference:1 reject:4 audit-correct:4 rewrite:3 mutant:23
+   note: derived numbers misses.value quotes 55; misses.value quotes 215; misses.value quotes 0.26
+ok drill/sumproduct-drill-1#1  L1  sheets=2  candidates=19 (Excel-right 5)  reference:1 reject:4 audit-correct:4 mutant:10
+   note: derived numbers misses.value quotes 15
+ok drill/sumproduct-drill-2#1  L1  sheets=2  candidates=23 (Excel-right 5)  reference:1 reject:3 audit-correct:4 mutant:15
+   note: derived numbers misses.value quotes 72; misses.value quotes 90; misses.value quotes 72; misses.value quotes 100,
+ok drill/sumproduct-drill-3#1  L2  sheets=2  candidates=25 (Excel-right 7)  reference:1 reject:4 audit-correct:4 rewrite:1 mutant:15
+   note: derived numbers misses.value quotes 1143; misses.value quotes 15
+ok drill/sumproduct-drill-4#1  L2  sheets=2  candidates=25 (Excel-right 6)  reference:1 accept:1 reject:4 audit-correct:4 mutant:15
+ok drill/sumproduct-drill-5#1  L2  sheets=2  candidates=30 (Excel-right 5)  reference:1 reject:4 audit-correct:4 mutant:21
+!! drill/switch-drill-1#1  L1  sheets=3  candidates=11 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:3
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/switch-drill-2#1  L1  sheets=4  candidates=16 (Excel-right 4)  reference:1 reject:3 audit-correct:3 audit-wrong:1 mutant:8
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/switch-drill-3#1  L1  sheets=3  candidates=11 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/switch-drill-4#1  L2  sheets=7  candidates=23 (Excel-right 4)  reference:1 reject:4 audit-correct:3 audit-wrong:6 mutant:9
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/switch-drill-5#1  L2  sheets=3  candidates=15 (Excel-right 5)  reference:1 accept:1 reject:4 audit-correct:3 mutant:6
+   note: derived numbers misses.value quotes 220
+ok drill/take-drill-1#1  L1  sheets=2  candidates=13 (Excel-right 7)  reference:1 reject:3 audit-correct:4 mutant:5
+ok drill/take-drill-2#1  L1  sheets=2  candidates=13 (Excel-right 6)  reference:1 reject:2 audit-correct:4 mutant:6
+ok drill/take-drill-3#1  L1  sheets=2  candidates=15 (Excel-right 7)  reference:1 reject:3 audit-correct:4 mutant:7
+   note: derived numbers hints.rule quotes 2,2
+ok drill/take-drill-4#1  L2  sheets=3  candidates=14 (Excel-right 5)  reference:1 reject:2 audit-correct:4 mutant:7
+ok drill/take-drill-5#1  L2  sheets=2  candidates=21 (Excel-right 7)  reference:1 accept:1 reject:3 audit-correct:4 mutant:12
+!! drill/textafter-drill-1#1  L1  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:3
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/textafter-drill-2#1  L1  sheets=2  candidates=10 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:3
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/textafter-drill-3#1  L1  sheets=3  candidates=12 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/textafter-drill-4#1  L2  sheets=3  candidates=15 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:7
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 2026
+!! drill/textafter-drill-5#1  L2  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:3
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/textbefore-drill-1#1  L1  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:3
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/textbefore-drill-2#1  L1  sheets=2  candidates=10 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:3
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/textbefore-drill-3#1  L1  sheets=2  candidates=12 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 204
+!! drill/textbefore-drill-4#1  L2  sheets=3  candidates=13 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/textbefore-drill-5#1  L2  sheets=2  candidates=12 (Excel-right 4)  reference:1 reject:5 audit-correct:3 mutant:3
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/textjoin-drill-1#1  L1  sheets=2  candidates=13 (Excel-right 6)  reference:1 accept:1 reject:4 audit-correct:4 mutant:3
+ok drill/textjoin-drill-2#1  L1  sheets=2  candidates=10 (Excel-right 6)  reference:1 accept:1 reject:3 audit-correct:4 mutant:1
+ok drill/textjoin-drill-3#1  L2  sheets=2  candidates=11 (Excel-right 5)  reference:1 reject:3 audit-correct:4 mutant:3
+ok drill/textjoin-drill-4#1  L2  sheets=3  candidates=16 (Excel-right 5)  reference:1 reject:3 audit-correct:4 audit-wrong:1 mutant:7
+ok drill/textjoin-drill-5#1  L2  sheets=2  candidates=17 (Excel-right 5)  reference:1 reject:4 audit-correct:4 mutant:8
+!! drill/trim-drill-1#1  L1  sheets=2  candidates=12 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/trim-drill-2#1  L1  sheets=2  candidates=12 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/trim-drill-3#1  L1  sheets=3  candidates=16 (Excel-right 5)  reference:1 accept:1 reject:2 audit-correct:3 mutant:9
+   - shape: variant 2 does not change the expected result
+!! drill/trim-drill-4#1  L2  sheets=2  candidates=12 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:5
+   - coverage: only 4 correct formulas checked in Excel
+!! drill/trim-drill-5#1  L2  sheets=3  candidates=15 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:7
+   - shape: variant 2 does not change the expected result
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/unique-drill-1#1  L1  sheets=3  candidates=13 (Excel-right 5)  reference:1 reject:3 audit-correct:4 audit-wrong:1 mutant:4
+ok drill/unique-drill-2#1  L1  sheets=2  candidates=11 (Excel-right 5)  reference:1 reject:2 audit-correct:4 mutant:4
+ok drill/unique-drill-3#1  L2  sheets=3  candidates=14 (Excel-right 6)  reference:1 accept:1 reject:2 audit-correct:4 audit-wrong:2 mutant:4
+!! drill/unique-drill-4#1  L2  sheets=5  candidates=14 (Excel-right 5)  reference:1 reject:4 audit-correct:4 audit-wrong:2 mutant:3
+   - shape: variant 1 does not change the expected result
+ok drill/unique-drill-5#1  L2  sheets=4  candidates=15 (Excel-right 6)  reference:1 accept:1 reject:3 audit-correct:4 audit-wrong:2 mutant:4
+!! drill/upper-drill-1#1  L1  sheets=2  candidates=12 (Excel-right 4)  reference:1 reject:4 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+   note: derived numbers misses.value quotes 204
+!! drill/upper-drill-2#1  L1  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/upper-drill-3#1  L1  sheets=2  candidates=17 (Excel-right 6)  reference:1 accept:2 reject:3 audit-correct:3 mutant:8
+!! drill/upper-drill-4#1  L2  sheets=2  candidates=11 (Excel-right 4)  reference:1 reject:3 audit-correct:3 mutant:4
+   - coverage: only 4 correct formulas checked in Excel
+ok drill/upper-drill-5#1  L2  sheets=2  candidates=14 (Excel-right 5)  reference:1 accept:1 reject:4 audit-correct:3 mutant:5
+ok drill/vlookup-drill-1#1  L1  sheets=5  candidates=23 (Excel-right 8)  reference:1 accept:2 reject:4 audit-correct:4 audit-wrong:2 rewrite:1 mutant:9
+ok drill/vlookup-drill-2#1  L1  sheets=4  candidates=22 (Excel-right 8)  reference:1 accept:1 reject:3 audit-correct:4 audit-wrong:1 rewrite:2 mutant:10
+ok drill/vlookup-drill-3#1  L2  sheets=3  candidates=22 (Excel-right 8)  reference:1 accept:1 reject:4 audit-correct:4 rewrite:2 mutant:10
+!! drill/vlookup-drill-4#1  L2  sheets=6  candidates=23 (Excel-right 9)  reference:1 accept:2 reject:3 audit-correct:4 rewrite:2 mutant:11
+   - shape: variant 3 does not change the expected result
+   - shape: variant 5 does not change the expected result
+ok drill/vlookup-drill-5#1  L2  sheets=6  candidates=25 (Excel-right 5)  reference:1 reject:4 audit-correct:4 audit-wrong:2 mutant:14
+ok drill/xlookup-drill-1#1  L1  sheets=3  candidates=23 (Excel-right 7)  reference:1 accept:2 reject:5 audit-correct:3 rewrite:1 mutant:11
+ok drill/xlookup-drill-2#1  L1  sheets=3  candidates=23 (Excel-right 6)  reference:1 reject:4 audit-correct:4 rewrite:1 mutant:13
+ok drill/xlookup-drill-3#1  L2  sheets=3  candidates=21 (Excel-right 7)  reference:1 reject:4 audit-correct:4 rewrite:2 mutant:10
+!! drill/xlookup-drill-4#1  L2  sheets=5  candidates=24 (Excel-right 6)  reference:1 accept:1 reject:4 audit-correct:4 mutant:14
+   - shape: variant 1 does not change the expected result
+ok drill/xlookup-drill-5#1  L2  sheets=3  candidates=27 (Excel-right 8)  reference:1 accept:1 reject:4 audit-correct:4 rewrite:2 mutant:15
 
-314 screens, 7758 candidate formulas (4969 graded only), 310 clean, 4 with problems.
+664 screens, 13815 candidate formulas (9123 graded only), 502 clean, 162 with problems.

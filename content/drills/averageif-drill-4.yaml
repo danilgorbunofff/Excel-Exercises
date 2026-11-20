@@ -1,0 +1,47 @@
+id: averageif-drill-4
+slug: averageif-drill-4
+level: 2
+title: Every region but one
+updated: 2026-11-19
+checkedInExcel: 2026-11-19
+function: AVERAGEIF
+screens:
+  - prompt: In D2, use AVERAGEIF to find the average sales in B2:B8 for every row whose region in A2:A8 is not "East".
+    rows:
+      - [Region, Sales, null, Not East average]
+      - [East, 400, null, null]
+      - [West, 250, null, null]
+      - [East, 310, null, null]
+      - [North, 520, null, null]
+      - [East, 190, null, null]
+      - [West, 330, null, null]
+      - [North, 450, null, null]
+    answerCell: D2
+    expected: 387.5
+    variants:
+      - set: {A4: South}
+        expected: 372
+      - set: {B3: 150}
+        expected: 362.5
+    answer: =AVERAGEIF(A2:A8,"<>East",B2:B8)
+    requiredFunctions:
+      - AVERAGEIF
+    hints:
+      nudge: Put <> in front of the text to mean not equal to.
+      rule: AVERAGEIF(A2:A8,"<>East",B2:B8) averages the West and North rows.
+    misses:
+      value: The four rows that are not East average 387.5.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AVERAGEIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AVERAGEIF(A2:A8,"<>East",B2:B8)
+    reject:
+      - formula: =AVERAGEIF(A2:A8,"East",B2:B8)
+        rule: value
+      - formula: =AVERAGE(B2:B8)
+        rule: required-function
+      - formula: =387.5
+        rule: required-function
+      - formula: =AVERAGEIF(A2:A8,"<>East",B2:B8
+        rule: syntax

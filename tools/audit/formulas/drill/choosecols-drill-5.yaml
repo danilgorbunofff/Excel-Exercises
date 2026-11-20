@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SORT(CHOOSECOLS($A$2:$C$7,3,1),1,-1)
+      - =SORT(CHOOSECOLS(A$2:C$7,3,1),1,-1)
+      - =sort(choosecols(a2:c7, 3, 1), 1, -1)
+      - =LET(data,A2:C7,SORT(CHOOSECOLS(data,3,1),1,-1))
+    wrong: []
+    equivalent: []

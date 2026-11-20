@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =DAY(EOMONTH($B$2,0))
+      - =DAY(EOMONTH(B$2,0))
+      - =day(eomonth(b2, 0))
+    wrong: []
+    equivalent: []

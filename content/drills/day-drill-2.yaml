@@ -1,0 +1,40 @@
+id: day-drill-2
+slug: day-drill-2
+level: 1
+title: The day of a date in a row
+updated: 2026-11-19
+checkedInExcel: 2026-11-19
+function: DAY
+screens:
+  - prompt: In C3, use DAY to return the day of the month of the date above it in C2.
+    rows:
+      - [Shift, Mon, Tue, Wed]
+      - [Date, 46356, 46357, 46358]
+      - [Day, null, null, null]
+    answerCell: C3
+    expected: 1
+    variants:
+      - set: {C2: 46381}
+        expected: 25
+    answer: =DAY(C2)
+    requiredFunctions:
+      - DAY
+    hints:
+      nudge: The date sits in the same column, one row up.
+      rule: DAY(C2) returns the day of the month of the date in C2.
+    misses:
+      value: 1 December 2026 is day 1 of the month.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for DAY.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =DAY(C2)
+    reject:
+      - formula: =DAY(B2)
+        rule: value
+      - formula: =DAY(D2)
+        rule: value
+      - formula: =1
+        rule: required-function
+      - formula: =DAY(C2
+        rule: syntax

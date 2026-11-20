@@ -1,0 +1,47 @@
+id: averageif-drill-3
+slug: averageif-drill-3
+level: 2
+title: The region from a cell
+updated: 2026-11-19
+checkedInExcel: 2026-11-19
+function: AVERAGEIF
+screens:
+  - prompt: In E2, use AVERAGEIF to find the average sales in B2:B8 for the region typed in D2, testing the regions in A2:A8.
+    rows:
+      - [Region, Sales, null, Region, Average]
+      - [East, 400, null, West, null]
+      - [West, 250, null, null, null]
+      - [East, 310, null, null, null]
+      - [North, 520, null, null, null]
+      - [East, 190, null, null, null]
+      - [West, 330, null, null, null]
+      - [North, 450, null, null, null]
+    answerCell: E2
+    expected: 290
+    variants:
+      - set: {D2: North}
+        expected: 485
+      - set: {D2: East}
+        expected: 300
+    answer: =AVERAGEIF(A2:A8,D2,B2:B8)
+    requiredFunctions:
+      - AVERAGEIF
+    hints:
+      nudge: The criteria can be a cell instead of text in quotes.
+      rule: AVERAGEIF(A2:A8,D2,B2:B8) follows whatever region D2 holds.
+    misses:
+      value: The two West rows average 290.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AVERAGEIF.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =AVERAGEIF(A2:A8,D2,B2:B8)
+    reject:
+      - formula: =AVERAGEIF(A2:A8,"West",B2:B8)
+        rule: fragile
+      - formula: =AVERAGEIF(B2:B8,D2,A2:A8)
+        rule: value
+      - formula: =290
+        rule: required-function
+      - formula: =AVERAGEIF(A2:A8,D2,B2:B8
+        rule: syntax

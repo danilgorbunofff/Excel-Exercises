@@ -1,0 +1,41 @@
+id: eomonth-drill-2
+slug: eomonth-drill-2
+level: 1
+title: The end of next month
+updated: 2026-11-19
+checkedInExcel: 2026-11-19
+function: EOMONTH
+screens:
+  - prompt: In C2, use EOMONTH to return the last day of the month after the invoice date in B2.
+    rows:
+      - [Invoice, Date, Due]
+      - [I-42, 46042, null]
+    answerCell: C2
+    expected: 46081
+    variants:
+      - set: {B2: 46356}
+        expected: 46387
+      - set: {B2: 46757}
+        expected: 46812
+    answer: =EOMONTH(B2,1)
+    requiredFunctions:
+      - EOMONTH
+    hints:
+      nudge: The second argument counts months forward.
+      rule: EOMONTH(B2,1) returns the last day of the next month.
+    misses:
+      value: 28 February 2026 is the date number 46081.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for EOMONTH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =EOMONTH(B2,1)
+    reject:
+      - formula: =EOMONTH(B2,0)
+        rule: value
+      - formula: =EOMONTH(B2,2)
+        rule: value
+      - formula: =46081
+        rule: required-function
+      - formula: =EOMONTH(B2,1
+        rule: syntax

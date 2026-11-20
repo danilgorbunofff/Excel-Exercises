@@ -1,0 +1,41 @@
+id: eomonth-drill-4
+slug: eomonth-drill-4
+level: 2
+title: The end of last month
+updated: 2026-11-19
+checkedInExcel: 2026-11-19
+function: EOMONTH
+screens:
+  - prompt: In C2, use EOMONTH with a negative number to return the last day of the month before the date in B2.
+    rows:
+      - [Report, Date, Previous month end]
+      - [R-3, 46822, null]
+    answerCell: C2
+    expected: 46812
+    variants:
+      - set: {B2: 46456}
+        expected: 46446
+      - set: {B2: 46037}
+        expected: 46022
+    answer: =EOMONTH(B2,-1)
+    requiredFunctions:
+      - EOMONTH
+    hints:
+      nudge: A negative number counts months back.
+      rule: EOMONTH(B2,-1) returns the last day of the month before, leap years included.
+    misses:
+      value: 2028 is a leap year, so February ends on the 29th, date number 46812.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for EOMONTH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =EOMONTH(B2,-1)
+    reject:
+      - formula: =EOMONTH(B2,0)
+        rule: value
+      - formula: =EOMONTH(B2,1)
+        rule: value
+      - formula: =46812
+        rule: required-function
+      - formula: =EOMONTH(B2,-1
+        rule: syntax

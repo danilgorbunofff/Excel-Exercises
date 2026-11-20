@@ -1,0 +1,37 @@
+id: day-drill-4
+slug: day-drill-4
+level: 2
+title: A date with a time
+updated: 2026-11-19
+checkedInExcel: 2026-11-19
+function: DAY
+screens:
+  - prompt: In C2, use DAY to return the day of the month of the time stamp in B2. It holds a time as well as a date.
+    rows:
+      - [Ticket, Opened, Day]
+      - [T-17, 46151.75, null]
+    answerCell: C2
+    expected: 9
+    variants:
+      - set: {B2: 46173.99}
+        expected: 31
+    answer: =DAY(B2)
+    requiredFunctions:
+      - DAY
+    hints:
+      nudge: DAY ignores the time part of the cell.
+      rule: DAY(B2) returns the day even when the cell also holds a time.
+    misses:
+      value: 6 pm on 9 May 2026 is still day 9 of the month.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for DAY.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =DAY(B2)
+    reject:
+      - formula: =B2
+        rule: required-function
+      - formula: =9
+        rule: required-function
+      - formula: =DAY(B2
+        rule: syntax

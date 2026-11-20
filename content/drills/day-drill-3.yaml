@@ -1,0 +1,42 @@
+id: day-drill-3
+slug: day-drill-3
+level: 2
+title: Days until pay day
+updated: 2026-11-19
+checkedInExcel: 2026-11-19
+function: DAY
+screens:
+  - prompt: In C2, use DAY to find how many days are left from the date in B2 until pay day, the day of the month in E1.
+    rows:
+      - [Name, Today, Days to pay day, Pay day, 25]
+      - [Ann, 46345, null, null, null]
+    answerCell: C2
+    expected: 6
+    variants:
+      - set: {E1: 28}
+        expected: 9
+      - set: {B2: 46329}
+        expected: 22
+    answer: =E1-DAY(B2)
+    requiredFunctions:
+      - DAY
+    hints:
+      nudge: Take the day of the month away from the pay day.
+      rule: E1-DAY(B2) counts the days from the date to pay day in the same month.
+    misses:
+      value: From the 19th to the 25th is 6 days.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      required-function: This drill asks for DAY.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =E1-DAY(B2)
+    reject:
+      - formula: =25-DAY(B2)
+        rule: reference
+      - formula: =DAY(B2)-E1
+        rule: value
+      - formula: =6
+        rule: required-function
+      - formula: =E1-DAY(B2
+        rule: syntax

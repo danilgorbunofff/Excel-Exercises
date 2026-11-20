@@ -14,8 +14,6 @@ cover: "F2 + F9"
 
 Click the cell and widen the formula bar with the arrow on its right. Say in words what the formula seems to do before you test any part of it.
 
-If the formula is long, paste it into the [formula explainer](/formula-explainer/) to see each part worked out in order.
-
 ## See what it reads: F2
 
 Press F2 in the cell. Each reference gets a coloured border on the sheet. Look for ranges that stop short, start on the wrong row or point at a different sheet.

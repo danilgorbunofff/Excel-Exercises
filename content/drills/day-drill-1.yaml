@@ -1,0 +1,40 @@
+id: day-drill-1
+slug: day-drill-1
+level: 1
+title: The day of a date
+updated: 2026-11-19
+checkedInExcel: 2026-11-19
+function: DAY
+screens:
+  - prompt: In C2, use DAY to return the day of the month of the order date in B2.
+    rows:
+      - [Order, Date, Day]
+      - [A-101, 46096, null]
+      - [A-102, 46109, null]
+    answerCell: C2
+    expected: 15
+    variants:
+      - set: {B2: 46207}
+        expected: 4
+      - set: {B2: 46418}
+        expected: 31
+    answer: =DAY(B2)
+    requiredFunctions:
+      - DAY
+    hints:
+      nudge: DAY takes one date.
+      rule: DAY(B2) returns the day of the month, from 1 to 31.
+    misses:
+      value: 15 March 2026 is day 15 of the month.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for DAY.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =DAY(B2)
+    reject:
+      - formula: =DAY(B3)
+        rule: value
+      - formula: =15
+        rule: required-function
+      - formula: =DAY(B2
+        rule: syntax

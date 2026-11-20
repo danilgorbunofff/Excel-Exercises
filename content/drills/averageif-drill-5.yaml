@@ -1,0 +1,51 @@
+id: averageif-drill-5
+slug: averageif-drill-5
+level: 2
+title: Rounded average for one region
+updated: 2026-11-19
+checkedInExcel: 2026-11-19
+function: AVERAGEIF
+screens:
+  - prompt: In B9, use ROUND and AVERAGEIF to find the average sales in B2:B8 for the "East" rows in A2:A8, rounded to one decimal place.
+    rows:
+      - [Region, Sales]
+      - [East, 400]
+      - [West, 250]
+      - [East, 310]
+      - [North, 520]
+      - [East, 195]
+      - [West, 330]
+      - [North, 450]
+      - [East average, null]
+    answerCell: B9
+    expected: 301.7
+    variants:
+      - set: {B2: 401}
+        expected: 302
+      - set: {A3: East}
+        expected: 288.8
+      - set: {A8: East}
+        expected: 338.8
+    answer: =ROUND(AVERAGEIF(A2:A8,"East",B2:B8),1)
+    requiredFunctions:
+      - AVERAGEIF
+      - ROUND
+    hints:
+      nudge: Put the AVERAGEIF inside ROUND, and round to 1 place.
+      rule: ROUND(AVERAGEIF(...),1) rounds the average to one decimal place.
+    misses:
+      value: The East average is 301.67, which rounds to 301.7.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for AVERAGEIF and ROUND.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =ROUND(AVERAGEIF(A2:A8,"East",B2:B8),1)
+    reject:
+      - formula: =AVERAGEIF(A2:A8,"East",B2:B8)
+        rule: required-function
+      - formula: =ROUND(AVERAGEIF(A2:A8,"East",B2:B8),0)
+        rule: value
+      - formula: =301.7
+        rule: required-function
+      - formula: =ROUND(AVERAGEIF(A2:A8,"East",B2:B8),1
+        rule: syntax

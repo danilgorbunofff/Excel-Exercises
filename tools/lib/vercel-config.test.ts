@@ -55,6 +55,12 @@ describe("vercel.json", () => {
     expect(redirect("/exercises/tracks/lookups/")).toBeUndefined();
   });
 
+  it("sends the retired resources page to the articles with a 301", () => {
+    for (const old of ["/resources/", "/resources"]) {
+      expect(redirect(old), old).toEqual({ to: "/articles/", status: 301 });
+    }
+  });
+
   it("sends the security headers on every path", () => {
     const all = headersFor("/(.*)");
     expect(all.get("content-security-policy")).toMatch(/^default-src 'self';/u);

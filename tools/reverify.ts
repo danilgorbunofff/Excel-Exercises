@@ -42,12 +42,10 @@ const PAGES: [string, string, Account[]][] = [
   ["functions", "/functions/", ["out"]],
   ["function-sum", "/functions/sum/", ["out"]],
   ["function-vlookup", "/functions/vlookup/", ["out"]],
-  ["explainers", "/formula-explainer/", ["out"]],
   ["articles", "/articles/", ["out"]],
   ["article-long", "/articles/relative-and-absolute-references/", ["out"]],
   ["article-short", "/articles/reading-formula-errors/", ["out"]],
   ["shortcuts", "/excel-shortcuts/", ["out"]],
-  ["resources", "/resources/", ["out"]],
   ["search", "/search/?q=sum", ["out"]],
   ["search-empty", "/search/?q=zzzzqx", ["out"]],
   ["contact", "/contact/", ["out"]],
@@ -68,16 +66,6 @@ const PAGES: [string, string, Account[]][] = [
   ["terms", "/terms/", ["out"]],
   ["not-found", "/no-such-page/", ["out"]],
 ];
-
-/** The first explainer, from its YAML, so the route is real. */
-const explainers = parse(readFileSync("content/explainers.yaml", "utf8")) as unknown;
-const firstExplainer = (
-  Array.isArray(explainers)
-    ? explainers
-    : ((explainers as Record<string, unknown[]>)["walkthroughs"] ?? [])
-)[0] as { slug?: string } | undefined;
-if (firstExplainer?.slug)
-  PAGES.push(["explainer", `/formula-explainer/${firstExplainer.slug}/`, ["out"]]);
 
 const proAnswers = (
   parse(readFileSync("content/exercises/find-a-code.yaml", "utf8")) as {

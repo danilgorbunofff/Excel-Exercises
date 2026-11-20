@@ -4,7 +4,7 @@
 // let the interface draw what a formula reads.
 
 /** Version of the grading rules. Bump it only for an intended grader change. */
-export const GRADER_VERSION = "1.2.0";
+export const GRADER_VERSION = "1.3.0";
 
 export {
   type Address,
@@ -16,6 +16,8 @@ export {
 } from "./address.ts";
 export { ERROR_CODES, type ErrorCode, type ErrorValue, errorValue, isError } from "./errors.ts";
 export { evaluate, evaluateFormula } from "./evaluate.ts";
+export { criteriaMatcher } from "./functions/criteria.ts";
+export { type Formatted, formatCode } from "./functions/format-code.ts";
 export { knownFunctions } from "./functions/registry.ts";
 export {
   type Expected,

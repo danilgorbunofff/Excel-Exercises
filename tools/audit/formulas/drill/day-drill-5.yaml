@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(DAY($B$2)<=15,"First half","Second half")
+      - =IF(DAY(B$2)<=15,"First half","Second half")
+      - =if(day(b2)<=15, "First half", "Second half")
+    wrong: []
+    equivalent: []

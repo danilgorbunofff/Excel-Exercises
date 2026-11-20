@@ -1,0 +1,41 @@
+id: day-drill-5
+slug: day-drill-5
+level: 2
+title: First or second half of the month
+updated: 2026-11-19
+checkedInExcel: 2026-11-19
+function: DAY
+screens:
+  - prompt: In C2, use IF and DAY to show "First half" when the day of the date in B2 is 15 or less, and "Second half" otherwise.
+    rows:
+      - [Invoice, Date, Half]
+      - [I-88, 46281, null]
+    answerCell: C2
+    expected: Second half
+    variants:
+      - set: {B2: 46280}
+        expected: First half
+      - set: {B2: 46266}
+        expected: First half
+    answer: =IF(DAY(B2)<=15,"First half","Second half")
+    requiredFunctions:
+      - IF
+      - DAY
+    hints:
+      nudge: Test DAY(B2) inside IF.
+      rule: IF(DAY(B2)<=15,"First half","Second half") splits the month at the 15th.
+    misses:
+      value: 16 September is in the second half of the month.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for IF and DAY.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =IF(DAY(B2)<=15,"First half","Second half")
+      - =IF(DAY(B2)>15,"Second half","First half")
+    reject:
+      - formula: =IF(DAY(B2)<15,"First half","Second half")
+        rule: fragile
+      - formula: ="Second half"
+        rule: required-function
+      - formula: =IF(DAY(B2)<=15,"First half","Second half"
+        rule: syntax

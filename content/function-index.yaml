@@ -141,6 +141,11 @@ functions:
     category: Statistical
     summary: Averages the rows that meet every condition.
     syntax: =AVERAGEIFS(average_range, criteria_range1, criteria1, ...)
+  - name: AVERAGEIF
+    group: conditional
+    category: Statistical
+    summary: Averages the cells that meet one condition.
+    syntax: =AVERAGEIF(range, criteria, [average_range])
   - name: SUMPRODUCT
     group: summarise
     category: Math and trigonometry
@@ -326,6 +331,11 @@ functions:
     category: Date and time
     summary: Builds a date from a year, a month and a day.
     syntax: =DATE(year, month, day)
+  - name: DAY
+    group: dates
+    category: Date and time
+    summary: Returns the day of the month of a date, from 1 to 31.
+    syntax: =DAY(serial_number)
   - name: DAYS
     group: dates
     category: Date and time
@@ -336,6 +346,11 @@ functions:
     category: Date and time
     summary: Counts whole days, months or years between two dates.
     syntax: =DATEDIF(start_date, end_date, unit)
+  - name: EOMONTH
+    group: dates
+    category: Date and time
+    summary: Returns the last day of the month, a number of months before or after a date.
+    syntax: =EOMONTH(start_date, months)
   - name: FILTER
     group: arrays
     category: Lookup and reference
@@ -361,6 +376,11 @@ functions:
     category: Lookup and reference
     summary: Keeps the first or last rows or columns of a range.
     syntax: =TAKE(array, rows, [columns])
+  - name: CHOOSECOLS
+    group: arrays
+    category: Lookup and reference
+    summary: Returns the chosen columns of a range, in the order you list them.
+    syntax: =CHOOSECOLS(array, col_num1, [col_num2], ...)
   - name: LET
     group: arrays
     category: Logical

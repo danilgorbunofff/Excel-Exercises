@@ -1,0 +1,39 @@
+id: eomonth-drill-1
+slug: eomonth-drill-1
+level: 1
+title: The end of this month
+updated: 2026-11-19
+checkedInExcel: 2026-11-19
+function: EOMONTH
+screens:
+  - prompt: In C2, use EOMONTH to return the last day of the month of the invoice date in B2.
+    rows:
+      - [Invoice, Date, Month end]
+      - [I-41, 46124, null]
+    answerCell: C2
+    expected: 46142
+    variants:
+      - set: {B2: 46056}
+        expected: 46081
+      - set: {B2: 46387}
+        expected: 46387
+    answer: =EOMONTH(B2,0)
+    requiredFunctions:
+      - EOMONTH
+    hints:
+      nudge: EOMONTH takes a date and a number of months. 0 means this month.
+      rule: EOMONTH(B2,0) returns the last day of the same month.
+    misses:
+      value: 30 April 2026 is the date number 46142.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for EOMONTH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =EOMONTH(B2,0)
+    reject:
+      - formula: =EOMONTH(B2,1)
+        rule: value
+      - formula: =46142
+        rule: required-function
+      - formula: =EOMONTH(B2,0
+        rule: syntax

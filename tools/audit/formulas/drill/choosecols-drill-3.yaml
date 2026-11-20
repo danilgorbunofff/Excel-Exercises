@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =CHOOSECOLS($A$2:$C$7,$I$1)
+      - =CHOOSECOLS(A$2:C$7,I1)
+      - =choosecols(a2:c7, i1)
+      - =LET(data,A2:C7,CHOOSECOLS(data,I1))
+    wrong: []
+    equivalent: []

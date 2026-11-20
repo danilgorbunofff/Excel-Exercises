@@ -53,5 +53,1139 @@
    "locale: =LET(data,A2:A13,FILTER(data,(B2:B13=\"Card\")*(--C2:C13>=500)))  [rewrite (LET naming the first range)] grader=correct",
    "coverage: only 0 correct formulas checked in Excel"
   ]
+ },
+ {
+  "screen": "drill/abs-drill-1#1",
+  "file": "content/drills/abs-drill-1.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/abs-drill-2#1",
+  "file": "content/drills/abs-drill-2.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/abs-drill-4#1",
+  "file": "content/drills/abs-drill-4.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/abs-drill-5#1",
+  "file": "content/drills/abs-drill-5.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/and-drill-2#1",
+  "file": "content/drills/and-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/and-drill-4#1",
+  "file": "content/drills/and-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/and-drill-5#1",
+  "file": "content/drills/and-drill-5.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/averageif-drill-1#1",
+  "file": "content/drills/averageif-drill-1.yaml",
+  "problems": [
+   "survivor: =AVERAGEIF(A2:A7,\"East\",B2:B8)  [mutant (range A2:A8 one row short at the end)] grader=correct",
+   "survivor: =AVERAGEIF(A2:A9,\"East\",B2:B8)  [mutant (range A2:A8 one row long)] grader=correct",
+   "survivor: =AVERAGEIF(A2:A8,\"East\",B2:B7)  [mutant (range B2:B8 one row short at the end)] grader=correct"
+  ]
+ },
+ {
+  "screen": "drill/averageif-drill-4#1",
+  "file": "content/drills/averageif-drill-4.yaml",
+  "problems": [
+   "wrong-passes: =AVERAGEIF(A2:A9,\"<>East\",B2:B8)  [mutant (range A2:A8 one row long)] grader=correct"
+  ]
+ },
+ {
+  "screen": "drill/averageif-drill-5#1",
+  "file": "content/drills/averageif-drill-5.yaml",
+  "problems": [
+   "survivor: =ROUND(AVERAGEIF(A2:A7,\"East\",B2:B8),1)  [mutant (range A2:A8 one row short at the end)] grader=correct",
+   "survivor: =ROUND(AVERAGEIF(A2:A9,\"East\",B2:B8),1)  [mutant (range A2:A8 one row long)] grader=correct",
+   "survivor: =ROUND(AVERAGEIF(A2:A8,\"East\",B2:B7),1)  [mutant (range B2:B8 one row short at the end)] grader=correct"
+  ]
+ },
+ {
+  "screen": "drill/concat-drill-1#1",
+  "file": "content/drills/concat-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/concat-drill-2#1",
+  "file": "content/drills/concat-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/concat-drill-4#1",
+  "file": "content/drills/concat-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/countifs-drill-3#1",
+  "file": "content/drills/countifs-drill-3.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/date-drill-1#1",
+  "file": "content/drills/date-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/date-drill-2#1",
+  "file": "content/drills/date-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/datedif-drill-1#1",
+  "file": "content/drills/datedif-drill-1.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/datedif-drill-2#1",
+  "file": "content/drills/datedif-drill-2.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/datedif-drill-3#1",
+  "file": "content/drills/datedif-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/datedif-drill-4#1",
+  "file": "content/drills/datedif-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/datedif-drill-5#1",
+  "file": "content/drills/datedif-drill-5.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/day-drill-1#1",
+  "file": "content/drills/day-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/day-drill-2#1",
+  "file": "content/drills/day-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/day-drill-3#1",
+  "file": "content/drills/day-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/day-drill-4#1",
+  "file": "content/drills/day-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/day-drill-5#1",
+  "file": "content/drills/day-drill-5.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/days-drill-1#1",
+  "file": "content/drills/days-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/days-drill-2#1",
+  "file": "content/drills/days-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/days-drill-3#1",
+  "file": "content/drills/days-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/days-drill-4#1",
+  "file": "content/drills/days-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/days-drill-5#1",
+  "file": "content/drills/days-drill-5.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/eomonth-drill-1#1",
+  "file": "content/drills/eomonth-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/eomonth-drill-2#1",
+  "file": "content/drills/eomonth-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/eomonth-drill-3#1",
+  "file": "content/drills/eomonth-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/eomonth-drill-4#1",
+  "file": "content/drills/eomonth-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/eomonth-drill-5#1",
+  "file": "content/drills/eomonth-drill-5.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/find-drill-1#1",
+  "file": "content/drills/find-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/find-drill-2#1",
+  "file": "content/drills/find-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/find-drill-3#1",
+  "file": "content/drills/find-drill-3.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/find-drill-4#1",
+  "file": "content/drills/find-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/find-drill-5#1",
+  "file": "content/drills/find-drill-5.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/floor-drill-1#1",
+  "file": "content/drills/floor-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/floor-drill-2#1",
+  "file": "content/drills/floor-drill-2.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/floor-drill-3#1",
+  "file": "content/drills/floor-drill-3.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/floor-drill-4#1",
+  "file": "content/drills/floor-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/floor-drill-5#1",
+  "file": "content/drills/floor-drill-5.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/hlookup-drill-3#1",
+  "file": "content/drills/hlookup-drill-3.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/if-drill-5#1",
+  "file": "content/drills/if-drill-5.yaml",
+  "problems": [
+   "shape: variant 3 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/iferror-drill-1#1",
+  "file": "content/drills/iferror-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/iferror-drill-3#1",
+  "file": "content/drills/iferror-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/ifs-drill-1#1",
+  "file": "content/drills/ifs-drill-1.yaml",
+  "problems": [
+   "shape: variant 3 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/ifs-drill-3#1",
+  "file": "content/drills/ifs-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/ifs-drill-4#1",
+  "file": "content/drills/ifs-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/ifs-drill-5#1",
+  "file": "content/drills/ifs-drill-5.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/isblank-drill-1#1",
+  "file": "content/drills/isblank-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/isblank-drill-2#1",
+  "file": "content/drills/isblank-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/isblank-drill-3#1",
+  "file": "content/drills/isblank-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/isblank-drill-5#1",
+  "file": "content/drills/isblank-drill-5.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/iserror-drill-1#1",
+  "file": "content/drills/iserror-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/iserror-drill-3#1",
+  "file": "content/drills/iserror-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/iserror-drill-4#1",
+  "file": "content/drills/iserror-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/iserror-drill-5#1",
+  "file": "content/drills/iserror-drill-5.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/isna-drill-3#1",
+  "file": "content/drills/isna-drill-3.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/isnumber-drill-1#1",
+  "file": "content/drills/isnumber-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/isnumber-drill-2#1",
+  "file": "content/drills/isnumber-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/isnumber-drill-3#1",
+  "file": "content/drills/isnumber-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/isnumber-drill-5#1",
+  "file": "content/drills/isnumber-drill-5.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/large-drill-3#1",
+  "file": "content/drills/large-drill-3.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/left-drill-1#1",
+  "file": "content/drills/left-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/left-drill-3#1",
+  "file": "content/drills/left-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/left-drill-4#1",
+  "file": "content/drills/left-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/left-drill-5#1",
+  "file": "content/drills/left-drill-5.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/len-drill-1#1",
+  "file": "content/drills/len-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/len-drill-2#1",
+  "file": "content/drills/len-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/len-drill-3#1",
+  "file": "content/drills/len-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/len-drill-4#1",
+  "file": "content/drills/len-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/len-drill-5#1",
+  "file": "content/drills/len-drill-5.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/let-drill-2#1",
+  "file": "content/drills/let-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/lower-drill-1#1",
+  "file": "content/drills/lower-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/lower-drill-2#1",
+  "file": "content/drills/lower-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/lower-drill-4#1",
+  "file": "content/drills/lower-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/match-drill-3#1",
+  "file": "content/drills/match-drill-3.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/median-drill-1#1",
+  "file": "content/drills/median-drill-1.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/median-drill-2#1",
+  "file": "content/drills/median-drill-2.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/mid-drill-1#1",
+  "file": "content/drills/mid-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/mid-drill-2#1",
+  "file": "content/drills/mid-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/mid-drill-3#1",
+  "file": "content/drills/mid-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/mid-drill-4#1",
+  "file": "content/drills/mid-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/mid-drill-5#1",
+  "file": "content/drills/mid-drill-5.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/mode-drill-3#1",
+  "file": "content/drills/mode-drill-3.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/mode-drill-4#1",
+  "file": "content/drills/mode-drill-4.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/mround-drill-1#1",
+  "file": "content/drills/mround-drill-1.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result",
+   "shape: variant 3 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/mround-drill-2#1",
+  "file": "content/drills/mround-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/mround-drill-3#1",
+  "file": "content/drills/mround-drill-3.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/mround-drill-4#1",
+  "file": "content/drills/mround-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/or-drill-1#1",
+  "file": "content/drills/or-drill-1.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/or-drill-2#1",
+  "file": "content/drills/or-drill-2.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/or-drill-3#1",
+  "file": "content/drills/or-drill-3.yaml",
+  "problems": [
+   "shape: variant 3 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/or-drill-4#1",
+  "file": "content/drills/or-drill-4.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result",
+   "shape: variant 3 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/or-drill-5#1",
+  "file": "content/drills/or-drill-5.yaml",
+  "problems": [
+   "shape: variant 3 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/proper-drill-1#1",
+  "file": "content/drills/proper-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/proper-drill-2#1",
+  "file": "content/drills/proper-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/proper-drill-3#1",
+  "file": "content/drills/proper-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/proper-drill-4#1",
+  "file": "content/drills/proper-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/rank-drill-4#1",
+  "file": "content/drills/rank-drill-4.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/right-drill-1#1",
+  "file": "content/drills/right-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/right-drill-3#1",
+  "file": "content/drills/right-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/right-drill-4#1",
+  "file": "content/drills/right-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/right-drill-5#1",
+  "file": "content/drills/right-drill-5.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/round-drill-1#1",
+  "file": "content/drills/round-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/round-drill-2#1",
+  "file": "content/drills/round-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/round-drill-3#1",
+  "file": "content/drills/round-drill-3.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/round-drill-4#1",
+  "file": "content/drills/round-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/rounddown-drill-1#1",
+  "file": "content/drills/rounddown-drill-1.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/rounddown-drill-2#1",
+  "file": "content/drills/rounddown-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/rounddown-drill-3#1",
+  "file": "content/drills/rounddown-drill-3.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/rounddown-drill-4#1",
+  "file": "content/drills/rounddown-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/rounddown-drill-5#1",
+  "file": "content/drills/rounddown-drill-5.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/roundup-drill-1#1",
+  "file": "content/drills/roundup-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/roundup-drill-2#1",
+  "file": "content/drills/roundup-drill-2.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/roundup-drill-3#1",
+  "file": "content/drills/roundup-drill-3.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/roundup-drill-4#1",
+  "file": "content/drills/roundup-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/roundup-drill-5#1",
+  "file": "content/drills/roundup-drill-5.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/search-drill-1#1",
+  "file": "content/drills/search-drill-1.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/search-drill-2#1",
+  "file": "content/drills/search-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/search-drill-3#1",
+  "file": "content/drills/search-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/search-drill-4#1",
+  "file": "content/drills/search-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/search-drill-5#1",
+  "file": "content/drills/search-drill-5.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/substitute-drill-1#1",
+  "file": "content/drills/substitute-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/substitute-drill-2#1",
+  "file": "content/drills/substitute-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/substitute-drill-3#1",
+  "file": "content/drills/substitute-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/substitute-drill-4#1",
+  "file": "content/drills/substitute-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/sumifs-drill-2#1",
+  "file": "content/drills/sumifs-drill-2.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/switch-drill-1#1",
+  "file": "content/drills/switch-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/switch-drill-2#1",
+  "file": "content/drills/switch-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/switch-drill-3#1",
+  "file": "content/drills/switch-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/switch-drill-4#1",
+  "file": "content/drills/switch-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/textafter-drill-1#1",
+  "file": "content/drills/textafter-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/textafter-drill-2#1",
+  "file": "content/drills/textafter-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/textafter-drill-3#1",
+  "file": "content/drills/textafter-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/textafter-drill-4#1",
+  "file": "content/drills/textafter-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/textafter-drill-5#1",
+  "file": "content/drills/textafter-drill-5.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/textbefore-drill-1#1",
+  "file": "content/drills/textbefore-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/textbefore-drill-2#1",
+  "file": "content/drills/textbefore-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/textbefore-drill-3#1",
+  "file": "content/drills/textbefore-drill-3.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/textbefore-drill-4#1",
+  "file": "content/drills/textbefore-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/textbefore-drill-5#1",
+  "file": "content/drills/textbefore-drill-5.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/trim-drill-1#1",
+  "file": "content/drills/trim-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/trim-drill-2#1",
+  "file": "content/drills/trim-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/trim-drill-3#1",
+  "file": "content/drills/trim-drill-3.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/trim-drill-4#1",
+  "file": "content/drills/trim-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/trim-drill-5#1",
+  "file": "content/drills/trim-drill-5.yaml",
+  "problems": [
+   "shape: variant 2 does not change the expected result",
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/unique-drill-4#1",
+  "file": "content/drills/unique-drill-4.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/upper-drill-1#1",
+  "file": "content/drills/upper-drill-1.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/upper-drill-2#1",
+  "file": "content/drills/upper-drill-2.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/upper-drill-4#1",
+  "file": "content/drills/upper-drill-4.yaml",
+  "problems": [
+   "coverage: only 4 correct formulas checked in Excel"
+  ]
+ },
+ {
+  "screen": "drill/vlookup-drill-4#1",
+  "file": "content/drills/vlookup-drill-4.yaml",
+  "problems": [
+   "shape: variant 3 does not change the expected result",
+   "shape: variant 5 does not change the expected result"
+  ]
+ },
+ {
+  "screen": "drill/xlookup-drill-4#1",
+  "file": "content/drills/xlookup-drill-4.yaml",
+  "problems": [
+   "shape: variant 1 does not change the expected result"
+  ]
  }
 ]

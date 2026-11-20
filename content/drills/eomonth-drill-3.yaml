@@ -1,0 +1,41 @@
+id: eomonth-drill-3
+slug: eomonth-drill-3
+level: 2
+title: Months from a cell
+updated: 2026-11-19
+checkedInExcel: 2026-11-19
+function: EOMONTH
+screens:
+  - prompt: In D2, use EOMONTH to return the last day of the month that is the number of months in C2 after the start date in B2.
+    rows:
+      - [Contract, Start, Months, Ends]
+      - [C-7, 46091, 6, null]
+    answerCell: D2
+    expected: 46295
+    variants:
+      - set: {C2: 12}
+        expected: 46477
+      - set: {C2: 1}
+        expected: 46142
+    answer: =EOMONTH(B2,C2)
+    requiredFunctions:
+      - EOMONTH
+    hints:
+      nudge: The number of months can come from a cell.
+      rule: EOMONTH(B2,C2) follows whatever C2 holds.
+    misses:
+      value: Six months after March 2026 ends on 30 September 2026, date number 46295.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This drill asks for EOMONTH.
+      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+    accept:
+      - =EOMONTH(B2,C2)
+    reject:
+      - formula: =EOMONTH(B2,6)
+        rule: fragile
+      - formula: =EOMONTH(C2,B2)
+        rule: value
+      - formula: =46295
+        rule: required-function
+      - formula: =EOMONTH(B2,C2
+        rule: syntax

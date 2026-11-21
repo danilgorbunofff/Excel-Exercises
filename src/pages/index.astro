@@ -223,14 +223,6 @@ const audiences: { title: string; text: string }[] = [
           <div class="how-example">
             <h3 id="check">A wrong answer tells you why</h3>
             <MissExample screen={missScreen} formula="=SUM(B2:B4)" />
-            <p>
-              Here someone typed <code>=SUM(B2:B4)</code> for the total in B6. The check outlines the
-              range the formula read in blue, marks the answer cell in red, and names what went wrong.
-            </p>
-            <p>
-              It looks at the method as well as the result, so typing the numbers in by hand or
-              picking the wrong range does not pass.
-            </p>
           </div>
         )
       }

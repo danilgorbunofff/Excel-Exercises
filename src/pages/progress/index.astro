@@ -76,6 +76,7 @@ const drills = (await drillTasks()).map((d, i) => ({
         </div>
         <div class="heat-months" aria-hidden="true" data-heat-months></div>
         <div class="heat" role="img" aria-label="No practice yet" data-heat></div>
+        <div class="heat-tip" aria-hidden="true" data-heat-tip><strong></strong><span></span></div>
         <p class="heat-legend" aria-hidden="true">
           Less <i></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i> More
         </p>
@@ -234,6 +235,7 @@ const drills = (await drillTasks()).map((d, i) => ({
     }
   }
   .p-heat {
+    position: relative;
     display: grid;
     gap: var(--space-2);
     min-width: 0;
@@ -273,7 +275,97 @@ const drills = (await drillTasks()).map((d, i) => ({
   .heat-legend i {
     aspect-ratio: 1;
     border-radius: 2px;
-    background: var(--header);
+    background: var(--header);  }
+  .heat :global(i) {
+    transition:
+      transform 160ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 160ms ease-out;
+  }
+  .heat :global(i[data-tip]):hover {
+    position: relative;
+    z-index: 1;
+    transform: scale(1.12);
+    box-shadow:
+      0 0 0 2px var(--surface),
+      0 0 0 3.5px var(--primary),
+      0 4px 10px rgb(0 0 0 / 0.2);
+  }
+  .heat-tip {
+    position: absolute;
+    z-index: 2;
+    display: grid;
+    gap: 2px;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    border-radius: var(--radius-l);
+    background: var(--heading);
+    color: var(--surface);
+    box-shadow:
+      0 2px 4px rgb(0 0 0 / 0.12),
+      0 12px 28px rgb(0 0 0 / 0.22);
+    text-align: left;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-100%) scale(0.94);
+    transform-origin: var(--arrow, 50%) 100%;
+    transition:
+      opacity 140ms ease-out,
+      transform 180ms cubic-bezier(0.34, 1.4, 0.64, 1),
+      visibility 140ms;
+  }
+  .heat-tip.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-100%) scale(1);
+    transition:
+      opacity 140ms ease-out,
+      transform 180ms cubic-bezier(0.34, 1.4, 0.64, 1),
+      left 140ms cubic-bezier(0.22, 1, 0.36, 1),
+      top 140ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .heat-tip::after {
+    content: "";
+    position: absolute;
+    top: calc(100% - 4px);
+    left: var(--arrow, 50%);
+    width: 8px;
+    height: 8px;
+    border-right: 1px solid rgb(255 255 255 / 0.1);
+    border-bottom: 1px solid rgb(255 255 255 / 0.1);
+    background: var(--heading);
+    transform: translateX(-50%) rotate(45deg);
+    transition: left 140ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .heat-tip strong {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--size-s);
+  }
+  .heat-tip strong::before {
+    content: "";
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 3px;
+    background: var(--dot);
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.25);
+  }
+  .heat-tip span {
+    font-size: var(--size-xs);
+    opacity: 0.7;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .heat-tip,
+    .heat-tip.show,
+    .heat-tip::after,
+    .heat :global(i) {
+      transition: none;
+    }
+    .heat :global(i[data-tip]):hover {
+      transform: none;
+    }
   }
   .heat :global(i.future) {
     background: transparent;
@@ -514,14 +606,13 @@ const drills = (await drillTasks()).map((d, i) => ({
      dialog that asks before anything goes. */
   .clear {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--space-3) var(--space-5);
-    padding: var(--space-4) var(--space-5);
-    border: 1px solid var(--rule);
+    gap: var(--space-4);
+    padding: var(--space-5);
+    border: 1px dashed var(--rule);
     border-radius: var(--radius-l);
-    background: var(--surface);
+    text-align: center;
   }
   .clear h2,
   .clear-dialog h2 {
@@ -543,7 +634,7 @@ const drills = (await drillTasks()).map((d, i) => ({
     background: var(--miss-tint);
   }
   .clear-status {
-    flex-basis: 100%;
+    margin: 0;
     font-weight: 600;
   }
   .clear-status:empty,

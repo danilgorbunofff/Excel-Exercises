@@ -23,7 +23,7 @@ screens:
       value: C-104 is Stanton Vets, whose region is East.
       syntax: "Check the brackets and commas. XLOOKUP follows the pattern `=XLOOKUP(lookup_value, lookup_array, return_array)`."
       reference: Look up B2 in E2:E5 and return from G2:G5.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =XLOOKUP(B2,$E$2:$E$5,$G$2:$G$5)
       - =xlookup(b2,e2:e5,g2:g5)

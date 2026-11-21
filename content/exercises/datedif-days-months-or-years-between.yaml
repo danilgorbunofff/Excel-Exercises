@@ -23,7 +23,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. DATEDIF follows the pattern `=DATEDIF(start_date, end_date, unit)`."
       required-function: Subtracting the two dates gives 790 days. DATEDIF with the "Y" unit turns that into complete years.
       reference: Point at B2 and C2, so the second employee needs no new formula.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =DATEDIF(B2,C2,"Y")
       - =DATEDIF(B2,C2,"y")
@@ -59,7 +59,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. DATEDIF follows the pattern `=DATEDIF(start_date, end_date, unit)`."
       required-function: DAYS counts days. DATEDIF with the "M" unit counts complete months.
       reference: Read Grace's start and the review date from B2 and C2.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =DATEDIF(B2,C2,"M")
       - =DATEDIF(B2,C2,"m")

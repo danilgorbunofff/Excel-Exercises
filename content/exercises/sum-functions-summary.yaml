@@ -26,7 +26,7 @@ screens:
       nudge: One function adds the whole amount column.
       rule: SUM adds every number in a range and skips text and empty cells. Point it at the column rather than typing the numbers.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: 320 + 250 + 180 + 300 + 400 is 1450.
       syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
       required-function: Add the column with one SUM rather than a chain of + signs.
@@ -67,7 +67,7 @@ screens:
       nudge: Take the total of every row, then subtract the total of the North rows.
       rule: SUM gives the whole column and SUMIF gives the rows that meet one condition. Subtracting one from the other leaves the rows that do not match.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: 1450 in total minus 900 of North sales leaves 550.
       syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
       required-function: "Use both functions: SUM for the whole column, minus SUMIF for the North rows."

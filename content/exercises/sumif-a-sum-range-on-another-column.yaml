@@ -63,7 +63,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, [sum_range])`."
       required-function: Use SUMIF. SUM adds every score, and COUNTIF counts the matches instead of adding them.
       reference: Test the scores in the grid rather than a list of numbers typed into the formula.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SUMIF(B2:B6,">40")
       - =sumif(b2:b6,">40")

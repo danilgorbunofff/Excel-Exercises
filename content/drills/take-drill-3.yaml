@@ -36,7 +36,7 @@ screens:
     misses:
       value: The corner holds Ann East, Bo West.
       syntax: Check the brackets, commas and quotes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =TAKE(A2:C7,2,2)
     reject:

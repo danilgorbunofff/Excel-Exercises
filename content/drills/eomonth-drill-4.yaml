@@ -13,9 +13,9 @@ screens:
     answerCell: C2
     expected: 46812
     variants:
-      - set: {B2: 46456}
+      - set: { B2: 46456 }
         expected: 46446
-      - set: {B2: 46037}
+      - set: { B2: 46037 }
         expected: 46022
     answer: =EOMONTH(B2,-1)
     requiredFunctions:
@@ -27,7 +27,7 @@ screens:
       value: 2028 is a leap year, so February ends on the 29th, date number 46812.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for EOMONTH.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =EOMONTH(B2,-1)
     reject:

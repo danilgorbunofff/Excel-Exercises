@@ -28,7 +28,7 @@ screens:
       nudge: Pick the count function that ignores text and blanks.
       rule: COUNT counts cells that hold numbers and skips text and empty cells. COUNTA counts every cell that is not empty, text included.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: 6 rows hold a number. One cell is blank, one holds n/a, and neither is a number.
       syntax: "Check the brackets, commas and quote marks. COUNT follows the pattern `=COUNT(value1, [value2], ...)`."
       reference: Pass the units column from the grid rather than a typed list of quantities.
@@ -76,7 +76,7 @@ screens:
       nudge: Count every row with an item, then take away the rows that have a number.
       rule: COUNTA counts cells that are not empty, so it counts rows by their item name. COUNT counts only numbers, so the difference is the rows without one.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: 8 items and 6 numbers leave 2 rows without a number.
       syntax: "Check the brackets, commas and quote marks. COUNTA follows the pattern `=COUNTA(value1, [value2], ...)`."
       reference: Count the items and the numbers from the grid rather than typing 8 or 6.

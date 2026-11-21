@@ -24,7 +24,7 @@ screens:
       value: 47 falls between 31 and 61, so Arden Ltd is in the 31 to 60 band.
       syntax: "Check the brackets and commas. The pattern is `=XLOOKUP(lookup, lookup_array, return_array, , -1)`, with an empty fourth argument."
       reference: Look up B2 in the From day column F2:F5 and return from G2:G5.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =XLOOKUP(B2,$F$2:$F$5,$G$2:$G$5,,-1)
       - =xlookup(b2,f2:f5,g2:g5,,-1)
@@ -58,7 +58,7 @@ screens:
       value: Corwen Print and Dunmore Labs are over 60 days. Their balances of 950 and 2700 make 3650.
       syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, sum_range)`."
       reference: The days run down B2:B6 and the balances down C2:C6.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SUMIF(B2:B6,">60",C2:C6)
       - =sumif(b2:b6,">60",c2:c6)

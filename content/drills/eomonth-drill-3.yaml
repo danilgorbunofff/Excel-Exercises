@@ -13,9 +13,9 @@ screens:
     answerCell: D2
     expected: 46295
     variants:
-      - set: {C2: 12}
+      - set: { C2: 12 }
         expected: 46477
-      - set: {C2: 1}
+      - set: { C2: 1 }
         expected: 46142
     answer: =EOMONTH(B2,C2)
     requiredFunctions:
@@ -27,7 +27,7 @@ screens:
       value: 6 months after March 2026 is September, which ends on 30 September 2026, date number 46295.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for EOMONTH.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =EOMONTH(B2,C2)
     reject:

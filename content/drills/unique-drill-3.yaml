@@ -35,7 +35,7 @@ screens:
     misses:
       value: The customers who appear once are Core, Edge, Dyne.
       syntax: Check the brackets, commas and quotes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =UNIQUE(A2:A9,,TRUE)
       - =UNIQUE(A2:A9,FALSE,TRUE)

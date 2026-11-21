@@ -20,11 +20,11 @@ screens:
     answerCell: B9
     expected: 301.7
     variants:
-      - set: {B2: 401}
+      - set: { B2: 401 }
         expected: 302
-      - set: {A3: East}
+      - set: { A3: East }
         expected: 288.8
-      - set: {A8: East}
+      - set: { A8: East }
         expected: 338.8
     answer: =ROUND(AVERAGEIF(A2:A8,"East",B2:B8),1)
     requiredFunctions:
@@ -37,7 +37,7 @@ screens:
       value: The East average is 301.67, which rounds to 301.7.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for AVERAGEIF and ROUND.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =ROUND(AVERAGEIF(A2:A8,"East",B2:B8),1)
     reject:

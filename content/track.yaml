@@ -168,7 +168,7 @@ topics:
       - Weight a cost by quantity and find a top customer's share
   - slug: interview-fpa
     title: FP&A interview
-    summary: Year to date, run rate, roll ups and headcount cost, as in a planning and analysis test.
+    summary: Year to date, run rate, roll-ups and headcount cost, as in a planning and analysis test.
     group: interview
     assessment: finance
     learn:

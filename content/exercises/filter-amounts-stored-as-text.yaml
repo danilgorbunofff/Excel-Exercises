@@ -59,7 +59,7 @@ screens:
     misses:
       value: "Six orders are over 1,000: 1003, 1005, 1007, 1011, 1015 and 1017. Order 1009 for 980 is text, and it is not over 1,000."
       syntax: "Write the conversion before the test: `--D2:D19>1000`."
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=FILTER(A2:A19,--D2:D19>1000)"
       - "=FILTER(A2:A19,D2:D19*1>1000)"

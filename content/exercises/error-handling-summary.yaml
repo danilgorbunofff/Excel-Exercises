@@ -27,7 +27,7 @@ screens:
       nudge: The prompt wants any failure caught, not only a missing match.
       rule: "IFERROR replaces every kind of error with its second argument. IFNA replaces only `#N/A`."
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: Q-9 is not in A2:A7, so the lookup fails and the answer is no match.
       syntax: "Check the brackets, commas and quote marks. IFERROR follows the pattern `=IFERROR(value, value_if_error)`."
       reference: Read the code from A8 so the answer follows the cell.
@@ -69,7 +69,7 @@ screens:
       nudge: Dividing by an empty cell gives an error that IFNA does not catch.
       rule: "Dividing by zero or by an empty cell gives `#DIV/0!`. IFERROR catches it and shows the fallback, while IFNA lets it through."
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: Row 4 is C-3 at 30 with no units recorded, so the division fails and the answer is no units.
       syntax: "Check the brackets, commas and quote marks. IFERROR follows the pattern `=IFERROR(value, value_if_error)`."
       reference: Divide the price in B4 by the units in C4, both read from the grid.

@@ -29,7 +29,7 @@ screens:
       nudge: Combine the two tests first, then let an IF turn the answer into a word.
       rule: AND returns TRUE only when every test holds. IF then shows one text result for TRUE and another for FALSE, with text in double quotes.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: The total of 150 is over 100 and the lowest count, 18, is at least 15, so B9 shows PASS.
       syntax: 'Both tests go inside AND, and AND goes inside IF: `=IF(AND(test1,test2),"PASS","FAIL")`.'
       reference: Read the total from B8 and the units from B2:B7.
@@ -72,7 +72,7 @@ screens:
       nudge: Check that the average is a number before you round it, and show none otherwise.
       rule: ISNUMBER returns TRUE for a number and FALSE for an error, so it can guard an IF. ROUND takes a number and the count of decimals to keep.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: The six prices total 25.9, an average of 4.3167, which rounds to 4.3.
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
       reference: Average C2:C7, the price column.

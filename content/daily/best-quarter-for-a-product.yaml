@@ -27,7 +27,7 @@ screens:
       value: Blender's best quarter is Q2, with 118.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=INDEX(B1:E1,MATCH(MAX(INDEX(B2:E5,MATCH(G2,A2:A5,0),0)),INDEX(B2:E5,MATCH(G2,A2:A5,0),0),0))"
       - "=index(b1:e1,match(max(index(b2:e5,match(g2,a2:a5,0),0)),index(b2:e5,match(g2,a2:a5,0),0),0))"

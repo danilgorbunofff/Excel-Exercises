@@ -37,7 +37,7 @@ screens:
       value: 3 of 7 stores have no report, a share of about 0.43.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for COUNTBLANK and COUNTA.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =COUNTBLANK(B2:B8)/COUNTA(A2:A8)
     reject:

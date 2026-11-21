@@ -75,7 +75,7 @@ for (const d of batch) {
     misses["forbidden-function"] = d.forbiddenMiss;
   if (variants.length > 0 || reject.some((r) => r.rule === "fragile"))
     misses.fragile =
-      "The data can change, so the formula has to work the result out from the cells, not from values you can see.";
+      "The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.";
   const screen = {
     prompt: d.prompt,
     rows: d.rows,

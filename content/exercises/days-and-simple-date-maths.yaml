@@ -23,7 +23,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. DAYS follows the pattern `=DAYS(end_date, start_date)`."
       required-function: This exercise asks for DAYS. Give it the end date in C2, then the start date in B2.
       reference: Pass C2 and B2, so the second milestone fills down from the same pattern.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =DAYS(C2,B2)
       - =days(c2,b2)

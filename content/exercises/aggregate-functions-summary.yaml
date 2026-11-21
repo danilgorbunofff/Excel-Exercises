@@ -24,7 +24,7 @@ screens:
       nudge: SUBTOTAL needs a number in front of the range to say which calculation to run.
       rule: SUBTOTAL takes a function number, then the range. 9 adds the values and leaves out rows hidden by a filter.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: 20 + 20 + 60 is 100.
       syntax: "Check the brackets, commas and quote marks. SUBTOTAL follows the pattern `=SUBTOTAL(function_num, ref1, [ref2], ...)`."
       required-function: The total under a table that may be filtered is a SUBTOTAL, with 9 for SUM.
@@ -62,7 +62,7 @@ screens:
       nudge: Build the price times quantity total with one function, the line total with another, then divide.
       rule: SUMPRODUCT multiplies two ranges row by row and adds the products. SUBTOTAL with 9 adds a column, and ROUND with 1 keeps one decimal place.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: 100 divided by 100 is 1, so the two routes agree.
       syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
       required-function: This exercise asks for SUMPRODUCT for the price-times-quantity total and SUBTOTAL for the line total.

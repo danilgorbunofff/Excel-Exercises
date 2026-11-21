@@ -24,7 +24,7 @@ screens:
       value: The five months add up to 255000, an average of 51000. Seven more months at 51000 is 357000, so the year is 612000.
       syntax: Check the brackets. The months left, 12 minus C2, need their own pair.
       reference: Point at the actuals in B2:B6 and the months closed in C2.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SUM(B2:B6)+AVERAGE(B2:B6)*(12-C2)
       - =sum(b2:b6)+average(b2:b6)*(12-c2)

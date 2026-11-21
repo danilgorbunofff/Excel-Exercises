@@ -13,7 +13,7 @@ screens:
     answerCell: C2
     expected: 9
     variants:
-      - set: {B2: 46173.99}
+      - set: { B2: 46173.99 }
         expected: 31
     answer: =DAY(B2)
     requiredFunctions:
@@ -25,7 +25,7 @@ screens:
       value: 6 pm on 9 May 2026 is still day 9 of the month.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for DAY.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =DAY(B2)
     reject:

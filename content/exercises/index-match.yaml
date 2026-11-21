@@ -26,7 +26,7 @@ screens:
       nudge: "Let MATCH find which row the ID is on, then let INDEX read the salary from that row."
       rule: "MATCH with a match type of 0 returns the position of a value in the search column. INDEX then returns the item at that position in the return column."
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: 88000 is Cy's salary, on row 4 of the sheet and third in C2:C6. Check which column INDEX reads and which one MATCH searches.
       syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
       required-function: This exercise asks for INDEX and MATCH together. MATCH finds the row of the ID, and INDEX reads the salary there.

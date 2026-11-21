@@ -27,7 +27,7 @@ screens:
       nudge: Add up the Sales spend lines first, then take the Sales budget away.
       rule: SUMIFS adds the spend where the cost centre matches D2. Subtract the budget in E2 after it, so overspends come out positive.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: Sales spent 4200 and 5300, which total 9500. Against a budget of 9000 that is 500 over.
       syntax: "Check the brackets and commas. SUMIFS follows the pattern `=SUMIFS(sum_range, criteria_range1, criteria1, ...)`."
       reference: Point at the budget in E2 rather than typing it, so a new budget flows through.
@@ -71,7 +71,7 @@ screens:
       nudge: Work out the IT variance as before, then divide it by the IT budget and round.
       rule: A variance share is the variance divided by the budget. ROUND with 3 as its second argument keeps three decimal places.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: IT spent 5700 against 6000, which is 300 under. 300 is 0.05 of the budget, so the share is -0.05.
       syntax: "Check the brackets and commas. ROUND follows the pattern `=ROUND(number, num_digits)`."
       reference: The IT budget is in E3, on the same row as the IT label in D3.

@@ -32,7 +32,7 @@ screens:
       value: 4 weights are from 10 to 20. 20 itself counts.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for COUNTIFS.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =COUNTIFS(B2:B8,">=10",B2:B8,"<=20")
     reject:

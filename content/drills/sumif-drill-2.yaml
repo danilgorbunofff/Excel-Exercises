@@ -33,7 +33,7 @@ screens:
       value: The amounts over 100 add up to 500. 100 itself is not over.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SUMIF.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SUMIF(B2:B8,">100")
       - =SUMIF(B2:B8,">100",B2:B8)

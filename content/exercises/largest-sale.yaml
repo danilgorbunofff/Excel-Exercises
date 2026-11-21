@@ -27,7 +27,7 @@ screens:
       required-function: This exercise asks for MAX. MIN returns the smallest sale.
       reference: Point at the sales in B2:B6 rather than typing them, and stop the range above B7.
       value: Check that the range includes every sale, down to B6.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =MAX(B2:B6)
       - =max(B2:B6)

@@ -23,7 +23,7 @@ screens:
       nudge: Test the visits before dividing, since dividing by zero gives an error.
       rule: IF can check the denominator first and return a word when it is zero. The division then runs only when there is something to divide by.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: With no visits the answer is the word n/a, not a number.
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
       reference: The visits figure for that rep is in B3.
@@ -66,7 +66,7 @@ screens:
       nudge: Check whether the name is in the list before looking it up.
       rule: COUNTIF returns 0 when a value is not in a range, so IF can test that count first. VLOOKUP with FALSE then runs only for a name that exists.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: Zed is not in the list, so the answer is the word not found.
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
       reference: The typed name is in E2.
@@ -110,7 +110,7 @@ screens:
       nudge: Check that the quantity is a number before multiplying.
       rule: ISNUMBER returns TRUE for a number and FALSE for text. Inside IF, it lets the multiplication run only when the quantity is a number.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: B3 holds the text n/a, so the line is worth 0.
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
       reference: The quantity is in B3.
@@ -156,7 +156,7 @@ screens:
       nudge: Both ranges must run from the first row of data to the last.
       rule: SUMIF takes the range to test, the condition, then the range to add. The two ranges should cover the same rows.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: The two North rows hold 100 and 150, which total 250.
       syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, [sum_range])`."
       reference: The amount column is B2:B5.
@@ -197,7 +197,7 @@ screens:
       nudge: A name error usually means Excel does not recognise the function name, so check the spelling.
       rule: Excel shows `#NAME?` when a function name is misspelt. AVERAGE adds the numbers in a range and divides by how many there are.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: The four scores total 339, so the average is 84.75.
       syntax: "Check the brackets, commas and quote marks. AVERAGE follows the pattern `=AVERAGE(number1, [number2], ...)`."
       reference: The score column is B2:B5.

@@ -25,7 +25,7 @@ screens:
       value: From character 6 on, CODE-ABC123 reads ABC123.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for MID.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =MID(A2,6,50)
     reject:

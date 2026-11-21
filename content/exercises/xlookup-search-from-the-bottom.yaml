@@ -28,7 +28,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. XLOOKUP follows the pattern `=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])`."
       required-function: Use XLOOKUP. VLOOKUP and MATCH return the first match, and XLOOKUP can search from the last row.
       reference: Point at A7 rather than typing the SKU, so the same formula works for A8.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =XLOOKUP(A7,A2:A6,B2:B6,,0,-1)
       - =xlookup(a7,a2:a6,b2:b6,,0,-1)

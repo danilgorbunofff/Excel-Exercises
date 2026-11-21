@@ -50,7 +50,7 @@ screens:
     misses:
       value: The largest East orders are Cy for 1300, Cy for 540 and Gus for 380.
       syntax: "Build it from the inside: `FILTER(...)`, then `SORT(that,2,-1)`, then `TAKE(that,3)`."
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - '=TAKE(SORT(FILTER(C2:D19,B2:B19="East"),2,-1),3)'
       - '=TAKE(SORTBY(FILTER(C2:D19,B2:B19="East"),FILTER(D2:D19,B2:B19="East"),-1),3)'

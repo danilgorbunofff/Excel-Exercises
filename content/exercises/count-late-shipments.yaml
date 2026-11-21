@@ -27,7 +27,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. COUNTIF follows the pattern `=COUNTIF(range, criteria)`."
       required-function: COUNT counts every number, early and on time included. COUNTIF counts only the late ones.
       reference: The days late run down D2:D7.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =COUNTIF(D2:D7,">0")
       - =countif(d2:d7,">0")
@@ -62,7 +62,7 @@ screens:
       syntax: Check the brackets. COUNTIF and the count you divide by each need their own pair.
       required-function: Let COUNTIF count the late orders, so the share updates when the data changes.
       reference: Point at the data rather than typing the counts.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =COUNTIF(D2:D7,">0")/COUNTA(A2:A7)
       - =countif(d2:d7,">0")/counta(a2:a7)
@@ -97,7 +97,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. AVERAGEIF follows the pattern `=AVERAGEIF(range, criteria, [average_range])`."
       required-function: A plain AVERAGE pulls in the on-time and early orders, which drags the figure down.
       reference: The days late run down D2:D7.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =AVERAGEIF(D2:D7,">0")
       - =averageif(d2:d7,">0")

@@ -25,7 +25,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. MID follows the pattern `=MID(text, start_num, num_chars)`."
       required-function: "Use both functions: FIND locates the hyphen, and MID reads the 4 digits after it."
       reference: The code is in A2.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =MID(A2,FIND("-",A2)+1,4)
       - =mid(a2,find("-",a2)+1,4)
@@ -63,7 +63,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. ROUND wraps the whole AVERAGEIFS call, and the 1 comes last: `=ROUND(number, num_digits)`."
       required-function: AVERAGE takes every row. Use AVERAGEIFS with the amounts first, then the region range and its condition.
       reference: The amounts to average are in C2:C5.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =ROUND(AVERAGEIFS(C2:C5,B2:B5,"N*"),1)
       - =round(averageifs(c2:c5,b2:b5,"n*"),1)

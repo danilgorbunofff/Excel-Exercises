@@ -26,7 +26,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. IFS follows the pattern `=IFS(logical_test1, value_if_true1, [logical_test2, value_if_true2], ...)`."
       required-function: This exercise asks for IFS, which takes several tests in one function.
       reference: Band the score in B3 rather than typing 78.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IFS(B3>=90,"A",B3>=80,"B",B3>=70,"C",TRUE,"D")
       - =ifs(b3>=90,"A",b3>=80,"B",b3>=70,"C",true,"D")
@@ -68,7 +68,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. IFS follows the pattern `=IFS(logical_test1, value_if_true1, [logical_test2, value_if_true2], ...)`."
       required-function: This exercise asks for IFS. Merit and Pass are two tests, and Resit is the TRUE fallback.
       reference: Label Cleo's score from B4.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IFS(B4>=90,"Merit",B4>=80,"Pass",TRUE,"Resit")
       - =ifs(b4>=90,"Merit",b4>=80,"Pass",true,"Resit")

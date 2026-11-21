@@ -53,7 +53,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, value_if_false)`."
       required-function: The answer is one of two words, so the comparison sits inside an IF.
       reference: "Use the label rolls row: B3, C3 and D3."
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IF(B3/C3<D3,"Reorder","OK")
       - =if(b3/c3<d3,"Reorder","OK")

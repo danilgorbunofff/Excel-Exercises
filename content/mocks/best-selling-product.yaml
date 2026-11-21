@@ -38,7 +38,7 @@ screens:
       value: Chair sold the most units, 515.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=INDEX(A2:A16,MATCH(MAX(B2:B16),B2:B16,0))"
       - "=index(a2:a16,match(max(b2:b16),b2:b16,0))"

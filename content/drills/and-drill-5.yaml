@@ -29,7 +29,7 @@ screens:
       value: The practical mark is 48, under 50, so the result is Resit.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for AND and IF.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IF(AND(B2>=50,C2>=50),"Pass","Resit")
     reject:

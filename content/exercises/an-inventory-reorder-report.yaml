@@ -30,7 +30,7 @@ screens:
       nudge: Work out the shortfall, then stop it from going below zero.
       rule: MAX returns the largest of its arguments. With 0 beside a subtraction, it returns the result when it is positive and 0 when it is negative.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: The reorder point of 10 less 4 on hand leaves 6.
       syntax: "Check the brackets, commas and quote marks. MAX follows the pattern `=MAX(number1, [number2], ...)`."
       reference: Stock on hand is in B2 and the reorder point is in C2.
@@ -80,7 +80,7 @@ screens:
       nudge: Compare the total of the reorder points with the total on hand, and keep the zero floor.
       rule: SUM adds a column, and MAX with 0 as one argument floors the difference of two totals at zero.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: The reorder points total 39 and the stock totals 27, which leaves 12.
       syntax: "Check the brackets, commas and quote marks. MAX follows the pattern `=MAX(number1, [number2], ...)`."
       reference: The stock column runs B2:B5.

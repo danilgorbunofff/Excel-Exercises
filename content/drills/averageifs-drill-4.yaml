@@ -33,7 +33,7 @@ screens:
       value: Blue's three scores average 82. The empty score is left out.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for AVERAGEIFS.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =AVERAGEIFS(C2:C8,A2:A8,F2)
     reject:

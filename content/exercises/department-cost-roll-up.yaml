@@ -60,7 +60,7 @@ screens:
       syntax: "Check the brackets and commas. ROUND follows the pattern `=ROUND(number, num_digits)`."
       required-function: Both totals come from SUMIFS, and the share is rounded with ROUND.
       reference: The amounts run down C2:C7.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =ROUND(SUMIFS(C2:C7,A2:A7,"Marketing",B2:B7,"Salaries")/SUMIFS(C2:C7,A2:A7,"Marketing"),2)
       - =round(sumifs(c2:c7,a2:a7,"marketing",b2:b7,"salaries")/sumifs(c2:c7,a2:a7,"marketing"),2)

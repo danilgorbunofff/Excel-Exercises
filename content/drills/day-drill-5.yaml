@@ -13,9 +13,9 @@ screens:
     answerCell: C2
     expected: Second half
     variants:
-      - set: {B2: 46280}
+      - set: { B2: 46280 }
         expected: First half
-      - set: {B2: 46266}
+      - set: { B2: 46266 }
         expected: First half
     answer: =IF(DAY(B2)<=15,"First half","Second half")
     requiredFunctions:
@@ -28,7 +28,7 @@ screens:
       value: 16 September is in the second half of the month.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for IF and DAY.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IF(DAY(B2)<=15,"First half","Second half")
       - =IF(DAY(B2)>15,"Second half","First half")

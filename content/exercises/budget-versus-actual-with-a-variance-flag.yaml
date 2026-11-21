@@ -24,7 +24,7 @@ screens:
       nudge: Take the difference between actual and budget, then divide it by the budget.
       rule: A variance as a share is actual minus budget, divided by budget. ROUND with 3 as its second argument keeps three decimal places.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: The variance of 100 divided by the budget of 2000 is 0.05.
       syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
       reference: The budget is in B2 and the actual in C2, on the same row.
@@ -70,7 +70,7 @@ screens:
       nudge: Make the variance positive whichever way it goes, then compare it with 10% of the budget.
       rule: ABS returns a number without its sign, so an overspend and an underspend of the same size compare alike. IF then returns one word when the test is true and another when it is false.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: A variance of 5% is within 10%, so the first line reads ok.
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
       reference: The budget is B2 and the actual C2, not the answer column.

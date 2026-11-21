@@ -27,7 +27,7 @@ screens:
       nudge: Total the North revenue and the North cost first, then work out the margin from those two totals.
       rule: SUMIF adds the values on rows that match one condition. Margin is revenue minus cost, divided by revenue, and IFERROR swaps any error for the value you give it.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: "Work in stages: North revenue, minus North cost, over North revenue, times 100. That is (2500 - 1380) / 2500 * 100 = 44.8."
       syntax: Check the brackets, commas and quote marks. IFERROR follows the pattern `=IFERROR(value, value_if_error)`.
       reference: Match on the region column and add the revenue column, so the answer follows the table.

@@ -6,7 +6,7 @@ title: Months well over budget
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In D14, count the months where spending was more than 10 per cent over budget.
+  - prompt: In D14, count the months where spending was more than 10% over budget.
     rows:
       - [Month, Budget, Actual, null]
       - [Jan, 4000, 4300, null]
@@ -31,13 +31,13 @@ screens:
         expected: 7
     answer: "=SUMPRODUCT(--(C2:C13>B2:B13*1.1))"
     hints:
-      nudge: Compare each month with its own budget times 1.1. Exactly 10 per cent over is not more than 10 per cent.
+      nudge: Compare each month with its own budget times 1.1. Exactly 10% over is not more than 10%.
       rule: A row-by-row test gives TRUE or FALSE per month. -- turns them into 1 and 0, and SUMPRODUCT adds them.
     misses:
-      value: 6 months were more than 10 per cent over. September was exactly 10 per cent over, so it does not count.
+      value: 6 months were more than 10% over. September was exactly 10% over, so it does not count.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=SUMPRODUCT(--(C2:C13>B2:B13*1.1))"
       - "=sumproduct(--(c2:c13>b2:b13*1.1))"

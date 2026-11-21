@@ -31,7 +31,7 @@ screens:
       value: Femi's extension is 3245.
       syntax: Check the brackets, commas and quotes.
       required-function: This task needs XLOOKUP.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=XLOOKUP(E2,A2:A7,C2:C7)"
       - "=xlookup(e2,a2:a7,c2:c7)"

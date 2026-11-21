@@ -25,7 +25,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. IFERROR follows the pattern `=IFERROR(value, value_if_error)`."
       required-function: "The lookup on its own returns `#N/A` in B5. IFERROR wraps that call and supplies the words."
       reference: Look up the SKU in A4, so a different SKU changes the answer.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IFERROR(VLOOKUP(A4,A2:B3,2,FALSE),"no price")
       - =iferror(vlookup(a4,a2:b3,2,false),"no price")

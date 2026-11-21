@@ -20,7 +20,7 @@ screens:
       nudge: One function jumps to the end of a month, counted from a start date.
       rule: EOMONTH takes a date and a number of months. 0 means the end of the same month.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: The contract starts on 12 March, so the month ends on 31 March, serial 46112.
       syntax: "Check the brackets and commas. EOMONTH follows the pattern `=EOMONTH(start_date, months)`."
       reference: Point at the start date in C2.
@@ -53,7 +53,7 @@ screens:
       nudge: Count the days used, divide by the days in the month, then multiply by the fee.
       rule: The month end minus the start date, plus 1, counts both days. DAY of the month end gives the number of days in the month.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: 12 to 31 March is 20 days out of 31, and 20 thirty-firsts of 3100 is 2000.
       syntax: Check the brackets. The days used need their own pair before the division.
       reference: Point at the fee in B2 and the start date in C2.

@@ -26,7 +26,7 @@ screens:
       nudge: Each row costs its heads times its cost per head. Add those five costs together in one step.
       rule: SUMPRODUCT multiplies the two ranges row by row and adds the results.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: The five rows cost 192000, 96000, 180000, 350000 and 90000, which is 908000.
       syntax: "Check the brackets and commas. SUMPRODUCT follows the pattern `=SUMPRODUCT(array1, array2)`."
       reference: The heads run down C2:C6 and the costs down D2:D6.
@@ -66,7 +66,7 @@ screens:
       nudge: Each row holds several heads, so add the heads on the senior rows rather than counting the rows.
       rule: SUMIFS or SUMIF adds the heads where the grade is Senior. COUNTIF would count rows, not people.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: Support has 2 senior heads and Engineering has 5, which makes 7.
       syntax: Check the brackets, commas and quote marks around Senior.
       reference: The heads run down C2:C6 and the grades down B2:B6.
@@ -102,7 +102,7 @@ screens:
       nudge: Take the total cost of the plan and share it over the total number of heads.
       rule: SUMPRODUCT gives the total cost. SUM of the heads gives the number of people. The first divided by the second is the weighted average.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: The plan costs 908000 for 20 heads, which is 45400 a head.
       syntax: Check the brackets. SUMPRODUCT and SUM each need their own pair.
       reference: The heads run down C2:C6 and the costs down D2:D6.

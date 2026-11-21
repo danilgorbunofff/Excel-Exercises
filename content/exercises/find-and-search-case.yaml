@@ -24,7 +24,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. FIND follows the pattern `=FIND(find_text, within_text, [start_num])`."
       required-function: This screen asks for FIND, which matches case. SEARCH ignores case.
       reference: The code is in A2.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =FIND("-",A2)
       - =find("-",a2)
@@ -61,7 +61,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. SEARCH follows the pattern `=SEARCH(find_text, within_text, [start_num])`."
       required-function: FIND matches case and finds no capital N in this label. SEARCH ignores case.
       reference: The label is in A2.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SEARCH("N",A2)
       - =search("n",a2)

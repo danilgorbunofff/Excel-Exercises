@@ -66,7 +66,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. SWITCH follows the pattern `=SWITCH(expression, value1, result1, [value2, result2], ..., [default])`."
       required-function: Use SWITCH, with one pair for each of the 3 tiers.
       reference: Match the tier in B3, a number, not the code beside it.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SWITCH(B3,1,"Bronze",2,"Silver",3,"Gold","None")
       - =switch(b3,1,"Bronze",2,"Silver",3,"Gold","None")

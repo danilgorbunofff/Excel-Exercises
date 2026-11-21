@@ -62,7 +62,7 @@ screens:
       syntax: "Check the brackets and operators. Every opening bracket needs a closing one."
       required-function: Add only the negative weeks, and let SUMIF do the adding.
       reference: Read the variances from the grid so the condition tests real cells.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =-SUMIF(B2:B6,"<0")
       - =-sumif(b2:b6,"<0")

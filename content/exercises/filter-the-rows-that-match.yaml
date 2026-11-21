@@ -61,7 +61,7 @@ screens:
     misses:
       value: Six orders are in the North region, two of them typed as north, and their reps are Ana, Di, Ana, Hal, Di and Kim.
       syntax: "Check the brackets and quotes. The pattern is `=FILTER(array, include)`."
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - '=FILTER(C2:C19,B2:B19="North")'
       - '=filter(c2:c19,b2:b19="north")'
@@ -115,7 +115,7 @@ screens:
     misses:
       value: "Three North orders reach 800: 1001, 1007 and 1017."
       syntax: "Put each test in its own brackets and multiply them: `(test1)*(test2)`."
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - '=FILTER(A2:A19,(B2:B19="North")*(D2:D19>=800))'
       - '=FILTER(A2:A19,(D2:D19>=800)*(B2:B19="North"))'

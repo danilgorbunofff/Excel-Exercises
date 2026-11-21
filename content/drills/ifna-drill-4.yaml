@@ -31,7 +31,7 @@ screens:
       value: Z99 is not in the list, so the cell shows a dash.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for IFNA, INDEX and MATCH.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IFNA(INDEX(B2:B5,MATCH(E2,A2:A5,0)),"-")
     reject:

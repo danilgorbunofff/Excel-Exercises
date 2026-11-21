@@ -24,7 +24,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. DATE follows the pattern `=DATE(year, month, day)`."
       required-function: This exercise asks for DATE. Build the date from B2, C2 and D2 rather than typing its serial.
       reference: Read the year, month and day from row 2, so the formula fills down to the other invoices.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =DATE(B2,C2,D2)
       - =date(b2,c2,d2)

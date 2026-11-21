@@ -34,7 +34,7 @@ screens:
       value: 76 is under 90 but at least 70, so the band is Good.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for IFS.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IFS(B2>=90,"Excellent",B2>=70,"Good",B2>=50,"Fair",TRUE,"Poor")
     reject:

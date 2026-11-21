@@ -54,7 +54,7 @@ export default [
     n: 2,
     level: 1,
     title: "Average of the large sales",
-    prompt: 'In B9, use AVERAGEIF to find the average of the sales in B2:B8 that are over 300.',
+    prompt: "In B9, use AVERAGEIF to find the average of the sales in B2:B8 that are over 300.",
     rows: [
       ["Region", "Sales"],
       ["East", 400],

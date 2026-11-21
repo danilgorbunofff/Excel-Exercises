@@ -32,7 +32,7 @@ screens:
       value: The scores run from 6.75 to 9, a gap of 2.25.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SUBTOTAL.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SUBTOTAL(4,B2:B6)-SUBTOTAL(5,B2:B6)
     reject:

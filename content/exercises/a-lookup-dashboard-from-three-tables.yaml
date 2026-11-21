@@ -25,7 +25,7 @@ screens:
       nudge: Find the position of the name in the rep column, then read the sales figure at that position.
       rule: MATCH with 0 as its last argument returns the position of an exact match in a range. INDEX returns the value at a given position in another range.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: Di is the fourth rep, and the fourth sales figure is 600.
       syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
       reference: The typed name is in F2.
@@ -68,7 +68,7 @@ screens:
       nudge: Find the rep's region first, then use that region to find the target.
       rule: An INDEX and MATCH pair can sit inside another one. The inner pair returns the region, and the outer MATCH finds that region in the target table.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: Di is in East, and the East target is 2000.
       syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
       reference: The typed name is in F7, below the rep list.

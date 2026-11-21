@@ -22,7 +22,7 @@ screens:
       required-function: Use IF, so the result changes when the score changes.
       reference: Point at the score in B2, so the result changes when the score does.
       value: Check the order. The result for a true test comes first, and the text must match Pass exactly.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - '=IF(B2>=50,"Pass","Fail")'
       - '=IF(B2<50,"Fail","Pass")'

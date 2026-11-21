@@ -22,7 +22,7 @@ screens:
       required-function: Use OR, since either test is enough.
       reference: Point at the order in B2 and the member column in C2.
       value: Check each test. The order is in B2 and the member answer is in C2.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - '=OR(B2>50,C2="Yes")'
       - '=OR(C2="yes",B2>50)'

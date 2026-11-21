@@ -21,7 +21,7 @@ import { proposeVariants } from "./lib/variant-search.ts";
 const ONLY = process.argv.find((a) => a.startsWith("--only="))?.slice(7);
 const APPLY = process.argv.includes("--apply");
 const FRAGILE =
-  "The data can change, so the formula has to work the result out from the cells, not from values you can see.";
+  "The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.";
 const TODAY = new Date().toISOString().slice(0, 10);
 
 const SKIPS = JSON.parse(readFileSync("tools/audit/variant-skips.json", "utf8")) as Record<

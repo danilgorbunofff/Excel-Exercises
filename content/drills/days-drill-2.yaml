@@ -25,7 +25,7 @@ screens:
       value: From 17 November to 25 December is 38 days.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for DAYS.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =DAYS(B2,A2)
     reject:

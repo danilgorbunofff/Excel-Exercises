@@ -59,7 +59,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, value_if_false)`."
       required-function: The test compares two SUMIFS totals inside an IF.
       reference: The quarters run down B2:B7.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IF(SUMIFS(C2:C7,B2:B7,"Q2")>SUMIFS(D2:D7,B2:B7,"Q2"),"Over","Under")
       - =if(sumifs(c2:c7,b2:b7,"q2")>sumifs(d2:d7,b2:b7,"q2"),"Over","Under")

@@ -14,7 +14,7 @@ screens:
     answerCell: C3
     expected: 1
     variants:
-      - set: {C2: 46381}
+      - set: { C2: 46381 }
         expected: 25
     answer: =DAY(C2)
     requiredFunctions:
@@ -26,7 +26,7 @@ screens:
       value: 1 December 2026 is day 1 of the month.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for DAY.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =DAY(C2)
     reject:

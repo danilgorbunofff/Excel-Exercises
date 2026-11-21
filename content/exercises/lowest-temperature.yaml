@@ -27,7 +27,7 @@ screens:
       required-function: Use MIN, which finds the smallest value in a range.
       reference: Point at the temperatures in B2 to B6 rather than typing them.
       value: Check that the range covers every night, from B2 to B6.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =MIN(B2:B6)
       - =MIN(B6,B5,B4,B3,B2)

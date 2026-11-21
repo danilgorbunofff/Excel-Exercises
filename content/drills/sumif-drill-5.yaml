@@ -34,7 +34,7 @@ screens:
       value: East sells 900 of 2450, a share of about 0.37.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SUMIF and SUM.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SUMIF(A2:A8,"East",B2:B8)/SUM(B2:B8)
     reject:

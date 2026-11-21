@@ -30,10 +30,10 @@ screens:
       nudge: Add the three largest revenues, then divide by the total.
       rule: LARGE(range, k) gives the k-th largest value, or SORT with TAKE gives the top rows. Divide their sum by the whole and multiply by 100.
     misses:
-      value: The top three bring 163400 of 282000, which is 57.9 per cent.
+      value: The top three bring 163400 of 282000, which is 57.9%.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=ROUND(SUM(TAKE(SORT(B2:B11,1,-1),3))/SUM(B2:B11)*100,1)"
       - "=round(sum(take(sort(b2:b11,1,-1),3))/sum(b2:b11)*100,1)"

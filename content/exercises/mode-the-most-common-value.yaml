@@ -27,7 +27,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. MODE follows the pattern `=MODE(number1, [number2], ...)`."
       required-function: The task asks for the most frequent size, not the middle or the largest.
       reference: Read the sizes from B2:B7, so a changed size updates the answer.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =MODE(B2:B7)
       - =mode(b2:b7)
@@ -65,7 +65,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. MODE follows the pattern `=MODE(number1, [number2], ...)`."
       required-function: MODE counts repeats, so it can return 2 while the median of the same column sits at 4.
       reference: Read the box counts from B2:B8 instead of typing them.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =MODE(B2:B8)
       - =mode(b2:b8)

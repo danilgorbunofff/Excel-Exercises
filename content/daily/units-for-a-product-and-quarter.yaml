@@ -27,7 +27,7 @@ screens:
       value: Toaster in Q3 sold 121.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=INDEX(B2:E5,MATCH(G2,A2:A5,0),MATCH(H2,B1:E1,0))"
       - "=index(b2:e5,match(g2,a2:a5,0),match(h2,b1:e1,0))"

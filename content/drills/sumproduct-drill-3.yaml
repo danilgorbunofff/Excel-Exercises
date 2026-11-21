@@ -31,7 +31,7 @@ screens:
       value: The weighted total is 1143 over 15 credits, which is 76.2.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SUMPRODUCT and SUM.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SUMPRODUCT(B2:B5,C2:C5)/SUM(C2:C5)
     reject:

@@ -14,7 +14,8 @@ const files = ROOTS.flatMap((r) =>
 // shortcut: regex, not a TS parser. Misses strings with nested quotes; upgrade to the TS compiler API if that bites.
 const LITERAL = /"((?:[^"\\\n]|\\.){8,})"|'((?:[^'\\\n]|\\.){8,})'|`((?:[^`\\]|\\.){8,})`/gu;
 // Prose: starts with a capital letter, has a space, and ends like a sentence.
-const isProse = (s: string) => /^[A-Z]/u.test(s) && /\s/u.test(s) && /[.?:]$|[a-z]$/u.test(s.trim());
+const isProse = (s: string) =>
+  /^[A-Z]/u.test(s) && /\s/u.test(s) && /[.?:]$|[a-z]$/u.test(s.trim());
 
 let total = 0;
 const list = process.argv.includes("--list");

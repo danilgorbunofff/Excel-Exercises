@@ -29,7 +29,7 @@ screens:
       value: 3.5 kg is over 1 but not over 5, so the cost is 7.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for IFS.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IFS(B2<=1,4,B2<=5,7,TRUE,12)
       - =IFS(B2<=1,4,B2<=5,7,B2>5,12)

@@ -25,7 +25,7 @@ screens:
       nudge: One function multiplies two columns row by row and adds up the results.
       rule: SUMPRODUCT takes ranges of the same size, multiplies the matching cells and returns the sum of those products.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: 10 times 2 is 20, 5 times 4 is 20 and 20 times 3 is 60, which total 100.
       syntax: "Check the brackets, commas and quote marks. SUMPRODUCT follows the pattern `=SUMPRODUCT(array1, [array2], ...)`."
       reference: Point at the price and quantity cells, not at numbers typed into the formula.
@@ -67,7 +67,7 @@ screens:
       nudge: An average that counts every unit is the total value divided by the total number of units.
       rule: A weighted average divides the sum of value times weight by the sum of the weights. ROUND with 1 as its second argument keeps one decimal place.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: 100 divided by 9 units is about 11.11, which rounds to 11.1.
       syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
       reference: Point at the price and quantity cells for both totals, not at typed numbers.

@@ -34,7 +34,7 @@ screens:
       value: Code C30 has 300 in the Stock column.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for VLOOKUP and MATCH.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =VLOOKUP(G2,A2:D7,MATCH(G1,A1:D1,0),FALSE)
     reject:

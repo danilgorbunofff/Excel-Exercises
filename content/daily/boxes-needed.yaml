@@ -24,7 +24,7 @@ screens:
     misses:
       value: 53 items need 4.42 boxes, so 5 boxes.
       syntax: Check the brackets, commas and quotes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       reference: Point at the cells, so the result follows the data when it changes.
     accept:
       - "=ROUNDUP(B2/C2,0)"

@@ -31,7 +31,7 @@ screens:
       value: 7002 appears twice, so the cell should say Duplicate.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - '=IF(COUNTIF(A2:A9,A5)>1,"Duplicate","Unique")'
       - '=if(countif(a2:a9,a5)>1,"Duplicate","Unique")'

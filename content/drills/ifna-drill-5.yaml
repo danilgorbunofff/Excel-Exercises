@@ -30,7 +30,7 @@ screens:
       value: B20 costs 3, and 4 of them cost 12.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for IFNA and VLOOKUP.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IFNA(VLOOKUP(E2,A2:B5,2,FALSE),0)*E3
       - =IFNA(VLOOKUP(E2,A2:B5,2,FALSE)*E3,0)

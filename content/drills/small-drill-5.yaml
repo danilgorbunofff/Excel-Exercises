@@ -37,7 +37,7 @@ screens:
       value: The fastest time is 37.6, which is Di's.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SMALL, INDEX and MATCH.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =INDEX(A2:A8,MATCH(SMALL(B2:B8,1),B2:B8,0))
     reject:

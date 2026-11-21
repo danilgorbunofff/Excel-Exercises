@@ -28,7 +28,7 @@ screens:
       value: 6 of the 8 places have a name.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=COUNTA(B2:B9)"
       - "=counta(b2:b9)"

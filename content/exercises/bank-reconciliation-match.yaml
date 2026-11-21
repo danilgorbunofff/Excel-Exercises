@@ -24,7 +24,7 @@ screens:
       nudge: The bank has a CHQ 2210, but check the amount as well as the reference.
       rule: COUNTIFS counts the bank lines where both the reference and the amount match. IF turns a count above 0 into Matched.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: The bank shows CHQ 2210 for 310, but the ledger has 300. The reference matches and the amount does not, so it is Missing.
       syntax: 'Check the brackets, commas and quote marks. The pattern is `=IF(COUNTIFS(refs, ref, amounts, amount)>0, "Matched", "Missing")`.'
       reference: Compare A6 and B6 with the bank columns E2:E5 and F2:F5.
@@ -64,7 +64,7 @@ screens:
       nudge: Add the ledger amounts only on the rows marked Missing.
       rule: SUMIF tests the match column and adds the ledger amounts beside it.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: CHQ 2209 for 760 and CHQ 2210 for 300 are missing, which is 1060 to explain.
       syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, sum_range)`."
       reference: The match results run down C2:C6 and the ledger amounts down B2:B6.

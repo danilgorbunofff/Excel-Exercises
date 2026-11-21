@@ -48,7 +48,7 @@ screens:
     misses:
       value: "Five invoices are over 30 days: V-02, V-03, V-06, V-08 and V-10."
       syntax: Check the brackets, commas and quotes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=FILTER(A2:A12,C2:C12>30)"
       - "=filter(a2:a12,c2:c12>30)"

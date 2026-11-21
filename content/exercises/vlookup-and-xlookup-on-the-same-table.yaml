@@ -27,7 +27,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. VLOOKUP follows the pattern `=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])`."
       required-function: Use VLOOKUP on this screen. XLOOKUP comes on the next one.
       reference: Take the SKU from B6, so a new SKU typed there gives its own price.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =VLOOKUP(B6,A2:C5,3,FALSE)
       - =vlookup(b6,a2:c5,3,false)

@@ -29,7 +29,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
       required-function: Add the 6 units with SUM inside the formula, then compare the total with 100.
       reference: Add the cells in B2:B7 rather than typing 150.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SUM(B2:B7)>100
       - =sum(b2:b7)>100
@@ -68,7 +68,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. AVERAGE follows the pattern `=AVERAGE(number1, [number2], ...)`."
       required-function: Use AVERAGE. The total of 150 answers a different question from the average.
       reference: Average the units in B2:B7.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =AVERAGE(B2:B7)>=20
       - =average(b2:b7)>=20

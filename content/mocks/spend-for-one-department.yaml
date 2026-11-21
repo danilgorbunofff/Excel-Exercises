@@ -31,7 +31,7 @@ screens:
       value: The four Ops orders add up to 835.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=SUMIF(B2:B9,E2,C2:C9)"
       - "=sumif(b2:b9,e2,c2:c9)"

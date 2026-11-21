@@ -27,7 +27,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
       required-function: Use INDEX with a MATCH for the row and a MATCH for the column. Typed positions such as 2 and 3 do not follow B5 and B6.
       reference: Read the region from B5 and the quarter from B6 so the sheet drives the answer.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =INDEX(B2:D4,MATCH(B5,A2:A4,0),MATCH(B6,B1:D1,0))
       - =index(b2:d4,match(b5,a2:a4,0),match(b6,b1:d1,0))

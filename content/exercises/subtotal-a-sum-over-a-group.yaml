@@ -58,7 +58,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. SUBTOTAL follows the pattern `=SUBTOTAL(function_num, ref1, [ref2], ...)`."
       required-function: Use SUBTOTAL, not MAX. The number in front of the range picks the largest value.
       reference: The prices live in B2:B4.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SUBTOTAL(4,B2:B4)
       - =subtotal(4,b2:b4)

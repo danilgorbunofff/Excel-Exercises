@@ -49,7 +49,7 @@ screens:
     misses:
       value: East reps over 300 are Ann, Cy.
       syntax: Check the brackets, commas and quotes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =FILTER(A2:A7,(B2:B7="East")*(C2:C7>300))
     reject:

@@ -32,7 +32,7 @@ screens:
       value: The seven open days average 442.857142857.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - '=AVERAGEIF(B2:B11,"<>0")'
       - '=averageif(b2:b11,"<>0")'

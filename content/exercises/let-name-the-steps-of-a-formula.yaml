@@ -6,7 +6,7 @@ topic: dynamic-arrays
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In F2, show the North region's share of all sales as a per cent figure with 1 decimal place, such as 12.5. Name the North total and the overall total inside the formula.
+  - prompt: In F2, show North's share of all sales to 1 decimal place, such as 12.5 for 12.5%. Name the North total and the overall total inside the formula.
     rows:
       - [Order, Region, Rep, Amount, null, null, null, null, null]
       - [1001, North, Ana, 820, null, null, null, null, null]
@@ -38,9 +38,9 @@ screens:
       nudge: Work out two totals and give each a name, then use the names to make the percentage.
       rule: LET(name1, value1, name2, value2, result) works out each value once and lets the last argument use the names. SUMIF ignores case, so north rows count.
     misses:
-      value: North sales are 4,540 of 14,120 in all, which is 32.2 per cent.
+      value: North sales are 4,540 of 14,120 in all, which is 32.2%.
       syntax: "LET takes pairs of name and value, then the result: `=LET(a,1,b,2,a+b)`."
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =LET(north,SUMIF(B2:B19,"North",D2:D19),total,SUM(D2:D19),ROUND(north/total*100,1))
       - =LET(total,SUM(D2:D19),north,SUMIF(B2:B19,"North",D2:D19),ROUND(100*north/total,1))

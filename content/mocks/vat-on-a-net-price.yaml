@@ -21,9 +21,9 @@ screens:
       nudge: The tax alone, not the price with tax.
       rule: The VAT is the net price times the rate.
     misses:
-      value: 20 per cent of 145 is 29.
+      value: 20% of 145 is 29.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=B2*B3"
       - "=b2*b3"

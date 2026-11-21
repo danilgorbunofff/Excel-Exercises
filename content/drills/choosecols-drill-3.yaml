@@ -25,7 +25,7 @@ screens:
       - [190]
       - [330]
     variants:
-      - set: {I1: 2}
+      - set: { I1: 2 }
         expected:
           - - East
           - - West
@@ -33,7 +33,7 @@ screens:
           - - North
           - - East
           - - West
-      - set: {I1: 1}
+      - set: { I1: 1 }
         expected:
           - - Ann
           - - Bo
@@ -50,7 +50,7 @@ screens:
     misses:
       value: Column 3 holds the sales 400, 250, 310, 520, 190, 330.
       syntax: Check the brackets, commas and quotes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =CHOOSECOLS(A2:C7,I1)
     reject:

@@ -26,7 +26,7 @@ screens:
       syntax: "Check the brackets and operators. Every opening bracket needs a closing one."
       required-function: LARGE returns one position at a time, so ask it twice and average the pair.
       reference: Both calls point at B2:B6, so no time is typed into the formula.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =(LARGE(B2:B6,1)+LARGE(B2:B6,2))/2
       - =(large(b2:b6,1)+large(b2:b6,2))/2
@@ -65,7 +65,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. RANK follows the pattern `=RANK(number, ref, [order])`."
       required-function: Once MEDIAN returns 57, RANK turns that 57 into third place.
       reference: Both functions read B2:B6, so the comparison stays inside the team.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =RANK(MEDIAN(B2:B6),B2:B6)
       - =rank(median(b2:b6),b2:b6)

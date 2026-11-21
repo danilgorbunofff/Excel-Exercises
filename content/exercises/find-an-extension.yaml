@@ -29,7 +29,7 @@ screens:
       required-function: Use VLOOKUP, which this exercise practises.
       reference: Point at the ID in B8, so the result updates when the ID changes.
       value: Count the columns from the left edge of the table. The extension is in the 4th column of A to D.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =VLOOKUP(B8,A2:D6,4,FALSE)
       - =VLOOKUP(B8,A2:D6,4,0)

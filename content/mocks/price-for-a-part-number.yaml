@@ -28,7 +28,7 @@ screens:
       value: P-140 costs 7.9.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=XLOOKUP(E2,A2:A6,C2:C6)"
       - "=xlookup(e2,a2:a6,c2:c6)"

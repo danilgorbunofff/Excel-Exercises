@@ -25,7 +25,7 @@ screens:
       nudge: Find the second-highest revenue first, then look up whose it is.
       rule: LARGE with 2 returns the second-highest value. MATCH with 0 finds its row, and INDEX reads the name there. XLOOKUP can do the last two steps at once.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: Kestrel Retail is first with 42500, so Linden Hotels is second with 27600.
       syntax: "Check the brackets and commas. The pattern is `=INDEX(names, MATCH(LARGE(revenue, 2), revenue, 0))`."
       reference: The names run down A2:A5 and the revenue down B2:B5.
@@ -65,7 +65,7 @@ screens:
       nudge: Take the highest revenue and divide it by the total of all revenue.
       rule: MAX returns the highest value and SUM the total. One divided by the other is the share.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: 42500 out of 100000 is 0.425, so the top customer brings in over two fifths of revenue.
       syntax: Check the brackets. Each function needs its own pair around its range.
       reference: The revenue runs down B2:B5.

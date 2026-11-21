@@ -27,7 +27,7 @@ screens:
       value: Month 14 of 2026 is February 2027, so the date number is 46428.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for DATE.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =DATE(A2,B2,C2)
       - =DATE(A2+1,B2-12,C2)

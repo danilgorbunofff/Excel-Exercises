@@ -34,7 +34,7 @@ screens:
       value: Months 1 to 5 add up to 224800.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - '=SUMIF(A2:A13,"<="&D2,B2:B13)'
       - '=sumif(a2:a13,"<="&d2,b2:b13)'

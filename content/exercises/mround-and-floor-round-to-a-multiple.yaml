@@ -54,7 +54,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. FLOOR follows the pattern `=FLOOR(number, significance)`."
       required-function: Only whole packs ship, so drop the part pack instead of rounding to the nearest one.
       reference: Read units and pack size from B2 and C2, so the second order is calculated the same way.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =FLOOR(B2,C2)
       - =floor(b2,c2)

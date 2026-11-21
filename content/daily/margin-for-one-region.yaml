@@ -29,10 +29,10 @@ screens:
       nudge: Total the region's revenue and cost first. Margin is the profit divided by the revenue.
       rule: Gross margin is (revenue minus cost) divided by revenue. LET can name the two totals so each is worked out once.
     misses:
-      value: West's revenue is 6000 and its cost 4245, so the margin is 29.3 per cent.
+      value: West's revenue is 6000 and its cost 4245, so the margin is 29.3%.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=LET(rev,SUMIF(A2:A9,F2,B2:B9),cost,SUMIF(A2:A9,F2,C2:C9),ROUND((rev-cost)/rev*100,1))"
       - "=let(rev,sumif(a2:a9,f2,b2:b9),cost,sumif(a2:a9,f2,c2:c9),round((rev-cost)/rev*100,1))"

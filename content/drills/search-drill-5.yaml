@@ -29,7 +29,7 @@ screens:
       value: The note contains URGENT, so the result is Yes.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SEARCH, ISNUMBER and IF.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IF(ISNUMBER(SEARCH("urgent",A2)),"Yes","No")
     reject:

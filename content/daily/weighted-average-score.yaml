@@ -30,7 +30,7 @@ screens:
       value: The four weighted modules give 7840 points over a weight of 100, which is 78.4.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUM(C2:C7),1)"
       - "=round(sumproduct(b2:b7,c2:c7)/sum(c2:c7),1)"

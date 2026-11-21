@@ -24,7 +24,7 @@ screens:
     misses:
       value: 27000 over 6 years is 4500 a year.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=(B2-B3)/B4"
       - "=(b2-b3)/b4"

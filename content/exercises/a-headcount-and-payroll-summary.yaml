@@ -25,7 +25,7 @@ screens:
       nudge: Each row's payroll is heads times salary, and one function multiplies and adds in one step.
       rule: SUMPRODUCT multiplies ranges of the same size row by row and adds the products.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: 135000 + 76000 + 82000 + 52000 comes to 345000.
       syntax: "Check the brackets, commas and quote marks. SUMPRODUCT follows the pattern `=SUMPRODUCT(array1, [array2], ...)`."
       reference: The headcount column is B2:B5.
@@ -69,7 +69,7 @@ screens:
       nudge: Divide the whole payroll by the number of heads, not by the number of rows.
       rule: The cost per head is the payroll total divided by the sum of the headcounts. ROUND with 0 as its second argument gives a whole number.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: 345000 divided by 8 heads comes to 43125.
       syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
       reference: Read the heads from B2:B5 in both halves.

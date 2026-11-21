@@ -35,7 +35,7 @@ screens:
       value: 74 falls in the band that starts at 60, so the grade is B.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for VLOOKUP.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =VLOOKUP(B2,E2:F4,2,TRUE)
       - =VLOOKUP(B2,E2:F4,2)

@@ -29,7 +29,7 @@ screens:
       nudge: MATCH finds the position of the item. INDEX returns the value at that position.
       rule: MATCH takes what to find, the range to search, then 0 for an exact match. INDEX takes a range and a position in it.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       syntax: Check that both functions close their brackets. MATCH sits inside INDEX.
       required-function: Use MATCH to find the row and INDEX to return the code.
       reference: Point at the codes in A2:A6 and the items in B2:B6. Keep the ranges clear of the answer in B9.

@@ -31,7 +31,7 @@ screens:
       value: The total is 530, and 20% of it is 106.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for LET.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =LET(total,SUM(B2:B6),total*0.2)
       - =LET(t,SUM(B2:B6),t*0.2)

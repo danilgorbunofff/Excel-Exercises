@@ -29,7 +29,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. COUNTIF follows the pattern `=COUNTIF(range, criteria)`."
       required-function: This exercise asks for COUNTIF, which counts the text that matches a pattern.
       reference: Match the pattern against the product column itself, not against the answer cell.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =COUNTIF(A2:A8,"Widget*")
       - =countif(a2:a8,"widget*")
@@ -70,7 +70,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. COUNTIF follows the pattern `=COUNTIF(range, criteria)`."
       required-function: This exercise asks for COUNTIF with a wildcard pattern.
       reference: Point the pattern at column A, where the names live.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =COUNTIF(A2:A8,"*B")
       - =countif(a2:a8,"*b")

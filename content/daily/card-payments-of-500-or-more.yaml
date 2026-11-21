@@ -49,7 +49,7 @@ screens:
     misses:
       value: "Five Card payments reach 500: Q-01, Q-04, Q-07, Q-09 and Q-12. Q-03 is text for 480, so it is not one of them."
       syntax: Check the brackets, commas and quotes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - '=FILTER(A2:A13,(B2:B13="Card")*(--C2:C13>=500))'
       - '=filter(a2:a13,(b2:b13="Card")*(--c2:c13>=500))'

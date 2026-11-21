@@ -30,7 +30,7 @@ screens:
       value: Pads is item number 4 in the list.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for MATCH.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =MATCH("Pads",A2:A7,0)
       - =match("pads",a2:a7,0)

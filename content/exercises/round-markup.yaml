@@ -26,7 +26,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
       required-function: This task needs SUM for the costs and ROUND for the 2 decimal places.
       reference: Point at B2:B4, so a changed cost changes the total.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =ROUND(SUM(B2:B4)*1.08,2)
       - =round(sum($B$2:$B$4)*1.08,2)

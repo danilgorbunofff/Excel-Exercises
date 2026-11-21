@@ -51,7 +51,7 @@ screens:
     misses:
       value: The East orders by value are 3009, 3003, 3007, 3001, 3011 and 3005.
       syntax: Check the brackets, commas and quotes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - '=SORTBY(FILTER(A2:A13,B2:B13="East"),FILTER(C2:C13,B2:B13="East"),-1)'
       - '=sortby(filter(a2:a13,b2:b13="East"),filter(c2:c13,b2:b13="East"),-1)'

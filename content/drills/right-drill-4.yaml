@@ -25,7 +25,7 @@ screens:
       value: The last two digits of 2026 are 26.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for RIGHT.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =RIGHT(A2,2)
     reject:

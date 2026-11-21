@@ -24,10 +24,10 @@ screens:
       nudge: Find which band 38 days falls in, then apply its rate to the amount.
       rule: An approximate VLOOKUP (TRUE) finds the band a number falls in. Multiply the amount by that rate, then round.
     misses:
-      value: 38 days is in the band from day 30, at 2.5 per cent, so the fee is 61.25.
+      value: 38 days is in the band from day 30, at 2.5%, so the fee is 61.25.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=ROUND(C2*VLOOKUP(B2,F2:G5,2,TRUE),2)"
       - "=round(c2*vlookup(b2,f2:g5,2,true),2)"

@@ -20,9 +20,9 @@ screens:
     answerCell: B9
     expected: 425
     variants:
-      - set: {B3: 600}
+      - set: { B3: 600 }
         expected: 460
-      - set: {B5: 100}
+      - set: { B5: 100 }
         expected: 393.333333333
     answer: =AVERAGEIF(B2:B8,">300")
     requiredFunctions:
@@ -34,7 +34,7 @@ screens:
       value: 400, 520, 330 and 450 average 425.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for AVERAGEIF.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =AVERAGEIF(B2:B8,">300")
       - =AVERAGEIF(B2:B8,">300",B2:B8)

@@ -25,7 +25,7 @@ screens:
       - [250, Bo]
       - [190, Ed]
     variants:
-      - set: {C3: 600}
+      - set: { C3: 600 }
         expected:
           - - 600
             - Bo
@@ -50,7 +50,7 @@ screens:
       value: Largest first, the sales are 520 Di, 400 Ann, 330 Flo, 310 Cy, 250 Bo, 190 Ed.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SORT and CHOOSECOLS.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SORT(CHOOSECOLS(A2:C7,3,1),1,-1)
     reject:

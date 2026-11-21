@@ -23,11 +23,11 @@ screens:
       nudge: Sales divided by leads, as a percentage.
       rule: Conversion is sales divided by leads, times 100, rounded to one decimal place.
     misses:
-      value: 97 of 1840 leads is 5.3 per cent.
+      value: 97 of 1840 leads is 5.3%.
       syntax: Check the brackets, commas and quotes.
       required-function: This task needs ROUND.
       reference: Point at the leads in B2 and the sales in C2, so the rate follows the data.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=ROUND(C2/B2*100,1)"
       - "=round(c2/b2*100,1)"

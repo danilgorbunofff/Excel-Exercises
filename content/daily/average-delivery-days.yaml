@@ -30,7 +30,7 @@ screens:
       value: The average is 6.2857..., which rounds to 6.3.
       reference: Point at the cells, so the result follows the data when it changes.
       syntax: Check the brackets, commas and quotes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=ROUND(AVERAGE(B2:B8),1)"
       - "=round(average(b2:b8),1)"

@@ -23,7 +23,7 @@ screens:
       nudge: Remove the extra spaces first, then fix the capital letters.
       rule: TRIM removes spaces at both ends and leaves single spaces between words. PROPER capitalises the first letter of each word and lowers the rest.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: With the extra spaces removed and each word capitalised, the name reads Ana Lopez.
       syntax: "Check the brackets, commas and quote marks. PROPER follows the pattern `=PROPER(text)`."
       reference: The imported name is in A2.
@@ -66,7 +66,7 @@ screens:
       nudge: Tidy the spaces first, swap each space for a dot, then make the text lower case.
       rule: SUBSTITUTE takes the text, the old text and the new text, and replaces every match. LOWER turns every letter into lower case.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: With the spaces tidied, ANA LOPEZ becomes ana.lopez.
       syntax: "Check the brackets, commas and quote marks. LOWER follows the pattern `=LOWER(text)`."
       reference: The imported name is in A2, at the top of the column.

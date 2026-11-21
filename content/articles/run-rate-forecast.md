@@ -1,6 +1,6 @@
 ---
 
-title: Full year forecast from the run rate
+title: Full-year forecast from the run rate
 description: Three ways to project a full year from the months you have, and when each one misleads.
 updated: 2026-11-16
 minutes: 4

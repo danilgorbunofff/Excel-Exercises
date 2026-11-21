@@ -22,7 +22,7 @@ screens:
       nudge: Two jobs, one inside the other. Strip the spaces, then change the case.
       rule: TRIM removes spaces at the start and end. UPPER turns every letter into a capital. Either can go inside the other.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: Without its spaces and in capitals, the code reads AB-1027.
       syntax: Check the brackets. Each function needs its own pair, one inside the other.
       reference: Point at the imported code in A2.
@@ -60,7 +60,7 @@ screens:
       nudge: The lookup fails on the raw code because of its spaces. Clean it inside the lookup.
       rule: XLOOKUP ignores the case of letters, but not spaces. TRIM inside XLOOKUP looks up the clean code.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: The clean code AB-1027 is on the first row of the price list, at 12.4.
       syntax: "Check the brackets and commas. The pattern is `=XLOOKUP(TRIM(code), codes, prices)`."
       reference: Look up A2 in D2:D4 and return from E2:E4.

@@ -42,7 +42,7 @@ screens:
     misses:
       value: Largest first, the sales are 520, 400, 330, 310, 250, 190.
       syntax: Check the brackets, commas and quotes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SORT(C2:C7,1,-1)
       - =SORT(C2:C7,,-1)

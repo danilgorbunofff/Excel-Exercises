@@ -27,7 +27,7 @@ screens:
       nudge: Wrap the lookup in a guard that replaces only the error for a missing match.
       rule: "VLOOKUP with FALSE returns `#N/A` when the code is missing. IFNA shows its second argument for `#N/A` and lets every other error through."
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: Q-9 is not in A2:A7, so the answer is not on the list.
       syntax: "Check the brackets, commas and quote marks. IFNA follows the pattern `=IFNA(value, value_if_na)`."
       reference: Read the code from A8 instead of typing Q-9 into the formula.
@@ -75,7 +75,7 @@ screens:
       nudge: Keep the same guard and lookup, and change only which code you look up.
       rule: VLOOKUP with FALSE returns the first exact match, reading down from the top. IFNA passes a found value through unchanged.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: A-1 first appears in row 2 at 10. The duplicate at row 5 holds 12 and is never reached.
       syntax: "Check the brackets, commas and quote marks. IFNA follows the pattern `=IFNA(value, value_if_na)`."
       reference: Take the code from A2 rather than typing A-1.

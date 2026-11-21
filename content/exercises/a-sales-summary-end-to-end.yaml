@@ -25,7 +25,7 @@ screens:
       nudge: Add up the amounts only on the rows where the region matches.
       rule: SUMIFS takes the range to add first, then pairs of a range to test and its condition. Text conditions go in double quotes.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: 1200 and 1450 are the two North rows, so the total is 2650.
       syntax: "Check the brackets, commas and quote marks. SUMIFS follows the pattern `=SUMIFS(sum_range, criteria_range1, criteria1, ...)`."
       reference: The amounts run down C2:C5 and the region labels down A2:A5.
@@ -68,7 +68,7 @@ screens:
       nudge: Work out both region totals, compare them, and let one function choose the word.
       rule: IF takes a test, the value when it is true and the value when it is false. The test can compare two formulas with a greater than sign.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: North totals 2650 and South totals 850, so the answer is North.
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
       reference: Both totals read the amount column, C2:C5.

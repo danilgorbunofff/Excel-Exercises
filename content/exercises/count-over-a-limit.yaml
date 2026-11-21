@@ -28,7 +28,7 @@ screens:
       required-function: Use COUNTIF with a condition, so the count updates when an amount changes.
       reference: Point at the amounts in B2:B7, not at B8.
       value: Check the condition, as in `">50"`. More than 100 leaves out an invoice for exactly 100.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - '=COUNTIF(B2:B7,">100")'
       - '=COUNTIF(B2:B7,"> 100")'

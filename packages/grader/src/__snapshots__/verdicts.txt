@@ -15,7 +15,7 @@ sales | SUM(B2:B5) | syntax [0-1] | Start the formula with =.
 sales | = | syntax [0-1] | The formula is empty after =.
 sales | =SUM(B2;B5) | syntax [7-8] | Use commas between arguments, not semicolons.
 sales | =SUM(B2:B5)/0 | value | B6 shows `#DIV/0!`: the formula divides by zero or by an empty cell.
-sales | =SUM(B2:B5)+B2:B3 | value | The formula returns several cells, but B6 holds one value.
+sales | =SUM(B2:B5)+B2:B3 | value | The formula returns several values, but this exercise expects one value in B6.
 sales | =SUM(B2:B5)&"" | value | B6 shows the text `"446"`, but this exercise expects a number.
 sales | =SUM(B2:B5)*total | syntax [12-17] | Excel reads total as a name. If you mean text, put it in quotes: `"total"`.
 sales | =ROUND(SUM(B2:B5)) | syntax [1-6] | ROUND needs 2 arguments.
@@ -37,7 +37,7 @@ lookup | =XLOOKUP(B4,A2:A4,B2:B4) | value | B6 shows `#N/A`: a lookup did not fi
 lookup | =XLOOKUP(A5,A2:A4,B2:B4) | value | B6 shows `#N/A`: a lookup did not find a match.
 lookup | =VLOOKUP(B5,A2:B4,2,FALSE) | required-function | This exercise asks for XLOOKUP, and the formula does not use it.
 lookup | =INDEX(B2:B4,MATCH(B5,A2:A4,0)) | required-function | This exercise asks for XLOOKUP, and the formula does not use it.
-lookup | =XLOOKUP(B5,A2:A4,A2:B4) | value | The formula returns several cells, but B6 holds one value.
+lookup | =XLOOKUP(B5,A2:A4,A2:B4) | value | The formula returns several values, but this exercise expects one value in B6.
 label | =IF(B1>=60,"Pass","Fail") | correct | Correct. B2 shows Pass.
 label | =IF(B1>=60,"pass","fail") | value | B2 shows pass. Check upper and lower case.
 label | =IF(B1>=60,Pass,Fail) | syntax [11-15] | Excel reads Pass as a name. If you mean text, put it in quotes: `"Pass"`.

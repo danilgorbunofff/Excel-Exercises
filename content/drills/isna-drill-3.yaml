@@ -19,13 +19,13 @@ screens:
     requiredFunctions:
       - ISNA
     hints:
-      nudge: 'Dividing by 0 gives `#DIV/0!`, not #N/A.'
+      nudge: "Dividing by 0 gives `#DIV/0!`, not #N/A."
       rule: "ISNA is TRUE only for #N/A; ISERROR is TRUE for any error."
     misses:
-      value: 'The error here is `#DIV/0!`, not #N/A, so the result is FALSE.'
+      value: "The error here is `#DIV/0!`, not #N/A, so the result is FALSE."
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for ISNA.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =ISNA(B2/C2)
     reject:

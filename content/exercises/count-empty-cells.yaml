@@ -28,7 +28,7 @@ screens:
       required-function: Use COUNTBLANK, which counts the empty cells.
       reference: Point at the owners in B2:B7, not at B8.
       value: Check that the range covers every task, from B2 to B7.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =COUNTBLANK(B2:B7)
       - =countblank(b2:b7)

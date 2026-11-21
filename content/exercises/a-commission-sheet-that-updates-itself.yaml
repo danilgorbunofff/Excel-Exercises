@@ -29,8 +29,8 @@ screens:
       nudge: Look up the rate the sales figure reaches in the tier table, then multiply the sales by it.
       rule: VLOOKUP with TRUE as its last argument finds the largest tier floor that is not above the value and returns the rate beside it. The floors must be sorted from smallest to largest.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: 4200 sits in the five per cent band, and five per cent of 4200 is 210.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+      value: 4200 sits in the 5% band, and 5% of 4200 is 210.
       syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
       reference: Start from the sales figure in B2.
     accept:
@@ -75,7 +75,7 @@ screens:
       nudge: The rate sits in the second column of the tier table, beside the floor the sales have reached.
       rule: VLOOKUP takes the value to find, the table, the column number to return and the match type. TRUE matches the largest floor at or below the value.
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: 4200 is past the 4000 floor, so the band pays 0.05.
       syntax: Check the brackets, commas and quote marks. VLOOKUP follows the pattern `=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])`.
       reference: The sales figure is in B2.

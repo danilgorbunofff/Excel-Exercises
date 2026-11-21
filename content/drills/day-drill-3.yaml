@@ -13,9 +13,9 @@ screens:
     answerCell: C2
     expected: 6
     variants:
-      - set: {E1: 28}
+      - set: { E1: 28 }
         expected: 9
-      - set: {B2: 46329}
+      - set: { B2: 46329 }
         expected: 22
     answer: =E1-DAY(B2)
     requiredFunctions:
@@ -28,7 +28,7 @@ screens:
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       required-function: This drill asks for DAY.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =E1-DAY(B2)
     reject:

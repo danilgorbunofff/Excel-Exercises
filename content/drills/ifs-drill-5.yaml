@@ -29,7 +29,7 @@ screens:
       value: Ann scores 85 with 6 years, so the level is Senior.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for IFS and AND.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IFS(AND(B2>=80,C2>=5),"Senior",B2>=80,"Mid",TRUE,"Junior")
     reject:

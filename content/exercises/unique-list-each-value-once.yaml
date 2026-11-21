@@ -48,7 +48,7 @@ screens:
     misses:
       value: "There are 4 regions: North, South, East and West. UNIQUE treats north and North as the same value."
       syntax: "The pattern is `=UNIQUE(array)`."
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=UNIQUE(B2:B19)"
       - "=unique(b2:b19)"
@@ -98,7 +98,7 @@ screens:
     misses:
       value: 11 different reps took orders. Ana, Bo, Cy, Di, Ed, Fay and Gus each took more than one.
       syntax: "Close each bracket: `=COUNTA(UNIQUE(range))`."
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=COUNTA(UNIQUE(C2:C19))"
       - "=counta(unique(c2:c19))"

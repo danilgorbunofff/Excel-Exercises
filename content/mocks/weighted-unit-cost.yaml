@@ -30,7 +30,7 @@ screens:
       value: The batches cost 24825 for 7400 units, which is 3.35 a unit.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=ROUND(SUMPRODUCT(B2:B7,C2:C7)/SUM(B2:B7),2)"
       - "=round(sumproduct(b2:b7,c2:c7)/sum(b2:b7),2)"

@@ -31,7 +31,7 @@ screens:
       value: 3 prices are over 20. A price of exactly 20 is not over.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for COUNTIF.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =COUNTIF(B2:B8,">"&D2)
     reject:

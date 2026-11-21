@@ -28,7 +28,7 @@ screens:
       nudge: "MATCH fails with `#N/A` when the code is missing, and one IS function tests for exactly that."
       rule: "ISNA returns TRUE only when its argument is `#N/A`. IF then gives the first word when the test is TRUE and the second when it is FALSE."
     misses:
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
       value: Q-9 is not in the code column, so the match fails and the IF shows missing, not found.
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
       reference: Search for the code held in A8 rather than typing Q-9.

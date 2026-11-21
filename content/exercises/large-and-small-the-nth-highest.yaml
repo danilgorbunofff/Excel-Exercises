@@ -26,7 +26,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. LARGE follows the pattern `=LARGE(array, k)`."
       required-function: This screen asks for LARGE. MAX gives only the slowest time, and SMALL counts from the fastest.
       reference: Point at the column of times instead of listing them inside the formula.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =LARGE(B2:B6,2)
       - =large(b2:b6,2)
@@ -64,7 +64,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. SMALL follows the pattern `=SMALL(array, k)`."
       required-function: This screen asks for SMALL. MIN gives only the cheapest quote, and LARGE counts from the most expensive.
       reference: Read the quotes from B2:B6, so the numbers live in one place.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SMALL(B2:B6,2)
       - =small(b2:b6,2)

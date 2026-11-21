@@ -30,7 +30,7 @@ screens:
       value: 380 is 120 under the budget, more than the limit of 100, so the flag is Check.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for ABS and IF.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IF(ABS(C2-B2)>D2,"Check","OK")
       - =IF(ABS(B2-C2)>D2,"Check","OK")

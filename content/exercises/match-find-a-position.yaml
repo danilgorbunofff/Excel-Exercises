@@ -27,7 +27,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. MATCH follows the pattern `=MATCH(lookup_value, lookup_array, [match_type])`."
       required-function: MATCH returns the month's position in the list. Returning the units beside it is INDEX's job.
       reference: Take the month from B6. With Mar typed into the formula, checking April means editing the formula instead of B6.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =MATCH(B6,A2:A5,0)
       - =match(b6,a2:a5,0)

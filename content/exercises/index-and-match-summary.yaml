@@ -26,7 +26,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
       required-function: This exercise asks for INDEX and MATCH. MATCH finds the band, and INDEX reads its rate from B2:B4.
       reference: Take the units from B5 so a new figure changes the rate without an edit to the formula.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =INDEX(B2:B4,MATCH(B5,A2:A4,1))
       - =index(b2:b4,match(b5,a2:a4,1))

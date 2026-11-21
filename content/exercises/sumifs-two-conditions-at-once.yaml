@@ -63,7 +63,7 @@ screens:
       syntax: "Check the brackets, commas and quote marks. SUMIFS follows the pattern `=SUMIFS(sum_range, criteria_range1, criteria1, ...)`."
       required-function: SUMIF takes one condition. Use SUMIFS, which takes both the status and the amount test.
       reference: Point the second condition at the amount column so the threshold is compared against real cells.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SUMIFS(C2:C6,B2:B6,"Shipped",C2:C6,">200")
       - =sumifs(c2:c6,b2:b6,"shipped",c2:c6,">200")

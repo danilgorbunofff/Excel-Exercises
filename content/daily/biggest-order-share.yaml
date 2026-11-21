@@ -29,10 +29,10 @@ screens:
       nudge: Find the biggest order and the total, then divide.
       rule: Divide the largest value by the sum, times 100 for a percentage, then round to one place.
     misses:
-      value: 2310 of 10140 is 22.8 per cent.
+      value: 2310 of 10140 is 22.8%.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=ROUND(MAX(B2:B11)/SUM(B2:B11)*100,1)"
       - "=round(max(b2:b11)/sum(b2:b11)*100,1)"

@@ -23,10 +23,10 @@ screens:
       nudge: Find the band 84000 falls in, then apply its rate.
       rule: An approximate match (TRUE) finds the largest band start not above the profit.
     misses:
-      value: 84000 is in the band from 50000, at 25 per cent, so the tax is 21000.
+      value: 84000 is in the band from 50000, at 25%, so the tax is 21000.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - "=B2*VLOOKUP(B2,E2:F4,2,TRUE)"
       - "=b2*vlookup(b2,e2:f4,2,true)"

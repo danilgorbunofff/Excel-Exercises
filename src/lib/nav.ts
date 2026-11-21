@@ -25,13 +25,13 @@ export const PRACTICE_NAV: readonly NavItem[] = [
     label: "Function practice",
     icon: "bolt",
     href: "/exercises/drills/",
-    description: "PRO: short tasks for one function or many, easy to hard.",
+    description: "Short tasks for one function or many. 10 free a day with an account.",
   },
   {
     label: "Learning tracks",
     icon: "route",
     href: "/exercises/tracks/",
-    description: "Exercises in a sensible order. Start here if formulas are new to you.",
+    description: "Exercises in teaching order. Start here if formulas are new to you.",
   },
   {
     label: "Daily exercise",

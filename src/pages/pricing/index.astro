@@ -64,7 +64,8 @@ const freeHas = [
 ];
 const freeLacks = ["PRO exercises", "Full mock assessments", "Certificates"];
 const proAdds = [
-  `${locked} PRO exercises: the rest of every track, with the work models and interview sets`,
+  `${locked} PRO exercises: the rest of every track, including the capstone tasks and interview sets`,
+  "Unlimited function practice",
   `${fullSets} full timed mock assessments, marked at the end`,
   "A certificate for each mock assessment you pass",
   "Advanced tracks as they arrive",
@@ -80,6 +81,7 @@ const compare: { group: string; rows: [string, Cell, Cell][] }[] = [
       ["PRO exercises", false, String(locked)],
       ["Learning tracks", `First ${perTrack} of each`, "Every exercise"],
       ["Daily exercise", true, true],
+      ["Function practice", "10 tasks a day", "Unlimited"],
       ["Hints and instant checks", true, true],
     ],
   },
@@ -111,7 +113,7 @@ const faq = [
   },
   {
     q: "Can I cancel?",
-    a: `Yes, at any time from your account. PRO stays until the end of the period you paid for, then the plan does not renew.${lifetime ? " Lifetime is one payment, so there is nothing to cancel." : ""}`,
+    a: `Yes, at any time from your account. The plan stops renewing, and PRO stays until the end of the period you paid for.${lifetime ? " Lifetime is one payment, so there is nothing to cancel." : ""}`,
   },
   ...(lifetime
     ? [
@@ -143,7 +145,7 @@ const faq = [
 >
   <header class="page-head">
     <h1>Choose your plan</h1>
-    <p class="lead">Start free. Go PRO for the longer exercises and timed mock assessments.</p>
+    <p class="lead">Start free. Go PRO for the rest of every track and the timed mock assessments.</p>
   </header>
 
   <p class="flash" role="status" data-flash hidden></p>
@@ -173,7 +175,7 @@ const faq = [
     <div class="cards">
       <section class="card-plan" aria-labelledby="free-title">
         <h2 id="free-title">Free</h2>
-        <p class="tagline">Everything you need to learn the basics.</p>
+        <p class="tagline">The first exercises of every track.</p>
         <div>
           <p class="price"><strong>$0</strong><span>forever</span></p>
           <p class="price-note">No card needed</p>

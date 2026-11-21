@@ -130,7 +130,7 @@ const columns = [
     display: inline-flex;
     align-items: center;
     gap: var(--space-1);
-    min-height: 2rem;
+    min-height: var(--target);
     padding: 0;
     border: 0;
     background: none;
@@ -190,9 +190,57 @@ const columns = [
     .track {
       display: none;
     }
-    th,
-    td {
-      padding-inline: var(--space-2);
+  }
+  /* Phones: each row is a list item, the title on the left at full width and
+     the level over the status on the right. As three columns the title got
+     85 px and wrapped to four lines. Sorting stays on wider screens. */
+  @media (max-width: 47.99rem) {
+    thead {
+      display: none;
+    }
+    tbody tr {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      grid-template-areas: "num title level" "num title state";
+      align-items: center;
+      padding: var(--space-3) var(--space-3) var(--space-3) 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    tbody tr:last-child {
+      border-bottom: 0;
+    }
+    tbody tr > * {
+      padding: 0;
+      border-bottom: 0;
+    }
+    tbody tr > th {
+      grid-area: title;
+      padding: 0 var(--space-3) 0 var(--space-4);
+    }
+    .num {
+      grid-area: num;
+      padding-left: var(--space-3);
+    }
+    td:last-child {
+      grid-area: level;
+      justify-self: end;
+    }
+    .state {
+      grid-area: state;
+      justify-self: end;
+      margin-top: var(--space-1);
+    }
+    /* Not started is the default, so it says nothing on a phone. */
+    .state :global(.state-tag:not([data-state])),
+    .state :global(.state-tag[data-state=""]) {
+      display: none;
+    }
+    .state :global(.state-tag) {
+      max-inline-size: none;
+      white-space: nowrap;
+    }
+    .state :global(.state-tag::after) {
+      display: none;
     }
   }
 </style>

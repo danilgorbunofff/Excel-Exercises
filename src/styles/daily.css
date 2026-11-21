@@ -18,6 +18,13 @@
 .d-main {
   min-width: 0;
 }
+/* Stacked, today's exercise comes first: the calendar would fill a phone's
+   whole first screen. */
+@media (max-width: 63.99rem) {
+  .d-main {
+    order: -1;
+  }
+}
 
 /* The strip of recent days on /account/: a row of a sheet. */
 .d-strip {
@@ -113,8 +120,8 @@ a.d-cell:focus-visible {
 .d-nav {
   display: grid;
   place-items: center;
-  width: 2rem;
-  height: 2rem;
+  width: var(--target);
+  height: var(--target);
   border: 1px solid var(--rule);
   border-radius: var(--radius-m);
   background: var(--surface);

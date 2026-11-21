@@ -116,6 +116,11 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
     </div>
   </div>
   <dialog id="menu" aria-label="Menu" closedby="any">
+    <!-- autofocus keeps focus off the search box, so phones do not raise the keyboard on open. -->
+    <button class="button button-secondary close-top" type="button" commandfor="menu" command="close" autofocus>
+      <Icon name="close" size={20} />
+      <span class="visually-hidden">Close menu</span>
+    </button>
     <HeaderSearch id="menu-search" />
     <nav class="menu-nav" aria-label="Main">
       {
@@ -165,9 +170,6 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
         <button class="button button-secondary" type="submit">Log out</button>
       </form>
     </section>
-    <button class="button button-secondary close" type="button" commandfor="menu" command="close">
-      Close
-    </button>
   </dialog>
 </header>
 
@@ -210,6 +212,8 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
     min-height: 4rem;
     margin: 0 auto;
     padding: 0 var(--space-6);
+    padding-inline: max(var(--space-6), env(safe-area-inset-left))
+      max(var(--space-6), env(safe-area-inset-right));
   }
   .brand {
     display: inline-flex;
@@ -425,7 +429,7 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
     gap: var(--space-5);
   }
   .signup {
-    min-height: 2.5rem;
+    min-height: var(--target);
     padding: 0 var(--space-4);
     font-size: var(--size-s);
   }
@@ -448,6 +452,8 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
     height: 100dvh;
     max-height: 100dvh;
     padding: var(--space-5);
+    padding-right: max(var(--space-5), env(safe-area-inset-right));
+    padding-bottom: max(var(--space-5), env(safe-area-inset-bottom));
     border: 0;
     background: var(--surface);
     color: var(--text);
@@ -483,10 +489,27 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
     display: flex;
     align-items: center;
     min-height: var(--target);
+    margin-left: calc(-1 * var(--space-3));
+    padding-left: var(--space-3);
+    border-left: 3px solid transparent;
     font-weight: 500;
+    color: var(--text);
+    text-decoration: none;
   }
-  dialog a[aria-current] {
+  dialog nav a[aria-current],
+  .menu-you a[aria-current] {
     font-weight: 700;
+    color: var(--heading);
+    border-left-color: var(--tab-active);
+  }
+  .close-top {
+    align-self: flex-end;
+    flex: none;
+    width: var(--target);
+    padding: 0;
+    margin: calc(-1 * var(--space-2)) calc(-1 * var(--space-2)) 0 0;
+    border-color: transparent;
+    background: transparent;
   }
   .menu-account {
     display: grid;
@@ -499,12 +522,17 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
     display: grid;
     margin-top: var(--space-2);
   }
-  .close {
-    margin-top: auto;
-  }
+  /* Phones and tablets: the search, nav and account buttons do not fit one row
+     below 64rem, so they all move into the Menu dialog. */
   @media (max-width: 63.99rem) {
-    .search-wide {
+    .search-wide,
+    .theme-wide,
+    .nav-wide,
+    .account {
       display: none;
+    }
+    .menu-wrap {
+      display: flex;
     }
   }
   @media (max-width: 47.99rem) {
@@ -515,14 +543,6 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
     }
     .brand {
       font-size: var(--size-base);
-    }
-    .theme-wide,
-    .nav-wide,
-    .account {
-      display: none;
-    }
-    .menu-wrap {
-      display: flex;
     }
   }
   /* Small phones: the logo, switch and Menu button all have to fit one row. */

@@ -25,6 +25,23 @@ const here = currentHref(PRACTICE_NAV, path);
   </ul>
 </nav>
 
+<script>
+  // On phones the row scrolls sideways; bring the current tab into view so
+  // Daily, Mock assessments and Progress are not marked off-screen.
+  // Measured after the web font loads: the fallback font's widths left the
+  // last tab 17 px short of the edge.
+  const current = document.querySelector<HTMLElement>(".practice-tabs [aria-current]");
+  const row = current?.closest("ul");
+  if (current && row) {
+    void document.fonts.ready.then(() => {
+      if (row.scrollWidth <= row.clientWidth) return;
+      const tab = current.getBoundingClientRect();
+      const box = row.getBoundingClientRect();
+      row.scrollLeft += tab.left - box.left - (box.width - tab.width) / 2;
+    });
+  }
+</script>
+
 <style>
   .practice-tabs {
     margin-top: var(--space-4);

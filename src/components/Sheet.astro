@@ -70,7 +70,7 @@ const kind = (v: unknown) =>
         autocapitalize="off"
         autocorrect="off"
         spellcheck="false"
-        enterkeyhint="done"
+        enterkeyhint="go"
         aria-describedby={verdictId}
         data-input
       />
@@ -172,6 +172,12 @@ const kind = (v: unknown) =>
     font-size: var(--size-s);
     font-weight: 600;
     cursor: pointer;
+  }
+  /* Touch screens get the full 44 px target; mice keep the slimmer band. */
+  @media (pointer: coarse) {
+    .reset {
+      min-height: var(--target);
+    }
   }
   .reset:hover {
     text-decoration: underline;

@@ -40,8 +40,14 @@ const noindex = hiddenFromSearch(Astro.url.pathname, siteConfig.accountsOpen);
 <html lang={siteConfig.lang}>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content"
+    />
     <meta name="color-scheme" content="light dark" />
+    <!-- The phone's browser bar matches the header (--surface in each theme). -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#161c26" media="(prefers-color-scheme: dark)" />
     <script is:inline>
       try {
         const t = localStorage.getItem("theme");
@@ -106,10 +112,14 @@ const noindex = hiddenFromSearch(Astro.url.pathname, siteConfig.accountsOpen);
     max-width: 80rem;
     margin: 0 auto;
     padding: 0 var(--space-4) var(--space-7);
+    /* viewport-fit=cover: keep clear of the notch on landscape phones. */
+    padding-inline: max(var(--space-4), env(safe-area-inset-left))
+      max(var(--space-4), env(safe-area-inset-right));
   }
   @media (min-width: 48rem) {
     main.wide {
-      padding-inline: var(--space-6);
+      padding-inline: max(var(--space-6), env(safe-area-inset-left))
+        max(var(--space-6), env(safe-area-inset-right));
     }
   }
   main.flush {

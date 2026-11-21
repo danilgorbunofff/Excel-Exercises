@@ -134,6 +134,12 @@ const data = JSON.stringify({ rows: walkthrough.rows, summaries, syntaxes }).rep
     font-size: var(--size-s);
     font-weight: 600;
   }
+  /* Touch screens get the full 44 px target; mice keep the slimmer band. */
+  @media (pointer: coarse) {
+    .reset.reset {
+      min-height: var(--target);
+    }
+  }
   .reset {
     min-height: 2.25rem;
     padding: 0 var(--space-3);

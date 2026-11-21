@@ -11,6 +11,7 @@ import {
   type SortDir,
   type SortKey,
 } from "../lib/catalogue.ts";
+import { collapse } from "./collapse.ts";
 import { readProgress } from "./progress.ts";
 import { paintStatus } from "./status.ts";
 
@@ -32,9 +33,16 @@ const table = document.querySelector<HTMLTableElement>("[data-exercise-table]");
 const count = document.querySelector<HTMLElement>("[data-filter-count]");
 const tbody = table?.tBodies[0];
 
-if (form && tbody) {
+if (form && table && tbody) {
   form.classList.add("ready");
   const rows = [...tbody.querySelectorAll<HTMLElement>("[data-row]")];
+  // Table order, so a sorted table keeps its first 20.
+  const cap = collapse(
+    table.closest(".table-wrap") ?? table,
+    () => [...tbody.querySelectorAll<HTMLElement>("[data-row]")],
+    20,
+    "exercises",
+  );
   const field = (name: string) =>
     form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | null;
   const params = new URLSearchParams(location.search);
@@ -57,11 +65,24 @@ if (form && tbody) {
       if (!el.hidden) shown += 1;
     }
     const filtered = Boolean(f.q.trim() || f.fn || f.level || f.track || f.progress);
+    cap(filtered);
     const line = countLine(shown, rows.length, filtered);
     if (count) count.textContent = line || `${rows.length} exercises`;
     const total = document.querySelector<HTMLElement>("[data-filter-total]");
     if (total) total.textContent = String(shown);
+    // The folded lists say on their button how many of them are set.
+    const set = [f.fn, f.level, f.track, f.progress].filter(Boolean).length;
+    if (moreLabel) moreLabel.textContent = set ? `More filters (${set})` : "More filters";
   };
+  const more = form.querySelector<HTMLButtonElement>("[data-more-toggle]");
+  const moreLabel = more?.querySelector("[data-more-label]");
+  more?.addEventListener("click", () => {
+    const open = form.classList.toggle("open");
+    more.setAttribute("aria-expanded", String(open));
+  });
+  // A link that arrives with ?fn= or ?track= opens the lists, so the set
+  // filter is in view.
+  if (["fn", "level", "track", "progress"].some((n) => params.get(n))) more?.click();
   form.addEventListener("input", apply);
   form.addEventListener("change", apply);
   form.addEventListener("submit", (e) => {
@@ -69,6 +90,8 @@ if (form && tbody) {
     apply();
   });
   form.addEventListener("reset", () => setTimeout(apply));
+  // Sorting re-orders the rows, so the cap is worked out again.
+  table.addEventListener("sorted", apply);
   apply();
 }
 
@@ -80,6 +103,7 @@ if (table && tbody) {
   const sort = () => {
     const sorted = [...rows].sort((a, b) => compare(rowOf(a), rowOf(b), key, dir));
     tbody.append(...sorted);
+    table.dispatchEvent(new Event("sorted"));
     for (const th of headers) {
       if (th.dataset["sortKey"] === key && key !== "order") th.setAttribute("aria-sort", dir);
       else th.removeAttribute("aria-sort");

@@ -589,6 +589,9 @@ const faq = [
   }
   .table-wrap {
     overflow-x: auto;
+    /* Chrome lets the collapsed table borders widen the page past the scroll box
+       when the table is wider than it; paint containment keeps them inside. */
+    contain: paint;
     border: 1px solid var(--rule);
     border-radius: var(--radius-l);
     background: var(--surface);
@@ -619,6 +622,27 @@ const faq = [
     width: 12rem;
     font-weight: 600;
     color: var(--heading);
+  }
+  /* Phones: all three columns fit, so Free and PRO sit side by side with no
+     sideways scroll hiding the PRO column. */
+  @media (max-width: 47.99rem) {
+    table {
+      min-width: 0;
+      font-size: var(--size-s);
+    }
+    th,
+    td {
+      padding: var(--space-3) var(--space-2);
+    }
+    th[scope="row"],
+    thead th:first-child,
+    .group th {
+      padding-left: var(--space-3);
+    }
+    td,
+    thead th:not(:first-child) {
+      width: 26%;
+    }
   }
   .group th {
     padding-top: var(--space-4);

@@ -555,6 +555,17 @@ const nextOf = (i: number) =>
   .exercise .answer-panel {
     grid-area: answer;
   }
+  /* Tablets in portrait still stack; the text keeps a readable 44rem measure
+     and the sheet gets room to breathe. */
+  @media (min-width: 48rem) and (max-width: 63.99rem) {
+    .exercise .task,
+    .exercise .details {
+      padding-inline: max(var(--space-6), calc((100% - 44rem) / 2));
+    }
+    .exercise .work {
+      padding: var(--space-5) var(--space-6);
+    }
+  }
   @media (min-width: 64rem) {
     main.exercise {
       grid-template-columns: minmax(20rem, var(--pane)) 0.75rem minmax(0, 1fr);

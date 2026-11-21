@@ -129,6 +129,8 @@ const haystack = (a: (typeof articles)[number]) =>
 <script>
   // Show one topic or all, and narrow by search words. The choice is kept in
   // the address (?topic=dates&q=sum), so a filtered list can be shared.
+  import { collapse } from "../../scripts/collapse.ts";
+
   const links = [...document.querySelectorAll<HTMLAnchorElement>("[data-topic-link]")];
   const groups = [...document.querySelectorAll<HTMLElement>("[data-group]")];
   const search = document.querySelector<HTMLElement>("[data-article-search]");
@@ -143,6 +145,13 @@ const haystack = (a: (typeof articles)[number]) =>
     const asked = params.get("topic") ?? "";
     let topic = groups.some((g) => g.dataset.group === asked) ? asked : "";
     input.value = params.get("q") ?? "";
+    // Phones: each topic shows its first 3 articles until a topic or search is chosen.
+    const caps = groups.flatMap((group) => {
+      const grid = group.querySelector(".grid");
+      if (!grid) return [];
+      const items = [...grid.querySelectorAll<HTMLElement>("li[data-search]")];
+      return [collapse(grid, () => items, 3, "articles")];
+    });
 
     const apply = () => {
       const words = input.value.toLowerCase().split(/\s+/).filter(Boolean);
@@ -163,6 +172,7 @@ const haystack = (a: (typeof articles)[number]) =>
         if (a.dataset.topicLink === topic) a.setAttribute("aria-current", "true");
         else a.removeAttribute("aria-current");
       }
+      for (const cap of caps) cap(Boolean(topic || words.length));
       if (count) count.textContent = `Showing ${shown} ${shown === 1 ? "article" : "articles"}`;
       if (empty) empty.hidden = shown > 0;
       const next = new URLSearchParams();
@@ -254,7 +264,7 @@ const haystack = (a: (typeof articles)[number]) =>
     display: flex;
     align-items: center;
     gap: var(--space-2);
-    min-height: 2.5rem;
+    min-height: var(--target);
     padding: 0 var(--space-3);
     border-radius: var(--radius-m);
     color: var(--text);

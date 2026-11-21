@@ -155,11 +155,15 @@ const slug = (c: string) => c.replaceAll(" ", "-").toLowerCase();
 
 <script>
   // Filters the function cards as you type. Without script the box searches the site.
+  import { collapse } from "../../scripts/collapse.ts";
+
   const form = document.querySelector<HTMLFormElement>("[data-fn-search]");
   const input = form?.querySelector("input");
   const count = document.querySelector<HTMLElement>("[data-fn-count]");
   const cards = [...document.querySelectorAll<HTMLElement>("[data-fn]")];
-  if (form && input && count) {
+  const grid = document.querySelector(".fn-grid");
+  if (form && input && count && grid) {
+    const cap = collapse(grid, () => cards, 12, "functions");
     const apply = () => {
       const words = input.value.toLowerCase().split(/\s+/u).filter(Boolean);
       let shown = 0;
@@ -172,6 +176,7 @@ const slug = (c: string) => c.replaceAll(" ", "-").toLowerCase();
           ? `Showing ${shown} of ${cards.length} functions.`
           : "No function matches. Press Enter to search the whole site."
         : "";
+      cap(words.length > 0);
     };
     input.addEventListener("input", apply);
     form.addEventListener("submit", (e) => {

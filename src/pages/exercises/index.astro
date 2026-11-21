@@ -136,28 +136,49 @@ const faq = [
         <p class="count" role="status" data-filter-count>{total} exercises</p>
         <label for="q">Find an exercise</label>
         <input id="q" name="q" type="search" autocomplete="off" spellcheck="false" placeholder="Title or function" />
-        <label for="progress">Progress</label>
-        <select id="progress" name="progress">
-          <option value="">All</option>
-          <option value="todo">Not completed</option>
-          <option value="done">Completed</option>
-        </select>
-        <label for="level">Difficulty</label>
-        <select id="level" name="level">
-          <option value="">All</option>
-          {Object.entries(LEVELS).map(([v, l]) => <option value={v}>{l}</option>)}
-        </select>
-        <label for="fn">Function</label>
-        <select id="fn" name="fn">
-          <option value="">All</option>
-          {functionNames.map((name) => <option value={name}>{name}</option>)}
-        </select>
-        <label for="track">Track</label>
-        <select id="track" name="track">
-          <option value="">All</option>
-          {tracks.map((t) => <option value={t.topic.slug}>{t.topic.title}</option>)}
-        </select>
-        <button class="button button-secondary" type="reset">Clear filters</button>
+        <!-- Phones fold the four lists behind this button; catalogue.ts runs it. -->
+        <button
+          class="button button-secondary more-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="more-filters"
+          data-more-toggle
+        >
+          <Icon name="filter" size={16} />
+          <span data-more-label>More filters</span>
+        </button>
+        <div class="more" id="more-filters">
+          <div class="field">
+            <label for="progress">Progress</label>
+            <select id="progress" name="progress">
+              <option value="">All</option>
+              <option value="todo">Not completed</option>
+              <option value="done">Completed</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="level">Difficulty</label>
+            <select id="level" name="level">
+              <option value="">All</option>
+              {Object.entries(LEVELS).map(([v, l]) => <option value={v}>{l}</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label for="fn">Function</label>
+            <select id="fn" name="fn">
+              <option value="">All</option>
+              {functionNames.map((name) => <option value={name}>{name}</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label for="track">Track</label>
+            <select id="track" name="track">
+              <option value="">All</option>
+              {tracks.map((t) => <option value={t.topic.slug}>{t.topic.title}</option>)}
+            </select>
+          </div>
+          <button class="button button-secondary" type="reset">Clear filters</button>
+        </div>
       </form>
     </aside>
   </div>
@@ -288,6 +309,39 @@ const faq = [
   }
   .filter .button {
     margin-top: var(--space-3);
+  }
+  .more {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .field {
+    display: grid;
+    gap: var(--space-2);
+  }
+  .more-toggle {
+    display: none;
+    gap: var(--space-2);
+  }
+  /* Phones: the search stays, the four lists fold behind "More filters", so
+     the first exercise is not 600 px down the page. */
+  @media (max-width: 47.99rem) {
+    .more-toggle {
+      display: inline-flex;
+    }
+    .filter:not(.open) .more {
+      display: none;
+    }
+  }
+  /* Tablets in portrait: the lists sit two by two instead of in one tall column. */
+  @media (min-width: 48rem) and (max-width: 63.99rem) {
+    .more {
+      grid-template-columns: 1fr 1fr;
+      column-gap: var(--space-4);
+    }
+    .more .button {
+      grid-column: 1 / -1;
+      justify-self: start;
+    }
   }
   .faq h2 {
     margin: 0 0 var(--space-1);

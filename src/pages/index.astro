@@ -341,7 +341,7 @@ const audiences: { title: string; text: string }[] = [
   }
   h1 {
     margin: 0;
-    font-size: 2.5rem;
+    font-size: var(--size-hero);
     font-weight: 700;
     line-height: 1.15;
     letter-spacing: -0.025em;
@@ -598,11 +598,17 @@ const audiences: { title: string; text: string }[] = [
     font-size: var(--size-l);
     color: inherit;
   }
-  @media (min-width: 48rem) {
-    h1 {
-      font-size: var(--size-hero);
-      line-height: 1.2;
+  /* Phones: the first 6 tracks (the "All tracks" link below has the rest) and
+     a shorter closing band. */
+  @media (max-width: 47.99rem) {
+    :global(.tracks[aria-labelledby="tracks"] > li:nth-child(n + 7)) {
+      display: none;
     }
+    .cta {
+      padding-block: var(--space-7);
+    }
+  }
+  @media (min-width: 48rem) {
     .stats-inner {
       grid-template-columns: repeat(4, 1fr);
     }

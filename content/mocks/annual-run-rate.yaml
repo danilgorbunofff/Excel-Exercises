@@ -20,7 +20,7 @@ screens:
         expected: 1100976
     answer: "=ROUND(AVERAGE(B2:B4)*12,0)"
     hints:
-      nudge: Average the three months, then scale up to twelve.
+      nudge: Average the three months, then scale up to 12 months.
       rule: A run rate is the average month times 12.
     misses:
       value: The three months average 81733.33, which is 980800 a year.

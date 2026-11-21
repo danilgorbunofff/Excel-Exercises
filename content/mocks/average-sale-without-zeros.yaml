@@ -27,7 +27,7 @@ screens:
     answer: '=AVERAGEIF(B2:B11,"<>0")'
     hints:
       nudge: Average only the days whose sales are not 0.
-      rule: 'A criteria such as "<>0" means not equal to 0.'
+      rule: 'A criterion such as "<>0" means not equal to 0.'
     misses:
       value: The seven open days average 442.857142857.
       syntax: Check the brackets, commas and quotes.

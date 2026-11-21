@@ -6,7 +6,7 @@ title: How many different customers
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In E2, count how many different customers placed orders.
+  - prompt: In E2, count how many different customers placed orders. Brio and brio are the same customer.
     rows:
       - [Order, Customer, Amount, null, null]
       - [501, Acme, 230, null, null]
@@ -28,7 +28,7 @@ screens:
       - { set: { B2: Elm, B8: Acme }, expected: 7 }
     answer: "=COUNTA(UNIQUE(B2:B13))"
     hints:
-      nudge: Make a list with each customer once, then count it. Brio and brio are the same customer.
+      nudge: Make a list with each customer once, then count it.
       rule: UNIQUE returns each value once, ignoring case. COUNTA or ROWS counts the list it returns.
     misses:
       value: "There are 7 different customers: Acme, Brio, Cobb, Dart, Elm, Fern and Gale."

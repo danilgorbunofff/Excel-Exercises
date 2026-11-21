@@ -1,11 +1,11 @@
 id: share-of-big-tickets
 slug: share-of-big-tickets
 level: 2
-title: Share of big tickets
+title: Share of slow tickets
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B12, show the share of tickets that took more than 48 hours to close, as a percentage rounded to one decimal place.
+  - prompt: In B12, show the share of tickets that took more than 48 hours to close, as a percentage rounded to one decimal place. Give it as a number such as 12.5, not 0.125.
     rows:
       - [Ticket, Hours]
       - [T1, 12]

@@ -26,7 +26,7 @@ screens:
     answer: '=COUNTIF(B2:B9,">1000")'
     hints:
       nudge: Count the amounts greater than 1000. Exactly 1000 is not over.
-      rule: 'A criteria such as ">1000" goes in quotes, with the comparison before the number.'
+      rule: 'A criterion such as ">1000" goes in quotes, with the comparison before the number.'
     misses:
       value: 4 invoices are over 1,000. I-3 is exactly 1,000, so it does not count.
       syntax: Check the brackets, commas and quotes.

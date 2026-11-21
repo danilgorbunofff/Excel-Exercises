@@ -6,7 +6,7 @@ title: Runner-up sales
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B10, show the second highest sales figure.
+  - prompt: In B10, show the second-highest sales figure. Tied figures count separately.
     rows:
       - [Rep, Sales]
       - [Ash, 5400]
@@ -25,12 +25,12 @@ screens:
       - { set: { B2: 7398, B9: 8289 }, expected: 7398 }
     answer: "=LARGE(B2:B9,2)"
     hints:
-      nudge: Two reps share the top figure. Count each copy.
+      nudge: Two reps share the top figure.
       rule: LARGE(range, k) returns the k-th largest value. Ties count as separate values.
     misses:
       value: Two reps sold 7200, so the second highest is also 7200.
       syntax: Check the brackets, commas and quotes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: This gives 7200 only because two reps tie for the top. When one rep leads alone, it must still return the second-highest figure.
       reference: Point at the cells, so the result follows the data when it changes.
     accept:
       - "=LARGE(B2:B9,2)"

@@ -6,7 +6,7 @@ title: Count the sign-ups
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B10, count how many people have signed up. Empty rows are free places.
+  - prompt: In B10, count how many people have signed up. An empty Name cell is a free place.
     rows:
       - [Place, Name]
       - [1, Ola]
@@ -25,7 +25,7 @@ screens:
       nudge: Count the cells in the Name column that are not empty.
       rule: COUNTA counts every cell that holds something, text included. COUNT counts numbers only.
     misses:
-      value: 6 of the eight places have a name.
+      value: 6 of the 8 places have a name.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

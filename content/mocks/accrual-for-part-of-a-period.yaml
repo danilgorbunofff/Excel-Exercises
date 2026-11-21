@@ -22,7 +22,7 @@ screens:
       nudge: The fee per day, times the days used.
       rule: Fee times days used, divided by days in the period.
     misses:
-      value: 38 of 91 days of 4550 is 1900.
+      value: 38 of the 91 days, at 4550 for the quarter, is 1900.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

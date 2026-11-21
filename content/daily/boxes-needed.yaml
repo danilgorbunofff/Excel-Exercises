@@ -20,7 +20,7 @@ screens:
     answer: "=ROUNDUP(B2/C2,0)"
     hints:
       nudge: Divide the items by the box size, then round up.
-      rule: ROUNDUP(number, 0) always rounds up to the next whole number, even from .1.
+      rule: ROUNDUP(number, 0) rounds any fraction up to the next whole number, even .1.
     misses:
       value: 53 items need 4.42 boxes, so 5 boxes.
       syntax: Check the brackets, commas and quotes.

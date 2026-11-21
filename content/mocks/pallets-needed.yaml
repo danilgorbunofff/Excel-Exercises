@@ -19,7 +19,7 @@ screens:
     answer: "=ROUNDUP(B2/C2,0)"
     hints:
       nudge: Divide the boxes by the pallet size, then round up.
-      rule: ROUNDUP(number, 0) always goes up to the next whole number.
+      rule: ROUNDUP(number, 0) rounds any fraction up to the next whole number.
     misses:
       value: 1730 boxes need 36.04 pallets, so 37.
       syntax: Check the brackets, commas and quotes.

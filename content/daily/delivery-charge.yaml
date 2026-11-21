@@ -6,7 +6,7 @@ title: Delivery charge
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In C2, charge 4.99 for delivery, or nothing when the order is 60 or more.
+  - prompt: In C2, charge 4.99 for delivery, or 0 when the order is 60 or more.
     rows:
       - [Order, Value, Delivery]
       - [W-77, 45, null]

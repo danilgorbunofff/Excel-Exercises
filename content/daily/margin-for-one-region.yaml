@@ -6,7 +6,7 @@ title: Margin for one region
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In G2, work out the gross margin of the region in F2 as a percentage, rounded to one decimal place.
+  - prompt: In G2, work out the gross margin of the region in F2 as a percentage, rounded to one decimal place. Give it as a number such as 12.5, not 0.125.
     rows:
       - [Region, Revenue, Cost, null, null, Region, "Margin %"]
       - [West, 1800, 1260, null, null, West, null]

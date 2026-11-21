@@ -5,7 +5,7 @@ title: Middle order value
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B12, find the middle order value, so one very large order does not pull it up.
+  - prompt: In B12, find the middle order value, so one very large order does not pull it up. With an even number of orders, average the two middle values.
     rows:
       - [Order, Value]
       - [O1, 45]

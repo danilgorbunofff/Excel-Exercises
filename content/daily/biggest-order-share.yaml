@@ -6,7 +6,7 @@ title: Biggest order's share
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In F2, show the biggest single order as a percentage of all orders, rounded to one decimal place.
+  - prompt: In F2, show the biggest single order as a percentage of all orders, rounded to one decimal place. Give it as a number such as 12.5, not 0.125.
     rows:
       - [Order, Amount, null, null, null, null]
       - [601, 840, null, null, null, null]

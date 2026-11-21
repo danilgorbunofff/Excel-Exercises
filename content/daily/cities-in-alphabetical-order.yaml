@@ -6,7 +6,7 @@ title: Cities in alphabetical order
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In E2, list each city once, from A to Z.
+  - prompt: In E2, list each city once, from A to Z. Treat Lima and lima as one city, written as it first appears.
     rows:
       - [Order, City, Amount, null, null]
       - [901, Oslo, 120, null, null]

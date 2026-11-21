@@ -5,7 +5,7 @@ title: Gross margin percent
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B5, work out the gross margin as a percentage of revenue, rounded to one decimal place.
+  - prompt: In B5, work out the gross margin as a percentage of revenue, rounded to one decimal place. Give it as a number such as 12.5, not 0.125.
     rows:
       - [Line, Q2]
       - [Revenue, 184500]

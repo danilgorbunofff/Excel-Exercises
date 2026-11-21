@@ -5,7 +5,7 @@ title: Forms returned
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B9, count the forms that have come back. An empty row means the form is not back yet.
+  - prompt: In B9, count the forms that have come back. An empty Returned by cell means the form is not back yet.
     rows:
       - [Form, Returned by]
       - [F1, Lea]
@@ -23,7 +23,7 @@ screens:
       nudge: Count the cells in the Returned by column that are not empty.
       rule: COUNTA counts every cell that holds something, names included.
     misses:
-      value: 5 of the seven forms have a name next to them.
+      value: 5 of the 7 forms have a name next to them.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
     accept:

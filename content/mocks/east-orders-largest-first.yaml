@@ -5,7 +5,7 @@ title: East orders, largest first
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In F2, list the order numbers from the East region, from the largest order to the smallest.
+  - prompt: In F2, list the order numbers from the East region, from the largest order to the smallest. Treat east and East as the same region.
     rows:
       - [Order, Region, Value, null, null, null]
       - [3001, East, 420, null, null, null]
@@ -46,7 +46,7 @@ screens:
           - [3005]
     answer: '=SORTBY(FILTER(A2:A13,B2:B13="East"),FILTER(C2:C13,B2:B13="East"),-1)'
     hints:
-      nudge: Keep the East rows, whatever their case, then order them by value.
+      nudge: Keep the East rows, then order them by value.
       rule: FILTER the rows first, then sort them by the value column with -1 for largest first.
     misses:
       value: The East orders by value are 3009, 3003, 3007, 3001, 3011 and 3005.

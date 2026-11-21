@@ -32,7 +32,7 @@ screens:
       value: The seven temperatures average 20.
       reference: Point at the cells, so the result follows the data when it changes.
       syntax: Check the brackets, commas and quotes.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: This gives 20 on this sheet by chance. When a temperature changes, it no longer returns the average.
     accept:
       - "=AVERAGE(B2:B8)"
       - "=average(b2:b8)"

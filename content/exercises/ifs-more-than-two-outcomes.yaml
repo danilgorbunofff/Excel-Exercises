@@ -23,8 +23,8 @@ screens:
       rule: IFS reads pairs of test and result and returns the result of the first test that is TRUE. A final TRUE test catches every score the earlier tests missed.
     misses:
       value: 78 is under 80 and at least 70, so the third pair answers C.
-      syntax: "=IFS(test 1, result 1, test 2, result 2, ..., TRUE, fallback): the pairs are read top to bottom."
-      required-function: Nested IFs would work, but this exercise wants the function built for several outcomes.
+      syntax: "Check the brackets, commas and quote marks. IFS follows the pattern `=IFS(logical_test1, value_if_true1, [logical_test2, value_if_true2], ...)`."
+      required-function: This exercise asks for IFS, which takes several tests in one function.
       reference: Band the score in B3 rather than typing 78.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -65,8 +65,8 @@ screens:
       rule: IFS stops at the first TRUE test, so the highest threshold goes first. A last pair whose test is TRUE gives the result for everything lower.
     misses:
       value: 85 is under 90 but at least 80, so the second pair returns Pass.
-      syntax: "=IFS(test 1, result 1, test 2, result 2, TRUE, fallback): three outcomes need two tests."
-      required-function: Merit and Pass are two tests, and Resit is the fallback that catches everything lower.
+      syntax: "Check the brackets, commas and quote marks. IFS follows the pattern `=IFS(logical_test1, value_if_true1, [logical_test2, value_if_true2], ...)`."
+      required-function: This exercise asks for IFS. Merit and Pass are two tests, and Resit is the TRUE fallback.
       reference: Label Cleo's score from B4.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -93,6 +93,6 @@ notes:
   syntax: IFS(test1, result1, test2, result2, ..., TRUE, fallback)
   example: '`=IFS(A1>=90,"A",A1>=80,"B",TRUE,"C")` with 85 in A1 gives B.'
   commonErrors:
-    - No test was TRUE and there was no TRUE fallback pair, so a score under the last band has nothing to return.
-    - The pairs are uneven and a test has no result of its own.
-    - The version of Excel in use has no IFS, or the name is mistyped.
+    - No test is TRUE and there is no TRUE fallback pair, so IFS returns `#N/A`.
+    - A test has no result of its own, and Excel refuses the formula for having too few arguments.
+    - The version of Excel in use has no IFS, or the name is mistyped, so the cell shows `#NAME?`.

@@ -6,7 +6,7 @@ topic: lookups
 updated: 2026-11-11
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B5, look up the month in B4 across the top row of B1:D3 and write that month's price.
+  - prompt: In B5, look up the month in B4 across the top row of B1:D3 and return that month's price.
     rows:
       - [Month, Jan, Feb, Mar]
       - [Units, 120, 180, 200]
@@ -21,10 +21,10 @@ screens:
       nudge: "The months run across the top row, so search across rather than down."
       rule: "HLOOKUP finds a value in the first row of a table and returns the item from the row number you name. FALSE asks for an exact match."
     misses:
-      value: That is the units figure. Row 3 of B1:D3 holds the price, so the third argument is 3.
+      value: Row 3 of B1:D3 holds the price, so the row number is 3. FALSE makes the month match exactly.
       syntax: "Check the brackets, commas and quote marks. HLOOKUP follows the pattern `=HLOOKUP(lookup_value, table_array, row_index_num, [range_lookup])`."
       required-function: HLOOKUP reads across a row. VLOOKUP would search column B for a month and find none.
-      reference: Take the month from B4, so the price answers the cell rather than a typed word.
+      reference: Take the month from B4 rather than typing it, so the price follows the cell.
     accept:
       - =HLOOKUP(B4,B1:D3,3,FALSE)
       - =hlookup(b4,b1:d3,3,false)
@@ -44,6 +44,6 @@ notes:
   syntax: HLOOKUP(lookup_value, table_array, row_index_num, [range_lookup])
   example: '`=HLOOKUP("Feb",A1:B2,2,FALSE)` with Jan and Feb in row 1 and 10 and 20 in row 2 gives 20.'
   commonErrors:
-    - The month is not in the first row of B1:D3, which leaves no column to read down.
-    - The row number is the word price rather than a number.
-    - The row number reaches below row 3 of B1:D3, so the answer sits outside the range.
+    - The month is not in the first row of B1:D3, so HLOOKUP returns `#N/A`.
+    - The row number is the word price rather than a number, so HLOOKUP returns `#VALUE!`.
+    - The row number is more than 3, the rows in B1:D3, so HLOOKUP returns `#REF!`.

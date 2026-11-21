@@ -26,7 +26,7 @@ screens:
     misses:
       value: A3 holds the word text, so the cell is not empty and the answer is FALSE.
       syntax: "Check the brackets, commas and quote marks. ISBLANK follows the pattern `=ISBLANK(value)`."
-      required-function: The question asks what is in the cell, so it needs a type test rather than a count.
+      required-function: This screen asks for ISBLANK, the test for an empty cell.
       reference: Point at A3, the cell the prompt names.
     accept:
       - =ISBLANK(A3)
@@ -62,7 +62,7 @@ screens:
     misses:
       value: A7 holds text, so the answer is FALSE, while the 12 in A2 would answer TRUE.
       syntax: "Check the brackets, commas and quote marks. ISNUMBER follows the pattern `=ISNUMBER(value)`."
-      required-function: Whether a cell holds a number is a question for ISNUMBER, not for a comparison with 0.
+      required-function: This screen asks for ISNUMBER, the test for a number.
       reference: Test A7, the row holding n/a.
     accept:
       - =ISNUMBER(A7)
@@ -79,10 +79,10 @@ screens:
       - { formula: =ISNUMBER(A7)/0, rule: value }
       - { formula: =ISNUMBER A7, rule: syntax }
 notes:
-  summary: The IS functions ask what kind of value a cell holds rather than how large it is. ISBLANK is TRUE only for a cell that was never filled.
+  summary: The IS functions ask what kind of value a cell holds rather than how large it is. ISBLANK is TRUE only for an empty cell, not for a formula that returns an empty string.
   syntax: ISBLANK(cell), =ISNUMBER(cell), =ISTEXT(cell) return a logical value
   example: "`=ISNUMBER(A1)` with n/a in A1 gives FALSE, while `=ISTEXT(A1)` gives TRUE."
   commonErrors:
-    - The logical answer was used in arithmetic, as when a TRUE is divided by zero.
+    - '`=A3=""` is used instead of ISBLANK, and it is also TRUE for a formula that returns an empty string.'
     - The function name was mistyped, and Excel returns `#NAME?`.
-    - The cell holds the characters FALSE typed in quotes, so a later IF reads a label where it expected a logical value.
+    - '`="FALSE"` gives the text FALSE, not the logical value FALSE.'

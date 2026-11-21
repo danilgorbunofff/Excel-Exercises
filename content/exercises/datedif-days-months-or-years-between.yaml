@@ -6,7 +6,7 @@ topic: dates
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: "The dates in B and C are serials, not text: put the complete years Ada has served into D2, counting only full years."
+  - prompt: "The dates in B and C are serial numbers, not text. In D2, find the complete years Ada has served by her review date."
     rows:
       - [Employee, Started, Review date, Years served]
       - [Ada Lovelace, 44562, 45352, null]
@@ -21,7 +21,7 @@ screens:
     misses:
       value: 1 January 2022 to 1 March 2024 is 2 whole years. The two months after that anniversary do not count.
       syntax: "Check the brackets, commas and quote marks. DATEDIF follows the pattern `=DATEDIF(start_date, end_date, unit)`."
-      required-function: Subtracting the two serials gives 790 days; the Y unit is what turns that into complete years.
+      required-function: Subtracting the two dates gives 790 days. DATEDIF with the "Y" unit turns that into complete years.
       reference: Point at B2 and C2, so the second employee needs no new formula.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -42,7 +42,7 @@ screens:
       - { formula: '=DATEDIF(B2,C2,"Y"', rule: syntax }
     variants:
       - { set: { C2: 45717 }, expected: 3 }
-  - prompt: "Different person, different unit: put the complete months since Grace started into D2."
+  - prompt: In D2, find the complete months from Grace's start date to her review date.
     rows:
       - [Employee, Started, Review date, Full months]
       - [Grace Hopper, 44197, 45352, null]
@@ -57,7 +57,7 @@ screens:
     misses:
       value: "1 January 2021 to 1 March 2024 is 38 whole months: 36 for the three years, then two more."
       syntax: "Check the brackets, commas and quote marks. DATEDIF follows the pattern `=DATEDIF(start_date, end_date, unit)`."
-      required-function: M counts complete months, not days divided by thirty.
+      required-function: DAYS counts days. DATEDIF with the "M" unit counts complete months.
       reference: Read Grace's start and the review date from B2 and C2.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -83,6 +83,6 @@ notes:
   syntax: DATEDIF(start, end, "unit")
   example: '`=DATEDIF(A1,B1,"M")` with 15 January 2024 in A1 and 14 April 2024 in B1 gives 2.'
   commonErrors:
-    - The end date falls before the start date, which leaves DATEDIF no positive interval to report.
-    - The unit in quotes is not Y, M, D, YM, MD or YD, which DATEDIF cannot count in.
-    - One of the dates is text that Excel cannot read as a date, so DATEDIF has no serial to compare.
+    - The end date falls before the start date, and DATEDIF returns `#NUM!`.
+    - The unit in quotes is not Y, M, D, YM, MD or YD, and DATEDIF returns `#NUM!`.
+    - One of the dates is text that Excel cannot read as a date, and DATEDIF returns `#VALUE!`.

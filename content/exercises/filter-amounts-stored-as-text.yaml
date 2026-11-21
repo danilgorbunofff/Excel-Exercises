@@ -81,5 +81,5 @@ notes:
   example: '`=--"980"` gives the number 980, so `--D2:D19>1000` tests real numbers.'
   commonErrors:
     - A text amount passes every greater-than test, so the list holds rows that should not be there.
-    - VALUE also converts text, but -- or *1 works on the whole column at once.
+    - "`VALUE(D2:D19)` converts the column too. The double minus and *1 are shorter ways to do the same."
     - A blank cell becomes 0, which is fine for a greater-than test.

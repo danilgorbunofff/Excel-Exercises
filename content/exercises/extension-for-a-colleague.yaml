@@ -48,4 +48,4 @@ notes:
   commonErrors:
     - Returning the wrong column gives the office instead of the extension.
     - "A name spelt differently from the list gives #N/A."
-    - The lookup and return ranges must have the same number of rows.
+    - "A return range with a different number of rows from the lookup range gives `#VALUE!`."

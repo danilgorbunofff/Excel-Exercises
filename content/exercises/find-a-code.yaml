@@ -32,7 +32,7 @@ screens:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       syntax: Check that both functions close their brackets. MATCH sits inside INDEX.
       required-function: Use MATCH to find the row and INDEX to return the code.
-      reference: Point at the codes in A2 to A6 and the items in B2 to B6, not at B9.
+      reference: Point at the codes in A2:A6 and the items in B2:B6. Keep the ranges clear of the answer in B9.
       value: Check each range. MATCH searches the items in column B, and INDEX returns from the codes in column A.
     accept:
       - =INDEX(A2:A6,MATCH(B8,B2:B6,0))
@@ -50,5 +50,5 @@ notes:
   syntax: INDEX(array, MATCH(lookup_value, lookup_array, 0))
   example: "`=INDEX(A2:A50,MATCH(E2,C2:C50,0))` finds E2 in column C and returns the value from column A."
   commonErrors:
-    - Leaving out the 0 in MATCH, so it looks for the nearest match.
+    - Leaving out the 0 in MATCH, so it does an approximate match that expects sorted data.
     - INDEX and MATCH ranges that start on different rows.

@@ -48,5 +48,5 @@ notes:
   syntax: VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])
   example: "`=VLOOKUP(E2,A2:C50,3,FALSE)` finds E2 in column A and returns the value from column C."
   commonErrors:
-    - Leaving out FALSE, so VLOOKUP looks for the nearest match instead of an exact one.
+    - Leaving out FALSE, so VLOOKUP does an approximate match and can return the wrong row from unsorted data.
     - Counting the column number from column A of the sheet rather than from the table's first column.

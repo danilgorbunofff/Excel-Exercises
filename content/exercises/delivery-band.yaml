@@ -45,7 +45,7 @@ screens:
 notes:
   summary: With TRUE or no last argument, VLOOKUP finds the band a value falls in. The first column must be sorted in ascending order.
   syntax: VLOOKUP(lookup_value, table_array, col_index_num, TRUE)
-  example: "`=VLOOKUP(73,A2:B6,2,TRUE)` with bands 0, 50, 70 and 90 in column A returns the row for 70."
+  example: "`=VLOOKUP(73,A2:B6,2,TRUE)` with the bands 0, 50, 70, 90 and 110 in A2:A6 returns the column B value on the 70 row."
   commonErrors:
     - Using FALSE, which gives #N/A when the value is between two bands.
     - A first column that is not sorted, which gives wrong results without an error.

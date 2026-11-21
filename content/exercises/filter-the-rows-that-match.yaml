@@ -138,4 +138,4 @@ notes:
   commonErrors:
     - '`#CALC!` means nothing passed the test. Give FILTER a third argument, such as "none", to show instead.'
     - "`#SPILL!` means a cell in the way holds data. Clear the cells below and to the right."
-    - The test and the array must have the same number of rows.
+    - A test with a different number of rows from the array gives `#VALUE!`.

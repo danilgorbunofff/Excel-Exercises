@@ -93,7 +93,7 @@ screens:
         rule: reference
       - formula: =IF COUNTIF(A2:A5,E2)=0,"not found",VLOOKUP(E2,A2:C5,3,FALSE)
         rule: syntax
-  - prompt: In D3, repair the line value so a quantity that is not a number contributes nothing instead of failing.
+  - prompt: In D3, repair the line value so a quantity that is not a number gives 0 instead of an error.
     rows:
       - [Item, Qty, Price, Value]
       - [bolt, 4, 2.5, null]
@@ -111,7 +111,7 @@ screens:
       rule: ISNUMBER returns TRUE for a number and FALSE for text. Inside IF, it lets the multiplication run only when the quantity is a number.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: A line with no usable quantity is worth nothing, so it contributes zero.
+      value: B3 holds the text n/a, so the line is worth 0.
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
       reference: The quantity is in B3.
     accept:
@@ -157,7 +157,7 @@ screens:
       rule: SUMIF takes the range to test, the condition, then the range to add. The two ranges should cover the same rows.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: A hundred and a hundred and fifty are the two North rows, so 250.
+      value: The two North rows hold 100 and 150, which total 250.
       syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, [sum_range])`."
       reference: The amount column is B2:B5.
     accept:
@@ -180,7 +180,7 @@ screens:
         rule: value
       - formula: =SUMIF A2:A5,"North",B2:B5
         rule: syntax
-  - prompt: In C2, repair the average so it stops reading a name error and reports the score column.
+  - prompt: In C2, repair the average of the score column, which shows a `#NAME?` error.
     rows:
       - [Name, Score, Answer]
       - [Ana, 82, null]
@@ -198,7 +198,7 @@ screens:
       rule: Excel shows `#NAME?` when a function name is misspelt. AVERAGE adds the numbers in a range and divides by how many there are.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: 339 across four names is 84.75.
+      value: The four scores total 339, so the average is 84.75.
       syntax: "Check the brackets, commas and quote marks. AVERAGE follows the pattern `=AVERAGE(number1, [number2], ...)`."
       reference: The score column is B2:B5.
     accept:
@@ -226,6 +226,6 @@ notes:
   syntax: "each error code names one break: a zero divisor, a missing key, text in arithmetic, a wrong range, a misspelling"
   example: '`=IF(B1=0,"n/a",A1/B1)` with 6 in A1 and 0 in B1 gives n/a instead of `#DIV/0!`.'
   commonErrors:
-    - A denominator is zero, so the division has no result and the cell needs a test in front of it.
-    - A lookup key is not in the table, which leaves no row to read, so the key has to be counted first.
-    - An operand is text where a number belongs, so the arithmetic needs a type test before it runs.
+    - A zero denominator gives `#DIV/0!`. Test it with IF before dividing.
+    - A lookup key that is not in the table gives `#N/A`. Count it with COUNTIF first.
+    - Text in arithmetic gives `#VALUE!`. Test the cell with ISNUMBER first.

@@ -28,8 +28,8 @@ screens:
       rule: "IFERROR replaces every kind of error with its second argument. IFNA replaces only `#N/A`."
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: Q-9 is not on the list, so the lookup fails and the net prints no match.
-      syntax: "=IFERROR(value, value_if_error): the second argument is the net."
+      value: Q-9 is not in A2:A7, so the lookup fails and the answer is no match.
+      syntax: "Check the brackets, commas and quote marks. IFERROR follows the pattern `=IFERROR(value, value_if_error)`."
       reference: Read the code from A8 so the answer follows the cell.
     accept:
       - =IFERROR(VLOOKUP(A8,A2:B7,2,FALSE),"no match")
@@ -98,6 +98,6 @@ notes:
   syntax: "IFERROR(value, fallback) catches everything; =IFNA(value, fallback) catches only #N/A"
   example: '`=IFERROR(1/0,"none")` gives none, while `=IFNA(1/0,"none")` still shows `#DIV/0!`.'
   commonErrors:
-    - C4 is blank, so the division has no divisor; only the wide net answers it with words.
-    - The lookup found no Q-9, the error IFNA is built to replace.
-    - The wide net reports a broken reference as no match, so a real formula fault passes for absent data.
+    - IFNA around a division lets `#DIV/0!` through, because IFNA replaces only `#N/A`.
+    - A VLOOKUP column number past the table's width gives `#REF!`, which IFNA also lets through.
+    - IFERROR shows a broken reference as no match, so a real formula fault looks like missing data.

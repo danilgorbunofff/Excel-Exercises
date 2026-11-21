@@ -6,7 +6,7 @@ topic: errors
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B9, look the code in A8 up in the table and say not on the list when it is missing.
+  - prompt: In B9, look up the code in A8 and show not on the list when it is missing.
     rows:
       - [Code, Price]
       - [A-1, 10]
@@ -28,7 +28,7 @@ screens:
       rule: "VLOOKUP with FALSE returns `#N/A` when the code is missing. IFNA shows its second argument for `#N/A` and lets every other error through."
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: Q-9 is not in the code column, so the fallback words are the answer.
+      value: Q-9 is not in A2:A7, so the answer is not on the list.
       syntax: "Check the brackets, commas and quote marks. IFNA follows the pattern `=IFNA(value, value_if_na)`."
       reference: Read the code from A8 instead of typing Q-9 into the formula.
     accept:
@@ -104,6 +104,6 @@ notes:
   syntax: "IFNA(value, value_if_na) replaces #N/A and nothing else"
   example: '`=IFNA(MATCH("Z",A1:A3,0),"none")` gives none when Z is not in A1:A3, but `=IFNA(1/0,"none")` still shows `#DIV/0!`.'
   commonErrors:
-    - The lookup matched nothing; without the guard this is the error B9 would hold.
-    - The function name is typed as IFNAA or IFA, and Excel reads what is there without guessing.
+    - Without IFNA, a code that is not in the table leaves `#N/A` in B9.
+    - A misspelt name such as IFNAA gives `#NAME?`.
     - The fourth argument is set to TRUE or left out, so an approximate match answers 32 for Q-9 and the fallback never fires.

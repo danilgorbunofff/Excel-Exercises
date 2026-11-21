@@ -29,7 +29,7 @@ screens:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: 88000 is Cy's salary, on row 4 of the sheet and third in C2:C6. Check which column INDEX reads and which one MATCH searches.
       syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
-      required-function: INDEX needs the salaries in C2:C6 and a row number. On its own it has no way to know which row you want.
+      required-function: This exercise asks for INDEX and MATCH together. MATCH finds the row of the ID, and INDEX reads the salary there.
       forbidden-function: This screen practises INDEX and MATCH, so leave VLOOKUP out. The same pair can also return columns left of the key, which VLOOKUP cannot.
       reference: Point at D3 for the ID and at the table for both ranges, so the formula still works when payroll adds a row.
     accept:
@@ -57,6 +57,6 @@ notes:
   syntax: INDEX(return_column, MATCH(lookup_value, search_column, 0))
   example: '`=INDEX(B1:B3,MATCH("Y",A1:A3,0))` with X, Y and Z in column A returns B2.'
   commonErrors:
-    - MATCH found no exact E-103 in A2:A6, usually because the ID carries a trailing space or is stored as text.
-    - The row number from MATCH sits past the end of C2:C6, which happens when the two ranges cover different numbers of rows.
+    - MATCH finds no exact E-103 in A2:A6, often because of a trailing space, and returns `#N/A`.
+    - The two ranges cover different numbers of rows, so MATCH can return a row past the end of C2:C6 and INDEX gives `#REF!`.
     - INDEX was handed no row number, or MATCH was given the whole table where a single column belongs.

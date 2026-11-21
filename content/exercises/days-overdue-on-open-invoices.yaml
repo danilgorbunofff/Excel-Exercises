@@ -52,9 +52,9 @@ screens:
     answer: =SUMIF(E2:E5,">30",C2:C5)
     hints:
       nudge: Add the amounts only on the rows where the days overdue are above 30.
-      rule: SUMIF tests one range and adds another. The test goes first, then the condition in quotes, then the range to add.
+      rule: SUMIF tests one range and adds another. The range to test goes first, then the condition in quotes, then the range to add.
     misses:
-      value: INV-1041, INV-1042 and INV-1044 are over 30 days late. Their amounts make 1250, 880 and 640, which is 2770.
+      value: INV-1041, INV-1042 and INV-1044 are over 30 days late. Their amounts, 1250, 880 and 640, add up to 2770.
       syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, sum_range)`."
       reference: The days run down E2:E5 and the amounts down C2:C5.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

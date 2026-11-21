@@ -1,7 +1,7 @@
 id: full-year-forecast-from-the-run-rate
 slug: full-year-forecast-from-the-run-rate
 level: 2
-title: Full year forecast from the run rate
+title: Full-year forecast from the run rate
 topic: interview-fpa
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
@@ -58,7 +58,7 @@ screens:
     misses:
       value: Months 3 to 5 average 51500. Seven months at that rate is 360500, plus 255000 to date gives 615500.
       syntax: Check the brackets. AVERAGE needs its own pair, and so do the months left.
-      required-function: AVERAGE over B4:B6 gives the run rate and updates when a month changes.
+      required-function: This screen asks for AVERAGE. Average B4:B6 rather than adding the three months and dividing by 3.
       reference: Months 3 to 5 are in B4:B6, and all five months are in B2:B6.
     accept:
       - =SUM(B2:B6)+AVERAGE(B4:B6)*(12-C2)
@@ -72,7 +72,7 @@ screens:
       - { formula: "=SUM(B2:B6)+(B4+B5+B6)/3*(12-C2)", rule: required-function }
       - { formula: "=SUM(B2:B6)+AVERAGE(B4:B6)*(12-C2", rule: syntax }
 notes:
-  summary: A run rate forecast keeps the months already closed and fills the rest at a typical monthly rate. Using only recent months reacts faster to a change in trend.
+  summary: A run-rate forecast keeps the months already closed and fills the rest at a typical monthly rate. Using only recent months reacts faster to a change in trend.
   syntax: SUM(actuals)+AVERAGE(recent_months)*(12-months_closed)
   example: "`=SUM(A1:A3)+AVERAGE(A1:A3)*9` with 10, 12 and 14 in A1:A3 gives 144."
   commonErrors:

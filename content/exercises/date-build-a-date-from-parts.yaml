@@ -6,7 +6,7 @@ topic: dates
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: Column E wants the raised date as a real date number built from the year, month and day in B2:D2, so start with INV-2001 in E2.
+  - prompt: In E2, build the raised date for INV-2001 as a real date from the year, month and day in B2:D2.
     rows:
       - [Invoice, Year, Month, Day, Date]
       - [INV-2001, 2024, 3, 1, null]
@@ -20,9 +20,9 @@ screens:
       nudge: One function takes a year, a month and a day and returns the date.
       rule: DATE takes the year, the month and the day, in that order, and returns the serial number of that date.
     misses:
-      value: 2024, 3 and 1 build 45352, which is 1 March 2024. A nearby serial means a part came from the wrong column.
+      value: 2024, 3 and 1 build 45352, which is 1 March 2024. A nearby serial means a part came from the wrong cell.
       syntax: "Check the brackets, commas and quote marks. DATE follows the pattern `=DATE(year, month, day)`."
-      required-function: All three parts belong in one call; splitting them across two DATE calls adds two serials together.
+      required-function: This exercise asks for DATE. Build the date from B2, C2 and D2 rather than typing its serial.
       reference: Read the year, month and day from row 2, so the formula fills down to the other invoices.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -56,8 +56,8 @@ screens:
     misses:
       value: 1 March 2024 is 45352 and March has 31 days, so 1 April 2024 is 45383. A result of 45352 means the month never moved.
       syntax: "Check the brackets, commas and quote marks. DATE follows the pattern `=DATE(year, month, day)`."
-      required-function: Keep the +1 inside the call, where the year and the roll-over stay Excel's job.
-      reference: Pass B2 rather than a typed 3, then add the one inside the brackets.
+      required-function: This exercise asks for DATE. Build the date from B2 rather than typing its serial.
+      reference: Use B2 for the month rather than a typed 4, and add 1 to it inside DATE.
     accept:
       - =DATE(2024,B2+1,1)
       - =date(2024,b2+1,1)
@@ -78,6 +78,6 @@ notes:
   syntax: DATE(year, month, day)
   example: "`=DATE(2024,2,29)` gives 45351, the serial number for 29 February 2024."
   commonErrors:
-    - A part is text that does not read as a number, so DATE has nothing to build the serial from.
-    - A negative year, or parts that push the result past 31 December 9999, fall outside the serials Excel holds.
+    - A part is text that does not read as a number, and DATE returns `#VALUE!`.
+    - A negative year, or parts that push the result past 31 December 9999, make DATE return `#NUM!`.
     - A month built as B2+2 rolls into the following month, so 1 May appears where 1 April was asked for.

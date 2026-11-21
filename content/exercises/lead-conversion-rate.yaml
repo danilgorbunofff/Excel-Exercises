@@ -21,7 +21,7 @@ screens:
     requiredFunctions: [ROUND]
     hints:
       nudge: Sales divided by leads, as a percentage.
-      rule: Conversion is sales divided by leads, times 100, rounded to one place.
+      rule: Conversion is sales divided by leads, times 100, rounded to one decimal place.
     misses:
       value: 97 of 1840 leads is 5.3 per cent.
       syntax: Check the brackets, commas and quotes.
@@ -44,4 +44,4 @@ notes:
   commonErrors:
     - Dividing leads by sales gives a number far above 100.
     - Forgetting * 100 leaves a decimal such as 0.053.
-    - Rounding before multiplying by 100 loses the precision.
+    - Rounding before multiplying by 100 turns 0.053 into 0.1, so the rate shows 10.

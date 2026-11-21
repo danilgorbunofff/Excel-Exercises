@@ -122,7 +122,7 @@ screens:
       - formula: =SUMPRODUCT(C2:C6,D2:D6/SUM(C2:C6)
         rule: syntax
 notes:
-  summary: A headcount plan multiplies people by what each costs. The total, the heads by grade and the average cost per head are the first three numbers a planning interview asks for.
+  summary: A headcount plan multiplies people by what each costs. A planning interview often asks for the total, the heads by grade and the average cost per head.
   syntax: SUMPRODUCT(heads,cost_per_head), SUMIFS(heads,grades,"Senior")
   example: "`=SUMPRODUCT(A1:A2,B1:B2)` with 2 and 3 heads at 10 and 20 gives 80."
   commonErrors:

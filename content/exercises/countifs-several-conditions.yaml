@@ -64,8 +64,8 @@ screens:
     misses:
       value: Rows 6 and 8 are open with 6 and 8 units. Row 2 has exactly 5, so it does not count.
       syntax: "Check the brackets, commas and quote marks. COUNTIFS follows the pattern `=COUNTIFS(criteria_range1, criteria1, [criteria_range2, criteria2], ...)`."
-      required-function: Two conditions over one table is what COUNTIFS is built for.
-      reference: Compare the threshold against the units column, so >5 is tested on real cells.
+      required-function: COUNTIF takes one condition. The status and the units need COUNTIFS.
+      reference: Point one range at the status column and the other at the units column, so >5 tests the units.
     accept:
       - =COUNTIFS(C2:C8,"Open",D2:D8,">5")
       - =countifs(c2:c8,"open",d2:d8,">5")
@@ -79,10 +79,10 @@ screens:
       - { formula: '=COUNTIFS(C2:C8,"Open",D2:D8,">5")/0', rule: value }
       - { formula: '=COUNTIFS(C2:C8,"Open",D2:D8,">5"', rule: syntax }
 notes:
-  summary: COUNTIFS counts the rows where every condition holds at the same time. Its arguments alternate range, condition, range, condition, and each range has to cover the same rows.
+  summary: COUNTIFS counts the rows where every condition holds at the same time. Its arguments alternate range, condition, range, condition, and every range must be the same size.
   syntax: COUNTIFS(criteria_range1, criteria1, [criteria_range2, criteria2], ...)
   example: '`=COUNTIFS(A1:A3,"North",B1:B3,">5")` with North 6, South 8 and North 2 gives 1.'
   commonErrors:
-    - One criteria range covers a different number of rows from the others, so the conditions stop lining up.
+    - One criteria range covers a different number of rows from the others, and COUNTIFS returns `#VALUE!`.
     - Two conditions that exclude each other, such as North and South on the same column, can never both hold for one row, and the count comes back as 0.
     - Dropping the second pair counts every North order, which is 4 rather than 3.

@@ -1,7 +1,7 @@
 id: department-cost-roll-up
 slug: department-cost-roll-up
 level: 2
-title: Department cost roll up
+title: Department cost roll-up
 topic: interview-fpa
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
@@ -89,7 +89,7 @@ screens:
     variants:
       - { set: { B5: Salaries }, expected: 0.85 }
 notes:
-  summary: A roll up totals the lines that share a department and a cost type. Planning teams build these to see where the money goes before they set next year's budget.
+  summary: A roll-up totals the lines that share a department and a cost type. Planning teams build these to see where the money goes before they set next year's budget.
   syntax: SUMIFS(amounts,departments,"Marketing",types,"Software")
   example: '`=SUMIFS(C1:C4,A1:A4,"IT",B1:B4,"Travel")` adds the IT travel lines only.'
   commonErrors:

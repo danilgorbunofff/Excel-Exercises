@@ -24,8 +24,8 @@ screens:
       rule: MAX returns the largest number in a range. MIN returns the smallest.
     misses:
       syntax: Write the range as the first cell, a colon, then the last cell.
-      required-function: Use MAX, so the result stays right when a sale changes.
-      reference: Point at the sales in B2 to B6 rather than typing them.
+      required-function: This exercise asks for MAX. MIN returns the smallest sale.
+      reference: Point at the sales in B2:B6 rather than typing them, and stop the range above B7.
       value: Check that the range includes every sale, down to B6.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:

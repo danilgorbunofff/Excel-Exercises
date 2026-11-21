@@ -22,9 +22,9 @@ screens:
       rule: IFERROR takes a calculation and a fallback. If the calculation returns any error, the cell shows the fallback instead.
     misses:
       value: TX-109 is not in A2:B3, so B5 should hold the fallback text the prompt names, not the error.
-      syntax: "Two arguments with a comma between: =IFERROR(what might fail, what to show instead)."
+      syntax: "Check the brackets, commas and quote marks. IFERROR follows the pattern `=IFERROR(value, value_if_error)`."
       required-function: "The lookup on its own returns `#N/A` in B5. IFERROR wraps that call and supplies the words."
-      reference: Ask for the code held in A4, so a different SKU changes the answer.
+      reference: Look up the SKU in A4, so a different SKU changes the answer.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =IFERROR(VLOOKUP(A4,A2:B3,2,FALSE),"no price")
@@ -49,4 +49,4 @@ notes:
   commonErrors:
     - The lookup finds nothing and no fallback is supplied, so the cell shows the error instead of words.
     - "A number is added to the fallback text outside the wrapper, so the whole cell turns into `#VALUE!`."
-    - The same fallback answers a broken reference too, so a formula fault prints as a missing price and nobody looks.
+    - IFERROR also replaces a broken reference with the fallback, so a formula fault looks like a missing price.

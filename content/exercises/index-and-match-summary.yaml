@@ -24,7 +24,7 @@ screens:
     misses:
       value: 150 clears 100 and does not reach 200, so the second band applies and its rate in B3 is 0.04.
       syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
-      required-function: INDEX turns the position into the rate sitting on that row of B2:B4.
+      required-function: This exercise asks for INDEX and MATCH. MATCH finds the band, and INDEX reads its rate from B2:B4.
       reference: Take the units from B5 so a new figure changes the rate without an edit to the formula.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -47,5 +47,5 @@ notes:
   syntax: INDEX(rates, MATCH(units, bands, 1))
   example: "`=INDEX(B2:B4,MATCH(150,A2:A4,1))` with 0, 100 and 200 in A2:A4 returns B3, because 100 is the largest start not above 150."
   commonErrors:
-    - The units figure is below the first starting point in A2, so no band applies and there is no rate to read.
-    - The band column is not sorted ascending, so MATCH settles on a neighbouring row and returns its rate.
+    - The units figure is below the first band start in A2, so MATCH returns `#N/A`.
+    - The band column is not sorted ascending, so MATCH can return the wrong row with no error.

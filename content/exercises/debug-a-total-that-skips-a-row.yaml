@@ -26,8 +26,8 @@ screens:
     misses:
       value: The numbers are 320, 250, 300, 400 and 180, which total 1450. The text in the middle is skipped.
       syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
-      required-function: Adding the cells one at a time is how a total ends up short. Use SUM over the block.
-      reference: Point at the column, or the range stops where somebody typed a row number by hand.
+      required-function: A chain of plus signs returns `#VALUE!` when it reaches the text in B4. Use SUM over the block.
+      reference: Point SUM at the sales in B2:B7 rather than typing the numbers.
     accept:
       - =SUM(B2:B7)
       - =sum(b2:b7)
@@ -83,6 +83,6 @@ notes:
   syntax: SUM(first_cell:last_cell)
   example: "`=SUM(A1:A3)` with 10, n/a and 5 gives 15."
   commonErrors:
-    - A cell in the range holds text that a chain of plus signs cannot add. SUM over the range would have skipped it.
-    - The range names a column or row that no longer exists after rows were deleted.
+    - A chain of plus signs reaches a text cell and returns `#VALUE!`. SUM over the range skips the text.
+    - The formula names a cell whose row was deleted, so it returns `#REF!`.
     - A range that reaches a subtotal counts the same money twice, and a range that stops early leaves a store out. Neither raises an error.

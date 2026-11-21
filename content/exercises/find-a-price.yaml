@@ -28,7 +28,7 @@ screens:
       syntax: Separate the three parts of XLOOKUP with commas, and close the bracket.
       required-function: Use XLOOKUP, which this exercise practises.
       reference: Point at the code in B8, so the price updates when the code changes.
-      value: Check the ranges. The codes are in A2 to A6 and the prices are in C2 to C6.
+      value: Check the ranges. The codes are in A2:A6 and the prices are in C2:C6.
     accept:
       - =XLOOKUP(B8,A2:A6,C2:C6)
       - =xlookup(b8,a2:a6,c2:c6)

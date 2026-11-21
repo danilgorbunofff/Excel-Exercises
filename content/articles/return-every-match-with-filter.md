@@ -51,7 +51,7 @@ This returns something like "1042, 1057, 1081".
 
 ## Return the last match instead
 
-If you only need the most recent match, you do not need FILTER. XLOOKUP can search from the bottom:
+If you need only the last match, you do not need FILTER. XLOOKUP can search from the bottom:
 
 `=XLOOKUP(H2, B2:B100, D2:D100, , , -1)`
 

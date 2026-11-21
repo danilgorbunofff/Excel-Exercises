@@ -10,9 +10,7 @@ exercises: [full-year-forecast-from-the-run-rate, quarter-forecast-against-budge
 cover: "YTD/9*12"
 ---
 
-## The question
-
-Nine months of actuals are in. Leadership wants to know where the full year will land. The quickest answer is a run rate: assume the rest of the year looks like the part you have seen.
+The quickest full-year forecast is a run rate: divide the year to date by the months you have, then multiply by 12. It assumes the rest of the year looks like the part you have seen. Methods 2 and 3 below allow for growth and for seasons.
 
 The examples assume the twelve months sit in B2:M2, with future months left empty.
 

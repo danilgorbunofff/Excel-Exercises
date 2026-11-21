@@ -10,6 +10,8 @@ exercises: [add-two-cells, multiply-price-by-quantity, price-after-discount]
 cover: "$A$1"
 ---
 
+A copied formula moves its cell references with it. A dollar sign before the column letter or row number keeps that part fixed, as in `$F$1`.
+
 ## What a reference is
 
 A formula points at cells by their address. In `=B2+B3`, Excel reads the value in B2 and the value in B3 and adds them. When either value changes, the result changes with it.
@@ -18,7 +20,7 @@ That is the whole reason to point at cells instead of typing numbers. A formula 
 
 ## Relative references move when you copy
 
-Most references are relative. Excel stores them as a direction from the formula's own cell, not as a fixed place.
+Most references are relative. Excel stores each one as an offset from the formula's own cell.
 
 Say C2 holds `=A2*B2`. Copy it down to C3 and Excel writes `=A3*B3`. Each row multiplies its own price by its own quantity, which is usually what you want.
 

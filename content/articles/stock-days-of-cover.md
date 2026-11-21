@@ -10,6 +10,8 @@ exercises: [stock-days-of-cover-and-reorder-flag, an-inventory-reorder-report, s
 cover: "Days cover"
 ---
 
+Days of cover is stock on hand divided by daily usage. Reorder when stock on hand plus units on order falls to the reorder point.
+
 ## The columns
 
 Each row is a product. You need the stock on hand, the units sold over a recent period, the supplier's lead time in days, and units already on order.

@@ -1,7 +1,7 @@
 ---
 
 title: "SUBSTITUTE or REPLACE: changing part of a text"
-description: One swaps text you can name, the other swaps text at a position. Here is when to use each.
+description: SUBSTITUTE swaps text you can name. REPLACE swaps the characters at a position.
 updated: 2026-11-16
 minutes: 3
 topic: text
@@ -10,11 +10,13 @@ exercises: [substitute-replace-one-piece-of-text, clean-up-an-imported-list, tex
 cover: "=SUBSTITUTE"
 ---
 
+Use SUBSTITUTE when you know the text to change, and REPLACE when you know where it sits.
+
 ## SUBSTITUTE: replace text you can name
 
 `=SUBSTITUTE(A2, "-", "")` removes every hyphen from A2, so "AB-12-9" becomes "AB129".
 
-The arguments are the text, what to find and what to put in its place. Leave the last one empty, as "", to delete.
+The arguments are the text, what to find and what to put in its place. Make the new text "" to delete.
 
 To change only one occurrence, give its number as a fourth argument:
 
@@ -46,7 +48,7 @@ Nest SUBSTITUTE to swap more than one thing:
 
 `=SUBSTITUTE(SUBSTITUTE(A2, "-", ""), " ", "")`
 
-This removes hyphens and spaces. Beyond three or four levels, a small table of old and new values with Find and Replace, or Power Query, is easier to maintain.
+This removes hyphens and spaces. Beyond three or four levels, Find and Replace (Ctrl+H) or Power Query is easier to maintain.
 
 ## Counting a character
 
@@ -57,5 +59,5 @@ SUBSTITUTE can also count. The number of hyphens in A2 is the length lost when y
 ## Common mistakes
 
 - Expecting SUBSTITUTE to ignore case.
-- Using REPLACE when the text you want to change moves between rows. Use SUBSTITUTE or FIND.
+- Using REPLACE when the text you want to change sits at a different position in each row. Use SUBSTITUTE or FIND.
 - Removing a separator from a number stored as text and expecting a number. The result is still text. Wrap it in VALUE.

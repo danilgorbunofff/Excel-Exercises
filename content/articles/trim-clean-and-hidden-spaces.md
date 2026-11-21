@@ -12,7 +12,7 @@ cover: "=TRIM(A2)"
 
 ## The symptom
 
-A lookup returns `#N/A`, or COUNTIF counts 0, although you can see the value in the list. Data from other systems, web pages and PDFs often carries characters you cannot see.
+A lookup returns `#N/A`, or COUNTIF counts 0, although you can see the value in the list. Data from other systems, web pages and PDFs often carries characters you cannot see. `=TRIM(CLEAN(SUBSTITUTE(A2, CHAR(160), " ")))` removes the usual three: extra spaces, control characters and non-breaking spaces.
 
 ## Find out what is there
 
@@ -51,14 +51,14 @@ To deal with all three problems at once:
 
 1. Add a helper column with the cleaning formula.
 2. Copy the helper column.
-3. Paste it over the original with Paste Special, Values.
+3. Paste it over the original with Paste Special > Values.
 4. Delete the helper column.
 
 If the data is reloaded every month, keep the formula instead, or clean it in Power Query, which repeats the steps on each refresh.
 
 ## Checking a match exactly
 
-`=A2=D5` ignores case. `=EXACT(A2, D5)` also compares case, and returns FALSE if any character differs. Use it to confirm that two cleaned values really are the same.
+`=A2=D5` ignores case. `=EXACT(A2, D5)` also compares case, and returns FALSE if any character differs. Use it to confirm that two cleaned values are the same.
 
 ## Common mistakes
 

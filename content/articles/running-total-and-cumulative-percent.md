@@ -38,7 +38,7 @@ In Excel for Microsoft 365, SCAN returns the whole running total as a spill:
 
 `=SCAN(0, B2:B13, LAMBDA(total, amount, total + amount))`
 
-SCAN starts at 0 and adds each amount in turn. The column updates when the source changes and cannot be broken by editing one cell.
+SCAN starts at 0 and adds each amount in turn. The column updates when the source changes, and there is only one formula to check.
 
 ## Running total by group
 
@@ -51,4 +51,4 @@ Each row adds the amounts so far that share its region. The data does not need t
 ## Checks
 
 - The last running total must equal `=SUM(B2:B13)`.
-- If the totals jump or stay flat, look for text in the amount column. SUM skips it without warning.
+- If the total stays flat on a row that has an amount, that amount is probably text. SUM skips it without warning.

@@ -10,6 +10,8 @@ exercises: [variance-to-budget-by-cost-centre, budget-versus-actual-with-a-varia
 cover: "=B2-C2"
 ---
 
+Variance is actual minus budget. Variance percent divides that by the budget. A favourable or adverse label depends on whether the line is revenue or cost.
+
 ## The layout
 
 Each row is a cost centre or account. Column B holds the actual and column C the budget. The variance goes in D and the variance percent in E.
@@ -52,9 +54,9 @@ If the actuals sit in a transaction list, total each cost centre with SUMIFS:
 
 `=SUMIFS(Ledger[Amount], Ledger[CostCentre], $A2, Ledger[Month], "<="&$H$3)`
 
-H3 holds the last closed month, so the same sheet gives month or year-to-date figures.
+H3 holds the last closed month, so the figures are year to date. Change `"<="` to `"="` to get that month alone.
 
 ## Checks
 
 - The total variance must equal total actual minus total budget.
-- Sum the percent column only as a check that nothing is wildly wrong. Percent variances do not add up across lines. Work out the total percent from the totals.
+- Do not sum the percent column. Percent variances do not add up across lines. Work out the total percent from the total actual and total budget.

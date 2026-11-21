@@ -40,7 +40,7 @@ This counts the cells in B2:B100 that contain "refund" anywhere, in any case.
 
 ## Things to watch
 
-- Only the first match comes back. If "Acme" appears in three names, you get the highest one in the list. Check with COUNTIF how many rows match before you trust the result.
+- Only the first match comes back. If "Acme" appears in three names, you get the one nearest the top of the list. Check with COUNTIF how many rows match before you trust the result.
 - Wildcards only match text. A number such as 1042 is not matched by `"10*"` unless it is stored as text.
 - Matching ignores case, so "ACME" and "acme" are the same.
 - If your data contains a real `*` or `?`, put `~` before it in the search value. Otherwise Excel reads it as a wildcard.

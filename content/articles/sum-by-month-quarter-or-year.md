@@ -10,6 +10,8 @@ exercises: [year-to-date-actual-against-budget, quarter-forecast-against-budget,
 cover: "Q1 Q2 Q3 Q4"
 ---
 
+To total a period, give SUMIFS two date limits: on or after the first day, and on or before the last.
+
 ## The setup
 
 Dates sit in A2:A500 and amounts in C2:C500. You want one total per month, quarter or year. The examples assume the first day of the period is in F2.
@@ -42,7 +44,7 @@ SUMPRODUCT can test the month directly, with no start and end dates:
 
 `=SUMPRODUCT((YEAR(A2:A500)=2026)*(MONTH(A2:A500)=3)*C2:C500)`
 
-This totals March 2026. It is handy for a one-off check, but slower than SUMIFS on large sheets. It returns `#VALUE!` if a date cell holds text.
+This totals March 2026. It is handy for a one-off check, but slower than SUMIFS on large sheets. It returns `#VALUE!` if a date cell holds text that is not a date.
 
 ## With a helper column
 

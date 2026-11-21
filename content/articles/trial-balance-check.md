@@ -12,7 +12,7 @@ cover: "Dr = Cr"
 
 ## What the check proves
 
-A trial balance lists every account with its balance at the period end. Before it feeds a report, three things must hold: it balances, every account is mapped to a report line, and the report adds back to the trial balance.
+A trial balance lists every account with its balance at the period end. Before it feeds a report, four things must hold. It balances, every account maps to a report line, the report adds back to the trial balance, and no account appears twice.
 
 ## Check 1: debits equal credits
 
@@ -48,7 +48,7 @@ The report lines together must equal the trial balance total:
 
 `=ROUND(SUM(ReportLines) - SUM(E2:E300), 2) = 0`
 
-If this fails while check 2 passes, a line name in the report does not match the mapping exactly.
+If this fails while check 2 passes, a line name in the report does not match the mapping exactly, or a line is missing from the report.
 
 ## Check 4: no duplicates
 

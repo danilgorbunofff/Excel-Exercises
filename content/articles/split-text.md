@@ -32,7 +32,7 @@ For "INV-2026-0451":
 
 The third argument picks which hyphen to split on. A negative number counts from the end.
 
-These three functions need Excel for Microsoft 365.
+These three functions need Excel for Microsoft 365 or Excel 2024.
 
 ## LEFT, MID and RIGHT: fixed positions
 
@@ -51,11 +51,11 @@ FIND returns the position of a character. Combine it with LEFT and MID:
 
 The `- 1` drops the hyphen itself. Giving MID the full length as the count returns everything that is left.
 
-FIND returns `#VALUE!` if the character is missing. Wrap the formula in IFERROR, or use SEARCH, which ignores case.
+FIND returns `#VALUE!` if the character is missing, so wrap the formula in IFERROR. FIND matches case. SEARCH works the same way and ignores case.
 
 ## Text to Columns
 
-Select the column, then go to Data, Text to Columns. Choose Delimited, pick the separator and finish. This changes the cells in place, so the result does not update when the source does.
+Select the column, then choose Data > Text to Columns. Choose Delimited, pick the separator and finish. This changes the cells in place, so the result does not update when the source does.
 
 ## Things to watch
 

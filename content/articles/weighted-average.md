@@ -33,7 +33,7 @@ SUMPRODUCT multiplies the two columns row by row and adds the results. Both rang
 - Average interest rate across loans, weighted by balance.
 - Course grade, where coursework counts 40 percent and the exam 60 percent.
 
-For grades, the weights already add up to 100 percent, so `=SUMPRODUCT(B2:B3, C2:C3)` is enough. Dividing by SUM of the weights does no harm and also catches weights that do not add up.
+For grades, the weights already add up to 100 percent, so `=SUMPRODUCT(B2:B3, C2:C3)` is enough. Dividing by SUM of the weights does no harm, and it still gives the right answer if the weights do not add up to 100 percent.
 
 ## With a condition
 

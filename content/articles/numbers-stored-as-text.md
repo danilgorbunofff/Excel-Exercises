@@ -32,19 +32,15 @@ To count them in a column: `=SUMPRODUCT(--ISTEXT(A2:A500))`.
 
 ## Five ways to fix them
 
-**1. The warning button.** Select the cells, click the warning icon next to them, and choose Convert to Number.
-
-**2. Text to Columns.** Select one column, go to Data, Text to Columns, and click Finish. Excel reads every cell again as a number.
-
-**3. Paste Special.** Type 1 in a spare cell and copy it. Select the text numbers, then use Paste Special, Multiply.
-
-**4. VALUE in a formula.** `=VALUE(A2)` turns text into a number. Wrapping LEFT or MID in VALUE fixes the result of a split.
-
-**5. Double minus.** `=--A2` does the same as VALUE in fewer characters. The first minus turns the text into a negative number, and the second turns it back.
+1. Select the cells, click the warning icon next to them, and choose Convert to Number.
+2. Select one column, choose Data > Text to Columns, and click Finish. Excel reads every cell again, and numbers come back as numbers.
+3. Type 1 in a spare cell and copy it. Select the text numbers, then choose Home > Paste > Paste Special and pick Multiply.
+4. In a formula, `=VALUE(A2)` turns text into a number. Wrap LEFT or MID in VALUE to turn the result of a split into a number.
+5. `=--A2` does the same as VALUE in fewer characters. The first minus turns the text into a negative number, and the second turns it back.
 
 ## Numbers with other separators
 
-"1.234,56" uses a comma for decimals. VALUE may read it wrongly, depending on your regional settings. Tell Excel which separators the text uses:
+"1.234,56" uses a comma for decimals. With en-US settings, VALUE does not read it as 1234.56. Tell Excel which separators the text uses:
 
 `=NUMBERVALUE(A2, ",", ".")`
 

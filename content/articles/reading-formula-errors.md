@@ -10,9 +10,7 @@ exercises: [sum-a-column, find-a-price, pass-or-fail]
 cover: "#N/A"
 ---
 
-## Errors are messages
-
-An error value in a cell is Excel telling you what went wrong. Read the code before you change the formula.
+Each error value names one kind of problem. Read the code first, then check the one thing it points to before you change the formula.
 
 ## The common ones
 
@@ -26,8 +24,10 @@ An error value in a cell is Excel telling you what went wrong. Read the code bef
 
 `#REF!` The formula points at a cell that no longer exists, often after a row or column was deleted.
 
+`#SPILL!` A formula that returns several values has no room to spill. Clear the cells in its way.
+
 ## A habit that helps
 
-Click the cell and look at the formula bar. Excel colours each reference and outlines the cells it reads, as this site does after each check.
+Select the cell and press F2. Excel colours each reference and outlines the cells it reads, as this site does after each check.
 
 If the outline is not where you expected, the reference is wrong. Fix that before anything else.

@@ -12,7 +12,7 @@ cover: "14 days"
 
 ## The approach
 
-Two weeks is enough to get fast at the tasks that make up most Excel tests. The plan below spends about 45 minutes a day, and every day includes building formulas, not only reading about them.
+Two weeks is enough to get fast at the tasks that make up most Excel tests. The plan below takes about 45 minutes a day, and you build formulas every day.
 
 Before day 1, try one timed [mock assessment](/mock-assessments/). Your score tells you where to spend extra time.
 

@@ -6,7 +6,7 @@ topic: subtotals
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In D5, add the prices up so that a broken cell in the range would not stop the total.
+  - prompt: In D5, add up the prices so that an error in the range would not stop the total.
     rows:
       - [Item, Price, Qty, Answer]
       - [pen, 10, 2, null]
@@ -25,9 +25,9 @@ screens:
       rule: AGGREGATE takes a function number, an options number, then the range. Function 9 adds, and option 6 skips cells that hold errors.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: Ten plus five plus twenty is 35.
+      value: 10 + 5 + 20 is 35.
       syntax: "Check the brackets, commas and quote marks. AGGREGATE follows the pattern `=AGGREGATE(function_num, options, ref1, [ref2], ...)`."
-      required-function: Three arguments, and only AGGREGATE carries the options number that skips a broken cell.
+      required-function: This exercise asks for AGGREGATE, whose options number can skip a cell holding an error.
       reference: The range is the price column of the table.
     accept:
       - =AGGREGATE(9,6,B2:B4)
@@ -59,12 +59,12 @@ screens:
     requiredFunctions: [AGGREGATE]
     hints:
       nudge: Change the function number to the one that averages, then round the result.
-      rule: AGGREGATE uses the same function numbers as SUBTOTAL, so 1 averages and 9 adds. ROUND with 1 as its second argument keeps one decimal place.
+      rule: AGGREGATE numbers its first 11 functions as SUBTOTAL does, so 1 averages and 9 adds. ROUND with 1 as its second argument keeps one decimal place.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: 35 divided by 3 is 11.666..., which rounds to 11.7.
       syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
-      required-function: An average over a range that may hold a broken cell needs AGGREGATE, with 1 as its function number.
+      required-function: An average that skips errors needs AGGREGATE, with 1 as its function number.
       reference: The prices live in B2:B4.
     accept:
       - =ROUND(AGGREGATE(1,6,B2:B4),1)
@@ -81,10 +81,10 @@ screens:
       - { formula: "=ROUND(AGGREGATE(1,6,B2:B4),1)/0", rule: value }
       - { formula: "=ROUND AGGREGATE(1,6,B2:B4),1", rule: syntax }
 notes:
-  summary: AGGREGATE takes a function number, an options number and a range. The function number works as in SUBTOTAL, and the options number says what to skip, such as 6 for error values.
+  summary: AGGREGATE takes a function number, an options number and a range. Function numbers 1 to 11 work as in SUBTOTAL, and the options number says what to skip, such as 6 for error values.
   syntax: AGGREGATE(function-number, options, range) with 9 for SUM, 1 for AVERAGE and 6 to skip error values
   example: "`=AGGREGATE(9,6,A1:A3)` with 4, `#N/A` and 10 in A1:A3 gives 14."
   commonErrors:
     - The options number is not one AGGREGATE recognises, so it cannot decide what to skip.
     - The function number is outside the range AGGREGATE supports.
-    - Option six has left a failed row out of the total, so the sum is one row short.
+    - Option 6 leaves a row holding an error out of the total without a warning, so the sum can come up short.

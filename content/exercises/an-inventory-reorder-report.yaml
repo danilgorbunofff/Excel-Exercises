@@ -31,7 +31,7 @@ screens:
       rule: MAX returns the largest of its arguments. With 0 beside a subtraction, it returns the result when it is positive and 0 when it is negative.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: Ten to reorder less four in stock leaves six.
+      value: The reorder point of 10 less 4 on hand leaves 6.
       syntax: "Check the brackets, commas and quote marks. MAX follows the pattern `=MAX(number1, [number2], ...)`."
       reference: Stock on hand is in B2 and the reorder point is in C2.
     accept:
@@ -81,7 +81,7 @@ screens:
       rule: SUM adds a column, and MAX with 0 as one argument floors the difference of two totals at zero.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: 39 to reorder against 27 in stock leaves 12.
+      value: The reorder points total 39 and the stock totals 27, which leaves 12.
       syntax: "Check the brackets, commas and quote marks. MAX follows the pattern `=MAX(number1, [number2], ...)`."
       reference: The stock column runs B2:B5.
     accept:
@@ -113,6 +113,6 @@ notes:
   syntax: MAX(0,reorder_at-on_hand) floors a shortfall at zero; MAX(0,a-b) over totals nets it out
   example: "`=MAX(0,A1-B1)` with 3 in A1 and 8 in B1 gives 0, and with 8 and 3 it gives 5."
   commonErrors:
-    - A cell in the subtraction holds text, which is not a number to work with.
-    - MAX is misspelled in the call, and Excel returns `#NAME?`.
+    - A cell in the subtraction holds text, so the subtraction returns `#VALUE!`.
+    - MAX is misspelled, and Excel returns `#NAME?`.
     - MAX is left off, so an over-stocked row asks for a negative number of parts.

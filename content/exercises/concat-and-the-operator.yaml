@@ -20,10 +20,10 @@ screens:
       nudge: CONCAT joins the pieces in the order you list them, and the space is a piece of its own.
       rule: CONCAT takes any number of arguments and joins them into one string. Text you type yourself, such as a space, goes in quotes.
     misses:
-      value: That is not first name, space, last name in that order. Check which cell comes first.
+      value: The result should read Ada Lovelace, with the first name, a space, then the last name.
       syntax: "Check the brackets, commas and quote marks. CONCAT follows the pattern `=CONCAT(text1, [text2], ...)`."
-      required-function: CONCAT glues its arguments together in order. The space has to be passed in as an argument of its own.
-      reference: Point at A2 and B2. Typing Ada and Lovelace gives an answer that ignores the next row.
+      required-function: This exercise asks for CONCAT. Pass the space in as an argument of its own.
+      reference: Point at A2 and B2, so the result changes when the names do.
     accept:
       - =CONCAT(A2," ",B2)
       - =concat(a2," ",b2)
@@ -44,6 +44,6 @@ notes:
   syntax: CONCAT(text1, [text2], ...) and =text1 & text2
   example: '`=CONCAT("Mon","-","Fri")` and `="Mon"&"-"&"Fri"` both give Mon-Fri.'
   commonErrors:
-    - The joined text was used in arithmetic, as when the whole call is divided by zero.
-    - CONCAT is typed as CONCATE, and the sheet has no function by that name.
-    - The call =CONCAT(A2,B2) passes no separator, so the two names come out as AdaLovelace and the grader rejects it.
+    - The joined text is used in arithmetic, such as a division, so Excel returns `#VALUE!`.
+    - CONCAT is typed as CONCATE, and Excel returns `#NAME?`.
+    - '`=CONCAT(A2,B2)` passes no separator, so the two names run together as AdaLovelace.'

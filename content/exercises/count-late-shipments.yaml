@@ -59,7 +59,7 @@ screens:
       rule: COUNTIF gives the late orders. COUNTA of the order column, or COUNT of the days column, gives every order.
     misses:
       value: 3 late orders out of 6 is 0.5, or half.
-      syntax: Check the brackets. COUNTIF and the count below it each need their own pair.
+      syntax: Check the brackets. COUNTIF and the count you divide by each need their own pair.
       required-function: Let COUNTIF count the late orders, so the share updates when the data changes.
       reference: Point at the data rather than typing the counts.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
@@ -94,8 +94,8 @@ screens:
       rule: AVERAGEIF takes a range and a condition, and averages only the cells that meet it.
     misses:
       value: The late orders were 3, 2 and 7 days late. That is 12 days over 3 orders, an average of 4.
-      syntax: "Check the brackets, commas and quote marks. AVERAGEIF follows the pattern `=AVERAGEIF(range, criteria)`."
-      required-function: A plain AVERAGE pulls in the on time and early orders, which drags the figure down.
+      syntax: "Check the brackets, commas and quote marks. AVERAGEIF follows the pattern `=AVERAGEIF(range, criteria, [average_range])`."
+      required-function: A plain AVERAGE pulls in the on-time and early orders, which drags the figure down.
       reference: The days late run down D2:D7.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -116,6 +116,6 @@ notes:
   syntax: COUNTIF(days,">0"), COUNTIF(days,">0")/COUNTA(orders), AVERAGEIF(days,">0")
   example: '`=AVERAGEIF(A1:A4,">0")` with 0, 2, 4 and minus 1 in A1:A4 gives 3.'
   commonErrors:
-    - Greater than or equal to 0 counts the on time orders as late.
+    - Greater than or equal to 0 counts the on-time orders as late.
     - COUNTA from row 1 counts the header as an order.
-    - A plain AVERAGE includes the early and on time orders.
+    - A plain AVERAGE includes the early and on-time orders.

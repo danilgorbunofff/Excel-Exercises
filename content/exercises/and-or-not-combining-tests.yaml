@@ -31,7 +31,7 @@ screens:
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: The total is 150 and the smallest item is 18, so both tests hold and the cell should say TRUE.
-      syntax: "=AND(test 1, test 2): the answer is TRUE only when both tests are."
+      syntax: "Check the brackets and commas. AND follows the pattern `=AND(logical1, [logical2], ...)`."
       reference: Read the total from B8 and the units from B2:B7.
     accept:
       - =AND(B8>100,MIN(B2:B7)>=15)
@@ -80,7 +80,7 @@ screens:
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Bolt has 18 units, under 20, so the first test already makes the answer TRUE.
-      syntax: "=OR(test 1, test 2): one TRUE is enough."
+      syntax: "Check the brackets and commas. OR follows the pattern `=OR(logical1, [logical2], ...)`."
       reference: Look through the units column for the smallest item and read the total from B8.
     accept:
       - =OR(MIN(B2:B7)<20,B8>200)
@@ -106,6 +106,6 @@ notes:
   syntax: AND(test1, test2, ...) needs every test; =OR(...) needs one; =NOT(test) flips it
   example: "`=AND(A1>0,A2>0)` with 5 and -2 gives FALSE, while `=OR(A1>0,A2>0)` gives TRUE."
   commonErrors:
-    - An argument is text where a logical test belongs, as when a word reaches AND without quotes.
-    - A function name is mistyped, so no test runs at all.
+    - A text value is typed where a logical test belongs, so AND returns `#VALUE!`.
+    - A function name is mistyped, and Excel returns `#NAME?`.
     - A formula holding a single comparison looks complete but skips the second condition, so a short item still passes.

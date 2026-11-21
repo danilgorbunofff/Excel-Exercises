@@ -6,7 +6,7 @@ topic: statistics
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 screens:
-  - prompt: Put the average of the two slowest (highest) times into C2, taking the values from the unsorted column. Use LARGE.
+  - prompt: In C2, average the two slowest (highest) times from the unsorted column. Use LARGE.
     rows:
       - [Swimmer, Seconds, Slowest-two average]
       - [Ada, 58, null]
@@ -22,7 +22,7 @@ screens:
       nudge: "Ask for the largest and the second largest times separately, then average the pair."
       rule: "LARGE returns the value at a given position from the top, so position 1 is the largest. To average two values, add them and divide by 2."
     misses:
-      value: The two largest are 61 and 58. Add them, divide by two, and the cell holds 59.5.
+      value: The two largest are 61 and 58. Add them and divide by 2 to get 59.5.
       syntax: "Check the brackets and operators. Every opening bracket needs a closing one."
       required-function: LARGE returns one position at a time, so ask it twice and average the pair.
       reference: Both calls point at B2:B6, so no time is typed into the formula.
@@ -45,7 +45,7 @@ screens:
     variants:
       - { set: { B6: 69 }, expected: 65 }
       - { set: { B2: 65 }, expected: 63 }
-  - prompt: Put the place the middle time earns into C2, so the row shows where the median sits. Use RANK and MEDIAN.
+  - prompt: In C2, show the place the median time takes, counting from the slowest. Use RANK and MEDIAN.
     rows:
       - [Swimmer, Seconds, Median's place]
       - [Ada, 58, null]
@@ -88,6 +88,6 @@ notes:
   syntax: RANK(MEDIAN(range), range) and =(LARGE(range,1)+LARGE(range,2))/2
   example: "`=(LARGE(A1:A4,1)+LARGE(A1:A4,2))/2` with 3, 8, 6 and 10 gives 9."
   commonErrors:
-    - One of the LARGE positions runs past the end of the range, which leaves LARGE no value to add.
-    - "RANK was given a number that is not in the range, which an average of a subset often produces: 59.5 appears nowhere among the times."
-    - An argument in the nest arrived as text that cannot be read as a number.
+    - One of the LARGE positions runs past the end of the range, so LARGE returns `#NUM!`.
+    - RANK is given a number that is not in the range, such as an average of 59.5, so it returns `#N/A`.
+    - A time stored as text is skipped by MEDIAN and LARGE, so the result leaves that swimmer out.

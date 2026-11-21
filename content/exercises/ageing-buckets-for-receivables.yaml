@@ -78,6 +78,6 @@ notes:
   syntax: XLOOKUP(days,band_starts,band_names,,-1) or VLOOKUP(days,band_table,2,TRUE)
   example: "`=VLOOKUP(45,A1:B4,2,TRUE)` with band starts 0, 31, 61 and 91 in A1:A4 returns the band that starts at 31."
   commonErrors:
-    - An exact match finds nothing, because 47 is not one of the band starts.
-    - Approximate VLOOKUP needs the band starts sorted from smallest to largest.
-    - Match mode 1 takes the next larger band, which puts every balance one band too late.
+    - An exact match returns `#N/A`, because 47 is not one of the band starts.
+    - The band starts are not sorted from smallest to largest, so approximate VLOOKUP can return the wrong band.
+    - Match mode 1 takes the next larger band start, so a balance between two starts lands one band too late.

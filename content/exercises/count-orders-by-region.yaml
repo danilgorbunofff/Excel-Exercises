@@ -26,7 +26,7 @@ screens:
     misses:
       syntax: Put the text to look for in double quotes, as in `"North"`.
       required-function: Use COUNTIF, so the count updates when an order changes.
-      reference: Point at the regions in B2 to B7, not at B8.
+      reference: Point at the regions in B2:B7, not at B8.
       value: Check the range and the spelling of the region. COUNTIF counts whole matches only.
     accept:
       - '=COUNTIF(B2:B7,"North")'
@@ -41,7 +41,7 @@ screens:
 notes:
   summary: COUNTIF counts the cells in a range that match one condition. Text matches ignore case.
   syntax: COUNTIF(range, criteria)
-  example: '`=COUNTIF(A1:A10,"Paid")` counts the cells in A1 to A10 that say Paid.'
+  example: '`=COUNTIF(A1:A10,"Paid")` counts the cells in A1:A10 that say Paid.'
   commonErrors:
     - Text criteria without double quotes.
     - A misspelt criterion, which matches nothing and gives 0.

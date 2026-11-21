@@ -29,7 +29,7 @@ screens:
       rule: COUNT counts cells that hold numbers and skips text and empty cells. COUNTA counts every cell that is not empty, text included.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: Six rows hold a number. One cell is blank, one holds n/a, and neither is a number.
+      value: 6 rows hold a number. One cell is blank, one holds n/a, and neither is a number.
       syntax: "Check the brackets, commas and quote marks. COUNT follows the pattern `=COUNT(value1, [value2], ...)`."
       reference: Pass the units column from the grid rather than a typed list of quantities.
     accept:
@@ -77,7 +77,7 @@ screens:
       rule: COUNTA counts cells that are not empty, so it counts rows by their item name. COUNT counts only numbers, so the difference is the rows without one.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: Eight items and six numbers leave two rows without a quantity.
+      value: 8 items and 6 numbers leave 2 rows without a number.
       syntax: "Check the brackets, commas and quote marks. COUNTA follows the pattern `=COUNTA(value1, [value2], ...)`."
       reference: Count the items and the numbers from the grid rather than typing 8 or 6.
     accept:
@@ -108,5 +108,5 @@ notes:
   example: "`=COUNTA(A1:A4)` with 5, n/a, 8 and an empty cell gives 3."
   commonErrors:
     - COUNTA over B2:B9 answers 7, because the n/a counts as a value.
-    - COUNT over a column that holds only text answers 0 and points at nothing.
-    - A misspelled name such as COUNTT is not a function, and Excel says so.
+    - COUNT over the item column, which holds only text, returns 0.
+    - A misspelled name such as COUNTT is not a function, and Excel returns `#NAME?`.

@@ -6,7 +6,7 @@ topic: capstone
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B7, work out the North gross margin as a percentage, rounded to 1 decimal. If the region has no sales, show a blank instead of an error.
+  - prompt: In B7, work out the North gross margin as a percentage, rounded to 1 decimal place. If the region has no sales, show a blank instead of an error.
     rows:
       - [Region, Revenue, Cost]
       - [North, 1500, 800]

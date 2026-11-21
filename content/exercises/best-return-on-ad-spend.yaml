@@ -49,4 +49,4 @@ notes:
   commonErrors:
     - The campaign with the most revenue is not always the best return.
     - The campaign with the smallest spend is not always the best return either.
-    - MATCH needs 0 as its last argument for an exact match.
+    - MATCH without 0 as its last argument does an approximate match on unsorted returns, and can pick the wrong row.

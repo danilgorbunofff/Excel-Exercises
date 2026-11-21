@@ -70,7 +70,7 @@ screens:
       rule: The cost per head is the payroll total divided by the sum of the headcounts. ROUND with 0 as its second argument gives a whole number.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: 345000 divided by eight heads comes to 43125.
+      value: 345000 divided by 8 heads comes to 43125.
       syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
       reference: Read the heads from B2:B5 in both halves.
     accept:
@@ -99,6 +99,6 @@ notes:
   syntax: SUMPRODUCT(heads,salaries) totals a payroll; divide by SUM(heads) for the cost per head
   example: "`=SUMPRODUCT(A1:A2,B1:B2)` with 2 and 3 heads in A1:A2 and salaries of 40000 and 50000 in B1:B2 gives 230000."
   commonErrors:
-    - The two ranges are different shapes, so the rows cannot be paired.
-    - The headcount total is zero and the cost per head divides by it.
+    - The two ranges are different sizes, so SUMPRODUCT returns `#VALUE!`.
+    - The headcount total is zero, so the division returns `#DIV/0!`.
     - The divisor counts rows instead of heads, so four teams divide a payroll built on eight.

@@ -25,7 +25,7 @@ screens:
       rule: SUBTOTAL takes a function number, then the range. 9 adds the values and leaves out rows hidden by a filter.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: Twenty plus twenty plus sixty is 100.
+      value: 20 + 20 + 60 is 100.
       syntax: "Check the brackets, commas and quote marks. SUBTOTAL follows the pattern `=SUBTOTAL(function_num, ref1, [ref2], ...)`."
       required-function: The total under a table that may be filtered is a SUBTOTAL, with 9 for SUM.
       reference: The line values are D2:D4.
@@ -65,7 +65,7 @@ screens:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: 100 divided by 100 is 1, so the two routes agree.
       syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
-      required-function: The numerator is price times quantity across the rows, which is what SUMPRODUCT does.
+      required-function: This exercise asks for SUMPRODUCT for the price-times-quantity total and SUBTOTAL for the line total.
       reference: Both routes read the table rows instead of numbers typed by hand.
     accept:
       - =ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUBTOTAL(9,D2:D4),1)
@@ -87,6 +87,6 @@ notes:
   syntax: SUMPRODUCT(pairs) values a table; =SUBTOTAL(9,range) adds a group; a ratio of the two is a weighted figure
   example: With 2 and 3 in A1:A2, 5 and 4 in B1:B2, and 10 and 12 in C1:C2, `=SUMPRODUCT(A1:A2,B1:B2)/SUBTOTAL(9,C1:C2)` gives 1.
   commonErrors:
-    - The subtotal under the line column is zero, so there is nothing to divide by.
-    - The two ranges in SUMPRODUCT are a different height, so the pairs cannot form.
+    - The subtotal under the line column is zero, so the formula returns `#DIV/0!`.
+    - The two ranges in SUMPRODUCT are different heights, so SUMPRODUCT returns `#VALUE!`.
     - A line value was typed over, so the two routes disagree and the ratio drifts away from 1.

@@ -22,7 +22,7 @@ A calm, exact tutor sitting next to the reader.
 - **Excel behaviour:** Microsoft 365 Excel, en-US. Comma argument separators and decimal points.
 - **Functions:** in capitals (VLOOKUP, XLOOKUP). Cell references as `B6` and ranges as `A2:A20`. Put whole formulas in backticks: `=SUM(B2:B9)`.
 - **Interface:** name menus and buttons exactly as Excel shows them, with a `>` between steps: Home > Conditional Formatting.
-- **Numbers:** digits for counts and money: `$1,200`, 3 hints. Dates are written day first: 16/11/2026.
+- **Numbers:** digits for counts and money: `$1,200`, 3 hints, 2 decimal places. Percentages take the sign: 5%, never "five per cent". Dates are written day first: 16/11/2026.
 - **Characters:** no em or en dashes, curly quotes, `…`, emoji or exclamation marks.
 - **Length:** sentences of 29 words or fewer, paragraphs of 69 or fewer.
 

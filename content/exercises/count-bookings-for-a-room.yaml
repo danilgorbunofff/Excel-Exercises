@@ -32,7 +32,7 @@ screens:
     misses:
       value: Elm was booked 5 times.
       syntax: Check the brackets, commas and quotes.
-      required-function: This task needs COUNTIF.
+      required-function: This exercise asks for COUNTIF.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - "=COUNTIF(B2:B11,E2)"

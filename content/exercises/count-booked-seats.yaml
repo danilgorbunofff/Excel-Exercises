@@ -26,8 +26,8 @@ screens:
     misses:
       syntax: Write the range as the first cell, a colon, then the last cell.
       required-function: Use COUNTA, which counts cells with text as well as numbers.
-      reference: Point at the names in B2 to B7, not at B8.
-      value: Check the column. Count the names in B2 to B7, not the seat numbers.
+      reference: Point at the names in B2:B7, not at B8.
+      value: Check the column. Count the names in B2:B7, not the seat numbers.
     accept:
       - =COUNTA(B2:B7)
       - =counta(B2:B7)

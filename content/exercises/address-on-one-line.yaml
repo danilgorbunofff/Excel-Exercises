@@ -20,7 +20,7 @@ screens:
     misses:
       value: The address reads 12 Mill Lane, Hebden, HX7 8AB.
       syntax: Check the brackets, commas and quotes.
-      required-function: This task needs TEXTJOIN.
+      required-function: This exercise asks for TEXTJOIN.
     accept:
       - '=TEXTJOIN(", ",TRUE,A2:D2)'
       - '=textjoin(", ",true,a2:d2)'
@@ -36,5 +36,5 @@ notes:
   example: '`=TEXTJOIN(" ",TRUE,A2:C2)` joins a first, middle and last name with spaces, and skips a missing middle name.'
   commonErrors:
     - FALSE as the second argument keeps the empty part and leaves two commas in a row.
-    - Joining with & needs a separator between every pair of cells.
-    - The separator goes in quotes, space included.
+    - Joining with & adds a separator beside the empty part too, which leaves `, ,` in the address.
+    - The separator is `","` without the space, so the parts run on after each comma.

@@ -26,7 +26,7 @@ screens:
     misses:
       syntax: Put the condition in double quotes, operator included, as in `">50"`.
       required-function: Use COUNTIF with a condition, so the count updates when an amount changes.
-      reference: Point at the amounts in B2 to B7, not at B8.
+      reference: Point at the amounts in B2:B7, not at B8.
       value: Check the condition, as in `">50"`. More than 100 leaves out an invoice for exactly 100.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -44,7 +44,7 @@ screens:
 notes:
   summary: A COUNTIF condition can compare numbers with the operators =, <>, <, <=, > and >=.
   syntax: COUNTIF(range, criteria)
-  example: '`=COUNTIF(A1:A10,"<0")` counts the negative numbers in A1 to A10.'
+  example: '`=COUNTIF(A1:A10,"<0")` counts the negative numbers in A1:A10.'
   commonErrors:
     - Using >= when the task says more than.
     - Leaving the condition out of double quotes.

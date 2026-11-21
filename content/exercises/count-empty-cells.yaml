@@ -26,7 +26,7 @@ screens:
     misses:
       syntax: Write the range as the first cell, a colon, then the last cell.
       required-function: Use COUNTBLANK, which counts the empty cells.
-      reference: Point at the owners in B2 to B7, not at B8.
+      reference: Point at the owners in B2:B7, not at B8.
       value: Check that the range covers every task, from B2 to B7.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:

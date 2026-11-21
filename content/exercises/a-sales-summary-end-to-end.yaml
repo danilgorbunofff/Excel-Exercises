@@ -69,8 +69,8 @@ screens:
       rule: IF takes a test, the value when it is true and the value when it is false. The test can compare two formulas with a greater than sign.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: 2650 against 850, so the larger region is North.
-      syntax: '=IF(SUMIFS(...)>SUMIFS(...),"North","South"): the test, the answer when it holds, the answer when it does not.'
+      value: North totals 2650 and South totals 850, so the answer is North.
+      syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
       reference: Both totals read the amount column, C2:C5.
     accept:
       - =IF(SUMIFS(C2:C5,A2:A5,"North")>SUMIFS(C2:C5,A2:A5,"South"),"North","South")
@@ -97,6 +97,6 @@ notes:
   syntax: SUMIFS(amounts,criteria_range,"North") totals one region; wrap it in IF to compare two
   example: '`=IF(SUMIFS(B1:B4,A1:A4,"East")>500,"high","low")` gives high when the East amounts add up to more than 500.'
   commonErrors:
-    - The criteria range and the sum range are different shapes, so the rows cannot be lined up.
+    - The criteria range and the sum range are different sizes, so SUMIFS returns `#VALUE!`.
     - The function name is misspelled, and Excel returns `#NAME?`.
     - The criterion points at the rep column instead of the region column, and the answer comes back as 0.

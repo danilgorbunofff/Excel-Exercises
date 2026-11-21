@@ -42,7 +42,7 @@ screens:
         rule: value
       - formula: =UPPER(TRIM(A2)
         rule: syntax
-  - prompt: The price list is in D and E. In B2, look up the price for the imported code in A2.
+  - prompt: The price list is in columns D and E. In B2, look up the price for the imported code in A2.
     rows:
       - [Imported code, Price, null, Code, List price]
       - ["  ab-1027 ", null, null, AB-1027, 12.4]

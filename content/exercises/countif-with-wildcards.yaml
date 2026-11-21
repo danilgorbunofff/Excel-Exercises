@@ -25,9 +25,9 @@ screens:
       nudge: A wildcard after the shared start of the name covers the different endings.
       rule: In a COUNTIF condition, * stands for any run of characters, including none, and ? for exactly one. The pattern goes in double quotes.
     misses:
-      value: The star covers the rest of each name, so all four Widget rows count.
+      value: The star covers the rest of each name, so all 4 Widget rows count.
       syntax: "Check the brackets, commas and quote marks. COUNTIF follows the pattern `=COUNTIF(range, criteria)`."
-      required-function: The column is text, so the count has to come from matches rather than numbers.
+      required-function: This exercise asks for COUNTIF, which counts the text that matches a pattern.
       reference: Match the pattern against the product column itself, not against the answer cell.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -64,11 +64,11 @@ screens:
     requiredFunctions: [COUNTIF]
     hints:
       nudge: This time the shared part is at the end, so the wildcard goes before it.
-      rule: A star in front of a letter matches any text that ends with that letter. COUNTIF patterns ignore case, so a lower case b would match too.
+      rule: A star in front of a letter matches any text that ends with that letter. COUNTIF patterns ignore case, so a lower-case b would match too.
     misses:
-      value: "Three names end in B: Widget B, Gizmo B and Gadget B."
+      value: "3 names end in B: Widget B, Gizmo B and Gadget B."
       syntax: "Check the brackets, commas and quote marks. COUNTIF follows the pattern `=COUNTIF(range, criteria)`."
-      required-function: Matching part of a name is still a counting question, not a lookup.
+      required-function: This exercise asks for COUNTIF with a wildcard pattern.
       reference: Point the pattern at column A, where the names live.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -91,6 +91,6 @@ notes:
   syntax: COUNTIF(range, "pattern*") counts the names that match; * stands for any run of characters and ? for exactly one
   example: '`=COUNTIF(A1:A3,"Red*")` with Red pen, Blue pen and Red cap gives 2.'
   commonErrors:
-    - A pattern typed without quotes, as in Widget*, is read as a name that does not exist.
+    - A pattern typed without quotes, as in Widget*, is not a valid formula, and Excel will not accept it.
     - An exact criterion that no cell holds, such as Widget on its own, returns 0.
-    - A star on the wrong end counts a different set of rows and returns that count.
+    - A star on the wrong end, as in B*, counts the names that start with B instead.

@@ -72,7 +72,7 @@ screens:
       - { set: { B2: 1800 }, expected: 0.02 }
     answer: =VLOOKUP(B2,$A$7:$B$9,2,TRUE)
     hints:
-      nudge: The rate sits in the second column of the tier table, beside the floor the sales have passed.
+      nudge: The rate sits in the second column of the tier table, beside the floor the sales have reached.
       rule: VLOOKUP takes the value to find, the table, the column number to return and the match type. TRUE matches the largest floor at or below the value.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

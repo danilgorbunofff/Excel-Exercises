@@ -24,7 +24,7 @@ screens:
       rule: TRIM removes spaces at both ends and leaves single spaces between words. PROPER capitalises the first letter of each word and lowers the rest.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: Padding and doubled spaces collapse, and the words become Ana Lopez.
+      value: With the extra spaces removed and each word capitalised, the name reads Ana Lopez.
       syntax: "Check the brackets, commas and quote marks. PROPER follows the pattern `=PROPER(text)`."
       reference: The imported name is in A2.
     accept:
@@ -67,7 +67,7 @@ screens:
       rule: SUBSTITUTE takes the text, the old text and the new text, and replaces every match. LOWER turns every letter into lower case.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: Ana Lopez becomes ana.lopez once the padding is gone.
+      value: With the spaces tidied, ANA LOPEZ becomes ana.lopez.
       syntax: "Check the brackets, commas and quote marks. LOWER follows the pattern `=LOWER(text)`."
       reference: The imported name is in A2, at the top of the column.
     accept:
@@ -97,6 +97,6 @@ notes:
   syntax: PROPER(TRIM(text)) tidies spacing and case; nest SUBSTITUTE and LOWER for a key
   example: '`=PROPER(TRIM(A1))` with "  jo   SMITH " in A1 gives Jo Smith.'
   commonErrors:
-    - A function is handed a whole range instead of one cell, which is not a single string to clean.
+    - TRIM is given the whole range A2:A5 instead of A2, so the result spills down four rows.
     - The function name is misspelled, and Excel returns `#NAME?`.
-    - SUBSTITUTE runs before TRIM and every run of spaces becomes a run of dots in the key.
+    - SUBSTITUTE runs before TRIM, so every run of spaces becomes a run of dots in the key.

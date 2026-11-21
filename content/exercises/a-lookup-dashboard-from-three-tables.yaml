@@ -48,7 +48,7 @@ screens:
         rule: value
       - formula: =INDEX C2:C5,MATCH(F2,A2:A5,0)
         rule: syntax
-  - prompt: In D2, report the target of the region the rep named in F2 belongs to.
+  - prompt: In D2, report the target of the region the rep named in F7 belongs to.
     rows:
       - [Rep, Region, Sales, Answer, null, Region, Target]
       - [Ana, North, 1200, null, null, North, 5000]
@@ -99,6 +99,6 @@ notes:
   syntax: INDEX(answer,MATCH(name,names,0)) looks up anything; nest the inner INDEX for three tables
   example: '`=INDEX(B1:B3,MATCH("Cy",A1:A3,0))` with Ana, Bo and Cy in A1:A3 and 10, 20 and 30 in B1:B3 gives 30.'
   commonErrors:
-    - The typed name is not in the column MATCH reads, which leaves it no position to return.
-    - INDEX is given a position past the end of its range, which is what happens after a column is deleted.
+    - The typed name is not in the column MATCH reads, so MATCH returns `#N/A`.
+    - INDEX is given a position past the end of its range, so it returns `#REF!`.
     - The outer INDEX reads the target column at the rep's row instead of the region's row, and returns a nearby figure.

@@ -26,8 +26,8 @@ screens:
     misses:
       syntax: Write the range as the first cell, a colon, then the last cell.
       required-function: Use COUNT. It counts only the cells with an amount.
-      reference: Point at the amounts in B2 to B7, not at B8.
-      value: Check the range. COUNT needs the amounts in B2 to B7, and the order codes are text.
+      reference: Point at the amounts in B2:B7, not at B8.
+      value: Check the range. COUNT needs the amounts in B2:B7, and the order codes are text.
     accept:
       - =COUNT(B2:B7)
       - =count(b2:b7)

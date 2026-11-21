@@ -6,7 +6,7 @@ topic: models
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In C2, flag the first reconciliation ready when its variance is zero and check otherwise. Use IF.
+  - prompt: In C2, show "ready" when the first variance is zero and "check" otherwise. Use IF.
     rows:
       - [Check, Variance, Status]
       - [bank, 0, null]
@@ -23,7 +23,7 @@ screens:
     misses:
       value: The bank variance is zero, so the status reads ready.
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
-      required-function: One cell has to choose between two words, which is IF's work.
+      required-function: This exercise asks for IF, which returns one of two words.
       reference: The variance is in B2.
     accept:
       - =IF(B2=0,"ready","check")
@@ -39,7 +39,7 @@ screens:
       - { formula: '=IF(B3=0,"ready","check")', rule: value }
       - { formula: '=IF(B2/0=0,"ready","check")', rule: reference }
       - { formula: '=IF B2=0,"ready","check"', rule: syntax }
-  - prompt: In C2, count the reconciliations whose variance is not zero. The count goes in the Status column. Use COUNTIF.
+  - prompt: In C2, count the reconciliations whose variance is not zero. Use COUNTIF.
     rows:
       - [Check, Variance, Status]
       - [bank, 0, null]
@@ -54,7 +54,7 @@ screens:
       nudge: One function counts the cells that meet a condition, and here the condition is not equal to zero.
       rule: COUNTIF takes a range and a condition in quotes. The operator <> means not equal to, and it goes inside the quotes before the value.
     misses:
-      value: Accruals and prepaids are out, so the count is two.
+      value: Accruals and prepaids are out, so the count is 2.
       syntax: "Check the brackets, commas and quote marks. COUNTIF follows the pattern `=COUNTIF(range, criteria)`."
       required-function: Counting rows that meet a condition is what COUNTIF does.
       reference: The variances run down B2:B5.
@@ -81,6 +81,6 @@ notes:
   syntax: IF(variance=0,"ready","check") flags one check; =COUNTIF(range,"<>0") counts the rest
   example: '`=COUNTIF(A1:A4,"<>0")` with 0, 5, 0 and -2 in A1:A4 gives 2.'
   commonErrors:
-    - A variance is divided by zero before the comparison is made.
+    - A variance is divided by zero before the comparison, so the formula returns `#DIV/0!`.
     - The function is typed as IF or COUNTIF with a letter missing, and Excel returns `#NAME?`.
     - The two branches are swapped, so a variance of zero reads check.

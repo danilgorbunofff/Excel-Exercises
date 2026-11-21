@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: SUM
 screens:
-  - prompt: In F2, use SUM to add North's four quarters in B2:E2.
+  - prompt: In F2, use SUM to add North's 4 quarters in B2:E2.
     rows:
       - [Region, Q1, Q2, Q3, Q4, Year]
       - [North, 210, 185, 240, 260, null]
@@ -21,7 +21,7 @@ screens:
       - SUM
     hints:
       nudge: This time the range runs along a row.
-      rule: "A row range works like a column range: SUM(B2:E2) adds the four cells from B2 to E2."
+      rule: "A row range works like a column range: SUM(B2:E2) adds the 4 cells from B2 to E2."
     misses:
       value: North's year is 895. Add only row 2, from B to E.
       syntax: Check the brackets, commas and quotes.

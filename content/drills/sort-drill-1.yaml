@@ -38,7 +38,7 @@ screens:
       - SORT
     hints:
       nudge: SORT with one range sorts it from smallest to largest, A to Z.
-      rule: SORT(range) spills the values in order.
+      rule: SORT(range) spills the values in ascending order.
     misses:
       value: A to Z, the reps are Ann, Bo, Cy, Di, Ed, Flo.
       syntax: Check the brackets, commas and quotes.

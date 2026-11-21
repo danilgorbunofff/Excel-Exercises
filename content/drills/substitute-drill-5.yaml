@@ -22,7 +22,7 @@ screens:
       nudge: Remove the comma first, then turn the text into a number.
       rule: SUBSTITUTE leaves text; VALUE makes it a number you can add up.
     misses:
-      value: Without the comma, A2 is the number 1250.
+      value: The result should be the number 1250, not the text "1250".
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SUBSTITUTE.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

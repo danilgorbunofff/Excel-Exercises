@@ -1,7 +1,7 @@
 id: take-drill-1
 slug: take-drill-1
 level: 1
-title: The first three
+title: The first 3
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: TAKE
@@ -32,9 +32,9 @@ screens:
       - TAKE
     hints:
       nudge: TAKE takes a range and how many rows to keep.
-      rule: TAKE(range,3) keeps the first three rows.
+      rule: TAKE(range,3) keeps the first 3 rows.
     misses:
-      value: The first three reps are Ann, Bo, Cy.
+      value: The first 3 reps are Ann, Bo, Cy.
       syntax: Check the brackets, commas and quotes.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:

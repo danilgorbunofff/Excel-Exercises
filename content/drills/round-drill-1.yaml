@@ -1,7 +1,7 @@
 id: round-drill-1
 slug: round-drill-1
 level: 1
-title: Round to two decimal places
+title: Round to 2 decimal places
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: ROUND

@@ -36,7 +36,7 @@ screens:
       nudge: The number of rows can come from a cell.
       rule: TAKE(range,I1) follows whatever I1 holds; a negative number counts from the end.
     misses:
-      value: The first four reps are Ann, Bo, Cy, Di.
+      value: The first 4 reps are Ann, Bo, Cy, Di.
       syntax: Check the brackets, commas and quotes.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:

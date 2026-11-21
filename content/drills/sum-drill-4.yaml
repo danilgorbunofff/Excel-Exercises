@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: SUM
 screens:
-  - prompt: In B7, use SUM to total the costs. One cell holds a note and one is empty.
+  - prompt: In B7, use SUM to total the costs in B2:B6. One cell holds a note and one is empty.
     rows:
       - [Item, Cost]
       - [Paper, 12.5]
@@ -27,7 +27,7 @@ screens:
       nudge: SUM skips text and empty cells on its own.
       rule: Unlike + between cells, SUM(range) ignores text such as n/a and empty cells.
     misses:
-      value: The three costs add up to 28.75. Include the whole range B2:B6.
+      value: The 3 costs add up to 28.75. Include the whole range B2:B6.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SUM.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

@@ -30,7 +30,7 @@ screens:
       nudge: SUMIF takes the range to test, what to look for, then the range to add.
       rule: SUMIF(test_range,"East",sum_range) adds the sales on the East rows only.
     misses:
-      value: The three East rows add up to 900.
+      value: The 3 East rows add up to 900.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SUMIF.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

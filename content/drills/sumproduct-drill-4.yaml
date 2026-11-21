@@ -29,7 +29,7 @@ screens:
       nudge: A test like (B2:B7=D8) gives 1 for a match and 0 otherwise. Multiply it by the sales.
       rule: SUMPRODUCT((range=value)*amounts) adds only the amounts on rows where the test is true.
     misses:
-      value: The three East rows add up to 900.
+      value: The 3 East rows add up to 900.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SUMPRODUCT.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

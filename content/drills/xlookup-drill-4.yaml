@@ -28,7 +28,7 @@ screens:
     requiredFunctions:
       - XLOOKUP
     hints:
-      nudge: "Match mode -1 means: an exact match, or else the next smaller value."
+      nudge: Match mode -1 looks for an exact match, or else the next smaller value.
       rule: XLOOKUP(value,starts,rates,,-1) finds the band an income falls in. Leave the fourth argument empty.
     misses:
       value: 52000 falls in the band that starts at 40000, so the rate is 0.3.

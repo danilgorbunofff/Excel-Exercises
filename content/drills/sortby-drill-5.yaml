@@ -1,7 +1,7 @@
 id: sortby-drill-5
 slug: sortby-drill-5
 level: 2
-title: Top three names by sales
+title: Top 3 names by sales
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: SORTBY
@@ -32,10 +32,10 @@ screens:
       - SORTBY
       - TAKE
     hints:
-      nudge: Sort the names by sales, largest first, then take three.
-      rule: TAKE(SORTBY(names,sales,-1),3) names the top three.
+      nudge: Sort the names by sales, largest first, then take 3.
+      rule: TAKE(SORTBY(names,sales,-1),3) names the top 3.
     misses:
-      value: The top three reps are Di, Ann, Flo.
+      value: The top 3 reps are Di, Ann, Flo.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SORTBY and TAKE.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

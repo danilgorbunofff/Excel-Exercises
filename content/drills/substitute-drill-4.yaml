@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: SUBSTITUTE
 screens:
-  - prompt: In B2, use SUBSTITUTE to replace every small "a" in A2 with "o".
+  - prompt: In B2, use SUBSTITUTE to replace every lowercase "a" in A2 with "o".
     rows:
       - [Text, Result]
       - [Banana A, null]
@@ -19,8 +19,8 @@ screens:
     requiredFunctions:
       - SUBSTITUTE
     hints:
-      nudge: SUBSTITUTE tells capital A from small a.
-      rule: Only the small letters change; the capital A stays.
+      nudge: "SUBSTITUTE is case-sensitive: A and a are different letters."
+      rule: SUBSTITUTE(A2,"a","o") changes only lowercase a; the capital A stays.
     misses:
       value: Changed, the text reads Bonono A.
       syntax: Check the brackets, commas and quotes.

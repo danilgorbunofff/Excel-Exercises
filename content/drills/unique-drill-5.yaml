@@ -31,7 +31,7 @@ screens:
       - SORT
     hints:
       nudge: Wrap UNIQUE in SORT.
-      rule: SORT(UNIQUE(range)) gives a tidy, sorted list.
+      rule: SORT(UNIQUE(range)) lists each value once, from A to Z.
     misses:
       value: Sorted, the regions are East, North, West.
       syntax: Check the brackets, commas and quotes.

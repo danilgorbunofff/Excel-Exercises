@@ -1,7 +1,7 @@
 id: rounddown-drill-2
 slug: rounddown-drill-2
 level: 1
-title: Cut a rate to two places
+title: Cut a rate to 2 places
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: ROUNDDOWN
@@ -21,10 +21,10 @@ screens:
     requiredFunctions:
       - ROUNDDOWN
     hints:
-      nudge: 2 places keeps two digits after the point.
+      nudge: 2 places keeps 2 digits after the decimal point.
       rule: ROUNDDOWN(number,2) drops every digit after the second.
     misses:
-      value: 2.349 cut to two places is 2.34.
+      value: 2.349 cut to 2 places is 2.34.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for ROUNDDOWN.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

@@ -1,7 +1,7 @@
 id: take-drill-2
 slug: take-drill-2
 level: 1
-title: The last two
+title: The last 2
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: TAKE
@@ -30,9 +30,9 @@ screens:
       - TAKE
     hints:
       nudge: A negative number counts from the end.
-      rule: TAKE(range,-2) keeps the last two rows.
+      rule: TAKE(range,-2) keeps the last 2 rows.
     misses:
-      value: The last two reps are Ed, Flo.
+      value: The last 2 reps are Ed, Flo.
       syntax: Check the brackets, commas and quotes.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:

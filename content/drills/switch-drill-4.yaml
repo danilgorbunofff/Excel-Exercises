@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: SWITCH
 screens:
-  - prompt: In C2, use SWITCH with TRUE to give "A" for 80 or more, "B" for 60 or more, and "C" otherwise.
+  - prompt: 'In C2, use SWITCH with TRUE to grade the score in B2: "A" for 80 or more, "B" for 60 or more, and "C" otherwise.'
     rows:
       - [Student, Score, Grade]
       - [Ann, 64, null]

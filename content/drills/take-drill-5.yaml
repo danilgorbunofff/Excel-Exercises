@@ -1,7 +1,7 @@
 id: take-drill-5
 slug: take-drill-5
 level: 2
-title: The three largest sales
+title: The 3 largest sales
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: TAKE
@@ -32,10 +32,10 @@ screens:
       - TAKE
       - SORT
     hints:
-      nudge: Sort largest first, then keep three.
-      rule: TAKE(SORT(range,1,-1),3) gives the top three values.
+      nudge: Sort largest first, then keep 3.
+      rule: TAKE(SORT(range,1,-1),3) gives the top 3 values.
     misses:
-      value: The three largest sales are 520, 400, 330.
+      value: The 3 largest sales are 520, 400, 330.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for TAKE and SORT.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

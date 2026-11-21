@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: SMALL
 screens:
-  - prompt: In B10, use SMALL to find the fastest, lowest, time in B2:B8.
+  - prompt: In B10, use SMALL to find the fastest time in B2:B8, which is the lowest.
     rows:
       - [Runner, Time]
       - [Ann, 41.2]
@@ -28,7 +28,7 @@ screens:
     requiredFunctions:
       - SMALL
     hints:
-      nudge: "SMALL takes a range and k: which smallest you want."
+      nudge: SMALL takes a range and k, the position counting up from the smallest.
       rule: SMALL(range,1) returns the smallest value, like MIN.
     misses:
       value: The fastest time is 37.6.

@@ -21,7 +21,7 @@ screens:
     requiredFunctions:
       - ROUNDUP
     hints:
-      nudge: ROUNDUP always goes up, even from .1.
+      nudge: Any fraction, even .1, takes ROUNDUP to the next whole number.
       rule: ROUNDUP(number,0) goes up to the next whole number unless it already is one.
     misses:
       value: 4.1 hours are billed as 5.

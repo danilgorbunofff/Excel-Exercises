@@ -24,7 +24,7 @@ screens:
       - TEXTJOIN
     hints:
       nudge: TRUE as the second argument skips empty cells.
-      rule: With FALSE, each empty cell leaves an extra comma.
+      rule: TEXTJOIN(", ",TRUE,range) skips the gaps. With FALSE, each empty cell leaves an extra comma.
     misses:
       value: Skipping the gaps, the names read Ann, Cy, Ed.
       syntax: Check the brackets, commas and quotes.

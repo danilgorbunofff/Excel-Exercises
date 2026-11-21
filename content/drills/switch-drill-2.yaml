@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: SWITCH
 screens:
-  - prompt: In B2, use SWITCH to show "Mon" for 1, "Tue" for 2, "Wed" for 3, and "Other" for anything else.
+  - prompt: In B2, use SWITCH to turn the day number in A2 into "Mon" for 1, "Tue" for 2, "Wed" for 3, and "Other" for anything else.
     rows:
       - [Day number, Name]
       - [2, null]

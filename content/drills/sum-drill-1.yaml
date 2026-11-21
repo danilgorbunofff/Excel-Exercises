@@ -1,7 +1,7 @@
 id: sum-drill-1
 slug: sum-drill-1
 level: 1
-title: Total five months of sales
+title: Total 5 months of sales
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: SUM
@@ -27,7 +27,7 @@ screens:
       nudge: One function adds up a whole range.
       rule: SUM(range) adds every number in the range. Write the range as first cell, colon, last cell.
     misses:
-      value: The five months add up to 600. Check that the range runs from B2 to B6.
+      value: The 5 months add up to 600. Check that the range runs from B2 to B6.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SUM.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

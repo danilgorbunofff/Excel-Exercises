@@ -20,7 +20,7 @@ screens:
       - TRIM
     hints:
       nudge: TRIM works on any text, digits included.
-      rule: "TRIM returns text: 42 with the spaces gone, but still text."
+      rule: TRIM always returns text, so 42 comes back as text, not a number.
     misses:
       value: Trimmed, the cell holds the text 42.
       syntax: Check the brackets, commas and quotes.

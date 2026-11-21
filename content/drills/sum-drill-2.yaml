@@ -26,7 +26,7 @@ screens:
       nudge: A range can cover several columns at once.
       rule: SUM(B2:D4) adds the whole block, from the top-left cell to the bottom-right cell.
     misses:
-      value: All nine cells add up to 53. The range has to reach column D.
+      value: All 9 cells add up to 53. The range has to reach column D.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SUM.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

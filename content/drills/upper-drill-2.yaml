@@ -20,7 +20,7 @@ screens:
       - UPPER
     hints:
       nudge: Letters already in capitals stay as they are.
-      rule: UPPER changes only the small letters.
+      rule: UPPER changes only the lowercase letters.
     misses:
       value: In capitals, the code is AB12CD.
       syntax: Check the brackets, commas and quotes.

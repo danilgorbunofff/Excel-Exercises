@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: SUMIFS
 screens:
-  - prompt: In C9, use SUMIFS and SUM to find the share of all units in C2:C8 that are "East" and "Pens".
+  - prompt: In C9, use SUMIFS and SUM to find what share of all units in C2:C8 comes from rows where the region is "East" and the product is "Pens".
     rows:
       - [Region, Product, Units]
       - [East, Pens, 40]

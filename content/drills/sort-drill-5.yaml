@@ -1,7 +1,7 @@
 id: sort-drill-5
 slug: sort-drill-5
 level: 2
-title: Top three rows by sales
+title: Top 3 rows by sales
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: SORT
@@ -38,10 +38,10 @@ screens:
       - SORT
       - TAKE
     hints:
-      nudge: Sort largest first, then take the first three rows.
-      rule: TAKE(SORT(table,3,-1),3) gives the top three.
+      nudge: Sort largest first, then take the first 3 rows.
+      rule: TAKE(SORT(table,3,-1),3) gives the top 3.
     misses:
-      value: The top three rows are Di North 520, Ann East 400, Flo West 330.
+      value: The top 3 rows are Di North 520, Ann East 400, Flo West 330.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SORT and TAKE.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

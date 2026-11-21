@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: UPPER
 screens:
-  - prompt: In C2, use UPPER to join A2 and B2 and turn the result into capitals.
+  - prompt: In C2, join A2 and B2, and use UPPER to turn the result into capitals.
     rows:
       - [Part 1, Part 2, Result]
       - [ab, cd, null]

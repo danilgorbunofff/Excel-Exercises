@@ -22,7 +22,7 @@ screens:
       - SEARCH
     hints:
       nudge: SEARCH's third argument says where to start looking.
-      rule: SEARCH("a",A2,5) skips the first four characters.
+      rule: SEARCH("a",A2,5) skips the first 4 characters.
     misses:
       value: From character 5 on, the next a is at 6.
       syntax: Check the brackets, commas and quotes.

@@ -21,7 +21,7 @@ screens:
     requiredFunctions:
       - ROUNDDOWN
     hints:
-      nudge: ROUNDDOWN always goes down, even from .9.
+      nudge: ROUNDDOWN drops any fraction, even .9.
       rule: ROUNDDOWN(number,0) drops everything after the decimal point.
     misses:
       value: 7.9 rounds down to 7.

@@ -40,7 +40,7 @@ screens:
       nudge: "Add a second pair: the sales range and -1."
       rule: SORTBY(names,key1,order1,key2,order2) breaks ties with the second key.
     misses:
-      value: Sorted, the reps are Ann, Cy, Ed, Di, Flo, Bo.
+      value: By region, then sales, the reps are Ann, Cy, Ed, Di, Flo, Bo.
       syntax: Check the brackets, commas and quotes.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:

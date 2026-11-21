@@ -28,7 +28,7 @@ screens:
       nudge: Function number 2 counts the cells that hold numbers.
       rule: SUBTOTAL(2,range) counts numbers; 3 would also count text.
     misses:
-      value: Four boxes have a weight.
+      value: B2:B7 holds 4 weights.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SUBTOTAL.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

@@ -21,8 +21,8 @@ screens:
     requiredFunctions:
       - ROUNDDOWN
     hints:
-      nudge: ROUNDDOWN rounds toward zero, so -2.7 becomes -2, not -3.
-      rule: ROUNDDOWN moves toward zero for negative numbers as well as positive ones.
+      nudge: For a negative number, ROUNDDOWN moves toward zero.
+      rule: ROUNDDOWN(number,0) moves toward zero, so -2.7 becomes -2, not -3.
     misses:
       value: -2.7 rounds toward zero, to -2.
       syntax: Check the brackets, commas and quotes.

@@ -1,7 +1,7 @@
 id: upper-drill-4
 slug: upper-drill-4
 level: 2
-title: Digits and signs stay
+title: Digits and symbols stay
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: UPPER
@@ -19,7 +19,7 @@ screens:
     requiredFunctions:
       - UPPER
     hints:
-      nudge: Digits, spaces and signs do not change.
+      nudge: Digits, spaces and symbols do not change.
       rule: UPPER changes letters only.
     misses:
       value: "In capitals, the note reads ORDER #12B, DUE 3PM."

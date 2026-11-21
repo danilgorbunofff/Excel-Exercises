@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: VLOOKUP
 screens:
-  - prompt: In G3, use VLOOKUP and MATCH to find, for the code in G2, the column of A2:D7 whose heading in A1:D1 is typed in G1.
+  - prompt: In G3, use VLOOKUP and MATCH to return the value for the code in G2 from the column whose heading in A1:D1 matches G1.
     rows:
       - [Code, Stock, Price, Item, null, Want, Stock]
       - [D40, 60, 2, Tape, null, Code, C30]

@@ -1,12 +1,12 @@
 id: sumproduct-drill-5
 slug: sumproduct-drill-5
 level: 2
-title: Add up sales for a region and a product
+title: Add up units for a region and a product
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: SUMPRODUCT
 screens:
-  - prompt: In E10, use SUMPRODUCT to add up the units in C2:C8 where the region in A2:A8 is East and the product in B2:B8 is Pens.
+  - prompt: In E10, use SUMPRODUCT to add up the units in C2:C8 where the region in A2:A8 matches E9 and the product in B2:B8 is "Pens".
     rows:
       - [Region, Product, Units, null, null]
       - [East, Pens, 40, null, null]
@@ -27,7 +27,7 @@ screens:
     requiredFunctions:
       - SUMPRODUCT
     hints:
-      nudge: Multiply two tests and the units together.
+      nudge: Multiply 2 tests and the units together.
       rule: Each test gives 1 or 0. Multiplying them keeps only rows where both are true.
     misses:
       value: East rows with Pens hold 40 and 15, so 55.

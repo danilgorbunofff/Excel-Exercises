@@ -27,7 +27,7 @@ screens:
     requiredFunctions:
       - SUMIF
     hints:
-      nudge: Point the criteria at D2.
+      nudge: Point the criteria argument at D2.
       rule: SUMIF(regions,D2,sales) adds the sales for whatever region D2 holds.
     misses:
       value: The West rows add up to 580.

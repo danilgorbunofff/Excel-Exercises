@@ -28,9 +28,9 @@ screens:
       - AVERAGE
     hints:
       nudge: Put the AVERAGE inside ROUND.
-      rule: ROUND(AVERAGE(range),1) rounds the average to one decimal place.
+      rule: ROUND(AVERAGE(range),1) rounds the average to 1 decimal place.
     misses:
-      value: The five days average 34.6 minutes, which is already 34.6 to one place.
+      value: The 5 days average exactly 34.6 minutes.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for ROUND and AVERAGE.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

@@ -27,8 +27,8 @@ screens:
     requiredFunctions:
       - SUMIFS
     hints:
-      nudge: Point each criteria at its cell, F2 and F3.
-      rule: SUMIFS(units,regions,F2,products,F3) follows whatever the two cells hold.
+      nudge: Point each criteria argument at its cell, F2 and F3.
+      rule: SUMIFS(units,regions,F2,products,F3) follows whatever the 2 cells hold.
     misses:
       value: East and Pens add up to 55.
       syntax: Check the brackets, commas and quotes.

@@ -27,7 +27,7 @@ screens:
       nudge: SUBTOTAL takes a function number first. 9 means add up.
       rule: SUBTOTAL(9,range) adds the range. Unlike SUM, it skips rows a filter hides.
     misses:
-      value: The five trips cost 2155 in all.
+      value: The 5 trips cost 2155 in all.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SUBTOTAL.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

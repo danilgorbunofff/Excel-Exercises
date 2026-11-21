@@ -27,7 +27,7 @@ screens:
       nudge: Multiply each quantity by its price, then add up the results, in one function.
       rule: SUMPRODUCT(range1,range2) multiplies the ranges row by row and adds the products. Both ranges must be the same size.
     misses:
-      value: The five lines come to 15 + 12 + 5 + 6 + 20, which is 58.
+      value: The 5 lines come to 15 + 12 + 5 + 6 + 20, which is 58.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for SUMPRODUCT.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

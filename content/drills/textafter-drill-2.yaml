@@ -20,7 +20,7 @@ screens:
       - TEXTAFTER
     hints:
       nudge: 'The delimiter here is a space: " ".'
-      rule: TEXTAFTER(A2," ") returns everything after the first word.
+      rule: TEXTAFTER(A2," ") returns everything after the first space.
     misses:
       value: The surname is Diaz.
       syntax: Check the brackets, commas and quotes.

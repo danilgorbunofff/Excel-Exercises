@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: SEARCH
 screens:
-  - prompt: In B2, use SEARCH with "b?t" to find the first three-letter word in A2 that starts with b and ends with t.
+  - prompt: 'In B2, use SEARCH with "b?t" to find where the first match in A2 starts: b, any one character, then t.'
     rows:
       - [Text, Result]
       - [a bat and a bit, null]

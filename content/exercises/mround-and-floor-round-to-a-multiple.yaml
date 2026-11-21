@@ -77,6 +77,6 @@ notes:
   syntax: MROUND(number, multiple) and =FLOOR(number, significance)
   example: "`=MROUND(13,5)` gives 15, and `=FLOOR(13,5)` gives 10."
   commonErrors:
-    - The multiple is zero, and zero gives MROUND no grid of multiples to land on.
+    - The multiple is 0, so MROUND returns 0 whatever the number.
     - The number and the multiple have different signs, so MROUND cannot choose a multiple between them.
     - MROUND where FLOOR is needed returns 48 and promises a pack nobody filled.

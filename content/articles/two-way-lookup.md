@@ -40,7 +40,7 @@ If you already use VLOOKUP, let MATCH supply the column number:
 
 `=VLOOKUP(H2, A1:F9, MATCH(H3, A1:F1, 0), FALSE)`
 
-Note that both ranges start in column A here. VLOOKUP counts columns from the first column of its range, so MATCH must count from the same place. If MATCH searched B1:F1 instead, every answer would come from one column too far to the left.
+Both ranges start in column A here. VLOOKUP counts columns from the first column of its range, so MATCH must count from the same place. If MATCH searched B1:F1 instead, every answer would come from one column too far to the left.
 
 ## Checks before you trust it
 

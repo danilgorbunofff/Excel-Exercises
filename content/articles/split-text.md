@@ -49,7 +49,7 @@ FIND returns the position of a character. Combine it with LEFT and MID:
 - Before the first hyphen: `=LEFT(A2, FIND("-", A2) - 1)`
 - After the first hyphen: `=MID(A2, FIND("-", A2) + 1, LEN(A2))`
 
-The `- 1` drops the hyphen itself. Giving MID the full length as the count simply returns everything that is left.
+The `- 1` drops the hyphen itself. Giving MID the full length as the count returns everything that is left.
 
 FIND returns `#VALUE!` if the character is missing. Wrap the formula in IFERROR, or use SEARCH, which ignores case.
 

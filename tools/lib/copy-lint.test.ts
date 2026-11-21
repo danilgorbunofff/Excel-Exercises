@@ -22,6 +22,9 @@ describe("lintText", () => {
     ["Unlock your potential.", "banned-phrase"],
     ["Oops, try again.", "banned-phrase"],
     ["Incorrect.", "banned-phrase"],
+    ["This is a crucial step.", "banned-phrase"],
+    ["Let's look at SUM.", "banned-phrase"],
+    ["Note that B6 is empty.", "banned-phrase"],
   ])("flags %j as %s", (text, rule) => {
     expect(rules(text)).toContain(rule);
   });

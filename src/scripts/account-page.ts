@@ -18,7 +18,7 @@ void loadMe().then((me) => {
   if (renews && me.proStatus === "lifetime") {
     renews.textContent = "You have lifetime PRO. It never renews or ends.";
   } else if (renews && me.proUntil) {
-    const day = new Date(me.proUntil).toLocaleDateString(undefined, { dateStyle: "long" });
+    const day = new Date(me.proUntil).toLocaleDateString("en-GB",{ dateStyle: "long" });
     renews.textContent =
       me.proStatus === "past_due"
         ? `Your last payment failed. Update your card before ${day}.`

@@ -85,7 +85,7 @@ export async function offerCertificate(
   button.className = "button button-primary";
   button.textContent = "Get certificate";
   const intro = document.createElement("p");
-  intro.textContent = `You passed with ${saved.score} of ${saved.total}. You can get a certificate with a link anyone can check.`;
+  intro.textContent = `You passed with ${saved.score} of ${saved.total}. Get a certificate with a link that anyone can check.`;
   form.append(label, input, button, note);
   box.replaceChildren(intro, form);
 

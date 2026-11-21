@@ -105,7 +105,7 @@ function row(cert: CertificateRow): HTMLLIElement {
         showActions();
         copy.focus();
       } catch {
-        note.textContent = "It could not be revoked. Try again.";
+        note.textContent = "The certificate could not be revoked. Try again.";
         yes.disabled = false;
       }
     });

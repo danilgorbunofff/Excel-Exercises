@@ -16,7 +16,7 @@ export const POST: APIRoute = async (ctx) => {
   });
   if (error) {
     return back(`/verify/?email=${encodeURIComponent(email)}`, {
-      error: "That code is not right or has expired.",
+      error: "That code is not right or has expired. Use the code in the newest email, or sign up again.",
     });
   }
   markSignedIn(ctx, true);

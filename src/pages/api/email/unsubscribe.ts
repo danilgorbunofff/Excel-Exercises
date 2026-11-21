@@ -27,7 +27,7 @@ export const GET: APIRoute = ({ url }) => {
   if (!readUnsubscribeToken(env.unsubscribeKey(), token)) return BAD;
   const action = `/api/email/unsubscribe/?t=${encodeURIComponent(token ?? "")}`;
   return page(
-    `<h1>Stop the weekly email?</h1><form method="post" action="${action}"><button type="submit">Stop the weekly email</button></form><p><a href="/">Back to the site</a></p>`,
+    `<h1>Turn off the weekly email?</h1><form method="post" action="${action}"><button type="submit">Turn off the weekly email</button></form><p><a href="/">Back to the site</a></p>`,
   );
 };
 
@@ -35,8 +35,8 @@ export const POST: APIRoute = async ({ url }) => {
   const userId = readUnsubscribeToken(env.unsubscribeKey(), url.searchParams.get("t"));
   if (!userId) return BAD;
   const { error } = await adminClient().from("profiles").update({ digest: false }).eq("id", userId);
-  if (error) return page("<h1>Something went wrong</h1><p>Try again in a minute.</p>", 500);
+  if (error) return page("<h1>The weekly email is still on</h1><p>The change could not be saved. Try again in a minute.</p>", 500);
   return page(
-    '<h1>Done</h1><p>You will not get the weekly email any more. You can turn it back on from your <a href="/account/">account page</a>.</p>',
+    '<h1>The weekly email is off</h1><p>You will not get it any more. To turn it back on, use your <a href="/account/">account page</a>.</p>',
   );
 };

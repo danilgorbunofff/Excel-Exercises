@@ -16,7 +16,7 @@ export const POST: APIRoute = async (ctx) => {
     .eq("id", user.id)
     .maybeSingle();
   if (!profile?.stripe_customer_id)
-    return back("/account/", { error: "There is no billing for this account yet." });
+    return back("/account/", { error: "This account has no billing yet. Choose a plan on the pricing page to start PRO." });
   const session = await stripe().billingPortal.sessions.create({
     customer: profile.stripe_customer_id,
     return_url: `${ctx.url.origin}/account/`,

@@ -16,7 +16,7 @@ export const POST: APIRoute = async (ctx) => {
     const message =
       error.code === "email_not_confirmed"
         ? "Confirm your email first. Use the link or the code we sent you."
-        : "The email or the password is not right.";
+        : "The email or the password is not right. Check both and try again.";
     return back(`/login/?next=${encodeURIComponent(next)}`, { error: message });
   }
   markSignedIn(ctx, true);

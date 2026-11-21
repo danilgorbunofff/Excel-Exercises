@@ -36,13 +36,13 @@ export function weeklyDigest(
   lines.push("", `See your review list: ${links.progress}`, "");
   lines.push(
     "You get this email because you turned on the weekly email on your account page.",
-    `Stop it: ${links.unsubscribe}`,
+    `Turn it off: ${links.unsubscribe}`,
   );
   return {
     subject:
       due + missed > 0
         ? `${plural(due + missed, "exercise")} to review this week`
-        : "Your week of Excel practice",
+        : `You solved ${plural(solvedThisWeek, "exercise")} this week`,
     text: lines.join("\n"),
   };
 }

@@ -45,7 +45,7 @@ export const POST: APIRoute = async (ctx) => {
   if (!UUID.test(attemptId)) return json({ error: "no such attempt" }, 404);
   if (!name)
     return json(
-      { error: "Type your name: letters, spaces, dots, hyphens or apostrophes, up to 80." },
+      { error: "Type your name in letters, spaces, dots, hyphens or apostrophes, up to 80 characters." },
       400,
     );
 

@@ -149,7 +149,7 @@ const ordered = [...cards.filter((c) => !c.job), ...cards.filter((c) => c.job)];
     const mins = Math.round((Date.parse(r.finished_at) - Date.parse(r.started_at)) / 60000);
     const line = document.createElement("p");
     line.className = "line";
-    line.textContent = `${new Date(r.finished_at).toLocaleDateString()}, ${
+    line.textContent = `${new Date(r.finished_at).toLocaleDateString("en-GB")}, ${
       r.time_limit_s === null ? `${mins} min, untimed` : `${mins} of ${r.time_limit_s / 60} min`
     }`;
     body.append(title, line);

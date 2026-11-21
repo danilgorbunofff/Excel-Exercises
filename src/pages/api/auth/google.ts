@@ -16,6 +16,6 @@ export const GET: APIRoute = async (ctx) => {
     },
   });
   if (error || !data.url)
-    return back("/login/", { error: "Google sign-in is not available right now." });
+    return back("/login/", { error: "Google sign-in is not available right now. Try again in a minute." });
   return redirect(data.url);
 };

@@ -23,13 +23,13 @@ describe("weeklyDigest", () => {
 
   it("says nothing when there is nothing to say", () => {
     expect(weeklyDigest({}, "2026-11-23", links)).toBeNull();
-    expect(
-      weeklyDigest(
-        { a: { state: "solved", date: "2026-11-01", last: "2026-11-20", reviews: 4 } },
-        "2026-11-23",
-        links,
-      )?.text,
-    ).toContain("This week you solved 1 exercise.");
+    const d = weeklyDigest(
+      { a: { state: "solved", date: "2026-11-01", last: "2026-11-20", reviews: 4 } },
+      "2026-11-23",
+      links,
+    );
+    expect(d?.text).toContain("This week you solved 1 exercise.");
+    expect(d?.subject).toBe("You solved 1 exercise this week");
   });
 
   it("counts solves this week, reviews due and tries not yet solved", () => {
@@ -46,6 +46,6 @@ describe("weeklyDigest", () => {
     expect(d?.text).toContain("This week you solved 1 exercise.");
     expect(d?.text).toContain("2 exercises you solved before are due for review.");
     expect(d?.text).toContain("1 exercise you tried is not solved yet.");
-    expect(d?.text).toContain("Stop it: https://x.test/u");
+    expect(d?.text).toContain("Turn it off: https://x.test/u");
   });
 });

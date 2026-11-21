@@ -81,9 +81,9 @@ describe("compareWithAnswer", () => {
 
   it("names the cells left out and the extra cells", () => {
     expect(compare("=SUM(B2:B4)")).toBe("Compared with the answer, your formula leaves out B5.");
-    expect(compare("=SUM(B1:B5)")).toBe("It also reads B1, which the answer does not.");
+    expect(compare("=SUM(B1:B5)")).toBe("Your formula also reads B1, which the answer does not.");
     expect(compare("=SUM(A3:A5)")).toBe(
-      "Compared with the answer, your formula leaves out B2:B5. It also reads A3:A5, which the answer does not.",
+      "Compared with the answer, your formula leaves out B2:B5. Your formula also reads A3:A5, which the answer does not.",
     );
   });
 

@@ -1,6 +1,6 @@
 ---
 // Why this exists: the one way exercises are listed, as a table in track
-// order: Complete, Title and Difficulty, as on Spreadsheet Center. The
+// order: Status, Title and Difficulty, as on Spreadsheet Center. The
 // catalogue and the progress page use it. Each row carries what the
 // catalogue script needs to filter and sort.
 import { isLocked } from "../lib/access.ts";
@@ -20,7 +20,7 @@ interface Props {
 const { rows, labelledby, numbered = false, sortable = false, showTrack = true } = Astro.props;
 const columns = [
   ...(numbered ? [{ key: "order", label: "No." }] : []),
-  { key: "state", label: "Complete" },
+  { key: "state", label: "Status" },
   { key: "title", label: "Title" },
   { key: "level", label: "Difficulty" },
 ];

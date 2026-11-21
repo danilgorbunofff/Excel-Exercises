@@ -79,13 +79,13 @@ test("track progress counts solved exercises, and the home sheet has no padding 
   page,
 }) => {
   await page.goto("/exercises/");
-  await expect(page.getByText("0 of 4 done").first()).toBeVisible();
+  await expect(page.getByText("0 of 4 solved").first()).toBeVisible();
   await page.goto("/");
   await expect(page.locator(".live .pad")).toHaveCount(0);
   await page.locator("#formula").fill("=B2+B3");
   await page.locator("#formula").press("Enter");
   await page.goto("/exercises/");
-  await expect(page.getByText("1 of 4 done").first()).toBeVisible();
+  await expect(page.getByText("1 of 4 solved").first()).toBeVisible();
 });
 
 test("the catalogue sorts by title and filters by difficulty and track", async ({ page }) => {
@@ -436,7 +436,7 @@ test("an interview track lists its exercises, locks and mock assessment", async 
   await expect(page.locator("[data-exercise-id] .badge-pro")).toHaveCount(3);
   await expect(page.locator("[data-exercise-id]").first().locator(".badge-pro")).toHaveCount(0);
   await expect(page.locator("[data-up-next]:not([hidden])")).toHaveCount(1);
-  await expect(page.getByText("0 of 5 done")).toBeVisible();
+  await expect(page.getByText("0 of 5 solved")).toBeVisible();
   await expect(page.getByRole("link", { name: "Start track" })).toHaveAttribute(
     "href",
     "/exercises/days-overdue-on-open-invoices/",
@@ -453,7 +453,7 @@ test("a started track says Continue, and a solved exercise says Review", async (
   await page.goto("/exercises/add-two-cells/");
   await check(page, "=B2+B3");
   // Signed out, the dialog offers an account to keep progress on every device.
-  const dialog = page.getByRole("dialog", { name: "Exercise completed" });
+  const dialog = page.getByRole("dialog", { name: "Exercise solved" });
   await expect(dialog.getByRole("link", { name: "Create an account" })).toBeVisible();
   await page.goto("/exercises/tracks/");
   await expect(

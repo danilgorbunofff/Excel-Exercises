@@ -299,7 +299,7 @@ async function startRandom(): Promise<void> {
       freeNote.replaceChildren(
         run.length === 0
           ? "Today's 10 tasks could not be loaded. Try again in a minute."
-          : "You've had today's 10 tasks. New ones tomorrow, or go PRO for unlimited. ",
+          : "You have solved today's 10 tasks. New ones come tomorrow, or get PRO for unlimited tasks. ",
         ...(run.length === 0
           ? []
           : [

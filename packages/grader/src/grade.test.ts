@@ -81,7 +81,7 @@ describe("grade: rules in their fixed order", () => {
     expect(g("=B2xB3")).toMatchObject({
       rule: "syntax",
       message:
-        "Excel reads B2xB3 as one name. To join two cells, put an operator such as `*` between them.",
+        "Excel reads B2xB3 as one name. To combine two cells, put an operator such as `*` between them.",
       start: 1,
       end: 6,
     });
@@ -306,11 +306,11 @@ describe("grade: value messages", () => {
 
   it("explains a range where one value belongs", () => {
     expect(g("=SUM(B2:B5)+B2:B3").message).toBe(
-      "The formula returns several cells, but B6 holds one value.",
+      "The formula returns several values, but this exercise expects one value in B6.",
     );
     const spec = { ...sales, requiredFunctions: [], requireReference: false };
     expect(g("=B2:B5", spec).message).toBe(
-      "The formula returns several cells, but B6 holds one value.",
+      "The formula returns several values, but this exercise expects one value in B6.",
     );
   });
 

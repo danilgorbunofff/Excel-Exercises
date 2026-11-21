@@ -145,11 +145,11 @@ function readsCells(node: Node): boolean {
 
 const ERROR_EXPLANATIONS: Record<ErrorCode, string> = {
   "#CALC!": "the calculation gave an empty result, such as a FILTER that matched nothing",
-  "#SPILL!": "the result needs more cells, and some of them already hold data",
+  "#SPILL!": "the result spills into cells that already hold data",
   "#DIV/0!": "the formula divides by zero or by an empty cell",
   "#N/A": "a lookup did not find a match",
   "#VALUE!": "a value has the wrong type, such as text where a number belongs",
-  "#REF!": "a reference points outside its range",
+  "#REF!": "a row or column number points outside the range",
   "#NUM!": "a number is out of range for the calculation",
   "#NAME?": "Excel does not recognise a name in the formula",
   "#NULL!": "two ranges do not overlap",
@@ -246,7 +246,7 @@ function checkNames(ast: Node): Omit<Verdict, "reads" | "correct" | "rule"> | nu
         message: isKnownFunction(fnName)
           ? `${fnName} needs brackets, such as ${fnName}(B2:B5).`
           : joined
-            ? `Excel reads ${n.name} as one name. To join two cells, put an operator such as \`*\` between them.`
+            ? `Excel reads ${n.name} as one name. To combine two cells, put an operator such as \`*\` between them.`
             : `Excel reads ${n.name} as a name. If you mean text, put it in quotes: \`"${n.name}"\`.`,
         start: n.start,
         end: n.end,
@@ -524,7 +524,7 @@ function judge(raw: Value, expected: Expected, grid: Grid, answer: Address): Out
   if (isRange(raw))
     return {
       ok: false,
-      message: `The formula returns several cells, but ${cellName} holds one value.`,
+      message: `The formula returns several values, but this exercise expects one value in ${cellName}.`,
     };
   const value = toScalar(raw);
   const display = formatValue(value);

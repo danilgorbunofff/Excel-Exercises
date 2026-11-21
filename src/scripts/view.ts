@@ -14,7 +14,7 @@ export const RULE_LABELS: Record<Rule, (cell: string) => string> = {
   "forbidden-function": (cell) => `Function not allowed in ${cell}.`,
   reference: (cell) => `Cell reference problem in ${cell}.`,
   value: (cell) => `Wrong result in ${cell}.`,
-  fragile: (cell) => `Breaks when the data changes in ${cell}.`,
+  fragile: (cell) => `Formula in ${cell} breaks when the data changes.`,
 };
 
 export interface VerdictView {
@@ -142,6 +142,6 @@ export function compareWithAnswer(
   if (missing.length > 0)
     parts.push(`Compared with the answer, your formula leaves out ${describeCells(missing)}.`);
   if (extra.length > 0)
-    parts.push(`It also reads ${describeCells(extra)}, which the answer does not.`);
+    parts.push(`Your formula also reads ${describeCells(extra)}, which the answer does not.`);
   return parts.join(" ");
 }

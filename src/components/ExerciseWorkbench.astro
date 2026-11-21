@@ -210,7 +210,7 @@ const nextOf = (i: number) =>
 
     <section class="note note-hints" aria-labelledby="hints">
       <h2 id="hints"><Icon name="hint" size={18} />Stuck?</h2>
-      <p class="count">The last hint shows the answer, and the exercise counts as solved with help.</p>
+      <p class="count">The last hint shows the answer. A solve after that counts as solved with help.</p>
       {screens.map((s, i) => <HintLadder screen={s} index={i} locked={locked} />)}
     </section>
 
@@ -294,7 +294,7 @@ const nextOf = (i: number) =>
 
   <div class="details answer-panel" role="tabpanel" id="panel-answer" aria-labelledby="tab-answer" hidden>
     <h2>The answer</h2>
-    <p>Seeing the answer marks this exercise as solved with help. Solve it again on a later day to count it as solved.</p>
+    <p>Once you have seen the answer, a solve counts as solved with help, not solved.</p>
     {
       screens.map((s, i) => (
         <div class="answer-block">

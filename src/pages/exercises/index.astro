@@ -30,19 +30,19 @@ const faq = [
   },
   {
     q: "Can these exercises help me prepare for a job that uses Excel?",
-    a: "Yes. The later tracks cover the conditions and lookups that office, finance and data roles use every day, and the interview tracks practise the tasks those tests set.",
+    a: "Yes. The later tracks cover the conditions and lookups that office, finance and data roles use every day, and the interview tracks practise the tasks that interview tests set.",
   },
   {
     q: "How much time does one exercise need?",
-    a: "Most take five to ten minutes. Each asks for one formula, and the hints are there if you get stuck.",
+    a: "Most take 5 to 10 minutes. Each asks for one formula, and the hints are there if you get stuck.",
   },
   {
     q: "What if I get stuck?",
-    a: "Yes. Each exercise has two hints and then the answer. Seeing the answer marks the exercise as solved with help.",
+    a: "Each exercise has two hints and then the answer. If you solve it after seeing the answer, it counts as solved with help.",
   },
   {
     q: "Which versions of Excel do the formulas work in?",
-    a: "The exercises follow Excel for Microsoft 365. XLOOKUP needs Excel 2021 or later. Everything else works in older versions too.",
+    a: "The exercises follow Excel for Microsoft 365. XLOOKUP, FILTER, SORT, UNIQUE and LET need Excel 2021 or later. TAKE, CHOOSECOLS, TEXTBEFORE and TEXTAFTER need Excel 2024 or later.",
   },
 ];
 ---
@@ -152,8 +152,8 @@ const faq = [
             <label for="progress">Progress</label>
             <select id="progress" name="progress">
               <option value="">All</option>
-              <option value="todo">Not completed</option>
-              <option value="done">Completed</option>
+              <option value="todo">Not solved</option>
+              <option value="done">Solved</option>
             </select>
           </div>
           <div class="field">

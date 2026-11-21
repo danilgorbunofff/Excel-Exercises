@@ -53,7 +53,7 @@ test("a formula tied to the visible data is marked as breaking when the data cha
   await page.goto("/exercises/ifna-catch-only-a-missing-match/");
   // Right for this sheet, but it looks up A9 (the code that is missing today) in the wrong way.
   await check(page, '=IFNA(VLOOKUP(A9,A2:B7,2,FALSE),"not on the list")');
-  await expect(status(page)).toContainText("Breaks when the data changes in B9.");
+  await expect(status(page)).toContainText("Formula in B9 breaks when the data changes.");
   await expect(status(page)).toContainText("Right for this data, but not when the data changes.");
 });
 
@@ -96,7 +96,7 @@ test("a correct answer turns Check into Next, in track order, and is remembered"
   await check(page, "=sum(b2:b5)");
   await expect(status(page)).toContainText("Correct. B6 shows 446.");
   // The completion dialog opens with the next exercise focused.
-  const dialog = page.getByRole("dialog", { name: "Exercise completed" });
+  const dialog = page.getByRole("dialog", { name: "Exercise solved" });
   await expect(dialog).toBeVisible();
   await expect(dialog.getByRole("link", { name: "Next exercise: Average score" })).toBeFocused();
   await page.keyboard.press("Escape");

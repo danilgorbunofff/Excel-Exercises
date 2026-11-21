@@ -1,4 +1,4 @@
-// Why this exists: the Complete column and the track progress bars read the
+// Why this exists: the Status column and the track progress bars read the
 // same progress store, so every list shows the same state with the same words.
 import { exerciseAction, isDone, trackStatus } from "../lib/catalogue.ts";
 import { type Progress, readProgress } from "./progress.ts";
@@ -36,7 +36,7 @@ export function paintStatus(progress: Progress = readProgress()): void {
     const bar = el.querySelector<HTMLElement>("[data-bar]");
     const text = el.querySelector<HTMLElement>("[data-bar-text]");
     if (bar) bar.style.width = `${ids.length ? (done / ids.length) * 100 : 0}%`;
-    if (text) text.textContent = `${done} of ${ids.length} done`;
+    if (text) text.textContent = `${done} of ${ids.length} solved`;
     const status = trackStatus(done, ids.length);
     const pill = el.querySelector<HTMLElement>("[data-track-state]");
     if (pill) {

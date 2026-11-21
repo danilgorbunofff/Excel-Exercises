@@ -77,20 +77,20 @@ const OPS: Record<string, [generic: string, Op]> = {
   "=": ["Tests whether the two sides are equal.", (a, b) => `Tests whether ${a} equals ${b}.`],
   "<>": ["Tests whether the two sides differ.", (a, b) => `Tests whether ${a} differs from ${b}.`],
   "<": [
-    "Tests whether the left side is smaller.",
-    (a, b) => `Tests whether ${a} is smaller than ${b}.`,
+    "Tests whether the left side is less than the right.",
+    (a, b) => `Tests whether ${a} is less than ${b}.`,
   ],
   ">": [
-    "Tests whether the left side is larger.",
-    (a, b) => `Tests whether ${a} is larger than ${b}.`,
+    "Tests whether the left side is greater than the right.",
+    (a, b) => `Tests whether ${a} is greater than ${b}.`,
   ],
   "<=": [
-    "Tests whether the left side is smaller or equal.",
-    (a, b) => `Tests whether ${a} is smaller than or equal to ${b}.`,
+    "Tests whether the left side is less than or equal to the right.",
+    (a, b) => `Tests whether ${a} is less than or equal to ${b}.`,
   ],
   ">=": [
-    "Tests whether the left side is larger or equal.",
-    (a, b) => `Tests whether ${a} is larger than or equal to ${b}.`,
+    "Tests whether the left side is greater than or equal to the right.",
+    (a, b) => `Tests whether ${a} is greater than or equal to ${b}.`,
   ],
 };
 
@@ -292,7 +292,7 @@ export function explain(
       case "unary":
         return {
           ...base(n),
-          note: n.op === "-" ? "Turns the value negative." : "Keeps the value as it is.",
+          note: n.op === "-" ? "Changes the sign of the value." : "Keeps the value as it is.",
           reads: [],
           children: [build(n.operand)].filter((s): s is Step => s !== null),
         };

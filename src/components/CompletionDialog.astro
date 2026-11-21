@@ -1,5 +1,5 @@
 ---
-// Why this exists: the "Exercise completed" dialog that opens when the last
+// Why this exists: the "Exercise solved" dialog that opens when the last
 // step is solved, as on Spreadsheet Center. It offers the next exercise.
 // Closing it leaves Next in the status bar. It only invites the visitor to
 // sign up once accounts are open.
@@ -21,7 +21,7 @@ const nextTitle = next.label.replace(/^Next: /u, "");
     <Icon name="close" size={18} />
   </button>
   <span class="badge" aria-hidden="true"><Icon name="check" size={30} /></span>
-  <h2 id="done-title">Exercise completed</h2>
+  <h2 id="done-title">Exercise solved</h2>
   <a
     class="button button-primary next"
     href={next.href}

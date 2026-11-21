@@ -421,21 +421,51 @@ const audiences: { title: string; text: string }[] = [
      own text colour, so they read the same in light and dark. */
   .offer {
     position: relative;
+    isolation: isolate;
     overflow: hidden;
     padding: var(--space-6);
     border-radius: var(--radius-xl);
     background: var(--offer-bg);
     color: var(--on-primary);
+    display: flex;
+    flex-direction: column;
   }
   .offer::after {
     content: "";
     position: absolute;
-    top: -2.5rem;
-    right: -2.5rem;
-    width: 9rem;
-    height: 9rem;
+    top: -4rem;
+    right: -4rem;
+    width: 13rem;
+    height: 13rem;
+    z-index: -1;
     border-radius: 50%;
     background: rgb(255 255 255 / 0.12);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .offer-link {
+      transition:
+        background-color 0.3s,
+        color 0.3s,
+        gap 0.3s;
+    }
+    .offer:hover .offer-link span[aria-hidden="true"] {
+      transform: translateX(4px);
+    }
+    .offer,
+    .offer::after {
+      transition:
+        transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+        border-radius 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+        background 0.35s;
+    }
+    .offer:hover {
+      transform: scale(1.04);
+    }
+    .offer:hover::after {
+      border-radius: 30%;
+      transform: rotate(45deg) scale(1.4);
+      background: rgb(255 255 255 / 0.18);
+    }
   }
   .offer-1 {
     --offer-bg: var(--primary);
@@ -461,20 +491,38 @@ const audiences: { title: string; text: string }[] = [
     margin: 0 0 var(--space-5);
     color: inherit;
   }
-  .offer-link {
-    position: relative;
+  /* The whole card is the link: this overlay stretches over it. */
+  .offer-link::before {
+    content: "";
+    position: absolute;
+    inset: 0;
     z-index: 1;
+  }
+  .offer-link {
     display: inline-flex;
     align-items: center;
+    align-self: flex-start;
+    margin-top: auto;
     gap: var(--space-2);
     min-height: var(--target);
+    padding: 0 var(--space-4);
+    border-radius: 999px;
     color: inherit;
     font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 0.3em;
+    text-decoration: none;
+    background: rgb(255 255 255 / 0.16);
+  }
+  .offer:hover .offer-link {
+    background: #fff;
+    color: var(--offer-bg);
   }
   .offer-link:focus-visible {
-    outline-color: var(--on-primary);
+    outline: none;
+  }
+  .offer-link:focus-visible::before {
+    outline: 3px solid var(--on-primary);
+    outline-offset: -6px;
+    border-radius: var(--radius-xl);
   }
   .how {
     display: grid;

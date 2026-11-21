@@ -12,7 +12,7 @@ cover: "Try > read"
 
 ## Watching is not the same as doing
 
-A video makes a formula look easy, because someone else is doing the thinking. The next day, facing an empty cell, most of it is gone. You learn a formula by writing it, getting it wrong and fixing it.
+A video makes a formula look easy, because someone else is doing the thinking. The next day, in front of an empty cell, you have forgotten most of it. You learn a formula by writing it, getting it wrong and fixing it.
 
 ## Try first, then read
 
@@ -28,7 +28,7 @@ Practise on lists that look like work: orders, invoices, staff, stock. Real-look
 
 ## Get instant feedback
 
-Knowing straight away whether an answer is right stops you from practising a mistake. The exercises on this site check each answer as you type and give a hint when you are stuck.
+Knowing straight away whether an answer is right stops you from practising a mistake. The exercises on this site check each answer when you press Enter and give a hint when you are stuck.
 
 ## Come back later
 
@@ -40,7 +40,7 @@ An error message is information. `#N/A` means no match, `#VALUE!` means the wron
 
 ## A little every day
 
-Fifteen minutes a day beats two hours on a Sunday. The [daily exercise](/daily/) gives you one task a day, the same for everyone, and keeps a streak.
+15 minutes a day beats two hours on a Sunday. The [daily exercise](/daily/) gives you one task a day, the same for everyone, and keeps a streak.
 
 ## Follow an order
 

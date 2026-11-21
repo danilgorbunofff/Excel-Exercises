@@ -26,7 +26,7 @@ Ctrl+[ jumps straight to the cells the formula reads.
 
 ## Step through it: Evaluate Formula
 
-Formulas, Evaluate Formula shows the formula with one part underlined. Each click on Evaluate works that part out, until the whole result appears. This shows exactly where a value goes wrong.
+Formulas > Evaluate Formula shows the formula with one part underlined. Each click on Evaluate works that part out, until the whole result appears. This shows exactly where a value goes wrong.
 
 ## Test one part: F9
 
@@ -36,7 +36,7 @@ Press Esc afterwards. If you press Enter, the value replaces that part of the fo
 
 ## Find typed numbers
 
-Typed numbers inside formulas, such as `*1.2`, are a common source of errors because nobody updates them. Go to Home, Find and Select, Go To Special, then pick Constants to see typed values, or Formulas to see formulas. A typed number in a column of formulas stands out.
+Typed numbers inside formulas, such as `*1.2`, are a common source of errors because nobody updates them. Go to Home > Find & Select > Go To Special, then pick Constants to see typed values, or Formulas to see formulas. A typed number in a column of formulas stands out.
 
 ## Check consistency down a column
 
@@ -48,4 +48,4 @@ IFERROR around a whole formula can hide a broken range or a missing lookup value
 
 ## Write down what you find
 
-Add a note to each cell you change, or keep a list on a separate sheet. The next person, often you in six months, will thank you.
+Add a note to each cell you change, or keep a list on a separate sheet. The next person to open the file, often you, then knows what changed and why.

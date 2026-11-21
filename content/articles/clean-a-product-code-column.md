@@ -12,7 +12,7 @@ cover: "ab-12 > AB12"
 
 ## The problem
 
-The price list holds codes like AB0012. The order export holds " ab-12", "AB 0012" and "ab0012". A lookup sees four different values and finds none of them.
+The price list holds codes like AB0012. The order export holds " ab-12", "AB 0012" and "ab0012". Lookups ignore case, so "ab0012" matches, but the other two return `#N/A`.
 
 The fix is to agree on one format, then convert both lists to it. Here the target is two capital letters followed by four digits.
 

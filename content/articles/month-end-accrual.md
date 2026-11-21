@@ -32,7 +32,7 @@ The service runs from the start date in B2 to the end date in C2. The days that 
 
 For a start of 14 November and no end yet, this gives 30 minus 14 plus 1, so 17 days. MAX(0, ...) returns 0 for a contract that starts after or ends before the month.
 
-If there is no end date, put a far future date in C2, or wrap it: `IF(C2="", LastDay, C2)`.
+MIN ignores an empty C2, so a contract with no end date runs to the last day of the month.
 
 ## Step 3: the accrual
 
@@ -46,7 +46,7 @@ Round each line to two places, so the journal total matches the lines.
 
 Some contracts charge by working day. Replace the day counts with NETWORKDAYS:
 
-- Days used: `=NETWORKDAYS(MAX(B2, FirstDay), MIN(C2, LastDay), Holidays)`
+- Days used: `=MAX(0, NETWORKDAYS(MAX(B2, FirstDay), MIN(C2, LastDay), Holidays))`
 - Days in the month: `=NETWORKDAYS(FirstDay, LastDay, Holidays)`
 
 ## Reversing next month

@@ -12,7 +12,7 @@ cover: "=UNIQUE"
 
 ## Two different questions
 
-"How many different customers ordered?" counts each name once, however often it appears. "How many customers ordered exactly once?" counts only names that appear one time. Excel can answer both.
+"How many different customers ordered?" counts each name once, however often it appears. "How many customers ordered exactly once?" counts only names that appear one time.
 
 ## Different values, in current Excel
 
@@ -38,9 +38,9 @@ This works in every version:
 
 `=SUMPRODUCT((A2:A500<>"")/COUNTIF(A2:A500, A2:A500&""))`
 
-COUNTIF counts how often each value appears. A name that appears three times gets 1/3 on each of its three rows, so it adds up to 1. The `<>""` part gives blank cells 0 instead of an error.
+COUNTIF counts how often each value appears. A name that appears three times gets 1/3 on each of its three rows, so it adds up to 1. The `&""` stops blank cells returning `#DIV/0!`, and the `<>""` part gives them 0.
 
-It is slow on many thousands of rows. On large data, use a PivotTable with the distinct count option, or a helper column.
+It is slow on many thousands of rows. On large data, use a helper column, or a PivotTable with Distinct Count, which needs the data added to the Data Model.
 
 ## Unique by a condition
 

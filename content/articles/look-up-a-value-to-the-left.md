@@ -1,7 +1,7 @@
 ---
 
 title: How to look up a value to the left
-description: VLOOKUP can only return columns to the right of the one it searches. Here are the two clean ways around that.
+description: VLOOKUP only returns columns to the right of the one it searches. Use XLOOKUP, or INDEX and MATCH in any version.
 updated: 2026-11-16
 minutes: 3
 topic: lookups
@@ -12,7 +12,7 @@ cover: "A <- D"
 
 ## The problem
 
-Say column A holds customer names and column D holds customer IDs. You know an ID and want the name. VLOOKUP cannot do this, because it searches the first column of its range and only returns columns to the right of it.
+Say column A holds customer names and column D holds customer IDs. You know an ID and want the name. VLOOKUP cannot do this, because it searches the first column of its range and only returns columns to the right of it. XLOOKUP, or INDEX with MATCH, can.
 
 ## With XLOOKUP
 

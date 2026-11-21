@@ -12,7 +12,9 @@ cover: "0-30 31-60"
 
 ## What an ageing report shows
 
-An aged receivables report groups unpaid invoices by how late they are. Finance teams use it to see which customers to chase and how much may not be paid. Typical bands are not yet due, 1 to 30 days, 31 to 60, 61 to 90 and over 90.
+An aged receivables report groups unpaid invoices by how late they are. Work out days overdue from a fixed report date, look up the band in a small table, then total each band with SUMIFS.
+
+Finance teams use it to see which customers to chase and how much may not be paid. Typical bands are not yet due, 1 to 30 days, 31 to 60, 61 to 90 and over 90.
 
 ## Step 1: fix the report date
 

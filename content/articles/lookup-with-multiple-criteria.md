@@ -1,7 +1,7 @@
 ---
 
 title: Look up a value with more than one condition
-description: Three ways to find the row where two or more columns match at once.
+description: Four ways to find the row where two or more columns match at once.
 updated: 2026-11-16
 minutes: 4
 topic: lookups

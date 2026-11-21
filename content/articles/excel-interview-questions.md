@@ -12,7 +12,7 @@ cover: "Q1 to Q25"
 
 ## How to use this list
 
-Read each question and answer it out loud before you read the answer. Then try the matching task on a real sheet. Interviewers care less about the words and more about whether you can build the formula. The interview tracks on the [learning tracks page](/exercises/tracks/#g-interview) give you that practice.
+Read each question and answer it out loud before you read the answer. Then try the matching task on a real sheet. Interviewers want to see you build the formula. The interview tracks on the [learning tracks page](/exercises/tracks/#g-interview) give you that practice.
 
 ## Lookups
 
@@ -60,7 +60,7 @@ Read each question and answer it out loud before you read the answer. Then try t
 
 **18. Why does a number not add up in SUM?** It is stored as text. Convert it with VALUE, Text to Columns or the warning button.
 
-**19. How does Excel store a date?** As a whole number of days since 1900. Times are fractions of a day.
+**19. How does Excel store a date?** As a serial number of days, with 1 January 1900 as day 1. Times are fractions of a day.
 
 **20. How do you find the last day of a month?** `=EOMONTH(A2, 0)`.
 

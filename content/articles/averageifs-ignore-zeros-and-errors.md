@@ -40,7 +40,7 @@ One `#N/A` in the range makes AVERAGE return `#N/A`. AGGREGATE can skip errors:
 
 `=AGGREGATE(1, 6, C2:C100)`
 
-The 1 asks for an average and the 6 tells it to ignore error values. Function 1 also skips rows hidden by a filter if you use option 7 instead, which ignores hidden rows and errors together.
+The 1 asks for an average and the 6 tells it to ignore error values. Use option 7 instead to skip hidden rows, such as rows a filter hides, as well as errors.
 
 Before you skip errors, find out why they are there. An error often points to a real problem in the data.
 

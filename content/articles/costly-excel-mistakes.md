@@ -12,61 +12,61 @@ cover: "=SUM(B2:B9)"
 
 ## Why small mistakes get expensive
 
-A spreadsheet error rarely shows itself. The number looks plausible, gets copied into a report and drives a decision. The mistakes below are common, quiet and easy to check for.
+A spreadsheet error rarely shows itself. The number looks plausible, gets copied into a report and drives a decision. Each mistake below comes with a check that catches it.
 
 ## 1. A total that misses rows
 
 New rows are added below the range, or a row is inserted just outside it. The total is low and nothing warns you.
 
-**Check:** turn the data into an Excel table, and compare the total with the source system's total.
+Turn the data into an Excel table so the range grows, and compare the total with the source system's total.
 
 ## 2. Typed numbers inside formulas
 
 `=B2*1.2` hides a rate. When the rate changes, nobody finds every formula that holds it.
 
-**Check:** keep every rate and assumption in its own labelled cell. Use Go To Special, Constants, to find typed values among formulas.
+Keep every rate and assumption in its own labelled cell. Home > Find & Select > Go To Special > Constants finds typed values among formulas.
 
 ## 3. A lookup without an exact match
 
 VLOOKUP without FALSE returns a neighbour's value when the code is missing. The result looks fine.
 
-**Check:** always give the match type. Read [approximate or exact match](/articles/approximate-or-exact-match/) for why.
+Always give the match type. Read [approximate or exact match](/articles/approximate-or-exact-match/) for why.
 
 ## 4. IFERROR around everything
 
 IFERROR turns a broken formula into a blank or a zero, so a problem disappears from view.
 
-**Check:** use IFNA for missing lookups and let other errors show. Count errors with a check cell.
+Use IFNA for missing lookups and let other errors show. A check cell can count the errors that remain.
 
 ## 5. Sorting only part of a table
 
 Selecting one column and sorting it mixes up the rows. Names no longer match their amounts.
 
-**Check:** sort from inside an Excel table, or select the whole table first. Keep an ID column so the original order can be restored.
+Sort from inside an Excel table, or select the whole table first. An ID column lets you restore the original order.
 
 ## 6. Numbers stored as text
 
 They look right but are left out of totals and lookups.
 
-**Check:** compare `=COUNT(range)` with the number of rows. Read [numbers stored as text](/articles/numbers-stored-as-text/) for the fixes.
+Compare `=COUNT(range)` with the number of rows. Read [numbers stored as text](/articles/numbers-stored-as-text/) for the fixes.
 
 ## 7. Values pasted over formulas
 
 Someone pastes values over one cell in a column of formulas. That cell stops updating.
 
-**Check:** press `` Ctrl+` `` to show formulas and scan each calculated column.
+Press `` Ctrl+` `` to show formulas and scan each calculated column.
 
 ## 8. Percent and units
 
 A rate typed as 5 instead of 5% multiplies by 5, not 0.05. Thousands mixed with units throw totals off by a factor of 1,000.
 
-**Check:** label units in every heading, and sanity-check one result by hand.
+Put the unit in every heading, and work out one result by hand.
 
 ## 9. Rounding in the wrong place
 
 Rounding each line, then comparing with a total rounded once, gives small gaps that hide bigger ones.
 
-**Check:** decide where rounding happens, and compare totals with ROUND on both sides.
+Decide where rounding happens, and use ROUND on both sides when you compare totals.
 
 ## A habit that catches most of them
 

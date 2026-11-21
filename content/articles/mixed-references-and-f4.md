@@ -42,8 +42,6 @@ Copy it across and down the whole grid. Every cell multiplies its row label by i
 - `$A2` always reads column A, but moves down the rows.
 - `B$1` always reads row 1, but moves across the columns.
 
-One formula, written once, fills every cell.
-
 ## A real use: a summary grid
 
 Products run down column A and months across row 1. The data sits in a table called Sales. In B2:

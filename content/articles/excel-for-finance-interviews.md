@@ -12,7 +12,7 @@ cover: "=XNPV"
 
 ## What finance interviews look for
 
-Finance tasks are less about rare functions and more about getting standard ones right on messy data. Expect to total, look up, compare periods and check that numbers tie out.
+Finance tasks test standard functions on messy data, and rarely the obscure ones. Expect to total, look up, compare periods and check that numbers tie out.
 
 ## 1. SUMIFS
 
@@ -52,7 +52,7 @@ XNPV takes real dates and is better when payments are not evenly spaced.
 
 ## 9. IRR and XIRR
 
-The rate at which the value of the cash flows is zero. XIRR takes dates, like XNPV. The trap: cash flows with the wrong sign. The investment must be negative and the returns positive.
+The rate at which the net present value of the cash flows is zero. XIRR takes dates, like XNPV. The trap: cash flows with the wrong sign. The investment must be negative and the returns positive.
 
 ## 10. PMT
 

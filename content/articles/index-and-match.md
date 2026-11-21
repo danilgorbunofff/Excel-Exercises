@@ -24,7 +24,7 @@ The last argument matters:
 - `1` the largest value that is less than or equal to the one you search for. The range must be sorted ascending. This is the default when you leave the argument out.
 - `-1` the smallest value that is greater than or equal. The range must be sorted descending.
 
-Leaving out the 0 is the most common INDEX and MATCH bug. The formula still returns a value, often from the wrong row.
+Leaving out the 0 is a common INDEX and MATCH bug. The formula still returns a value, often from the wrong row.
 
 ## INDEX fetches the value
 
@@ -45,7 +45,7 @@ Both ranges must start on the same row and have the same height. If one starts o
 - Inserting or deleting columns does not break it, because there is no column number to count.
 - MATCH on its own is useful. It answers questions such as "which row is this on" or "is this value in the list at all".
 
-If everyone has Excel for Microsoft 365, XLOOKUP does the same job in one function. Read [VLOOKUP or XLOOKUP](/articles/vlookup-or-xlookup/) for when to pick which.
+If everyone has Excel for Microsoft 365 or Excel 2021 or later, XLOOKUP does the same job in one function. Read [VLOOKUP or XLOOKUP](/articles/vlookup-or-xlookup/) for when to pick which.
 
 ## When nothing matches
 
@@ -53,4 +53,4 @@ MATCH returns `#N/A` when the value is not in the range, and INDEX passes it on.
 
 `=IFNA(INDEX(F2:F20, MATCH(A2, D2:D20, 0)), "Not found")`
 
-Use IFNA rather than IFERROR. IFERROR also hides typos in the formula itself.
+Use IFNA rather than IFERROR. IFERROR also hides other errors, such as the `#NAME?` from a mistyped function name.

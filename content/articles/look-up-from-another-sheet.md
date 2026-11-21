@@ -46,7 +46,7 @@ Fixed ranges such as A2:A200 miss any rows added below row 200. Turn the data in
 
 `=XLOOKUP(A2, Prices[Code], Prices[Price])`
 
-The table grows as rows are added, the names say what each column holds, and the reference does not shift when the formula is copied.
+The table grows as rows are added, the names say what each column holds, and the reference does not shift when the formula is copied down.
 
 ## Whole columns
 

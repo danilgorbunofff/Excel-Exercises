@@ -1,6 +1,6 @@
 ---
 
-title: "Excel skills tests: what employers actually ask"
+title: "Excel skills tests: what employers ask"
 description: The usual formats of a pre-hire Excel test, the tasks that come up, and how they are marked.
 updated: 2026-11-16
 minutes: 5
@@ -12,7 +12,7 @@ cover: "45:00"
 
 ## Why employers test Excel
 
-"Advanced Excel" on a CV can mean anything from SUM to a full financial model. A short test shows what a candidate can actually do, under time pressure, in a few minutes of the employer's time.
+"Advanced Excel" on a CV can mean anything from SUM to a full financial model. A short test shows what a candidate can do under time pressure, and costs the employer a few minutes.
 
 ## The common formats
 
@@ -41,7 +41,7 @@ Most tests check the result in each cell. Many also check how you got it:
 
 - A typed number where a formula belongs usually scores nothing.
 - A formula that only works for the current data, such as a range that stops one row short, may be marked down.
-- In take-home files, readable formulas, clear labels and a check total make a good impression.
+- In take-home files, a person reads your work, so readable formulas, clear labels and a check total count.
 
 ## How to do well
 
@@ -53,4 +53,4 @@ Most tests check the result in each cell. Many also check how you got it:
 
 ## Practise under a timer
 
-The best preparation is solving the same kinds of task against the clock. The [mock assessments](/mock-assessments/) on this site are timed sets marked at the end, like an employer's test.
+Prepare by solving the same kinds of task against the clock. The [mock assessments](/mock-assessments/) on this site are timed sets marked at the end, like an employer's test.

@@ -28,7 +28,7 @@ TEXTJOIN puts a separator between every item, and can skip empty cells:
 
 `=TEXTJOIN(", ", TRUE, A2:D2)`
 
-The first argument is the separator. TRUE skips blanks, so you never get two commas in a row. This is the best choice for addresses and lists.
+The first argument is the separator. TRUE skips blanks, so you never get two commas in a row. Use it for addresses and lists.
 
 CONCAT and TEXTJOIN need Excel 2019 or later.
 

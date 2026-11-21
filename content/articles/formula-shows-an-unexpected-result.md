@@ -18,15 +18,15 @@ If every formula on the sheet shows as text, Show Formulas is on. Press `` Ctrl+
 
 ## The result does not update
 
-If you change an input and nothing moves, the workbook may be set to manual calculation. Look at Formulas, Calculation Options, and pick Automatic. Press F9 to recalculate once.
+If you change an input and nothing moves, the workbook may be set to manual calculation. Go to Formulas > Calculation Options and pick Automatic. Press F9 to recalculate once.
 
 A workbook set to manual can switch other open workbooks to manual too.
 
 ## Two equal numbers are not equal
 
-`=0.1+0.2=0.3` returns FALSE. Computers store most decimals as very close binary values, so the sum is 0.30000000000000004.
+`=10.01-10=0.01` returns FALSE. Computers store most decimals as very close binary values, so 10.01-10 gives 0.00999999999999979.
 
-The fix is to round before you compare:
+Round before you compare:
 
 `=ROUND(A2, 2) = ROUND(B2, 2)`
 
@@ -53,7 +53,7 @@ A reference that should be fixed moved when the formula was copied. Click a wron
 
 ## A circular reference
 
-If a formula refers to its own cell, directly or through other cells, Excel warns about a circular reference and may show 0. Find it under Formulas, Error Checking, Circular References.
+If a formula refers to its own cell, directly or through other cells, Excel warns about a circular reference and may show 0. Find it under Formulas > Error Checking > Circular References.
 
 ## A good habit
 

@@ -17,7 +17,7 @@ An item costs 60 and sells for 100. The profit is 40.
 - **Margin** is profit as a share of the price: 40 / 100 = 40 percent.
 - **Markup** is profit as a share of the cost: 40 / 60 = 66.7 percent.
 
-Both describe the same sale. Mixing them up is one of the most common pricing mistakes.
+Both describe the same sale. Use one where you meant the other and the price comes out wrong.
 
 ## The formulas
 

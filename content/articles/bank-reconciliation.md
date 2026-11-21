@@ -67,4 +67,4 @@ ROUND stops tiny decimal differences from showing a mismatch.
 
 - Money out as negative on one side and positive on the other, so nothing matches.
 - Counting a pair as matched twice when two lines share an amount and date.
-- Leaving old unmatched items on the list month after month. Anything older than a month or two needs to be investigated.
+- Leaving old unmatched items on the list month after month. Investigate anything older than a month or two.

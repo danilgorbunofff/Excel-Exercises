@@ -58,19 +58,18 @@ async function signIn(page: Page) {
   await page.route("**/api/progress/", (r) => r.fulfill({ json: {} }));
 }
 
-const stat = (page: Page, name: "today" | "current" | "best") => page.locator(`[data-${name}]`);
+const stat = (page: Page, name: "current" | "best") => page.locator(`[data-${name}]`);
+// The calendar cell for today carries the solved state; the page has no separate line for it.
+const today = (page: Page) => page.locator(".d-day.is-today");
 
 test("a signed-out solve counts today and stays after a reload", async ({ page }) => {
   await setDay(page, "2026-11-20");
   await page.goto("/daily/");
-  await expect(stat(page, "today")).toHaveText("Not yet");
+  await expect(today(page)).not.toHaveClass(/\bis-solved\b/u);
   await expect(stat(page, "current")).toHaveText("0 days");
   expect((await exerciseData(page)).id).toBe(pickFor("2026-11-20", pool)?.id);
   await solve(page);
-  await expect(page.locator("[data-state]")).toHaveText(
-    "Solved today. A new exercise comes tomorrow.",
-  );
-  await expect(stat(page, "today")).toHaveText("Solved");
+  await expect(today(page)).toHaveClass(/\bis-solved\b/u);
   await expect(stat(page, "current")).toHaveText("1 day");
   await expect(stat(page, "best")).toHaveText("1 day");
   await page.reload();
@@ -91,7 +90,7 @@ test("a missed day resets the streak and keeps the best", async ({ page }) => {
   // The 19th is missed.
   await setDay(page, "2026-11-20");
   await page.reload();
-  await expect(page.locator("[data-state]")).toHaveText("Not solved yet today.");
+  await expect(today(page)).not.toHaveClass(/\bis-solved\b/u);
   await expect(stat(page, "current")).toHaveText("0 days");
   await expect(stat(page, "best")).toHaveText("2 days");
   await expect(page.locator(".d-day.is-solved")).toHaveCount(2);
@@ -132,7 +131,7 @@ test("a signed-in solve is saved to the account once", async ({ page }) => {
     return r.fulfill({ status: 201, json: { saved: body.length } });
   });
   await page.reload();
-  await expect(page.locator('[data-when="in"]').last()).toBeVisible();
+  await expect(page.locator('.account[data-when="in"]')).toBeVisible();
   await solve(page);
   await expect(stat(page, "current")).toHaveText("1 day");
   await expect.poll(() => posts.length).toBe(1);
@@ -154,7 +153,7 @@ test("the account's days are merged into this browser on sign in", async ({ page
   );
   await page.reload();
   await expect(stat(page, "current")).toHaveText("1 day");
-  await expect(stat(page, "today")).toHaveText("Not yet");
+  await expect(today(page)).not.toHaveClass(/\bis-solved\b/u);
 });
 
 test("the week climbs from Monday's easiest task to Sunday's hardest", async ({ page }) => {
@@ -257,8 +256,6 @@ test("the daily works from the keyboard alone", async ({ page, browserName }) =>
       await expect(page.locator(`#formula-${i + 2}`)).toBeFocused();
     }
   }
-  await expect(page.locator("[data-state]")).toHaveText(
-    "Solved today. A new exercise comes tomorrow.",
-  );
+  await expect(today(page)).toHaveClass(/\bis-solved\b/u);
   await expect(stat(page, "current")).toHaveText("1 day");
 });

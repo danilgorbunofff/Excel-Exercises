@@ -56,9 +56,9 @@ groups:
       - { action: Find and replace, win: "Ctrl + H", mac: "Ctrl + H" }
   - title: Rows, columns and tables
     items:
-      - { action: Insert cells, rows or columns, win: "Ctrl + Shift + =", mac: "Cmd + Shift + =" }
+      - { action: Insert cells, rows or columns, win: "Ctrl + Shift + =", mac: "Ctrl + Shift + =" }
       - { action: Delete cells, rows or columns, win: "Ctrl + -", mac: "Cmd + -" }
-      - { action: Hide the selected rows, win: "Ctrl + 9", mac: "Cmd + 9" }
+      - { action: Hide the selected rows, win: "Ctrl + 9", mac: "Ctrl + 9" }
       - { action: Hide the selected columns, win: "Ctrl + 0", mac: "Cmd + 0" }
       - { action: Create a table, win: "Ctrl + T", mac: "Cmd + T" }
       - { action: Turn filters on or off, win: "Ctrl + Shift + L", mac: "Cmd + Shift + F" }
@@ -67,10 +67,10 @@ groups:
       - { action: Open Format Cells, win: "Ctrl + 1", mac: "Cmd + 1" }
       - { action: Bold, win: "Ctrl + B", mac: "Cmd + B" }
       - { action: Italic, win: "Ctrl + I", mac: "Cmd + I" }
-      - { action: Apply the currency format, win: "Ctrl + Shift + $", mac: "Ctrl + Shift + $" }
-      - { action: Apply the percentage format, win: "Ctrl + Shift + %", mac: "Ctrl + Shift + %" }
+      - { action: Apply the Currency format, win: "Ctrl + Shift + $", mac: "Ctrl + Shift + $" }
+      - { action: Apply the Percentage format, win: "Ctrl + Shift + %", mac: "Ctrl + Shift + %" }
       - {
-          action: Apply the general number format,
+          action: Apply the General number format,
           win: "Ctrl + Shift + ~",
           mac: "Ctrl + Shift + ~",
         }

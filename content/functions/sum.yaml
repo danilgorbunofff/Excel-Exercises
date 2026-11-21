@@ -56,7 +56,7 @@ pitfalls:
   - title: Adding cells with plus signs instead
     text: A formula such as `=B2+B3+B4` gives `#VALUE!` when a cell holds text, and `#REF!` when one of its rows is deleted. SUM avoids both.
 about:
-  - SUM is often the first function people learn, and most sheets lean on it. Give it a range and it adds every number inside.
+  - SUM is often the first function people learn. Give it a range and it adds every number inside.
   - It reads only numbers. Text, empty cells and TRUE or FALSE inside a range are passed over without an error. That makes SUM safer than a chain of plus signs.
   - A range grows with the sheet. Insert a row inside `B2:B8` and the formula widens to take it in. A row added below the last cell may be left out, so check the range after adding data.
 tips:

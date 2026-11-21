@@ -48,7 +48,7 @@ sets:
 
   - slug: office-essentials
     title: Office essentials
-    summary: The everyday formulas an office job expects, from totals to a first lookup.
+    summary: Totals, averages, conditional counts, a first IF and a first lookup, as in an office skills test.
     minutes: 30
     tasks:
       - invoice-total-from-lines

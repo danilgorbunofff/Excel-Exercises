@@ -54,7 +54,7 @@ topics:
     group: skill
     learn:
       - Round a price to two decimal places
-      - Round always up or always down
+      - Always round up, or always round down
       - Round to the nearest multiple, such as 5
       - Round down to a whole pack or crate
   - slug: statistics
@@ -74,7 +74,7 @@ topics:
       - Find a price from a product code with XLOOKUP
       - Read a value from a table with VLOOKUP
       - Look up a band with an approximate match
-      - Combine INDEX and MATCH for a flexible lookup
+      - Combine INDEX and MATCH to look up to the left
   - slug: index-match
     title: INDEX and MATCH
     summary: Find a position, read a cell by row and column, then combine the two.
@@ -119,7 +119,7 @@ topics:
       - Build a date from a year, month and day
       - Count the days between two dates
       - Count whole months or years between dates
-      - Add days to a date
+      - Turn a count of days into weeks
   - slug: subtotals
     title: SUMPRODUCT, SUBTOTAL and AGGREGATE
     summary: Multiply and add in one step, and pick a total by its code.
@@ -149,7 +149,7 @@ topics:
       - Track which month end tasks are done
   - slug: capstone
     title: Capstone tasks
-    summary: Longer tasks that use the functions from every other track.
+    summary: Longer tasks that combine the functions from earlier topics.
     group: skill
     learn:
       - Build a sales summary from raw rows
@@ -164,7 +164,7 @@ topics:
     learn:
       - Work out growth from one year to the next
       - Turn revenue and cost into a margin
-      - Flag a variance that breaks a limit in either direction
+      - Compare actual spend with budget for each cost centre
       - Weight a cost by quantity and find a top customer's share
   - slug: interview-fpa
     title: FP&A interview

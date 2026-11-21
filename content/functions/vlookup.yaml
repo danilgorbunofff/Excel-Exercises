@@ -68,8 +68,8 @@ pitfalls:
     text: Columns count from the table's first column, not from column A of the sheet. In a table that starts in column C, column E is number 3.
 about:
   - Use VLOOKUP when you know one value, such as a product code, and want something else from the same row, such as its price. The V stands for vertical. It reads down the first column of the table until it finds the value.
-  - The last argument decides how it matches. FALSE asks for the exact value, which is the safe choice for codes and names. TRUE finds the nearest value below, which suits bands such as grades or delivery rates.
-  - VLOOKUP only returns values to the right of the column it searches. When the value you want sits to the left, use XLOOKUP, or INDEX with MATCH.
+  - The last argument decides how it matches. FALSE asks for the exact value, which is the safe choice for codes and names. TRUE finds the exact value or the nearest one below it, which suits bands such as grades or delivery rates.
+  - VLOOKUP cannot return values to the left of the column it searches. When the value you want sits to the left, use XLOOKUP, or INDEX with MATCH.
 tips:
   - Write FALSE as the last argument unless you want a band. It is easy to leave out, and the default is TRUE.
   - Fix the table with dollar signs, as in `$A$2:$C$4`, before you copy the formula down. Without them the table moves with the formula.

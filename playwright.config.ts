@@ -11,7 +11,20 @@ export default defineConfig({
   forbidOnly: Boolean(process.env["CI"]),
   retries: 0,
   reporter: process.env["CI"] ? [["list"], ["html", { open: "never" }]] : "list",
-  use: { baseURL: `http://localhost:${PORT}` },
+  use: {
+    baseURL: `http://localhost:${PORT}`,
+    // The first-visit tour covers the page, so every test starts as a returning
+    // visitor. tour.spec.ts clears this to test the tour itself.
+    storageState: {
+      cookies: [],
+      origins: [
+        {
+          origin: `http://localhost:${PORT}`,
+          localStorage: [{ name: "formula-practice:tour:v1", value: "1" }],
+        },
+      ],
+    },
+  },
   webServer: {
     command: `node tools/serve-static.ts ${PORT} --ssr`,
     url: `http://localhost:${PORT}/`,

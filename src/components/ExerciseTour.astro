@@ -1,0 +1,84 @@
+---
+// Why this exists: the Tour button beside the timer and the styles of the
+// spotlight tour (tour.ts). Hidden until the script runs, since the tour needs it.
+---
+
+<button class="link-button tour-start" type="button" data-tour-start hidden>Tour</button>
+
+<script>
+  import "../scripts/tour.ts";
+</script>
+
+<style is:global>
+  .tour-start {
+    color: var(--muted);
+    font-size: var(--size-s);
+  }
+  .tour-start:hover {
+    color: var(--text);
+  }
+  /* The cutout: one box whose huge shadow dims everything around it. */
+  .tour-spot {
+    position: fixed;
+    z-index: 90;
+    border-radius: 6px;
+    box-shadow:
+      0 0 0 9999px rgb(16 24 40 / 0.55),
+      0 0 0 2px var(--primary);
+    pointer-events: none;
+  }
+  .tour-card {
+    position: fixed;
+    z-index: 91;
+    display: grid;
+    gap: var(--space-2);
+    width: min(320px, calc(100vw - 16px));
+    padding: var(--space-4);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: var(--shadow-pop);
+  }
+  .tour-count {
+    margin: 0;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+  }
+  .tour-title {
+    margin: 0;
+    font-size: 1.0625rem;
+  }
+  .tour-body {
+    margin: 0;
+  }
+  .tour-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+  }
+  .tour-skip {
+    color: var(--muted);
+  }
+  .tour-nav {
+    display: flex;
+    gap: var(--space-2);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .tour-spot {
+      transition:
+        top 0.35s var(--ease),
+        left 0.35s var(--ease),
+        width 0.35s var(--ease),
+        height 0.35s var(--ease);
+    }
+    .tour-card {
+      transition:
+        top 0.35s var(--ease),
+        left 0.35s var(--ease);
+    }
+  }
+</style>

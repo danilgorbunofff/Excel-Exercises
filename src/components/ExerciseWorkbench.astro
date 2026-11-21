@@ -26,6 +26,7 @@ import Breadcrumbs from "./Breadcrumbs.astro";
 import CompletionDialog from "./CompletionDialog.astro";
 import ExerciseData from "./ExerciseData.astro";
 import ExerciseTimer from "./ExerciseTimer.astro";
+import ExerciseTour from "./ExerciseTour.astro";
 import HintLadder from "./HintLadder.astro";
 import Icon from "./Icon.astro";
 import RichText from "./RichText.astro";
@@ -92,6 +93,7 @@ const nextOf = (i: number) =>
               <Icon name="chevron-down" size={16} class="next" />
             </a>
           </nav>
+      {!locked && <ExerciseTour />}
       <ExerciseTimer />
     </div>
   </div>

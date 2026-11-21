@@ -23,9 +23,9 @@ screens:
       nudge: One function joins a range with a separator and can leave out the empty cells.
       rule: TEXTJOIN takes the separator in quotes, then TRUE to skip empty cells or FALSE to keep them, then the range.
     misses:
-      value: Three of the five rows hold a department, joined by a comma and a space.
+      value: The result is Engineering, Research, Ops. Check that TRUE skips the blanks and the separator is a comma and a space.
       syntax: "Check the brackets, commas and quote marks. TEXTJOIN follows the pattern `=TEXTJOIN(delimiter, ignore_empty, text1, [text2], ...)`."
-      required-function: TEXTJOIN is the one function with a separator and a blank rule. CONCAT has neither and runs the departments into one word.
+      required-function: Use TEXTJOIN. CONCAT has no separator and no way to skip blanks, so it runs the departments together.
       reference: Join B2:B6 so a department typed into a blank row is picked up.
     accept:
       - =TEXTJOIN(", ",TRUE,B2:B6)
@@ -46,6 +46,6 @@ notes:
   syntax: TEXTJOIN(delimiter, ignore_empty, range)
   example: '`=TEXTJOIN("/",TRUE,A1:A3)` with red, an empty cell and blue gives red/blue.'
   commonErrors:
-    - The joined text was used in arithmetic, as when the result is divided by a number.
+    - Arithmetic on the joined text, such as dividing it by a number, returns #VALUE!.
     - "TEXTJOIN is typed without its last letter, and Excel returns `#NAME?`."
     - FALSE in the second argument keeps the two empty rows, so the line has two comma pairs with nothing between them.

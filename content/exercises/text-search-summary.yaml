@@ -21,9 +21,9 @@ screens:
       nudge: FIND gives the position of the hyphen, and the digits start one place after it.
       rule: MID takes the text, a start position and a count. Use FIND for the start so the formula works wherever the hyphen sits.
     misses:
-      value: The hyphen is third, so the four digits start at four.
+      value: The hyphen is the 3rd character, so the digits start at position 4. Check the +1 and the count of 4.
       syntax: "Check the brackets, commas and quote marks. MID follows the pattern `=MID(text, start_num, num_chars)`."
-      required-function: The digits are a slice of the code, so MID reads them.
+      required-function: "Use both functions: FIND locates the hyphen, and MID reads the 4 digits after it."
       reference: The code is in A2.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -59,9 +59,9 @@ screens:
       nudge: Average only the rows whose region starts with N, then round the result.
       rule: AVERAGEIFS takes the range to average first, then a criteria range and its criterion, which can hold a wildcard. ROUND with 1 as its second argument keeps one decimal place.
     misses:
-      value: 380 across three rows is 126.666..., which rounds to 126.7.
-      syntax: ROUND wraps the average, so the pattern sits inside the AVERAGEIFS call and the digits come last.
-      required-function: "A conditional average is AVERAGEIFS' job: the amounts first, the condition second."
+      value: 380 across 3 rows is about 126.67, which rounds to 126.7.
+      syntax: "Check the brackets, commas and quote marks. ROUND wraps the whole AVERAGEIFS call, and the 1 comes last: `=ROUND(number, num_digits)`."
+      required-function: AVERAGE takes every row. Use AVERAGEIFS with the amounts first, then the region range and its condition.
       reference: The amounts to average are in C2:C5.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -87,6 +87,6 @@ notes:
   syntax: MID(text,FIND("-",text)+1,4) finds the separator then slices after it; criteria take patterns
   example: '`=MID("AB-9071",FIND("-","AB-9071")+1,2)` gives 90.'
   commonErrors:
-    - FIND cannot see the hyphen in the code, so the MID call receives no start position.
-    - No row matches the pattern, so AVERAGEIFS has no numbers to average.
-    - Dropping the plus one returns -104, which is four characters starting at the hyphen.
+    - If the code has no hyphen, FIND returns #VALUE! and MID passes the error on.
+    - If no row matches the pattern, AVERAGEIFS returns #DIV/0!.
+    - Dropping the +1 returns -104, which is 4 characters starting at the hyphen.

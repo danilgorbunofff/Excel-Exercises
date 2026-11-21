@@ -23,10 +23,10 @@ screens:
       nudge: "Join a star to the end of the partial name so it matches any ending."
       rule: "In an exact-match VLOOKUP, the lookup value can hold wildcards. A star matches any run of characters, and a question mark matches exactly one."
     misses:
-      value: That is the country. Supplier is 1, country 2, lead time 3, so the third argument is 3.
+      value: The lead time is column 3 of A1:C6. Join a star to A7 and end with FALSE for an exact match.
       syntax: "Check the brackets, commas and quote marks. VLOOKUP follows the pattern `=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])`."
-      required-function: INDEX and MATCH could answer too, but the point here is what a wildcard does inside VLOOKUP's first argument.
-      reference: Build the pattern from A7. A typed "Northwind*" is right today and dead tomorrow.
+      required-function: Use VLOOKUP for this screen, with the wildcard in its first argument.
+      reference: Build the pattern from A7, so a new name typed there is looked up.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =VLOOKUP(A7&"*",A1:C6,3,FALSE)
@@ -55,6 +55,6 @@ notes:
   syntax: VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])
   example: '`=VLOOKUP("Bal*",A1:B3,2,FALSE)` returns the column B value for the first name in A1:A3 that starts with Bal.'
   commonErrors:
-    - The pattern matched no supplier, usually because the star is missing or the prefix is wrong.
-    - The column number is a word such as lead, which cannot be counted to.
-    - The column number runs past column C, the last one in A1:C6.
+    - A pattern that matches no supplier returns #N/A. Check for a missing star or a wrong prefix.
+    - A column number given as a word, such as lead, returns #VALUE!.
+    - A column number above 3 runs past A1:C6 and returns #REF!.

@@ -6,7 +6,7 @@ topic: interview-finance-analyst
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: Spend lines are in A and B, and the budget for each cost centre is in D and E. In F2, show Sales actual spend minus its budget.
+  - prompt: Spend lines are in A and B, and the budget for each cost centre is in D and E. In F2, show the Sales spend minus the Sales budget.
     rows:
       - [Cost centre, Spend, null, Centre, Budget, Variance]
       - [Sales, 4200, null, Sales, 9000, null]
@@ -28,7 +28,7 @@ screens:
       rule: SUMIFS adds the spend where the cost centre matches D2. Subtract the budget in E2 after it, so overspends come out positive.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: Sales spent 4200 and 5300, which is 9500. Against a budget of 9000 that is 500 over.
+      value: Sales spent 4200 and 5300, which total 9500. Against a budget of 9000 that is 500 over.
       syntax: "Check the brackets and commas. SUMIFS follows the pattern `=SUMIFS(sum_range, criteria_range1, criteria1, ...)`."
       reference: Point at the budget in E2 rather than typing it, so a new budget flows through.
     accept:
@@ -72,7 +72,7 @@ screens:
       rule: A variance share is the variance divided by the budget. ROUND with 3 as its second argument keeps three decimal places.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: IT spent 5700 against 6000, which is 300 under. 300 is 0.05 of the budget, so the share is minus 0.05.
+      value: IT spent 5700 against 6000, which is 300 under. 300 is 0.05 of the budget, so the share is -0.05.
       syntax: "Check the brackets and commas. ROUND follows the pattern `=ROUND(number, num_digits)`."
       reference: The IT budget is in E3, on the same row as the IT label in D3.
     accept:

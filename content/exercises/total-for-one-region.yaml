@@ -45,5 +45,5 @@ notes:
   syntax: SUMIF(range, criteria, [sum_range])
   example: '`=SUMIF(A2:A9,"Rent",B2:B9)` adds the amounts in column B on rows that say Rent.'
   commonErrors:
-    - Swapping the range to test and the range to add, which gives 0.
-    - Leaving out the range to add, so SUMIF tries to add the text in the tested range.
+    - Swapping the range to test and the range to add gives 0.
+    - Leaving out the range to add makes SUMIF add the tested range. That range holds text, so the result is 0.

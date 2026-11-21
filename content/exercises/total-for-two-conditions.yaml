@@ -27,7 +27,7 @@ screens:
       syntax: Put each condition in double quotes, as in `"Pens"`.
       required-function: Use SUMIFS, which tests two conditions at once.
       reference: Point at the units in C2 to C7, not at C8.
-      value: Check that both conditions are there, the region in column A and the product in column B.
+      value: "Check both conditions: North in column A and Pens in column B."
     accept:
       - '=SUMIFS(C2:C7,A2:A7,"North",B2:B7,"Pens")'
       - '=SUMIFS(C2:C7,B2:B7,"Pens",A2:A7,"North")'
@@ -43,5 +43,5 @@ notes:
   syntax: SUMIFS(sum_range, criteria_range1, criteria1, [criteria_range2, criteria2], ...)
   example: '`=SUMIFS(C2:C9,A2:A9,"Rent",B2:B9,"Jan")` adds the January rent.'
   commonErrors:
-    - Putting the range to add last, as in SUMIF. SUMIFS takes it first.
-    - Ranges of different sizes, which give a #VALUE! error.
+    - SUMIF puts the range to add last, but SUMIFS takes it first.
+    - Ranges of different sizes return #VALUE!.

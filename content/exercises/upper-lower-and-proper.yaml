@@ -61,7 +61,7 @@ screens:
     misses:
       value: "Each word starts with a capital and the rest drops to lower case: Ada Lovelace."
       syntax: "Check the brackets, commas and quote marks. PROPER follows the pattern `=PROPER(text)`."
-      required-function: One name is shouted and the other is not, which is the case PROPER fixes.
+      required-function: UPPER and LOWER set every letter the same way. PROPER capitalises the first letter of each word and lowers the rest.
       reference: Read the name from A2 rather than typing Ada Lovelace into the formula.
     accept:
       - =PROPER(A2)
@@ -79,10 +79,10 @@ screens:
       - { formula: =PROPER(A2)&"?", rule: value }
       - { formula: =PROPER(A2)/0, rule: value }
 notes:
-  summary: UPPER makes every letter a capital, LOWER takes them all down, and PROPER capitalises the first letter of each word. Each takes one piece of text and returns new text.
+  summary: UPPER makes every letter a capital, LOWER takes them all down, and PROPER capitalises the first letter of each word and lowers the rest. Each takes one piece of text and returns new text.
   syntax: UPPER(text) · =LOWER(text) · =PROPER(text)
   example: '`=PROPER("mARY ann")` gives Mary Ann, and `=LOWER("OK")` gives ok.'
   commonErrors:
-    - The converted text was used in arithmetic, as in =UPPER(A2)/0.
+    - Dividing the converted text by a number, as in `=UPPER(A2)/2`, returns #VALUE!.
     - "UPPER was typed with an extra letter, and Excel returns `#NAME?`."
     - PROPER on a code starts a new word after each hyphen, so the label comes out Ab-2291-Xk.

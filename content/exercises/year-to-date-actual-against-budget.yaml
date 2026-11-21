@@ -1,7 +1,7 @@
 id: year-to-date-actual-against-budget
 slug: year-to-date-actual-against-budget
 level: 2
-title: Year to date actual against budget
+title: Year-to-date actual against budget
 topic: interview-fpa
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
@@ -26,7 +26,7 @@ screens:
       value: Months 1 to 4 have budgets of 40000, 40000, 42000 and 42000, which add up to 164000.
       syntax: 'Check the brackets, commas and quote marks. The condition is written `"<="&D2`, with the comparison in quotes.'
       required-function: The whole column includes months not yet closed. SUMIFS keeps only months up to D2.
-      reference: The month numbers run down A2:A7, the budget down C2:C7, and the months closed is in D2.
+      reference: The month numbers run down A2:A7, the budget down C2:C7, and the count of months closed is in D2.
     accept:
       - =SUMIFS(C2:C7,A2:A7,"<="&D2)
       - =sumifs(c2:c7,a2:a7,"<="&d2)
@@ -40,7 +40,7 @@ screens:
       - { formula: '=SUMIFS(B2:B7,A2:A7,"<="&D2)', rule: value }
       - { formula: '=SUMIFS(C2:C7,A2:A7,"<=D2")', rule: value }
       - { formula: '=SUMIFS(C2:C7,A2:A7,"<="&D2', rule: syntax }
-  - prompt: In E2, show the year to date actual minus the year to date budget. Use SUMIFS.
+  - prompt: In E2, show the year-to-date actual minus the year-to-date budget. Use SUMIFS.
     rows:
       - [Month, Actual, Budget, Months closed, Answer]
       - [1, 41000, 40000, 4, null]
@@ -60,7 +60,7 @@ screens:
       value: The actual to date is 164500 and the budget to date is 164000, so the year is 500 ahead.
       syntax: "Check the brackets, commas and quote marks. Each SUMIFS follows the pattern `=SUMIFS(sum_range, criteria_range1, criteria1)`."
       required-function: The budget column runs past the closed months, so it needs SUMIFS to cut it off at D2.
-      reference: The month numbers run down A2:A7 and the months closed is in D2.
+      reference: The month numbers run down A2:A7 and the count of months closed is in D2.
     accept:
       - =SUMIFS(B2:B7,A2:A7,"<="&D2)-SUMIFS(C2:C7,A2:A7,"<="&D2)
       - =sumifs(b2:b7,a2:a7,"<="&d2)-sumifs(c2:c7,a2:a7,"<="&d2)
@@ -73,7 +73,7 @@ screens:
       - { formula: '=SUM(B2:B7)-SUMIFS(C2:C7,A2:A7,"<"&D2)', rule: value }
       - { formula: '=SUMIFS(B2:B7,A2:A7,"<="&D2)-SUMIFS(C2:C7,A2:A7,"<="&D2', rule: syntax }
 notes:
-  summary: Year to date figures only count the months that have closed. A comparison against budget is only fair when both sides cover the same months.
+  summary: Year-to-date figures count only the months that have closed. A comparison against budget is only fair when both sides cover the same months.
   syntax: SUMIFS(values,months,"<="&months_closed)
   example: '`=SUMIFS(B1:B6,A1:A6,"<="&3)` adds the values for months 1, 2 and 3.'
   commonErrors:

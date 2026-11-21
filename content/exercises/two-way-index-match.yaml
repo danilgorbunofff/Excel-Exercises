@@ -25,7 +25,7 @@ screens:
     misses:
       value: South is the second region down and Q3 is the third column across, so INDEX reads 130.
       syntax: "Check the brackets, commas and quote marks. INDEX follows the pattern `=INDEX(array, row_num, [column_num])`."
-      required-function: INDEX needs both numbers. With only the row it reads along the first column of B2:D4 and ignores the quarter.
+      required-function: Use INDEX with a MATCH for the row and a MATCH for the column. Typed positions such as 2 and 3 do not follow B5 and B6.
       reference: Read the region from B5 and the quarter from B6 so the sheet drives the answer.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -49,6 +49,6 @@ notes:
   syntax: INDEX(grid, row, column)
   example: '`=INDEX(B2:C3,MATCH("South",A2:A3,0),MATCH("Q1",B1:C1,0))` with North and South in A2:A3 and Q1, Q2 in B1:C1 returns the value in B3.'
   commonErrors:
-    - A region missing from A2:A4, or a quarter missing from B1:D1, leaves one of the two positions without a value.
+    - A region missing from A2:A4, or a quarter missing from B1:D1, makes MATCH return #N/A.
     - The two MATCH calls went in the wrong order, so INDEX reads row 3 column 2 and returns 95.
-    - A MATCH run over a range that reaches past the grid returns a position B2:D4 does not have.
+    - A MATCH over a range that starts on a different row or column from the grid gives an offset position, so INDEX reads the wrong cell or returns #REF!.

@@ -56,10 +56,10 @@ screens:
     answer: =IF(SUM(B2:B6)=SUM(C2:C6),"Balanced","Check")
     hints:
       nudge: Total each column, then compare the two totals inside an IF.
-      rule: IF returns its second argument when the test is true and its third when it is false. The test is the debit total equals the credit total.
+      rule: IF returns its second argument when the test is true and its third when it is false. The test checks that the debit total equals the credit total.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: Debits are 24500, 51300 and 28400, which is 104200. Credits are 86000 and 18200, also 104200, so the balance holds.
+      value: Debits are 24500, 51300 and 28400, which total 104200. Credits are 86000 and 18200, also 104200, so the balance holds.
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, value_if_false)`."
       reference: The debits run down B2:B6 and the credits down C2:C6.
     accept:

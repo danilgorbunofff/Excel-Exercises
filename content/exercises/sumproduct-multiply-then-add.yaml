@@ -1,7 +1,7 @@
 id: sumproduct-multiply-then-add
 slug: sumproduct-multiply-then-add
 level: 3
-title: "SUMPRODUCT: multiply the pair, then add them up"
+title: "SUMPRODUCT: multiply the pairs, then add them up"
 topic: subtotals
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
@@ -26,7 +26,7 @@ screens:
       rule: SUMPRODUCT takes ranges of the same size, multiplies the matching cells and returns the sum of those products.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: "Ten times two, five times four, twenty times three: 100."
+      value: 10 times 2 is 20, 5 times 4 is 20 and 20 times 3 is 60, which total 100.
       syntax: "Check the brackets, commas and quote marks. SUMPRODUCT follows the pattern `=SUMPRODUCT(array1, [array2], ...)`."
       reference: Point at the price and quantity cells, not at numbers typed into the formula.
     accept:
@@ -68,9 +68,9 @@ screens:
       rule: A weighted average divides the sum of value times weight by the sum of the weights. ROUND with 1 as its second argument keeps one decimal place.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: 100 divided by 9 units is 11.111..., which rounds to 11.1.
+      value: 100 divided by 9 units is about 11.11, which rounds to 11.1.
       syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
-      reference: Both totals, the value and the quantity, come from the table rows.
+      reference: Point at the price and quantity cells for both totals, not at typed numbers.
     accept:
       - =ROUND(SUMPRODUCT(B2:B4,C2:C4)/SUM(C2:C4),1)
       - =round(sumproduct(b2:b4,c2:c4)/sum(c2:c4),1)
@@ -98,6 +98,6 @@ notes:
   syntax: SUMPRODUCT(prices, quantities) multiplies the two ranges row by row and adds the products
   example: "`=SUMPRODUCT(A1:A2,B1:B2)` with 3 and 4 in A1:A2 and 5 and 6 in B1:B2 gives 39."
   commonErrors:
-    - The two ranges are a different height, so the pairs stop lining up and Excel refuses the call.
-    - The function name is misspelt, so Excel reads it as an undefined name.
+    - Ranges of different heights make SUMPRODUCT return #VALUE!.
+    - A misspelt function name returns #NAME?.
     - A range that starts one row below the other pairs each price with the next quantity, and the total is wrong without any error.

@@ -46,7 +46,7 @@ screens:
       nudge: Each region should appear one time only, however many orders it has.
       rule: UNIQUE keeps the first time each value appears and drops the repeats. It ignores case, so north and North count as one region.
     misses:
-      value: "There are four regions: North, South, East and West. north is the same region as North."
+      value: "There are 4 regions: North, South, East and West. UNIQUE treats north and North as the same value."
       syntax: "The pattern is `=UNIQUE(array)`."
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -96,7 +96,7 @@ screens:
       nudge: First make the list of reps with no repeats, then count that list.
       rule: "A function can work on a spilled list directly: wrap UNIQUE in COUNTA to count the values it returns."
     misses:
-      value: Eleven different reps took orders. Ana, Bo, Cy, Di, Ed, Fay and Gus each took more than one.
+      value: 11 different reps took orders. Ana, Bo, Cy, Di, Ed, Fay and Gus each took more than one.
       syntax: "Close each bracket: `=COUNTA(UNIQUE(range))`."
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:

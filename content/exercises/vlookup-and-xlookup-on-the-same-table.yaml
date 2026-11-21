@@ -6,7 +6,7 @@ topic: lookups
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B7, return the unit price for the SKU typed in B6 using the table A1:C5.
+  - prompt: In B7, return the unit price for the SKU in B6 from the table A1:C5. Use VLOOKUP.
     rows:
       - [SKU, Product, Unit price]
       - [BX-210, Bracket, 2.4]
@@ -25,8 +25,8 @@ screens:
     misses:
       value: "Count from the SKU column: product is 2, price is 3. Column 2 would return Clamp."
       syntax: "Check the brackets, commas and quote marks. VLOOKUP follows the pattern `=VLOOKUP(lookup_value, table_array, col_index_num, [range_lookup])`."
-      required-function: VLOOKUP is this screen's function; XLOOKUP gets the next one.
-      reference: Take the SKU from B6, so another product is one cell away.
+      required-function: Use VLOOKUP on this screen. XLOOKUP comes on the next one.
+      reference: Take the SKU from B6, so a new SKU typed there gives its own price.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =VLOOKUP(B6,A2:C5,3,FALSE)
@@ -60,10 +60,10 @@ screens:
       nudge: "XLOOKUP takes the column to search and the column to return, with no column count."
       rule: "XLOOKUP takes what to find, the range to search, then the range to return from. Both ranges need the same number of rows."
     misses:
-      value: The answer sits in the third argument, on the row where the match was found.
+      value: The price is in column C, so the third argument should be C2:C5.
       syntax: "Check the brackets, commas and quote marks. XLOOKUP follows the pattern `=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])`."
-      required-function: Same table, two ranges. There is no column to count and nothing to break when the sheet is reordered.
-      reference: B6 again, so both screens answer the same question.
+      required-function: Use XLOOKUP on this screen, with the SKU column to search and the price column to return.
+      reference: Take the SKU from B6, as on the first screen.
     accept:
       - =XLOOKUP(B6,A2:A5,C2:C5)
       - =xlookup(b6,a2:a5,c2:c5)
@@ -83,5 +83,5 @@ notes:
   syntax: VLOOKUP(value, table, column, FALSE) · =XLOOKUP(value, search, return)
   example: '`=VLOOKUP("B",A1:C3,3,FALSE)` and `=XLOOKUP("B",A1:A3,C1:C3)` return the same column C value from the row that holds B.'
   commonErrors:
-    - "The SKU is not in the searched column: a missing product, not a broken formula."
-    - VLOOKUP's column number is wider than the table, which asks for a column the table does not have.
+    - A SKU missing from the searched column returns #N/A. The formula works, but the product is not in the table.
+    - A column number larger than the table's width makes VLOOKUP return #REF!.

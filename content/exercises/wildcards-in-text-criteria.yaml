@@ -21,9 +21,9 @@ screens:
       nudge: A star in the criterion matches any run of characters after the letters you type.
       rule: COUNTIF takes a range and a criterion in quotes. In the criterion, * stands for any run of characters and ? for exactly one.
     misses:
-      value: "Three regions start with Nor: rows 2, 4 and 5."
+      value: "3 regions start with Nor: rows 2, 4 and 5."
       syntax: "Check the brackets, commas and quote marks. COUNTIF follows the pattern `=COUNTIF(range, criteria)`."
-      required-function: Counting rows that fit a pattern is COUNTIF's own job.
+      required-function: Use COUNTIF. COUNTA counts every filled cell, and SUM adds amounts instead of counting rows.
       reference: The regions are in B2:B5.
     accept:
       - =COUNTIF(B2:B5,"Nor*")
@@ -42,7 +42,7 @@ screens:
       - { formula: '=COUNTIF(C2:C5,">100")', rule: value }
       - { formula: '=COUNTIF(B2:B5,"Nor*")/0', rule: value }
       - { formula: '=COUNTIF B2:B5,"Nor*"', rule: syntax }
-  - prompt: In D2, add the amounts of every code that fits the two-letter pattern with a wildcard. Use SUMIF.
+  - prompt: In D2, add the amounts for every code that starts with two letters and a hyphen. Use SUMIF with a wildcard.
     rows:
       - [Code, Region, Amount, Answer]
       - [AN-1042, North, 120, null]
@@ -59,7 +59,7 @@ screens:
     misses:
       value: All four codes are two letters, a hyphen and four digits, so all four amounts count.
       syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, [sum_range])`."
-      required-function: A total that depends on a pattern is SUMIF's job.
+      required-function: Use SUMIF. SUM adds every amount, and COUNTIF counts the codes instead of adding them.
       reference: The codes are in A2:A5.
     accept:
       - =SUMIF(A2:A5,"??-*",C2:C5)
@@ -84,6 +84,6 @@ notes:
   syntax: In a criterion, ? matches one character and * matches any run of them
   example: '`=COUNTIF(A1:A3,"Re*")` with Red, Reed and Blue gives 2.'
   commonErrors:
-    - The criterion cannot be read as text or as a comparison, usually because its quotes are unbalanced.
-    - A range points at rows that no longer exist after a column was deleted.
-    - COUNTIF(B2:B5,"N") matches nothing and returns 0.
+    - Unbalanced quotes around the criterion stop Excel accepting the formula at all.
+    - Deleting the column a range points at turns that range into #REF!.
+    - 'Without a wildcard, "N" matches only a cell that holds exactly N, so `=COUNTIF(B2:B5,"N")` returns 0.'

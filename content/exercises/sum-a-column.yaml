@@ -24,7 +24,7 @@ screens:
     misses:
       syntax: Check that every opening bracket has a closing bracket.
       required-function: Use SUM, so the total updates when a sale changes.
-      reference: Point at the cells. Typed numbers do not update when the data changes.
+      reference: Point at B2 to B5 only. Typed numbers do not update, and B6 is the total's own cell.
       value: Check that the range starts at B2 and ends at B5.
     accept:
       - =SUM(B2:B5)

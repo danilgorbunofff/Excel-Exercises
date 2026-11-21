@@ -21,11 +21,11 @@ screens:
       nudge: Match the code against each code in the list and give back the item paired with it.
       rule: SWITCH takes one value, then pairs of a match and a result, then an optional fallback. It returns the result beside the first exact match, and text goes in double quotes.
     misses:
-      value: A2 is the first code in the list and its pair names Widget, so check every label and the spaces inside them.
-      syntax: "=SWITCH(value, match 1, result 1, match 2, result 2, ..., fallback): one value, then pairs."
-      required-function: Nothing here is counted or compared by size, only a code matched against a short list.
+      value: A2 holds W-01, which pairs with Widget. Check each match and result, including stray spaces inside the quotes.
+      syntax: "Check the brackets, commas and quote marks. SWITCH follows the pattern `=SWITCH(expression, value1, result1, [value2, result2], ..., [default])`."
+      required-function: Use SWITCH, which matches one code against a list of codes in a single call.
       reference: Read the code from A2 rather than typing W-01.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: "The code in A2 can change. Give SWITCH a pair for every code in the table: W-01, G-02 and S-03."
     accept:
       - =SWITCH(A2,"W-01","Widget","G-02","Gadget","S-03","Screw","Unknown")
       - =SWITCH(A2,"S-03","Screw","G-02","Gadget","W-01","Widget","Unknown")
@@ -64,7 +64,7 @@ screens:
     misses:
       value: B3 holds 3, so the third pair returns Gold.
       syntax: "Check the brackets, commas and quote marks. SWITCH follows the pattern `=SWITCH(expression, value1, result1, [value2, result2], ..., [default])`."
-      required-function: Three tiers are three pairs, which avoids a lookup range for three rows.
+      required-function: Use SWITCH, with one pair for each of the 3 tiers.
       reference: Match the tier in B3, a number, not the code beside it.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -89,6 +89,6 @@ notes:
   syntax: SWITCH(expression, value1, result1, value2, result2, ..., default)
   example: '`=SWITCH(A1,1,"Low",2,"High","Other")` with 2 in A1 gives High.'
   commonErrors:
-    - No pair matched and no default was supplied, which is what a text match against a number produces.
-    - A text result was used in arithmetic, or a pair is missing its result.
-    - SWITCH is absent from the version of Excel in use, or the name is mistyped.
+    - 'When nothing matches and there is no default, SWITCH returns #N/A. A text match such as "3" never equals the number 3.'
+    - A pair with no result shifts every argument after it, so the matches and results no longer line up.
+    - A mistyped name returns #NAME?, and so does SWITCH in versions before Excel 2019.

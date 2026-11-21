@@ -23,9 +23,9 @@ screens:
       nudge: Test the regions in one column, but add the bonuses from another.
       rule: SUMIF takes the range to test, the condition, then the range to add. The range to add must cover the same rows as the tested range.
     misses:
-      value: The North bonuses are 32, 18 and 40, which come to 90. The full column holds more than that.
+      value: The North bonuses are 32, 18 and 40, which come to 90. Check that the third argument is C2:C6.
       syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, [sum_range])`."
-      required-function: SUMIF adds only the rows that match, and here the money sits in a different column from the test.
+      required-function: Use SUMIF for this task. Its sum range goes last, after the range to test and the condition.
       reference: Read the regions from the grid rather than typing them into the formula.
     accept:
       - =SUMIF(A2:A6,"North",C2:C6)
@@ -61,7 +61,7 @@ screens:
     misses:
       value: The scores above 40 are 52 and 47, which total 99.
       syntax: "Check the brackets, commas and quote marks. SUMIF follows the pattern `=SUMIF(range, criteria, [sum_range])`."
-      required-function: A plain SUM adds every score; filtering them is the whole question here.
+      required-function: Use SUMIF. SUM adds every score, and COUNTIF counts the matches instead of adding them.
       reference: Test the scores in the grid rather than a list of numbers typed into the formula.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -85,6 +85,6 @@ notes:
   syntax: SUMIF(criteria_range, condition, [sum_range])
   example: '`=SUMIF(A1:A3,"North",B1:B3)` with North 10, South 20 and North 5 gives 15.'
   commonErrors:
-    - The sum range holds text where numbers were expected, which happens when the region column is given as the third argument.
-    - The function is spelled SMIF, or SUMIFS was used with the argument order SUMIF keeps.
-    - Two arguments means SUMIF adds the criteria range. With words in that column the answer is 0, and no error marks it.
+    - A sum range that points at the region column holds only text, so SUMIF returns 0.
+    - A misspelling such as SMIF returns #NAME?. SUMIFS takes the sum range first, so SUMIF's argument order does not work in it.
+    - With only two arguments, SUMIF adds the criteria range. If that column holds words, the result is 0 with no error.

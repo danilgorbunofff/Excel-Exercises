@@ -17,10 +17,10 @@ screens:
     answer: =SUMPRODUCT(B2:B4,C2:C4)/SUM(B2:B4)
     requiredFunctions: [SUMPRODUCT]
     hints:
-      nudge: The batch of 500 should count for more than the batch of 200. Work out the total cost, then share it over the total units.
+      nudge: The batch of 500 should count for more than the batch of 200. Work out the total cost, then spread it over the total units.
       rule: SUMPRODUCT multiplies each pair of values and adds the results, which gives the total cost. Divide it by the total units to get the weighted average.
     misses:
-      value: The batches cost 900, 2100 and 1530, which is 4530 for 1000 units, or 4.53 a unit.
+      value: The batches cost 900, 2100 and 1530, which total 4530 for 1000 units, or 4.53 a unit.
       syntax: "Check the brackets and commas. SUMPRODUCT follows the pattern `=SUMPRODUCT(array1, array2)`."
       required-function: A plain average treats every batch the same, whatever its size. SUMPRODUCT weights each cost by its units.
       reference: The units run down B2:B4 and the costs down C2:C4.
@@ -43,4 +43,4 @@ notes:
   commonErrors:
     - A plain AVERAGE of the costs ignores how many units each batch had.
     - Dividing by the number of batches instead of the units gives a cost per batch.
-    - The two ranges in SUMPRODUCT must be the same size, or the result is an error.
+    - The two ranges in SUMPRODUCT must be the same size, or SUMPRODUCT returns #VALUE!.

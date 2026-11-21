@@ -22,11 +22,11 @@ screens:
       nudge: "XLOOKUP has an optional slot for what to show when nothing matches."
       rule: "The fourth argument of XLOOKUP is returned when the value is not in the search range. Without it, a miss gives `#N/A`."
     misses:
-      value: TX-104 is not in the list, so the answer is the fallback, spelled as the prompt spells it.
+      value: TX-104 is not in the list, so the answer is the fallback "not stocked", in lower case as the prompt writes it.
       syntax: "Check the brackets, commas and quote marks. XLOOKUP follows the pattern `=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])`."
-      required-function: "Four arguments here. The fourth only matters when nothing matches, and the three-argument form would show `#N/A`."
+      required-function: "Use XLOOKUP, whose fourth argument sets the text for a miss. VLOOKUP shows `#N/A` when the SKU is missing."
       reference: Search for the SKU in B5, so asking about another one is a single edit.
-      fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
+      fragile: When the SKU is found, the price must stay a number. Joining text to the result turns 19.99 into text.
     accept:
       - =XLOOKUP(B5,A2:A4,B2:B4,"not stocked")
       - =xlookup(b5,a2:a4,b2:b4,"not stocked")
@@ -47,5 +47,5 @@ notes:
   syntax: XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])
   example: '`=XLOOKUP("Z",A1:A3,B1:B3,"none")` gives none when Z is not in A1:A3.'
   commonErrors:
-    - No fallback was supplied, so a SKU that is not in A2:A4 came back with nothing to say.
-    - The search column and the return column are different sizes, and some rows have no partner.
+    - Without a fallback, a SKU that is not in A2:A4 returns #N/A.
+    - Search and return columns of different sizes make XLOOKUP return #VALUE!.

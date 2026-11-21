@@ -20,10 +20,10 @@ screens:
       nudge: One function returns everything that comes before a delimiter you name.
       rule: TEXTBEFORE takes the text and a delimiter in quotes, and returns the part before the first match of the delimiter.
     misses:
-      value: Everything before the hyphen is ORD.
+      value: Everything before the hyphen is ORD, in capitals with no extra spaces.
       syntax: "Check the brackets, commas and quote marks. TEXTBEFORE follows the pattern `=TEXTBEFORE(text, delimiter, [instance_num], ...)`."
-      required-function: The prefix is everything before the hyphen, which is what TEXTBEFORE answers.
-      reference: The order code is in A2.
+      required-function: Use TEXTBEFORE. LEFT takes a fixed 3 characters, and TEXTBEFORE splits at the hyphen wherever it sits.
+      reference: Read the order code from A2 rather than typing it.
     accept:
       - =TEXTBEFORE(A2,"-")
       - =textbefore(a2,"-")
@@ -58,8 +58,8 @@ screens:
     misses:
       value: Everything after the hyphen is 4471.
       syntax: "Check the brackets, commas and quote marks. TEXTAFTER follows the pattern `=TEXTAFTER(text, delimiter, [instance_num], ...)`."
-      required-function: The number sits after the hyphen, which is TEXTAFTER's half.
-      reference: The order code is in A2.
+      required-function: Use TEXTAFTER. RIGHT takes a fixed 4 characters, and TEXTAFTER splits at the hyphen wherever it sits.
+      reference: Read the order code from A2 rather than typing it.
     accept:
       - =TEXTAFTER(A2,"-")
       - =textafter(a2,"-")
@@ -81,6 +81,6 @@ notes:
   syntax: TEXTBEFORE(text,"-") keeps what precedes the delimiter; =TEXTAFTER keeps what follows
   example: '`=TEXTBEFORE("inv-77","-")` gives inv and `=TEXTAFTER("inv-77","-")` gives 77 as text.'
   commonErrors:
-    - The cell holds no copy of the delimiter, which leaves no place to split.
-    - The workbook was built in an Excel version older than the one that added these functions.
+    - If the cell has no delimiter, both functions return #N/A.
+    - Older versions of Excel lack these functions and show #NAME?.
     - The two functions differ by one word, and the wrong one returns the other half of the code.

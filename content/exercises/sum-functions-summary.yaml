@@ -6,7 +6,7 @@ topic: conditions
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 screens:
-  - prompt: In B7, total everything sold, and then be ready for the question that follows. Use SUM.
+  - prompt: In B7, total everything sold. Use SUM.
     rows:
       - [Region, Amount]
       - [North, 320]
@@ -29,7 +29,7 @@ screens:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: 320 + 250 + 180 + 300 + 400 is 1450.
       syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
-      required-function: Every number in the column, added by one function.
+      required-function: Add the column with one SUM rather than a chain of + signs.
       reference: Point at the amount column rather than typing the five numbers.
     accept:
       - =SUM(B2:B6)
@@ -45,7 +45,7 @@ screens:
       - { formula: =SUM(B2:B6)/0, rule: value }
       - { formula: =SUM(B2:B6, rule: syntax }
       - { formula: =SUM(C2:C6), rule: value }
-  - prompt: "In C7, total everything that is not North: one SUM, one SUMIF, subtracted."
+  - prompt: In C7, total every row that is not North. Subtract a SUMIF from a SUM.
     rows:
       - [Region, Rep, Amount]
       - [North, Ada, 320]
@@ -70,7 +70,7 @@ screens:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: 1450 in total minus 900 of North sales leaves 550.
       syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
-      required-function: The total of the column is a SUM; the part to remove is not.
+      required-function: "Use both functions: SUM for the whole column, minus SUMIF for the North rows."
       reference: Read both the regions and the amounts from the grid.
     accept:
       - =SUM(C2:C6)-SUMIF(A2:A6,"North",C2:C6)
@@ -91,6 +91,6 @@ notes:
   syntax: SUM(range) and =SUMIF(criteria_range, condition, sum_range), combined by subtraction
   example: '`=SUM(B1:B3)-SUMIF(A1:A3,"North",B1:B3)` with North 10, South 20 and North 5 gives 20.'
   commonErrors:
-    - A range in the call holds text where numbers were expected, or a comparison has lost its quotes.
-    - SUMIF was typed as SUMIFS with SUMIF arguments, or the function is misspelled.
-    - Ranges of different shapes match the wrong rows. The total is off by one row.
+    - Text criteria need quotes. North without them returns #NAME?.
+    - SUMIFS takes the sum range first and SUMIF takes it last, so SUMIF's argument order does not work in SUMIFS.
+    - If the sum range starts one row below the criteria range, SUMIF adds the amount from the row under each match.

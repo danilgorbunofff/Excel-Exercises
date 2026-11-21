@@ -62,6 +62,6 @@ notes:
   syntax: VLOOKUP(product, table, MATCH(quarter, header_row, 0), FALSE)
   example: '`=MATCH("Mar",A1:D1,0)` with Product, Jan, Feb and Mar in A1:D1 gives 4, which VLOOKUP can use as its column number.'
   commonErrors:
-    - The quarter is not in the header, or the product is not in the first column.
-    - The MATCH position was joined to text, so VLOOKUP was handed a column number it cannot count with.
-    - MATCH's column number is wider than A1:C5, which happens when its header starts before the table does.
+    - A quarter missing from the header, or a product missing from the first column, returns #N/A.
+    - A column number joined to text, such as 3x, makes VLOOKUP return #VALUE!.
+    - A header range that starts on a different column from the table shifts the count. VLOOKUP then reads the wrong column, or returns #REF! past the edge.

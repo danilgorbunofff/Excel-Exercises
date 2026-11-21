@@ -22,7 +22,7 @@ screens:
     misses:
       value: 320 + 250 + 300 + 260 is 1130.
       syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
-      required-function: One function should take both blocks; adding them separately hides a mistake.
+      required-function: Use one SUM for both blocks, with a comma between the two ranges.
       reference: Point at the two blocks in the grid rather than typing the four numbers in.
     accept:
       - =SUM(B2:B3,D2:D3)
@@ -56,8 +56,8 @@ screens:
     misses:
       value: The numbers are 320, 180, 300, 250, 260, 400 and 150, which total 1860.
       syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
-      required-function: This is a single SUM over a rectangle, not an addition of columns.
-      reference: Read the block from the grid; a typed list cannot hold the text cells at all.
+      required-function: Use one SUM over the rectangle. Adding the cells with + signs returns #VALUE! at the text cell.
+      reference: Point at the block in the grid rather than typing the numbers in.
     accept:
       - =SUM(B2:D4)
       - =sum(b2:d4)
@@ -74,10 +74,10 @@ screens:
       - { formula: =SUM(B2:D4)/0, rule: value }
       - { formula: =SUM(B2:D4, rule: syntax }
 notes:
-  summary: SUM takes as many arguments as you need, and each one can be its own block. A comma between ranges adds them all in one call.
+  summary: SUM takes up to 255 arguments, and each one can be its own block. A comma between ranges adds them all in one call.
   syntax: SUM(range1, range2, ...) across separate blocks, or =SUM(A1:C3) across one rectangle
   example: "`=SUM(A1:A2,C1:C2)` with 1 and 2 in A1:A2 and 3 and 4 in C1:C2 gives 10."
   commonErrors:
-    - A cell in a hand-written chain holds text. SUM over a whole range would have stepped over it.
-    - A block names a range that no longer exists after rows or columns were deleted.
-    - A rectangle that swallows its own total row adds the subtotal to the detail. Check the last row of the range.
+    - A chain of + signs that meets a text cell returns #VALUE!. SUM over the range skips the text.
+    - Deleting all the rows or columns of a block turns that range into #REF!.
+    - A range that reaches into the total row includes the formula's own cell, which makes a circular reference. Check the last row of the range.

@@ -24,9 +24,9 @@ screens:
       rule: SUMIFS takes the range to add first, then pairs of range and condition. It adds a row only when every condition holds.
     misses:
       value: Ada's North sales are 320 in row 2 and 400 in row 6, so the total is 720. Nothing else matches both conditions.
-      syntax: "=SUMIFS(sum range, range 1, condition 1, range 2, condition 2): the sum range comes first."
-      required-function: SUMIF takes one condition. Two of them need SUMIFS, and SUMIFS puts the sum range first.
-      reference: Point at the region column in the grid rather than typing the names into the formula.
+      syntax: "Check the brackets, commas and quote marks. SUMIFS follows the pattern `=SUMIFS(sum_range, criteria_range1, criteria1, ...)`."
+      required-function: Use SUMIFS. SUMIF takes one condition, and SUMIFS takes several, with the sum range first.
+      reference: Point at the region and rep columns in the grid rather than typing the names into the formula.
     accept:
       - =SUMIFS(C2:C6,A2:A6,"North",B2:B6,"Ada")
       - =sumifs(c2:c6,a2:a6,"north",b2:b6,"ada")
@@ -61,7 +61,7 @@ screens:
     misses:
       value: Only two shipped orders clear 200, at 320 and 300, which total 620.
       syntax: "Check the brackets, commas and quote marks. SUMIFS follows the pattern `=SUMIFS(sum_range, criteria_range1, criteria1, ...)`."
-      required-function: Two conditions on one table is the case SUMIFS exists for.
+      required-function: SUMIF takes one condition. Use SUMIFS, which takes both the status and the amount test.
       reference: Point the second condition at the amount column so the threshold is compared against real cells.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -86,6 +86,6 @@ notes:
   syntax: SUMIFS(sum_range, criteria_range1, criteria1, [criteria_range2, criteria2], ...)
   example: '`=SUMIFS(C1:C3,A1:A3,"North",B1:B3,"Ada")` with North Ada 10, North Ben 20 and North Ada 5 gives 15.'
   commonErrors:
-    - A criteria range is a different shape from the sum range, so the rows no longer line up. Every range in the call has to start and end on the same rows.
+    - A criteria range of a different size from the sum range returns #VALUE!. Every range in the call needs the same number of rows and columns.
     - "The function is typed as SUMIF, which takes its arguments in another order: range, condition, sum range."
     - SUMIFS joins conditions with AND. Two tests that exclude each other, such as Shipped and Open on one column, never both hold for one row, so the answer is 0.

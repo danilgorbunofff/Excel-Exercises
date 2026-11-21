@@ -24,10 +24,10 @@ screens:
       nudge: "XLOOKUP can start its search at the last row instead of the first."
       rule: "The sixth argument of XLOOKUP sets the search mode. 1 searches from the first row and -1 from the last, so -1 finds the newest entry in a log."
     misses:
-      value: That is the first entry, 19.99. Search mode 1 starts at the top, and the newest entry is the last match.
+      value: The first TX-101 entry is 19.99, and the newest is 21.5. Set the sixth argument to -1 so the search starts at the bottom.
       syntax: "Check the brackets, commas and quote marks. XLOOKUP follows the pattern `=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])`."
-      required-function: "Six arguments: the key, the keys, the prices, the text for a miss, the match mode, and the search direction."
-      reference: Point at A7 rather than typing the SKU, so the row above and the row below behave the same.
+      required-function: Use XLOOKUP. VLOOKUP and MATCH return the first match, and XLOOKUP can search from the last row.
+      reference: Point at A7 rather than typing the SKU, so the same formula works for A8.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =XLOOKUP(A7,A2:A6,B2:B6,,0,-1)
@@ -68,7 +68,7 @@ screens:
     misses:
       value: The first TX-102 is 14, in row 3. Working from the bottom, the last one is 16.25.
       syntax: "Check the brackets, commas and quote marks. XLOOKUP follows the pattern `=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])`."
-      required-function: The same six arguments as the row above, and the same two empty slots.
+      required-function: Use XLOOKUP, as for A7. VLOOKUP and MATCH return the first match, not the last.
       reference: Point at A8, which holds TX-102. That SKU appears in rows 3 and 6.
     accept:
       - =XLOOKUP(A8,A2:A6,B2:B6,,0,-1)
@@ -91,5 +91,5 @@ notes:
   syntax: XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found], [match_mode], [search_mode])
   example: '`=XLOOKUP("A",A1:A3,B1:B3,,0,-1)` with A, B and A in column A and 5, 6 and 7 in column B gives 7.'
   commonErrors:
-    - The key is not in the searched range, which happens when the range points at the price column or stops before the last row.
-    - The key range and the price range are different sizes, so a row in one has no partner in the other.
+    - A searched range that points at the wrong column returns #N/A. One that stops before the last row can miss the newest entry.
+    - Search and return ranges of different sizes make XLOOKUP return #VALUE!.

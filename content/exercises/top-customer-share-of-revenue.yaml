@@ -6,7 +6,7 @@ topic: interview-finance-analyst
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In C2, name the customer with the second highest revenue.
+  - prompt: In C2, name the customer with the second-highest revenue.
     rows:
       - [Customer, Revenue, Answer]
       - [Harbour Foods, 18400, null]
@@ -22,8 +22,8 @@ screens:
         expected: "Harbour Foods"
     answer: =INDEX(A2:A5,MATCH(LARGE(B2:B5,2),B2:B5,0))
     hints:
-      nudge: Find the second highest revenue first, then look up whose it is.
-      rule: LARGE with 2 returns the second highest value. MATCH with 0 finds its row, and INDEX reads the name there. XLOOKUP can do the last two steps at once.
+      nudge: Find the second-highest revenue first, then look up whose it is.
+      rule: LARGE with 2 returns the second-highest value. MATCH with 0 finds its row, and INDEX reads the name there. XLOOKUP can do the last two steps at once.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: Kestrel Retail is first with 42500, so Linden Hotels is second with 27600.

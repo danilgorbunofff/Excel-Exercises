@@ -16,7 +16,7 @@ screens:
     requiredFunctions: [TRIM, PROPER]
     hints:
       nudge: "Two fixes: the spaces, then the capitals."
-      rule: TRIM removes spaces at the ends and turns runs of spaces into one. PROPER capitalises the first letter of each word.
+      rule: TRIM removes spaces at the ends and turns runs of spaces into one. PROPER capitalises the first letter of each word and lowers the rest.
     misses:
       value: The tidy name reads Jane Smith.
       syntax: Check the brackets, commas and quotes.
@@ -36,5 +36,5 @@ notes:
   example: '`=PROPER(TRIM("  ann   LEE"))` gives Ann Lee.'
   commonErrors:
     - TRIM alone leaves the capitals as they were.
-    - UPPER turns every letter into a capital, where PROPER changes only the first of each word.
-    - PROPER also capitalises after an apostrophe, so check names such as O'Neil.
+    - UPPER turns every letter into a capital, where PROPER capitalises the first letter of each word and lowers the rest.
+    - PROPER capitalises any letter after a non-letter, so it gives O'Neil correctly but turns McDonald into Mcdonald.

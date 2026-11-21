@@ -6,7 +6,7 @@ topic: logic
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B9, put PASS in the cell when the total is over 100 and no item is under 15 units, otherwise FAIL.
+  - prompt: In B9, show PASS when the total in B8 is over 100 and no item is under 15 units. Otherwise show FAIL.
     rows:
       - [Item, Units]
       - [Bolt, 18]
@@ -30,8 +30,8 @@ screens:
       rule: AND returns TRUE only when every test holds. IF then shows one text result for TRUE and another for FALSE, with text in double quotes.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: 150 clears the total test and 18 clears the floor, so B9 reads PASS.
-      syntax: '=IF(AND(test 1, test 2),"PASS","FAIL"): the tests sit inside the IF, in brackets of their own.'
+      value: The total of 150 is over 100 and the lowest count, 18, is at least 15, so B9 shows PASS.
+      syntax: 'Both tests go inside AND, and AND goes inside IF: `=IF(AND(test1,test2),"PASS","FAIL")`.'
       reference: Read the total from B8 and the units from B2:B7.
     accept:
       - =IF(AND(B8>100,MIN(B2:B7)>=15),"PASS","FAIL")
@@ -51,7 +51,7 @@ screens:
         rule: value
       - formula: =IF(AND(B8>100 MIN(B2:B7)>=15),"PASS","FAIL")
         rule: syntax
-  - prompt: In D9, average the price column and round it to one decimal, but say none when there is nothing to average.
+  - prompt: In D9, average the prices in C2:C7 and round to 1 decimal place. Show none when there is nothing to average.
     rows:
       - [Item, Units, Price, Answer]
       - [Bolt, 18, 4.5, null]
@@ -73,7 +73,7 @@ screens:
       rule: ISNUMBER returns TRUE for a number and FALSE for an error, so it can guard an IF. ROUND takes a number and the count of decimals to keep.
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: The six prices come to 25.9, which is 4.3166 each, so one decimal place gives 4.3.
+      value: The six prices total 25.9, an average of 4.3167, which rounds to 4.3.
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
       reference: Average C2:C7, the price column.
     accept:
@@ -101,6 +101,6 @@ notes:
   syntax: IF(AND(test 1, test 2),"PASS","FAIL"); =IF(ISNUMBER(AVERAGE(range)),ROUND(...,1),"none")
   example: '`=IF(AND(A1>0,A2>0),"Yes","No")` with 4 and 0 gives No.'
   commonErrors:
-    - The finished text result was used in arithmetic, as when PASS is divided by zero.
-    - AVERAGE found no numbers in C2:C7 and divided a zero total by a count of zero.
-    - One of the nested function names was mistyped, so the whole formula fails.
+    - "Arithmetic on the text result, such as PASS divided by zero, returns `#VALUE!`."
+    - "When C2:C7 holds no numbers, AVERAGE returns `#DIV/0!`."
+    - "A mistyped function name anywhere in the formula returns `#NAME?`."

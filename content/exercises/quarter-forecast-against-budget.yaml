@@ -6,7 +6,7 @@ topic: interview-fpa
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In E2, show the second quarter forecast minus the second quarter budget. Use SUMIFS.
+  - prompt: In E2, show the Q2 forecast minus the Q2 budget. Use SUMIFS.
     rows:
       - [Month, Quarter, Forecast, Budget, Answer]
       - [Jan, Q1, 30500, 30000, null]
@@ -23,7 +23,7 @@ screens:
       nudge: Total the Q2 forecast, total the Q2 budget, then take one from the other.
       rule: SUMIFS with the quarter as its condition picks out the three Q2 months on each side. Forecast minus budget keeps a shortfall negative.
     misses:
-      value: Q2 forecast is 96500 against a budget of 98000, so the quarter is 1500 short.
+      value: The Q2 forecast is 96,500 against a budget of 98,000, so the quarter is 1,500 short.
       syntax: "Check the brackets, commas and quote marks. SUMIFS follows the pattern `=SUMIFS(sum_range, criteria_range1, criteria1)`."
       required-function: Pick the Q2 months with SUMIFS, so the formula still works if rows are added or sorted.
       reference: The quarters run down B2:B7, the forecast down C2:C7 and the budget down D2:D7.
@@ -38,7 +38,7 @@ screens:
       - { formula: '=SUMIFS(C2:C7,B2:B7,"Q2")', rule: value }
       - { formula: "=SUM(C5:C7)-SUM(D5:D7)", rule: required-function }
       - { formula: '=SUMIFS(C2:C7,B2:B7,"Q2")-SUMIFS(D2:D7,B2:B7,"Q2"', rule: syntax }
-  - prompt: In E2, show Over when the second quarter forecast is above its budget and Under when it is not. Use IF and SUMIFS.
+  - prompt: In E2, show Over when the Q2 forecast is above the Q2 budget and Under when it is not. Use IF and SUMIFS.
     rows:
       - [Month, Quarter, Forecast, Budget, Answer]
       - [Jan, Q1, 30500, 30000, null]
@@ -55,7 +55,7 @@ screens:
       nudge: Compare the two Q2 totals inside an IF and return one of the two words.
       rule: IF returns its second argument when the test is true and its third when it is false. The test here is forecast greater than budget.
     misses:
-      value: Q2 forecast of 96500 is below the 98000 budget, so the answer is Under.
+      value: The Q2 forecast of 96,500 is below the 98,000 budget, so the answer is Under.
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, value_if_false)`."
       required-function: The test compares two SUMIFS totals inside an IF.
       reference: The quarters run down B2:B7.

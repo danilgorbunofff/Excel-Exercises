@@ -22,7 +22,7 @@ screens:
     misses:
       value: The hyphen is the third character, so the digits start at four.
       syntax: "Check the brackets, commas and quote marks. MID follows the pattern `=MID(text, start_num, num_chars)`."
-      required-function: The digits sit inside the code, so neither end-cutter reaches them.
+      required-function: Use MID here. The task practises reading from a start position.
       reference: The code is in B2.
     accept:
       - =MID(B2,4,4)
@@ -82,6 +82,6 @@ notes:
   syntax: MID(text,start,num_chars) counts positions from 1 and reads num_chars characters
   example: '`=MID("ZX-5501",4,2)` gives 55.'
   commonErrors:
-    - The start position or the length is not a number, or the start is below 1.
+    - "A start below 1, or a start or length that is not a number, returns `#VALUE!`."
     - "The function is spelled MD or MIDD, and Excel returns `#NAME?`."
-    - A start of 3 keeps the hyphen and returns -1042.
+    - A start of 3 keeps the hyphen and returns -104.

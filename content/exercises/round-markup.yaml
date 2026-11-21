@@ -6,7 +6,7 @@ topic: rounding
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B6, total the three costs, add 8% markup, and round the result to 2 decimals. Use SUM.
+  - prompt: In B6, total the three costs, add an 8% markup, and round the result to 2 decimal places. Use SUM.
     rows:
       - [Item, Cost]
       - [Hosting, 1500.24]
@@ -22,9 +22,9 @@ screens:
       nudge: Work out the marked-up total first, then round that whole result once.
       rule: ROUND takes a number and the count of decimals to keep. An 8% markup means multiplying by 1.08.
     misses:
-      value: 4120.74 times 1.08 is 4450.3992, and two decimals round that to 4450.4. An 8% markup is 1.08, not 1.8.
+      value: 4120.74 times 1.08 is 4450.3992, which rounds to 4450.4 at 2 decimal places. An 8% markup is 1.08, not 1.8.
       syntax: "Check the brackets, commas and quote marks. ROUND follows the pattern `=ROUND(number, num_digits)`."
-      required-function: The number is 4450.3992 and the answer wants two decimals, so ROUND needs both arguments.
+      required-function: This task needs SUM for the costs and ROUND for the 2 decimal places.
       reference: Point at B2:B4, so a changed cost changes the total.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -52,6 +52,6 @@ notes:
   syntax: ROUND(number, num_digits)
   example: "`=ROUND(10.456,2)` gives 10.46."
   commonErrors:
-    - The second argument is text, such as "2" in quotes after a paste from another system.
-    - The name is typed ROUNDOF or ROUND_UP, and Excel recognises only ROUND.
+    - 'A second argument of text that is not a number, such as "two", returns `#VALUE!`.'
+    - "A misspelt name such as ROUNDOF or ROUND_UP returns `#NAME?`."
     - Rounding each cost after the markup and then adding can give a different sum from rounding the total once.

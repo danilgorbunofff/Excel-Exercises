@@ -6,7 +6,7 @@ topic: rounding
 updated: 2026-11-11
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: "In B6, work out the crates needed: twelve units to a crate, and a part crate still ships."
+  - prompt: "In B6, work out the crates needed: 12 units to a crate, and a part crate still ships."
     rows:
       - [Item, Units]
       - [Bolts, 250]
@@ -59,7 +59,7 @@ screens:
     misses:
       value: 476 divided by 12 is 39.67, so 39 crates are full and 8 units are left over.
       syntax: "Check the brackets, commas and quote marks. ROUNDDOWN follows the pattern `=ROUNDDOWN(number, num_digits)`."
-      required-function: A full crate throws the part crate away, so the count moves toward zero.
+      required-function: Only full crates count, so drop the part crate and round toward zero.
       reference: Take the total from B5 rather than typing 476, so the count follows the sheet.
     accept:
       - =ROUNDDOWN(B5/12,0)
@@ -81,6 +81,6 @@ notes:
   syntax: ROUNDUP(number, digits) and =ROUNDDOWN(number, digits)
   example: "`=ROUNDUP(3.21,0)` gives 4, and `=ROUNDDOWN(3.89,0)` gives 3."
   commonErrors:
-    - The digits argument is text, or a range was passed where a single number belongs.
-    - The name is typed ROUND-UP or ROUND_UP, and the function is one word.
+    - 'A digits argument of text that is not a number, such as "none", returns `#VALUE!`.'
+    - "A name typed as ROUND-UP or ROUND_UP returns `#NAME?`. The function name is one word."
     - ROUNDDOWN returns 39 and leaves 8 units unshipped, where the order needs 40 crates.

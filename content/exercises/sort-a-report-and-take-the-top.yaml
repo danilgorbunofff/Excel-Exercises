@@ -6,7 +6,7 @@ topic: dynamic-arrays
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In F2, list the three largest orders, largest first, with the order number beside each amount.
+  - prompt: "In F2, list the three largest orders, largest first: the order number in column F and its amount in column G."
     rows:
       - [Order, Region, Rep, Amount, null, null, null, null, null]
       - [1001, North, Ana, 820, null, null, null, null, null]

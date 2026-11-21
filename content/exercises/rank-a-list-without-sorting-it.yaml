@@ -6,7 +6,7 @@ topic: statistics
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 screens:
-  - prompt: Put Ada's place in the team into C2 using the default order, without sorting the sheet. Use RANK.
+  - prompt: In C2, show Ada's place in the team with the default order, without sorting the sheet. Use RANK.
     rows:
       - [Swimmer, Seconds, Place (slowest first)]
       - [Ada, 58, null]
@@ -43,7 +43,7 @@ screens:
       - { formula: =RANK(B2 B2:B6), rule: syntax }
     variants:
       - { set: { B2: 29 }, expected: 5 }
-  - prompt: Flip the order argument so the smallest time takes place 1, and put Ada's place in C2. Use RANK.
+  - prompt: In C2, show Ada's place with the fastest time as place 1. Use RANK.
     rows:
       - [Swimmer, Seconds, Place (fastest first)]
       - [Ada, 58, null]
@@ -59,7 +59,7 @@ screens:
       nudge: "The third argument decides which end of the list counts as place 1."
       rule: "RANK with a third argument of 0, or none, ranks the largest value first. Any other number, such as 1, ranks the smallest first."
     misses:
-      value: Counting up, Eli's 50 is place 1, then 55 and 57, so Ada's 58 is place 4.
+      value: From the fastest, Eli's 50 is place 1, then 55 and 57, so Ada's 58 is place 4.
       syntax: "Check the brackets, commas and quote marks. RANK follows the pattern `=RANK(number, ref, [order])`."
       required-function: This is the same ranking read from the other end, and RANK takes the order as its third argument.
       reference: Point the second argument at B2:B6 instead of typing the five times.
@@ -83,6 +83,6 @@ notes:
   syntax: RANK(number, ref, [order])
   example: "`=RANK(A1,A1:A4)` with 40, 70, 55 and 20 gives 3, and `=RANK(A1,A1:A4,1)` gives 2."
   commonErrors:
-    - The value being ranked is not in the range, which happens when the number argument points at a different row from the list.
+    - "When the number is not in the range, RANK returns `#N/A`. This happens when the number argument points at a row outside the list."
     - The number argument is text, so there is nothing to compare with the other values.
-    - A third argument of 1 ranks the smallest value first, so a missing argument flips every place on the sheet.
+    - Leaving out the 1 when the smallest should come first reverses every place.

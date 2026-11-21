@@ -6,7 +6,7 @@ topic: lookups
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B7, return the product name for the SKU in B6, even though the name column sits left of the key. Use XLOOKUP.
+  - prompt: In B7, return the product name for the SKU in B6, even though the names sit left of the SKUs. Use XLOOKUP.
     rows:
       - [Product, SKU, On hand]
       - [Bracket, BX-210, 240]
@@ -25,8 +25,8 @@ screens:
     misses:
       value: DX-410 is the third SKU down, so the answer is the third name in the column to its left.
       syntax: "Check the brackets, commas and quote marks. XLOOKUP follows the pattern `=XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found])`."
-      required-function: The name sits left of the SKU, which is the case XLOOKUP handles without help.
-      reference: Take the SKU from B6, so the next question is one edit away.
+      required-function: This task asks for XLOOKUP, which can return from a column left of the SKU.
+      reference: Take the SKU from B6, so a new SKU there updates the answer.
     accept:
       - =XLOOKUP(B6,B2:B5,A2:A5)
       - =xlookup(b6,b2:b5,a2:a5)
@@ -42,9 +42,9 @@ screens:
       - { formula: "=XLOOKUP(B6,B2:B5,C2:C5)", rule: value }
       - { formula: "=XLOOKUP(B6,B2:B5,B2:B5)", rule: value }
 notes:
-  summary: "Four functions do this job: VLOOKUP, HLOOKUP, INDEX with MATCH, and XLOOKUP. VLOOKUP only reads right from the key column, while XLOOKUP and INDEX with MATCH can return from either side."
+  summary: "The main lookups are VLOOKUP, HLOOKUP, INDEX with MATCH, and XLOOKUP. VLOOKUP only reads right from the key column, while XLOOKUP and INDEX with MATCH can return from either side."
   syntax: XLOOKUP(value, search column, return column)
   example: '`=XLOOKUP("K2",B1:B3,A1:A3)` with K1, K2 and K3 in B1:B3 returns A2, the cell left of K2.'
   commonErrors:
-    - Nothing in the searched column matched, so the lookup has no row to return from.
-    - A VLOOKUP column number counted past the returned range, so it points at a column that is not there.
+    - "When nothing in the searched column matches, the lookup returns `#N/A`."
+    - "A VLOOKUP column number larger than the table's column count returns `#REF!`."

@@ -52,7 +52,7 @@ screens:
       value: 90 rolls at 15 a day last 6 days, and a delivery takes 7, so the rolls need reordering.
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, value_if_false)`."
       required-function: The answer is one of two words, so the comparison sits inside an IF.
-      reference: Use the label roll row, B3, C3 and D3.
+      reference: "Use the label rolls row: B3, C3 and D3."
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =IF(B3/C3<D3,"Reorder","OK")

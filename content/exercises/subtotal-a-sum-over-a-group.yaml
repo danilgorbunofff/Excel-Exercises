@@ -21,9 +21,9 @@ screens:
       nudge: SUBTOTAL needs a number in front of the range, and one of those numbers means sum.
       rule: SUBTOTAL takes a function number, then the range. 9 adds the values, 1 averages them, 2 counts them and 4 returns the largest.
     misses:
-      value: Ten plus five plus twenty is 35.
+      value: 10 plus 5 plus 20 is 35.
       syntax: "Check the brackets, commas and quote marks. SUBTOTAL follows the pattern `=SUBTOTAL(function_num, ref1, [ref2], ...)`."
-      required-function: Nine is the SUM inside SUBTOTAL, which is what the total row of a filtered table needs.
+      required-function: Use SUBTOTAL, as the total row of a filtered list does. Its first argument picks the sum.
       reference: The range is the price column of the table.
     accept:
       - =SUBTOTAL(9,B2:B4)
@@ -54,9 +54,9 @@ screens:
       nudge: Keep SUBTOTAL and the range, and change only the number in front.
       rule: The first argument of SUBTOTAL picks the calculation. 4 returns the largest value and 5 the smallest.
     misses:
-      value: The largest of ten, five and twenty is 20.
+      value: The largest of 10, 5 and 20 is 20.
       syntax: "Check the brackets, commas and quote marks. SUBTOTAL follows the pattern `=SUBTOTAL(function_num, ref1, [ref2], ...)`."
-      required-function: "MAX is not called by name here: the number in front of the range selects it."
+      required-function: Use SUBTOTAL, not MAX. The number in front of the range picks the largest value.
       reference: The prices live in B2:B4.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -81,6 +81,6 @@ notes:
   syntax: SUBTOTAL(function-number, range) with 9 (or 109) for SUM, 4 for MAX, 5 for MIN, 2 for COUNT
   example: "`=SUBTOTAL(9,A1:A3)` with 4, 6 and 10 in A1:A3 gives 20."
   commonErrors:
-    - The first argument is missing or is not one of the numbers SUBTOTAL recognises, so nothing says what to calculate.
-    - The range was deleted, so the reference no longer points at any cells.
-    - The number says COUNT or MAX while the question asked for a sum, and the answer measures something else.
+    - "A first argument that is missing or not a valid function number returns `#VALUE!`."
+    - "Deleting the cells in the range turns the reference into `#REF!`."
+    - A function number for COUNT or MAX, where the question asks for a sum, measures the wrong thing.

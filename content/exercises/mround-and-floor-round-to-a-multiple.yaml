@@ -6,7 +6,7 @@ topic: rounding
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: Round each pallet's unit count to the nearest five and put the first one in C2.
+  - prompt: In C2, round the first pallet's unit count to the nearest 5.
     rows:
       - [Pallet, Units, Nearest 5]
       - [P-01, 47, null]
@@ -21,7 +21,7 @@ screens:
     misses:
       value: 47 sits two units above 45 and three below 50, so 45 is nearer.
       syntax: "Check the brackets, commas and quote marks. MROUND follows the pattern `=MROUND(number, multiple)`."
-      required-function: The target here is a multiple of five, so name the five in the second argument.
+      required-function: Use the function that rounds to the nearest multiple, with 5 as the multiple.
       reference: Read the count from B2, so the second pallet gets its own answer in C3.
     accept:
       - =MROUND(B2,5)
@@ -37,7 +37,7 @@ screens:
       - { formula: "=MROUND(B2,10)", rule: value }
       - { formula: "=MROUND(B2,5)/0", rule: value }
       - { formula: =MROUND(B2 5), rule: syntax }
-  - prompt: Only whole packs ship, so put the units that fit the full packs of the first order into D2.
+  - prompt: Only whole packs ship. In D2, show how many units of order A-10 fit into full packs.
     rows:
       - [Order, Units, Pack, Shipped]
       - [A-10, 47, 6, null]
@@ -50,7 +50,7 @@ screens:
       nudge: "A part pack does not ship, so round down to a whole number of packs."
       rule: "FLOOR rounds a number down to the nearest multiple of its second argument. CEILING rounds up instead, and MROUND rounds to the nearest."
     misses:
-      value: 47 units fill seven packs of six, which is 42, and 5 units are left over.
+      value: 47 units fill 7 packs of 6, which is 42, and 5 units are left over.
       syntax: "Check the brackets, commas and quote marks. FLOOR follows the pattern `=FLOOR(number, significance)`."
       required-function: Only whole packs ship, so drop the part pack instead of rounding to the nearest one.
       reference: Read units and pack size from B2 and C2, so the second order is calculated the same way.
@@ -73,7 +73,7 @@ screens:
     variants:
       - { set: { C2: 13 }, expected: 39 }
 notes:
-  summary: "MROUND rounds a number to the nearest multiple you name. FLOOR always rounds down to a multiple, so it keeps only what fills whole units."
+  summary: "MROUND rounds a number to the nearest multiple you name. FLOOR always rounds down to a multiple, so it keeps only what fills whole packs."
   syntax: MROUND(number, multiple) and =FLOOR(number, significance)
   example: "`=MROUND(13,5)` gives 15, and `=FLOOR(13,5)` gives 10."
   commonErrors:

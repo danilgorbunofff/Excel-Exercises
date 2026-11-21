@@ -6,7 +6,7 @@ topic: interview-sales
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In H2, add up the revenue for the region in F2 in the month in G2. Use SUMIFS.
+  - prompt: In H2, add up the revenue for the region in F2 and the month in G2. Use SUMIFS.
     rows:
       - [Region, Month, Revenue, null, null, Region, Month, Revenue]
       - [North, Jan, 12400, null, null, South, Feb, null]
@@ -32,7 +32,7 @@ screens:
       nudge: "Two conditions: the region and the month."
       rule: SUMIFS(range to add, range1, criteria1, range2, criteria2). The range to add comes first.
     misses:
-      value: Three South rows are in February, and they add up to 18300.
+      value: Three South rows are in February, and they add up to 18,300.
       syntax: Check the brackets, commas and quotes.
       required-function: This task needs SUMIFS.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
@@ -49,7 +49,7 @@ screens:
 notes:
   summary: SUMIFS adds the rows that match several conditions, such as one region in one month.
   syntax: "SUMIFS(sum_range, criteria_range1, criteria1, criteria_range2, criteria2)"
-  example: '`=SUMIFS(C2:C11,A2:A11,"North",B2:B11,"Jan")` gives North in January.'
+  example: '`=SUMIFS(C2:C11,A2:A11,"North",B2:B11,"Jan")` gives the North revenue for January.'
   commonErrors:
     - SUMIF takes one condition, so it adds every month for the region.
     - In SUMIFS the range to add comes first, unlike SUMIF.

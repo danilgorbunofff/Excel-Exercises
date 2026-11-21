@@ -19,7 +19,7 @@ screens:
     misses:
       syntax: Check that every opening bracket has a closing bracket.
       reference: Point at B2 and C2, so the sale price changes when the price or the discount changes.
-      value: The sale price is the price minus the discount. Without brackets, Excel multiplies before it subtracts.
+      value: The sale price is the price minus the discount amount. Without brackets, Excel multiplies before it subtracts.
     accept:
       - =B2*(1-C2)
       - =(1-C2)*B2

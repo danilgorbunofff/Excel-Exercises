@@ -6,7 +6,7 @@ topic: dynamic-arrays
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In F2, show the North region's share of all sales as a percentage, rounded to one decimal place. Name the North total and the overall total inside the formula.
+  - prompt: In F2, show the North region's share of all sales as a per cent figure with 1 decimal place, such as 12.5. Name the North total and the overall total inside the formula.
     rows:
       - [Order, Region, Rep, Amount, null, null, null, null, null]
       - [1001, North, Ana, 820, null, null, null, null, null]

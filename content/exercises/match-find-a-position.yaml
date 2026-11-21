@@ -25,8 +25,8 @@ screens:
     misses:
       value: Jan is 1, Feb is 2, Mar is 3. Counting starts at the top of A2:A5, not the top of the sheet.
       syntax: "Check the brackets, commas and quote marks. MATCH follows the pattern `=MATCH(lookup_value, lookup_array, [match_type])`."
-      required-function: MATCH hands back a count of cells, 3. The units in B4 are INDEX's job.
-      reference: Take the month from B6. Typing Mar into the formula means April needs an edit to the formula, not the sheet.
+      required-function: MATCH returns the month's position in the list. Returning the units beside it is INDEX's job.
+      reference: Take the month from B6. With Mar typed into the formula, checking April means editing the formula instead of B6.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
       - =MATCH(B6,A2:A5,0)
@@ -48,6 +48,6 @@ notes:
   syntax: MATCH(lookup_value, lookup_array, [match_type])
   example: '`=MATCH("Mar",A1:A4,0)` with Jan, Feb, Mar and Apr gives 3.'
   commonErrors:
-    - No cell in A2:A5 holds the month, so MATCH has no position to return.
-    - The searched range was a block rather than one row or column, or the match type was text.
-    - The match type was left out or set to 1, so MATCH searched a calendar-order list as though it were ascending and picked a neighbouring month.
+    - "When no cell in A2:A5 holds the month, MATCH returns `#N/A`."
+    - "A searched range of several rows and columns returns `#N/A`, and a text match type returns `#VALUE!`."
+    - Leaving out the match type means 1, which expects an ascending list. Months in calendar order are not sorted A to Z, so MATCH can return the wrong position.

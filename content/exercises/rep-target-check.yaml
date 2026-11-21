@@ -22,7 +22,7 @@ screens:
       nudge: Compare the sales with the target. Reaching it exactly counts.
       rule: IF(test, value if true, value if false). The test is sales greater than or equal to target.
     misses:
-      value: 50850 is short of 52000, so the cell should say Below.
+      value: Sales of 50,850 fall short of the 52,000 target, so D2 shows Below.
       syntax: Check the brackets, commas and quotes.
       required-function: This task needs IF.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

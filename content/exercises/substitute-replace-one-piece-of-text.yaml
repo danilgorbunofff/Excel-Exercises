@@ -22,8 +22,8 @@ screens:
     misses:
       value: "Both hyphens become slashes: WH/12/03. The digits never move."
       syntax: "Check the brackets, commas and quote marks. SUBSTITUTE follows the pattern `=SUBSTITUTE(text, old_text, new_text, [instance_num])`."
-      required-function: Both hyphens move, which is what the three-argument form does with no occurrence given.
-      reference: Point at A2 so every reference in the column can be checked.
+      required-function: Use SUBSTITUTE. With three arguments it replaces every hyphen, wherever it sits.
+      reference: Point at A2, so the formula fills down to the other references.
     accept:
       - =SUBSTITUTE(A2,"-","/")
       - =substitute(a2,"-","/")
@@ -55,8 +55,8 @@ screens:
     misses:
       value: "The second hyphen turns into a slash and the first one stays: WH-12/03."
       syntax: "Check the brackets, commas and quote marks. SUBSTITUTE follows the pattern `=SUBSTITUTE(text, old_text, new_text, [instance_num])`."
-      required-function: Only one hyphen moves, so the occurrence number has to be named.
-      reference: The reference is in A2. Type it in and a corrected code never reaches the answer.
+      required-function: Use SUBSTITUTE with an occurrence number, which finds the second hyphen wherever it sits.
+      reference: Point at A2. A typed copy of the code does not change when A2 does.
     accept:
       - =SUBSTITUTE(A2,"-","/",2)
       - =substitute(a2,"-","/",2)
@@ -77,6 +77,6 @@ notes:
   syntax: SUBSTITUTE(text,old,new,[instance]) swaps old for new everywhere, or at one instance
   example: '`=SUBSTITUTE("a.b.c",".","-",2)` gives a.b-c.'
   commonErrors:
-    - The fourth argument is below 1 or is not a number, which names no occurrence to replace.
+    - "An occurrence number below 1, or one that is not a number, returns `#VALUE!`."
     - "SUBSTITUTE is misspelled, and Excel returns `#NAME?`."
-    - An occurrence number past the end of the text returns the reference unchanged, and the grader sees an untouched answer.
+    - An occurrence number higher than the count of matches returns the text unchanged.

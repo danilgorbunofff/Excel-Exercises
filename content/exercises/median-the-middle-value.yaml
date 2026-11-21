@@ -6,7 +6,7 @@ topic: statistics
 updated: 2026-11-11
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: Put the typical reading into C2, choosing the summary that one noisy reading cannot drag.
+  - prompt: In C2, find the typical reading, using the measure that one extreme reading cannot drag.
     rows:
       - [Reading, Value, Typical]
       - [R-1, 12, null]
@@ -24,7 +24,7 @@ screens:
     misses:
       value: "Sorted, the five readings are 12, 14, 15, 18, 19: the middle one is 15."
       syntax: "Check the brackets, commas and quote marks. MEDIAN follows the pattern `=MEDIAN(number1, [number2], ...)`."
-      required-function: A mean moves when one reading moves; the middle of the list does not, and that is a different function.
+      required-function: AVERAGE moves when one reading jumps. The middle value of the sorted list does not, and a different function returns it.
       reference: Read the readings from B2:B6 instead of listing them in the formula.
     accept:
       - =MEDIAN(B2:B6)
@@ -40,7 +40,7 @@ screens:
       - { formula: =MEDIAN(B3:B6), rule: value }
       - { formula: =MEDIAN(B2:B6)/0, rule: value }
       - { formula: =MEDIAN(B2:B6, rule: syntax }
-  - prompt: The audit has an even number of readings, so put the median into C2 and accept the half-way value.
+  - prompt: In C2, find the median of the readings. There are six, an even number.
     rows:
       - [Reading, Value, Median]
       - [R-1, 12, null]
@@ -60,7 +60,7 @@ screens:
       value: The middle two are 15 and 18, so the median is the half-way value, 16.5.
       syntax: "Check the brackets, commas and quote marks. MEDIAN follows the pattern `=MEDIAN(number1, [number2], ...)`."
       required-function: An even count has no single middle element, and MEDIAN handles that for you.
-      reference: Read all six readings from the sheet so a new one is picked up automatically.
+      reference: Read all six readings from B2:B7 instead of typing them, so a changed reading updates the median.
     accept:
       - =MEDIAN(B2:B7)
       - =median(b2:b7)
@@ -81,5 +81,5 @@ notes:
   example: "`=MEDIAN(A1:A4)` with 3, 9, 4 and 100 gives 6.5."
   commonErrors:
     - The range holds no numbers at all, which leaves MEDIAN no middle value to report.
-    - A word was passed as an argument, as in =MEDIAN("n/a"), so it cannot join the sort.
+    - 'Text typed as an argument, as in `=MEDIAN("n/a")`, returns `#VALUE!`.'
     - "A range that stops one row short changes the answer: five readings give 15 where six give 16.5."

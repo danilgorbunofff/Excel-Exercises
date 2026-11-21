@@ -28,7 +28,7 @@ screens:
       nudge: Add the expenses up, then take them away from the float.
       rule: SUM the expenses, then subtract that total from the opening float.
     misses:
-      value: 200 minus 91.14 of expenses leaves 108.86.
+      value: 200 minus 91.14 in expenses leaves 108.86.
       syntax: Check the brackets, commas and quotes.
       required-function: This task needs SUM.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

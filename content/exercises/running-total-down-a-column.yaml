@@ -23,7 +23,7 @@ screens:
     misses:
       value: Monday alone is 12; nothing has been added to it yet.
       syntax: "Check the brackets, commas and quote marks. SUM follows the pattern `=SUM(number1, [number2], ...)`."
-      required-function: A running total is a SUM whose range grows; this exercise wants the function.
+      required-function: This exercise practises SUM over a range that grows.
       reference: Point at the units column so the range grows with the rows.
     accept:
       - =SUM(B$2:B2)
@@ -76,5 +76,5 @@ notes:
   example: "`=SUM(A$1:A1)` filled down beside 5, 2 and 4 gives 5, 7 and 11."
   commonErrors:
     - Pinning both halves of the range freezes it, so every row repeats the first total. Only the start row takes the dollar sign.
-    - A filled-down range names rows outside the sheet, usually after the start cell was deleted.
+    - Leaving out both dollar signs moves the whole range down, so each row sums only its own day.
     - A heading caught in the growing range is text. SUM skips it, but a chain of plus signs returns `#VALUE!`.

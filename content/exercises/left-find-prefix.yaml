@@ -31,7 +31,7 @@ screens:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
       value: FIND returns 4, the dash position, so LEFT needs 3 characters. One more keeps the dash.
       syntax: "Check the brackets, commas and quote marks. LEFT follows the pattern `=LEFT(text, [num_chars])`."
-      reference: Read B2; the other references are there for comparison.
+      reference: Read the reference in B2. The rows below it are there for comparison.
     accept:
       - =LEFT(B2,FIND("-",B2)-1)
       - =left(b2,find("-",b2)-1)
@@ -64,6 +64,6 @@ notes:
   syntax: LEFT(text, FIND(delimiter, text) - 1)
   example: '`=LEFT("SKU-88",FIND("-","SKU-88")-1)` gives SKU, because the dash is the fourth character.'
   commonErrors:
-    - "The search string is absent from the cell, and FIND raises `#VALUE!` rather than returning 0."
+    - "When the cell has no dash, FIND returns `#VALUE!`, not 0."
     - LEFT(B2,FIND("-",B2)) keeps the dash, so the answer reads ORD- instead of ORD.
-    - LEFT(B2,3) answers ORD here and drops the last letter of a four-letter prefix.
+    - LEFT(B2,3) gives ORD here but drops the last letter of a four-letter prefix.

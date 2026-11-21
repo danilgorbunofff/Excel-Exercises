@@ -6,7 +6,7 @@ topic: errors
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
 screens:
-  - prompt: In B9, say missing when the code in A8 is not in the table, and found when it is.
+  - prompt: In B9, show missing when the code in A8 is not in A2:A7, and found when it is.
     rows:
       - [Code, Price]
       - [A-1, 10]
@@ -29,7 +29,7 @@ screens:
       rule: "ISNA returns TRUE only when its argument is `#N/A`. IF then gives the first word when the test is TRUE and the second when it is FALSE."
     misses:
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
-      value: Q-9 is not in the code column, so the match fails and the IF prints missing, not found.
+      value: Q-9 is not in the code column, so the match fails and the IF shows missing, not found.
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
       reference: Search for the code held in A8 rather than typing Q-9.
     accept:
@@ -50,7 +50,7 @@ screens:
         rule: value
       - formula: =IF(ISNA MATCH(A8,A2:A7,0),"missing","found")
         rule: syntax
-  - prompt: In B9, ask the table for a third column and say out of range when that column does not exist, otherwise fine.
+  - prompt: In B9, ask A2:B7 for a third column. Show out of range when that column does not exist, and fine when it does.
     rows:
       - [Code, Price]
       - [A-1, 10]
@@ -68,9 +68,9 @@ screens:
       nudge: Asking INDEX for a column the range does not have is an error, so test for any error.
       rule: "ISERROR returns TRUE for any error value, such as `#REF!` or `#N/A`. Put it inside IF to choose between two words."
     misses:
-      value: A two-column table has no third column, so INDEX fails and the answer is out of range.
+      value: "A two-column table has no third column, so INDEX returns `#REF!` and the answer is out of range."
       syntax: "Check the brackets, commas and quote marks. IF follows the pattern `=IF(logical_test, value_if_true, [value_if_false])`."
-      reference: Point at A2:B7 itself rather than at a range you type out.
+      reference: Point INDEX at the table in A2:B7.
     accept:
       - =IF(ISERROR(INDEX(A2:B7,1,3)),"out of range","fine")
       - =if(iserror(index(a2:b7,1,3)),"out of range","fine")
@@ -96,6 +96,6 @@ notes:
   syntax: IF(ISNA(x),"missing","found"); =IF(ISERROR(x),"bad","ok")
   example: "`=ISNA(1/0)` gives FALSE because `#DIV/0!` is not `#N/A`, while `=ISERROR(1/0)` gives TRUE."
   commonErrors:
-    - "Nothing matched: the code in A8 is not in the list MATCH searched."
-    - The reference lies outside the range, as a column number past the last column does.
-    - Arithmetic was handed text, as dividing the word missing by zero does.
+    - "MATCH returns `#N/A` when the code in A8 is not in the list it searched."
+    - "INDEX returns `#REF!` for a column number past the last column of its range."
+    - "Arithmetic on text, such as the word missing divided by zero, returns `#VALUE!`."

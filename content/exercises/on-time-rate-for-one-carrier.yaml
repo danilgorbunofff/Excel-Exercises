@@ -1,7 +1,7 @@
 id: on-time-rate-for-one-carrier
 slug: on-time-rate-for-one-carrier
 level: 2
-title: On time rate for one carrier
+title: On-time rate for one carrier
 topic: interview-data-analyst
 updated: 2026-11-16
 checkedInExcel: 2026-11-16
@@ -26,7 +26,7 @@ screens:
     misses:
       value: Northway made 4 shipments and 3 were on time, which is 0.75.
       syntax: "Check the brackets, commas and quote marks. COUNTIFS follows the pattern `=COUNTIFS(range1, criteria1, range2, criteria2)`."
-      required-function: The top of the share has two conditions, carrier and status, which needs COUNTIFS.
+      required-function: The on-time Northway count has two conditions, carrier and status, so it needs COUNTIFS.
       reference: The carriers run down B2:B8 and the statuses down C2:C8.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -68,7 +68,7 @@ screens:
     misses:
       value: Fastlane made 3 shipments and 2 were on time. Two thirds rounds to 0.67.
       syntax: "Check the brackets and commas. ROUND follows the pattern `=ROUND(number, num_digits)`."
-      required-function: Two thirds runs to a long tail of digits, so the share needs ROUND around a COUNTIFS.
+      required-function: Two thirds has endless decimals, so wrap the COUNTIFS share in ROUND.
       reference: The carriers run down B2:B8 and the statuses down C2:C8.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.
     accept:
@@ -99,7 +99,7 @@ screens:
     variants:
       - { set: { B2: Fastlane }, expected: 0.75 }
 notes:
-  summary: An on time rate is the on time shipments for one carrier over all of that carrier's shipments. Both counts must be for the same carrier.
+  summary: An on-time rate is the on-time shipments for one carrier over all of that carrier's shipments. Both counts must be for the same carrier.
   syntax: COUNTIFS(carriers,name,statuses,"On time")/COUNTIF(carriers,name)
   example: '`=COUNTIFS(A1:A5,"X",B1:B5,"On time")` counts the rows where A is X and B is On time.'
   commonErrors:

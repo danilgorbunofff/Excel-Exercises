@@ -22,7 +22,7 @@ screens:
       - FLOOR
     hints:
       nudge: FLOOR takes a number and a multiple, and always goes down.
-      rule: FLOOR(number,5) rounds down to the multiple of 5 below.
+      rule: FLOOR(number,5) rounds down to the nearest multiple of 5.
     misses:
       value: 23 goes down to 20.
       syntax: Check the brackets, commas and quotes.

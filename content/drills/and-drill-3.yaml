@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: AND
 screens:
-  - prompt: In E2, use AND to test that the value in B2 is from the low limit in C2 to the high limit in D2.
+  - prompt: In E2, use AND to test that the value in B2 is between the low limit in C2 and the high limit in D2, limits included.
     rows:
       - [Reading, Value, Low, High, In range]
       - [T1, 22, 18, 25, null]

@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: ABS
 screens:
-  - prompt: In D2, use ABS to show how far the actual in C2 is from the budget in B2, whichever is bigger.
+  - prompt: In D2, use ABS to show how far the actual in C2 is from the budget in B2, in either direction.
     rows:
       - [Item, Budget, Actual, Gap]
       - [Travel, 500, 620, null]
@@ -22,7 +22,7 @@ screens:
       - ABS
     hints:
       nudge: Subtract inside ABS, so the order does not matter.
-      rule: ABS(a-b) gives the gap between two numbers, always positive.
+      rule: ABS(a-b) gives the gap between two numbers, never negative.
     misses:
       value: The actual is 120 away from the budget.
       syntax: Check the brackets, commas and quotes.

@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: AVERAGE
 screens:
-  - prompt: In B9, use AVERAGE to find the mean number of visitors. Days with no count are left empty.
+  - prompt: In B9, use AVERAGE to find the mean number of visitors in B2:B7. Days with no count are left empty.
     rows:
       - [Day, Visitors]
       - [Mon, 120]

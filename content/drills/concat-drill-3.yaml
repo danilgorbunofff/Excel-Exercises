@@ -1,7 +1,7 @@
 id: concat-drill-3
 slug: concat-drill-3
 level: 1
-title: Join a whole row
+title: Join a row of letters
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: CONCAT

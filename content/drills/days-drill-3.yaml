@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: DAYS
 screens:
-  - prompt: In D2, use DAYS to count how many days after the due date in B2 the invoice was paid, on the date in C2.
+  - prompt: In D2, use DAYS to count how many days late the invoice was paid. It was due on the date in B2 and paid on the date in C2.
     rows:
       - [Invoice, Due, Paid, Days late]
       - [I-1, 46152, 46175, null]
@@ -22,7 +22,7 @@ screens:
       nudge: The payment date is the later one, so it goes first.
       rule: DAYS(paid,due) is the number of days late.
     misses:
-      value: Paid on 2 June against 10 May is 23 days late.
+      value: Due on 10 May and paid on 2 June, the invoice is 23 days late.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for DAYS.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

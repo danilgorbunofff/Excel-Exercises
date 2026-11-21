@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: DATE
 screens:
-  - prompt: In D2, use DATE to build the date. B2 counts months from the start of the year in A2, so it can be more than 12.
+  - prompt: In D2, use DATE to build the date from A2, B2 and C2. B2 counts months from the start of the year in A2, so it can be more than 12.
     rows:
       - [Year, Month, Day, Date]
       - [2026, 14, 10, null]

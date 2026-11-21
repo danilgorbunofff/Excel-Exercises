@@ -29,7 +29,7 @@ screens:
       - AVERAGEIFS
       - ROUND
     hints:
-      nudge: Put the AVERAGEIFS inside ROUND, and round to 1 place.
+      nudge: Put the AVERAGEIFS inside ROUND, and round to 1 decimal place.
       rule: ROUND(AVERAGEIFS(...),1) rounds the average to one decimal place.
     misses:
       value: The East average is 301.67, which rounds to 301.7.

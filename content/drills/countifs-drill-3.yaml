@@ -27,7 +27,7 @@ screens:
     requiredFunctions:
       - COUNTIFS
     hints:
-      nudge: Point each criteria at its cell, E2 and E3.
+      nudge: Point each criteria argument at its cell, E2 and E3.
       rule: COUNTIFS(regions,E2,products,E3) follows whatever the two cells hold.
     misses:
       value: 2 rows are East and Pens.

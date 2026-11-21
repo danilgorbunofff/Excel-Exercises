@@ -6,7 +6,7 @@ updated: 2026-11-19
 checkedInExcel: 2026-11-19
 function: EOMONTH
 screens:
-  - prompt: In D2, use EOMONTH to return the last day of the month that is the number of months in C2 after the start date in B2.
+  - prompt: In D2, use EOMONTH to return the last day of the month that falls C2 months after the start date in B2.
     rows:
       - [Contract, Start, Months, Ends]
       - [C-7, 46091, 6, null]
@@ -24,7 +24,7 @@ screens:
       nudge: The number of months can come from a cell.
       rule: EOMONTH(B2,C2) follows whatever C2 holds.
     misses:
-      value: Six months after March 2026 ends on 30 September 2026, date number 46295.
+      value: 6 months after March 2026 is September, which ends on 30 September 2026, date number 46295.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for EOMONTH.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

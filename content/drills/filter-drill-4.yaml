@@ -26,7 +26,7 @@ screens:
       - FILTER
     hints:
       nudge: FILTER's third argument is what to show when no row passes.
-      rule: 'FILTER(...,"None") shows None instead of #CALC.'
+      rule: 'FILTER(...,"None") shows None instead of `#CALC!`.'
     misses:
       value: No rep is from South, so the cell shows None.
       syntax: Check the brackets, commas and quotes.

@@ -21,7 +21,7 @@ screens:
     requiredFunctions:
       - FLOOR
     hints:
-      nudge: FLOOR goes down the number line, so -2.5 goes to -3.
+      nudge: FLOOR moves down the number line, even for a negative number.
       rule: FLOOR always moves to the smaller multiple, which for a negative number is further from zero.
     misses:
       value: -2.5 goes down the number line, to -3.

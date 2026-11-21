@@ -22,7 +22,7 @@ screens:
       - DAYS
       - ROUNDDOWN
     hints:
-      nudge: Count the days, divide by 7, then drop the part week.
+      nudge: Count the days, divide by 7, then drop the leftover days.
       rule: ROUNDDOWN(DAYS(end,start)/7,0) counts whole weeks only.
     misses:
       value: 55 days hold 7 full weeks.

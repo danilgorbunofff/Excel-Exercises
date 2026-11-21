@@ -28,7 +28,7 @@ screens:
     requiredFunctions:
       - AVERAGEIFS
     hints:
-      nudge: AVERAGEIFS starts with the range to average, then pairs of a range and a criteria.
+      nudge: AVERAGEIFS starts with the range to average, then pairs of a range and its criteria.
       rule: AVERAGEIFS(average_range,criteria_range,"East") averages the East rows only.
     misses:
       value: The three East rows average 300.

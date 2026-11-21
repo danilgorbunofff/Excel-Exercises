@@ -1,7 +1,7 @@
 id: aggregate-drill-5
 slug: aggregate-drill-5
 level: 2
-title: Smallest and largest with AGGREGATE
+title: Second largest and second smallest
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: AGGREGATE

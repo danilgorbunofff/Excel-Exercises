@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: DATEDIF
 screens:
-  - prompt: In D2, use DATEDIF twice to write the age of someone born on B2, on C2, as text such as "36 years, 2 months".
+  - prompt: In D2, use DATEDIF twice to write the age as text, such as "36 years, 2 months". B2 holds the birth date, and C2 the date to count to.
     rows:
       - [Name, Born, On, Age]
       - [Ann, 33109, 46343, null]

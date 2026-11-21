@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: CONCAT
 screens:
-  - prompt: In C2, use CONCAT and LEFT to make the first letter of A2, then ". ", then the surname in B2.
+  - prompt: In C2, use CONCAT and LEFT to join the first letter of A2, then ". ", then the surname in B2.
     rows:
       - [First, Last, Result]
       - [Rosa, Diaz, null]

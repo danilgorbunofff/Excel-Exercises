@@ -24,7 +24,7 @@ screens:
     requiredFunctions:
       - AGGREGATE
     hints:
-      nudge: AGGREGATE takes a function number, an options number, then the range.
+      nudge: AGGREGATE takes a function number, an option number, then the range.
       rule: AGGREGATE(9,6,range) adds the range and would skip any cell holding an error.
     misses:
       value: The tasks take 35 hours in all.

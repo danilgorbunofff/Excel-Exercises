@@ -29,7 +29,7 @@ screens:
       nudge: Count the tasks, then take away the tasks that have an owner.
       rule: COUNTA(all tasks) minus COUNTA(owners) leaves the tasks with no owner.
     misses:
-      value: Seven tasks and four owners leave 3 tasks with no owner.
+      value: 7 tasks and 4 owners leave 3 tasks with no owner.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for COUNTA.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

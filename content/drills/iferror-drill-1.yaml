@@ -22,7 +22,7 @@ screens:
       - IFERROR
     hints:
       nudge: IFERROR takes a formula, then what to show if it fails.
-      rule: "IFERROR(B2/C2,0) shows 0 instead of #DIV/0."
+      rule: IFERROR returns its second argument when the first gives an error, such as `#DIV/0!` from dividing by 0.
     misses:
       value: C2 is 0, so the division fails and the cell shows 0.
       syntax: Check the brackets, commas and quotes.

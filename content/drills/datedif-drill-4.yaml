@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: DATEDIF
 screens:
-  - prompt: In D2, use DATEDIF with "ym" to find how many full months have passed since the last birthday of someone born on B2, on the date in C2.
+  - prompt: In D2, use DATEDIF with "ym" to count the full months since the last birthday. B2 holds the birth date, and C2 the date to count to.
     rows:
       - [Name, Born, On, Months]
       - [Ann, 33109, 46343, null]

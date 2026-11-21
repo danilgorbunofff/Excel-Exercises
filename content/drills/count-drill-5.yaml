@@ -30,7 +30,7 @@ screens:
       nudge: Count the scores, then divide by the number of students.
       rule: COUNT counts numbers; COUNTA counts every filled cell, so it counts the names.
     misses:
-      value: Four of six students have a score, a share of about 0.67.
+      value: 4 of 6 students have a score, a share of about 0.67.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for COUNT and COUNTA.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

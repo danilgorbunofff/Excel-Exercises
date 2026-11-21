@@ -34,7 +34,7 @@ screens:
       nudge: Count the empty report cells, then divide by the number of stores.
       rule: COUNTBLANK(reports)/COUNTA(stores) gives the share still missing.
     misses:
-      value: Three of seven stores have no report, a share of about 0.43.
+      value: 3 of 7 stores have no report, a share of about 0.43.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for COUNTBLANK and COUNTA.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

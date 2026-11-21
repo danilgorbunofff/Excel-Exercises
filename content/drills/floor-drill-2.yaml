@@ -22,7 +22,7 @@ screens:
       - FLOOR
     hints:
       nudge: The multiple can be a decimal, such as 0.25.
-      rule: FLOOR(hours,0.25) rounds down to the quarter hour below.
+      rule: FLOOR(hours,0.25) rounds down to the nearest quarter hour.
     misses:
       value: 7.8 hours go down to 7.75.
       syntax: Check the brackets, commas and quotes.

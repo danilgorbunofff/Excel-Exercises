@@ -7,7 +7,7 @@ minutes: 4
 topic: habits
 functions: [ROUND, ISTEXT, SUBTOTAL, SUM]
 exercises: [debug-a-total-that-skips-a-row, formula-audit-fix-five-broken-sheets, true-and-false-what-a-comparison-returns]
-cover: "=0.1+0.2"
+cover: "=10.01-10"
 ---
 
 ## The formula shows as text

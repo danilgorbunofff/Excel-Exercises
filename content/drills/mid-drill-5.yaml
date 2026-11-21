@@ -23,9 +23,9 @@ screens:
       - FIND
     hints:
       nudge: FIND gives the dash's position; start one after it.
-      rule: MID(A2,FIND("-",A2)+1,3) works whatever the prefix length.
+      rule: Start MID one character after the position FIND returns, so it works whatever the length of the prefix.
     misses:
-      value: After the first dash in INV-204-81 come 204.
+      value: The 3 characters after the first dash in INV-204-81 are 204.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for MID and FIND.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

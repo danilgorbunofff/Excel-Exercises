@@ -28,9 +28,9 @@ screens:
       - RANK
     hints:
       nudge: The number to rank can come from a cell, as long as it is in the list.
-      rule: RANK(E2,list) ranks whatever score E2 holds.
+      rule: RANK(number,list) can read the number from a cell outside the list.
     misses:
-      value: Two scores are higher than 85, so it ranks 3.
+      value: Two scores are higher than 85, so 85 ranks 3.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       required-function: This drill asks for RANK.

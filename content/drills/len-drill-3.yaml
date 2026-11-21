@@ -20,7 +20,7 @@ screens:
       - LEN
     hints:
       nudge: LEN works on numbers as well as text.
-      rule: LEN(number) counts the digits Excel shows.
+      rule: LEN(number) counts the characters of the stored number, not its number format.
     misses:
       value: 4417203 has 7 digits.
       syntax: Check the brackets, commas and quotes.

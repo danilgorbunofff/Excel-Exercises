@@ -22,7 +22,7 @@ screens:
       - MROUND
     hints:
       nudge: For a negative number, use a negative multiple.
-      rule: "MROUND(-23,5) gives an error, while MROUND(-23,-5) gives -25."
+      rule: MROUND(-23,5) returns `#NUM!`, while MROUND(-23,-5) returns -25.
     misses:
       value: -23 is nearer -25 than -20, so it rounds to -25.
       syntax: Check the brackets, commas and quotes.

@@ -27,7 +27,7 @@ screens:
       - RANK
     hints:
       nudge: Tied values get the same rank.
-      rule: RANK gives equal values the same, best rank, and skips the next one.
+      rule: RANK gives tied values the same rank, the best one, and then skips a rank.
     misses:
       value: Two scores beat 85 and two students share it, so both rank 3.
       syntax: Check the brackets, commas and quotes.

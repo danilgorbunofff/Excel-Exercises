@@ -32,7 +32,7 @@ screens:
       - COUNTIF
     hints:
       nudge: Name the average first, then use the name in the COUNTIF test.
-      rule: LET(avg,AVERAGE(range),COUNTIF(range,">"&avg)) reads clearly.
+      rule: LET(avg,AVERAGE(range),COUNTIF(range,">"&avg)) works out the average once, then counts against it.
     misses:
       value: The average is 139.2, and 2 days are above it.
       syntax: Check the brackets, commas and quotes.

@@ -21,7 +21,7 @@ screens:
       - IF
     hints:
       nudge: Use ISBLANK as the test inside IF.
-      rule: IF(ISBLANK(B2),"Missing","OK") labels the row.
+      rule: IF takes the test, then the result when it is TRUE, then the result when it is FALSE.
     misses:
       value: B2 is empty, so the status is Missing.
       syntax: Check the brackets, commas and quotes.

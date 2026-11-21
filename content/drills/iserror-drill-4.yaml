@@ -1,7 +1,7 @@
 id: iserror-drill-4
 slug: iserror-drill-4
 level: 2
-title: A number that works
+title: A division that works
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: ISERROR

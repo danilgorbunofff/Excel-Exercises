@@ -23,7 +23,7 @@ screens:
       - IF
     hints:
       nudge: Test with ISERROR, then give one result or the other.
-      rule: IF(ISERROR(B2/C2),"Check",B2/C2) does what IFERROR does, in two steps.
+      rule: IF(ISERROR(formula),"Check",formula) does what IFERROR does, in two steps.
     misses:
       value: C2 is 0, so the cell shows Check.
       syntax: Check the brackets, commas and quotes.

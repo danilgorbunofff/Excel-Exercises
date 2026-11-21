@@ -30,7 +30,7 @@ screens:
       nudge: k can come from a cell.
       rule: LARGE(range,E2) returns the value at whatever place E2 holds.
     misses:
-      value: In order, the scores go 91, 88, 85, so the third is 85.
+      value: From the highest, the scores go 91, 88, 85, so the third is 85.
       syntax: Check the brackets, commas and quotes.
       required-function: This drill asks for LARGE.
       fragile: The data can change, so the formula has to work the result out from the cells, not from values you can see.

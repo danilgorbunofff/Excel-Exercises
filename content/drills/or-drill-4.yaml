@@ -24,7 +24,7 @@ screens:
       - OR
     hints:
       nudge: Test the same cell three times inside OR.
-      rule: OR(B2="NY",B2="LA",B2="SF") is TRUE when B2 matches any of them.
+      rule: Write one test of B2 for each city. OR is TRUE when any one of them matches.
     misses:
       value: LA is one of the three, so the result is TRUE.
       syntax: Check the brackets, commas and quotes.

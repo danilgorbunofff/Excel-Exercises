@@ -26,7 +26,7 @@ screens:
       - MATCH
     hints:
       nudge: "MATCH gives #N/A for a missing code, and INDEX passes it on."
-      rule: IFNA(INDEX(...,MATCH(...)),"-") catches it.
+      rule: 'IFNA(INDEX(...,MATCH(...)),"-") turns that #N/A into a dash.'
     misses:
       value: Z99 is not in the list, so the cell shows a dash.
       syntax: Check the brackets, commas and quotes.

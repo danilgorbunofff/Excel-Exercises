@@ -30,7 +30,7 @@ screens:
       - LARGE
     hints:
       nudge: Add the first, second and third largest.
-      rule: LARGE(range,1)+LARGE(range,2)+LARGE(range,3) totals the top three.
+      rule: LARGE(range,k) returns the kth largest value, so add the results for k of 1, 2 and 3.
     misses:
       value: 91 + 88 + 85 is 264.
       syntax: Check the brackets, commas and quotes.

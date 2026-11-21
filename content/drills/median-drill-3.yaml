@@ -26,7 +26,7 @@ screens:
       - MEDIAN
     hints:
       nudge: The range can cover the whole block.
-      rule: MEDIAN(B2:D4) takes the middle of all nine values.
+      rule: A range can span several rows and columns, and MEDIAN takes the middle of every value in it.
     misses:
       value: Sorted, the nine ratings run 1 to 9, so the middle one is 5.
       syntax: Check the brackets, commas and quotes.

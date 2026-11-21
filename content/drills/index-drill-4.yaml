@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: INDEX
 screens:
-  - prompt: In D2, use INDEX and COUNTA to return the last name in B2:B8. The list has no gaps but ends before row 8.
+  - prompt: In D2, use INDEX and COUNTA to return the last name in B2:B8. The list has no gaps but may stop before row 8.
     rows:
       - [Order, Name, null, Last]
       - [1, Ann, null, null]

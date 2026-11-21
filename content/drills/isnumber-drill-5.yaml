@@ -21,7 +21,7 @@ screens:
       - IF
     hints:
       nudge: Test with ISNUMBER first, then calculate.
-      rule: IF(ISNUMBER(B2),B2*2,"Not a number") only multiplies real numbers.
+      rule: Use ISNUMBER(B2) as the test in IF, so the multiplication runs only for a real number.
     misses:
       value: 12a is not a number, so the cell shows Not a number.
       syntax: Check the brackets, commas and quotes.

@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: LET
 screens:
-  - prompt: In E2, use LET, FILTER and SORT to name the reps in A2:A7 from "East" as east, then return them sorted from A to Z.
+  - prompt: In E2, use LET, FILTER and SORT to name the reps in A2:A7 whose region in B2:B7 is "East" as east, then return them sorted from A to Z.
     rows:
       - [Rep, Region, Sales, null, Result, null, null, null, null]
       - [Flo, East, 330, null, null, null, null, null, null]

@@ -20,7 +20,7 @@ screens:
       - LOWER
     hints:
       nudge: Join the parts with &, then wrap the whole thing in LOWER.
-      rule: LOWER(A2&"@"&B2) lowers the joined address.
+      rule: LOWER works on any text, including text you join with & inside it.
     misses:
       value: The address is rosa@example.com.
       syntax: Check the brackets, commas and quotes.

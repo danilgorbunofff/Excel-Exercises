@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: OR
 screens:
-  - prompt: In D2, use OR to test that the spend in B2 is 1000 or more or the years in C2 are 5 or more.
+  - prompt: In D2, use OR to test whether the spend in B2 is 1000 or more, or the years in C2 are 5 or more.
     rows:
       - [Customer, Spend, Years, VIP]
       - [Ann, 1200, 1, null]

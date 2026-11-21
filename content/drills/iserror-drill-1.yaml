@@ -22,7 +22,7 @@ screens:
       - ISERROR
     hints:
       nudge: ISERROR is TRUE for any error at all.
-      rule: ISERROR(B2/C2) is TRUE when C2 is 0.
+      rule: ISERROR(formula) is TRUE when the formula gives any error, such as `#DIV/0!` from dividing by 0.
     misses:
       value: C2 is 0, so the division fails and the result is TRUE.
       syntax: Check the brackets, commas and quotes.

@@ -1,7 +1,7 @@
 id: max-drill-2
 slug: max-drill-2
 level: 1
-title: Find the busiest month in a row
+title: Find the busiest month along a row
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: MAX
@@ -20,7 +20,7 @@ screens:
       - MAX
     hints:
       nudge: The months run along row 2.
-      rule: "MAX works on a row range: MAX(B2:G2)."
+      rule: MAX works on a row range in the same way as a column.
     misses:
       value: The busiest month had 520 orders.
       syntax: Check the brackets, commas and quotes.

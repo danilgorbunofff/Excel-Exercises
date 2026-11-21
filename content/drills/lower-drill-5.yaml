@@ -21,7 +21,7 @@ screens:
       - LEFT
     hints:
       nudge: Take the initial with LEFT, join the surname, then lower it all.
-      rule: LOWER(LEFT(A2,1)&B2) makes rdiaz from Rosa Diaz.
+      rule: LOWER(LEFT(first,1)&last) joins the initial and the surname, then lowers both.
     misses:
       value: The user name is rdiaz.
       syntax: Check the brackets, commas and quotes.

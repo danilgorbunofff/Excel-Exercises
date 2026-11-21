@@ -28,7 +28,7 @@ screens:
       - OR
     hints:
       nudge: Compare each side with the maximum in D2.
-      rule: OR(B2>D2,C2>D2) is TRUE when either side is too big.
+      rule: OR(test1,test2) is TRUE when either side is over the maximum.
     misses:
       value: The width of 120 is over 100, so the result is TRUE.
       syntax: Check the brackets, commas and quotes.

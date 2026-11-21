@@ -22,7 +22,7 @@ screens:
       - MID
     hints:
       nudge: Both numbers can come from cells.
-      rule: MID(A2,B2,C2) starts at B2 and keeps C2 characters.
+      rule: MID(text,start,count) can take both start and count from cells.
     misses:
       value: Four characters from position 7 are WEST.
       syntax: Check the brackets, commas and quotes.

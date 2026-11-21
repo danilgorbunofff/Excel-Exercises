@@ -22,7 +22,7 @@ screens:
       - LEN
     hints:
       nudge: Compare LEN with 8 to get TRUE or FALSE.
-      rule: LEN(A2)=8 is TRUE only for exactly eight characters.
+      rule: A comparison such as LEN(text)=8 is TRUE only for exactly eight characters.
     misses:
       value: AB12CD34 has exactly 8 characters, so the result is TRUE.
       syntax: Check the brackets, commas and quotes.

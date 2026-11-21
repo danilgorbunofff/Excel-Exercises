@@ -1,7 +1,7 @@
 id: mode-drill-2
 slug: mode-drill-2
 level: 1
-title: The most common daily count in a row
+title: The most common daily count along a row
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: MODE
@@ -22,7 +22,7 @@ screens:
       - MODE
     hints:
       nudge: The days run along row 2.
-      rule: "MODE works on a row range: MODE(B2:H2)."
+      rule: MODE works on a row range in the same way as a column.
     misses:
       value: 12 calls happen on three days, more than any other count.
       syntax: Check the brackets, commas and quotes.

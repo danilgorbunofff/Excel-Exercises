@@ -22,7 +22,7 @@ screens:
       - LEFT
     hints:
       nudge: The number of characters can come from a cell.
-      rule: LEFT(A2,B2) keeps whatever number of characters B2 says.
+      rule: Give LEFT a cell reference as its second argument, and it keeps that many characters.
     misses:
       value: The first five characters are NORTH.
       syntax: Check the brackets, commas and quotes.

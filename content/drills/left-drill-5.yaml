@@ -23,7 +23,7 @@ screens:
       - FIND
     hints:
       nudge: FIND(" ",A2) gives the position of the space; take one less.
-      rule: LEFT(A2,FIND(" ",A2)-1) keeps everything before the space.
+      rule: LEFT(text,FIND(" ",text)-1) keeps everything before the first space.
     misses:
       value: Everything before the space in Rosa Diaz is Rosa.
       syntax: Check the brackets, commas and quotes.

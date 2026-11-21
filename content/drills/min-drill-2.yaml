@@ -1,7 +1,7 @@
 id: min-drill-2
 slug: min-drill-2
 level: 1
-title: Find the quietest day in a row
+title: Find the quietest day along a row
 updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: MIN
@@ -20,7 +20,7 @@ screens:
       - MIN
     hints:
       nudge: The days run along row 2.
-      rule: "MIN works on a row range: MIN(B2:E2)."
+      rule: MIN works on a row range in the same way as a column.
     misses:
       value: The quietest day had 29 tickets.
       syntax: Check the brackets, commas and quotes.

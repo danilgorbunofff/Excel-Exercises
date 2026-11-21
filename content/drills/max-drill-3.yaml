@@ -24,7 +24,7 @@ screens:
       - MAX
     hints:
       nudge: The range can cover the whole block.
-      rule: MAX(B2:D4) looks at all nine cells.
+      rule: A range can span several rows and columns, and MAX checks every cell in it.
     misses:
       value: The longest call was 21 minutes.
       syntax: Check the brackets, commas and quotes.

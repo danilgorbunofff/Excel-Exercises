@@ -20,7 +20,7 @@ screens:
       - IFERROR
     hints:
       nudge: The fallback can be text.
-      rule: IFERROR(B2/C2,"-") shows a dash when C2 is 0.
+      rule: Give IFERROR the division first, then the text to show in quotes. Dividing by 0 gives an error, so the text appears.
     misses:
       value: There were no units, so the cell shows a dash.
       syntax: Check the brackets, commas and quotes.

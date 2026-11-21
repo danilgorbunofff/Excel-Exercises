@@ -21,7 +21,7 @@ screens:
       - FIND
     hints:
       nudge: FIND fails when the text is not there.
-      rule: ISERROR(FIND("x",A2)) is TRUE when there is no x.
+      rule: FIND gives `#VALUE!` when the text is not there, so ISERROR around FIND is TRUE when there is no x.
     misses:
       value: AB-204 has no x, so the result is TRUE.
       syntax: Check the brackets, commas and quotes.

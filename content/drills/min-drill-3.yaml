@@ -24,7 +24,7 @@ screens:
       - MIN
     hints:
       nudge: The range can cover the whole block.
-      rule: MIN(B2:D4) looks at all nine cells.
+      rule: A range can span several rows and columns, and MIN checks every cell in it.
     misses:
       value: The fastest lap was 81.5 seconds.
       syntax: Check the brackets, commas and quotes.

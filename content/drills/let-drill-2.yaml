@@ -22,7 +22,7 @@ screens:
       - LET
     hints:
       nudge: The name can stand for a calculation.
-      rule: LET(line,B2*C2,line-D2) names the line total, then uses it.
+      rule: LET(name,value,calculation) names the line total, then the calculation uses the name.
     misses:
       value: 3 desks at 220 make 660, minus 40 is 620.
       syntax: Check the brackets, commas and quotes.

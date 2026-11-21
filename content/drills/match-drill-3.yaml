@@ -6,7 +6,7 @@ updated: 2026-11-17
 checkedInExcel: 2026-11-17
 function: MATCH
 screens:
-  - prompt: In D3, use MATCH with 1 to find which band in A2:A5, holding the start of each band from small to large, the value in D2 falls in.
+  - prompt: A2:A5 holds the start of each band, from small to large. In D3, use MATCH with match type 1 to find which band the value in D2 falls in.
     rows:
       - [From, null, Find, null]
       - [0, null, Value, 52]

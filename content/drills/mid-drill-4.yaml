@@ -22,7 +22,7 @@ screens:
       - MID
     hints:
       nudge: A length of 1 takes one character.
-      rule: MID(A2,B2,1) returns the character at position B2.
+      rule: MID(text,position,1) returns the single character at that position.
     misses:
       value: The 4th letter of Spreadsheet is e.
       syntax: Check the brackets, commas and quotes.

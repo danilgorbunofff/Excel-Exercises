@@ -24,7 +24,7 @@ screens:
       - IFS
     hints:
       nudge: "Start with the lightest band: the first true test wins."
-      rule: IFS(B2<=1,4,B2<=5,7,TRUE,12) checks the bands in order.
+      rule: Test the bands from lightest to heaviest with <=, and end with TRUE for anything over 5 kg.
     misses:
       value: 3.5 kg is over 1 but not over 5, so the cost is 7.
       syntax: Check the brackets, commas and quotes.

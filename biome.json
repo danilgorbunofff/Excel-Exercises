@@ -16,6 +16,8 @@
       "!**/test-results",
       "!**/playwright-report",
       "!docs/design/contrast.md",
+      "!docs/design/*.html",
+      "!docs/mockups",
       "!docs/directions/practice-pages",
       "!docs/directions/paywall",
       "!docs/directions/drills-done",

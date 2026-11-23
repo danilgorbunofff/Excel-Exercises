@@ -33,6 +33,7 @@ These patterns make text read as generated filler. They come from Wikipedia's "S
 **Vocabulary.** delve, crucial, pivotal, seamless, empower, elevate, harness, landscape, realm, tapestry, testament, vibrant, comprehensive, powerful, effortless, game-changer, streamline, foster, showcase, "in today's...", "whether you're...", "take it to the next level". These words have plain alternatives, or the sentence works without them.
 
 **Structure:**
+
 - Lists of three by reflex, where the third item is vague.
 - "It's not X, it's Y" and "not just X, but Y".
 - Openers that announce: "In this article", "Let's look at", "Imagine".

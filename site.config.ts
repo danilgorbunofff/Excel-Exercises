@@ -9,8 +9,8 @@ export const siteConfig = {
   url: "https://excelexercises.online",
   /** Language of the pages. */
   lang: "en",
-  /** TODO(owner): the contact email address shown in the footer of every page. */
-  contactEmail: null as string | null,
+  /** The contact email address shown in the footer of every page. */
+  contactEmail: "info@excelexercises.online" as string | null,
   /** The web host, named on the privacy page with its own privacy notice. */
   host: { name: "Vercel", privacyUrl: "https://vercel.com/legal/privacy-policy" } as {
     name: string;

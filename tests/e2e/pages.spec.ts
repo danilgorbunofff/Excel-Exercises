@@ -51,7 +51,7 @@ test("the catalogue filters from a search, including one sent from the 404 page"
 }) => {
   await page.goto("/no-such-page/");
   await page.getByLabel("Search the exercises").fill("vlookup");
-  await page.getByRole("button", { name: "Search" }).click();
+  await page.getByRole("button", { name: "Search", exact: true }).click();
   await expect(page).toHaveURL(/\/exercises\/\?q=vlookup$/u);
   await expect(page.locator("tbody tr:not([hidden])")).toHaveCount(9);
   await expect(page.getByText("9 of 128 exercises")).toBeVisible();
@@ -120,6 +120,22 @@ test("the header search suggests pages and the search page lists matches", async
   await expect(page.locator("[data-kind='Function'] li:not([hidden])")).not.toHaveCount(0);
 });
 
+test("the large search window takes the typed query, filters by kind and closes on Escape", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/");
+  await page.getByRole("combobox", { name: "Search the site" }).first().fill("lookup");
+  await page.getByRole("button", { name: "Open large search" }).click();
+  const dialog = page.getByRole("dialog", { name: "Search" });
+  await expect(dialog.getByRole("combobox")).toHaveValue("lookup");
+  await expect(dialog.getByRole("group", { name: "Functions" })).toBeVisible();
+  await dialog.getByRole("button", { name: "Articles" }).click();
+  await expect(dialog.getByRole("group", { name: "Functions" })).toHaveCount(0);
+  await expect(dialog.getByRole("group", { name: "Articles" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+});
 test("articles list and open, and end with exercises", async ({ page }) => {
   await page.goto("/articles/");
   await page.getByRole("link", { name: /VLOOKUP or XLOOKUP/u }).click();

@@ -2,14 +2,7 @@
 // small JSON file fetched on first focus. Arrow keys move, Enter opens,
 // Escape closes. Without this script the box is a plain form.
 import { type SearchItem, search } from "../lib/search.ts";
-
-let index: Promise<SearchItem[]> | null = null;
-const load = () => {
-  index ??= fetch("/search-index.json")
-    .then((r) => (r.ok ? (r.json() as Promise<SearchItem[]>) : []))
-    .catch(() => []);
-  return index;
-};
+import { loadIndex as load } from "./search-index.ts";
 
 for (const form of document.querySelectorAll<HTMLFormElement>("[data-search]")) {
   const input = form.querySelector<HTMLInputElement>("[data-search-input]");

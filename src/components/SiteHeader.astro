@@ -16,6 +16,7 @@ import {
 import HeaderSearch from "./HeaderSearch.astro";
 import Icon from "./Icon.astro";
 import Logo from "./Logo.astro";
+import SearchDialog from "./SearchDialog.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 
 const path = Astro.url.pathname;
@@ -30,8 +31,6 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
       <Logo />
       <span>{siteConfig.name}</span>
     </a>
-    <div class="search-wide"><HeaderSearch /></div>
-    <div class="theme-wide"><ThemeToggle /></div>
     <nav class="nav-wide" aria-label="Main">
       <ul>
         {
@@ -72,6 +71,8 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
         </li>
       </ul>
     </nav>
+    <div class="search-wide"><HeaderSearch wide /></div>
+    <div class="theme-wide"><ThemeToggle /></div>
     <div class="account" data-when="out">
       <a class="login" href={ACCOUNT_NAV.login.href}>{ACCOUNT_NAV.login.label}</a>
       <a class="button button-primary signup" href={ACCOUNT_NAV.register.href}>
@@ -79,14 +80,9 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
       </a>
     </div>
     <div class="account" data-when="in" hidden>
-      <button
-        class="button button-secondary signup"
-        type="button"
-        popovertarget="nav-you"
-        aria-expanded="false"
-      >
-        {ACCOUNT_NAV.account.label}
-        <Icon name="chevron-down" size={16} />
+      <button class="avatar-button" type="button" popovertarget="nav-you" aria-expanded="false">
+        <span class="avatar" data-avatar aria-hidden="true"><Icon name="user" size={18} /></span>
+        <span class="visually-hidden">{ACCOUNT_NAV.account.label}</span>
       </button>
       <div class="panel panel-you" id="nav-you" popover data-nav-panel>
         <ul class="you-list">
@@ -171,10 +167,17 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
       </form>
     </section>
   </dialog>
+  <SearchDialog />
 </header>
 
 <script>
-  import "../scripts/session.ts";
+  import { loadMe } from "../scripts/session.ts";
+  // The avatar shows the first letter of the email; the user icon stays until it is known.
+  void loadMe().then((me) => {
+    const letter = me?.email.charAt(0).toUpperCase();
+    const avatar = document.querySelector<HTMLElement>("[data-avatar]");
+    if (letter && avatar) avatar.textContent = letter;
+  });
 
   // Browsers without button commands get the same behaviour from a click handler.
   if (!("command" in HTMLButtonElement.prototype)) {
@@ -207,7 +210,7 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
   .bar {
     display: flex;
     align-items: center;
-    gap: var(--space-6);
+    gap: var(--space-4);
     max-width: 80rem;
     min-height: 4rem;
     margin: 0 auto;
@@ -226,22 +229,24 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
     text-decoration: none;
     color: var(--heading);
   }
+  /* Logo, nav, then the search fills the middle and sits centred. */
   .search-wide {
     display: flex;
     flex: 1;
-    max-width: 28rem;
+    justify-content: center;
+    min-width: 0;
+  }
+  .search-wide :global(.search-row) {
+    flex: 0 1 28rem;
   }
   ul {
     list-style: none;
     margin: 0;
     padding: 0;
   }
-  .theme-wide {
-    margin-left: auto;
-  }
   .nav-wide > ul {
     display: flex;
-    gap: var(--space-5);
+    gap: var(--space-1);
   }
   .group-button,
   .plain,
@@ -250,8 +255,9 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
     align-items: center;
     gap: var(--space-1);
     min-height: var(--target);
-    padding: 0;
+    padding: 0 var(--space-3);
     border: 0;
+    border-radius: var(--radius-m);
     background: none;
     color: inherit;
     font: inherit;
@@ -260,12 +266,15 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
     text-decoration: none;
     cursor: pointer;
   }
+  /* Hover and open show as a grey chip; the page you are on keeps an underline. */
   .group-button:hover,
-  .group-button.is-here,
   .group-button[aria-expanded="true"],
   .plain:hover,
-  .plain[aria-current="page"],
   .login:hover {
+    background: var(--header);
+  }
+  .group-button.is-here,
+  .plain[aria-current="page"] {
     text-decoration: underline 2px;
     text-underline-offset: 0.45em;
   }
@@ -426,7 +435,40 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
   .account {
     display: flex;
     align-items: center;
-    gap: var(--space-5);
+    gap: var(--space-2);
+  }
+  /* Signed in, the account is the user's round initial. */
+  .avatar-button {
+    display: grid;
+    place-items: center;
+    width: var(--target);
+    height: var(--target);
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+  }
+  .avatar {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: var(--size-xs);
+    font-weight: 700;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .avatar {
+      transition: box-shadow var(--duration) var(--ease);
+    }
+  }
+  .avatar-button:hover .avatar,
+  .avatar-button[aria-expanded="true"] .avatar {
+    box-shadow: 0 0 0 3px var(--header);
   }
   .signup {
     min-height: var(--target);
@@ -467,7 +509,7 @@ const pageCurrent = (item: NavItem | { href: string }, here: string | null) =>
   dialog::backdrop {
     background: rgb(0 0 0 / 0.45);
   }
-  dialog :global(.header-search) {
+  dialog :global(.search-row) {
     flex: none;
     max-width: none;
   }

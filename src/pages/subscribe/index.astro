@@ -15,6 +15,10 @@ import Base from "../../layouts/Base.astro";
       <div data-done hidden>
         <h1>PRO is active</h1>
         <p>Every exercise is now open to you.</p>
+        <p data-new hidden>
+          Your account uses the email you paid with. To log in later, use Continue with Google
+          with that email, or <a href="/forgot-password/">set a password</a>.
+        </p>
       </div>
       <div data-late hidden>
         <h1>Almost there</h1>
@@ -37,6 +41,8 @@ import Base from "../../layouts/Base.astro";
       if (el) el.hidden = k !== which;
     }
   };
+  const fresh = document.querySelector<HTMLElement>("[data-new]");
+  if (fresh) fresh.hidden = !new URLSearchParams(location.search).has("new");
   let tries = 0;
   async function check(): Promise<void> {
     const me = tries === 0 ? await loadMe() : await fetch("/api/me/").then((r) => (r.ok ? r.json() : null));

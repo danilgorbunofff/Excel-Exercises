@@ -3,8 +3,8 @@
 // work: a billing switch, two cards with what each gives, a comparison table
 // and the usual questions. The switch is three radios joined to the PRO form,
 // and CSS shows the chosen price, so checkout works without JavaScript. The
-// form posts to /api/stripe/checkout/, which asks a signed-out visitor to log
-// in first. Lifetime is a launch offer, shown only while offeredPlans() has it.
+// form posts to /api/stripe/checkout/; a signed-out visitor pays as a guest or
+// signs in with Google first. Lifetime is a launch offer, shown only while offeredPlans() has it.
 // The old 6-month plan is not offered; its members are handled by the webhook.
 import { siteConfig } from "../../../site.config.ts";
 import Icon from "../../components/Icon.astro";
@@ -220,6 +220,10 @@ const faq = [
         }
         <form id="pro-checkout" method="post" action="/api/stripe/checkout/">
           <button class="button button-primary" type="submit">Get PRO</button>
+          <button class="button button-secondary" type="submit" name="via" value="google" data-when="out">
+            Continue with Google
+          </button>
+          <p class="small" data-when="out">No account needed: we make one with the email you pay with.</p>
         </form>
         <p class="plus divide">Everything in Free, plus:</p>
         <ul class="list">
@@ -519,6 +523,10 @@ const faq = [
   .card-plan form {
     width: 100%;
     margin-top: var(--space-2);
+  }
+  .card-plan form {
+    display: grid;
+    gap: var(--space-2);
   }
   .card-plan form .button {
     margin: 0;

@@ -3,13 +3,16 @@
 // hero that runs the first exercise, the numbers, three solid offer cards, how
 // it works beside what a check says about a wrong formula, why to practise
 // here, a dark band on who uses it, the tracks, questions and a solid green
-// last call to start.
+// last call to start. Under the hero, a band offers the free sample
+// assessment to visitors with an Excel test coming up.
+import { getCollection } from "astro:content";
 import MissExample from "../components/home/MissExample.astro";
 import Icon, { type IconName } from "../components/Icon.astro";
 import LiveExercise from "../components/LiveExercise.astro";
 import TrackList from "../components/TrackList.astro";
 import Base from "../layouts/Base.astro";
 import { isLocked } from "../lib/access.ts";
+import { assessmentPath, coverOf, loadAssessments } from "../lib/assessments.ts";
 import { exercisePath, placedExercises, trackSummaries, tracksPath } from "../lib/exercises.ts";
 import { loadFunctionIndex } from "../lib/functions.ts";
 
@@ -24,6 +27,12 @@ const functionCount = loadFunctionIndex().functions.length;
 const free = placed.filter((p) => !isLocked(p)).length;
 const sumExercise = placed.find((p) => p.exercise.id === "sum-a-column");
 const missScreen = sumExercise?.exercise.screens[0];
+const sample = loadAssessments().sets.find((s) => s.sample);
+if (!sample) throw new Error("There is no free sample assessment");
+const sampleSkills = coverOf(
+  sample,
+  new Map((await getCollection("exercises")).map((e) => [e.data.id, e.data])),
+).functions;
 
 const faq = [
   {
@@ -154,6 +163,27 @@ const audiences: { title: string; text: string }[] = [
       </div>
       <div class="hero-try">
         <LiveExercise placed={first} heading="Try the first exercise" />
+      </div>
+    </div>
+  </section>
+
+  <section class="test-band" aria-labelledby="test-band-title">
+    <div class="container test-band-inner">
+      <div class="test-band-copy">
+        <h2 id="test-band-title">Excel test coming up?</h2>
+        <p>
+          Take the free {sample.minutes}-minute sample assessment: {sample.tasks.length} tasks, one per core skill.
+          At the end you see your weak spot, before the real test does.
+        </p>
+        <ol class="test-band-skills" aria-label="The skills it tests">
+          {sampleSkills.map((f) => <li>{f}</li>)}
+        </ol>
+      </div>
+      <div class="test-band-action">
+        <a class="button button-on-primary button-l" href={assessmentPath(sample.slug)}>
+          Start the free assessment
+        </a>
+        <p>Free, no sign-up</p>
       </div>
     </div>
   </section>
@@ -360,6 +390,56 @@ const audiences: { title: string; text: string }[] = [
     border-radius: var(--radius-l);
     background: var(--surface);
     box-shadow: 0 8px 24px rgb(16 24 40 / 0.12);
+  }
+  /* The sample assessment band: solid green like the closing call, with the
+     skills it tests as one row of cells. */
+  .test-band {
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+  .test-band-inner {
+    display: grid;
+    gap: var(--space-5);
+    padding-block: var(--space-7);
+  }
+  .test-band h2 {
+    margin: 0;
+    font-size: var(--size-page);
+    letter-spacing: -0.025em;
+    color: inherit;
+  }
+  .test-band-copy p {
+    max-width: 40rem;
+    margin: var(--space-3) 0 0;
+    font-size: var(--size-l);
+  }
+  .test-band-skills {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    max-width: 36rem;
+    margin-top: var(--space-5);
+    border: 1px solid rgb(255 255 255 / 0.4);
+    border-radius: var(--radius-s);
+    overflow: hidden;
+    background: rgb(255 255 255 / 0.4);
+  }
+  .test-band-skills li {
+    padding: var(--space-2) var(--space-1);
+    background: var(--primary);
+    font-family: var(--font-mono);
+    font-size: var(--size-s);
+    font-weight: 600;
+    text-align: center;
+  }
+  .test-band-action {
+    display: grid;
+    gap: var(--space-2);
+    justify-items: center;
+  }
+  .test-band-action p {
+    margin: 0;
+    font-size: var(--size-s);
   }
   .stats {
     background: var(--surface);
@@ -655,9 +735,12 @@ const audiences: { title: string; text: string }[] = [
     font-size: var(--size-l);
     color: inherit;
   }
-  /* Phones: the first 6 tracks (the "All tracks" link below has the rest) and
-     a shorter closing band. */
+  /* Phones: the first 6 tracks (the "All tracks" link below has the rest), a
+     shorter closing band and a full-width sample button. */
   @media (max-width: 47.99rem) {
+    .test-band-action .button {
+      width: 100%;
+    }
     :global(.tracks[aria-labelledby="tracks"] > li:nth-child(n + 7)) {
       display: none;
     }
@@ -668,6 +751,9 @@ const audiences: { title: string; text: string }[] = [
   @media (min-width: 48rem) {
     .stats-inner {
       grid-template-columns: repeat(4, 1fr);
+    }
+    .test-band-skills {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
     }
     .stats-inner > div + div {
       border-left: 1px solid var(--rule);
@@ -686,6 +772,11 @@ const audiences: { title: string; text: string }[] = [
     .hero-inner {
       grid-template-columns: 1fr 1fr;
       padding-block: 5rem;
+    }
+    .test-band-inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: var(--space-7);
     }
     .how {
       grid-template-columns: 1fr 1fr;

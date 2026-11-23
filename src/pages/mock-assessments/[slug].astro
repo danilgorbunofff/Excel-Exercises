@@ -6,8 +6,9 @@
 // a report: a summary, every answer with its mark, and a score per function. assessment.ts
 // runs it. Every set except the sample needs PRO.
 import { getCollection } from "astro:content";
+import { siteConfig } from "../../../site.config.ts";
 import Breadcrumbs from "../../components/Breadcrumbs.astro";
-import Icon from "../../components/Icon.astro";
+import Icon, { type IconName } from "../../components/Icon.astro";
 import RichText from "../../components/RichText.astro";
 import Sheet from "../../components/Sheet.astro";
 import Base from "../../layouts/Base.astro";
@@ -28,6 +29,7 @@ import {
 } from "../../lib/exercises.ts";
 import { functionPages, functionPath } from "../../lib/functions.ts";
 import type { TaskData } from "../../scripts/assessment-score.ts";
+import { PLANS } from "../../server/plans.ts";
 import "../../styles/assessments.css";
 
 export function getStaticPaths() {
@@ -63,6 +65,41 @@ const tasks = set.tasks.map((t) => {
 const cover = coverOf(set, byId);
 const locked = !set.sample;
 const fullSets = loadAssessments().sets.filter((s) => !s.sample);
+// The PRO offer under the sample's result, from the real sets, counts and
+// prices, so its numbers cannot drift from the site.
+const dollars = (cents: number) =>
+  `$${Number.isInteger(cents / 100) ? cents / 100 : (cents / 100).toFixed(2)}`;
+const centsOf = (key: string) => PLANS.find((p) => p.key === key)?.listCents ?? 0;
+const minutes = fullSets.map((s) => s.minutes);
+const sizes = [...new Set(fullSets.map((s) => s.tasks.length))];
+const pro = {
+  tasks: sizes.length === 1 ? String(sizes[0]) : `${Math.min(...sizes)} to ${Math.max(...sizes)}`,
+  yearly: dollars(centsOf("annual")),
+  perMonth: dollars(Math.round(centsOf("annual") / 12)),
+  monthly: dollars(centsOf("monthly")),
+  benefits: [
+    {
+      icon: "clock",
+      title: `${fullSets.length} timed tests.`,
+      text: ` ${fullSets.map((s) => s.title).join(", ")}: ${Math.min(...minutes)} to ${Math.max(...minutes)} minutes each.`,
+    },
+    {
+      icon: "lock",
+      title: "Tasks you have not seen.",
+      text: " Kept out of practice, so your score shows what you can do on the day.",
+    },
+    {
+      icon: "file",
+      title: "A certificate for each pass.",
+      text: " A public link to send an employer or add to your CV.",
+    },
+    {
+      icon: "cells",
+      title: "Every exercise and drill.",
+      text: ` All ${(await placedExercises()).length} exercises and ${(await getCollection("drills")).length} function drills, to fix a weak spot.`,
+    },
+  ] satisfies { icon: IconName; title: string; text: string }[],
+};
 const path = assessmentPath(set.slug);
 const n = tasks.length;
 const levelWord = (l: number) => LEVELS[l as 1 | 2 | 3];
@@ -339,22 +376,85 @@ const data = {
           </div>
         </dl>
         <div class="a-notice cert-offer" data-cert hidden></div>
-        {
-          set.sample && (
-            <div class="a-notice">
-              <p>
-                That was the short sample. The full sets are timed like an employer's test:{" "}
-                {/* Names only: the task count and time of each are on its own cover. */}
-                {/* One line each: a line break here would put a space before the comma. */}
-                {fullSets.map((s, i) => (
-                  <>{i > 0 && (i === fullSets.length - 1 ? " and " : ", ")}<a href={assessmentPath(s.slug)}>{s.title}</a></>
-                ))}. They come with PRO, with a certificate for each one you pass.{" "}
-                <a href="/pricing/">See PRO plans</a>.
-              </p>
-            </div>
-          )
-        }
       </div>
+
+      {
+        /* The sample's two next steps: keep this result (signed out), and the
+           full sets (without PRO). assessment.ts shows or hides each. */
+        set.sample && (
+          <div class="offers" data-offers>
+            {siteConfig.accountsOpen && (
+              <section class="ruled offer" aria-labelledby="save-title" data-save-offer hidden>
+                <div class="list-head">
+                  <h3 id="save-title">Save your result</h3>
+                  <span class="mark-tag free">Free</span>
+                </div>
+                <div class="offer-body">
+                  <p>
+                    Keep this score in your account. When you take the sample again, you see your best beside the
+                    new score, on any device.
+                  </p>
+                  <div class="offer-actions">
+                    <a class="button button-primary" href={`/register/?next=${encodeURIComponent(path)}`}>Sign up free</a>
+                    <a class="button button-secondary" href={`/api/auth/google/?next=${encodeURIComponent(path)}`}>
+                      Continue with Google
+                    </a>
+                  </div>
+                  <p class="a-note">
+                    Have an account? <a href={`/login/?next=${encodeURIComponent(path)}`}>Log in</a>
+                  </p>
+                </div>
+              </section>
+            )}
+            <section class="ruled offer-pro" aria-labelledby="pro-title" data-pro-offer>
+              <div class="pro-top">
+                <div class="pro-pitch">
+                  <p class="pro-eyebrow"><span class="tag">PRO</span> The full assessments</p>
+                  <h3 id="pro-title" class="pro-title">Get ready for the real Excel test</h3>
+                  <p class="pro-lead">
+                    The sample had {n} short tasks. The full assessments have {pro.tasks} each, timed like an
+                    employer's test, on tasks you have not seen before.
+                  </p>
+                  <figure class="pro-stat">
+                    <figcaption>Testing yourself beats re-reading. How much people remembered a week later:</figcaption>
+                    <dl>
+                      <div class="pro-bar">
+                        <dt>Practised with tests</dt>
+                        <dd>61%</dd>
+                        <span class="track" aria-hidden="true"><span class="fill fill-test"></span></span>
+                      </div>
+                      <div class="pro-bar">
+                        <dt>Only re-read</dt>
+                        <dd>40%</dd>
+                        <span class="track" aria-hidden="true"><span class="fill fill-reread"></span></span>
+                      </div>
+                    </dl>
+                    <p class="pro-source">
+                      Roediger and Karpicke,{" "}
+                      <a href="https://source.washu.edu/2006/04/repeated-testing-better-than-repeated-studying/" rel="noopener">Psychological Science, 2006</a>
+                    </p>
+                  </figure>
+                </div>
+                <ul class="pro-benefits">
+                  {pro.benefits.map((b) => (
+                    <li>
+                      <span class="pro-icon"><Icon name={b.icon} size={20} /></span>
+                      <span>
+                        <strong>{b.title}</strong>
+                        {b.text}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div class="pro-foot">
+                <a class="button button-primary button-l" href="/pricing/">Get PRO</a>
+                <p>{pro.yearly} a year, about {pro.perMonth} a month. Or {pro.monthly} monthly. Cancel anytime.</p>
+              </div>
+            </section>
+          </div>
+        )
+      }
 
       <div class="a-grid">
         <section class="ruled answers" aria-labelledby="answers-title">
@@ -449,6 +549,190 @@ const data = {
     flex-shrink: 0;
     margin: 0;
     accent-color: var(--primary);
+  }
+
+  /* Stage 3: the sample's offers under the summary: a short Save card, then
+     the PRO offer at full width. */
+  .offers {
+    display: grid;
+    gap: var(--space-5);
+  }
+  .offer-body {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-4);
+  }
+  .offer-body p {
+    margin: 0;
+  }
+  .offer-body .a-note {
+    margin: 0;
+  }
+  .offer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .offer-actions .button {
+    flex: 1 1 12rem;
+  }
+  @media (min-width: 64rem) {
+    .offer-body {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 28rem);
+      align-items: center;
+      column-gap: var(--space-6);
+    }
+    .offer-body .a-note {
+      grid-column: 2;
+      text-align: center;
+    }
+  }
+
+  /* The PRO offer: a pitch with the research, beside what PRO gives. */
+  .offer-pro {
+    background: linear-gradient(180deg, var(--pro-bg), var(--surface) 16rem);
+  }
+  .pro-top {
+    display: grid;
+    gap: var(--space-6);
+    padding: var(--space-6) var(--space-5);
+  }
+  @media (min-width: 64rem) {
+    .pro-top {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: var(--space-7);
+      padding: var(--space-6);
+    }
+  }
+  .pro-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    font-size: var(--size-s);
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .pro-title {
+    margin: var(--space-2) 0 0;
+    font-size: var(--size-page);
+    letter-spacing: -0.025em;
+    color: var(--heading);
+  }
+  .pro-lead {
+    margin: var(--space-3) 0 0;
+    font-size: var(--size-l);
+    color: var(--muted);
+  }
+  /* The research as two bars: the figures are the text, the bars only draw them. */
+  .pro-stat {
+    margin: var(--space-5) 0 0;
+    padding: var(--space-4);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+  }
+  .pro-stat figcaption {
+    font-size: var(--size-s);
+    font-weight: 600;
+  }
+  .pro-stat dl {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-3) 0 0;
+  }
+  .pro-bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-1) var(--space-3);
+    align-items: baseline;
+    font-size: var(--size-s);
+  }
+  .pro-bar dd {
+    margin: 0;
+    font-size: var(--size-l);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .pro-bar:first-child dd {
+    color: var(--pro);
+  }
+  .pro-bar .track {
+    grid-column: 1 / -1;
+    height: 0.625rem;
+    border-radius: var(--radius-pill);
+    background: var(--header);
+    overflow: hidden;
+  }
+  .pro-bar .fill {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+  }
+  .fill-test {
+    width: 61%;
+    background: var(--pro);
+  }
+  .fill-reread {
+    width: 40%;
+    background: var(--faint);
+  }
+  .pro-source {
+    margin: var(--space-3) 0 0;
+    font-size: var(--size-xs);
+    color: var(--muted);
+  }
+  .pro-benefits {
+    display: grid;
+    align-content: start;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  /* Rows of a sheet: the card's hairline sits midway between two benefits. */
+  .pro-benefits li {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: var(--space-3);
+    align-items: start;
+    padding-block: var(--space-4);
+  }
+  .pro-benefits li:first-child {
+    padding-top: 0;
+  }
+  .pro-benefits li:last-child {
+    padding-bottom: 0;
+  }
+  .pro-benefits strong {
+    color: var(--heading);
+  }
+  .pro-icon {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-m);
+    background: var(--pro-bg);
+    color: var(--pro);
+  }
+  .pro-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3) var(--space-5);
+    padding: var(--space-4) var(--space-5);
+    border-top: 1px solid var(--rule);
+    background: var(--bg);
+  }
+  .pro-foot p {
+    margin: 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  @media (max-width: 47.99rem) {
+    .pro-foot .button {
+      width: 100%;
+    }
   }
 
   /* Stage 2: the workbench. */

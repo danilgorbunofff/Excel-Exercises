@@ -56,7 +56,7 @@ test("the sample is marked only at the end, with every miss explained", async ({
   });
   await page.goto(SAMPLE);
   await page.getByRole("button", { name: /^Start: \d+ minutes$/u }).click();
-  await expect(page.getByText("Task 1 of 3").first()).toBeVisible();
+  await expect(page.getByText("Task 1 of 6").first()).toBeVisible();
   const [first] = answersOf("sample");
   await input(page, 1).fill(first ?? "");
   await input(page, 1).press("Enter");
@@ -66,30 +66,37 @@ test("the sample is marked only at the end, with every miss explained", async ({
   await input(page, 2).fill("=1+1");
   await input(page, 2).press("Enter");
   await page.getByRole("button", { name: "Finish" }).click();
-  await expect(page.getByRole("button", { name: "Finish with 1 blank" })).toBeVisible();
-  await page.getByRole("button", { name: "Finish with 1 blank" }).click();
-  await expect(page.locator("[data-score]")).toHaveText("1 of 3 correct");
+  await expect(page.getByRole("button", { name: "Finish with 4 blank" })).toBeVisible();
+  await page.getByRole("button", { name: "Finish with 4 blank" }).click();
+  await expect(page.locator("[data-score]")).toHaveText("1 of 6 correct");
   await expect(page.locator("#summary-title")).toBeFocused();
   const rows = page.locator("[data-results] > li");
-  await expect(rows.locator(".mark-tag")).toHaveText(["Correct", "Missed", "Blank"]);
+  await expect(rows.locator(".mark-tag")).toHaveText([
+    "Correct",
+    "Missed",
+    "Blank",
+    "Blank",
+    "Blank",
+    "Blank",
+  ]);
   await expect(rows.nth(1)).toContainText("=1+1");
   await expect(page.locator('[data-count="correct"]')).toHaveText("1");
   // The first miss is open; its button closes and reopens the explanation.
   const why = page.locator("[data-results] .why").first();
   await expect(why).toBeVisible();
-  await expect(why).toContainText("Missing function in B8.");
+  await expect(why).toContainText("Missing function in C2.");
   const missed = page.getByRole("button", { name: "Why it was missed" });
   await expect(missed).toHaveAttribute("aria-expanded", "true");
   await missed.click();
   await expect(why).toBeHidden();
   await missed.click();
   await expect(why).toBeVisible();
-  await expect(why).toContainText("Answer: =COUNT(");
+  await expect(why).toContainText("Answer: =IF(");
   // By function: weakest first, each miss with a link to practise it.
   const fns = page.locator("[data-by-function] tr");
-  await expect(fns).toHaveCount(3);
-  await expect(fns.filter({ hasText: "0 of 1" })).toHaveCount(2);
-  await expect(page.locator("[data-by-function] a")).toHaveCount(2);
+  await expect(fns).toHaveCount(6);
+  await expect(fns.filter({ hasText: "0 of 1" })).toHaveCount(5);
+  await expect(page.locator("[data-by-function] a")).toHaveCount(5);
   await expect(page.locator("[data-save-note]")).toContainText("Not saved");
   expect(posts).toEqual([]);
 });
@@ -118,7 +125,7 @@ test("time running out ends the attempt and blanks count as missed", async ({ pa
   await page.goto(SAMPLE);
   await page.getByRole("button", { name: /^Start: \d+ minutes$/u }).click();
   await page.clock.fastForward("10:01");
-  await expect(page.locator("[data-score]")).toHaveText("0 of 3 correct");
+  await expect(page.locator("[data-score]")).toHaveText("0 of 6 correct");
   await expect(page.locator("[data-results] .mark-tag").first()).toHaveText("Blank");
 });
 
@@ -128,7 +135,7 @@ test("the time limit can be turned off", async ({ page }) => {
   await page.getByRole("button", { name: /^Start: \d+ minutes$/u }).click();
   await expect(page.locator("[data-clock-box]")).toBeHidden();
   await page.getByRole("button", { name: "Finish" }).click();
-  await page.getByRole("button", { name: /Finish with 3 blank/u }).click();
+  await page.getByRole("button", { name: /Finish with 6 blank/u }).click();
   await expect(page.locator("[data-time]")).toContainText("untimed");
 });
 
@@ -250,8 +257,8 @@ test("the assessment works from the keyboard alone", async ({ page }) => {
   await page.keyboard.type("=1");
   await page.keyboard.press("Enter");
   await expect(input(page, 2)).toBeFocused();
-  await page.keyboard.press("Enter");
-  await page.keyboard.press("Enter");
+  // Enter on a blank task moves on; past the last one it reaches Finish.
+  for (let i = 0; i < 5; i++) await page.keyboard.press("Enter");
   await expect(page.getByRole("button", { name: /^Finish/u })).toBeFocused();
 });
 
@@ -260,10 +267,10 @@ test("Save and next works without the keyboard, and counts what is answered", as
   await page.getByRole("button", { name: /^Start: \d+ minutes$/u }).click();
   await input(page, 1).fill("=SUM(B2:B5)");
   await page.getByRole("button", { name: "Save and next" }).click();
-  await expect(page.getByText("Task 2 of 3")).toBeVisible();
-  await expect(page.locator("[data-answered]")).toHaveText("1 of 3 answered");
+  await expect(page.getByText("Task 2 of 6")).toBeVisible();
+  await expect(page.locator("[data-answered]")).toHaveText("1 of 6 answered");
   await page.getByRole("button", { name: "Previous" }).click();
-  await expect(page.getByText("Task 1 of 3")).toBeVisible();
+  await expect(page.getByText("Task 1 of 6")).toBeVisible();
   await expect(input(page, 1)).toHaveValue("=SUM(B2:B5)");
 });
 
@@ -286,9 +293,9 @@ test("a blank task shows its answer when opened", async ({ page }) => {
   await page.getByRole("button", { name: /Finish with/u }).click();
   // The first blank is open on its own; the second opens on request.
   const blanks = page.getByRole("button", { name: "See the answer" });
-  await expect(blanks).toHaveCount(2);
+  await expect(blanks).toHaveCount(5);
   await blanks.nth(1).click();
-  await expect(page.locator("[data-results] .why").nth(1)).toContainText("Answer: =IF(");
+  await expect(page.locator("[data-results] .why").nth(1)).toContainText("Answer: =XLOOKUP(");
 });
 
 test("the index shows the general sets, then one per job, and Your best only when signed in", async ({
@@ -328,12 +335,12 @@ test("the first task has no Previous, the last has no Next, and the page does no
   await page.getByRole("button", { name: /^Start: \d+ minutes$/u }).click();
   const footer = page.locator("footer.site-footer");
   const tops: number[] = [];
-  for (const n of [1, 2, 3]) {
+  for (const n of [1, 2, 3, 4, 5, 6]) {
     await page.locator(`[data-goto="${n - 1}"]`).click();
-    await expect(page.getByText(`Task ${n} of 3`)).toBeVisible();
+    await expect(page.getByText(`Task ${n} of 6`)).toBeVisible();
     await expect(page.getByRole("button", { name: "Previous" })).toHaveCount(n === 1 ? 0 : 1);
     await expect(page.getByRole("button", { name: "Next", exact: true })).toHaveCount(
-      n === 3 ? 0 : 1,
+      n === 6 ? 0 : 1,
     );
     tops.push(await footer.evaluate((f) => f.getBoundingClientRect().top + window.scrollY));
   }
@@ -354,14 +361,20 @@ test("the result is a report: a summary, the answers, and what to practise", asy
   const summary = page.locator(".summary");
   await expect(summary.getByRole("button", { name: "Take it again" })).toBeVisible();
   await expect(summary.getByRole("link", { name: "All assessments" })).toBeVisible();
-  await expect(summary.getByRole("link", { name: "Log in" })).toBeVisible();
-  await expect(page.locator("#summary-title")).toHaveText(/Sample assessment\s*1 of 3 correct/u);
+  await expect(page.locator("#summary-title")).toHaveText(/Sample assessment\s*1 of 6 correct/u);
   // One bar segment per task, in order, and the counts that key it.
-  await expect(page.locator("[data-bar] > span")).toHaveClass(["correct", "miss", "blank"]);
+  await expect(page.locator("[data-bar] > span")).toHaveClass([
+    "correct",
+    "miss",
+    "blank",
+    "blank",
+    "blank",
+    "blank",
+  ]);
   for (const [mark, n] of [
     ["correct", "1"],
     ["miss", "1"],
-    ["blank", "1"],
+    ["blank", "4"],
   ])
     await expect(page.locator(`[data-count="${mark}"]`)).toHaveText(n ?? "");
 
@@ -372,7 +385,79 @@ test("the result is a report: a summary, the answers, and what to practise", asy
   await expect(page.locator("#why-3")).toBeVisible();
 
   await expect(page.locator("[data-practise] a")).toHaveText([
-    "Count the paid orders",
     "Pass or fail",
+    "Find a price with XLOOKUP",
+    "LEN, LEFT and RIGHT: count and cut",
+    "DAYS and simple date maths",
+    "Year-to-date actual against budget",
   ]);
+});
+
+test("signed out, the sample result offers sign-up that comes back here, and PRO", async ({
+  page,
+}) => {
+  await page.goto(SAMPLE);
+  await page.getByRole("button", { name: /^Start: \d+ minutes$/u }).click();
+  await page.getByRole("button", { name: "Finish" }).click();
+  await page.getByRole("button", { name: /Finish with/u }).click();
+  await expect(page.locator("[data-save-note]")).toHaveText("Not saved yet.");
+  const keep = page.getByRole("region", { name: "Save your result" });
+  const next = encodeURIComponent(SAMPLE);
+  await expect(keep.getByRole("link", { name: "Sign up free" })).toHaveAttribute(
+    "href",
+    `/register/?next=${next}`,
+  );
+  await expect(keep.getByRole("link", { name: "Continue with Google" })).toHaveAttribute(
+    "href",
+    `/api/auth/google/?next=${next}`,
+  );
+  await expect(keep.getByRole("link", { name: "Log in" })).toHaveAttribute(
+    "href",
+    `/login/?next=${next}`,
+  );
+  // The PRO offer names every full set, cites its research and leads to pricing.
+  const pro = page.getByRole("region", { name: "Get ready for the real Excel test" });
+  await expect(pro.getByText(`${sets.length - 1} timed tests.`)).toBeVisible();
+  await expect(pro.getByRole("figure")).toContainText("61%");
+  await expect(pro.getByRole("link", { name: "Get PRO" })).toHaveAttribute("href", "/pricing/");
+});
+
+for (const pro of [false, true])
+  test(`signed in ${pro ? "with PRO, the sample result offers nothing" : "on Free, the sample result offers only PRO"}`, async ({
+    page,
+  }) => {
+    await page.goto(SAMPLE);
+    await signIn(page, pro);
+    await page.route("**/api/assessments/", (r) =>
+      r.request().method() === "GET"
+        ? r.fulfill({ json: [] })
+        : r.fulfill({
+            status: 201,
+            json: { saved: true, id: "11111111-2222-4333-8444-555555555555", score: 0, total: 6 },
+          }),
+    );
+    await page.reload();
+    await page.getByLabel(/No time limit/u).check();
+    await page.getByRole("button", { name: /^Start: \d+ minutes$/u }).click();
+    await page.getByRole("button", { name: "Finish" }).click();
+    await page.getByRole("button", { name: /Finish with/u }).click();
+    await expect(page.locator("[data-save-note]")).toHaveText("Saved to your history.");
+    await expect(page.locator("[data-save-offer]")).toBeHidden();
+    if (pro) await expect(page.locator("[data-offers]")).toHaveCount(0);
+    else await expect(page.locator("[data-pro-offer]")).toBeVisible();
+  });
+
+test("the home page offers the free sample in a band under the hero", async ({ page }) => {
+  await page.goto("/");
+  const band = page.getByRole("region", { name: "Excel test coming up?" });
+  await expect(band.getByRole("listitem")).toHaveText([
+    "SUM",
+    "IF",
+    "XLOOKUP",
+    "LEFT",
+    "DAYS",
+    "SUMIFS",
+  ]);
+  await band.getByRole("link", { name: "Start the free assessment" }).click();
+  await expect(page).toHaveURL(new RegExp(`${SAMPLE}$`, "u"));
 });

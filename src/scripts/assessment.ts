@@ -383,10 +383,20 @@ function run(root: HTMLElement, data: SetData) {
 
   const report = async (results: readonly Result[]) => {
     if (!state?.finishedAt) return;
+    const saveOffer = q<HTMLElement>("[data-save-offer]");
     if (!signedIn()) {
-      saveNote("signed-out");
+      // The sample's Save card has the sign-up links, so the line above stays short.
+      if (saveOffer) {
+        saveOffer.hidden = false;
+        const note = q<HTMLElement>("[data-save-note]");
+        if (note) note.textContent = "Not saved yet.";
+      } else saveNote("signed-out");
       return;
     }
+    // A PRO account needs neither offer.
+    void loadMe().then((me) => {
+      if (me?.pro) q<HTMLElement>("[data-offers]")?.remove();
+    });
     try {
       const past = await fetch("/api/assessments/", { credentials: "same-origin" });
       if (past.ok) showBest((await past.json()) as Past[]);

@@ -6,13 +6,17 @@
 sets:
   - slug: sample
     title: Sample assessment
-    summary: Three short tasks to see how a timed assessment works.
+    summary: Six short tasks, one per core skill, to find your weak spot and see how a timed assessment works.
     minutes: 10
     sample: true
+    # One task per skill, easiest first, so the score per function names a weak spot.
     tasks:
       - sum-a-column
-      - count-paid-orders
       - pass-or-fail
+      - find-a-price
+      - { exercise: len-left-and-right-count-and-cut, screen: 1 }
+      - days-and-simple-date-maths
+      - year-to-date-actual-against-budget
 
   - slug: beginner
     title: Beginner

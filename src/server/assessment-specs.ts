@@ -4,7 +4,7 @@
 
 import { getCollection } from "astro:content";
 import type { GradeSpec } from "@practice/grader";
-import type { SpecFor } from "../lib/assessments.ts";
+import { type SpecFor, skillsOf } from "../lib/assessments.ts";
 import { exerciseData } from "../lib/exercises.ts";
 
 let cache: Map<string, GradeSpec[]> | null = null;
@@ -18,4 +18,13 @@ export async function loadSpecs(): Promise<SpecFor> {
   );
   const specs = cache;
   return (exercise, screen) => specs.get(exercise)?.[screen] ?? null;
+}
+
+/** The functions an exercise screen checks, for the score per skill in the level email. */
+export async function loadSkills(): Promise<(exercise: string, screen: number) => string[]> {
+  const byId = new Map((await getCollection("exercises")).map((e) => [e.data.id, e.data]));
+  return (exercise, screen) => {
+    const s = byId.get(exercise)?.screens[screen];
+    return s ? skillsOf(s) : [];
+  };
 }

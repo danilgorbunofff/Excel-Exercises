@@ -1,16 +1,20 @@
 ---
 // Why this exists: Free and PRO side by side, the way pricing pages usually
-// work: a billing switch, two cards with what each gives, a comparison table
-// and the usual questions. The switch is three radios joined to the PRO form,
+// work: a billing switch, two equal cards that say the same four things, a
+// band of what PRO gets you (numbers, an example certificate, the research on
+// testing), a comparison table and the usual questions. Every number is read
+// from the content, so it stays true as tracks and drills grow. The switch is three radios joined to the PRO form,
 // and CSS shows the chosen price, so checkout works without JavaScript. The
 // form posts to /api/stripe/checkout/; a signed-out visitor pays as a guest or
 // signs in with Google first. Lifetime is a launch offer, shown only while offeredPlans() has it.
 // The old 6-month plan is not offered; its members are handled by the webhook.
+import { getCollection } from "astro:content";
 import { siteConfig } from "../../../site.config.ts";
-import Icon from "../../components/Icon.astro";
+import Icon, { type IconName } from "../../components/Icon.astro";
 import Base from "../../layouts/Base.astro";
 import { isLocked } from "../../lib/access.ts";
 import { loadAssessments } from "../../lib/assessments.ts";
+import { RANDOM_SIZE as FREE_DRILLS } from "../../lib/drills.ts";
 import { placedExercises } from "../../lib/exercises.ts";
 import { formatAmount, offeredPlans, PLANS, savingPercent } from "../../server/plans.ts";
 import { proPrices } from "../../server/prices.ts";
@@ -20,7 +24,8 @@ const placed = await placedExercises();
 const locked = placed.filter((p) => isLocked(p)).length;
 const free = placed.length - locked;
 const perTrack = siteConfig.freePerTrack;
-const fullSets = loadAssessments().sets.filter((s) => !s.sample).length;
+const sets = loadAssessments().sets.filter((s) => !s.sample);
+const fullSets = sets.length;
 const prices = await proPrices();
 const offered = offeredPlans();
 const lifetime = offered.some((p) => p.months === null);
@@ -53,58 +58,156 @@ const periods = offered.map((p) => {
   };
 });
 
+const drills = (await getCollection("drills")).map((d) => d.data);
+const drillFunctions = new Set(drills.map((d) => d.function)).size;
+const interviewSets = new Set(
+  placed.filter((p) => p.topic.group === "interview").map((p) => p.topic.slug),
+).size;
+const testTasks = (await getCollection("mocks")).length;
+const minutes = sets.map((s) => s.minutes);
+const testTime = `${Math.min(...minutes)} to ${Math.max(...minutes)} minutes each`;
+// The example certificate: the longest set, so its numbers are real.
+const example = [...sets].sort((a, b) => b.minutes - a.minutes)[0];
+const yearly = PLANS.find((p) => p.key === DEFAULT);
+const fromPrice = yearly
+  ? `from ${formatAmount({ currency: amountOf(yearly).currency, unit_amount: Math.round(amountOf(yearly).cents / 12) })} a month`
+  : "";
+
+// The two cards say the same four things, so each line reads across.
 const freeHas = [
-  `${free} exercises: the first ${perTrack} of every learning track`,
-  "Hints and an instant check on every answer",
-  "The daily exercise, from easy on Monday to hard on Sunday",
-  "The sample mock assessment",
-  "Function guides and articles",
-  "10 random function practice tasks a day",
-  "Progress saved on every device",
+  `${free} exercises`,
+  "A daily exercise",
+  "A 10-minute level check",
+  `${FREE_DRILLS} function drills a day`,
 ];
-const freeLacks = ["PRO exercises", "Full mock assessments", "Certificates"];
-const proAdds = [
-  `${locked} PRO exercises: the rest of every track, including the capstone tasks and interview sets`,
-  "Unlimited function practice",
-  `${fullSets} full timed mock assessments, marked at the end`,
-  "A certificate for each mock assessment you pass",
-  "Advanced tracks as they arrive",
+const proHas = [
+  `All ${placed.length} exercises`,
+  `${fullSets} timed tests like an employer's`,
+  "A certificate for each test you pass",
+  `${drills.length} function drills, no daily limit`,
+];
+const tiles: { icon: IconName; value: number; title: string; text: string }[] = [
+  {
+    icon: "grid",
+    value: placed.length,
+    title: "Exercises",
+    text: `Every track to the end. Free has ${free}.`,
+  },
+  {
+    icon: "clock",
+    value: fullSets,
+    title: "Timed tests",
+    text: `Like an employer's, on ${testTasks} tasks you have not seen.`,
+  },
+  {
+    icon: "bolt",
+    value: drills.length,
+    title: "Function drills",
+    text: `${drillFunctions} functions, 5 drills each, no limit.`,
+  },
+  {
+    icon: "briefcase",
+    value: interviewSets,
+    title: "Interview sets",
+    text: "Finance, FP&A, accounting, operations, admin and sales.",
+  },
 ];
 
-// true / false is a check or a cross; a string is shown as it is.
-type Cell = boolean | string;
-const compare: { group: string; rows: [string, Cell, Cell][] }[] = [
-  {
-    group: "Practice",
-    rows: [
-      ["Free exercises", String(free), String(free)],
-      ["PRO exercises", false, String(locked)],
-      ["Learning tracks", `First ${perTrack} of each`, "Every exercise"],
-      ["Daily exercise", true, true],
-      ["Function practice", "10 tasks a day", "Unlimited"],
-      ["Hints and instant checks", true, true],
-    ],
-  },
-  {
-    group: "Assessments",
-    rows: [
-      ["Sample mock assessment", true, true],
-      ["Full mock assessments", false, String(fullSets)],
-      ["Certificates", false, true],
-    ],
-  },
-  {
-    group: "Learn",
-    rows: [
-      ["Function guides", true, true],
-      ["Articles", true, true],
-    ],
-  },
-  {
-    group: "Account",
-    rows: [["Progress on every device", true, true]],
-  },
-];
+// true / false is a check or a cross; a string is shown as it is, a number large.
+type Cell = boolean | string | number;
+const compare: { group: string; rows: { name: string; note: string; free: Cell; pro: Cell }[] }[] =
+  [
+    {
+      group: "Practise",
+      rows: [
+        {
+          name: "Exercises",
+          note: "Real formulas on a real grid, checked at once",
+          free,
+          pro: placed.length,
+        },
+        {
+          name: "Capstone tasks",
+          note: "Small working sheets, several steps each",
+          free: `First ${perTrack}`,
+          pro: "All",
+        },
+        {
+          name: "Function drills",
+          note: `One function at a time, ${drillFunctions} functions`,
+          free: `${FREE_DRILLS} a day`,
+          pro: drills.length,
+        },
+        { name: "Daily exercise", note: "Easy on Monday, hard on Sunday", free: true, pro: true },
+        {
+          name: "Hints, answers and instant checks",
+          note: "See which cells your formula read",
+          free: true,
+          pro: true,
+        },
+      ],
+    },
+    {
+      group: "Get test-ready",
+      rows: [
+        { name: "Level check", note: "10 minutes, scored by skill", free: true, pro: true },
+        { name: "Timed tests like an employer's", note: testTime, free: false, pro: fullSets },
+        {
+          name: "Unseen test tasks",
+          note: "Tasks that are not in the practice tracks",
+          free: false,
+          pro: testTasks,
+        },
+        {
+          name: "Interview sets",
+          note: "Finance, FP&A, accounting, operations, admin, sales",
+          free: `First ${perTrack} of each`,
+          pro: interviewSets,
+        },
+        {
+          name: "Results by skill",
+          note: "Your weakest functions first, with practice links",
+          free: "Level check",
+          pro: "Every test",
+        },
+      ],
+    },
+    {
+      group: "Show it",
+      rows: [
+        {
+          name: "Certificates",
+          note: "One for each test you pass, with a link anyone can check",
+          free: false,
+          pro: true,
+        },
+      ],
+    },
+    {
+      group: "Keep going",
+      rows: [
+        {
+          name: "Review list",
+          note: "Misses and solves that are due again",
+          free: true,
+          pro: true,
+        },
+        { name: "Progress on every device", note: "Saved to your account", free: true, pro: true },
+        {
+          name: "Daily exercise by email",
+          note: "Opt in, stop in one click",
+          free: true,
+          pro: true,
+        },
+        {
+          name: "Function guides, articles and shortcuts",
+          note: "Nothing locked",
+          free: true,
+          pro: true,
+        },
+      ],
+    },
+  ];
 
 const faq = [
   {
@@ -144,8 +247,10 @@ const faq = [
   layout="wide"
 >
   <header class="page-head">
-    <h1>Choose your plan</h1>
-    <p class="lead">Start free. Go PRO for the rest of every track and the timed mock assessments.</p>
+    <h1>Walk into your Excel test ready</h1>
+    <p class="lead">
+      Start free. Go PRO for every exercise, timed tests like an employer's and a certificate you can show.
+    </p>
   </header>
 
   <p class="flash" role="status" data-flash hidden></p>
@@ -175,13 +280,11 @@ const faq = [
     <div class="cards">
       <section class="card-plan" aria-labelledby="free-title">
         <h2 id="free-title">Free</h2>
-        <p class="tagline">The first exercises of every track.</p>
+        <p class="tagline">See how it works.</p>
         <div>
           <p class="price"><strong>$0</strong><span>forever</span></p>
           <p class="price-note">No card needed</p>
         </div>
-        <a class="button button-outline" href="/register/" data-when="out">Sign up free</a>
-        <a class="button button-outline" href="/exercises/" data-when="in" hidden>Go to the exercises</a>
         <ul class="list divide">
           {
             freeHas.map((f) => (
@@ -191,44 +294,32 @@ const faq = [
               </li>
             ))
           }
-          {
-            freeLacks.map((f) => (
-              <li class="lacks">
-                <Icon name="close" size={18} class="no" />
-                <span><span class="visually-hidden">Not included: </span>{f}</span>
-              </li>
-            ))
-          }
         </ul>
+        <div class="card-foot">
+          <a class="button button-outline" href="/register/" data-when="out">Start free</a>
+          <a class="button button-outline" href="/exercises/" data-when="in" hidden>Go to the exercises</a>
+        </div>
       </section>
 
       <section class="card-plan pro" aria-labelledby="pro-title">
         <p class="band">Recommended</p>
         <h2 id="pro-title">PRO</h2>
-        <p class="tagline">For work tasks and timed Excel tests.</p>
+        <p class="tagline">Everything to get test-ready.</p>
         {
           periods.map((p) => (
             <div class="period" data-shows={p.key}>
-              {p.best && <p class="best">Best value</p>}
               <p class="price">
                 <strong>{p.price}</strong>
                 <span>{p.per}</span>
+                {p.best && <span class="best">Best value</span>}
               </p>
               <p class="price-note">{p.note}</p>
             </div>
           ))
         }
-        <form id="pro-checkout" method="post" action="/api/stripe/checkout/">
-          <button class="button button-primary" type="submit">Get PRO</button>
-          <button class="button button-secondary" type="submit" name="via" value="google" data-when="out">
-            Continue with Google
-          </button>
-          <p class="small" data-when="out">No account needed: we make one with the email you pay with.</p>
-        </form>
-        <p class="plus divide">Everything in Free, plus:</p>
-        <ul class="list">
+        <ul class="list divide">
           {
-            proAdds.map((f) => (
+            proHas.map((f) => (
               <li>
                 <Icon name="check" size={18} class="yes" />
                 {f}
@@ -236,44 +327,118 @@ const faq = [
             ))
           }
         </ul>
-        <p class="small">
-          Subscriptions renew until you cancel; cancel anytime from your account.{lifetime && " Lifetime is a single payment."}
-        </p>
+        <form id="pro-checkout" class="card-foot" method="post" action="/api/stripe/checkout/">
+          <button class="button button-primary" type="submit">Get PRO</button>
+          <button class="button button-secondary" type="submit" name="via" value="google" data-when="out">
+            Continue with Google
+          </button>
+        </form>
       </section>
     </div>
 
     <ul class="trust">
       <li><Icon name="check" size={16} /> Cancel anytime</li>
+      <li><Icon name="user" size={16} /> No account needed to buy</li>
       <li><Icon name="lock" size={16} /> Secure checkout by Stripe</li>
       <li><Icon name="bolt" size={16} /> Promo codes accepted</li>
     </ul>
   </div>
 
+  <section class="gets" aria-labelledby="gets-title">
+    <h2 id="gets-title" class="section-title">What you get with PRO</h2>
+    <p class="section-lead">Built for one job: passing an employer's Excel test.</p>
+    <ul class="tiles">
+      {
+        tiles.map((t) => (
+          <li class="tile">
+            <span class="tile-icon"><Icon name={t.icon} size={20} /></span>
+            <p class="tile-value">{t.value}</p>
+            <h3>{t.title}</h3>
+            <p>{t.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="proof">
+      {
+        example && (
+          <figure class="cert">
+            <p class="cert-kicker">Certificate · Example</p>
+            <p class="cert-title">{example.title} Excel test</p>
+            <p class="cert-sub">Passed under time, on tasks not seen before</p>
+            <dl class="cert-facts">
+              <div><dt>tasks</dt><dd>{example.tasks.length}</dd></div>
+              <div><dt>minutes</dt><dd>{example.minutes}</dd></div>
+              <div><dt>check</dt><dd>Public link</dd></div>
+            </dl>
+            <figcaption class="cert-note">Each certificate has its own page an employer can open to check it.</figcaption>
+          </figure>
+        )
+      }
+      <figure class="study">
+        <p class="study-title">Why timed tests work</p>
+        <figcaption>Testing yourself beats re-reading. How much people remembered a week later:</figcaption>
+        <dl class="bars">
+          <div>
+            <dt>Practised with tests</dt>
+            <dd>61%</dd>
+            <span class="bar" aria-hidden="true"><span class="fill fill-test"></span></span>
+          </div>
+          <div>
+            <dt>Only re-read</dt>
+            <dd>40%</dd>
+            <span class="bar" aria-hidden="true"><span class="fill fill-reread"></span></span>
+          </div>
+        </dl>
+        <p class="source">
+          Roediger and Karpicke,{" "}
+          <a href="https://source.washu.edu/2006/04/repeated-testing-better-than-repeated-studying/" rel="noopener">Psychological Science, 2006</a>
+        </p>
+        <button class="button button-primary" type="submit" form="pro-checkout">Get PRO</button>
+      </figure>
+    </div>
+  </section>
+
   <section class="compare" aria-labelledby="compare-title">
-    <h2 id="compare-title" class="section-title">Compare plans</h2>
+    <h2 id="compare-title" class="section-title">Free shows you how. PRO gets you ready.</h2>
+    <p class="section-lead">
+      The same grid and the same instant checks. PRO opens the rest of every track, the timed tests and the certificates.
+    </p>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
             <th scope="col"><span class="visually-hidden">Feature</span></th>
-            <th scope="col">Free</th>
-            <th scope="col" class="pro-col">PRO</th>
+            <th scope="col">
+              <span class="plan-name">Free</span>
+              <span class="plan-price">$0</span>
+            </th>
+            <th scope="col" class="pro-col">
+              <span class="plan-name">PRO</span>
+              <span class="plan-price">{fromPrice}</span>
+            </th>
           </tr>
         </thead>
         {
           compare.map((g) => (
             <tbody>
               <tr class="group">
-                <th scope="colgroup" colspan="3">
+                <th scope="colgroup" colspan="2">
                   {g.group}
                 </th>
+                <td class="pro-col" />
               </tr>
-              {g.rows.map(([name, f, p]) => (
+              {g.rows.map((r) => (
                 <tr>
-                  <th scope="row">{name}</th>
-                  {[f, p].map((c, i) => (
+                  <th scope="row">
+                    <span class="feat">{r.name}</span>
+                    <span class="feat-note">{r.note}</span>
+                  </th>
+                  {[r.free, r.pro].map((c, i) => (
                     <td class:list={{ "pro-col": i === 1 }}>
-                      {typeof c === "string" ? (
+                      {typeof c === "number" ? (
+                        <span class="num">{c}</span>
+                      ) : typeof c === "string" ? (
                         c
                       ) : c ? (
                         <>
@@ -293,10 +458,21 @@ const faq = [
             </tbody>
           ))
         }
+        <tfoot>
+          <tr>
+            <td></td>
+            <td>
+              <a class="button button-outline" href="/register/" data-when="out">Start free</a>
+              <a class="button button-outline" href="/exercises/" data-when="in" hidden>Exercises</a>
+            </td>
+            <td class="pro-col">
+              <button class="button button-primary" type="submit" form="pro-checkout">Get PRO</button>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   </section>
-
   <section class="faq" aria-labelledby="faq-title">
     <h2 id="faq-title" class="section-title">Questions</h2>
     {
@@ -438,8 +614,7 @@ const faq = [
     display: block;
   }
   .best {
-    width: fit-content;
-    margin: 0 0 var(--space-2);
+    align-self: center;
     padding: 0 var(--space-2);
     border-radius: var(--radius-pill);
     background: var(--correct-tint);
@@ -519,22 +694,15 @@ const faq = [
     font-size: var(--size-s);
     color: var(--muted);
   }
-  .card-plan .button,
-  .card-plan form {
-    width: 100%;
-    margin-top: var(--space-2);
-  }
-  .card-plan form {
+  /* The buttons sit at the bottom, so both cards line up whatever is above. */
+  .card-foot {
     display: grid;
     gap: var(--space-2);
+    margin-top: auto;
+    padding-top: var(--space-4);
   }
-  .card-plan form .button {
-    margin: 0;
-  }
-  .plus {
-    margin-bottom: 0;
-    font-weight: 700;
-    color: var(--heading);
+  .card-foot .button {
+    width: 100%;
   }
   .list {
     display: grid;
@@ -558,19 +726,10 @@ const faq = [
     padding-top: var(--space-5);
     border-top: 1px solid var(--rule);
   }
-  .lacks {
-    color: var(--muted);
-  }
   :global(.yes) {
     color: var(--correct);
   }
   :global(.no) {
-    color: var(--muted);
-  }
-  .small {
-    margin: auto 0 0;
-    padding-top: var(--space-3);
-    font-size: var(--size-s);
     color: var(--muted);
   }
 
@@ -594,14 +753,190 @@ const faq = [
     color: var(--correct);
   }
 
+  .gets,
   .compare,
   .faq {
     max-width: 56rem;
     margin: var(--space-7) auto 0;
   }
+  .gets,
+  .compare {
+    margin-top: calc(var(--space-7) * 1.5);
+  }
   .section-title {
     margin: 0 0 var(--space-5);
     text-align: center;
+  }
+  .section-lead {
+    max-width: 40rem;
+    margin: calc(-1 * var(--space-3)) auto var(--space-5);
+    text-align: center;
+    color: var(--muted);
+  }
+
+  /* What PRO gets you: four numbers, then the proof. */
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(9rem, 40%), 1fr));
+    gap: var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .tile {
+    padding: var(--space-5);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-xl);
+    background: var(--surface);
+  }
+  .tile-icon,
+  .cert-kicker {
+    color: var(--correct);
+  }
+  .tile-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-l);
+    background: var(--correct-tint);
+  }
+  .tile-value {
+    margin: var(--space-3) 0 var(--space-1);
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--heading);
+    font-variant-numeric: tabular-nums;
+  }
+  .tile h3 {
+    margin: 0;
+    font-size: var(--size-base);
+    color: var(--heading);
+  }
+  .tile p:last-child {
+    margin: var(--space-1) 0 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .proof {
+    display: grid;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+  }
+  .cert,
+  .study {
+    margin: 0;
+    padding: var(--space-6);
+    border-radius: var(--radius-xl);
+  }
+  .cert {
+    background: var(--offer-charcoal);
+    color: #f3f4f6;
+  }
+  .cert p,
+  .study p {
+    margin: 0;
+  }
+  .cert-kicker {
+    font-size: var(--size-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #7ee2a8;
+  }
+  .cert .cert-title {
+    margin-top: var(--space-2);
+    font-size: var(--size-xl);
+    font-weight: 700;
+    color: #fff;
+  }
+  .cert-sub,
+  .cert-note {
+    font-size: var(--size-s);
+    color: #b8bec8;
+  }
+  .cert-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    margin: var(--space-5) 0;
+  }
+  .cert-facts div {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .cert-facts dt {
+    font-size: var(--size-s);
+    color: #b8bec8;
+  }
+  .cert-facts dd {
+    margin: 0;
+    font-size: var(--size-xl);
+    font-weight: 700;
+    color: #fff;
+  }
+  .study {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    border: 1px solid var(--rule);
+    background: var(--surface);
+  }
+  .study-title {
+    font-size: var(--size-l);
+    font-weight: 700;
+    color: var(--heading);
+  }
+  .study figcaption,
+  .source {
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .bars {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-3) 0;
+  }
+  .bars div {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-1) var(--space-3);
+    font-size: var(--size-s);
+  }
+  .bars dd {
+    margin: 0;
+    font-weight: 700;
+    color: var(--heading);
+  }
+  .bar {
+    grid-column: 1 / -1;
+    height: 0.75rem;
+    border-radius: var(--radius-pill);
+    background: var(--header);
+    overflow: hidden;
+  }
+  .fill {
+    display: block;
+    height: 100%;
+    border-radius: var(--radius-pill);
+    background: var(--primary);
+  }
+  .fill-test {
+    width: 61%;
+  }
+  .fill-reread {
+    width: 40%;
+    background: var(--line);
+  }
+  .study .button {
+    margin-top: auto;
+  }
+  @media (min-width: 48rem) {
+    .proof {
+      grid-template-columns: 1.1fr 1fr;
+    }
   }
   .table-wrap {
     overflow-x: auto;
@@ -674,7 +1009,59 @@ const faq = [
     background: var(--correct-tint);
   }
   thead .pro-col {
-    color: var(--correct);
+    box-shadow: inset 0 3px 0 var(--primary);
+  }
+  thead th {
+    padding-top: var(--space-5);
+  }
+  .plan-name {
+    display: block;
+    font-size: var(--size-l);
+  }
+  .plan-price {
+    display: block;
+    font-size: var(--size-s);
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .feat {
+    display: block;
+    font-weight: 600;
+    color: var(--heading);
+  }
+  .feat-note {
+    display: block;
+    font-size: var(--size-xs);
+    color: var(--muted);
+  }
+  .num {
+    font-size: var(--size-xl);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  tfoot td {
+    padding: var(--space-4);
+  }
+  tfoot .button {
+    width: 100%;
+  }
+  @media (max-width: 47.99rem) {
+    .feat-note {
+      display: none;
+    }
+    .num {
+      font-size: var(--size-l);
+    }
+    table {
+      table-layout: fixed;
+    }
+    tfoot td {
+      padding: var(--space-3) var(--space-1);
+    }
+    tfoot .button {
+      padding-inline: var(--space-1);
+      font-size: var(--size-s);
+    }
   }
 
   .faq {

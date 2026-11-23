@@ -730,7 +730,7 @@
 @media (min-width: 44rem) {
   .ac .cal-wrap {
     grid-template-columns: 20rem minmax(0, 1fr);
-    align-items: start;
+    align-items: stretch;
   }
 }
 .ac .cal-wrap .d-cal {
@@ -891,7 +891,7 @@
   color: var(--muted);
 }
 .ac .sets li .button {
-  align-self: flex-start;
+  align-self: stretch;
   margin-top: auto;
 } /* Plan and billing */
 .ac .cur-plan {
@@ -1006,6 +1006,7 @@
 }
 /* The price a month, for plans billed for more than a month. */
 .ac .plans .each {
+  min-height: 1lh; /* kept when empty so the rule under it lines up across cards */
   font-size: var(--size-s);
   font-weight: 700;
   color: var(--correct);
@@ -1034,10 +1035,16 @@
   display: grid;
   gap: var(--space-3);
 }
+.ac .plans-incl .compare {
+  justify-self: start;
+}
 .ac .plans-incl .includes {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
   padding-top: 0;
   border-top: 0;
+}
+.ac .plans .fine {
+  min-height: 2lh; /* the longest note wraps to two lines */
 }
 /* The name, then a line kept for the badge even when there is none, so the
    prices line up across the row. */

@@ -108,6 +108,7 @@ const planData = JSON.stringify(
         <ul class="includes" aria-labelledby="bi-incl">
           {includes.map((x) => <li><Icon name="check" size={16} /><span>{x}</span></li>)}
         </ul>
+        <a class="button button-primary sm compare" href="/pricing/">Compare Free and PRO in full</a>
       </div>
       <ul class="plans">
         {
@@ -121,7 +122,7 @@ const planData = JSON.stringify(
               </p>
               <span class="p">{p.price}</span>
               <span class="fine">{p.per}</span>
-              {p.each && <span class="each">{p.each}</span>}
+              <span class="each">{p.each}</span>
               <ul class="why">
                 {p.why.map((x) => <li><Icon name="check" size={16} /><span>{x}</span></li>)}
               </ul>

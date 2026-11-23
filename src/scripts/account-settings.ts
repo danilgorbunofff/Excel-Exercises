@@ -7,10 +7,9 @@ const $ = <T extends HTMLElement>(s: string) => document.querySelector<T>(s);
 
 void loadMe().then((me) => {
   if (!me) return;
-  const news = $<HTMLInputElement>("[data-news]");
-  if (news) news.checked = me.news;
-  const digest = $<HTMLInputElement>("[data-digest]");
-  if (digest) digest.checked = me.digest;
+  const mail = me.daily ? "daily" : me.digest ? "weekly" : "never";
+  const choice = $<HTMLInputElement>(`[data-mail="${mail}"]`);
+  if (choice) choice.checked = true;
   const password = $("[data-password]");
   if (password) password.hidden = !me.hasPassword;
   const google = $("[data-google]");

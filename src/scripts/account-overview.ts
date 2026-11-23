@@ -143,6 +143,9 @@ void syncDaily().then(({ days }) => {
 
 void loadMe().then(async (me) => {
   if (!me) return;
+  // Google sign-ups saw no email checkbox: ask once, until answered.
+  const ask = $("[data-daily-ask]");
+  if (ask) ask.hidden = me.dailyAsked !== false;
   if (me.pro) {
     text("[data-plan-name]", me.proStatus === "lifetime" ? "Lifetime PRO" : "PRO");
     text("[data-plan-line]", planLine(me));

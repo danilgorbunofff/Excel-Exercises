@@ -16,7 +16,7 @@ import Base from "../../../layouts/Base.astro";
     <form class="setting" method="post" action="/api/auth/email/" aria-labelledby="st-email">
       <div class="setting-body">
         <h2 id="st-email">Email</h2>
-        <p>You sign in with <strong data-me-email>this address</strong>. Receipts and the weekly email go there too.</p>
+        <p>You sign in with <strong data-me-email>this address</strong>. Receipts and the emails you choose go there too.</p>
         <div class="field">
           <label for="new-email">New email</label>
           <input class="input" id="new-email" name="email" type="email" autocomplete="email" required />
@@ -59,15 +59,19 @@ import Base from "../../../layouts/Base.astro";
       <div class="setting-body">
         <h2 id="st-mail">Email preferences</h2>
         <p>Choose what we send you. Receipts and sign-in links always arrive.</p>
-        <div>
-          <div class="switch-row">
-            <div><b id="st-news-label">New exercises</b><p class="fine">One email when a new batch of exercises arrives.</p></div>
-            <span class="switch"><input type="checkbox" role="switch" name="news" aria-labelledby="st-news-label" data-news /><span aria-hidden="true"></span></span>
-          </div>
-          <div class="switch-row">
-            <div><b id="st-digest-label">Weekly progress</b><p class="fine">Every Monday: what you solved last week and what is due for review.</p></div>
-            <span class="switch"><input type="checkbox" role="switch" name="digest" aria-labelledby="st-digest-label" data-digest /><span aria-hidden="true"></span></span>
-          </div>
+        <div role="radiogroup" aria-labelledby="st-mail">
+          <label class="switch-row">
+            <span><b>Daily exercise</b><span class="fine">Every day: that day's exercise, with tips and offers now and then.</span></span>
+            <input type="radio" name="mail" value="daily" data-mail="daily" />
+          </label>
+          <label class="switch-row">
+            <span><b>Weekly progress</b><span class="fine">Every Monday: what you solved last week and what is due for review.</span></span>
+            <input type="radio" name="mail" value="weekly" data-mail="weekly" />
+          </label>
+          <label class="switch-row">
+            <span><b>No emails</b><span class="fine">Only receipts and sign-in links.</span></span>
+            <input type="radio" name="mail" value="never" data-mail="never" checked />
+          </label>
         </div>
       </div>
       <div class="setting-foot">
@@ -79,7 +83,7 @@ import Base from "../../../layouts/Base.astro";
     <section class="setting" aria-labelledby="st-data">
       <div class="setting-body">
         <h2 id="st-data">Your data</h2>
-        <p>Download everything your account keeps as one JSON file: your plan, email preferences, progress, mock assessment results, daily solves, drill runs and certificates.</p>
+        <p>Download everything your account keeps as one JSON file: your plan, email preferences, progress, mock assessment results, daily solves, drill runs, the emails we sent you and certificates.</p>
       </div>
       <div class="setting-foot">
         <span>Progress saved only in a browser where you have not logged in is not in the file.</span>

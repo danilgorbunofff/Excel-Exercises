@@ -7,6 +7,8 @@ export interface Mail {
   to: string;
   subject: string;
   text: string;
+  /** The HTML part (src/server/mail-templates.ts); text is the fallback. */
+  html?: string;
   /** The one-click unsubscribe address for this person. */
   unsubscribe: string;
 }
@@ -23,6 +25,7 @@ export async function sendMail(mail: Mail): Promise<boolean> {
       to: [mail.to],
       subject: mail.subject,
       text: mail.text,
+      ...(mail.html ? { html: mail.html } : {}),
       headers: {
         "List-Unsubscribe": `<${mail.unsubscribe}>`,
         "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",

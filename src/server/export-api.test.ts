@@ -27,6 +27,7 @@ const ROWS: Record<string, unknown> = {
     pro_until: "2027-11-15T00:00:00Z",
     news: true,
     digest: false,
+    daily: true,
     updated_at: "2026-11-01T00:00:00Z",
   },
   progress: [
@@ -43,6 +44,7 @@ const ROWS: Record<string, unknown> = {
   free_drill_runs: [
     { day: "2026-11-15", slugs: ["sum-drill-1"], created_at: "2026-11-15T09:00:00Z" },
   ],
+  mail_log: [{ kind: "daily:2026-11-15", sent_at: "2026-11-15T12:00:00Z" }],
   certificates: [{ id: "AAAAAAAAAAAAAAAAAAAAAA", name: "Ada Lovelace", revoked_at: null }],
 };
 
@@ -77,6 +79,7 @@ describe("GET /api/account/export/", () => {
       proUntil: "2027-11-15T00:00:00Z",
       news: true,
       digest: false,
+      daily: true,
       updatedAt: "2026-11-01T00:00:00Z",
     });
     for (const key of [
@@ -84,6 +87,7 @@ describe("GET /api/account/export/", () => {
       "assessment_attempts",
       "daily_solves",
       "free_drill_runs",
+      "mail_log",
       "certificates",
     ]) {
       expect(body[key]).toEqual(ROWS[key]);
@@ -98,6 +102,7 @@ describe("GET /api/account/export/", () => {
       "certificates",
       "daily_solves",
       "free_drill_runs",
+      "mail_log",
       "profiles",
       "progress",
     ]);

@@ -20,6 +20,7 @@ const TABLES = {
   ],
   daily_solves: ["daily_solves", "day, exercise, solved_at", "day"],
   free_drill_runs: ["free_drill_runs", "day, slugs, created_at", "day"],
+  mail_log: ["mail_log", "kind, sent_at", "sent_at"],
   certificates: [
     "certificates",
     "id, assessment, assessment_title, name, score, total, time_limit_s, issued_at, revoked_at",
@@ -35,7 +36,7 @@ export const GET: APIRoute = async (ctx) => {
   }
   const profile = await supabase
     .from("profiles")
-    .select("pro_status, pro_until, news, digest, updated_at")
+    .select("pro_status, pro_until, news, digest, daily, updated_at")
     .eq("id", user.id)
     .maybeSingle();
   const rows = await Promise.all(
@@ -62,6 +63,7 @@ export const GET: APIRoute = async (ctx) => {
       proUntil: profile.data?.pro_until ?? null,
       news: profile.data?.news ?? false,
       digest: profile.data?.digest ?? false,
+      daily: profile.data?.daily ?? false,
       updatedAt: profile.data?.updated_at ?? null,
     },
     ...Object.fromEntries(rows.map(([key, r]) => [key, r.data ?? []])),

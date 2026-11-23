@@ -34,10 +34,28 @@ const data = JSON.stringify({ items, dailyTitles, setTitles }).replaceAll("<", "
     lead="What to do next, your plan and how far you have got."
     outLead="Log in to see your progress, your plan and what to do next, on any device."
   >
+    <form class="setting" method="post" action="/api/account/news/" aria-labelledby="ov-mail" data-daily-ask hidden>
+      <input type="hidden" name="from" value="/account/" />
+      <input type="hidden" name="answer" value="1" />
+      <div class="setting-body">
+        <div class="switch-row">
+          <div>
+            <b id="ov-mail">Get the daily exercise by email?</b>
+            <p class="fine">One short email a day with that day's exercise, plus tips and offers now and then. Unsubscribe in one click.</p>
+          </div>
+          <span class="switch"><input type="checkbox" role="switch" name="daily" aria-labelledby="ov-mail" /><span aria-hidden="true"></span></span>
+        </div>
+      </div>
+      <div class="setting-foot">
+        <span>You can change it later on the account settings.</span>
+        <button class="button button-primary sm" type="submit">Save</button>
+      </div>
+    </form>
+
     <section class="box cont" aria-labelledby="ov-next">
       <div class="cont-main">
         <div>
-          <p class="fine" data-next-label>Start here</p>
+          <p class="eyebrow" data-next-label>Start here</p>
           <h2 id="ov-next"><a class="plain" href={items[0]?.href} data-next>{items[0]?.title}</a></h2>
           <p class="fine" data-next-meta>{items[0]?.trackTitle}</p>
         </div>
@@ -83,7 +101,7 @@ const data = JSON.stringify({ items, dailyTitles, setTitles }).replaceAll("<", "
           {
             Object.entries(LEVELS).map(([n, name]) => (
               <div class={`leg-${n}`}>
-                <dt>{name}</dt>
+                <dt><span class={`level level-${n}`}>{name}</span></dt>
                 <dd data-legend={n}>0 of {items.filter((i) => String(i.level) === n).length}</dd>
               </div>
             ))

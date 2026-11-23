@@ -46,6 +46,6 @@ describe("weeklyDigest", () => {
     expect(d?.text).toContain("This week you solved 1 exercise.");
     expect(d?.text).toContain("2 exercises you solved before are due for review.");
     expect(d?.text).toContain("1 exercise you tried is not solved yet.");
-    expect(d?.text).toContain("Turn it off: https://x.test/u");
+    expect(d?.text).toContain("Unsubscribe in one click: https://x.test/u");
   });
 });

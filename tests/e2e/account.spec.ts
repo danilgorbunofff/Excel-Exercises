@@ -29,6 +29,8 @@ async function signIn(page: Page, plan: Plan, path: string) {
         proUntil: plan === "monthly" ? "2026-12-01T00:00:00.000Z" : null,
         news: false,
         digest: true,
+        daily: false,
+        dailyAsked: plan !== "lifetime",
         hasPassword: true,
         createdAt: "2026-11-01T10:00:00.000Z",
       },
@@ -93,6 +95,7 @@ test("the left menu reaches every account page and marks the current one", async
 test("the overview shows what to do next, the plan and recent results", async ({ page }) => {
   await signIn(page, "monthly", "/account/");
   await expect(page.locator("[data-next-label]")).toHaveText("Start here");
+  await expect(page.locator("[data-daily-ask]")).toBeHidden();
   await expect(page.locator("[data-plan-line]")).toHaveText(
     "Your PRO plan renews or ends on 1 December 2026.",
   );
@@ -122,12 +125,21 @@ test("billing follows the plan", async ({ page }) => {
 
 test("settings read the account's choices and guard delete", async ({ page }) => {
   await signIn(page, "free", "/account/settings/");
-  await expect(page.getByRole("switch", { name: "New exercises" })).not.toBeChecked();
-  await expect(page.getByRole("switch", { name: "Weekly progress" })).toBeChecked();
+  await expect(page.getByRole("radio", { name: "Daily exercise" })).not.toBeChecked();
+  await expect(page.getByRole("radio", { name: "Weekly progress" })).toBeChecked();
   const del = page.getByRole("button", { name: "Delete my account" });
   await expect(del).toBeDisabled();
   await page.getByLabel("Type DELETE to confirm").fill("delete");
   await expect(del).toBeEnabled();
+});
+
+test("an account that never answered is asked once about the daily email", async ({ page }) => {
+  await signIn(page, "lifetime", "/account/");
+  const ask = page.locator("[data-daily-ask]");
+  await expect(ask).toBeVisible();
+  await expect(
+    ask.getByRole("switch", { name: "Get the daily exercise by email?" }),
+  ).not.toBeChecked();
 });
 
 test("a timed pass with no certificate can be claimed", async ({ page }) => {

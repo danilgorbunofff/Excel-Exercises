@@ -1,5 +1,6 @@
-// Why this exists: the words of the weekly email, from one person's progress.
-// Pure, so it is unit-tested; the cron job reads the rows and sends it.
+// Why this exists: the words of the weekly email. Pure, so they are
+// unit-tested; the cron job reads the rows and sends them. The daily and
+// starter emails are HTML, in mail-templates.ts.
 import { addDays, isDue, isSolved, type Progress } from "../scripts/progress.ts";
 
 export interface Digest {
@@ -33,16 +34,23 @@ export function weeklyDigest(
     lines.push(
       `${plural(missed, "exercise")} you tried ${missed === 1 ? "is" : "are"} not solved yet.`,
     );
-  lines.push("", `See your review list: ${links.progress}`, "");
-  lines.push(
-    "You get this email because you turned on the weekly email in your account settings.",
-    `Turn it off: ${links.unsubscribe}`,
-  );
+  lines.push("", `See your review list: ${links.progress}`);
   return {
     subject:
       due + missed > 0
         ? `${plural(due + missed, "exercise")} to review this week`
         : `You solved ${plural(solvedThisWeek, "exercise")} this week`,
-    text: lines.join("\n"),
+    text: layout(
+      lines,
+      "You get this email because you turned on the weekly email in your account settings.",
+      links.unsubscribe,
+    ),
   };
 }
+
+/**
+ * The frame every email shares: the body, then why it came and the
+ * unsubscribe link. The one place to swap for an HTML template later.
+ */
+export const layout = (body: readonly string[], why: string, unsubscribe: string): string =>
+  [...body, "", why, `Unsubscribe in one click: ${unsubscribe}`].join("\n");

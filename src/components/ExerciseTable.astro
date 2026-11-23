@@ -72,6 +72,7 @@ const columns = [
                   {isLocked(p) && <span class="badge badge-pro">PRO</span>}
                 </span>
                 <span class="meta">
+                  {isLocked(p) && <span class="badge badge-pro pro-meta">PRO</span>}
                   {fns.length > 0 ? fns.join(", ") : "Cell references"}
                   {showTrack && <span class="track"> · {p.topic.title}</span>}
                 </span>
@@ -173,6 +174,21 @@ const columns = [
     color: var(--correct);
     text-decoration: underline;
   }
+  /* The whole row opens the exercise, not only the title text. */
+  tbody tr {
+    position: relative;
+  }
+  .title-line a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  tbody tr:hover .title-line a {
+    color: var(--correct);
+  }
+  .pro-meta {
+    display: none;
+  }
   .meta {
     display: block;
     margin-top: 0.125rem;
@@ -241,6 +257,15 @@ const columns = [
     }
     .state :global(.state-tag::after) {
       display: none;
+    }
+    /* PRO moves to the start of the meta line: by the title it wrapped onto
+       a line of its own whenever the title filled the row. */
+    .title-line .badge-pro {
+      display: none;
+    }
+    .pro-meta {
+      display: inline-flex;
+      margin-right: var(--space-2);
     }
   }
 </style>

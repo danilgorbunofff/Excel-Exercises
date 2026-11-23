@@ -24,10 +24,10 @@ function link(id: string): HTMLParagraphElement {
   const a = document.createElement("a");
   a.href = certificatePath(id);
   a.textContent = "View your certificate";
-  p.append(a, ". It is also listed on your ");
+  p.append(a, ". It is also listed in your ");
   const account = document.createElement("a");
-  account.href = "/account/";
-  account.textContent = "account page";
+  account.href = "/account/certificates/";
+  account.textContent = "account";
   p.append(account, ".");
   return p;
 }

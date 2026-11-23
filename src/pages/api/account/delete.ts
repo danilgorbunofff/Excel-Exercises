@@ -13,10 +13,11 @@ export const prerender = false;
 export const POST: APIRoute = async (ctx) => {
   const form = await ctx.request.formData();
   if (field(form, "confirm").toUpperCase() !== "DELETE") {
-    return back("/account/", { error: "Type DELETE to confirm." });
+    return back("/account/settings/", { error: "Type DELETE to confirm." });
   }
   const { supabase, user } = await currentUser(ctx);
-  if (!user) return back("/login/?next=/account/", { error: "Log in to delete your account." });
+  if (!user)
+    return back("/login/?next=/account/settings/", { error: "Log in to delete your account." });
 
   const { data: profile } = await supabase
     .from("profiles")
@@ -35,7 +36,7 @@ export const POST: APIRoute = async (ctx) => {
   }
   const { error } = await adminClient().auth.admin.deleteUser(user.id);
   if (error)
-    return back("/account/", {
+    return back("/account/settings/", {
       error: "Your account could not be deleted. Try again, or contact us.",
     });
   await supabase.auth.signOut();

@@ -56,7 +56,23 @@ const here = location.pathname.endsWith("/") ? location.pathname : `${location.p
 const session = root ? readSession() : null;
 const step = session ? sessionStep(session.hrefs, here) : null;
 
-if (root && session && step && step.index >= 0) {
+/** Arrived from a page of the run, or from the page that started it. A task opened from the
+ * exercise list is not part of the run, even if the run still sits in this tab's storage. */
+function cameFromRun(s: DrillSession): boolean {
+  try {
+    const from = new URL(document.referrer);
+    if (from.origin !== location.origin) return false;
+    const slash = (p: string) => (p.endsWith("/") ? p : `${p}/`);
+    return (
+      s.hrefs.includes(slash(from.pathname)) ||
+      slash(from.pathname) === slash(new URL(s.doneHref, location.origin).pathname)
+    );
+  } catch {
+    return false;
+  }
+}
+
+if (root && session && step && step.index >= 0 && cameFromRun(session)) {
   const review = session.kind === "review";
   const id = session.ids[step.index] ?? "";
   const last = step.next === null;

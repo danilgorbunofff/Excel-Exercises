@@ -1,0 +1,814 @@
+---
+import { isLocked } from "../lib/access.ts";
+import {
+  drillTasks,
+  exercisePath,
+  functionsOf,
+  LEVELS,
+  placedExercises,
+} from "../lib/exercises.ts";
+import { ACCOUNT_NAV } from "../lib/nav.ts";
+// Why this exists: the body of the progress page, shared by /progress/ (guests
+// and signed-in visitors) and /account/progress/ (inside the account area).
+// It reads progress from this browser, which a signed-in visitor's account
+// keeps in step (session.ts). An open head with what to do next, a grid of the
+// days you practised beside the numbers, then review.
+import Icon from "./Icon.astro";
+import "../styles/assessments.css";
+
+const placed = await placedExercises();
+const first = placed[0];
+if (!first) throw new Error("The track has no exercises");
+const list = placed.map((p) => ({
+  id: p.exercise.id,
+  number: p.number,
+  title: p.exercise.title,
+  href: exercisePath(p.exercise.slug),
+  locked: isLocked(p),
+  level: p.exercise.level,
+  track: p.topic.slug,
+  trackTitle: p.topic.title,
+  fns: functionsOf(p.exercise),
+}));
+// Drills come back on the review list too, but never count as exercises solved.
+const drills = (await drillTasks()).map((d, i) => ({
+  id: d.exercise.id,
+  number: placed.length + i + 1,
+  title: `${d.fn} practice: ${d.exercise.title}`,
+  href: `/exercises/drills/${d.exercise.slug}/`,
+  locked: true,
+  level: d.exercise.level,
+  track: "drills",
+  trackTitle: "Function practice",
+  fns: [d.fn],
+}));
+
+interface Props {
+  /** Inside the account area: the shell shows the page title, so this leaves out its own. */
+  embedded?: boolean;
+}
+const { embedded = false } = Astro.props;
+---
+
+  <div class:list={["a-page", { embedded }]}>
+    <header class="open-head">
+      {
+        !embedded && (
+          <>
+            <h1 id="progress-title">Your progress</h1>
+            <p class="lead" data-when="out">
+              Saved in this browser. <a href={ACCOUNT_NAV.register.href}>Sign up free</a> to keep it
+              on every device.
+            </p>
+            <p class="lead" data-when="in" hidden>
+              Saved to your account. <a href="/account/progress/">Open it in your account</a> with
+              your tracks and daily streak.
+            </p>
+          </>
+        )
+      }
+      <p class="actions">
+        <a class="button button-primary" href={exercisePath(first.exercise.slug)} data-next>
+          Start: {first.exercise.title}
+        </a>
+        <a class="button button-outline" href="/daily/" data-review-next>Today's exercise</a>
+      </p>
+    </header>
+
+    <div class="p-activity">
+      <section class="card p-heat" aria-labelledby="heat-title">
+        <div class="p-heat-head">
+          <h2 id="heat-title">Days you practised</h2>
+          <span>Last 6 months</span>
+        </div>
+        <div class="heat-months" aria-hidden="true" data-heat-months></div>
+        <div class="heat" role="img" aria-label="No practice yet" data-heat></div>
+        <div class="heat-tip" aria-hidden="true" data-heat-tip><strong></strong><span></span></div>
+        <p class="heat-legend" aria-hidden="true">
+          Less <i></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i> More
+        </p>
+      </section>
+      <dl class="p-nums" aria-label="Your numbers">
+        <div class="card">
+          <dt>solved of {placed.length}</dt>
+          <dd data-stat="solved">0</dd>
+        </div>
+        <div class="card">
+          <dt>current streak, best <span data-stat="best">0 days</span></dt>
+          <dd data-stat="streak">0 days</dd>
+        </div>
+        <div class="card">
+          <dt>on your own, <span data-stat="helped">0</span> with help</dt>
+          <dd data-stat="own">0</dd>
+        </div>
+      </dl>
+    </div>
+    <noscript>
+      <p class="ruled a-pad">This page needs JavaScript to read your progress from this browser.</p>
+    </noscript>
+
+    <section class="p-section" aria-labelledby="review-title">
+      <div class="p-section-head">
+        <div>
+          <h2 id="review-title">
+            Due for review <span class="p-due"><span class="visually-hidden">, </span><span
+                data-stat="due">0</span
+              ></span>
+          </h2>
+          <p class="p-sub">Exercises you got wrong, and solved ones due again.</p>
+        </div>
+      </div>
+      <p class="card review-empty" data-review-empty>
+        Nothing to review. Exercises you got wrong, and solved ones due again, come back here.
+      </p>
+      <div class="review-layout" data-review hidden>
+        <div class="review-main">
+          <div class="r-table-wrap">
+            <table aria-labelledby="review-title" data-review-table>
+              <thead>
+                <tr>
+                  <th scope="col" class="col-why" data-sort-key="state">
+                    <button type="button" class="sort">Why<span class="sort-mark" aria-hidden="true"></span></button>
+                  </th>
+                  <th scope="col" data-sort-key="title">
+                    <button type="button" class="sort">Title<span class="sort-mark" aria-hidden="true"></span></button>
+                  </th>
+                  <th scope="col" class="col-level" data-sort-key="level">
+                    <button type="button" class="sort">Difficulty<span class="sort-mark" aria-hidden="true"></span></button>
+                  </th>
+                </tr>
+              </thead>
+              <tbody data-review-rows></tbody>
+            </table>
+          </div>
+          <p class="r-more" data-review-more-wrap hidden>
+            <button class="button button-secondary" type="button" data-review-more></button>
+          </p>
+        </div>
+        <form class="card r-filter" role="search" aria-label="Filter the review list" data-review-filter>
+          <div class="r-head">
+            <h3>Filters</h3>
+            <span class="r-active" data-review-active hidden></span>
+            <button class="r-reset" type="reset" aria-label="Clear filters" data-review-reset hidden>Reset</button>
+          </div>
+          <div class="r-search">
+            <Icon name="lookup" size={16} />
+            <label class="visually-hidden" for="r-q">Find an exercise</label>
+            <input id="r-q" name="q" type="search" autocomplete="off" spellcheck="false" placeholder="Search title or function" />
+          </div>
+          <div class="r-field">
+            <label for="r-why">Why it is due</label>
+            <div class="r-select">
+              <select id="r-why" name="why">
+                <option value="">All</option>
+                <option value="unsolved">Not solved yet</option>
+                <option value="missed">Wrong on your last try</option>
+                <option value="due">Due for review</option>
+              </select>
+              <Icon name="chevron-down" size={16} />
+            </div>
+          </div>
+          <div class="r-field">
+            <label for="r-level">Difficulty</label>
+            <div class="r-select">
+              <select id="r-level" name="level">
+                <option value="">All</option>
+                {Object.entries(LEVELS).map(([v, l]) => <option value={v}>{l}</option>)}
+              </select>
+              <Icon name="chevron-down" size={16} />
+            </div>
+          </div>
+          <div class="r-field">
+            <label for="r-track">Track</label>
+            <div class="r-select">
+              <select id="r-track" name="track" data-review-tracks>
+                <option value="">All</option>
+              </select>
+              <Icon name="chevron-down" size={16} />
+            </div>
+          </div>
+          <p class="r-count" role="status" data-review-count></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="clear" aria-labelledby="clear-head" data-clear>
+      <div class="clear-text">
+        <h2 id="clear-head">Start over</h2>
+        <p>
+          Clears every solve, review and practice result
+          <span data-when="out">saved in this browser.</span>
+          <span data-when="in" hidden>from your account, on every device.</span>
+        </p>
+      </div>
+      <button class="button button-secondary clear-ask" type="button" data-clear-ask>
+        <Icon name="reset" size={16} />
+        Clear my progress
+      </button>
+      <p class="clear-status" role="status" data-clear-status></p>
+    </section>
+
+    <dialog
+      class="clear-dialog"
+      aria-labelledby="clear-title"
+      aria-describedby="clear-desc"
+      closedby="any"
+      data-clear-dialog
+    >
+      <h2 id="clear-title">
+        <span class="warn-badge" aria-hidden="true"><Icon name="warn" size={22} /></span>
+        Clear all your progress?
+      </h2>
+      <p id="clear-desc">
+        This removes every solve, review and practice result from
+        <span data-when="out">this browser.</span>
+        <span data-when="in" hidden>your account, on every device you use.</span>
+        It cannot be undone.
+      </p>
+      <p class="clear-error" role="alert" data-clear-error></p>
+      <div class="clear-dialog-actions">
+        <button class="button button-secondary" type="button" autofocus data-clear-no>Keep it</button>
+        <button class="button button-danger" type="button" data-clear-yes>Yes, clear it</button>
+      </div>
+    </dialog>
+
+    <script type="application/json" data-exercises set:html={JSON.stringify(list).replaceAll("<", "\\u003c")} />
+    <script type="application/json" data-drill-items set:html={JSON.stringify(drills).replaceAll("<", "\\u003c")} />
+  </div>
+<script>
+  import "../scripts/catalogue.ts";
+  import "../scripts/progress-page.ts";
+</script>
+
+<style>
+  /* The table is wider than a phone: it scrolls inside its card, not the page. */
+  .a-page {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+  /* This grid gap is space-6, one step more than the other practice pages. */
+  .open-head {
+    margin-bottom: calc(var(--space-5) - var(--space-6));
+  }
+  /* In the account area the shell has the title: the actions sit left, no top band. */
+  .embedded .open-head {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+  }
+  .embedded .open-head .actions {
+    justify-content: flex-start;
+    margin: 0;
+  }
+  /* The grid of days practised beside three number cards; stacked on phones. */
+  .p-activity {
+    display: grid;
+    gap: var(--space-4);
+  }
+  @media (min-width: 64rem) {
+    .p-activity {
+      grid-template-columns: minmax(0, 1fr) 17.5rem;
+    }
+  }
+  .p-heat {
+    position: relative;
+    display: grid;
+    gap: var(--space-2);
+    min-width: 0;
+    padding: var(--space-5);
+  }
+  .p-heat-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .p-heat-head h2 {
+    margin: 0;
+    font-size: var(--size-l);
+    color: var(--heading);
+  }
+  /* Weeks are columns, Monday to Sunday down each one. */
+  .heat,
+  .heat-months {
+    display: grid;
+    grid-template-columns: repeat(26, minmax(0, 1fr));
+    gap: 3px;
+  }
+  .heat {
+    grid-template-rows: repeat(7, auto);
+    grid-auto-flow: column;
+  }
+  .heat-months {
+    font-size: var(--size-xs);
+    color: var(--faint);
+    white-space: nowrap;
+  }
+  .heat :global(i),
+  .heat-legend i {
+    aspect-ratio: 1;
+    border-radius: 2px;
+    background: var(--header);  }
+  .heat :global(i) {
+    transition:
+      transform 160ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 160ms ease-out;
+  }
+  .heat :global(i[data-tip]):hover {
+    position: relative;
+    z-index: 1;
+    transform: scale(1.12);
+    box-shadow:
+      0 0 0 2px var(--surface),
+      0 0 0 3.5px var(--primary),
+      0 4px 10px rgb(0 0 0 / 0.2);
+  }
+  .heat-tip {
+    position: absolute;
+    z-index: 2;
+    display: grid;
+    gap: 2px;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid rgb(255 255 255 / 0.1);
+    border-radius: var(--radius-l);
+    background: var(--heading);
+    color: var(--surface);
+    box-shadow:
+      0 2px 4px rgb(0 0 0 / 0.12),
+      0 12px 28px rgb(0 0 0 / 0.22);
+    text-align: left;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-100%) scale(0.94);
+    transform-origin: var(--arrow, 50%) 100%;
+    transition:
+      opacity 140ms ease-out,
+      transform 180ms cubic-bezier(0.34, 1.4, 0.64, 1),
+      visibility 140ms;
+  }
+  .heat-tip.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-100%) scale(1);
+    transition:
+      opacity 140ms ease-out,
+      transform 180ms cubic-bezier(0.34, 1.4, 0.64, 1),
+      left 140ms cubic-bezier(0.22, 1, 0.36, 1),
+      top 140ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .heat-tip::after {
+    content: "";
+    position: absolute;
+    top: calc(100% - 4px);
+    left: var(--arrow, 50%);
+    width: 8px;
+    height: 8px;
+    border-right: 1px solid rgb(255 255 255 / 0.1);
+    border-bottom: 1px solid rgb(255 255 255 / 0.1);
+    background: var(--heading);
+    transform: translateX(-50%) rotate(45deg);
+    transition: left 140ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .heat-tip strong {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--size-s);
+  }
+  .heat-tip strong::before {
+    content: "";
+    width: 0.65rem;
+    height: 0.65rem;
+    border-radius: 3px;
+    background: var(--dot);
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.25);
+  }
+  .heat-tip span {
+    font-size: var(--size-xs);
+    opacity: 0.7;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .heat-tip,
+    .heat-tip.show,
+    .heat-tip::after,
+    .heat :global(i) {
+      transition: none;
+    }
+    .heat :global(i[data-tip]):hover {
+      transform: none;
+    }
+  }
+  .heat :global(i.future) {
+    background: transparent;
+  }
+  .heat :global(i.l1),
+  .heat-legend .l1 {
+    background: color-mix(in srgb, var(--primary) 25%, var(--surface));
+  }
+  .heat :global(i.l2),
+  .heat-legend .l2 {
+    background: color-mix(in srgb, var(--primary) 50%, var(--surface));
+  }
+  .heat :global(i.l3),
+  .heat-legend .l3 {
+    background: color-mix(in srgb, var(--primary) 75%, var(--surface));
+  }
+  .heat :global(i.l4),
+  .heat-legend .l4 {
+    background: var(--primary);
+  }
+  .heat-legend {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 3px;
+    margin: var(--space-1) 0 0;
+    font-size: var(--size-xs);
+    color: var(--faint);
+  }
+  .heat-legend i {
+    width: 0.75rem;
+  }
+  .p-nums {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+  }
+  .p-nums > div {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    padding: var(--space-4);
+  }
+  .p-nums dt {
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .p-nums dd {
+    margin: 0;
+    font-size: var(--size-xl);
+    font-weight: 700;
+    line-height: var(--leading-tight);
+    color: var(--heading);
+  }
+  .p-due {
+    display: inline-block;
+    min-width: 1.75rem;
+    margin-left: var(--space-1);
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-pill);
+    background: var(--header);
+    font-size: var(--size-s);
+    text-align: center;
+    vertical-align: middle;
+    color: var(--muted);
+  }
+  /* The card already draws the frame. */
+  .list-head .count {
+    margin: 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .review-empty {
+    max-width: 48rem;
+    margin: 0;
+    color: var(--muted);
+  }
+  /* Review cards are built by progress-page.ts, so these rules are global. */
+  /* The due list as the catalogue's table, with its filter panel beside it.
+     Rows are built by progress-page.ts, so their styles are global here. */
+  .review-layout {
+    display: grid;
+    gap: var(--space-5);
+  }
+  .review-main {
+    min-width: 0;
+  }
+  @media (min-width: 64rem) {
+    .review-layout {
+      grid-template-columns: minmax(0, 1fr) 18rem;
+      align-items: start;
+    }
+  }
+  .r-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+  }
+  .r-table-wrap table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--size-s);
+  }
+  .r-table-wrap :global(th),
+  .r-table-wrap :global(td) {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--rule);
+    text-align: left;
+    vertical-align: middle;
+  }
+  .r-table-wrap :global(tbody tr:last-child > *) {
+    border-bottom: 0;
+  }
+  .r-table-wrap thead th {
+    background: var(--bg);
+    font-size: var(--size-xs);
+    font-weight: 600;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .col-why {
+    width: 15rem;
+  }
+  .col-level {
+    width: 8rem;
+  }
+  .sort {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: var(--target);
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  .sort:hover {
+    color: var(--text);
+  }
+  .sort-mark::after {
+    content: "↕";
+    opacity: 0.5;
+  }
+  th[aria-sort="ascending"] .sort-mark::after {
+    content: "↑";
+    opacity: 1;
+  }
+  th[aria-sort="descending"] .sort-mark::after {
+    content: "↓";
+    opacity: 1;
+  }
+  .r-table-wrap :global(tbody th) {
+    font-weight: 400;
+  }
+  .r-table-wrap :global(tbody tr:hover) {
+    background: var(--bg);
+  }
+  .r-table-wrap :global(.r-title) {
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .r-table-wrap :global(.r-title:hover) {
+    color: var(--correct);
+    text-decoration: underline;
+  }
+  /* The whole row opens the exercise, not only the title text. The click still
+     lands on the link, so it starts the review run as before. */
+  .r-table-wrap :global(tbody tr) {
+    position: relative;
+  }
+  .r-table-wrap :global(.r-title::after) {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .r-table-wrap :global(tbody tr:hover .r-title) {
+    color: var(--correct);
+  }
+  .r-table-wrap :global(.r-meta) {
+    display: block;
+    margin-top: 0.125rem;
+    font-size: var(--size-xs);
+    color: var(--faint);
+  }
+  .r-table-wrap :global(.why) {
+    display: inline-block;
+    padding: 0.125rem 0.625rem;
+    border-radius: var(--radius-pill);
+    background: var(--read-tint);
+    color: var(--read);
+    font-size: var(--size-xs);
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  @media (min-width: 48rem) {
+    .r-table-wrap :global(.why) {
+      white-space: nowrap;
+    }
+  }
+  .r-table-wrap :global(.why[data-why="unsolved"]),
+  .r-table-wrap :global(.why[data-why="missed"]) {
+    background: var(--miss-tint);
+    color: var(--miss);
+  }
+  .r-table-wrap :global(tr[hidden]) {
+    display: none;
+  }
+  .r-more {
+    margin: var(--space-3) 0 0;
+  }
+  .r-filter {
+    display: grid;
+    gap: var(--space-4);
+  }
+  .r-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .r-head h3 {
+    flex: 1;
+    margin: 0;
+    font-size: var(--size-l);
+    color: var(--heading);
+  }
+  .r-active {
+    padding: 2px var(--space-2);
+    border-radius: 999px;
+    background: var(--primary);
+    color: #fff;
+    font-size: var(--size-xs);
+    font-weight: 600;
+  }
+  .r-reset {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--correct);
+    font-size: var(--size-s);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .r-reset:hover {
+    text-decoration: underline;
+  }
+  .r-active[hidden],
+  .r-reset[hidden] {
+    display: none;
+  }
+  .r-search,
+  .r-select {
+    position: relative;
+  }
+  .r-search :global(.icon),
+  .r-select :global(.icon) {
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .r-search :global(.icon) {
+    left: var(--space-3);
+  }
+  .r-select :global(.icon) {
+    right: var(--space-3);
+  }
+  .r-field {
+    display: grid;
+    gap: 6px;
+  }
+  .r-filter label {
+    font-size: var(--size-xs);
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .r-filter input,
+  .r-filter select {
+    width: 100%;
+    min-height: var(--target);
+    padding: 0 var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background-color: var(--surface);
+    font-size: var(--size-s);
+  }
+  .r-filter input {
+    padding-left: 2.25rem;
+  }
+  .r-filter select {
+    background-image: none;
+    padding-right: 2.25rem;
+  }
+  .r-count {
+    margin: 0;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--rule);
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  /* Clearing is rare and cannot be undone: a quiet card at the end, and a
+     dialog that asks before anything goes. */
+  .clear {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    border: 1px dashed var(--rule);
+    border-radius: var(--radius-l);
+    text-align: center;
+  }
+  .clear h2,
+  .clear-dialog h2 {
+    margin: 0;
+    font-size: var(--size-base);
+    color: var(--heading);
+  }
+  .clear p,
+  .clear-dialog p {
+    margin: var(--space-1) 0 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .clear-ask {
+    color: var(--miss);
+  }
+  .clear-ask:hover {
+    border-color: var(--miss);
+    background: var(--miss-tint);
+  }
+  .clear-status {
+    margin: 0;
+    font-weight: 600;
+  }
+  .clear-status:empty,
+  .clear-error:empty {
+    display: none;
+  }
+  .clear-dialog {
+    width: min(28rem, calc(100vw - 2rem));
+    padding: var(--space-6);
+    border: 0;
+    border-top: 4px solid var(--miss);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: var(--shadow-pop);
+  }
+  .clear-dialog::backdrop {
+    background: rgb(0 0 0 / 0.45);
+  }
+  .clear-dialog h2 {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--size-l);
+  }
+  .warn-badge {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--miss-tint);
+    color: var(--miss);
+  }
+  .clear-dialog p {
+    margin: var(--space-4) 0;
+    font-size: var(--size-base);
+  }
+  .clear-dialog .clear-error {
+    font-weight: 600;
+    color: var(--miss);
+  }
+  .clear-dialog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+  .button-danger {
+    background: var(--miss);
+    color: var(--surface);
+  }
+  .button-danger:hover {
+    filter: brightness(0.92);
+  }
+  [data-review][hidden],
+  [data-review-empty][hidden],
+  [data-review-next][hidden],
+  .danger[hidden] {
+    display: none;
+  }
+  .confirm {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .confirm[hidden] {
+    display: none;
+  }
+</style>

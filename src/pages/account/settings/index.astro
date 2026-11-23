@@ -1,0 +1,125 @@
+---
+// Why this exists: sign-in details, email preferences, the data export, log
+// out and delete, one setting card each. Every form posts to an /api/ function
+// that comes back here with ?ok= or ?error=, shown by the shell's message line.
+import AccountShell from "../../../components/AccountShell.astro";
+import Base from "../../../layouts/Base.astro";
+---
+
+<Base title="Account settings" description="Your sign-in details, emails and data." layout="flush">
+  <AccountShell
+    current="settings"
+    title="Account settings"
+    lead="Your sign-in details, the emails we send you, and your data."
+    outLead="Log in to change your email, password and email preferences."
+  >
+    <form class="setting" method="post" action="/api/auth/email/" aria-labelledby="st-email">
+      <div class="setting-body">
+        <h2 id="st-email">Email</h2>
+        <p>You sign in with <strong data-me-email>this address</strong>. Receipts and the weekly email go there too.</p>
+        <div class="field">
+          <label for="new-email">New email</label>
+          <input class="input" id="new-email" name="email" type="email" autocomplete="email" required />
+        </div>
+      </div>
+      <div class="setting-foot">
+        <span>We send a link to the new address. The change happens when you open it.</span>
+        <button class="button button-primary sm" type="submit">Change email</button>
+      </div>
+    </form>
+
+    <form class="setting" method="post" action="/api/auth/password/" aria-labelledby="st-pass" data-password hidden>
+      <input type="hidden" name="from" value="/account/settings/" />
+      <div class="setting-body">
+        <h2 id="st-pass">Password</h2>
+        <p>Use at least 8 characters. You stay signed in on this device.</p>
+        <div class="field">
+          <label for="password">New password</label>
+          <input class="input" id="password" name="password" type="password" autocomplete="new-password" minlength="8" required />
+        </div>
+        <div class="field">
+          <label for="password2">Repeat the new password</label>
+          <input class="input" id="password2" name="password2" type="password" autocomplete="new-password" minlength="8" required />
+        </div>
+      </div>
+      <div class="setting-foot">
+        <span>Forgot it? <a class="lnk" href="/forgot-password/">Reset it by email</a></span>
+        <button class="button button-primary sm" type="submit">Save password</button>
+      </div>
+    </form>
+
+    <section class="setting" aria-labelledby="st-google" data-google hidden>
+      <div class="setting-body">
+        <h2 id="st-google">Sign-in method</h2>
+        <p>You sign in with Google, so there is no password to change here.</p>
+      </div>
+    </section>
+
+    <form class="setting" method="post" action="/api/account/news/" aria-labelledby="st-mail">
+      <div class="setting-body">
+        <h2 id="st-mail">Email preferences</h2>
+        <p>Choose what we send you. Receipts and sign-in links always arrive.</p>
+        <div>
+          <div class="switch-row">
+            <div><b id="st-news-label">New exercises</b><p class="fine">One email when a new batch of exercises arrives.</p></div>
+            <span class="switch"><input type="checkbox" role="switch" name="news" aria-labelledby="st-news-label" data-news /><span aria-hidden="true"></span></span>
+          </div>
+          <div class="switch-row">
+            <div><b id="st-digest-label">Weekly progress</b><p class="fine">Every Monday: what you solved last week and what is due for review.</p></div>
+            <span class="switch"><input type="checkbox" role="switch" name="digest" aria-labelledby="st-digest-label" data-digest /><span aria-hidden="true"></span></span>
+          </div>
+        </div>
+      </div>
+      <div class="setting-foot">
+        <span>Every email has a one-click unsubscribe link.</span>
+        <button class="button button-primary sm" type="submit">Save</button>
+      </div>
+    </form>
+
+    <section class="setting" aria-labelledby="st-data">
+      <div class="setting-body">
+        <h2 id="st-data">Your data</h2>
+        <p>Download everything your account keeps as one JSON file: your plan, email preferences, progress, mock assessment results, daily solves, drill runs and certificates.</p>
+      </div>
+      <div class="setting-foot">
+        <span>Progress saved only in a browser where you have not logged in is not in the file.</span>
+        <a class="button button-secondary sm" href="/api/account/export/" download>Download your data</a>
+      </div>
+    </section>
+
+    <form class="setting" method="post" action="/api/auth/logout/" aria-labelledby="st-out">
+      <div class="setting-body">
+        <h2 id="st-out">Log out</h2>
+        <p>Sign out of Excel Exercises in this browser. Your progress stays in your account.</p>
+      </div>
+      <div class="setting-foot">
+        <span>Other devices stay signed in.</span>
+        <button class="button button-secondary sm" type="submit">Log out</button>
+      </div>
+    </form>
+
+    <section class="sect" aria-labelledby="st-danger">
+      <div class="sect-head"><h2 id="st-danger">Danger zone</h2></div>
+      <form class="danger" method="post" action="/api/account/delete/">
+        <div class="danger-row">
+          <div>
+            <b>Delete account</b>
+            <p class="fine">
+              Deletes your account, the progress saved in it, your results and certificates, and cancels
+              PRO. It cannot be undone. Progress in this browser stays.
+            </p>
+          </div>
+          <div class="field field-wide">
+            <label for="confirm">Type DELETE to confirm</label>
+            <input class="input" id="confirm" name="confirm" type="text" autocomplete="off" required pattern="[Dd][Ee][Ll][Ee][Tt][Ee]" data-delete-input />
+          </div>
+          <button class="button button-danger" type="submit" disabled data-delete-button>Delete my account</button>
+        </div>
+      </form>
+    </section>
+  </AccountShell>
+</Base>
+
+<script>
+  import "../../../scripts/account-settings.ts";
+</script>

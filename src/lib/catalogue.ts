@@ -78,5 +78,5 @@ export function compare(a: CatalogueRow, b: CatalogueRow, key: SortKey, dir: Sor
 export function countLine(shown: number, total: number, filtered: boolean): string {
   if (!filtered) return "";
   if (shown === 0) return "No exercise matches. Try a function name such as SUM.";
-  return `Showing ${shown} of ${total} exercises.`;
+  return `${shown} of ${total} exercises`;
 }

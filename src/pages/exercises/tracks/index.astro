@@ -243,14 +243,24 @@ const how = [
     font-size: var(--size-s);
     color: #fff;
   }
+  /* A white pill on the green card; the card is green in both themes, so the pill is too. */
   .then a {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-1);
-    margin-top: var(--space-2);
+    align-self: flex-start;
+    gap: var(--space-2);
+    min-height: var(--target);
+    margin-top: var(--space-3);
+    padding: 0 var(--space-4);
+    border-radius: 999px;
+    background: #fff;
     font-size: var(--size-s);
     font-weight: 700;
-    color: #fff;
+    color: var(--primary);
+    text-decoration: none;
+  }
+  .then a:hover {
+    background: var(--chip-bg);
   }
   .then a :global(svg) {
     transform: rotate(90deg);
@@ -290,8 +300,8 @@ const how = [
     background: var(--chip-bg);
     color: var(--chip);
   }
+  /* Last on the page: main.wide already ends with --space-7. */
   .browse {
-    margin-bottom: var(--space-7);
     text-align: center;
   }
   .browse h2 {

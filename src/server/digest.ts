@@ -35,7 +35,7 @@ export function weeklyDigest(
     );
   lines.push("", `See your review list: ${links.progress}`, "");
   lines.push(
-    "You get this email because you turned on the weekly email on your account page.",
+    "You get this email because you turned on the weekly email in your account settings.",
     `Turn it off: ${links.unsubscribe}`,
   );
   return {

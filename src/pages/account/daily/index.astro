@@ -1,0 +1,95 @@
+---
+// Why this exists: the account's Daily exercise page. Today's status, the
+// streak, the month calendar, how the week's steps work and the recent days.
+// Playing the exercise stays on /daily/.
+import AccountShell from "../../../components/AccountShell.astro";
+import Icon from "../../../components/Icon.astro";
+import Base from "../../../layouts/Base.astro";
+import { ladderPool, TIER_NAMES } from "../../../lib/daily.ts";
+import { dailyTasks, placedExercises } from "../../../lib/exercises.ts";
+import "../../../styles/daily.css";
+
+const tasks = await dailyTasks();
+const pool = ladderPool(tasks.map((t) => ({ ...t.exercise, tier: t.tier })));
+// Days before the weekly ladder used track exercises, so both kinds have titles here.
+const titles = Object.fromEntries([
+  ...(await placedExercises()).map((p) => [p.exercise.id, p.exercise.title]),
+  ...tasks.map((t) => [t.exercise.id, t.exercise.title]),
+]);
+const json = JSON.stringify({ pool, titles }).replaceAll("<", "\\u003c");
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+---
+
+<Base title="Your daily exercise" description="Your daily streak, calendar and recent days." layout="flush">
+  <AccountShell
+    current="daily"
+    title="Daily exercise"
+    lead="One new exercise every day. Monday is a warm-up and it gets harder towards Sunday."
+    outLead="Log in to keep your daily streak on every device."
+  >
+    <section class="box today" aria-labelledby="dl-today">
+      <div>
+        <span class="pill" data-today-state>Not solved yet</span>
+        <h2 id="dl-today" data-today-title>Today's exercise</h2>
+        <p class="fine" data-today-step></p>
+      </div>
+      <a class="button button-primary" href="/daily/" data-today-button>Open today's exercise</a>
+    </section>
+
+    <dl class="box figs">
+      <div><dt>Current streak</dt><dd><span data-fig="streak">0</span> <small>days</small></dd></div>
+      <div><dt>Best streak</dt><dd><span data-fig="best">0</span> <small>days</small></dd></div>
+      <div><dt>This month</dt><dd><span data-fig="month">0</span> <small data-fig="month-of"></small></dd></div>
+      <div><dt>Tomorrow</dt><dd data-fig="tomorrow">-</dd></div>
+    </dl>
+
+    <section class="sect" aria-labelledby="dl-cal">
+      <div class="sect-head"><h2 id="dl-cal">Calendar</h2></div>
+      <div class="cal-wrap" data-daily-cal>
+        <template data-check-icon><Icon name="check" size={16} /></template>
+        <div class="box d-cal">
+          <div class="d-cal-head"><h3 data-month-title>This month</h3></div>
+          <div class="d-dow" aria-hidden="true">
+            <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+          </div>
+          <ol class="d-month" aria-label="This month's daily exercises" data-month></ol>
+          <span hidden data-month-solved></span>
+        </div>
+        <div class="box pad stack">
+          <h3>How the week works</h3>
+          <ol class="ladder">
+            {
+              TIER_NAMES.slice(1).map((name, i) => (
+                <li>
+                  <b>{DAYS[i]?.slice(0, 3)}</b>
+                  <span class="muted">{name}</span>
+                  <span class="steps" aria-hidden="true">
+                    {Array.from({ length: 7 }, (_, k) => <i class:list={[`h${k}`, { on: k <= i }]} />)}
+                  </span>
+                </li>
+              ))
+            }
+          </ol>
+          <p class="fine">Past days stay open to practise, but only the day itself counts for your streak.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sect" aria-labelledby="dl-recent">
+      <div class="sect-head"><h2 id="dl-recent">Recent days</h2></div>
+      <div class="box">
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th scope="col">Day</th><th scope="col">Exercise</th><th scope="col">Step</th><th scope="col">Result</th></tr></thead>
+            <tbody data-days></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </AccountShell>
+  <script type="application/json" data-daily-data set:html={json} />
+</Base>
+
+<script>
+  import "../../../scripts/account-daily.ts";
+</script>

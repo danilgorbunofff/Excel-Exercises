@@ -345,13 +345,10 @@ const data = {
               <p>
                 That was the short sample. The full sets are timed like an employer's test:{" "}
                 {/* Names only: the task count and time of each are on its own cover. */}
+                {/* One line each: a line break here would put a space before the comma. */}
                 {fullSets.map((s, i) => (
-                  <>
-                    {i > 0 && (i === fullSets.length - 1 ? " and " : ", ")}
-                    <a href={assessmentPath(s.slug)}>{s.title}</a>
-                  </>
-                ))}
-                . They come with PRO, with a certificate for each one you pass.{" "}
+                  <>{i > 0 && (i === fullSets.length - 1 ? " and " : ", ")}<a href={assessmentPath(s.slug)}>{s.title}</a></>
+                ))}. They come with PRO, with a certificate for each one you pass.{" "}
                 <a href="/pricing/">See PRO plans</a>.
               </p>
             </div>
@@ -426,6 +423,8 @@ const data = {
     align-items: center;
     gap: var(--space-3);
     min-height: var(--target);
+    /* The hover pill reaches out; the checkbox lines up with Start. */
+    margin-inline: calc(var(--space-3) * -1);
     padding: var(--space-2) var(--space-3);
     border-radius: var(--radius-m);
     font-size: var(--size-s);
@@ -508,6 +507,24 @@ const data = {
     background: var(--surface);
     color: var(--correct);
   }
+  /* Phones: the header is 3.5rem plus its border, and the strip stays short. */
+  @media (max-width: 47.99rem) {
+    .strip {
+      top: calc(3.5rem + 1px);
+      gap: 0 var(--space-3);
+      padding: var(--space-1) var(--space-1) var(--space-1) var(--space-3);
+    }
+    .strip .strip-title {
+      flex-basis: 100%;
+      font-size: var(--size-s);
+    }
+    .clock [role="timer"] {
+      font-size: var(--size-l);
+    }
+    .finish {
+      margin-left: auto;
+    }
+  }
   /* Empty live regions stay in the page, so what is written into them is read out. */
   .confirm:empty {
     padding: 0;
@@ -589,6 +606,13 @@ const data = {
   @media (min-width: 64rem) {
     .task {
       grid-template-columns: minmax(18rem, 2fr) minmax(0, 3fr);
+    }
+  }
+  /* Stacked, a task stretched to the tallest one left a gap above its sheet;
+     the card hugs its content and the stage keeps the tallest height. */
+  @media (max-width: 63.99rem) {
+    .tasks > .task {
+      align-self: start;
     }
   }
   .task-text {

@@ -168,7 +168,8 @@ a.d-cell:focus-visible {
 .d-month .d-cell svg {
   display: none;
 }
-.d-month a.d-cell:hover {
+/* Today and solved days keep their own fill on hover, so the text stays readable. */
+.d-month .d-day:not(.is-today, .is-solved) a.d-cell:hover {
   background: var(--header);
 }
 .d-month .is-solved .d-cell {

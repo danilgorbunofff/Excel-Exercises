@@ -210,6 +210,8 @@ reviewNext?.addEventListener("click", () => startReview(dueNow));
 const reviewForm = q<HTMLFormElement>("[data-review-filter]");
 const reviewBody = q<HTMLTableSectionElement>("[data-review-rows]");
 const reviewCount = q<HTMLElement>("[data-review-count]");
+const activeTag = q<HTMLElement>("[data-review-active]");
+const resetButton = q<HTMLElement>("[data-review-reset]");
 const moreWrap = q<HTMLElement>("[data-review-more-wrap]");
 const moreButton = q<HTMLButtonElement>("[data-review-more]");
 const headers = [
@@ -244,13 +246,24 @@ function paintTable(): void {
     else th.removeAttribute("aria-sort");
   }
   const total = rowsNow.length;
-  if (reviewCount)
-    reviewCount.textContent =
+  if (reviewCount) {
+    const line =
       shown.length === total
         ? `${total} due`
         : shown.length === 0
           ? `No exercise matches these filters. Clear them to see all ${total}.`
-          : `Showing ${shown.length} of ${total} due`;
+          : `${shown.length} of ${total} due`;
+    // The number leads in bold: "1 of 2 due".
+    const m = /^(\d+)(.*)$/.exec(line);
+    if (m) reviewCount.replaceChildren(Object.assign(document.createElement("b"), { textContent: m[1] }), m[2] ?? "");
+    else reviewCount.textContent = line;
+  }
+  const active = [field("q"), field("why"), field("level"), field("track")].filter((el) => el?.value.trim()).length;
+  if (activeTag) {
+    activeTag.hidden = active === 0;
+    activeTag.textContent = `${active} active`;
+  }
+  if (resetButton) resetButton.hidden = active === 0;
   const hiddenCount = shown.length - visible.length;
   if (moreWrap && moreButton) {
     moreWrap.hidden = hiddenCount <= 0;

@@ -49,20 +49,20 @@ const keys = (combo: string) => combo.split(" + ");
             {g.items.map((s) => (
               <tr data-shortcut={`${s.action} ${s.win} ${s.mac}`.toLowerCase()}>
                 <th scope="row">{s.action}</th>
-                <td>
+                <td data-label="Windows">
                   {keys(s.win).map((k, i) => (
-                    <>
+                    <span class="key">
                       {i > 0 && <span class="plus">+</span>}
                       <kbd>{k}</kbd>
-                    </>
+                    </span>
                   ))}
                 </td>
-                <td>
+                <td data-label="Mac">
                   {keys(s.mac).map((k, i) => (
-                    <>
+                    <span class="key">
                       {i > 0 && <span class="plus">+</span>}
                       <kbd>{k}</kbd>
-                    </>
+                    </span>
                   ))}
                 </td>
               </tr>
@@ -117,9 +117,9 @@ const keys = (combo: string) => combo.split(" + ");
     font-size: var(--size-s);
     color: var(--muted);
   }
+  /* main.wide already ends with --space-7, so no bottom margin here. */
   .table-wrap {
     overflow-x: auto;
-    margin-bottom: var(--space-7);
     border: 1px solid var(--rule);
     border-radius: var(--radius-l);
     background: var(--surface);
@@ -163,9 +163,52 @@ const keys = (combo: string) => combo.split(" + ");
     border-radius: var(--radius-s);
     background: var(--bg);
     font-size: var(--size-xs);
+    white-space: nowrap;
+  }
+  /* "+" stays with the key after it, so a line never ends on a plus. */
+  .key {
+    display: inline-block;
+    white-space: nowrap;
   }
   .plus {
     margin: 0 0.25rem;
     color: var(--faint);
+  }
+  /* Phones: three columns broke combos mid-key. The action takes the full
+     width, then Windows and Mac sit side by side under their own labels. */
+  @media (max-width: 29.99rem) {
+    thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+    tbody tr:not(.group) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-2) var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--rule);
+    }
+    tbody tr[hidden] {
+      display: none;
+    }
+    tbody tr:not(.group) > * {
+      padding: 0;
+      border-bottom: 0;
+    }
+    tbody th[scope="row"] {
+      grid-column: 1 / -1;
+      font-weight: 600;
+    }
+    td::before {
+      /* The hidden header already names the column for screen readers. */
+      content: attr(data-label) / "";
+      display: block;
+      margin-bottom: var(--space-1);
+      font-size: var(--size-xs);
+      color: var(--muted);
+    }
   }
 </style>

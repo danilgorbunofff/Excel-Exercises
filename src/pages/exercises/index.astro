@@ -117,7 +117,7 @@ const faq = [
                   <a class="sync" href={ACCOUNT_NAV.register.href} data-when="out">
                     Sign up to keep progress&nbsp;<span aria-hidden="true">→</span>
                   </a>
-                  <a class="sync" href="/progress/" data-when="in" hidden>
+                  <a class="sync" href="/account/progress/" data-when="in" hidden>
                     Saved to your account. See your progress&nbsp;<span aria-hidden="true">→</span>
                   </a>
                 </>
@@ -132,10 +132,16 @@ const faq = [
       }
 
       <form class="card filter" role="search" action="/exercises/" method="get" data-filter>
-        <h2>Filter exercises</h2>
-        <p class="count" role="status" data-filter-count>{total} exercises</p>
-        <label for="q">Find an exercise</label>
-        <input id="q" name="q" type="search" autocomplete="off" spellcheck="false" placeholder="Title or function" />
+        <div class="head">
+          <h2>Filters</h2>
+          <span class="active" data-filter-active hidden></span>
+          <button class="reset" type="reset" aria-label="Clear filters" data-filter-reset hidden>Reset</button>
+        </div>
+        <div class="search">
+          <Icon name="lookup" size={16} />
+          <label class="visually-hidden" for="q">Find an exercise</label>
+          <input id="q" name="q" type="search" autocomplete="off" spellcheck="false" placeholder="Search title or function" />
+        </div>
         <!-- Phones fold the four lists behind this button; catalogue.ts runs it. -->
         <button
           class="button button-secondary more-toggle"
@@ -150,35 +156,47 @@ const faq = [
         <div class="more" id="more-filters">
           <div class="field">
             <label for="progress">Progress</label>
-            <select id="progress" name="progress">
-              <option value="">All</option>
-              <option value="todo">Not solved</option>
-              <option value="done">Solved</option>
-            </select>
+            <div class="select">
+              <select id="progress" name="progress">
+                <option value="">All</option>
+                <option value="todo">Not solved</option>
+                <option value="done">Solved</option>
+              </select>
+              <Icon name="chevron-down" size={16} />
+            </div>
           </div>
           <div class="field">
             <label for="level">Difficulty</label>
-            <select id="level" name="level">
-              <option value="">All</option>
-              {Object.entries(LEVELS).map(([v, l]) => <option value={v}>{l}</option>)}
-            </select>
+            <div class="select">
+              <select id="level" name="level">
+                <option value="">All</option>
+                {Object.entries(LEVELS).map(([v, l]) => <option value={v}>{l}</option>)}
+              </select>
+              <Icon name="chevron-down" size={16} />
+            </div>
           </div>
           <div class="field">
             <label for="fn">Function</label>
-            <select id="fn" name="fn">
-              <option value="">All</option>
-              {functionNames.map((name) => <option value={name}>{name}</option>)}
-            </select>
+            <div class="select">
+              <select id="fn" name="fn">
+                <option value="">All</option>
+                {functionNames.map((name) => <option value={name}>{name}</option>)}
+              </select>
+              <Icon name="chevron-down" size={16} />
+            </div>
           </div>
           <div class="field">
             <label for="track">Track</label>
-            <select id="track" name="track">
-              <option value="">All</option>
-              {tracks.map((t) => <option value={t.topic.slug}>{t.topic.title}</option>)}
-            </select>
+            <div class="select">
+              <select id="track" name="track">
+                <option value="">All</option>
+                {tracks.map((t) => <option value={t.topic.slug}>{t.topic.title}</option>)}
+              </select>
+              <Icon name="chevron-down" size={16} />
+            </div>
           </div>
-          <button class="button button-secondary" type="reset">Clear filters</button>
         </div>
+        <p class="count" role="status" data-filter-count>{total} exercises</p>
       </form>
     </aside>
   </div>
@@ -277,7 +295,54 @@ const faq = [
   }
   .filter {
     display: grid;
+    gap: var(--space-4);
+  }
+  .head {
+    display: flex;
+    align-items: center;
     gap: var(--space-2);
+  }
+  .head h2 {
+    flex: 1;
+    margin: 0;
+  }
+  .active {
+    padding: 2px var(--space-2);
+    border-radius: 999px;
+    background: var(--primary);
+    color: #fff;
+    font-size: var(--size-xs);
+    font-weight: 600;
+  }
+  .reset {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--correct);
+    font-size: var(--size-s);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .reset:hover {
+    text-decoration: underline;
+  }
+  .active[hidden],
+  .reset[hidden] {
+    display: none;
+  }
+  .search {
+    position: relative;
+  }
+  .search :global(.icon) {
+    position: absolute;
+    top: 50%;
+    left: var(--space-3);
+    translate: 0 -50%;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .search input {
+    padding-left: 2.25rem;
   }
   /* The filter needs the script. Its space is kept from the start, so showing
      it moves nothing on the page. */
@@ -285,12 +350,13 @@ const faq = [
     visibility: hidden;
   }
   .count {
-    margin: 0 0 var(--space-2);
+    margin: 0;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--rule);
     font-size: var(--size-s);
     color: var(--muted);
   }
   label {
-    margin-top: var(--space-2);
     font-size: var(--size-s);
     font-weight: 600;
   }
@@ -304,19 +370,40 @@ const faq = [
     background-color: var(--surface);
     font-size: var(--size-s);
   }
-  select {
-    padding-right: 2.5rem;
-  }
   .filter .button {
     margin-top: var(--space-3);
   }
   .more {
     display: grid;
-    gap: var(--space-2);
+    gap: var(--space-4);
   }
+  /* One filter per line: the name over a full-width list. */
   .field {
     display: grid;
-    gap: var(--space-2);
+    gap: 6px;
+  }
+  .field label {
+    color: var(--muted);
+    font-size: var(--size-xs);
+  }
+  .select {
+    position: relative;
+  }
+  .select :global(.icon) {
+    position: absolute;
+    top: 50%;
+    right: var(--space-3);
+    translate: 0 -50%;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .filter select {
+    background-image: none;
+    padding-right: 2.25rem;
+  }
+  .filter input,
+  .filter select {
+    border-radius: 10px;
   }
   .more-toggle {
     display: none;

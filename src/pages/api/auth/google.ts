@@ -7,7 +7,7 @@ import { userClient } from "../../../server/supabase.ts";
 export const prerender = false;
 
 export const GET: APIRoute = async (ctx) => {
-  const next = safePath(ctx.url.searchParams.get("next"), "/profile/");
+  const next = safePath(ctx.url.searchParams.get("next"), "/account/");
   const { data, error } = await userClient(ctx).auth.signInWithOAuth({
     provider: "google",
     options: {
@@ -16,6 +16,8 @@ export const GET: APIRoute = async (ctx) => {
     },
   });
   if (error || !data.url)
-    return back("/login/", { error: "Google sign-in is not available right now. Try again in a minute." });
+    return back("/login/", {
+      error: "Google sign-in is not available right now. Try again in a minute.",
+    });
   return redirect(data.url);
 };

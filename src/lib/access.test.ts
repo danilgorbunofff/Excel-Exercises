@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { hasPro, isLocked, topicNumbers } from "./access.ts";
+import { hasPro, isLocked, planLine, topicNumbers } from "./access.ts";
 
 describe("isLocked", () => {
   it("leaves the first ones in a track free and locks the rest", () => {
@@ -31,5 +31,18 @@ describe("hasPro", () => {
     expect(hasPro({ pro_status: "active", pro_until: "2026-05-01" }, now)).toBe(false);
     expect(hasPro({ pro_status: "active", pro_until: "2026-07-01" }, now)).toBe(true);
     expect(hasPro({ pro_status: "trialing", pro_until: null }, now)).toBe(true);
+  });
+});
+
+describe("planLine", () => {
+  it("says lifetime, past due or the renewal date", () => {
+    expect(planLine({ proStatus: "lifetime", proUntil: null })).toMatch(/lifetime PRO/u);
+    expect(planLine({ proStatus: "active", proUntil: null })).toBe("Your PRO plan is active.");
+    expect(planLine({ proStatus: "active", proUntil: "2027-01-05T00:00:00Z" })).toBe(
+      "Your PRO plan renews or ends on 5 January 2027.",
+    );
+    expect(planLine({ proStatus: "past_due", proUntil: "2027-01-05T00:00:00Z" })).toMatch(
+      /^Your last payment failed/u,
+    );
   });
 });

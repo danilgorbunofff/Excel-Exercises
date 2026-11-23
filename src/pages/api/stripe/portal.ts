@@ -9,17 +9,19 @@ export const prerender = false;
 
 export const POST: APIRoute = async (ctx) => {
   const { supabase, user } = await currentUser(ctx);
-  if (!user) return back("/login/?next=/account/", { error: "Log in to manage billing." });
+  if (!user) return back("/login/?next=/account/billing/", { error: "Log in to manage billing." });
   const { data: profile } = await supabase
     .from("profiles")
     .select("stripe_customer_id")
     .eq("id", user.id)
     .maybeSingle();
   if (!profile?.stripe_customer_id)
-    return back("/account/", { error: "This account has no billing yet. Choose a plan on the pricing page to start PRO." });
+    return back("/account/billing/", {
+      error: "This account has no billing yet. Choose a plan on the pricing page to start PRO.",
+    });
   const session = await stripe().billingPortal.sessions.create({
     customer: profile.stripe_customer_id,
-    return_url: `${ctx.url.origin}/account/`,
+    return_url: `${ctx.url.origin}/account/billing/`,
   });
   return redirect(session.url);
 };

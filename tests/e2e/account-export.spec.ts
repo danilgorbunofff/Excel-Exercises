@@ -1,4 +1,4 @@
-// Why this exists: the account page's "Download your data" link saves the
+// Why this exists: the account settings page's "Download your data" link saves the
 // export as a file, and the page stays free of axe findings in both schemes.
 // The account and the export answer are mocked here.
 import AxeBuilder from "@axe-core/playwright";
@@ -7,7 +7,7 @@ import { expect, test } from "@playwright/test";
 const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"];
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("/account/");
+  await page.goto("/account/settings/");
   await page.context().addCookies([{ name: "signed_in", value: "1", url: page.url() }]);
   await page.route("**/api/me/", (r) =>
     r.fulfill({
@@ -48,9 +48,12 @@ test("Download your data saves the export as a file", async ({ page, browserName
   expect(download.suggestedFilename()).toBe("excelexercises-data-2026-11-15.json");
 });
 
-test("the signed-in account page has no axe findings in either scheme", async ({ page }) => {
+test("the signed-in account settings page has no axe findings in either scheme", async ({
+  page,
+}) => {
   for (const colorScheme of ["light", "dark"] as const) {
-    await page.emulateMedia({ colorScheme });
+    // Reduced motion: the cards' scroll fade-in would read as low contrast.
+    await page.emulateMedia({ colorScheme, reducedMotion: "reduce" });
     await page.reload();
     await expect(page.getByRole("link", { name: "Download your data" })).toBeVisible();
     await page.waitForLoadState("networkidle");

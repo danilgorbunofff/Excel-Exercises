@@ -18,6 +18,8 @@ const first = placed[0];
 if (!first) throw new Error("The track has no exercises");
 const total = placed.length;
 const tracks = trackSummaries(placed);
+// Three rows of three; "All N tracks" leads to the rest.
+const TRACKS_SHOWN = 9;
 const functionCount = loadFunctionIndex().functions.length;
 const free = placed.filter((p) => !isLocked(p)).length;
 const sumExercise = placed.find((p) => p.exercise.id === "sum-a-column");
@@ -276,9 +278,9 @@ const audiences: { title: string; text: string }[] = [
         <h2 id="tracks">Work through the tracks in order</h2>
         <p>Each track builds on the ones before it. Start at the top if you are new to formulas.</p>
       </div>
-      <TrackList tracks={tracks} labelledby="tracks" />
+      <TrackList tracks={tracks.slice(0, TRACKS_SHOWN)} labelledby="tracks" />
       <p class="more">
-        <a class="arrow-link" href={tracksPath}>All tracks&nbsp;<span aria-hidden="true">→</span></a>
+        <a class="all-tracks" href={tracksPath}>All {tracks.length} tracks <span aria-hidden="true">→</span></a>
       </p>
     </div>
   </section>
@@ -598,6 +600,21 @@ const audiences: { title: string; text: string }[] = [
   .more {
     margin: var(--space-5) 0 0;
     text-align: center;
+  }
+  .all-tracks {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--target);
+    padding: 0 var(--space-5);
+    border-radius: 999px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .all-tracks:hover {
+    background: var(--primary-hover);
   }
   .faq-wrap {
     display: grid;

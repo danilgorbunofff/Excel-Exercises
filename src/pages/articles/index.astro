@@ -259,6 +259,8 @@ const haystack = (a: (typeof articles)[number]) =>
     padding: 0;
     list-style: none;
     overflow-x: auto;
+    /* The cut-off last topic shows there is more; the bar only drew a stray line. */
+    scrollbar-width: none;
   }
   .topics a {
     display: flex;

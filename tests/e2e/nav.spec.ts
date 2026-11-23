@@ -103,7 +103,7 @@ test("signed in, the Account button opens the account links", async ({ page }) =
   await account.press("Enter");
   const you = panel(page, "you");
   await expect(you).toBeVisible();
-  await expect(you.getByRole("link")).toHaveText(["Profile", "Certificates", "Account settings"]);
+  await expect(you.getByRole("link")).toHaveText(["Overview", "Certificates", "Account settings"]);
   await expect(you.getByRole("button", { name: "Log out" })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(you).toBeHidden();

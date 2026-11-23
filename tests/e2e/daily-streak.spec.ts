@@ -76,20 +76,20 @@ async function axe(page: Page, ready: string) {
   }
 }
 
-test("the account page shows the streak joined with the account's days", async ({ page }) => {
+test("the account daily page shows the streak joined with the account's days", async ({ page }) => {
   await setDay(page, TODAY);
-  await page.goto("/account/");
+  await page.goto("/account/daily/");
   await seed(page, ["2026-11-18", "2026-11-19", TODAY]);
   await signIn(page);
   const posts = await account(page, [solve("2026-11-17"), solve("2026-11-18")]);
   await page.reload();
-  const card = page.locator("[data-streak]");
-  await expect(card.getByRole("heading", { name: "Daily streak" })).toBeVisible();
-  await expect(card.locator("[data-current]")).toHaveText("4 days");
-  await expect(card.locator("[data-best]")).toHaveText("4 days");
+  await expect(page.locator("[data-fig=streak]")).toHaveText("4");
+  await expect(page.locator("[data-fig=best]")).toHaveText("4");
+  const card = page.locator("[data-daily-cal]");
   await expect(card.locator(".d-day.is-solved")).toHaveCount(4);
   await expect(card.locator(".d-day.is-today")).toHaveClass(/\bis-solved\b/u);
-  await expect(card.getByRole("link", { name: "Open the daily exercise" })).toHaveAttribute(
+  await expect(page.locator("[data-today-state]")).toHaveText("Solved today");
+  await expect(page.getByRole("link", { name: "Open today's exercise" })).toHaveAttribute(
     "href",
     "/daily/",
   );
@@ -97,10 +97,10 @@ test("the account page shows the streak joined with the account's days", async (
   await expect.poll(() => posts.length).toBe(1);
   expect(posts[0]).toEqual([solve("2026-11-19"), solve(TODAY)]);
   await page.reload();
-  await expect(card.locator("[data-current]")).toHaveText("4 days");
+  await expect(page.locator("[data-fig=streak]")).toHaveText("4");
   await page.waitForLoadState("networkidle");
   expect(posts).toHaveLength(1);
-  await axe(page, "[data-strip] .d-day.is-solved >> nth=3");
+  await axe(page, "[data-daily-cal] .d-day.is-solved >> nth=3");
 });
 
 test("days solved signed out reach the account from the first page after sign-in", async ({

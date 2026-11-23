@@ -18,7 +18,7 @@ const page = (body: string, status = 200) =>
   );
 
 const BAD = page(
-  '<h1>This link does not work</h1><p>Turn the weekly email off on your <a href="/account/">account page</a>.</p>',
+  '<h1>This link does not work</h1><p>Turn the weekly email off on your <a href="/account/settings/">account settings</a>.</p>',
   400,
 );
 
@@ -35,8 +35,12 @@ export const POST: APIRoute = async ({ url }) => {
   const userId = readUnsubscribeToken(env.unsubscribeKey(), url.searchParams.get("t"));
   if (!userId) return BAD;
   const { error } = await adminClient().from("profiles").update({ digest: false }).eq("id", userId);
-  if (error) return page("<h1>The weekly email is still on</h1><p>The change could not be saved. Try again in a minute.</p>", 500);
+  if (error)
+    return page(
+      "<h1>The weekly email is still on</h1><p>The change could not be saved. Try again in a minute.</p>",
+      500,
+    );
   return page(
-    '<h1>The weekly email is off</h1><p>You will not get it any more. To turn it back on, use your <a href="/account/">account page</a>.</p>',
+    '<h1>The weekly email is off</h1><p>You will not get it any more. To turn it back on, use your <a href="/account/settings/">account settings</a>.</p>',
   );
 };

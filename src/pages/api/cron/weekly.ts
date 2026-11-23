@@ -41,7 +41,7 @@ export const GET: APIRoute = async ({ request, url }) => {
     );
     const unsubscribe = `${url.origin}/api/email/unsubscribe/?t=${unsubscribeToken(env.unsubscribeKey(), id)}`;
     const digest = weeklyDigest(progress, today, {
-      progress: `${url.origin}/progress/`,
+      progress: `${url.origin}/account/progress/`,
       unsubscribe,
     });
     if (digest && (await sendMail({ to: email, ...digest, unsubscribe }))) sent += 1;

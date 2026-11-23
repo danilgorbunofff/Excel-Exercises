@@ -650,9 +650,12 @@ a.chip:hover {
 }
 /* Touch: the chip stays small to look at, but its hit area grows to 44 px. */
 @media (pointer: coarse) {
+  /* Plain chips match, so a row mixing links and labels lines up. */
+  .chip {
+    min-height: 2rem;
+  }
   a.chip {
     position: relative;
-    min-height: 2rem;
   }
   a.chip::after {
     content: "";
@@ -684,6 +687,9 @@ a.chip:hover {
   font-size: var(--size-l);
 }
 .arrow-link {
+  /* A standalone link: padding lifts the target past 24 px. */
+  display: inline-block;
+  padding-block: var(--space-1);
   color: var(--correct);
   font-weight: 600;
   text-decoration: none;

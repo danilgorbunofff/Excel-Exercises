@@ -1,0 +1,91 @@
+---
+// Why this exists: the account's Certificates page. Your certificates (view,
+// copy the link, revoke), every mock assessment result with a way to claim a
+// certificate for a timed pass, and the sets you can take.
+import AccountShell from "../../../components/AccountShell.astro";
+import Icon from "../../../components/Icon.astro";
+import Base from "../../../layouts/Base.astro";
+import { assessmentPath, loadAssessments } from "../../../lib/assessments.ts";
+
+const sets = loadAssessments().sets;
+const titles = JSON.stringify(
+  Object.fromEntries(sets.map((s) => [s.slug, { title: s.title, sample: s.sample }])),
+);
+---
+
+<Base title="Your certificates" description="Your certificates and mock assessment results." layout="flush">
+  <AccountShell
+    current="certificates"
+    title="Certificates"
+    lead="Pass a timed mock assessment with 80% or more to earn a certificate anyone can check."
+    outLead="Log in to see your certificates and mock assessment results."
+  >
+    <section class="sect" aria-labelledby="ce-list">
+      <div class="sect-head"><h2 id="ce-list">Your certificates</h2></div>
+      <div class="box pad" data-certs>
+        <p class="muted" data-certs-empty>
+          None yet. Pass a timed mock assessment with 80% or more and the certificate shows here with a
+          link an employer can check.
+          <span data-certs-free hidden>Certificates come with <a class="lnk" href="/account/billing/">PRO</a>.</span>
+        </p>
+        <ul class="cert-list" data-certs-list hidden></ul>
+      </div>
+    </section>
+
+    <section class="sect" aria-labelledby="ce-results">
+      <div class="sect-head">
+        <h2 id="ce-results">Assessment results</h2>
+        <p>Your last 50 runs. A timed pass with no certificate yet can still claim one.</p>
+      </div>
+      <p class="box pad muted" data-attempts-empty>No results yet. Take a mock assessment below.</p>
+      <div class="box" data-attempts-box hidden>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th scope="col">Assessment</th><th scope="col">Date</th><th scope="col" class="r">Score</th>
+                <th scope="col" class="r">Time</th><th scope="col">Result</th>
+              </tr>
+            </thead>
+            <tbody data-attempts></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="sect" aria-labelledby="ce-sets">
+      <div class="sect-head">
+        <h2 id="ce-sets">Mock assessments</h2>
+        <p>Timed, with no hints. You see your results at the end.</p>
+      </div>
+      <ul class="sets">
+        {
+          sets.map((s) => (
+            <li class="box">
+              <div class="row">
+                <h3>{s.title}</h3>
+                {s.sample ? (
+                  <span class="pill">Free</span>
+                ) : (
+                  <span class="pill pro" data-pro-lock hidden>
+                    <Icon name="lock" size={12} /> PRO
+                  </span>
+                )}
+              </div>
+              <p class="fine">{s.summary}</p>
+              <p class="fine tnum">{s.tasks.length} tasks in {s.minutes} minutes</p>
+              <a class="button button-secondary sm" href={assessmentPath(s.slug)}>
+                {s.sample ? "Try the sample" : "Open"}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </AccountShell>
+  <script type="application/json" data-set-titles set:html={titles} />
+</Base>
+
+<script>
+  import "../../../scripts/account-certificates.ts";
+</script>

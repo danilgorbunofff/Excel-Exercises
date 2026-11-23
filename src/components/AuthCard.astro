@@ -80,6 +80,18 @@ const open = siteConfig.accountsOpen || enabled;
     display: grid;
     gap: var(--space-1);
   }
+  .head > :global(:first-child) {
+    margin-bottom: var(--space-2);
+  }
+  /* Phones: less frame around the card, so the form gets the width. */
+  @media (max-width: 29.99rem) {
+    .auth {
+      padding: var(--space-5) var(--space-4);
+    }
+    .card {
+      padding: var(--space-5);
+    }
+  }
   .title {
     margin: 0;
     font-size: var(--size-xl);
@@ -154,6 +166,8 @@ const open = siteConfig.accountsOpen || enabled;
     color: var(--muted);
   }
   .card :global(.switch a) {
+    display: inline-block;
+    padding-block: var(--space-1);
     color: var(--text);
     font-weight: 600;
   }

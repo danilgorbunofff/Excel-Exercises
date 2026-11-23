@@ -8,7 +8,7 @@ export const prerender = false;
 
 export const POST: APIRoute = async (ctx) => {
   const form = await ctx.request.formData();
-  const page = safePath(field(form, "from"), "/account/");
+  const page = safePath(field(form, "from"), "/account/settings/");
   const password = String(form.get("password") ?? "");
   if (password.length < MIN_PASSWORD) {
     return back(page, { error: `Use a password of at least ${MIN_PASSWORD} characters.` });
@@ -20,5 +20,5 @@ export const POST: APIRoute = async (ctx) => {
   if (!user) return back("/login/", { error: "Your reset link has expired. Ask for a new one." });
   const { error } = await supabase.auth.updateUser({ password });
   if (error) return back(page, { error: error.message });
-  return back("/account/", { ok: "Your new password is saved." });
+  return back("/account/settings/", { ok: "Your new password is saved." });
 };

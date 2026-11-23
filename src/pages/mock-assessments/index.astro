@@ -73,8 +73,9 @@ const ordered = [...cards.filter((c) => !c.job), ...cards.filter((c) => c.job)];
             </h2>
             <p class="summary">{set.summary}</p>
             <p class="meta">
-              {set.job && <>{set.title} · </>}
-              {set.tasks.length} tasks · {set.minutes} min ·{" "}
+              {set.job && <span>{set.title}</span>}
+              <span>{set.tasks.length} tasks</span>
+              <span>{set.minutes} min</span>
               <span class={`level level-${set.level}`}>{set.levelName}</span>
             </p>
             <p class="best" data-when="in" hidden>
@@ -236,6 +237,27 @@ const ordered = [...cards.filter((c) => !c.job), ...cards.filter((c) => c.job)];
   .best {
     font-size: var(--size-s);
     color: var(--muted);
+  }
+  /* Each item carries its dot in the gap before it. The row is pulled left by
+     one gap and clipped there, so a wrapped line never starts or ends with a dot. */
+  .set .meta {
+    --dot: 1.25em;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: var(--space-1);
+    margin-left: calc(var(--dot) * -1);
+    clip-path: inset(0 0 0 var(--dot));
+  }
+  .meta > span {
+    margin-left: var(--dot);
+  }
+  .meta > span:not(.level)::before {
+    content: "·" / "";
+    display: inline-block;
+    width: var(--dot);
+    margin-left: calc(var(--dot) * -1);
+    text-align: center;
   }
   .start {
     width: 100%;

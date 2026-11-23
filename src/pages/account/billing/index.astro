@@ -1,0 +1,161 @@
+---
+// Why this exists: the account's Plan and billing page. The current plan, the
+// plans to choose or switch to, the card on file and the payment history.
+// account-billing.ts reads /api/me and /api/billing/; buying goes to Stripe
+// Checkout and every change to the Stripe Customer Portal.
+import AccountShell from "../../../components/AccountShell.astro";
+import Icon from "../../../components/Icon.astro";
+import Base from "../../../layouts/Base.astro";
+import { loadAssessments } from "../../../lib/assessments.ts";
+import { placedExercises, trackSummaries } from "../../../lib/exercises.ts";
+import { offeredPlans, PLANS, savingPercent } from "../../../server/plans.ts";
+
+const placed = await placedExercises();
+const trackCount = trackSummaries(placed).filter((t) => t.exercises.length > 0).length;
+const mocks = loadAssessments().sets.filter((s) => !s.sample).length;
+const monthly = PLANS.find((p) => p.key === "monthly")?.listCents ?? 1500;
+const money = (cents: number) => `$${cents % 100 ? (cents / 100).toFixed(2) : cents / 100}`;
+const plans = offeredPlans().map((p) => ({
+  key: p.key,
+  label: p.label,
+  price: money(p.listCents),
+  per:
+    p.months === null
+      ? "One payment, PRO for good"
+      : p.months === 1
+        ? "Billed every month"
+        : p.months === 12
+          ? "Billed every year"
+          : `Billed every ${p.months} months`,
+  save: p.months && p.months > 1 ? savingPercent(p.listCents, p.months, monthly) : 0,
+}));
+const includes = [
+  `All ${placed.length} exercises in ${trackCount} tracks`,
+  "Function practice drills",
+  `${mocks} timed mock assessments`,
+  "Certificates with a public link",
+];
+const planData = JSON.stringify(
+  PLANS.map((p) => ({ key: p.key, label: p.label, price: money(p.listCents) })),
+);
+---
+
+<Base title="Plan and billing" description="Your plan, card and payment history." layout="flush">
+  <AccountShell
+    current="billing"
+    title="Plan and billing"
+    lead="Your plan, card and payment history. Payments are handled securely by Stripe."
+    outLead="Log in to see your plan and payments."
+  >
+    <section class="sect" aria-labelledby="bi-plan">
+      <div class="sect-head"><h2 id="bi-plan">Plan</h2></div>
+
+      <div class="box cur-plan" data-cur="free">
+        <div class="top">
+          <div class="stack-s">
+            <p class="fine">Current plan</p>
+            <p class="plan-name"><b class="big">Free</b></p>
+            <p class="muted">The first two exercises in every track, the daily exercise and the sample assessment.</p>
+          </div>
+        </div>
+        <ul class="includes" aria-label="What PRO adds">
+          {includes.map((x) => <li><Icon name="plus" size={16} /><span>{x}</span></li>)}
+        </ul>
+      </div>
+
+      <div class="box cur-plan" data-cur="sub" hidden>
+        <div class="top">
+          <div class="stack-s">
+            <p class="fine">Current plan</p>
+            <p class="plan-name"><b class="big" data-sub-name>PRO</b><span class="pill ok" data-sub-state>Active</span></p>
+            <p class="price" data-sub-price></p>
+            <p class="muted" data-sub-renew></p>
+          </div>
+          <form method="post" action="/api/stripe/portal/">
+            <button class="button button-secondary" type="submit">Manage in Stripe</button>
+          </form>
+        </div>
+        <ul class="includes">{includes.map((x) => <li><Icon name="check" size={16} /><span>{x}</span></li>)}</ul>
+      </div>
+
+      <div class="box cur-plan" data-cur="lifetime" hidden>
+        <div class="top">
+          <div class="stack-s">
+            <p class="fine">Current plan</p>
+            <p class="plan-name"><b class="big">Lifetime PRO</b><span class="pill ok">Active</span></p>
+            <p class="muted">Paid once. It never renews or ends.</p>
+          </div>
+        </div>
+        <ul class="includes">{includes.map((x) => <li><Icon name="check" size={16} /><span>{x}</span></li>)}</ul>
+      </div>
+    </section>
+
+    <section class="sect" aria-labelledby="bi-choose" data-plans>
+      <div class="sect-head">
+        <h2 id="bi-choose" data-plans-title>Choose a plan</h2>
+        <p data-plans-note>Prices in US dollars. Cancel a subscription any time.</p>
+      </div>
+      <ul class="plans">
+        {
+          plans.map((p) => (
+            <li data-plan-card={p.key}>
+              <p class="plan-top">
+                <b>{p.label}</b>
+                {p.save > 0 && <span class="pill ok" data-save>Save {p.save}%</span>}
+                {p.key === "lifetime" && <span class="pill pro" data-save>Launch offer</span>}
+                <span class="pill ok" data-current hidden>Current</span>
+              </p>
+              <span class="p">{p.price}</span>
+              <span class="fine">{p.per}</span>
+              <form method="post" action="/api/stripe/checkout/" data-buy>
+                <input type="hidden" name="plan" value={p.key} />
+                <button class:list={["button sm", p.key === "annual" ? "button-primary" : "button-secondary"]} type="submit">Choose</button>
+              </form>
+              <form method="post" action="/api/stripe/portal/" data-switch hidden>
+                <button class="button button-secondary sm" type="submit">Switch in Stripe</button>
+              </form>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="sect" aria-labelledby="bi-card" data-pay hidden>
+      <div class="sect-head"><h2 id="bi-card">Payment method</h2></div>
+      <div class="box">
+        <div class="kv-row">
+          <div>
+            <span class="card-chip" aria-hidden="true" data-card-brand>CARD</span>
+            <div><b data-card-line>No card on file</b><p class="fine" data-card-exp></p></div>
+          </div>
+          <form method="post" action="/api/stripe/portal/">
+            <button class="button button-secondary sm" type="submit">Update in Stripe</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="sect" aria-labelledby="bi-history" data-history hidden>
+      <div class="sect-head"><h2 id="bi-history">Payments</h2></div>
+      <div class="box">
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th scope="col">Date</th><th scope="col">Description</th><th scope="col" class="r">Amount</th>
+                <th scope="col">Status</th><th scope="col" class="r"><span class="visually-hidden">Receipt</span></th>
+              </tr>
+            </thead>
+            <tbody data-payments></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    <p class="fine" data-billing-error hidden></p>
+  </AccountShell>
+  <script type="application/json" data-plans-data set:html={planData} />
+</Base>
+
+<script>
+  import "../../../scripts/account-billing.ts";
+</script>

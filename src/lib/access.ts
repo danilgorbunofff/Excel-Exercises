@@ -47,3 +47,13 @@ export function hasPro(
   }
   return profile.pro_until === null || new Date(profile.pro_until) > now;
 }
+
+/** The sentence under a PRO badge: lifetime, a failed payment, or the renewal date. */
+export function planLine(me: { proStatus: string | null; proUntil: string | null }): string {
+  if (me.proStatus === LIFETIME) return "You have lifetime PRO. It never renews or ends.";
+  if (!me.proUntil) return "Your PRO plan is active.";
+  const day = new Date(me.proUntil).toLocaleDateString("en-GB", { dateStyle: "long" });
+  return me.proStatus === "past_due"
+    ? `Your last payment failed. Update your card before ${day}.`
+    : `Your PRO plan renews or ends on ${day}.`;
+}

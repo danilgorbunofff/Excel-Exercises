@@ -25,7 +25,7 @@ export const POST: APIRoute = async (ctx) => {
     email,
     password,
     options: {
-      emailRedirectTo: `${ctx.url.origin}/api/auth/callback/?next=/profile/`,
+      emailRedirectTo: `${ctx.url.origin}/api/auth/callback/?next=/account/`,
       data: { news: form.get("news") !== null },
     },
   });
@@ -33,7 +33,7 @@ export const POST: APIRoute = async (ctx) => {
   // With email confirmation turned off, Supabase signs the user in at once.
   if (data.session) {
     markSignedIn(ctx, true);
-    return redirect("/profile/");
+    return redirect("/account/");
   }
   return redirect(`/verify/?email=${encodeURIComponent(email)}`);
 };

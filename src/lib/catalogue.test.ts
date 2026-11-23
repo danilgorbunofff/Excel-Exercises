@@ -65,7 +65,7 @@ describe("catalogue sort", () => {
   });
   it("says how many rows show", () => {
     expect(countLine(3, 24, false)).toBe("");
-    expect(countLine(2, 24, true)).toBe("Showing 2 of 24 exercises.");
+    expect(countLine(2, 24, true)).toBe("2 of 24 exercises");
     expect(countLine(0, 24, true)).toBe("No exercise matches. Try a function name such as SUM.");
   });
 });

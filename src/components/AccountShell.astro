@@ -1,0 +1,65 @@
+---
+// Why this exists: the frame every account page shares: the left menu of
+// account pages, who is signed in, the page title and the form message line.
+// Signed out, it shows the log-in panel instead. account-shell.ts fills the
+// email and plan from /api/me.
+import { ACCOUNT_AREA, type AccountPage } from "../lib/nav.ts";
+import "../styles/account.css";
+import Icon from "./Icon.astro";
+import SignedOutPanel from "./SignedOutPanel.astro";
+
+interface Props {
+  current: AccountPage;
+  title: string;
+  lead: string;
+  /** What a signed-out visitor is told this page is for. */
+  outLead: string;
+  /** Pages with wide tables (Progress) drop the reading-width cap. */
+  wide?: boolean;
+}
+const { current, title, lead, outLead, wide = false } = Astro.props;
+---
+
+<div data-when="out">
+  <SignedOutPanel title={title} lead={outLead} icon="user" />
+</div>
+
+<div class="ac" data-when="in" hidden>
+  <nav class="ac-nav" aria-label="Your account">
+    <div>
+      <p class="me">
+        <span class="initial" aria-hidden="true" data-ac-initial></span>
+        <span class="me-text">
+          <b data-me-email>Signed in</b>
+          <span class="tag" data-ac-pro hidden>PRO</span>
+          <span class="fine" data-ac-free hidden>Free plan</span>
+        </span>
+      </p>
+      <ul>
+        {
+          ACCOUNT_AREA.map((page) => (
+            <li>
+              <a href={page.href} aria-current={page.key === current ? "page" : undefined}>
+                <Icon name={page.icon} size={18} />
+                {page.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </nav>
+  <div class:list={["ac-main", { "ac-wide": wide }]}>
+    <header class="ac-head">
+      <h1>{title}</h1>
+      <p>{lead}</p>
+    </header>
+    <p class="ac-flash" role="status" data-flash hidden></p>
+    <slot />
+  </div>
+</div>
+
+<script>
+  import "../scripts/flash.ts";
+  import "../scripts/account-shell.ts";
+</script>

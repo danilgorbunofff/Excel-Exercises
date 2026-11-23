@@ -1,263 +1,128 @@
 ---
-// Why this exists: account settings: plan and billing, email, password, email
-// preferences, log out and delete. Every form posts to an /api/ function and
-// comes back here with a message. account-page.ts fills in the current values
-// and the daily streak.
+// Why this exists: the signed-in home. What to do next, the plan, how far
+// through the course you are, this month's numbers and the latest activity,
+// each linking to its full account page. The page is static; account-overview.ts
+// fills it from /api/me, progress, the daily days and /api/assessments.
+import AccountShell from "../../components/AccountShell.astro";
 import Icon from "../../components/Icon.astro";
-import SignedOutPanel from "../../components/SignedOutPanel.astro";
 import Base from "../../layouts/Base.astro";
-import { STRIP_DAYS } from "../../lib/daily.ts";
-import "../../styles/daily.css";
+import { loadAssessments } from "../../lib/assessments.ts";
+import { dailyTasks, exercisePath, LEVELS, placedExercises } from "../../lib/exercises.ts";
+
+const placed = await placedExercises();
+const items = placed.map((p) => ({
+  id: p.exercise.id,
+  title: p.exercise.title,
+  href: exercisePath(p.exercise.slug),
+  level: p.exercise.level,
+  track: p.topic.slug,
+  trackTitle: p.topic.title,
+  number: p.topicNumber,
+  trackTotal: p.topicTotal,
+}));
+const dailyTitles = Object.fromEntries(
+  (await dailyTasks()).map((d) => [d.exercise.id, d.exercise.title]),
+);
+const setTitles = Object.fromEntries(loadAssessments().sets.map((s) => [s.slug, s.title]));
+const data = JSON.stringify({ items, dailyTitles, setTitles }).replaceAll("<", "\\u003c");
 ---
 
-<Base title="Account" description="Your account settings." layout="flush">
-  <div data-when="out">
-    <SignedOutPanel title="Account settings" lead="Log in to change your email, password and email preferences." />
-  </div>
-
-  <div class="wrap" data-when="in" hidden>
-    <h1>Account settings</h1>
-    <p class="flash" role="status" data-flash hidden></p>
-
-    <section class="card block" aria-labelledby="plan">
-      <h2 id="plan">Plan and billing</h2>
-      <div data-plan-free>
-        <p>You are on the <strong>Free</strong> plan.</p>
-        <a class="button button-primary" href="/pricing/">Get PRO</a>
+<Base title="Your account" description="What to do next, your plan and your progress." layout="flush">
+  <AccountShell
+    current="overview"
+    title="Overview"
+    lead="What to do next, your plan and how far you have got."
+    outLead="Log in to see your progress, your plan and what to do next, on any device."
+  >
+    <section class="box cont" aria-labelledby="ov-next">
+      <div class="cont-main">
+        <div>
+          <p class="fine" data-next-label>Start here</p>
+          <h2 id="ov-next"><a class="plain" href={items[0]?.href} data-next>{items[0]?.title}</a></h2>
+          <p class="fine" data-next-meta>{items[0]?.trackTitle}</p>
+        </div>
+        <a class="button button-primary" href={items[0]?.href} data-next-button>
+          <Icon name="play" size={16} />
+          <span data-next-verb>Start</span>
+        </a>
       </div>
-      <div data-plan-pro hidden>
-        <p><span class="tag">PRO</span> <span data-renews>Your PRO plan is active.</span></p>
-        <form method="post" action="/api/stripe/portal/">
-          <button class="button button-outline" type="submit">Manage billing</button>
-        </form>
-        <p class="small">Change your plan, update your card, see invoices or cancel, on Stripe.</p>
+      <div class="cont-foot">
+        <a href="/daily/"><Icon name="calendar" size={16} /><span data-daily-line>Today's daily exercise</span></a>
+        <a href="/account/progress/"><Icon name="reset" size={16} /><span data-due-line>Nothing due for review</span></a>
       </div>
     </section>
 
-    <section class="card block streak" aria-labelledby="streak-title" data-streak>
-      <h2 id="streak-title">Daily streak</h2>
-      <dl class="streak-stats">
+    <section class="sect" aria-labelledby="ov-plan">
+      <div class="sect-head"><h2 id="ov-plan">Plan</h2></div>
+      <div class="box plan-row">
         <div>
-          <dt>Current streak</dt>
-          <dd data-current>0 days</dd>
+          <p class="plan-name"><b data-plan-name>Free plan</b><span class="tag" data-plan-tag hidden>PRO</span></p>
+          <p class="fine" data-plan-line>
+            The first two exercises in every track are free. PRO opens all {items.length}, the timed mock
+            assessments and certificates.
+          </p>
         </div>
-        <div>
-          <dt>Best streak</dt>
-          <dd data-best>0 days</dd>
+        <a class="button button-primary" href="/account/billing/" data-plan-button>See plans</a>
+      </div>
+    </section>
+
+    <section class="sect" aria-labelledby="ov-progress">
+      <div class="sect-head">
+        <h2 id="ov-progress">Progress</h2>
+        <a class="lnk" href="/account/progress/">Open progress</a>
+      </div>
+      <div class="box pad stack">
+        <p class="total">
+          <strong data-solved>0</strong>
+          <span class="muted">of {items.length} exercises solved, <span data-percent>0%</span> of the course</span>
+        </p>
+        <div class="segbar" role="img" aria-label="Solved by difficulty" data-segbar>
+          {[1, 2, 3].map((n) => <span class={`seg-${n}`} data-seg={n}></span>)}
         </div>
+        <dl class="legend">
+          {
+            Object.entries(LEVELS).map(([n, name]) => (
+              <div class={`leg-${n}`}>
+                <dt>{name}</dt>
+                <dd data-legend={n}>0 of {items.filter((i) => String(i.level) === n).length}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </section>
+
+    <section class="sect" aria-labelledby="ov-month">
+      <div class="sect-head"><h2 id="ov-month" data-month-name>This month</h2></div>
+      <dl class="box figs">
+        <div><dt>Days practised</dt><dd data-fig="days">0</dd></div>
+        <div><dt>Daily streak</dt><dd><span data-fig="streak">0</span> <small>days</small></dd></div>
+        <div><dt>Due for review</dt><dd data-fig="due">0</dd></div>
+        <div><dt>Certificates</dt><dd data-fig="certs">0</dd></div>
       </dl>
-      <template data-check-icon><Icon name="check" size={16} /></template>
-      <h3 class="visually-hidden" id="account-strip-title">The last {STRIP_DAYS} days</h3>
-      <ol class="d-strip" aria-labelledby="account-strip-title" data-strip></ol>
-      <p><a href="/daily/">Open the daily exercise</a></p>
     </section>
 
-    <section class="card block" aria-labelledby="cert-title" data-certs>
-      <h2 id="cert-title">Certificates</h2>
-      <p class="small" data-certs-empty>
-        Pass a timed mock assessment with 80% or more to get a certificate.
-        <span data-certs-free hidden>Certificates come with <a href="/pricing/">PRO</a>.</span>
-      </p>
-      <ul class="cert-list" data-certs-list hidden></ul>
-      <p><a href="/mock-assessments/">See the mock assessments</a></p>
+    <section class="sect" aria-labelledby="ov-recent">
+      <div class="sect-head">
+        <h2 id="ov-recent">Recent activity</h2>
+        <a class="lnk" href="/account/progress/">See all</a>
+      </div>
+      <p class="box pad muted" data-recent-empty>Nothing yet. Solve an exercise and it shows here.</p>
+      <div class="box" data-recent-box hidden>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead>
+              <tr><th scope="col">Exercise</th><th scope="col">Where</th><th scope="col">Result</th><th scope="col" class="r">When</th></tr>
+            </thead>
+            <tbody data-recent></tbody>
+          </table>
+        </div>
+      </div>
     </section>
-
-    <section class="card block" aria-labelledby="email-title">
-      <h2 id="email-title">Email</h2>
-      <p>Signed in as <strong data-me-email></strong>.</p>
-      <form method="post" action="/api/auth/email/" class="fields">
-        <label for="new-email">New email</label>
-        <input id="new-email" name="email" type="email" autocomplete="email" required />
-        <button class="button button-outline" type="submit">Change email</button>
-      </form>
-    </section>
-
-    <section class="card block" aria-labelledby="password-title" data-password>
-      <h2 id="password-title">Password</h2>
-      <form method="post" action="/api/auth/password/" class="fields">
-        <input type="hidden" name="from" value="/account/" />
-        <label for="password">New password</label>
-        <input id="password" name="password" type="password" autocomplete="new-password" minlength="8" required />
-        <label for="password2">Repeat the new password</label>
-        <input id="password2" name="password2" type="password" autocomplete="new-password" minlength="8" required />
-        <button class="button button-outline" type="submit">Save the new password</button>
-      </form>
-    </section>
-
-    <section class="card block" aria-labelledby="news-title">
-      <h2 id="news-title">Email preferences</h2>
-      <form method="post" action="/api/account/news/" class="fields">
-        <label class="check"><input type="checkbox" name="news" data-news /> Send me an email when new exercises arrive</label>
-        <label class="check"><input type="checkbox" name="digest" data-digest /> Send me a weekly email with my progress and the exercises due for review</label>
-        <button class="button button-outline" type="submit">Save</button>
-      </form>
-    </section>
-
-    <section class="card block" aria-labelledby="export-title">
-      <h2 id="export-title">Your data</h2>
-      <p>
-        Download everything your account keeps as one JSON file: your plan, email preferences,
-        progress, mock assessment results, daily solves, drill runs and certificates.
-      </p>
-      <p class="small">
-        Progress saved only in a browser where you have not logged in is not in the file.
-      </p>
-      <p><a class="button button-outline" href="/api/account/export/" download>Download your data</a></p>
-    </section>
-
-    <section class="card block" aria-labelledby="session-title">
-      <h2 id="session-title">Log out</h2>
-      <form method="post" action="/api/auth/logout/">
-        <button class="button button-outline" type="submit">Log out</button>
-      </form>
-    </section>
-
-    <section class="card block danger" aria-labelledby="delete-title">
-      <h2 id="delete-title">Delete account</h2>
-      <p>
-        This deletes your account and the progress saved in it, and cancels PRO. It cannot be undone.
-        Progress in this browser stays.
-      </p>
-      <form method="post" action="/api/account/delete/" class="fields">
-        <label for="confirm">Type DELETE to confirm</label>
-        <input id="confirm" name="confirm" type="text" autocomplete="off" required pattern="[Dd][Ee][Ll][Ee][Tt][Ee]" />
-        <button class="button button-outline" type="submit">Delete my account</button>
-      </form>
-    </section>
-  </div>
+  </AccountShell>
+  <script type="application/json" data-overview set:html={data} />
 </Base>
 
 <script>
-  import "../../scripts/flash.ts";
-  import "../../scripts/account-page.ts";
+  import "../../scripts/account-overview.ts";
 </script>
-
-<style>
-  .wrap {
-    display: grid;
-    gap: var(--space-5);
-    width: 100%;
-    max-width: 40rem;
-    margin: 0 auto;
-    padding: var(--space-7) var(--space-4);
-  }
-  h1 {
-    margin: 0;
-    font-size: var(--size-xl);
-    color: var(--heading);
-  }
-  .block {
-    display: grid;
-    gap: var(--space-3);
-    padding: var(--space-5);
-  }
-  h2 {
-    margin: 0;
-    font-size: var(--size-l);
-    color: var(--heading);
-  }
-  p {
-    margin: 0;
-  }
-  .small {
-    font-size: var(--size-s);
-    color: var(--muted);
-  }
-  .fields {
-    display: grid;
-    gap: var(--space-2);
-    justify-items: start;
-  }
-  .fields label {
-    font-size: var(--size-s);
-    font-weight: 600;
-  }
-  .fields input:not([type="checkbox"]) {
-    width: 100%;
-    min-height: var(--target);
-    padding: 0 var(--space-3);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-m);
-    background: var(--surface);
-  }
-  .check {
-    display: flex;
-    gap: var(--space-2);
-    align-items: flex-start;
-    font-weight: 400 !important;
-  }
-  .fields .button {
-    margin-top: var(--space-2);
-  }
-  .flash {
-    padding: var(--space-3) var(--space-4);
-    border: 1px solid var(--chip-line);
-    border-radius: var(--radius-m);
-    background: var(--chip-bg);
-    font-size: var(--size-s);
-  }
-  .flash[data-kind="error"] {
-    border-color: var(--miss);
-    background: var(--miss-tint);
-  }
-  .danger {
-    border-color: var(--miss);
-  }
-  .streak-stats {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-3);
-    margin: 0;
-  }
-  .streak-stats dt {
-    font-size: var(--size-s);
-    color: var(--muted);
-  }
-  .streak-stats dd {
-    margin: var(--space-1) 0 0;
-    font-size: var(--size-l);
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    color: var(--heading);
-  }
-  .cert-list {
-    display: grid;
-    gap: 0;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    border-top: 1px solid var(--rule);
-  }
-  .cert-list :global(li) {
-    display: grid;
-    gap: var(--space-1);
-    padding: var(--space-3) 0;
-    border-bottom: 1px solid var(--rule);
-  }
-  .cert-list :global(p) {
-    margin: 0;
-  }
-  .cert-list :global(.cert-name) {
-    font-weight: 600;
-  }
-  .cert-list :global(.cert-revoked) {
-    color: var(--miss);
-  }
-  .cert-list :global(.cert-actions) {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-2);
-    margin-top: var(--space-1);
-  }
-  /* The card is narrow, so the strip keeps two weeks of seven at every width. */
-  .streak .d-strip {
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-  }
-  /* On phones the strip takes half the card padding, so each day stays 44 px wide. */
-  @media (max-width: 47.99rem) {
-    .streak .d-strip {
-      margin-inline: calc(-1 * var(--space-3));
-    }
-  }
-</style>

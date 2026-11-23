@@ -7,7 +7,7 @@ export const prerender = false;
 
 export const POST: APIRoute = async (ctx) => {
   const form = await ctx.request.formData();
-  const next = safePath(field(form, "next"), "/profile/");
+  const next = safePath(field(form, "next"), "/account/");
   const { error } = await userClient(ctx).auth.signInWithPassword({
     email: field(form, "email"),
     password: String(form.get("password") ?? ""),

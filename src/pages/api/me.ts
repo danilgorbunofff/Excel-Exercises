@@ -15,6 +15,8 @@ export interface Me {
   digest: boolean;
   /** Google users have no password to change. */
   hasPassword: boolean;
+  /** When the account was made (ISO), for "Member since" on the profile. */
+  createdAt?: string;
 }
 
 export const GET: APIRoute = async (ctx) => {
@@ -36,6 +38,7 @@ export const GET: APIRoute = async (ctx) => {
     news: profile?.news ?? false,
     digest: profile?.digest ?? false,
     hasPassword: (user.identities ?? []).some((i) => i.provider === "email"),
+    createdAt: user.created_at,
   };
   return json(me);
 };

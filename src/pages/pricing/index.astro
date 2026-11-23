@@ -459,6 +459,12 @@ const faq = [
     background: var(--surface);
     box-shadow: var(--shadow-card);
   }
+  /* The ribbon room lines the two cards up side by side; stacked, Free needs none. */
+  @media (max-width: 47.99rem) {
+    .card-plan:not(.pro) {
+      padding-top: var(--space-6);
+    }
+  }
   .pro {
     order: -1;
     border: 2px solid var(--primary);

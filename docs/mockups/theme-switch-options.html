@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Theme switch options</title>
+<style>
+  /* Tokens copied from src/styles/tokens.css so the options use the site's own colours, radii and type. */
+  :root {
+    color-scheme: light dark;
+    --bg: light-dark(#f9fafb, #0f141c);
+    --surface: light-dark(#ffffff, #161c26);
+    --header: light-dark(#f3f4f6, #1f2733);
+    --text: light-dark(#101828, #f3f4f6);
+    --muted: light-dark(#4a5565, #a3abb8);
+    --rule: light-dark(#e5e7eb, #2b3442);
+    --line: light-dark(#6a7282, #8a94a3);
+    --focus: light-dark(#101828, #f3f4f6);
+    --chip: light-dark(#126a41, #7ee2a8);
+    --chip-bg: light-dark(#ecfdf3, #10241a);
+    --chip-line: light-dark(#a6e3bf, #2d5a40);
+    --primary: #18804f;
+    --primary-hover: #126a41;
+    --correct: light-dark(#18804f, #5ad08a);
+    --correct-tint: light-dark(#e9f9ef, #0f2f1d);
+    --font-text: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --size-xs: .8125rem; --size-s: .875rem;
+    --radius-s: 4px; --radius-m: 6px; --radius-pill: 999px;
+    --duration: 150ms; --ease: cubic-bezier(.2,0,0,1);
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; padding:24px; background:#e5e7eb; color:#101828; font:15px/1.5 var(--font-text); }
+  h1 { margin:0 0 4px; font-size:20px; }
+  .note { margin:0 0 20px; color:#4a5565; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(520px,1fr)); gap:20px; }
+  .card { background:#fff; border:1px solid #d1d5db; border-radius:8px; padding:16px; display:flex; flex-direction:column; gap:12px; }
+  .card h2 { margin:0; font-size:15px; }
+  .card h2 span { display:inline-grid; place-items:center; width:22px; height:22px; margin-right:8px; border-radius:50%; background:#18804f; color:#fff; font-size:12px; }
+  .card p { margin:0; color:#4a5565; font-size:13px; }
+
+  /* Header replica: same colours and spacing as the real one. */
+  .strip { display:flex; align-items:center; gap:16px; height:56px; padding:0 16px; background:var(--header); border:1px solid var(--rule); border-radius:8px; color:var(--text); }
+  .strip.light { color-scheme:light; } .strip.dark { color-scheme:dark; }
+  .logo { display:flex; align-items:center; gap:8px; font-weight:700; font-size:15px; white-space:nowrap; }
+  .logo i { width:24px; height:24px; border-radius:5px; background:var(--primary); }
+  .nav { display:flex; gap:16px; font-size:var(--size-s); font-weight:500; color:var(--muted); margin-right:auto; }
+  .signup { background:var(--primary); color:#fff; border-radius:var(--radius-m); padding:6px 12px; font-size:var(--size-s); font-weight:600; }
+  .tag { margin-left:auto; font-size:11px; color:var(--muted); }
+
+  /* The switches. --on is 0 in light, 1 in dark, flipped by a click. */
+  .sw { --on:0; position:relative; flex:none; border:0; padding:0; background:none; font:inherit; color:inherit; cursor:pointer; }
+  .sw[aria-pressed="true"] { --on:1; }
+  .sw:focus-visible { outline:2px solid var(--focus); outline-offset:2px; }
+  .sw svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; display:block; }
+  .stack { display:grid; place-items:center; }
+  .stack > * { grid-area:1/1; transition:opacity var(--duration) var(--ease), transform .25s var(--ease); }
+  .stack .sun  { opacity:calc(1 - var(--on)); transform:rotate(calc(var(--on)*90deg)) scale(calc(1 - var(--on)*.5)); }
+  .stack .moon { opacity:var(--on); transform:rotate(calc((1 - var(--on))*-90deg)) scale(calc(.5 + var(--on)*.5)); }
+
+  /* 1 Sheet tabs: two cells, the active one gets the green underline the Practice tabs use. */
+  .t1 { display:flex; height:32px; padding:2px; gap:2px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-m); }
+  .t1 .cell { width:32px; display:grid; place-items:center; border-radius:var(--radius-s); color:var(--muted); border-bottom:2px solid transparent; transition:background var(--duration), color var(--duration); }
+  .t1 .cell.l { color:var(--text); background:var(--header); border-bottom-color:var(--chip); }
+  .t1[aria-pressed="true"] .cell.l { color:var(--muted); background:none; border-bottom-color:transparent; }
+  .t1[aria-pressed="true"] .cell.r { color:var(--text); background:var(--header); border-bottom-color:var(--chip); }
+  .strip .t1 .cell.l { background:var(--surface); } .strip .t1[aria-pressed="true"] .cell.r { background:var(--surface); }
+  .t1 .cell.l { background:var(--bg); } .t1[aria-pressed="true"] .cell.r { background:var(--bg); }
+
+  /* 2 Icon button: the same square, hairline button as the menu button. */
+  .t2 { width:32px; height:32px; display:grid; place-items:center; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-m); color:var(--text); transition:background var(--duration); }
+  .t2:hover { background:var(--bg); }
+  .t2 svg { width:18px; height:18px; }
+
+  /* 3 Square switch: track and thumb use the 6 px radius, green when dark like a selected cell. */
+  .t3 { width:52px; height:28px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-m); transition:background var(--duration), border-color var(--duration); }
+  .t3[aria-pressed="true"] { background:var(--primary); border-color:var(--primary); }
+  .t3 .thumb { position:absolute; top:3px; left:3px; width:20px; height:20px; display:grid; place-items:center; border-radius:var(--radius-s); background:var(--header); border:1px solid var(--line); color:var(--text); transform:translateX(calc(var(--on)*24px)); transition:transform .2s var(--ease), background var(--duration); }
+  .t3[aria-pressed="true"] .thumb { background:#fff; border-color:#fff; color:var(--primary); }
+  .t3 svg { width:13px; height:13px; }
+
+  /* 4 Flat pill: the site's pill radius, a green thumb, no shadow, no gradient. */
+  .t4 { width:52px; height:28px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-pill); }
+  .t4 .thumb { position:absolute; top:3px; left:3px; width:20px; height:20px; display:grid; place-items:center; border-radius:50%; background:var(--primary); color:#fff; transform:translateX(calc(var(--on)*24px)); transition:transform .2s var(--ease); }
+  .strip.dark .t4 .thumb { background:var(--correct); color:#0f141c; }
+  .t4 svg { width:12px; height:12px; }
+
+  /* 5 Labelled segments: words as well as icons, like a ribbon toggle. */
+  .t5 { display:flex; height:32px; padding:2px; gap:2px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-m); font-size:var(--size-xs); font-weight:500; }
+  .t5 .cell { display:flex; align-items:center; gap:6px; padding:0 10px; border-radius:var(--radius-s); color:var(--muted); transition:background var(--duration), color var(--duration); }
+  .t5 .cell svg { width:14px; height:14px; }
+  .t5 .cell.l { background:var(--chip-bg); color:var(--chip); box-shadow:inset 0 0 0 1px var(--chip-line); font-weight:600; }
+  .t5[aria-pressed="true"] .cell.l { background:none; color:var(--muted); box-shadow:none; font-weight:500; }
+  .t5[aria-pressed="true"] .cell.r { background:var(--chip-bg); color:var(--chip); box-shadow:inset 0 0 0 1px var(--chip-line); font-weight:600; }
+
+  @media (prefers-reduced-motion:reduce) { * { transition:none !important; } }
+  @media (max-width:560px) { .grid { grid-template-columns:1fr; } .nav { display:none; } }
+</style>
+</head>
+<body>
+<h1>Theme switch options</h1>
+<p class="note">Built from the site's own tokens, 6 px radius, hairline borders and green accent, shown in a copy of the header in light and dark. Click any switch to flip it.</p>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+  <symbol id="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></symbol>
+</defs></svg>
+
+<div class="grid" id="g"></div>
+
+<script>
+  const ic = n => `<svg><use href="#${n}"/></svg>`;
+  const both = `<span class="stack"><span class="sun">${ic("sun")}</span><span class="moon">${ic("moon")}</span></span>`;
+  const sw = (cls, inner, label) => `<button class="sw ${cls}" aria-pressed="false" aria-label="${label}">${inner}</button>`;
+  const variants = [
+    ["Sheet tabs", "Two square cells in one hairline box. The active one takes the same green underline as the Practice tabs. Both choices stay visible.",
+      sw("t1", `<span class="cell l">${ic("sun")}</span><span class="cell r">${ic("moon")}</span>`, "Theme")],
+    ["Icon button", "Same square hairline button as the menu button. One icon, shows the current theme. Smallest.",
+      sw("t2", both, "Theme")],
+    ["Square switch", "A switch with the site's 6 px radius instead of a pill. Fills green in dark, like a selected cell.",
+      sw("t3", `<span class="thumb">${both}</span>`, "Dark theme")],
+    ["Flat pill", "Keeps the familiar switch shape, drops the sky, stars and shadows. Green thumb ties it to the primary colour.",
+      sw("t4", `<span class="thumb">${both}</span>`, "Dark theme")],
+    ["Labelled segments", "Words with the icons, using the green chip look for the active side. Clearest, but widest.",
+      sw("t5", `<span class="cell l">${ic("sun")}Light</span><span class="cell r">${ic("moon")}Dark</span>`, "Theme")],
+  ];
+  const strip = (mode, h) => `<div class="strip ${mode}"><span class="logo"><i></i>Excel Exercises</span><span class="nav"><span>Practice</span><span>Learn</span><span>Pricing</span></span><span class="signup">Sign up</span>${h}</div>`;
+  g.innerHTML = variants.map(([t, d, h], i) =>
+    `<section class="card"><h2><span>${i + 1}</span>${t}</h2>${strip("light", h)}${strip("dark", h)}<p>${d}</p></section>`).join("");
+  document.querySelectorAll(".strip.dark .sw").forEach(b => b.setAttribute("aria-pressed", "true"));
+  g.addEventListener("click", e => {
+    const b = e.target.closest(".sw");
+    if (b) b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") === "true" ? "false" : "true");
+  });
+</script>
+</body>
+</html>

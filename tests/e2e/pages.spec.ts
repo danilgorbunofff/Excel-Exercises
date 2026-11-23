@@ -54,7 +54,7 @@ test("the catalogue filters from a search, including one sent from the 404 page"
   await page.getByRole("button", { name: "Search" }).click();
   await expect(page).toHaveURL(/\/exercises\/\?q=vlookup$/u);
   await expect(page.locator("tbody tr:not([hidden])")).toHaveCount(9);
-  await expect(page.getByText("Showing 9 of 128 exercises.")).toBeVisible();
+  await expect(page.getByText("9 of 128 exercises")).toBeVisible();
   await page.getByLabel("Find an exercise").fill("zzzz");
   await expect(page.getByText("No exercise matches.")).toBeVisible();
 });
@@ -102,7 +102,7 @@ test("the catalogue sorts by title and filters by difficulty and track", async (
   await page.getByLabel("Difficulty").selectOption("");
   await page.getByLabel("Track", { exact: true }).selectOption("logic");
   await expect(page.locator("tbody tr:not([hidden])")).toHaveCount(10);
-  await expect(page.getByText("Showing 10 of 128 exercises.")).toBeVisible();
+  await expect(page.getByText("10 of 128 exercises")).toBeVisible();
 });
 
 test("the header search suggests pages and the search page lists matches", async ({ page }) => {
@@ -217,7 +217,7 @@ test("a Review link opens a run through the due list, with Previous and Next", a
   // The filter narrows the table; clearing it brings both back.
   await page.getByLabel("Find an exercise").fill("subtract");
   await expect(rows).toHaveCount(1);
-  await expect(page.locator("[data-review-count]")).toHaveText("Showing 1 of 2 due");
+  await expect(page.locator("[data-review-count]")).toHaveText("1 of 2 due");
   await page.getByRole("button", { name: "Clear filters" }).click();
   await expect(rows).toHaveCount(2);
   await rows.nth(1).getByRole("link").click();
@@ -404,7 +404,7 @@ test("a function link lists only the exercises that use that function", async ({
     "Free delivery when either test passes",
     "AND, OR and NOT: combining tests",
   ]);
-  await expect(page.getByText("Showing 2 of 128 exercises.")).toBeVisible();
+  await expect(page.getByText("2 of 128 exercises")).toBeVisible();
 });
 
 test("search finds reference pages", async ({ page }) => {

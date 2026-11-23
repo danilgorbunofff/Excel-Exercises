@@ -282,6 +282,8 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
       display: flex;
       gap: var(--space-2);
       overflow-x: auto;
+      /* The cut-off last group shows there is more; the bar only drew a stray line. */
+      scrollbar-width: none;
       padding-bottom: var(--space-1);
     }
     .nav-item {

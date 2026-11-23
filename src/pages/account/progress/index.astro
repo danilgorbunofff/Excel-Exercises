@@ -1,0 +1,80 @@
+---
+// Why this exists: the account's Progress page. The same body as /progress/
+// (days practised, the numbers, the review list, start over), plus every track
+// with how far through it you are.
+import AccountShell from "../../../components/AccountShell.astro";
+import ProgressBody from "../../../components/ProgressBody.astro";
+import TrackIcon from "../../../components/TrackIcon.astro";
+import Base from "../../../layouts/Base.astro";
+import {
+  LEVELS,
+  placedExercises,
+  topicPath,
+  trackSummaries,
+} from "../../../lib/exercises.ts";
+
+const GROUPS = {
+  essentials: "Start here",
+  skill: "Functions",
+  interview: "Job interviews",
+} as const;
+const placed = await placedExercises();
+const tracks = trackSummaries(placed).filter((t) => t.exercises.length > 0);
+---
+
+<Base title="Your progress" description="What you have solved, by track, and what is due for review." layout="flush">
+  <AccountShell
+    current="progress"
+    title="Progress"
+    lead="Everything you have solved and what is due for review, saved to your account on every device."
+    outLead="Log in to keep your progress on every device. Without an account it stays in this browser."
+    wide
+  >
+    <ProgressBody embedded />
+
+    <section class="sect" aria-labelledby="pr-tracks">
+      <div class="sect-head">
+        <h2 id="pr-tracks">By track</h2>
+        <div class="seg-ctl" role="group" aria-label="Show tracks" data-track-filter>
+          <button type="button" data-group="" aria-pressed="true">All</button>
+          {Object.entries(GROUPS).map(([key, label]) => <button type="button" data-group={key} aria-pressed="false">{label}</button>)}
+        </div>
+      </div>
+      <div class="box">
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead>
+              <tr><th scope="col">Track</th><th scope="col">Difficulty</th><th scope="col">Progress</th><th scope="col">Status</th></tr>
+            </thead>
+            <tbody>
+              {
+                tracks.map((t) => (
+                  <tr data-track={t.topic.slug} data-track-group={t.topic.group}>
+                    <td>
+                      <span class="track-cell">
+                        <TrackIcon slug={t.topic.slug} size={32} />
+                        <a class="row-link" href={topicPath(t.topic.slug)}>{t.topic.title}</a>
+                      </span>
+                    </td>
+                    <td><span class={`badge badge-${t.level}`}>{LEVELS[t.level]}</span></td>
+                    <td>
+                      <span class="prog-cell">
+                        <span class="bar" aria-hidden="true"><i data-fill></i></span>
+                        <span class="tnum fine count"><span data-count>0</span> / {t.exercises.length}</span>
+                      </span>
+                    </td>
+                    <td data-state><span class="fine">Not started</span></td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </AccountShell>
+</Base>
+
+<script>
+  import "../../../scripts/account-tracks.ts";
+</script>

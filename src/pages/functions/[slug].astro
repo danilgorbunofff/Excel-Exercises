@@ -394,6 +394,17 @@ const jsonLd = JSON.stringify({
     color: var(--heading);
     scroll-margin-top: 5rem;
   }
+  /* Phones: the contents box sits off the header rule, Syntax follows it
+     closely, and main.wide alone sets the space above the footer. */
+  @media (max-width: 47.99rem) {
+    .fn-body {
+      padding-top: var(--space-5);
+      padding-bottom: 0;
+    }
+    .content > h2:first-child {
+      margin-top: 0;
+    }
+  }
   .content h3 {
     margin: var(--space-5) 0 var(--space-2);
     font-size: var(--size-base);
@@ -444,6 +455,36 @@ const jsonLd = JSON.stringify({
     background: var(--bg);
     font-size: var(--size-xs);
     color: var(--muted);
+  }
+  /* Phones: three columns left the description 100 px wide. Each argument
+     becomes a block: name and badge on one line, the description below. */
+  @media (max-width: 29.99rem) {
+    .args thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+    .args tr {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: var(--space-2) var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--rule);
+    }
+    .args tbody tr:last-child {
+      border-bottom: 0;
+    }
+    .args th,
+    .args td {
+      padding: 0;
+      border-bottom: 0;
+    }
+    .args td:last-child {
+      grid-column: 1 / -1;
+    }
   }
   ul {
     margin: 0;

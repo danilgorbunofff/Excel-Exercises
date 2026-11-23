@@ -67,13 +67,26 @@ if (form && table && tbody) {
     const filtered = Boolean(f.q.trim() || f.fn || f.level || f.track || f.progress);
     cap(filtered);
     const line = countLine(shown, rows.length, filtered);
-    if (count) count.textContent = line || `${rows.length} exercises`;
+    if (count) {
+      // The number leads in bold: "18 of 128 exercises".
+      const m = /^(\d+)(.*)$/.exec(line || `${rows.length} exercises`);
+      if (m) count.replaceChildren(Object.assign(document.createElement("b"), { textContent: m[1] }), m[2] ?? "");
+      else count.textContent = line;
+    }
     const total = document.querySelector<HTMLElement>("[data-filter-total]");
     if (total) total.textContent = String(shown);
     // The folded lists say on their button how many of them are set.
     const set = [f.fn, f.level, f.track, f.progress].filter(Boolean).length;
     if (moreLabel) moreLabel.textContent = set ? `More filters (${set})` : "More filters";
+    const active = set + (f.q.trim() ? 1 : 0);
+    if (activeTag) {
+      activeTag.hidden = active === 0;
+      activeTag.textContent = `${active} active`;
+    }
+    if (resetButton) resetButton.hidden = active === 0;
   };
+  const activeTag = form.querySelector<HTMLElement>("[data-filter-active]");
+  const resetButton = form.querySelector<HTMLElement>("[data-filter-reset]");
   const more = form.querySelector<HTMLButtonElement>("[data-more-toggle]");
   const moreLabel = more?.querySelector("[data-more-label]");
   more?.addEventListener("click", () => {

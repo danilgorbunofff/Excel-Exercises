@@ -131,7 +131,7 @@ const jsonLd = JSON.stringify({
   </header>
 
   <section aria-labelledby="list" class="list-section">
-    <div class="list-head">
+    <div class="steps-head">
       <h2 id="list">The exercises, in order</h2>
       <div class="progress" data-track-progress={ids}>
         <span class="progress-text" data-bar-text>0 of {exercises.length} solved</span>
@@ -323,7 +323,7 @@ const jsonLd = JSON.stringify({
   .start {
     margin-top: var(--space-6);
   }
-  .list-head {
+  .steps-head {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -331,7 +331,7 @@ const jsonLd = JSON.stringify({
     gap: var(--space-3);
     margin-bottom: var(--space-4);
   }
-  .list-head h2,
+  .steps-head h2,
   .where h2 {
     margin: 0;
     font-size: var(--size-xl);
@@ -406,11 +406,24 @@ const jsonLd = JSON.stringify({
     gap: var(--space-3);
   }
   .go {
-    grid-column: 1 / -1;
+    grid-column: 2;
     justify-self: start;
   }
+  /* Phones: the number sits by the title, the button lines up with the text. */
+  @media (max-width: 47.99rem) {
+    .num {
+      align-self: start;
+    }
+    .progress {
+      flex: 1 1 100%;
+    }
+    .progress-text {
+      text-align: left;
+    }
+  }
+  /* main.wide already ends with --space-7, so no bottom margin here. */
   .where {
-    margin: var(--space-7) 0;
+    margin: var(--space-7) 0 0;
   }
   .where-grid {
     display: grid;

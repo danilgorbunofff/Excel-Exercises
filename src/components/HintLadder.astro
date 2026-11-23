@@ -79,6 +79,10 @@ const { screen, index, locked = false } = Astro.props;
   p + p {
     padding-top: 0;
   }
+  /* A long answer formula wraps inside the card on a phone. */
+  p code {
+    overflow-wrap: anywhere;
+  }
   @media (prefers-reduced-motion: no-preference) {
     summary :global(.chev) {
       transition: rotate 200ms var(--ease);

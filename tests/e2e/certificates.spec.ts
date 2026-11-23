@@ -112,12 +112,12 @@ test.describe("the public certificate page", () => {
   });
 });
 
-test.describe("the account page", () => {
+test.describe("the account certificates page", () => {
   test("lists certificates, copies a link and revokes after a confirm", async ({
     page,
     browserName,
   }) => {
-    await page.goto("/account/");
+    await page.goto("/account/certificates/");
     await signIn(page, true);
     const rows = [{ ...valid }, { ...revoked }];
     const patches: unknown[] = [];
@@ -130,7 +130,7 @@ test.describe("the account page", () => {
     });
     await page.reload();
     const card = page.locator("[data-certs]");
-    await expect(card.getByRole("heading", { name: "Certificates" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Your certificates" })).toBeVisible();
     const items = card.locator("[data-certs-list] > li");
     await expect(items).toHaveCount(2);
     await expect(items.nth(0).getByRole("link", { name: "Office essentials" })).toHaveAttribute(
@@ -168,7 +168,7 @@ test.describe("the account page", () => {
   });
 
   test("a free account sees how to get one", async ({ page }) => {
-    await page.goto("/account/");
+    await page.goto("/account/certificates/");
     await signIn(page, false);
     await page.route("**/api/certificates/", (r) => r.fulfill({ json: [] }));
     await page.reload();

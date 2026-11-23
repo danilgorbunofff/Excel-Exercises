@@ -12,10 +12,13 @@ export const POST: APIRoute = async (ctx) => {
   const digest = form.get("digest") !== null;
   const { supabase, user } = await currentUser(ctx);
   if (!user)
-    return back("/login/?next=/account/", { error: "Log in to change your email preferences." });
+    return back("/login/?next=/account/settings/", {
+      error: "Log in to change your email preferences.",
+    });
   const { error } = await supabase.from("profiles").update({ news, digest }).eq("id", user.id);
-  if (error) return back("/account/", { error: "Your preference could not be saved. Try again." });
-  return back("/account/", {
+  if (error)
+    return back("/account/settings/", { error: "Your preference could not be saved. Try again." });
+  return back("/account/settings/", {
     ok:
       news || digest
         ? "Saved. You can turn emails off here or from the link in any email."

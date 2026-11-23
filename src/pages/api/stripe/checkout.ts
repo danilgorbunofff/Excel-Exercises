@@ -28,7 +28,9 @@ export const POST: APIRoute = async (ctx) => {
     .eq("id", user.id)
     .maybeSingle();
   if (hasPro(profile)) {
-    return back("/account/", { ok: "You already have PRO. Change your plan with Manage billing." });
+    return back("/account/billing/", {
+      ok: "You already have PRO. Change your plan with Manage in Stripe.",
+    });
   }
 
   let customer = profile?.stripe_customer_id ?? null;

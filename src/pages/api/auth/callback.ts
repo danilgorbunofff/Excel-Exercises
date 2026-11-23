@@ -19,7 +19,7 @@ const OTP_TYPES: readonly EmailOtpType[] = [
 
 export const GET: APIRoute = async (ctx) => {
   const q = ctx.url.searchParams;
-  const next = safePath(q.get("next"), "/profile/");
+  const next = safePath(q.get("next"), "/account/");
   const supabase = userClient(ctx);
   const code = q.get("code");
   const tokenHash = q.get("token_hash");

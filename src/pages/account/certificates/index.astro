@@ -5,9 +5,12 @@
 import AccountShell from "../../../components/AccountShell.astro";
 import Icon from "../../../components/Icon.astro";
 import Base from "../../../layouts/Base.astro";
-import { assessmentPath, loadAssessments } from "../../../lib/assessments.ts";
+import { assessmentPath } from "../../../lib/assessments.ts";
+import { assessmentCards } from "../../../lib/exercises.ts";
 
-const sets = loadAssessments().sets;
+const cards = await assessmentCards();
+// The sample and the general sets first, then the job ones, as on /mock-assessments/.
+const sets = [...cards.filter((c) => !c.job), ...cards.filter((c) => c.job)];
 const titles = JSON.stringify(
   Object.fromEntries(sets.map((s) => [s.slug, { title: s.title, sample: s.sample }])),
 );
@@ -63,7 +66,7 @@ const titles = JSON.stringify(
           sets.map((s) => (
             <li class="box">
               <div class="row">
-                <h3>{s.title}</h3>
+                <span class="ticon set-icon" aria-hidden="true"><Icon name={s.icon} size={20} /></span>
                 {s.sample ? (
                   <span class="pill">Free</span>
                 ) : (
@@ -72,9 +75,14 @@ const titles = JSON.stringify(
                   </span>
                 )}
               </div>
-              <p class="fine">{s.summary}</p>
-              <p class="fine tnum">{s.tasks.length} tasks in {s.minutes} minutes</p>
-              <a class="button button-secondary sm" href={assessmentPath(s.slug)}>
+              <h3>{s.title}</h3>
+              <p class="set-sum">{s.summary}</p>
+              <p class="set-meta">
+                <span><Icon name="formula" size={14} />{s.tasks.length} tasks</span>
+                <span><Icon name="clock" size={14} />{s.minutes} min</span>
+                <span class={`level level-${s.level}`}>{s.levelName}</span>
+              </p>
+              <a class:list={["button sm", s.sample ? "button-primary" : "button-secondary"]} href={assessmentPath(s.slug)}>
                 {s.sample ? "Try the sample" : "Open"}
               </a>
             </li>

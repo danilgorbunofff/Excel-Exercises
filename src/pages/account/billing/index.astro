@@ -15,6 +15,14 @@ const trackCount = trackSummaries(placed).filter((t) => t.exercises.length > 0).
 const mocks = loadAssessments().sets.filter((s) => !s.sample).length;
 const monthly = PLANS.find((p) => p.key === "monthly")?.listCents ?? 1500;
 const money = (cents: number) => `$${cents % 100 ? (cents / 100).toFixed(2) : cents / 100}`;
+// What sets each plan apart; what every plan gives is the shared list above the cards.
+const WHY: Record<string, string[]> = {
+  monthly: ["Try PRO for a month", "Cancel any time"],
+  quarterly: ["Enough time to prepare for a test", "Cancel any time"],
+  semiannual: ["Half a year of practice", "Cancel any time"],
+  annual: ["A year to practise at your own pace", "Cancel any time"],
+  lifetime: ["Nothing renews, nothing to cancel", "Every new exercise included"],
+};
 const plans = offeredPlans().map((p) => ({
   key: p.key,
   label: p.label,
@@ -28,6 +36,9 @@ const plans = offeredPlans().map((p) => ({
           ? "Billed every year"
           : `Billed every ${p.months} months`,
   save: p.months && p.months > 1 ? savingPercent(p.listCents, p.months, monthly) : 0,
+  // Rounded like the pricing page, so both say the same.
+  each: p.months && p.months > 1 ? `${money(Math.round(p.listCents / p.months))} a month` : "",
+  why: WHY[p.key] ?? [],
 }));
 const includes = [
   `All ${placed.length} exercises in ${trackCount} tracks`,
@@ -53,20 +64,17 @@ const planData = JSON.stringify(
       <div class="box cur-plan" data-cur="free">
         <div class="top">
           <div class="stack-s">
-            <p class="fine">Current plan</p>
+            <p class="eyebrow">Current plan</p>
             <p class="plan-name"><b class="big">Free</b></p>
             <p class="muted">The first two exercises in every track, the daily exercise and the sample assessment.</p>
           </div>
         </div>
-        <ul class="includes" aria-label="What PRO adds">
-          {includes.map((x) => <li><Icon name="plus" size={16} /><span>{x}</span></li>)}
-        </ul>
       </div>
 
       <div class="box cur-plan" data-cur="sub" hidden>
         <div class="top">
           <div class="stack-s">
-            <p class="fine">Current plan</p>
+            <p class="eyebrow">Current plan</p>
             <p class="plan-name"><b class="big" data-sub-name>PRO</b><span class="pill ok" data-sub-state>Active</span></p>
             <p class="price" data-sub-price></p>
             <p class="muted" data-sub-renew></p>
@@ -81,7 +89,7 @@ const planData = JSON.stringify(
       <div class="box cur-plan" data-cur="lifetime" hidden>
         <div class="top">
           <div class="stack-s">
-            <p class="fine">Current plan</p>
+            <p class="eyebrow">Current plan</p>
             <p class="plan-name"><b class="big">Lifetime PRO</b><span class="pill ok">Active</span></p>
             <p class="muted">Paid once. It never renews or ends.</p>
           </div>
@@ -95,10 +103,16 @@ const planData = JSON.stringify(
         <h2 id="bi-choose" data-plans-title>Choose a plan</h2>
         <p data-plans-note>Prices in US dollars. Cancel a subscription any time.</p>
       </div>
+      <div class="plans-incl" data-plans-includes>
+        <p class="eyebrow" id="bi-incl">Every PRO plan includes</p>
+        <ul class="includes" aria-labelledby="bi-incl">
+          {includes.map((x) => <li><Icon name="check" size={16} /><span>{x}</span></li>)}
+        </ul>
+      </div>
       <ul class="plans">
         {
           plans.map((p) => (
-            <li data-plan-card={p.key}>
+            <li class:list={{ best: p.key === "annual" }} data-plan-card={p.key}>
               <p class="plan-top">
                 <b>{p.label}</b>
                 {p.save > 0 && <span class="pill ok" data-save>Save {p.save}%</span>}
@@ -107,6 +121,10 @@ const planData = JSON.stringify(
               </p>
               <span class="p">{p.price}</span>
               <span class="fine">{p.per}</span>
+              {p.each && <span class="each">{p.each}</span>}
+              <ul class="why">
+                {p.why.map((x) => <li><Icon name="check" size={16} /><span>{x}</span></li>)}
+              </ul>
               <form method="post" action="/api/stripe/checkout/" data-buy>
                 <input type="hidden" name="plan" value={p.key} />
                 <button class:list={["button sm", p.key === "annual" ? "button-primary" : "button-secondary"]} type="submit">Choose</button>

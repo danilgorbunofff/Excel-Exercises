@@ -50,6 +50,8 @@ void loadMe().then(async (me) => {
   for (const card of document.querySelectorAll<HTMLElement>("[data-cur]"))
     card.hidden = card.dataset.cur !== state;
   show("[data-plans]", state !== "lifetime");
+  // A subscriber's own plan card already lists what PRO includes.
+  show("[data-plans-includes]", state === "free");
   show("[data-pay]", me.pro);
   if (state === "sub") {
     text("[data-sub-renew]", planLine(me));

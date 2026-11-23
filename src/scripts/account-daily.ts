@@ -57,7 +57,11 @@ function paint(days: DailyDays): void {
   text("[data-fig=tomorrow]", TIER_NAMES[tierOf(addDays(today, 1))] ?? "");
 
   const cal = $("[data-daily-cal]");
-  if (cal) renderMonth(cal, days, month, today);
+  if (cal)
+    renderMonth(cal, days, month, today, (day) => {
+      const id = days[day] ?? pickFor(day, data.pool)?.id;
+      return id ? data.titles[id] : undefined;
+    });
 
   const rows = Array.from({ length: 14 }, (_, i) => addDays(today, -i)).map((day) => {
     const done = days[day] !== undefined;

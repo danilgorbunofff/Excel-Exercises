@@ -53,13 +53,17 @@ function rows(attempts: Attempt[], certs: Cert[], pro: boolean): HTMLTableRowEle
     const set = sets[a.assessment];
     const pct = Math.round((a.score / a.total) * 100);
     const tr = el("tr");
-    const result = el("td", { className: "nowrap" });
+    // The pill and a claim button sit in a wrapping row, so the button drops
+    // under the pill on a narrow table instead of widening the row.
+    const result = el("td", { className: "res-cell" });
+    const res = el("span", { className: "res" });
+    result.append(res);
     const passed = passes(a.score, a.total);
     const pill = el("span", {
       className: set?.sample ? "pill" : passed ? "pill ok" : "pill bad",
       textContent: set?.sample ? "Practice run" : passed ? "Passed" : "Below 80%",
     });
-    result.append(pill);
+    res.append(pill);
     tr.append(
       el("td", { textContent: set?.title ?? a.assessment }),
       el("td", {
@@ -78,10 +82,10 @@ function rows(attempts: Attempt[], certs: Cert[], pro: boolean): HTMLTableRowEle
     if (!claimable) return [tr];
     const claim = el("button", {
       type: "button",
-      className: "button button-secondary sm",
+      className: "button button-secondary sm nowrap",
       textContent: "Claim certificate",
     });
-    result.append(" ", claim);
+    res.append(claim);
     const formRow = el("tr", { hidden: true });
     const cell = el("td", { colSpan: 5 });
     const box = el("div", { className: "claim" });

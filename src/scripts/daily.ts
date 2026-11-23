@@ -13,7 +13,7 @@ import { track } from "./track.ts";
 
 const q = <T extends Element>(root: Element, selector: string) => root.querySelector<T>(selector);
 
-function start(root: HTMLElement, pool: DailyEntry[]) {
+function start(root: HTMLElement, pool: DailyEntry[], titles: Record<string, string>) {
   // The day is fixed when the page opens: a solve just after midnight still
   // counts for the day that was shown.
   const today = localDay();
@@ -37,7 +37,13 @@ function start(root: HTMLElement, pool: DailyEntry[]) {
   const render = () => {
     const now = localDay();
     renderStreak(root, sync.days);
-    renderMonth(root, sync.days, month, day);
+    renderMonth(
+      root,
+      sync.days,
+      month,
+      day,
+      (d) => titles[sync.days[d] ?? pickFor(d, pool)?.id ?? ""],
+    );
     if (prev) prev.disabled = month <= DAILY_START.slice(0, 7);
     if (next) next.disabled = month >= now.slice(0, 7);
   };
@@ -105,4 +111,10 @@ async function showExercise(
 
 const page = document.querySelector<HTMLElement>("[data-daily]");
 const poolNode = page?.querySelector("script[data-daily-pool]");
-if (page && poolNode?.textContent) start(page, JSON.parse(poolNode.textContent) as DailyEntry[]);
+const titlesNode = page?.querySelector("script[data-daily-titles]");
+if (page && poolNode?.textContent)
+  start(
+    page,
+    JSON.parse(poolNode.textContent) as DailyEntry[],
+    JSON.parse(titlesNode?.textContent || "{}") as Record<string, string>,
+  );

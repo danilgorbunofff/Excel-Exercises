@@ -1,46 +1,18 @@
 ---
-import { getCollection } from "astro:content";
 // Why this exists: the mock assessments, picked by the job the test is for:
 // one grid of cards, the sample and general sets first and then one per job,
 // each with its size, time, level and your best, then your past attempts.
 // The sample is free; the other sets are PRO.
-import Icon, { type IconName } from "../../components/Icon.astro";
+import Icon from "../../components/Icon.astro";
 import PracticeTabs from "../../components/PracticeTabs.astro";
 import Base from "../../layouts/Base.astro";
-import { assessmentPath, coverOf, loadAssessments } from "../../lib/assessments.ts";
-import { LEVELS } from "../../lib/exercises.ts";
+import { assessmentPath } from "../../lib/assessments.ts";
+import { assessmentCards } from "../../lib/exercises.ts";
 import { ACCOUNT_NAV } from "../../lib/nav.ts";
 import "../../styles/assessments.css";
 
-const byId = new Map(
-  [...(await getCollection("exercises")), ...(await getCollection("mocks"))].map((e) => [
-    e.data.id,
-    e.data,
-  ]),
-);
-const levelWord = (l: number) => LEVELS[l as 1 | 2 | 3];
-// A set's level is its hardest task's.
-const sets = loadAssessments().sets.map((set) => {
-  const cover = coverOf(set, byId);
-  const level = cover.levels.at(-1) ?? 1;
-  return { ...set, level, levelName: levelWord(level) };
-});
-const titles = Object.fromEntries(sets.map((s) => [s.slug, s.title]));
-// The job sets go under the job's name; every set is the same card.
-const CARDS: Record<string, { name?: string; icon: IconName }> = {
-  "office-essentials": { name: "Office or admin", icon: "briefcase" },
-  "data-analyst": { name: "Data analyst", icon: "chart" },
-  finance: { name: "Finance or accounting", icon: "percent" },
-  sample: { icon: "play" },
-  beginner: { icon: "sigma" },
-  intermediate: { icon: "formula" },
-};
-const cards = sets.map((s) => ({
-  ...s,
-  name: CARDS[s.slug]?.name ?? s.title,
-  icon: CARDS[s.slug]?.icon ?? ("grid" satisfies IconName),
-  job: CARDS[s.slug]?.name !== undefined,
-}));
+const cards = await assessmentCards();
+const titles = Object.fromEntries(cards.map((s) => [s.slug, s.title]));
 // The sample and the general sets first, then the job ones, in one grid.
 const ordered = [...cards.filter((c) => !c.job), ...cards.filter((c) => c.job)];
 ---

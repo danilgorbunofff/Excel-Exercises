@@ -11,6 +11,7 @@ import {
   tierOf,
 } from "../lib/daily.ts";
 import type { DailyDays } from "./daily-store.ts";
+import { bindHoverTip } from "./hover-tip.ts";
 import { localDay } from "./progress.ts";
 
 /** "Sunday 15 November", read in UTC so the day never shifts. */
@@ -25,11 +26,18 @@ const weekdayName = (day: string) =>
   new Date(`${day}T00:00:00Z`).toLocaleDateString("en-GB", { weekday: "narrow", timeZone: "UTC" });
 export const dayCount = (n: number) => `${n} ${n === 1 ? "day" : "days"}`;
 
-/** One day as a cell: a link once it can be played, with its full name for screen readers. */
+/** The exercise title for a day, when the page knows it. */
+export type TitleOf = (day: string) => string | undefined;
+
+/**
+ * One day as a cell: a link once it can be played, with its full name for
+ * screen readers, and the words for the hover bubble (hover-tip.ts).
+ */
 function dayCell(
   d: { day: string; solved: boolean; today: boolean; future: boolean },
   shown: string | undefined,
   icon: HTMLTemplateElement | null,
+  titleOf?: TitleOf,
 ): HTMLElement {
   const tier = d.day >= LADDER_START ? TIER_NAMES[tierOf(d.day)] : "";
   const step = tier ? `, ${tier.toLowerCase()}` : "";
@@ -50,6 +58,21 @@ function dayCell(
   num.textContent = String(Number(d.day.slice(8)));
   cell.append(text, num);
   if (d.solved && icon) cell.append(icon.content.cloneNode(true));
+  if (!d.future) {
+    const word = d.solved ? "Solved" : d.today ? "Not solved yet" : "Not solved";
+    const name = titleOf?.(d.day);
+    // "Mon 16 Nov, warm-up step": short, so the bubble's small line stays on one line.
+    const date = new Date(`${d.day}T00:00:00Z`).toLocaleDateString("en-GB", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      timeZone: "UTC",
+    });
+    const when = `${date}${tier ? `, ${tier.toLowerCase()} step` : ""}`;
+    cell.dataset.tip = name ?? word;
+    cell.dataset.day = name ? `${word} · ${when}` : when;
+    cell.dataset.dot = d.solved ? "var(--correct)" : "var(--line)";
+  }
   return cell;
 }
 
@@ -92,9 +115,16 @@ export function renderStreak(root: Element, days: DailyDays): void {
 /**
  * Fills the [data-month] calendar for month ("2026-11"), Monday first, with
  * its title and the count of days solved in it. shown: the day /daily/ is
- * showing, marked in the calendar.
+ * showing, marked in the calendar. titleOf names each day's exercise in the
+ * hover bubble, which is bound here when the calendar has a .hover-tip.
  */
-export function renderMonth(root: Element, days: DailyDays, month: string, shown: string): void {
+export function renderMonth(
+  root: Element,
+  days: DailyDays,
+  month: string,
+  shown: string,
+  titleOf?: TitleOf,
+): void {
   const now = localDay();
   const grid = root.querySelector("[data-month]");
   const icon = root.querySelector<HTMLTemplateElement>("template[data-check-icon]");
@@ -113,13 +143,15 @@ export function renderMonth(root: Element, days: DailyDays, month: string, shown
     });
   const solved = root.querySelector("[data-month-solved]");
   if (solved) solved.textContent = String(list.filter((d) => d.solved).length);
-  grid?.replaceChildren(
+  if (!grid) return;
+  grid.replaceChildren(
     ...list.map((d, i) => {
       const li = dayItem(d);
       // The first day sits under its weekday; the rest flow after it.
       if (i === 0) li.style.gridColumnStart = String(tierOf(d.day));
-      li.append(dayCell(d, shown, icon));
+      li.append(dayCell(d, shown, icon, titleOf));
       return li;
     }),
   );
+  bindHoverTip(grid as HTMLElement, root.querySelector<HTMLElement>(".hover-tip"));
 }

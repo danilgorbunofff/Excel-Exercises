@@ -6,6 +6,10 @@
    Stripe's billing rows, GitHub's danger zone. */
 /* Shell */
 .ac {
+  /* Darker than the site's grays: the account pages are mostly small text. */
+  --muted: light-dark(#344054, #c3cad5);
+  --faint: light-dark(#475467, #a9b1bd);
+  --box-line: light-dark(#d0d5dd, #3a4556);
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--space-5);
@@ -39,7 +43,7 @@
   align-items: center;
   padding: 0 var(--space-3) var(--space-4);
   margin-bottom: var(--space-3);
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--box-line);
 }
 .ac-nav .me b {
   display: block;
@@ -61,22 +65,26 @@
   min-height: 2.5rem;
   padding: 0 var(--space-3);
   border-radius: var(--radius-m);
-  color: var(--muted);
+  color: var(--text);
   font-weight: 500;
   text-decoration: none;
   white-space: nowrap;
 }
 .ac-nav a .icon {
-  color: var(--faint);
+  color: var(--muted);
 }
 .ac-nav a:hover {
   background: var(--header);
   color: var(--text);
 }
 .ac-nav a[aria-current="page"] {
-  background: var(--header);
+  border-radius: 0 var(--radius-m) var(--radius-m) 0;
+  background: var(--surface);
   color: var(--heading);
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow:
+    inset 3px 0 0 var(--primary),
+    var(--shadow-card);
 }
 .ac-nav a[aria-current="page"] .icon {
   color: var(--primary);
@@ -114,8 +122,9 @@
   gap: var(--space-2);
 }
 .ac-head h1 {
-  font-size: var(--size-xl);
-  letter-spacing: -0.01em;
+  font-size: var(--size-page);
+  font-weight: 750;
+  letter-spacing: -0.02em;
 }
 .ac-head p {
   color: var(--muted);
@@ -144,7 +153,8 @@
   gap: var(--space-2) var(--space-4);
 }
 .ac .sect-head h2 {
-  font-size: var(--size-l);
+  font-size: 1.25rem;
+  font-weight: 700;
 }
 .ac .sect-head p {
   color: var(--muted);
@@ -161,9 +171,10 @@
   text-decoration: underline;
 }
 .ac .box {
-  border: 1px solid var(--rule);
+  border: 1px solid var(--box-line);
   border-radius: var(--radius-l);
   background: var(--surface);
+  box-shadow: var(--shadow-card);
   min-width: 0;
 }
 .ac .pad {
@@ -174,6 +185,14 @@
 }
 .ac .fine {
   font-size: var(--size-s);
+  color: var(--muted);
+}
+/* A small label over a title: "Start here", "Current plan". */
+.ac .eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--muted);
 }
 .ac .tnum {
@@ -207,7 +226,7 @@
   display: block;
   height: 0.5rem;
   border-radius: var(--radius-pill);
-  background: var(--header);
+  background: light-dark(#e4e7ec, #2b3442);
   overflow: hidden;
 }
 .ac .bar > i {
@@ -286,13 +305,16 @@
   }
 }
 .ac .figs dt {
-  font-size: var(--size-s);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--muted);
 }
 .ac .figs dd {
   margin: 0;
-  font-size: var(--size-xl);
-  font-weight: 650;
+  font-size: var(--size-xxl);
+  font-weight: 750;
   color: var(--heading);
   font-variant-numeric: tabular-nums;
   line-height: 1.2;
@@ -300,7 +322,7 @@
 .ac .figs dd small {
   font-size: var(--size-s);
   font-weight: 500;
-  color: var(--faint);
+  color: var(--muted);
 } /* Tables */
 .ac .tbl-wrap {
   overflow-x: auto;
@@ -312,10 +334,12 @@
 }
 .ac .tbl th {
   padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--rule);
-  background: var(--bg);
-  font-size: var(--size-s);
-  font-weight: 500;
+  border-bottom: 1px solid var(--box-line);
+  background: var(--header);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--muted);
   text-align: left;
   white-space: nowrap;
@@ -400,9 +424,10 @@
   box-shadow: var(--shadow-card);
 } /* Setting card (Vercel pattern) */
 .ac .setting {
-  border: 1px solid var(--rule);
+  border: 1px solid var(--box-line);
   border-radius: var(--radius-l);
   background: var(--surface);
+  box-shadow: var(--shadow-card);
   overflow: hidden;
 }
 .ac .setting-body {
@@ -411,7 +436,9 @@
   padding: var(--space-5);
 }
 .ac .setting-body h2 {
-  font-size: var(--size-l);
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 .ac .setting-body > p {
   color: var(--muted);
@@ -423,8 +450,8 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-3) var(--space-5);
-  border-top: 1px solid var(--rule);
-  background: var(--bg);
+  border-top: 1px solid var(--box-line);
+  background: var(--header);
   font-size: var(--size-s);
   color: var(--muted);
 }
@@ -492,7 +519,6 @@
   inset: 0;
   border-radius: var(--radius-pill);
   background: var(--line);
-  transition: background var(--duration);
 }
 .ac .switch span::after {
   content: "";
@@ -503,7 +529,6 @@
   height: 1.125rem;
   border-radius: 50%;
   background: var(--surface);
-  transition: transform var(--duration);
 }
 .ac .switch input:checked + span {
   background: var(--primary);
@@ -515,10 +540,12 @@
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
-@media (prefers-reduced-motion: reduce) {
-  .ac .switch span,
+@media (prefers-reduced-motion: no-preference) {
+  .ac .switch span {
+    transition: background var(--duration);
+  }
   .ac .switch span::after {
-    transition: none;
+    transition: transform var(--duration);
   }
 } /* Danger zone (GitHub pattern) */
 .ac .danger {
@@ -580,15 +607,17 @@
   gap: var(--space-1);
 }
 .ac .cont-main h2 {
-  font-size: var(--size-l);
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 .ac .cont-foot {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-6);
   padding: var(--space-3) var(--space-5);
-  border-top: 1px solid var(--rule);
-  background: var(--bg);
+  border-top: 1px solid var(--box-line);
+  background: var(--header);
   font-size: var(--size-s);
 }
 .ac .cont-foot a {
@@ -596,13 +625,14 @@
   gap: var(--space-2);
   align-items: center;
   color: var(--text);
+  font-weight: 600;
   text-decoration: none;
 }
 .ac .cont-foot a:hover {
   text-decoration: underline;
 }
 .ac .cont-foot .icon {
-  color: var(--faint);
+  color: var(--text);
 }
 .ac .plan-row {
   display: flex;
@@ -624,7 +654,9 @@
   align-items: center;
 }
 .ac .plan-name b {
-  font-size: var(--size-l);
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
   color: var(--heading);
 }
 .ac .total {
@@ -634,17 +666,22 @@
   gap: var(--space-2);
 }
 .ac .total strong {
-  font-size: var(--size-xxl);
+  font-size: 2.75rem;
+  font-weight: 800;
   line-height: 1;
   color: var(--heading);
   font-variant-numeric: tabular-nums;
 }
+.ac .total .muted {
+  font-size: var(--size-l);
+  color: var(--text);
+}
 .ac .segbar {
   display: flex;
   gap: 2px;
-  height: 0.75rem;
+  height: 0.875rem;
   border-radius: var(--radius-s);
-  background: var(--header);
+  background: light-dark(#e4e7ec, #2b3442);
   overflow: hidden;
 }
 .ac .segbar span {
@@ -658,17 +695,16 @@
 }
 .ac .legend div {
   display: grid;
-  gap: 2px;
+  gap: var(--space-2);
+  justify-items: start;
   padding-left: var(--space-3);
-  border-left: 3px solid var(--c);
-}
-.ac .legend dt {
-  font-size: var(--size-s);
-  color: var(--muted);
+  border-left: 4px solid var(--c);
 }
 .ac .legend dd {
   margin: 0;
-  font-weight: 600;
+  font-size: var(--size-l);
+  font-weight: 700;
+  color: var(--heading);
   font-variant-numeric: tabular-nums;
 } /* Daily */
 .ac .today {
@@ -781,7 +817,10 @@
   margin: 0;
 }
 .ac .cert-meta dt {
-  font-size: var(--size-xs);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--muted);
 }
 .ac .cert-meta dd {
@@ -807,11 +846,13 @@
   padding: 0;
   list-style: none;
 }
+/* A set card: icon and price on top, what it covers, then the facts; the
+   button sits at the bottom so the buttons in a row line up. */
 .ac .sets li {
-  display: grid;
-  gap: var(--space-2);
-  align-content: start;
-  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
 }
 .ac .sets li .row {
   display: flex;
@@ -819,12 +860,39 @@
   align-items: center;
   gap: var(--space-2);
 }
+.ac .sets .set-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+}
 .ac .sets li h3 {
-  font-size: var(--size-base);
+  font-size: var(--size-l);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.ac .sets .set-sum {
+  color: var(--text);
+}
+.ac .sets .set-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  font-size: var(--size-s);
+  font-weight: 600;
+  color: var(--heading);
+  font-variant-numeric: tabular-nums;
+}
+.ac .sets .set-meta > span:not(.level) {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.ac .sets .set-meta .icon {
+  color: var(--muted);
 }
 .ac .sets li .button {
-  justify-self: start;
-  margin-top: var(--space-1);
+  align-self: flex-start;
+  margin-top: auto;
 } /* Plan and billing */
 .ac .cur-plan {
   display: grid;
@@ -904,24 +972,81 @@
   padding: 0;
   list-style: none;
 }
-.ac .plans li {
+.ac .plans > li {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
   padding: var(--space-4);
-  border: 1px solid var(--rule);
+  border: 1px solid var(--box-line);
   border-radius: var(--radius-l);
   background: var(--surface);
+  box-shadow: var(--shadow-card);
 }
-.ac .plans li.current {
+.ac .plans > li.current {
   border-color: var(--primary);
   box-shadow: inset 0 0 0 1px var(--primary);
 }
+/* The recommended plan: a green top edge over the card's own border. */
+.ac .plans > li.best {
+  box-shadow:
+    inset 0 3px 0 var(--primary),
+    var(--shadow-card);
+}
+.ac .plans > li.best.current {
+  box-shadow:
+    inset 0 3px 0 var(--primary),
+    inset 0 0 0 1px var(--primary);
+}
 .ac .plans .p {
-  font-size: var(--size-xl);
-  font-weight: 700;
+  font-size: var(--size-xxl);
+  font-weight: 750;
+  line-height: 1.1;
   color: var(--heading);
   font-variant-numeric: tabular-nums;
+}
+/* The price a month, for plans billed for more than a month. */
+.ac .plans .each {
+  font-size: var(--size-s);
+  font-weight: 700;
+  color: var(--correct);
+}
+.ac .plans .why {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-3) 0 0;
+  border-top: 1px solid var(--rule);
+  list-style: none;
+  font-size: var(--size-s);
+}
+.ac .plans .why li {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+}
+.ac .plans .why .icon {
+  flex: none;
+  margin-top: 0.125rem;
+  color: var(--correct);
+}
+/* What every plan gives, said once above the cards. */
+.ac .plans-incl {
+  display: grid;
+  gap: var(--space-3);
+}
+.ac .plans-incl .includes {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  padding-top: 0;
+  border-top: 0;
+}
+/* The name, then a line kept for the badge even when there is none, so the
+   prices line up across the row. */
+.ac .plans .plan-top {
+  display: grid;
+  justify-items: start;
+  align-content: start;
+  gap: var(--space-1);
+  min-height: 3.25rem;
 }
 .ac .plans .button {
   margin-top: auto;
@@ -966,23 +1091,21 @@
 .ac .nowrap {
   white-space: nowrap;
 }
+/* Each level keeps its pill's hue (base.css .level-N), at bar strength. */
 .ac .seg-1,
 .ac .leg-1 {
-  --c: var(--beginner);
-  background: var(--c);
+  --c: var(--beginner-fill);
 }
 .ac .seg-2,
 .ac .leg-2 {
-  --c: var(--intermediate);
-  background: var(--c);
+  --c: var(--intermediate-fill);
 }
 .ac .seg-3,
 .ac .leg-3 {
-  --c: var(--advanced);
-  background: var(--c);
+  --c: var(--advanced-fill);
 }
-.ac .legend div {
-  background: none;
+.ac .segbar span {
+  background: var(--c);
 }
 .ac .ladder .steps .h0 {
   height: 4px;
@@ -1034,8 +1157,9 @@
   margin: 0;
 }
 .ac .cert-list .cert-name {
-  font-size: var(--size-l);
-  font-weight: 600;
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 .ac .cert-list .small {
   font-size: var(--size-s);
@@ -1050,6 +1174,15 @@
   align-items: center;
   gap: var(--space-2);
   margin-top: var(--space-2);
+}
+.ac .res-cell {
+  min-width: 9rem;
+}
+.ac .res {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
 }
 .ac .claim {
   display: grid;

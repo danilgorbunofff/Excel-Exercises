@@ -5,8 +5,9 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import { readFileSync } from "node:fs";
 import { parse } from "yaml";
+import type { IconName } from "../components/Icon.astro";
 import { type Track, trackSchema } from "../content/schema.ts";
-import { skillsOf } from "./assessments.ts";
+import { coverOf, loadAssessments, skillsOf } from "./assessments.ts";
 
 export type ExerciseEntry = CollectionEntry<"exercises">;
 
@@ -232,3 +233,39 @@ export const listWords = (items: readonly string[]) =>
 export const functionsOf = (exercise: ExerciseEntry["data"]) => [
   ...new Set(exercise.screens.flatMap((s) => skillsOf(s))),
 ];
+
+// The job sets go under the job's name; every set is the same card.
+const SET_LOOKS: Record<string, { name?: string; icon: IconName }> = {
+  "office-essentials": { name: "Office or admin", icon: "briefcase" },
+  "data-analyst": { name: "Data analyst", icon: "chart" },
+  finance: { name: "Finance or accounting", icon: "percent" },
+  sample: { icon: "play" },
+  beginner: { icon: "sigma" },
+  intermediate: { icon: "formula" },
+};
+
+/**
+ * The mock assessment sets as cards, for /mock-assessments/ and the account's
+ * Certificates page: the icon, the name shown, and the level, which is the
+ * hardest task's.
+ */
+export async function assessmentCards() {
+  const byId = new Map(
+    [...(await getCollection("exercises")), ...(await getCollection("mocks"))].map((e) => [
+      e.data.id,
+      e.data,
+    ]),
+  );
+  return loadAssessments().sets.map((set) => {
+    const level = (coverOf(set, byId).levels.at(-1) ?? 1) as 1 | 2 | 3;
+    const look = SET_LOOKS[set.slug];
+    return {
+      ...set,
+      level,
+      levelName: LEVELS[level],
+      name: look?.name ?? set.title,
+      icon: look?.icon ?? ("grid" satisfies IconName),
+      job: look?.name !== undefined,
+    };
+  });
+}

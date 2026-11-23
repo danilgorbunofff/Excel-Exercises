@@ -21,6 +21,10 @@ const buildPick = pickFor(buildDay, pool);
 const shown = tasks.find((t) => t.exercise.id === buildPick?.id) ?? tasks[0];
 if (!shown) throw new Error("content/daily/ has no tasks.");
 const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
+// Names each day in the calendar's hover bubble.
+const titlesJson = JSON.stringify(
+  Object.fromEntries(tasks.map((t) => [t.exercise.id, t.exercise.title])),
+).replaceAll("<", "\\u003c");
 ---
 
 <Base
@@ -31,6 +35,7 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
   <PracticeTabs />
   <div class="a-page daily" data-daily>
     <script type="application/json" data-daily-pool set:html={poolJson} />
+    <script type="application/json" data-daily-titles set:html={titlesJson} />
     <template data-check-icon><Icon name="check" size={16} /></template>
 
     <header class="open-head">
@@ -60,6 +65,7 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
           >
         </div>
         <ol class="d-month" aria-labelledby="month-title" data-month></ol>
+        <div class="hover-tip" aria-hidden="true"><strong></strong><span></span></div>
         <dl class="d-cal-stats">
           <div><dt>Streak</dt><dd data-current>0 days</dd></div>
           <div><dt>Best</dt><dd data-best>0 days</dd></div>

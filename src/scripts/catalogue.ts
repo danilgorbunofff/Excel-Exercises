@@ -70,7 +70,11 @@ if (form && table && tbody) {
     if (count) {
       // The number leads in bold: "18 of 128 exercises".
       const m = /^(\d+)(.*)$/.exec(line || `${rows.length} exercises`);
-      if (m) count.replaceChildren(Object.assign(document.createElement("b"), { textContent: m[1] }), m[2] ?? "");
+      if (m)
+        count.replaceChildren(
+          Object.assign(document.createElement("b"), { textContent: m[1] }),
+          m[2] ?? "",
+        );
       else count.textContent = line;
     }
     const total = document.querySelector<HTMLElement>("[data-filter-total]");

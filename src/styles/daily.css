@@ -102,6 +102,8 @@ a.d-cell:focus-visible {
 }
 
 .d-cal {
+  /* Holds the hover bubble (base.css .hover-tip). */
+  position: relative;
   display: grid;
   gap: var(--space-3);
   min-width: 0;

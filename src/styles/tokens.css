@@ -42,6 +42,10 @@
   --intermediate-bg: light-dark(#fef9c2, #33260a);
   --advanced: light-dark(#9f0712, #ff9b9b);
   --advanced-bg: light-dark(#ffe2e2, #3b1214);
+  /* The same three hues at bar strength, for charts beside the pills. */
+  --beginner-fill: light-dark(#2f9e5a, #7ee2a8);
+  --intermediate-fill: light-dark(#e0a800, #f7c873);
+  --advanced-fill: light-dark(#dc3d43, #ff9b9b);
   --pro: light-dark(#5b21b6, #c8b4ff);
   --pro-bg: light-dark(#ede9fe, #251a45);
   --chip: light-dark(#126a41, #7ee2a8);

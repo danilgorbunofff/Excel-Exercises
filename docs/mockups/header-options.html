@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Header options: search and account</title>
+<style>
+  /* Tokens copied from src/styles/tokens.css so the options use the site's own colours, radii and type. */
+  :root {
+    color-scheme: light;
+    --bg: light-dark(#f9fafb, #0f141c);
+    --surface: light-dark(#ffffff, #161c26);
+    --header: light-dark(#f3f4f6, #1f2733);
+    --text: light-dark(#101828, #f3f4f6);
+    --muted: light-dark(#4a5565, #a3abb8);
+    --rule: light-dark(#e5e7eb, #2b3442);
+    --line: light-dark(#6a7282, #8a94a3);
+    --focus: light-dark(#101828, #f3f4f6);
+    --faint: light-dark(#6a7282, #8a94a3);
+    --pro: light-dark(#5b21b6, #c8b4ff);
+    --pro-bg: light-dark(#ede9fe, #251a45);
+    --chip: light-dark(#126a41, #7ee2a8);
+    --chip-bg: light-dark(#ecfdf3, #10241a);
+    --chip-line: light-dark(#a6e3bf, #2d5a40);
+    --read: light-dark(#0063b1, #6cb4ff);
+    --read-tint: light-dark(#e3f0fd, #0d2a47);
+    --primary: #18804f;
+    --primary-hover: #126a41;
+    --correct: light-dark(#18804f, #5ad08a);
+    --correct-tint: light-dark(#e9f9ef, #0f2f1d);
+    --shadow-pop: 0 8px 24px rgb(16 24 40 / 0.14);
+    --shadow-header: 0 1px 2px rgb(16 24 40 / 0.08);
+    --font-text: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+    --radius-s: 4px; --radius-m: 6px; --radius-l: 8px; --radius-pill: 999px;
+    --ease: cubic-bezier(.2,0,0,1);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 0 24px 48px; background: var(--bg); color: var(--text); font: 15px/1.5 var(--font-text); }
+  h1 { margin: 0; font-size: 20px; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  a { color: inherit; text-decoration: none; }
+  svg.i { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  /* Controls above the options. */
+  .bar-top { position: sticky; top: 0; z-index: 50; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px; margin: 0 -24px 24px; padding: 12px 24px; background: var(--surface); border-bottom: 1px solid var(--rule); }
+  .bar-top h1 { margin-right: auto; }
+  .seg { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .seg > div { display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius-m); overflow: hidden; }
+  .seg button { border: 0; background: none; padding: 5px 11px; font-size: 13px; }
+  .seg button[aria-pressed="true"] { background: var(--primary); color: #fff; }
+
+  .opt { max-width: 1180px; margin: 0 auto 40px; }
+  .opt > h2 { margin: 0; font-size: 16px; }
+  .opt > p { margin: 2px 0 10px; color: var(--muted); font-size: 13.5px; max-width: 80ch; }
+  .stage { position: relative; display: flex; flex-direction: column; height: 540px; background: var(--bg); border: 1px solid var(--rule); border-radius: var(--radius-l); overflow: hidden; }
+  .page { flex: 1; padding: 32px 24px; display: grid; align-content: start; gap: 12px; }
+  .page i { display: block; height: 12px; border-radius: 3px; background: var(--rule); }
+  .page i:nth-child(1) { width: 34%; height: 22px; } .page i:nth-child(2) { width: 62%; } .page i:nth-child(3) { width: 48%; } .page i:nth-child(4) { width: 55%; }
+
+  /* The header. Same height, surface and shadow as the real one. */
+  .hdr { position: relative; z-index: 5; background: var(--surface); box-shadow: var(--shadow-header); border-bottom: 1px solid var(--rule); }
+  .row { display: flex; align-items: center; gap: 16px; height: 64px; padding: 0 20px; }
+  .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; white-space: nowrap; }
+  .brand svg { width: 28px; height: 28px; }
+  .nav { display: flex; align-items: center; gap: 2px; font-size: 14.5px; font-weight: 500; }
+  .nav a, .nav button { display: inline-flex; align-items: center; gap: 4px; min-height: 40px; padding: 0 10px; border: 0; border-radius: var(--radius-m); background: none; color: var(--text); }
+  .nav a:hover, .nav button:hover { background: var(--header); }
+  .grow { flex: 1; min-width: 0; display: flex; justify-content: center; }
+  .spacer { flex: 1; }
+  .theme { display: grid; place-items: center; width: 40px; height: 40px; border: 0; background: none; border-radius: var(--radius-m); color: var(--muted); }
+  .theme:hover { background: var(--header); }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 40px; padding: 0 14px; border: 1px solid var(--line); border-radius: var(--radius-m); background: var(--surface); font-size: 14.5px; font-weight: 600; white-space: nowrap; }
+  .btn:hover { background: var(--header); }
+  .btn-primary { border-color: var(--primary); background: var(--primary); color: #fff; }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-text { border-color: transparent; background: none; }
+  .signed-out { display: flex; gap: 8px; }
+  .kbd { display: inline-block; padding: 0 5px; border: 1px solid var(--line); border-radius: var(--radius-s); font: 500 11.5px/18px var(--font-mono); color: var(--muted); background: var(--surface); }
+
+  /* State switches set on <body> by the controls above. */
+  body[data-auth="in"] .out, body[data-auth="out"] .in { display: none !important; }
+  .pop { display: none; }
+  body[data-open="search"] .pop-search, body[data-open="account"] .pop-account { display: block; }
+
+  .avatar { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: #fff; font-size: 12.5px; font-weight: 700; letter-spacing: .02em; flex: none; }
+  .chip { display: inline-block; padding: 0 8px; border-radius: var(--radius-pill); font-size: 11.5px; font-weight: 600; line-height: 20px; white-space: nowrap; }
+  .chip.free { background: var(--header); color: var(--muted); }
+  .chip.pro { background: var(--pro-bg); color: var(--pro); }
+  mark { background: none; color: inherit; font-weight: 700; }
+
+  /* Popover surfaces. */
+  .pop { position: absolute; z-index: 30; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius-l); box-shadow: var(--shadow-pop); overflow: hidden; }
+  .acct { position: relative; }
+  .acct .pop { top: calc(100% + 8px); right: 0; width: 280px; }
+  .menu-head { display: flex; align-items: center; gap: 10px; padding: 14px; border-bottom: 1px solid var(--rule); }
+  .menu-head b { display: block; font-size: 14.5px; line-height: 1.25; }
+  .menu-head small { display: block; color: var(--muted); font-size: 12.5px; }
+  .menu ul { list-style: none; margin: 0; padding: 6px; }
+  .menu li a, .menu li button { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 38px; padding: 0 10px; border: 0; background: none; border-radius: var(--radius-m); font-size: 14px; text-align: left; }
+  .menu li a:hover, .menu li button:hover, .menu li a.on { background: var(--header); }
+  .menu li svg { color: var(--muted); }
+  .menu hr { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+  .menu .upsell { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 6px; padding: 10px 12px; border-radius: var(--radius-m); background: var(--pro-bg); color: var(--pro); font-size: 13px; font-weight: 600; }
+
+  /* Result rows shared by options 1, 2 and 4. */
+  .results { list-style: none; margin: 0; padding: 6px; }
+  .results li { row-gap: 0; display: grid; grid-template-columns: 74px 1fr auto; align-items: center; gap: 10px; min-height: 44px; padding: 4px 10px; border-radius: var(--radius-m); font-size: 14px; }
+  .results li.on { background: var(--header); }
+  .results .d { grid-column: 2; margin-top: -4px; color: var(--muted); font-size: 12.5px; }
+  .k { justify-self: start; padding: 0 7px; border-radius: var(--radius-s); font-size: 11.5px; font-weight: 600; line-height: 20px; }
+  .k.Function { background: var(--read-tint); color: var(--read); }
+  .k.Exercise { background: var(--chip-bg); color: var(--chip); }
+  .k.Article { background: var(--header); color: var(--muted); }
+  .k.Track { background: var(--pro-bg); color: var(--pro); }
+  .more { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 13px; }
+
+  /* 1 Pill */
+  .o1 .field { position: relative; width: min(100%, 420px); }
+  .o1 .pill { display: flex; align-items: center; gap: 10px; width: 100%; height: 40px; padding: 0 8px 0 14px; border: 1px solid var(--rule); border-radius: var(--radius-pill); background: var(--header); color: var(--muted); font-size: 14px; text-align: left; transition: border-color 150ms var(--ease), background 150ms var(--ease); }
+  .o1 .pill:hover, body[data-open="search"] .o1 .pill { border-color: var(--line); background: var(--surface); }
+  .o1 .pill .ph { flex: 1; }
+  .o1 .pop-search { top: calc(100% + 8px); left: 50%; translate: -50% 0; width: 500px; }
+  .o1 .acct > button { display: grid; place-items: center; width: 40px; height: 40px; border: 0; background: none; border-radius: 50%; padding: 0; }
+  .o1 .acct > button:hover .avatar { box-shadow: 0 0 0 3px var(--header); }
+
+  /* 2 Takeover */
+  .o2 .find { display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid transparent; border-radius: var(--radius-m); background: none; }
+  .o2 .find:hover { background: var(--header); }
+  .o2 .takeover { display: none; flex: 1; position: relative; align-items: center; gap: 10px; }
+  .o2 .takeover .box { position: relative; flex: 1; display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px; border: 2px solid var(--primary); border-radius: var(--radius-m); background: var(--surface); }
+  .o2 .takeover input { flex: 1; border: 0; background: none; font: inherit; font-size: 16px; color: var(--text); outline: 0; }
+  .o2 .takeover .pop-search { top: calc(100% + 10px); left: 0; right: 0; width: auto; }
+  body[data-open="search"] .o2 .takeover { display: flex; }
+  body[data-open="search"] .o2 .normal { display: none; }
+  .o2 .normal { display: contents; }
+  .o2 .name { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 10px 0 6px; border: 1px solid var(--rule); border-radius: var(--radius-pill); background: none; font-size: 14px; font-weight: 600; }
+  .o2 .name:hover { background: var(--header); }
+
+  /* 3 Palette */
+  .o3 .trigger { display: flex; align-items: center; gap: 10px; width: min(100%, 360px); height: 40px; padding: 0 8px 0 12px; border: 1px solid var(--line); border-radius: var(--radius-m); background: var(--surface); color: var(--muted); font-size: 14px; text-align: left; }
+  .o3 .trigger:hover { background: var(--header); }
+  .o3 .trigger .ph { flex: 1; }
+  .scrim { display: none; position: absolute; inset: 0; z-index: 20; background: rgb(0 0 0 / .45); }
+  body[data-open="search"] .o3 .scrim, body[data-open="search"] .o3 .palette { display: block; }
+  .palette { display: none; position: absolute; z-index: 25; top: 68px; left: 50%; translate: -50% 0; width: min(94%, 600px); background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius-l); box-shadow: var(--shadow-pop); overflow: hidden; }
+  .palette .q { display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 16px; border-bottom: 1px solid var(--rule); font-size: 16px; }
+  .palette .q .ph { flex: 1; }
+  .scope { display: flex; gap: 6px; padding: 10px 12px 4px; }
+  .scope button { height: 28px; padding: 0 11px; border: 1px solid var(--rule); border-radius: var(--radius-pill); background: none; font-size: 13px; }
+  .scope button[aria-pressed="true"] { border-color: var(--primary); background: var(--correct-tint); color: var(--correct); font-weight: 600; }
+  .grp { margin: 0; padding: 10px 16px 2px; color: var(--muted); font-size: 12.5px; font-weight: 600; }
+  .palette .results li { grid-template-columns: 20px 1fr auto; }
+  .palette .results .d { grid-column: 2; }
+  .palette .results svg { color: var(--muted); }
+  .hint { display: flex; gap: 16px; padding: 9px 16px; border-top: 1px solid var(--rule); background: var(--header); color: var(--muted); font-size: 12.5px; }
+  .o3 .acct > button { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border: 0; padding: 0; border-radius: 50%; background: conic-gradient(var(--primary) 0 57%, var(--rule) 57% 100%); }
+  .o3 .acct > button::before { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--surface); }
+  .o3 .acct > button .avatar { position: relative; width: 32px; height: 32px; }
+  .week { display: flex; gap: 6px; margin-top: 8px; }
+  .week i { width: 20px; height: 20px; border-radius: var(--radius-s); background: var(--rule); }
+  .week i.d { background: var(--primary); }
+  .week i.t { box-shadow: inset 0 0 0 2px var(--primary); background: none; }
+  .o3 .menu-head { display: block; }
+
+  /* 4 Search band */
+  .o4 .row .cta { margin-left: auto; }
+  .o4 .band { position: relative; display: flex; justify-content: center; align-items: center; gap: 14px; padding: 0 20px 12px; }
+  .o4 .band .box { position: relative; flex: 1; max-width: 760px; }
+  .o4 .band .in-field { display: flex; align-items: center; gap: 10px; height: 46px; padding: 0 6px 0 14px; border: 1px solid var(--line); border-radius: var(--radius-m); background: var(--surface); color: var(--muted); font-size: 15px; }
+  .o4 .band .in-field:hover, body[data-open="search"] .o4 .in-field { border-color: var(--text); }
+  .o4 .band .in-field .ph { flex: 1; text-align: left; }
+  .o4 .band .in-field .btn { min-height: 34px; }
+  .o4 .band .pop-search { top: calc(100% + 6px); left: 0; right: 0; }
+  .o4 .quick { display: flex; gap: 6px; flex: none; font-size: 13px; color: var(--muted); align-items: center; }
+  .o4 .quick a { padding: 3px 10px; border: 1px solid var(--rule); border-radius: var(--radius-pill); }
+  .o4 .quick a:hover { background: var(--header); }
+  .o4 .acct > button { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 12px 0 10px; border: 1px solid var(--line); border-radius: var(--radius-m); background: var(--surface); font-size: 14.5px; font-weight: 600; }
+  .o4 .acct > button:hover { background: var(--header); }
+
+  /* 5 Formula bar */
+  .o5 .fx { position: relative; display: flex; align-items: stretch; width: min(100%, 460px); height: 38px; border: 1px solid var(--line); border-radius: var(--radius-s); background: var(--surface); font-size: 14px; }
+  .o5 .nb { display: flex; align-items: center; gap: 4px; width: 84px; padding: 0 8px; border: 0; border-right: 1px solid var(--line); background: var(--header); font: 500 13px var(--font-mono); color: var(--muted); }
+  .o5 .fxm { display: grid; place-items: center; width: 34px; border-right: 1px solid var(--rule); font: italic 600 14px var(--font-text); color: var(--muted); }
+  .o5 .fx .t { flex: 1; display: flex; align-items: center; padding: 0 10px; color: var(--muted); border: 0; background: none; text-align: left; }
+  .o5 .fx:focus-within, body[data-open="search"] .o5 .fx { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+  body[data-open="search"] .o5 .fx .t { color: var(--text); }
+  .o5 .pop-search { top: calc(100% + 6px); left: 0; width: 560px; border-radius: var(--radius-s); }
+  .o5 .grid { display: grid; grid-template-columns: 34px 1fr 90px 120px; font-size: 13.5px; }
+  .o5 .grid > div { padding: 0 10px; height: 34px; display: flex; align-items: center; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .o5 .grid > .h { background: var(--header); color: var(--muted); font-size: 12px; justify-content: center; padding: 0; }
+  .o5 .grid > .h.l { justify-content: flex-start; padding: 0 10px; }
+  .o5 .grid > .rn { background: var(--header); color: var(--muted); font-size: 12px; justify-content: center; padding: 0; }
+  .o5 .grid > .sel { outline: 2px solid var(--primary); outline-offset: -2px; position: relative; background: var(--correct-tint); }
+  .o5 .grid > .rn.sel { outline: 0; background: var(--correct-tint); color: var(--correct); font-weight: 700; }
+  .o5 .status { display: flex; justify-content: space-between; padding: 6px 12px; background: var(--header); color: var(--muted); font-size: 12px; }
+  .o5 .acct > button { position: relative; display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 10px; border: 2px solid var(--primary); border-radius: var(--radius-s); background: var(--surface); font: 600 13px var(--font-mono); }
+  .o5 .acct > button::after { content: ""; position: absolute; right: -5px; bottom: -5px; width: 8px; height: 8px; border: 1.5px solid var(--surface); background: var(--primary); }
+  .o5 .acct > button .ref { color: var(--muted); font-weight: 500; }
+  .o5 .acct > button:hover { background: var(--correct-tint); }
+  .o5 .acct .pop { border-radius: var(--radius-s); }
+  .o5 .menu li a, .o5 .menu li button { border-radius: 0; border-left: 3px solid transparent; }
+  .o5 .menu li a:hover, .o5 .menu li button:hover { border-left-color: var(--primary); background: var(--correct-tint); }
+  .o5 .signed-out .btn { border-radius: var(--radius-s); }
+
+  @media (max-width: 900px) { .nav, .o4 .quick { display: none; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body data-theme="light" data-auth="in" data-open="search">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="search" viewBox="0 0 20 20"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></symbol>
+  <symbol id="chev" viewBox="0 0 20 20"><path d="M5 8l5 5 5-5"/></symbol>
+  <symbol id="x" viewBox="0 0 20 20"><path d="M5 5l10 10M15 5L5 15"/></symbol>
+  <symbol id="user" viewBox="0 0 20 20"><circle cx="10" cy="7" r="3.5"/><path d="M3.5 17c.8-3 3.3-4.5 6.5-4.5s5.7 1.5 6.5 4.5"/></symbol>
+  <symbol id="grid" viewBox="0 0 20 20"><rect x="3" y="3" width="6" height="6"/><rect x="11" y="3" width="6" height="6"/><rect x="3" y="11" width="6" height="6"/><rect x="11" y="11" width="6" height="6"/></symbol>
+  <symbol id="chart" viewBox="0 0 20 20"><path d="M3 17V3M3 17h14M7 14v-4M11 14V6M15 14v-6"/></symbol>
+  <symbol id="cal" viewBox="0 0 20 20"><rect x="3" y="4" width="14" height="13" rx="1"/><path d="M3 8h14M7 2v4M13 2v4"/></symbol>
+  <symbol id="file" viewBox="0 0 20 20"><path d="M5 2h7l4 4v12H5z"/><path d="M12 2v4h4"/></symbol>
+  <symbol id="card" viewBox="0 0 20 20"><rect x="2" y="5" width="16" height="11" rx="1.5"/><path d="M2 9h16"/></symbol>
+  <symbol id="gear" viewBox="0 0 20 20"><circle cx="10" cy="10" r="2.5"/><path d="M10 2v2.5M10 15.5V18M2 10h2.5M15.5 10H18M4.3 4.3l1.8 1.8M13.9 13.9l1.8 1.8M15.7 4.3l-1.8 1.8M6.1 13.9l-1.8 1.8"/></symbol>
+  <symbol id="out" viewBox="0 0 20 20"><path d="M8 3H4v14h4M12 6l4 4-4 4M16 10H8"/></symbol>
+  <symbol id="sigma" viewBox="0 0 20 20"><path d="M15 4H5l5 6-5 6h10"/></symbol>
+  <symbol id="book" viewBox="0 0 20 20"><path d="M4 3h9a3 3 0 013 3v11H7a3 3 0 01-3-3z"/></symbol>
+  <symbol id="pen" viewBox="0 0 20 20"><path d="M3 17l1-4L14 3l3 3L7 16z"/></symbol>
+  <symbol id="route" viewBox="0 0 20 20"><circle cx="5" cy="15" r="2"/><circle cx="15" cy="5" r="2"/><path d="M7 15h5a3 3 0 000-6H8a3 3 0 010-6h5"/></symbol>
+  <symbol id="moon" viewBox="0 0 20 20"><path d="M16 11.5A6.5 6.5 0 018.5 4a6.5 6.5 0 107.5 7.5z"/></symbol>
+</svg>
+
+<div class="bar-top">
+  <h1>Header options: search and account</h1>
+  <div class="seg">Theme <div role="group" aria-label="Theme">
+    <button data-set="theme" data-v="light" aria-pressed="true">Light</button>
+    <button data-set="theme" data-v="dark" aria-pressed="false">Dark</button></div></div>
+  <div class="seg">Visitor <div role="group" aria-label="Visitor">
+    <button data-set="auth" data-v="out" aria-pressed="false">Signed out</button>
+    <button data-set="auth" data-v="in" aria-pressed="true">Signed in</button></div></div>
+  <div class="seg">Open <div role="group" aria-label="Open">
+    <button data-set="open" data-v="none" aria-pressed="false">Nothing</button>
+    <button data-set="open" data-v="search" aria-pressed="true">Search</button>
+    <button data-set="open" data-v="account" aria-pressed="false">Account menu</button></div></div>
+</div>
+
+<!-- 1 -->
+<section class="opt o1">
+  <h2>1 Pill search, avatar</h2>
+  <p>Quiet. A rounded pill sits in the centre with a "/" shortcut; suggestions drop under it, grouped by kind. The account is just a round avatar when signed in, so the bar stays calm.</p>
+  <div class="stage">
+    <header class="hdr"><div class="row">
+      <a class="brand" href="#"><svg viewBox="0 0 28 28"><use href="#logo"/></svg>Excel Exercises</a>
+      <nav class="nav"><button>Practice <svg class="i"><use href="#chev"/></svg></button><button>Learn <svg class="i"><use href="#chev"/></svg></button><a href="#">Pricing</a></nav>
+      <div class="grow"><div class="field">
+        <button class="pill" data-act="search"><svg class="i"><use href="#search"/></svg><span class="ph">Search exercises and functions</span><span class="kbd">/</span></button>
+        <div class="pop pop-search" data-render="list"></div>
+      </div></div>
+      <button class="theme" aria-label="Switch theme"><svg class="i"><use href="#moon"/></svg></button>
+      <div class="signed-out out"><a class="btn btn-text" href="#">Log in</a><a class="btn btn-primary" href="#">Sign up free</a></div>
+      <div class="acct in"><button data-act="account" aria-label="Account menu"><span class="avatar">MK</span></button>
+        <div class="pop pop-account menu" data-render="menu" data-style="plain"></div></div>
+    </div></header>
+    <div class="page"><i></i><i></i><i></i><i></i></div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="opt o2">
+  <h2>2 Search icon that takes over the bar</h2>
+  <p>Closed, search is one icon, so Practice, Learn and Pricing get the room. Click it and the nav slides away for a full-width field with results under it. Account is a pill with the first name, which tells you who is signed in.</p>
+  <div class="stage">
+    <header class="hdr"><div class="row">
+      <a class="brand" href="#"><svg viewBox="0 0 28 28"><use href="#logo"/></svg>Excel Exercises</a>
+      <div class="normal">
+        <nav class="nav"><button>Practice <svg class="i"><use href="#chev"/></svg></button><button>Learn <svg class="i"><use href="#chev"/></svg></button><a href="#">Pricing</a></nav>
+        <span class="spacer"></span>
+        <button class="find" data-act="search" aria-label="Search"><svg class="i" style="width:20px;height:20px"><use href="#search"/></svg></button>
+        <button class="theme" aria-label="Switch theme"><svg class="i"><use href="#moon"/></svg></button>
+        <div class="signed-out out"><a class="btn btn-text" href="#">Log in</a><a class="btn btn-primary" href="#">Sign up free</a></div>
+        <div class="acct in"><button class="name" data-act="account"><span class="avatar" style="width:28px;height:28px">MK</span>Maria<svg class="i"><use href="#chev"/></svg></button>
+          <div class="pop pop-account menu" data-render="menu" data-style="upsell"></div></div>
+      </div>
+      <div class="takeover">
+        <div class="box"><svg class="i"><use href="#search"/></svg><input value="lookup" aria-label="Search the site"><span class="kbd">Enter</span></div>
+        <button class="btn" data-set="open" data-v="none">Cancel</button>
+        <div class="pop pop-search" data-render="list"></div>
+      </div>
+    </div></header>
+    <div class="page"><i></i><i></i><i></i><i></i></div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="opt o3">
+  <h2>3 Command palette, progress ring</h2>
+  <p>The header only has a button that looks like a field. Click it, or press Ctrl K, and a palette opens over the page with scope chips and grouped results. Account is an avatar inside a ring showing this week's daily exercises; the menu shows the week.</p>
+  <div class="stage">
+    <header class="hdr"><div class="row">
+      <a class="brand" href="#"><svg viewBox="0 0 28 28"><use href="#logo"/></svg>Excel Exercises</a>
+      <nav class="nav"><button>Practice <svg class="i"><use href="#chev"/></svg></button><button>Learn <svg class="i"><use href="#chev"/></svg></button><a href="#">Pricing</a></nav>
+      <div class="grow"><button class="trigger" data-act="search"><svg class="i"><use href="#search"/></svg><span class="ph">Search</span><span class="kbd">Ctrl K</span></button></div>
+      <button class="theme" aria-label="Switch theme"><svg class="i"><use href="#moon"/></svg></button>
+      <div class="signed-out out"><a class="btn btn-text" href="#">Log in</a><a class="btn btn-primary" href="#">Start free</a></div>
+      <div class="acct in"><button data-act="account" aria-label="Account menu, 4 of 7 daily exercises done this week"><span class="avatar">MK</span></button>
+        <div class="pop pop-account menu" data-render="menu" data-style="week"></div></div>
+    </div></header>
+    <div class="page"><i></i><i></i><i></i><i></i></div>
+    <div class="scrim" data-set="open" data-v="none"></div>
+    <div class="palette" data-render="palette" style="display:none"></div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="opt o4">
+  <h2>4 Search band under the bar</h2>
+  <p>Two tiers. The top row keeps only navigation and account; search gets its own wide, high field on a second row, with quick links beside it. Biggest target and the clearest place to look, at the cost of about 58 px of height on every page.</p>
+  <div class="stage" style="height:580px">
+    <header class="hdr">
+      <div class="row">
+        <a class="brand" href="#"><svg viewBox="0 0 28 28"><use href="#logo"/></svg>Excel Exercises</a>
+        <nav class="nav"><button>Practice <svg class="i"><use href="#chev"/></svg></button><button>Learn <svg class="i"><use href="#chev"/></svg></button><a href="#">Pricing</a></nav>
+        <span class="spacer"></span>
+        <button class="theme" aria-label="Switch theme"><svg class="i"><use href="#moon"/></svg></button>
+        <div class="signed-out out"><a class="btn btn-text" href="#">Log in</a><a class="btn btn-primary" href="#">Sign up free</a></div>
+        <div class="acct in"><button data-act="account"><svg class="i"><use href="#user"/></svg>Account <span class="chip free">Free</span><svg class="i"><use href="#chev"/></svg></button>
+          <div class="pop pop-account menu" data-render="menu" data-style="plan"></div></div>
+      </div>
+      <div class="band">
+        <div class="box">
+          <button class="in-field" data-act="search" style="width:100%;border:0;border:1px solid var(--line)"><svg class="i"><use href="#search"/></svg><span class="ph">Search exercises and functions</span><span class="btn btn-primary">Search</span></button>
+          <div class="pop pop-search" data-render="list"></div>
+        </div>
+        <div class="quick">Try <a href="#">VLOOKUP</a><a href="#">SUMIFS</a><a href="#">Pivot</a></div>
+      </div>
+    </header>
+    <div class="page"><i></i><i></i><i></i><i></i></div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="opt o5">
+  <h2>5 Formula bar, cell account</h2>
+  <p>Made from the product itself. Search is a formula bar: a name box, an fx mark and the text. Results drop down as a small sheet with row numbers and a selected cell. The account button is a selected cell with a fill handle, showing your initials.</p>
+  <div class="stage">
+    <header class="hdr"><div class="row">
+      <a class="brand" href="#"><svg viewBox="0 0 28 28"><use href="#logo"/></svg>Excel Exercises</a>
+      <nav class="nav"><button>Practice <svg class="i"><use href="#chev"/></svg></button><button>Learn <svg class="i"><use href="#chev"/></svg></button><a href="#">Pricing</a></nav>
+      <div class="grow"><div style="position:relative;width:min(100%,460px)">
+        <div class="fx" data-act="search"><button class="nb" tabindex="-1">All <svg class="i" style="margin-left:auto"><use href="#chev"/></svg></button><span class="fxm">fx</span><button class="t"><span class="ph">Search exercises and functions</span></button></div>
+        <div class="pop pop-search" data-render="sheet"></div>
+      </div></div>
+      <button class="theme" aria-label="Switch theme"><svg class="i"><use href="#moon"/></svg></button>
+      <div class="signed-out out"><a class="btn btn-text" href="#">Log in</a><a class="btn btn-primary" href="#">Sign up free</a></div>
+      <div class="acct in"><button data-act="account"><svg class="i" style="color:var(--muted)"><use href="#user"/></svg><span>MK</span></button>
+        <div class="pop pop-account menu" data-render="menu" data-style="plain"></div></div>
+    </div></header>
+    <div class="page"><i></i><i></i><i></i><i></i></div>
+  </div>
+</section>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 28 28" style="stroke:none"><rect x="1" y="1" width="26" height="26" rx="6" fill="#18804f"/><path d="M1 10.5h26M1 18h26M10 1v26M18.5 1v26" stroke="#fff" stroke-opacity=".45" stroke-width="1.5" fill="none"/><rect x="11" y="11.5" width="6.5" height="5.5" rx="1" fill="#fff"/></symbol>
+</svg>
+
+<script>
+  const Q = "lookup";
+  const DATA = [
+    { k: "Function", t: "VLOOKUP", d: "Find a value in the first column of a table", ic: "sigma", lv: "" },
+    { k: "Function", t: "XLOOKUP", d: "Find a value in any column, return from another", ic: "sigma", lv: "" },
+    { k: "Exercise", t: "Price lookup by product code", d: "Learning track: Lookup and reference", ic: "pen", lv: "Beginner" },
+    { k: "Exercise", t: "Two-way lookup with INDEX and MATCH", d: "Learning track: Lookup and reference", ic: "pen", lv: "Intermediate" },
+    { k: "Article", t: "Why VLOOKUP returns #N/A", d: "Four causes and how to read each one", ic: "book", lv: "" },
+    { k: "Track", t: "Lookup and reference", d: "12 exercises, 4 functions", ic: "route", lv: "" },
+  ];
+  const hl = (s) => s.replace(new RegExp(Q, "i"), (m) => `<mark>${m}</mark>`);
+  const ico = (n) => `<svg class="i"><use href="#${n}"/></svg>`;
+
+  const R = {
+    list: () => `<ul class="results" role="listbox">${DATA.map((r, i) =>
+      `<li class="${i ? "" : "on"}" role="option"><span class="k ${r.k}">${r.k}</span><span>${hl(r.t)}</span>${r.lv ? `<span class="chip free">${r.lv}</span>` : "<span></span>"}<span class="d">${r.d}</span></li>`).join("")}</ul>
+      <div class="more"><span>See all 14 results for “${Q}”</span><span class="kbd">Enter</span></div>`,
+
+    palette: () => {
+      const g = (name, kinds) => `<p class="grp">${name}</p><ul class="results">${DATA.filter((r) => kinds.includes(r.k)).map((r, i) =>
+        `<li class="${name === "Functions" && !i ? "on" : ""}">${ico(r.ic)}<span>${hl(r.t)}<br><span class="d" style="font-size:12.5px;color:var(--muted)">${r.d}</span></span>${r.lv ? `<span class="chip free">${r.lv}</span>` : "<span></span>"}</li>`).join("")}</ul>`;
+      return `<div class="q">${ico("search")}<span class="ph">${Q}</span><span class="kbd">Esc</span></div>
+        <div class="scope">${["All", "Exercises", "Functions", "Articles"].map((s, i) => `<button aria-pressed="${!i}">${s}</button>`).join("")}</div>
+        ${g("Functions", ["Function"])}${g("Exercises", ["Exercise"])}${g("Articles and tracks", ["Article", "Track"])}
+        <div class="hint"><span><span class="kbd">↑</span> <span class="kbd">↓</span> move</span><span><span class="kbd">Enter</span> open</span><span><span class="kbd">Tab</span> change scope</span></div>`;
+    },
+
+    sheet: () => `<div class="grid"><div class="h"></div><div class="h l">Result</div><div class="h l">Type</div><div class="h l">Level</div>
+      ${DATA.map((r, i) => `<div class="rn ${i ? "" : "sel"}">${i + 1}</div><div class="${i ? "" : "sel"}"><span>${hl(r.t)}</span></div><div>${r.k}</div><div>${r.lv || ""}</div>`).join("")}</div>
+      <div class="status"><span>6 of 14 results for “${Q}”</span><span><span class="kbd">↑</span> <span class="kbd">↓</span> select &nbsp; <span class="kbd">Enter</span> open</span></div>`,
+
+    menu: (el) => {
+      const style = el.dataset.style;
+      const link = (i, l, on) => `<li><a href="#" class="${on ? "on" : ""}">${ico(i)}${l}</a></li>`;
+      const head = style === "week"
+        ? `<div class="menu-head"><div style="display:flex;gap:10px;align-items:center"><span class="avatar">MK</span><div><b>Maria K.</b><small>maria@example.com</small></div></div>
+           <div style="margin-top:12px;font-size:13px;color:var(--muted)">Daily exercise: 4 of 7 this week</div>
+           <div class="week"><i class="d"></i><i class="d"></i><i></i><i class="d"></i><i class="d"></i><i class="t"></i><i></i></div></div>`
+        : `<div class="menu-head"><span class="avatar">MK</span><div><b>Maria K.</b><small>${style === "plan" ? "Free plan" : "maria@example.com"}</small></div>${style === "plain" ? `<span class="chip free" style="margin-left:auto">Free</span>` : ""}</div>`;
+      const extra = style === "upsell" ? `<div class="upsell"><span>Unlock every exercise</span><span>PRO</span></div>`
+        : style === "plan" ? `<div class="upsell"><span>Free plan, 14 of 92 exercises</span><span>Upgrade</span></div>` : "";
+      return `${head}<ul>${link("grid", "Overview")}${link("chart", "Progress")}${link("cal", "Daily exercise")}${link("file", "Certificates")}${link("card", "Plan and billing")}${link("gear", "Account settings")}</ul>${extra}<hr><ul><li><button>${ico("out")}Log out</button></li></ul>`;
+    },
+  };
+
+  const mount = () => {
+    document.querySelectorAll("[data-render]").forEach((el) => { el.innerHTML = R[el.dataset.render](el); });
+    document.querySelectorAll(".palette").forEach((p) => { p.style.display = ""; });
+  };
+  mount();
+
+  const body = document.body;
+  const sync = () => document.querySelectorAll("[data-set]").forEach((b) => {
+    const key = b.dataset.set;
+    b.setAttribute("aria-pressed", String(key === "theme" ? body.dataset.theme === b.dataset.v : body.dataset[key] === b.dataset.v));
+  });
+  const set = (key, v) => {
+    body.dataset[key] = v;
+    if (key === "theme") document.documentElement.style.colorScheme = v;
+    sync();
+  };
+  document.addEventListener("click", (e) => {
+    const s = e.target.closest("[data-set]");
+    if (s) return set(s.dataset.set, s.dataset.v);
+    const a = e.target.closest("[data-act]");
+    if (a) return set("open", body.dataset.open === a.dataset.act ? "none" : a.dataset.act);
+    if (!e.target.closest(".pop, .palette")) set("open", "none");
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") set("open", "none");
+    if ((e.key === "k" && (e.ctrlKey || e.metaKey)) || (e.key === "/" && !/input/i.test(e.target.tagName))) { e.preventDefault(); set("open", "search"); }
+  });
+  sync();
+</script>
+</body>
+</html>

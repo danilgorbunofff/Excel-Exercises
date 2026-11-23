@@ -16,6 +16,7 @@ import { bestStreak, currentStreak } from "../lib/daily.ts";
 import { readDaily } from "./daily-store.ts";
 import { dayCount, longDate } from "./daily-view.ts";
 import { saveSession } from "./drill-session.ts";
+import { bindHoverTip } from "./hover-tip.ts";
 import {
   activeDays,
   addDays,
@@ -60,34 +61,6 @@ const stat = (key: string, value: string) => {
   if (el) el.textContent = value;
 };
 
-/** A tooltip over the tile under the pointer; the native title one is slow and absent in some webviews. */
-function bindHeatTip(grid: HTMLElement): void {
-  const tip = q("[data-heat-tip]");
-  const card = tip?.parentElement;
-  if (!tip || !card || grid.dataset.tipBound) return;
-  grid.dataset.tipBound = "";
-  const [count, date] = [tip.querySelector("strong"), tip.querySelector("span")];
-  grid.addEventListener("pointerover", (e) => {
-    const cell = (e.target as HTMLElement).closest<HTMLElement>("[data-tip]");
-    if (!cell || !count || !date) return tip.classList.remove("show");
-    count.textContent = cell.dataset.tip ?? "";
-    date.textContent = cell.dataset.day ?? "";
-    const c = cell.getBoundingClientRect();
-    const k = card.getBoundingClientRect();
-    const half = tip.offsetWidth / 2;
-    const mid = c.left - k.left + c.width / 2;
-    const left = Math.min(Math.max(mid, half), k.width - half) - half;
-    tip.style.left = `${left}px`;
-    tip.style.top = `${c.top - k.top - 13}px`;
-    tip.style.setProperty("--arrow", `${mid - left}px`);
-    tip.style.setProperty("--dot", getComputedStyle(cell).backgroundColor);
-    // Set the place while hidden (no transition), so it glides only between tiles.
-    void tip.offsetWidth;
-    tip.classList.add("show");
-  });
-  grid.addEventListener("pointerleave", () => tip.classList.remove("show"));
-}
-
 /** Weeks in the grid of days practised: about six months. */
 const HEAT_WEEKS = 26;
 
@@ -120,7 +93,7 @@ function paintActivity(progress: Progress, today: string): void {
     return cell;
   });
   grid.replaceChildren(...cells);
-  bindHeatTip(grid);
+  bindHoverTip(grid, q("[data-heat-tip]"));
   grid.setAttribute(
     "aria-label",
     practised ? `Practised on ${dayCount(practised)} in the last 6 months` : "No practice yet",
@@ -255,10 +228,16 @@ function paintTable(): void {
           : `${shown.length} of ${total} due`;
     // The number leads in bold: "1 of 2 due".
     const m = /^(\d+)(.*)$/.exec(line);
-    if (m) reviewCount.replaceChildren(Object.assign(document.createElement("b"), { textContent: m[1] }), m[2] ?? "");
+    if (m)
+      reviewCount.replaceChildren(
+        Object.assign(document.createElement("b"), { textContent: m[1] }),
+        m[2] ?? "",
+      );
     else reviewCount.textContent = line;
   }
-  const active = [field("q"), field("why"), field("level"), field("track")].filter((el) => el?.value.trim()).length;
+  const active = [field("q"), field("why"), field("level"), field("track")].filter((el) =>
+    el?.value.trim(),
+  ).length;
   if (activeTag) {
     activeTag.hidden = active === 0;
     activeTag.textContent = `${active} active`;

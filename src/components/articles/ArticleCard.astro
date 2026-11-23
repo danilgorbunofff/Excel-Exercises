@@ -19,7 +19,7 @@ const { article, index, level: Heading = "h2", showTopic = true } = Astro.props;
 const { title, description, minutes, functions, cover, topic } = article.data;
 ---
 
-<article class="card article-card">
+<article class="card card-link article-card">
   <ArticleCover text={cover ?? functions[0] ?? "fx"} tone={index} />
   <div class="body">
     {showTopic && <p class="topic">{ARTICLE_TOPICS[topic]}</p>}
@@ -42,9 +42,6 @@ const { title, description, minutes, functions, cover, topic } = article.data;
     height: 100%;
     padding: 0;
     overflow: hidden;
-  }
-  .article-card:hover {
-    border-color: var(--chip-line);
   }
   .body {
     display: flex;

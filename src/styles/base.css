@@ -250,7 +250,8 @@ kbd {
       border-color 250ms var(--ease),
       color 250ms var(--ease);
   }
-  a.card {
+  a.card,
+  .card-link {
     transition:
       background-color 250ms var(--ease),
       border-color var(--duration) var(--ease),
@@ -261,12 +262,14 @@ kbd {
   .progress-bar > span {
     transition: width 400ms var(--ease);
   }
-  a.card:focus-visible {
+  a.card:focus-visible,
+  .card-link:has(:focus-visible) {
     transform: translateY(-2px);
     box-shadow: var(--shadow-pop);
   }
   @media (hover: hover) {
-    a.card:hover {
+    a.card:hover,
+    .card-link:hover {
       transform: translateY(-2px);
       box-shadow: var(--shadow-pop);
     }
@@ -418,8 +421,10 @@ a.card {
   color: inherit;
   text-decoration: none;
 }
+/* A card whose single link is stretched over it (see ArticleCard) acts like a.card. */
 @media (hover: hover) {
-  a.card:hover {
+  a.card:hover,
+  .card-link:hover {
     border-color: var(--chip-line);
   }
 }

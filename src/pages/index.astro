@@ -530,15 +530,18 @@ const audiences: { title: string; text: string }[] = [
         color 0.3s,
         gap 0.3s;
     }
-    .offer:hover .offer-link span[aria-hidden="true"] {
-      transform: translateX(4px);
-    }
     .offer,
     .offer::after {
       transition:
         transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
         border-radius 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
         background 0.35s;
+    }
+  }
+  /* Touch screens keep :hover after a tap, so the grow only runs with a mouse. */
+  @media (prefers-reduced-motion: no-preference) and (hover: hover) {
+    .offer:hover .offer-link span[aria-hidden="true"] {
+      transform: translateX(4px);
     }
     .offer:hover {
       transform: scale(1.04);

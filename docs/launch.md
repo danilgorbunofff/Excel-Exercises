@@ -72,6 +72,9 @@ For local work: `vercel link`, then `vercel env pull .env.local`.
    Then run `supabase/migrations/0005_events.sql` (anonymous usage counts,
    see `docs/metrics.md`) and `0006_digest.sql` (the weekly email switch).
    Deploy the code and run 0006 together: the account page reads `digest`.
+   Then run every later file, `0007` up to the newest, in number order. Check
+   with Database, Migrations in Supabase, or `list_migrations` in its MCP
+   server, that none was skipped.
 2. Authentication, URL Configuration: Site URL `https://excelexercises.online`.
    Redirect URLs: `https://excelexercises.online/api/auth/callback/**`,
    `http://localhost:4321/api/auth/callback/**` and your preview domain.

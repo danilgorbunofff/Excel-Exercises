@@ -225,10 +225,20 @@ ${score < 100 ? `<td class="bg-track" style="height:8px;line-height:8px;font-siz
 const WHY = "You signed up for the daily exercise and tips.";
 
 function layout(
-  ctx: MailContext,
-  m: { subject: string; preheader: string; body: string; text: string[] },
+  ctx: Pick<MailContext, "origin" | "unsubscribe">,
+  m: {
+    subject: string;
+    preheader: string;
+    body: string;
+    text: string[];
+    /** Why this email came. The daily series when absent. */
+    why?: string;
+  },
 ): Email {
   const { origin, unsubscribe } = ctx;
+  const why = m.why ?? WHY;
+  // The weekly email is the "weekly instead" choice, so it links to settings.
+  const other = m.why ? "Email settings" : "Weekly instead";
   const css = `
 body{margin:0;padding:0;-webkit-text-size-adjust:100%;}
 @media (max-width:620px){
@@ -269,9 +279,9 @@ ${DARK_RULES.map((r) => `[data-ogsc] ${r}`).join("\n")}`;
 ${m.body}
 
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:40px 0 0;"><tr><td class="c-muted b-rule" style="padding:20px 0 0;border-top:1px solid ${C.rule[0]};font-family:${FONT};font-size:13px;line-height:20px;color:${C.muted[0]};">
-${WHY}<br>
+${why}<br>
 <a class="c-muted" href="${esc(unsubscribe)}" style="color:${C.muted[0]};">Unsubscribe</a> &middot;
-<a class="c-muted" href="${origin}/account/settings/" style="color:${C.muted[0]};">Weekly instead</a><br>
+<a class="c-muted" href="${origin}/account/settings/" style="color:${C.muted[0]};">${other}</a><br>
 Excel Exercises, [postal address]
 </td></tr></table>
 
@@ -284,9 +294,9 @@ Excel Exercises, [postal address]
     ...m.text,
     "",
     "--",
-    WHY,
+    why,
     `Unsubscribe in one click: ${unsubscribe}`,
-    `Weekly instead: ${origin}/account/settings/`,
+    `${other}: ${origin}/account/settings/`,
   ].join("\n");
   return { subject: m.subject, html, text };
 }
@@ -564,5 +574,22 @@ ${taskTeaser(ctx.today, o)}`,
       `Get PRO yearly: ${o}/pricing/`,
       ...teaserText(ctx),
     ],
+  });
+}
+
+/** The Monday email for people who chose weekly: the counts, then the review list. */
+export function weeklyMail(
+  ctx: Pick<MailContext, "origin" | "unsubscribe">,
+  m: { subject: string; lines: readonly string[]; progress: string },
+): Email {
+  return layout(ctx, {
+    subject: m.subject,
+    preheader: m.lines.join(" "),
+    body: `${muted("Your week", "margin:0 0 6px;")}
+${h1(esc(m.subject))}
+${list(m.lines.map(esc))}
+${button("See your review list", m.progress)}`,
+    text: [...m.lines, "", `See your review list: ${m.progress}`],
+    why: "You get this email because you turned on the weekly email in your account settings.",
   });
 }

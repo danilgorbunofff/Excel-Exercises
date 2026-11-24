@@ -1,19 +1,15 @@
 // Why this exists: the words of the weekly email. Pure, so they are
-// unit-tested; the cron job reads the rows and sends them. The daily and
-// starter emails are HTML, in mail-templates.ts.
+// unit-tested; the cron job reads the rows and sends them. The HTML frame is
+// weeklyMail in mail-templates.ts, shared with the daily emails.
 import { addDays, isDue, isSolved, type Progress } from "../scripts/progress.ts";
-
-export interface Digest {
-  subject: string;
-  text: string;
-}
+import { type Email, weeklyMail } from "./mail-templates.ts";
 
 /** The weekly email, or null when there is nothing to say: no solves this week and nothing due. */
 export function weeklyDigest(
   progress: Progress,
   today: string,
   links: { progress: string; unsubscribe: string },
-): Digest | null {
+): Email | null {
   const weekAgo = addDays(today, -7);
   const entries = Object.values(progress);
   const solvedThisWeek = entries.filter((e) => isSolved(e) && (e.last ?? "") > weekAgo).length;
@@ -34,23 +30,12 @@ export function weeklyDigest(
     lines.push(
       `${plural(missed, "exercise")} you tried ${missed === 1 ? "is" : "are"} not solved yet.`,
     );
-  lines.push("", `See your review list: ${links.progress}`);
-  return {
-    subject:
-      due + missed > 0
-        ? `${plural(due + missed, "exercise")} to review this week`
-        : `You solved ${plural(solvedThisWeek, "exercise")} this week`,
-    text: layout(
-      lines,
-      "You get this email because you turned on the weekly email in your account settings.",
-      links.unsubscribe,
-    ),
-  };
+  const subject =
+    due + missed > 0
+      ? `${plural(due + missed, "exercise")} to review this week`
+      : `You solved ${plural(solvedThisWeek, "exercise")} this week`;
+  return weeklyMail(
+    { origin: new URL(links.progress).origin, unsubscribe: links.unsubscribe },
+    { subject, lines, progress: links.progress },
+  );
 }
-
-/**
- * The frame every email shares: the body, then why it came and the
- * unsubscribe link. The one place to swap for an HTML template later.
- */
-export const layout = (body: readonly string[], why: string, unsubscribe: string): string =>
-  [...body, "", why, `Unsubscribe in one click: ${unsubscribe}`].join("\n");

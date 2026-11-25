@@ -949,7 +949,55 @@
   "area": "criteria",
   "formula": "=SUMIF(B2:B9,\"South\",F2)",
   "excel": 6,
-  "match": false
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIF(B2:B9,\"North\",F2:F12)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIF(B4:B9,\"North\",F2)",
+  "excel": 8,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIF(B2:B9,\"North\",F5:F6)",
+  "excel": 6,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIF(B2:B9,\"North\",F2:G2)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIF(B2:C9,\"North\",F2)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=SUMIF(B:B,\"North\",F2)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=AVERAGEIF(B2:B9,\"South\",F2:F3)",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "criteria",
+  "formula": "=AVERAGEIF(B2:B9,\"North\",F3)",
+  "excel": 1,
+  "match": true
  },
  {
   "area": "criteria",

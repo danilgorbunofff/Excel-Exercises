@@ -30,7 +30,14 @@ export function wildcardRegExp(pattern: string): RegExp {
 }
 
 const cmp = (op: Op, c: number) =>
-  ({ "=": c === 0, "<>": c !== 0, "<": c < 0, ">": c > 0, "<=": c <= 0, ">=": c >= 0 })[op];
+  ({
+    "=": c === 0,
+    "<>": c !== 0,
+    "<": c < 0,
+    ">": c > 0,
+    "<=": c <= 0,
+    ">=": c >= 0,
+  })[op];
 
 /** Returns a test for one cell, built from a criteria value. */
 export function criteriaMatcher(criteria: Scalar): (cell: Scalar) => boolean {
@@ -121,6 +128,14 @@ const pairsFrom = (args: Arg[], offset: number): [RangeValue, Scalar][] => {
   for (let i = offset; i < args.length; i += 2) pairs.push([range(args[i]), scalar(args[i + 1])]);
   return pairs;
 };
+/**
+ * SUMIF's and AVERAGEIF's sum_range as Excel reads it: a block the shape of the
+ * criteria range from sum_range's top-left cell, so SUMIF(A2:A10,"x",B2:B9) reads B10 too.
+ */
+function sumRange(r: RangeValue, a: Arg | undefined): RangeValue {
+  if (!a || a.empty) return r;
+  return a.resize ? a.resize(r.rows.length, r.rows[0]?.length ?? 0) : range(a);
+}
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
 const mean = (xs: number[]) => (xs.length ? sum(xs) / xs.length : fail("#DIV/0!"));
 
@@ -166,7 +181,7 @@ export const CRITERIA: Record<string, FunctionSpec> = {
     safe((args) => {
       const r = range(args[0]);
       const at = matches([[r, scalar(args[1])]]);
-      return sum(pick(args[2] && !args[2].empty ? range(args[2]) : r, at));
+      return sum(pick(sumRange(r, args[2]), at));
     }),
   ),
   SUMIFS: fn(
@@ -186,7 +201,7 @@ export const CRITERIA: Record<string, FunctionSpec> = {
     safe((args) => {
       const r = range(args[0]);
       const at = matches([[r, scalar(args[1])]]);
-      return mean(pick(args[2] && !args[2].empty ? range(args[2]) : r, at));
+      return mean(pick(sumRange(r, args[2]), at));
     }),
   ),
   AVERAGEIFS: fn(

@@ -106,31 +106,6 @@
   ]
  },
  {
-  "screen": "drill/averageif-drill-1#1",
-  "file": "content/drills/averageif-drill-1.yaml",
-  "problems": [
-   "survivor: =AVERAGEIF(A2:A7,\"East\",B2:B8)  [mutant (range A2:A8 one row short at the end)] grader=correct",
-   "survivor: =AVERAGEIF(A2:A9,\"East\",B2:B8)  [mutant (range A2:A8 one row long)] grader=correct",
-   "survivor: =AVERAGEIF(A2:A8,\"East\",B2:B7)  [mutant (range B2:B8 one row short at the end)] grader=correct"
-  ]
- },
- {
-  "screen": "drill/averageif-drill-4#1",
-  "file": "content/drills/averageif-drill-4.yaml",
-  "problems": [
-   "wrong-passes: =AVERAGEIF(A2:A9,\"<>East\",B2:B8)  [mutant (range A2:A8 one row long)] grader=correct"
-  ]
- },
- {
-  "screen": "drill/averageif-drill-5#1",
-  "file": "content/drills/averageif-drill-5.yaml",
-  "problems": [
-   "survivor: =ROUND(AVERAGEIF(A2:A7,\"East\",B2:B8),1)  [mutant (range A2:A8 one row short at the end)] grader=correct",
-   "survivor: =ROUND(AVERAGEIF(A2:A9,\"East\",B2:B8),1)  [mutant (range A2:A8 one row long)] grader=correct",
-   "survivor: =ROUND(AVERAGEIF(A2:A8,\"East\",B2:B7),1)  [mutant (range B2:B8 one row short at the end)] grader=correct"
-  ]
- },
- {
   "screen": "drill/concat-drill-1#1",
   "file": "content/drills/concat-drill-1.yaml",
   "problems": [
@@ -234,13 +209,6 @@
   "file": "content/drills/day-drill-4.yaml",
   "problems": [
    "coverage: only 4 correct formulas checked in Excel"
-  ]
- },
- {
-  "screen": "drill/day-drill-5#1",
-  "file": "content/drills/day-drill-5.yaml",
-  "problems": [
-   "shape: variant 2 does not change the expected result"
   ]
  },
  {

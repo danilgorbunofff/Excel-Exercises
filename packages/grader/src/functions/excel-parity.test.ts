@@ -23,8 +23,6 @@ const rows = JSON.parse(
 
 /** Differences that are understood, each with the reason it is kept. */
 const KNOWN: Record<string, string> = {
-  '=SUMIF(B2:B9,"South",F2)':
-    "Excel stretches a short sum_range over the sheet; the grader sums only the cells given. No task needs it.",
   "=F2:F4*F2:F3":
     "Excel pads to 3 rows with #N/A (ROWS gives 3); the automation read back only 2 rows.",
   "=LET(x,2,x,3,x)": "Excel refuses the formula; grade() reports it as syntax before evaluating.",

@@ -22,6 +22,11 @@ export type Value = Scalar | RangeValue;
 export interface Arg {
   get: () => Value;
   empty: boolean;
+  /**
+   * For a cell or range reference: the sheet block of the given size that starts
+   * at the reference's top-left cell. SUMIF's sum_range needs it, as Excel resizes it.
+   */
+  resize?: (rows: number, cols: number) => RangeValue;
 }
 
 /** `options` reaches the few functions that read outside the sheet, such as TODAY. */

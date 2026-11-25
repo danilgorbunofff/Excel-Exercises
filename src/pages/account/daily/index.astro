@@ -61,7 +61,7 @@ const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
           <ol class="ladder">
             {
               TIER_NAMES.slice(1).map((name, i) => (
-                <li>
+                <li data-level={i < 2 ? 1 : i < 5 ? 2 : 3}>
                   <b>{DAYS[i]?.slice(0, 3)}</b>
                   <span class="muted">{name}</span>
                   <span class="steps" aria-hidden="true">

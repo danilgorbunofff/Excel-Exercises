@@ -410,10 +410,9 @@ test("no internal link leads to a missing page", async ({ request }) => {
 
 test("a function link lists only the exercises that use that function", async ({ page }) => {
   await page.goto("/functions/");
-  await page
-    .locator(".fn", { hasText: "Returns TRUE when at least one test is true." })
-    .getByRole("link", { name: /exercise/u })
-    .click();
+  const or = page.locator(".fn", { hasText: "Returns TRUE when at least one test is true." });
+  await or.hover();
+  await or.getByRole("link", { name: /exercise/u }).click();
   await expect(page).toHaveURL(/\/exercises\/\?fn=OR$/u);
   await expect(page.getByLabel("Function", { exact: true })).toHaveValue("OR");
   await expect(page.locator("tbody tr:not([hidden]) th a")).toHaveText([

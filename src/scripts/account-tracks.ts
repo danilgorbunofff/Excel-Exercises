@@ -34,11 +34,30 @@ filter?.addEventListener("click", (e) => {
   if (!button) return;
   for (const b of filter.querySelectorAll("[data-group]"))
     b.setAttribute("aria-pressed", String(b === button));
+  moveThumb();
   const group = button.dataset.group;
+  let shown = 0;
   for (const row of document.querySelectorAll<HTMLElement>("[data-track]")) {
     row.hidden = Boolean(group) && row.dataset.trackGroup !== group;
+    if (row.hidden) continue;
+    // Restart the settle-in animation on each row that stays, staggered down the table.
+    row.classList.remove("row-in");
+    row.style.setProperty("--i", String(Math.min(shown++, 8)));
+    void row.offsetWidth;
+    row.classList.add("row-in");
   }
 });
+
+/** Slides the thumb under the pressed button. */
+function moveThumb(): void {
+  const pressed = filter?.querySelector<HTMLElement>('[aria-pressed="true"]');
+  if (!(filter instanceof HTMLElement) || !pressed) return;
+  filter.style.setProperty("--x", `${pressed.offsetLeft}px`);
+  filter.style.setProperty("--w", `${pressed.offsetWidth}px`);
+  filter.dataset.thumb = "";
+}
+moveThumb();
+if (filter) new ResizeObserver(moveThumb).observe(filter);
 
 paint();
 document.addEventListener(SYNCED_EVENT, paint);

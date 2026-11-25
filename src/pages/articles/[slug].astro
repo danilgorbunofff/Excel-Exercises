@@ -351,6 +351,10 @@ const jsonLd = JSON.stringify({
     color: var(--heading);
     scroll-margin-top: 5rem;
   }
+  /* The note box already pads its top, so its heading takes no margin above it. */
+  .prose :global(.note > h2) {
+    margin: 0 0 var(--space-2);
+  }
   .prose :global(p),
   .prose :global(li) {
     line-height: 1.7;

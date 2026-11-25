@@ -132,15 +132,19 @@ function reviewItems(progress: Progress, today: string): Item[] {
 }
 
 /** Why an item is on the list, as a sort key and the words shown for it. */
-function reasonOf(progress: Progress, id: string): { key: string; text: string } {
+function reasonOf(
+  progress: Progress,
+  id: string,
+): { key: string; text: string; note?: string } {
   const e = progress[id];
   const misses = e?.misses ?? 0;
   if (!isSolved(e))
     return {
       key: "unsolved",
-      text: `Not solved yet, ${misses} wrong ${misses === 1 ? "check" : "checks"}`,
+      text: "Not solved yet",
+      note: misses > 0 ? `${misses} wrong ${misses === 1 ? "check" : "checks"}` : undefined,
     };
-  if ((e?.missed ?? "") > (e?.last ?? "")) return { key: "missed", text: "Wrong on your last try" };
+  if ((e?.missed ?? "") > (e?.last ?? "")) return { key: "missed", text: "Wrong last try" };
   return { key: "due", text: "Due for review" };
 }
 
@@ -261,6 +265,10 @@ function buildRow(item: Item, progress: Progress, urgency: number): ReviewRow {
     }),
   );
   whyCell.firstElementChild?.setAttribute("data-why", reason.key);
+  if (reason.note)
+    whyCell.append(
+      Object.assign(document.createElement("span"), { className: "why-note", textContent: reason.note }),
+    );
   const titleCell = document.createElement("th");
   titleCell.scope = "row";
   titleCell.append(

@@ -1,7 +1,9 @@
 ---
-// Why this exists: the function index, laid out as on Spreadsheet Center: a
-// search box, "Start with a task" cards, a card per essential function with
-// its syntax and exercise count, and every function by category.
+// Why this exists: the function index. Every function is on the page, so the
+// default view is an A to Z list of names; pointing at one shows what it does,
+// how it is written and where to practise it. The same functions can be read
+// by job or by Microsoft category. Without script all three lists show.
+import Icon from "../../components/Icon.astro";
 import Base from "../../layouts/Base.astro";
 import {
   drillsPath,
@@ -15,6 +17,7 @@ import {
   functionsPractised,
   loadFunctionIndex,
 } from "../../lib/functions.ts";
+import { syntaxHtml } from "../../lib/syntax.ts";
 
 const pages = await functionPages();
 const withPage = new Map(pages.map((p) => [p.name, functionPath(p.slug)]));
@@ -24,55 +27,80 @@ const index = loadFunctionIndex();
 const href = (name: string) => withPage.get(name) ?? exercisesForFunction(name);
 const plural = (n: number) => (n === 1 ? "1 exercise" : `${n} exercises`);
 const categories = [...new Set(index.functions.map((f) => f.category))].sort();
-const slug = (c: string) => c.replaceAll(" ", "-").toLowerCase();
+
+// A to Z, dealt into four columns of about the same height. A letter stays whole.
+const byLetter = new Map<string, typeof index.functions>();
+for (const f of [...index.functions].sort((a, b) => a.name.localeCompare(b.name))) {
+  const letter = f.name.charAt(0).toUpperCase();
+  byLetter.set(letter, [...(byLetter.get(letter) ?? []), f]);
+}
+const lines = (list: typeof index.functions) => list.length + 2;
+const target = [...byLetter.values()].reduce((n, l) => n + lines(l), 0) / 4;
+const columns: [string, typeof index.functions][][] = [[], [], [], []];
+let at = 0;
+let filled = 0;
+for (const entry of byLetter) {
+  if (filled >= target && at < 3) {
+    at += 1;
+    filled = 0;
+  }
+  columns[at]?.push(entry);
+  filled += lines(entry[1]);
+}
+const guide = (name: string) => withPage.has(name);
 ---
 
 <Base
   title="Functions"
-  description="Excel functions explained with their syntax, what they are for and the exercises that practise them. Search by name or start from a task."
+  description="Excel functions explained with their syntax, what they are for and the exercises that practise them. Search by name or browse by job."
   layout="wide"
 >
-  <header class="page-head">
-    <h1>Excel functions</h1>
-    <p class="lead">
-      Find the function you need, see how it is written, and practise it in a live sheet.
-    </p>
+  <header class="head">
+    <div>
+      <h1>Excel functions</h1>
+      <p class="lead">
+        {index.functions.length} functions. Point at one to see what it does and how it is written.
+      </p>
+    </div>
     <form class="fn-search" role="search" action="/search/" method="get" data-fn-search>
+      <Icon name="lookup" size={18} />
       <label class="visually-hidden" for="fn-q">Search functions</label>
       <input
         id="fn-q"
         name="q"
         type="search"
-        placeholder="Search functions such as XLOOKUP, IF or SUMIFS"
+        placeholder="Search by name or by what it does"
         autocomplete="off"
         spellcheck="false"
       />
     </form>
-    <p class="fn-count" role="status" data-fn-count></p>
   </header>
+  <p class="fn-count" role="status" data-fn-count></p>
 
-  <section aria-labelledby="tasks" class="block">
-    <div class="block-head">
-      <div>
-        <h2 id="tasks">Find a function by the job</h2>
-        <p>Not sure which function you need? Pick the job you are doing.</p>
-      </div>
-      <a class="button button-outline" href="#by-category">See them by category</a>
-    </div>
-    <ul class="task-grid">
+  <nav class="views" aria-label="Ways to browse the functions">
+    <ul>
+      <li><a href="#by-job" data-view-link>By job</a></li>
+      <li><a href="#by-category" data-view-link>By category</a></li>
+      <li><a href="#a-z" data-view-link aria-current="true">A to Z</a></li>
+    </ul>
+  </nav>
+
+  <section id="by-job" data-view hidden aria-label="Functions by job">
+    <ul class="ledger">
       {
         index.groups.map((g) => (
-          <li class="card">
-            <h3>{g.title}</h3>
-            <p>{g.summary}</p>
-            <ul class="chips">
+          <li class="job">
+            <div>
+              <h2>{g.title}</h2>
+              <p>{g.summary}</p>
+            </div>
+            <ul class="names">
               {index.functions
                 .filter((f) => f.group === g.slug)
                 .map((f) => (
                   <li>
-                    <a class="chip" href={href(f.name)}>
-                      {f.name}
-                    </a>
+                    <a href={href(f.name)}>{f.name}</a>
+                    {guide(f.name) && <span class="gd" role="img" aria-label="Has a full guide" />}
                   </li>
                 ))}
             </ul>
@@ -82,40 +110,25 @@ const slug = (c: string) => c.replaceAll(" ", "-").toLowerCase();
     </ul>
   </section>
 
-  <section aria-labelledby="all" class="block">
-    <div class="block-head">
-      <div>
-        <h2 id="all">The functions used most</h2>
-        <p>
-          {pages.length} have a full guide with worked examples, and every one has exercises to
-          practise.
-        </p>
-      </div>
-    </div>
-    <ul class="fn-grid">
+  <section id="by-category" data-view hidden aria-label="Functions by Microsoft category">
+    <ul class="ledger">
       {
-        index.functions.map((f) => {
-          const count = practised.get(f.name)?.length ?? 0;
+        categories.map((c) => {
+          const list = index.functions.filter((f) => f.category === c);
           return (
-            <li class="card fn" data-fn={`${f.name} ${f.summary}`.toLowerCase()}>
-              <div class="fn-top">
-                <h3>
-                  <a href={href(f.name)}>{f.name}</a>
-                </h3>
-                {withPage.has(f.name) && <span class="badge badge-1">Guide</span>}
+            <li class="job">
+              <div>
+                <h2>{c}</h2>
+                <p>{list.length} functions</p>
               </div>
-              <p>{f.summary}</p>
-              <code class="syntax">{f.syntax}</code>
-              {count > 0 && (
-                <a class="arrow-link small" href={exercisesForFunction(f.name)}>
-                  {plural(count)} on this function
-                </a>
-              )}
-              {drilled.has(f.name) && (
-                <a class="arrow-link small" href={drillsPath(f.name)}>
-                  Practise {f.name} (PRO)
-                </a>
-              )}
+              <ul class="names">
+                {list.map((f) => (
+                  <li>
+                    <a href={href(f.name)}>{f.name}</a>
+                    {guide(f.name) && <span class="gd" role="img" aria-label="Has a full guide" />}
+                  </li>
+                ))}
+              </ul>
             </li>
           );
         })
@@ -123,112 +136,164 @@ const slug = (c: string) => c.replaceAll(" ", "-").toLowerCase();
     </ul>
   </section>
 
-  <section aria-labelledby="by-category" class="block">
-    <div class="block-head">
-      <div>
-        <h2 id="by-category">Every function by category</h2>
-        <p>Every function on this site, in Microsoft's categories.</p>
-      </div>
-    </div>
-    <div class="categories">
+  <section id="a-z" data-view aria-label="Functions A to Z">
+    <div class="az">
       {
-        categories.map((c) => (
-          <section class="card" aria-labelledby={`cat-${slug(c)}`}>
-            <h3 id={`cat-${slug(c)}`}>{c} functions</h3>
-            <ul class="chips">
-              {index.functions
-                .filter((f) => f.category === c)
-                .map((f) => (
-                  <li>
-                    <a class="chip" href={href(f.name)}>
-                      {f.name}
-                    </a>
-                  </li>
-                ))}
-            </ul>
-          </section>
+        columns.map((col) => (
+          <div class="az-col">
+            {col.map(([letter, list]) => (
+              <section class="lt" data-letter>
+                <h2>{letter}</h2>
+                <ul>
+                  {list.map((f) => {
+                    const count = practised.get(f.name)?.length ?? 0;
+                    return (
+                      <li class="fn" data-fn={`${f.name} ${f.summary}`.toLowerCase()}>
+                        <a href={href(f.name)}>{f.name}</a>
+                        {guide(f.name) && (
+                          <span class="gd" role="img" aria-label="Has a full guide" />
+                        )}
+                        <div class="pop">
+                          <p>{f.summary}</p>
+                          <code class="fx" set:html={syntaxHtml(f.syntax)} />
+                          {(count > 0 || drilled.has(f.name)) && (
+                            <p class="pl">
+                              {count > 0 && (
+                                <a href={exercisesForFunction(f.name)}>{plural(count)}</a>
+                              )}
+                              {drilled.has(f.name) && (
+                                <a href={drillsPath(f.name)}>Practise {f.name} (PRO)</a>
+                              )}
+                            </p>
+                          )}
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+            ))}
+          </div>
         ))
       }
     </div>
+    <p class="none" data-fn-none hidden>
+      No function matches. Press Enter to search the whole site.
+    </p>
+    <p class="legend"><span class="gd" aria-hidden="true"></span>Has a full guide with worked examples</p>
   </section>
 </Base>
 
+<noscript>
+  <style>
+    [data-view][hidden] {
+      display: block;
+    }
+  </style>
+</noscript>
+
 <script>
-  // Filters the function cards as you type. Without script the box searches the site.
-  import { collapse } from "../../scripts/collapse.ts";
+  // Switches between the three lists and filters the A to Z list as you type.
+  // Without script every list shows and the search box searches the site.
+  const views = [...document.querySelectorAll<HTMLElement>("[data-view]")];
+  const links = [...document.querySelectorAll<HTMLAnchorElement>("[data-view-link]")];
+  const show = (id: string) => {
+    for (const v of views) v.hidden = v.id !== id;
+    for (const l of links) {
+      if (l.hash === `#${id}`) l.setAttribute("aria-current", "true");
+      else l.removeAttribute("aria-current");
+    }
+  };
+  const fromHash = () => {
+    const id = location.hash.slice(1);
+    show(views.some((v) => v.id === id) ? id : "a-z");
+  };
+  for (const l of links) {
+    l.addEventListener("click", (e) => {
+      e.preventDefault();
+      history.replaceState(null, "", l.hash);
+      show(l.hash.slice(1));
+    });
+  }
+  window.addEventListener("hashchange", fromHash);
+  fromHash();
 
   const form = document.querySelector<HTMLFormElement>("[data-fn-search]");
   const input = form?.querySelector("input");
   const count = document.querySelector<HTMLElement>("[data-fn-count]");
-  const cards = [...document.querySelectorAll<HTMLElement>("[data-fn]")];
-  const grid = document.querySelector(".fn-grid");
-  if (form && input && count && grid) {
-    const cap = collapse(grid, () => cards, 12, "functions");
+  const none = document.querySelector<HTMLElement>("[data-fn-none]");
+  const items = [...document.querySelectorAll<HTMLElement>("[data-fn]")];
+  const letters = [...document.querySelectorAll<HTMLElement>("[data-letter]")];
+  if (form && input && count && none) {
     const apply = () => {
       const words = input.value.toLowerCase().split(/\s+/u).filter(Boolean);
       let shown = 0;
-      for (const card of cards) {
-        card.hidden = !words.every((w) => (card.dataset["fn"] ?? "").includes(w));
-        if (!card.hidden) shown += 1;
+      for (const item of items) {
+        item.hidden = !words.every((w) => (item.dataset["fn"] ?? "").includes(w));
+        if (!item.hidden) shown += 1;
       }
+      for (const l of letters) l.hidden = !l.querySelector("[data-fn]:not([hidden])");
+      if (words.length) show("a-z");
+      none.hidden = !(words.length && !shown);
       count.textContent = words.length
         ? shown
-          ? `Showing ${shown} of ${cards.length} functions.`
-          : "No function matches. Press Enter to search the whole site."
+          ? `Showing ${shown} of ${items.length} functions.`
+          : ""
         : "";
-      cap(words.length > 0);
     };
     input.addEventListener("input", apply);
     form.addEventListener("submit", (e) => {
-      if (cards.some((c) => !c.hidden) && input.value) {
-        e.preventDefault();
-        document.getElementById("all")?.scrollIntoView({ block: "start" });
-      }
+      if (items.some((i) => !i.hidden) && input.value) e.preventDefault();
     });
   }
 </script>
 
 <style>
-  .fn-search {
-    max-width: 36rem;
-    margin: var(--space-6) auto 0;
-  }
-  .fn-search input {
-    width: 100%;
-    min-height: 3.25rem;
-    padding: 0 var(--space-4);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-l);
-    background: var(--surface);
-    box-shadow: var(--shadow-card);
-    font-size: var(--size-base);
-  }
-  .fn-count {
-    min-height: 1.5em;
-    margin: var(--space-2) 0 0;
-    font-size: var(--size-s);
-    color: var(--muted);
-  }
-  .block {
-    margin-bottom: var(--space-7);
-    scroll-margin-top: 5rem;
-  }
-  .block-head {
+  .head {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
     justify-content: space-between;
-    gap: var(--space-3);
-    margin-bottom: var(--space-5);
+    gap: var(--space-5);
+    padding: var(--space-7) 0 var(--space-4);
   }
-  .block-head h2 {
-    margin: 0 0 var(--space-1);
-    font-size: var(--size-xl);
-    color: var(--heading);
-    scroll-margin-top: 5rem;
-  }
-  .block-head p {
+  h1 {
     margin: 0;
+    font-size: var(--size-page);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: var(--heading);
+  }
+  .lead {
+    margin: var(--space-2) 0 0;
+    color: var(--muted);
+  }
+  .fn-search {
+    position: relative;
+    width: min(100%, 27.5rem);
+  }
+  .fn-search :global(.icon) {
+    position: absolute;
+    top: 50%;
+    left: var(--space-3);
+    translate: 0 -50%;
+    color: var(--faint);
+    pointer-events: none;
+  }
+  .fn-search input {
+    width: 100%;
+    min-height: var(--target);
+    padding: 0 var(--space-3) 0 2.5rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+    font-size: var(--size-base);
+  }
+  .fn-count {
+    min-height: 1.5em;
+    margin: 0 0 var(--space-2);
+    font-size: var(--size-s);
     color: var(--muted);
   }
   ul {
@@ -236,73 +301,226 @@ const slug = (c: string) => c.replaceAll(" ", "-").toLowerCase();
     margin: 0;
     padding: 0;
   }
-  .task-grid,
-  .fn-grid,
-  .categories {
-    display: grid;
-    gap: var(--space-4);
+  .views {
+    margin-bottom: var(--space-6);
+    border-bottom: 1px solid var(--rule);
   }
-  h3 {
-    margin: 0 0 var(--space-2);
-    font-size: var(--size-base);
+  .views ul {
+    display: flex;
+    gap: var(--space-6);
+  }
+  .views a {
+    display: block;
+    margin-bottom: -1px;
+    padding: var(--space-3) 0;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .views a[aria-current="true"] {
+    border-bottom-color: var(--primary);
     color: var(--heading);
   }
-  .card p {
-    margin: 0 0 var(--space-3);
+  @media (hover: hover) {
+    .views a:hover {
+      color: var(--heading);
+    }
+  }
+  [data-view][hidden] {
+    display: none;
+  }
+  .gd {
+    display: inline-block;
+    inline-size: 0.375rem;
+    block-size: 0.375rem;
+    margin-inline-start: var(--space-2);
+    border-radius: 50%;
+    background: var(--primary);
+    vertical-align: middle;
+  }
+  .legend {
+    display: flex;
+    align-items: center;
+    margin: var(--space-5) 0 0;
     font-size: var(--size-s);
     color: var(--muted);
+  }
+  .legend .gd {
+    margin: 0 var(--space-2) 0 0;
+  }
+  .none {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  /* A to Z */
+  .az {
+    display: grid;
+    gap: 0 var(--space-7);
+  }
+  .lt {
+    margin-bottom: var(--space-5);
+  }
+  .lt[hidden] {
+    display: none;
+  }
+  .lt h2 {
+    margin: 0 0 var(--space-1);
+    padding-bottom: 0.375rem;
+    border-bottom: 1px solid var(--rule);
+    font-size: var(--size-s);
+    font-weight: 700;
+    color: var(--faint);
+  }
+  .fn {
+    position: relative;
   }
   .fn[hidden] {
     display: none;
   }
-  .fn {
-    display: flex;
-    flex-direction: column;
-  }
-  /* Two links stacked at the foot of a card: keep each a full touch target apart. */
-  .fn .arrow-link.small + .arrow-link.small {
-    margin-top: var(--space-3);
-  }
-  .fn-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-2);
-  }
-  .fn h3 {
+  .fn > a {
+    display: inline-block;
+    padding: var(--space-1) 0;
     font-family: var(--font-mono);
-    font-size: var(--size-l);
-  }
-  .fn h3 a {
+    font-size: var(--size-s);
+    font-weight: 600;
+    color: var(--text);
     text-decoration: none;
   }
-  .fn h3 a:hover {
+  .fn > a:focus-visible,
+  .fn > a:hover {
     color: var(--correct);
     text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
-  .syntax {
-    display: block;
-    margin-bottom: var(--space-3);
-    padding: var(--space-2) var(--space-3);
-    border-radius: var(--radius-m);
-    background: var(--header);
-    font-size: var(--size-xs);
-    overflow-wrap: anywhere;
+  .pop {
+    position: absolute;
+    z-index: 5;
+    top: 100%;
+    left: 0;
+    inline-size: min(22rem, calc(100vw - 2rem));
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+    box-shadow: var(--shadow-pop);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity var(--duration) var(--ease);
   }
-  .small {
-    margin-top: auto;
+  .fn:focus-within .pop {
+    visibility: visible;
+    opacity: 1;
+  }
+  @media (hover: hover) {
+    .fn:hover .pop {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+  .pop p {
+    margin: 0 0 var(--space-2);
     font-size: var(--size-s);
   }
+  .pop .pl {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-4);
+    margin: var(--space-2) 0 0;
+  }
+  .pop .pl a {
+    font-weight: 600;
+    color: var(--correct);
+  }
+  .fx {
+    display: block;
+    padding: 0;
+    background: none;
+    font-size: var(--size-xs);
+    color: var(--muted);
+    overflow-wrap: anywhere;
+  }
+  .fx b {
+    color: var(--heading);
+  }
+  .fx .r {
+    color: var(--text);
+  }
+  .fx .o {
+    color: var(--faint);
+  }
+  @media (pointer: coarse) {
+    .fn > a {
+      padding: var(--space-3) 0;
+    }
+  }
   @media (min-width: 40rem) {
-    .task-grid,
-    .fn-grid,
-    .categories {
+    .az {
       grid-template-columns: 1fr 1fr;
+    }
+    .az-col:nth-child(even) .pop {
+      right: 0;
+      left: auto;
     }
   }
   @media (min-width: 64rem) {
-    .fn-grid {
-      grid-template-columns: repeat(3, 1fr);
+    .az {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .az-col:nth-child(even) .pop {
+      right: auto;
+      left: 0;
+    }
+    .az-col:nth-child(n + 3) .pop {
+      right: 0;
+      left: auto;
+    }
+  }
+
+  /* By job and by category */
+  .ledger {
+    border-top: 1px solid var(--heading);
+  }
+  .job {
+    display: grid;
+    gap: var(--space-3) var(--space-7);
+    padding: var(--space-5) 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .job h2 {
+    margin: 0;
+    font-size: var(--size-base);
+    font-weight: 700;
+    color: var(--heading);
+  }
+  .job p {
+    max-width: 34ch;
+    margin: var(--space-1) 0 0;
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .names {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    gap: var(--space-1) var(--space-5);
+  }
+  .names a {
+    display: inline-block;
+    padding: var(--space-1) 0;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .names a:hover {
+    color: var(--correct);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  @media (min-width: 48rem) {
+    .job {
+      grid-template-columns: 18rem 1fr;
     }
   }
 </style>

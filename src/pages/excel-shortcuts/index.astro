@@ -30,6 +30,11 @@ const keys = (combo: string) => combo.split(" + ");
 
   <div class="table-wrap">
     <table>
+      <colgroup>
+        <col class="col-action" />
+        <col class="col-key" />
+        <col class="col-key" />
+      </colgroup>
       <caption class="visually-hidden">Excel keyboard shortcuts for Windows and Mac</caption>
       <thead>
         <tr>
@@ -125,10 +130,19 @@ const keys = (combo: string) => combo.split(" + ");
     background: var(--surface);
     box-shadow: var(--shadow-card);
   }
+  /* Fixed layout: the columns keep their width however many rows the filter leaves. */
   table {
     width: 100%;
+    min-width: 40rem;
+    table-layout: fixed;
     border-collapse: collapse;
     font-size: var(--size-s);
+  }
+  .col-action {
+    width: 45%;
+  }
+  .col-key {
+    width: 27.5%;
   }
   th,
   td {

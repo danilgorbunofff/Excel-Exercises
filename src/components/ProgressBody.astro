@@ -145,6 +145,7 @@ const { embedded = false } = Astro.props;
             <button class="button button-secondary" type="button" data-review-more></button>
           </p>
         </div>
+        <div class="r-side">
         <form class="card r-filter" role="search" aria-label="Filter the review list" data-review-filter>
           <div class="r-head">
             <h3>Filters</h3>
@@ -189,6 +190,7 @@ const { embedded = false } = Astro.props;
           </div>
           <p class="r-count" role="status" data-review-count></p>
         </form>
+        </div>
       </div>
     </section>
 
@@ -421,9 +423,34 @@ const { embedded = false } = Astro.props;
     min-width: 0;
   }
   @media (min-width: 64rem) {
+    /* The table and the filter card share row 1; the "show more" button sits in
+       row 2 under the table only. */
     .review-layout {
       grid-template-columns: minmax(0, 1fr) 18rem;
-      align-items: start;
+      column-gap: var(--space-5);
+      row-gap: 0;
+    }
+    .review-main {
+      display: contents;
+    }
+    .r-table-wrap {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .r-more {
+      grid-column: 1;
+      grid-row: 2;
+    }
+    /* The filter keeps its own height and follows the scroll until the table ends
+       (its grid area is row 1, so it stops there). */
+    .r-side {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    /* Sticky is bounded by its parent, so the wrapper (row 1 only) stops it at the table's end, above the button. */
+    .r-filter {
+      position: sticky;
+      top: 4.5rem;
     }
   }
   .r-table-wrap {
@@ -524,15 +551,32 @@ const { embedded = false } = Astro.props;
   .r-table-wrap :global(.why) {
     display: inline-block;
     padding: 0.125rem 0.625rem;
-    border-radius: var(--radius-pill);
+    /* Not a full pill: on a phone the text may wrap to a second line. */
+    border-radius: 0.875rem;
     background: var(--read-tint);
     color: var(--read);
     font-size: var(--size-xs);
     font-weight: 700;
     line-height: 1.5;
   }
+  /* Fixed columns keep the title wide and the meta line is cut to one line, so
+     rows stay short beside the filter card. */
   @media (min-width: 48rem) {
+    .r-table-wrap table {
+      table-layout: fixed;
+    }
+    .col-why {
+      width: 9rem;
+    }
+    .col-level {
+      width: 8.5rem;
+    }
     .r-table-wrap :global(.why) {
+      white-space: nowrap;
+    }
+    .r-table-wrap :global(.r-meta) {
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
     }
   }
@@ -540,6 +584,12 @@ const { embedded = false } = Astro.props;
   .r-table-wrap :global(.why[data-why="missed"]) {
     background: var(--miss-tint);
     color: var(--miss);
+  }
+  .r-table-wrap :global(.why-note) {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: var(--size-xs);
+    color: var(--muted);
   }
   .r-table-wrap :global(tr[hidden]) {
     display: none;

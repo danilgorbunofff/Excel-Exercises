@@ -352,6 +352,20 @@
 .ac .tbl tr:last-child td {
   border-bottom: 0;
 }
+/* Fixed columns, so the widths stay the same whichever group the filter shows. */
+.ac .tbl-tracks {
+  table-layout: fixed;
+  min-width: 42rem;
+}
+.ac .tbl-tracks th:nth-child(2) {
+  width: 8.5rem;
+}
+.ac .tbl-tracks th:nth-child(3) {
+  width: 11rem;
+}
+.ac .tbl-tracks th:nth-child(4) {
+  width: 8rem;
+}
 .ac .tbl .r {
   text-align: right;
 }
@@ -540,12 +554,55 @@
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
+/* Segmented control with a sliding thumb. account-tracks.ts sets data-thumb and
+   --x/--w (the pressed button's offset and width) once it can measure; without
+   it the pressed button keeps its own background above. */
+.ac .seg-ctl {
+  position: relative;
+  isolation: isolate;
+}
+.ac .seg-ctl[data-thumb]::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 2px;
+  bottom: 2px;
+  left: 0;
+  width: var(--w);
+  transform: translateX(var(--x));
+  border-radius: calc(var(--radius-m) - 2px);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+.ac .seg-ctl[data-thumb] button[aria-pressed="true"] {
+  background: none;
+  box-shadow: none;
+}
 @media (prefers-reduced-motion: no-preference) {
   .ac .switch span {
     transition: background var(--duration);
   }
   .ac .switch span::after {
     transition: transform var(--duration);
+  }
+  .ac .seg-ctl[data-thumb]::before {
+    transition:
+      transform 320ms cubic-bezier(0.34, 1.2, 0.5, 1),
+      width 320ms cubic-bezier(0.34, 1.2, 0.5, 1);
+  }
+  .ac .seg-ctl button {
+    transition: color var(--duration) var(--ease);
+  }
+  /* Rows that stay after a filter settle in one after another. */
+  .ac .tbl tr.row-in td {
+    animation: row-in 360ms var(--ease) backwards;
+    animation-delay: calc(var(--i, 0) * 35ms);
+  }
+  @keyframes row-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
   }
 } /* Danger zone (GitHub pattern) */
 .ac .danger {
@@ -755,13 +812,23 @@
   align-items: flex-end;
   height: 1rem;
 }
+/* Green for the easy days, yellow for the middle, red for the hard end; unlit bars are a faint tint of the same colour. */
+.ac .ladder li[data-level="1"] {
+  --c: var(--beginner-fill);
+}
+.ac .ladder li[data-level="2"] {
+  --c: var(--intermediate-fill);
+}
+.ac .ladder li[data-level="3"] {
+  --c: var(--advanced-fill);
+}
 .ac .ladder .steps i {
-  width: 4px;
-  background: var(--line);
+  width: 5px;
+  background: color-mix(in srgb, var(--c) 22%, transparent);
   border-radius: 1px;
 }
 .ac .ladder .steps i.on {
-  background: var(--text);
+  background: var(--c);
 } /* Certificates */
 .ac .cert {
   display: grid;

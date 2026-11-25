@@ -92,7 +92,10 @@ test("a wrong check on an unsolved drill puts it on the review list", async ({ p
   await expect(page.locator("[data-review]")).toContainText(
     "MIN practice: Find the cheapest quote",
   );
-  await expect(page.locator("[data-review]")).toContainText("Not solved yet, 1 wrong check");
+  await expect(page.locator("[data-review] [data-why=unsolved]").first()).toHaveText(
+    "Not solved yet",
+  );
+  await expect(page.locator("[data-review] .why-note").first()).toHaveText("1 wrong check");
 });
 
 test("the picker asks for a function before it starts", async ({ page }) => {

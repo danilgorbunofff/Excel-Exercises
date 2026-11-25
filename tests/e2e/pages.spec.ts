@@ -229,7 +229,8 @@ test("a Review link opens a run through the due list, with Previous and Next", a
   const rows = page.locator("[data-review-rows] tr");
   await expect(rows).toHaveCount(2);
   await expect(page.locator("[data-review-count]")).toHaveText("2 due");
-  await expect(rows.first()).toContainText("Not solved yet, 2 wrong checks");
+  await expect(rows.first().locator("[data-why]")).toHaveText("Not solved yet");
+  await expect(rows.first().locator(".why-note")).toHaveText("2 wrong checks");
   // The filter narrows the table; clearing it brings both back.
   await page.getByLabel("Find an exercise").fill("subtract");
   await expect(rows).toHaveCount(1);

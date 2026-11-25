@@ -1,0 +1,51 @@
+id: count-booked-seats-step-3
+slug: count-booked-seats-step-3
+level: 2
+title: Count every answer, words and numbers
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-booked-seats
+step: 3
+screens:
+  - prompt: In B12, count how many people answered, whether they gave a number, a word or TBC. Use COUNTA.
+    rows:
+      - [Guest, Answer]
+      - [Ana, 2]
+      - [Ben, TBC]
+      - [Cy, null]
+      - [Di, No]
+      - [Ed, 1]
+      - [Flo, null]
+      - [Gil, 3]
+      - [Hu, TBC]
+      - [Ida, No]
+      - [Jo, 2]
+      - [Answered, null]
+    answerCell: B12
+    expected: 8
+    variants:
+      - set: { B4: Yes }
+        expected: 9
+    answer: =COUNTA(B2:B11)
+    requiredFunctions:
+      - COUNTA
+    hints:
+      nudge: Numbers and words both count as an answer.
+      rule: COUNTA(B2:B11) counts every cell with anything in it. COUNT would count only the numbers.
+    misses:
+      value: 8 people answered. Count every answer from B2 to B11, words and numbers.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTA.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTA(B2:B11)
+      - =COUNTA($B$2:$B$11)
+    reject:
+      - formula: =COUNT(B2:B11)
+        rule: required-function
+      - formula: =COUNTA(B2:B10)
+        rule: value
+      - formula: =8
+        rule: required-function
+      - formula: =COUNTA(B2:B11
+        rule: syntax

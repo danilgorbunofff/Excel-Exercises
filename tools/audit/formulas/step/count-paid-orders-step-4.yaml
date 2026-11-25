@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNT($B$2:$B$8,$D$2:$D$8)
+      - =COUNT(B$2:B$8,D2:D8)
+      - =count(b2:b8, d2:d8)
+      - =LET(data,B2:B8,COUNT(data,D2:D8))
+    wrong: []
+    equivalent:
+      - formula: =COUNT(B2:B9,D2:D8)
+        why: "range B2:B8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =COUNT(B2:B8,D2:D9)
+        why: "range D2:D8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

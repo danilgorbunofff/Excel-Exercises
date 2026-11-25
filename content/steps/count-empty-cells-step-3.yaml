@@ -1,0 +1,47 @@
+id: count-empty-cells-step-3
+slug: count-empty-cells-step-3
+level: 2
+title: Count the gaps in a block
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-empty-cells
+step: 3
+screens:
+  - prompt: In B8, count the missing fields in the contact list, the block B2 to D6. Use COUNTBLANK.
+    rows:
+      - [Name, Phone, Email, City]
+      - [Ana, 0711 223, null, Leeds]
+      - [Ben, null, ben@mail.com, null]
+      - [Cy, 0722 118, cy@mail.com, York]
+      - [Di, null, null, Hull]
+      - [Ed, 0733 456, ed@mail.com, null]
+      - [null, null, null, null]
+      - [Missing, null, null, null]
+    answerCell: B8
+    expected: 6
+    variants:
+      - set: { C2: ana@mail.com }
+        expected: 5
+    answer: =COUNTBLANK(B2:D6)
+    requiredFunctions:
+      - COUNTBLANK
+    hints:
+      nudge: One range can cover all three columns of details.
+      rule: COUNTBLANK(B2:D6) counts every empty field in the block.
+    misses:
+      value: 6 fields are missing. The range has to cover B to D.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTBLANK.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTBLANK(B2:D6)
+      - =COUNTBLANK(B2:B6)+COUNTBLANK(C2:C6)+COUNTBLANK(D2:D6)
+    reject:
+      - formula: =COUNTBLANK(B2:B6)
+        rule: value
+      - formula: =COUNTA(B2:D6)
+        rule: required-function
+      - formula: =6
+        rule: required-function
+      - formula: =COUNTBLANK(B2:D6
+        rule: syntax

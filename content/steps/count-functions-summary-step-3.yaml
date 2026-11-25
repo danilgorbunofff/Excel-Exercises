@@ -1,0 +1,55 @@
+id: count-functions-summary-step-3
+slug: count-functions-summary-step-3
+level: 2
+title: Count the empty stock cells
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-functions-summary
+step: 3
+screens:
+  - prompt: In B12, count the items whose stock cell is empty, B2 to B10. Use COUNTBLANK.
+    rows:
+      - [Item, Stock]
+      - [Pens, 40]
+      - [Pads, null]
+      - [Clips, 120]
+      - [Tape, ask]
+      - [Glue, null]
+      - [Files, 35]
+      - [Ink, null]
+      - [Rulers, 25]
+      - [Labels, n/a]
+      - [null, null]
+      - [Empty, null]
+    answerCell: B12
+    expected: 3
+    variants:
+      - set: { B3: 14 }
+        expected: 2
+      - set: { B2: null }
+        expected: 4
+      - set: { B10: null }
+        expected: 4
+    answer: =COUNTBLANK(B2:B10)
+    requiredFunctions:
+      - COUNTBLANK
+    hints:
+      nudge: COUNTBLANK counts only the truly empty cells, not the ones with a word.
+      rule: COUNTBLANK(B2:B10) counts the empty stock cells and leaves out ask and n/a.
+    misses:
+      value: 3 stock cells are empty. Text such as ask is not empty.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTBLANK.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTBLANK(B2:B10)
+      - =COUNTBLANK($B$2:$B$10)
+    reject:
+      - formula: =COUNTA(B2:B10)
+        rule: required-function
+      - formula: =COUNTBLANK(B2:B7)
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =COUNTBLANK(B2:B10
+        rule: syntax

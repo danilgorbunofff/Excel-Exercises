@@ -1,0 +1,59 @@
+id: count-paid-orders-step-5
+slug: count-paid-orders-step-5
+level: 3
+title: How many orders are still unpaid
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-paid-orders
+step: 5
+screens:
+  - prompt: In E2, how many orders are still unpaid? Paid orders show an amount; unpaid ones show pending or are still blank.
+    rows:
+      - [Order, Amount, null, Unpaid, null]
+      - [B-201, 145, null, null, null]
+      - [B-202, pending, null, null, null]
+      - [B-203, 88, null, null, null]
+      - [B-204, null, null, null, null]
+      - [B-205, 230, null, null, null]
+      - [B-206, 61, null, null, null]
+      - [B-207, pending, null, null, null]
+      - [B-208, 175, null, null, null]
+      - [B-209, null, null, null, null]
+      - [B-210, 92, null, null, null]
+      - [B-211, 310, null, null, null]
+      - [B-212, pending, null, null, null]
+      - [B-213, 54, null, null, null]
+      - [B-214, 128, null, null, null]
+      - [B-215, 76, null, null, null]
+    answerCell: E2
+    expected: 5
+    variants:
+      - set: { B3: 150 }
+        expected: 4
+      - set: { B11: pending }
+        expected: 6
+      - set: { B7: null }
+        expected: 6
+    answer: =COUNTA(A2:A16)-COUNT(B2:B16)
+    requiredFunctions: []
+    hints:
+      nudge: Every order without an amount is unpaid, whatever the cell shows.
+      rule: "Count all the orders, then take away the ones with a number: COUNTA(A2:A16)-COUNT(B2:B16)."
+    misses:
+      value: "5 orders are unpaid: the pending ones and the blank ones together."
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTA(A2:A16)-COUNT(B2:B16)
+      - =ROWS(B2:B16)-COUNT(B2:B16)
+      - =SUMPRODUCT(--NOT(ISNUMBER(B2:B16)))
+    reject:
+      - formula: =COUNTIF(B2:B16,"pending")
+        rule: value
+      - formula: =COUNTBLANK(B2:B16)
+        rule: value
+      - formula: =5
+        rule: reference
+      - formula: =COUNTA(A2:A16)-COUNT(B2:B16
+        rule: syntax

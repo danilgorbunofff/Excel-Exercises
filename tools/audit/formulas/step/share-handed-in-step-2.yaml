@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTBLANK(B$2:B$9)
+      - =countblank(b2:b9)
+      - =LET(data,B2:B9,COUNTBLANK(data))
+    wrong:
+      - formula: =COUNTBLANK(B2:B8)
+        rule: fragile
+        why: range B2:B9 one row short at the end
+      - formula: =COUNTBLANK(B3:B9)
+        rule: fragile
+        why: range B2:B9 skips its first row
+    equivalent: []

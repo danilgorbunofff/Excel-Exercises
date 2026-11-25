@@ -1,0 +1,41 @@
+id: count-empty-cells-step-2
+slug: count-empty-cells-step-2
+level: 1
+title: Count the empty days in a row
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-empty-cells
+step: 2
+screens:
+  - prompt: The room shows a name on each day it is booked. In I2, count the days it is free, from B2 to H2. Use COUNTBLANK.
+    rows:
+      - [Day, Mon, Tue, Wed, Thu, Fri, Sat, Sun, Free days]
+      - [Room 1, Sales, null, HR, null, Sales, null, null, null]
+    answerCell: I2
+    expected: 4
+    variants:
+      - set: { C2: IT }
+        expected: 3
+    answer: =COUNTBLANK(B2:H2)
+    requiredFunctions:
+      - COUNTBLANK
+    hints:
+      nudge: COUNTBLANK counts the empty cells in a range.
+      rule: COUNTBLANK(B2:H2) counts the days with nothing in them.
+    misses:
+      value: The room is free on 4 days. Count the empty cells from B2 to H2.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTBLANK.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTBLANK(B2:H2)
+      - =countblank(b2:h2)
+    reject:
+      - formula: =COUNTA(B2:H2)
+        rule: required-function
+      - formula: =COUNTBLANK(B2:G2)
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =COUNTBLANK(B2:H2
+        rule: syntax

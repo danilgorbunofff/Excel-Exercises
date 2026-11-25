@@ -1,0 +1,49 @@
+id: count-booked-seats-step-4
+slug: count-booked-seats-step-4
+level: 2
+title: Count the bookings on two days
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-booked-seats
+step: 4
+screens:
+  - prompt: "In B9, count the booked slots on both days: Monday in B2 to B7 and Tuesday in D2 to D7. Use COUNTA."
+    rows:
+      - [Slot, Monday, null, Tuesday]
+      - [9:00, Ana, null, null]
+      - [10:00, null, null, Ravi]
+      - [11:00, Lu, null, Kim]
+      - [12:00, Omar, null, null]
+      - [14:00, null, null, Sam]
+      - [15:00, Jo, null, Eve]
+      - [null, null, null, null]
+      - [Booked, null, null, null]
+    answerCell: B9
+    expected: 8
+    variants:
+      - set: { D2: Ben }
+        expected: 9
+    answer: =COUNTA(B2:B7,D2:D7)
+    requiredFunctions:
+      - COUNTA
+    hints:
+      nudge: COUNTA takes more than one range, separated by commas.
+      rule: COUNTA(B2:B7,D2:D7) counts the names on both days.
+    misses:
+      value: 8 slots are booked across both days. Include both columns.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTA.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTA(B2:B7,D2:D7)
+      - =COUNTA(B2:D7)
+      - =COUNTA(B2:B7)+COUNTA(D2:D7)
+    reject:
+      - formula: =COUNTA(B2:B7)
+        rule: value
+      - formula: =COUNT(B2:B7,D2:D7)
+        rule: required-function
+      - formula: =8
+        rule: required-function
+      - formula: =COUNTA(B2:B7,D2:D7
+        rule: syntax

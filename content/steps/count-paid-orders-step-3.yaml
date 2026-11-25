@@ -1,0 +1,53 @@
+id: count-paid-orders-step-3
+slug: count-paid-orders-step-3
+level: 2
+title: Count the numbers in a block
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-paid-orders
+step: 3
+screens:
+  - prompt: In B11, count the scores that were entered for both rounds, in the block B2 to C9. Some players have a note or nothing. Use COUNT.
+    rows:
+      - [Player, Round 1, Round 2]
+      - [Ana, 72, 68]
+      - [Ben, injured, 75]
+      - [Cy, 81, null]
+      - [Di, 64, 70]
+      - [Ed, null, late]
+      - [Flo, 77, 79]
+      - [Gil, 69, 73]
+      - [Hu, withdrew, withdrew]
+      - [null, null, null]
+      - [Scores, null, null]
+    answerCell: B11
+    expected: 10
+    variants:
+      - set: { C4: 66 }
+        expected: 11
+      - set: { B9: 70 }
+        expected: 11
+    answer: =COUNT(B2:C9)
+    requiredFunctions:
+      - COUNT
+    hints:
+      nudge: One range can cover both rounds side by side.
+      rule: COUNT(B2:C9) counts every number in the block and skips the notes and gaps.
+    misses:
+      value: There are 10 scores in the block. The range has to cover both columns.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNT(B2:C9)
+      - =COUNT(B2:B9,C2:C9)
+      - =COUNT(B2:B9)+COUNT(C2:C9)
+    reject:
+      - formula: =COUNT(B2:B9)
+        rule: value
+      - formula: =COUNTA(B2:C9)
+        rule: required-function
+      - formula: =10
+        rule: required-function
+      - formula: =COUNT(B2:C9
+        rule: syntax

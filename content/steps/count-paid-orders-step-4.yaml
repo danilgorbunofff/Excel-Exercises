@@ -1,0 +1,50 @@
+id: count-paid-orders-step-4
+slug: count-paid-orders-step-4
+level: 2
+title: Count paid orders across two months
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-paid-orders
+step: 4
+screens:
+  - prompt: "In B10, count the paid orders in both months: May in B2 to B8 and June in D2 to D8. Unpaid ones say pending. Use COUNT."
+    rows:
+      - [Order, May, null, June]
+      - ["1", 120, null, pending]
+      - ["2", pending, null, 95]
+      - ["3", 88, null, 140]
+      - ["4", 230, null, pending]
+      - ["5", pending, null, 61]
+      - ["6", 47, null, 210]
+      - ["7", 156, null, 99]
+      - [null, null, null, null]
+      - [Paid, null, null, null]
+    answerCell: B10
+    expected: 10
+    variants:
+      - set: { D2: 80 }
+        expected: 11
+    answer: =COUNT(B2:B8,D2:D8)
+    requiredFunctions:
+      - COUNT
+    hints:
+      nudge: COUNT takes more than one range, separated by commas.
+      rule: COUNT(B2:B8,D2:D8) counts the amounts in both months and skips the pending ones.
+    misses:
+      value: There are 10 paid orders across both months. Include both columns.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNT(B2:B8,D2:D8)
+      - =COUNT(B2:D8)
+      - =COUNT(B2:B8)+COUNT(D2:D8)
+    reject:
+      - formula: =COUNT(B2:B8)
+        rule: value
+      - formula: =COUNTA(B2:B8,D2:D8)
+        rule: required-function
+      - formula: =10
+        rule: required-function
+      - formula: =COUNT(B2:B8,D2:D8
+        rule: syntax

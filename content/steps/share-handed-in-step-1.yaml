@@ -1,0 +1,49 @@
+id: share-handed-in-step-1
+slug: share-handed-in-step-1
+level: 1
+title: Count the essays handed in
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: share-handed-in
+step: 1
+screens:
+  - prompt: Each essay that was handed in has a mark. In B10, count the essays handed in. Use COUNT.
+    rows:
+      - [Student, Mark]
+      - [Ana, 15]
+      - [Ben, 11]
+      - [Cara, null]
+      - [Dan, 18]
+      - [Eve, 13]
+      - [Finn, null]
+      - [Gus, 16]
+      - [Hana, 12]
+      - [Handed in, null]
+    answerCell: B10
+    expected: 6
+    variants:
+      - set: { B4: 14 }
+        expected: 7
+    answer: =COUNT(B2:B9)
+    requiredFunctions:
+      - COUNT
+    hints:
+      nudge: Count the marks, which are numbers.
+      rule: COUNT(B2:B9) counts the cells with a mark and skips the empty ones.
+    misses:
+      value: 6 essays were handed in. Count the marks from B2 to B9.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNT(B2:B9)
+      - =COUNT($B$2:$B$9)
+    reject:
+      - formula: =COUNTA(A2:A9)
+        rule: required-function
+      - formula: =COUNT(B2:B8)
+        rule: value
+      - formula: =6
+        rule: required-function
+      - formula: =COUNT(B2:B9
+        rule: syntax

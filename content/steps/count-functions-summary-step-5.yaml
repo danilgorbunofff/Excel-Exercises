@@ -1,0 +1,57 @@
+id: count-functions-summary-step-5
+slug: count-functions-summary-step-5
+level: 3
+title: Stock cells that hold a word
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-functions-summary
+step: 5
+screens:
+  - prompt: In E2, how many stock cells hold a word, such as ask or n/a, instead of a number? Empty cells do not count.
+    rows:
+      - [Item, Stock, null, null, null]
+      - [Pens, 40, null, Stock as a word, null]
+      - [Pads, ask, null, null, null]
+      - [Clips, 120, null, null, null]
+      - [Tape, null, null, null, null]
+      - [Glue, 18, null, null, null]
+      - [Files, n/a, null, null, null]
+      - [Ink, 6, null, null, null]
+      - [Rulers, ask, null, null, null]
+      - [Labels, 25, null, null, null]
+      - [Staples, null, null, null, null]
+      - [Markers, 30, null, null, null]
+      - [Erasers, n/a, null, null, null]
+      - [Binders, 12, null, null, null]
+      - [Folders, ask, null, null, null]
+      - [Notes, 44, null, null, null]
+    answerCell: E2
+    expected: 5
+    variants:
+      - set: { B3: 15 }
+        expected: 4
+      - set: { B5: ask }
+        expected: 6
+    answer: =COUNTA(B2:B16)-COUNT(B2:B16)
+    requiredFunctions: []
+    hints:
+      nudge: Count everything that is not empty, then take away the numbers.
+      rule: COUNTA counts words and numbers; COUNT counts only numbers. COUNTA(B2:B16)-COUNT(B2:B16) leaves the words.
+    misses:
+      value: 5 stock cells hold a word. Leave out both the numbers and the empty cells.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTA(B2:B16)-COUNT(B2:B16)
+      - =COUNTIF(B2:B16,"*")
+      - =SUMPRODUCT(--ISTEXT(B2:B16))
+    reject:
+      - formula: =COUNTIF(B2:B16,"ask")
+        rule: value
+      - formula: =ROWS(B2:B16)-COUNT(B2:B16)
+        rule: value
+      - formula: =5
+        rule: reference
+      - formula: =COUNTA(B2:B16)-COUNT(B2:B16
+        rule: syntax

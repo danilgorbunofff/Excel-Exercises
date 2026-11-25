@@ -1,0 +1,41 @@
+id: count-paid-orders-step-2
+slug: count-paid-orders-step-2
+level: 1
+title: Count the readings in a row
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-paid-orders
+step: 2
+screens:
+  - prompt: The meter was off on some days, which shows as the word off. In H2, count the days with a reading, from B2 to G2. Use COUNT.
+    rows:
+      - [Day, Mon, Tue, Wed, Thu, Fri, Sat, Readings]
+      - [kWh, 14.2, off, 13.8, 15.1, off, 12.9, null]
+    answerCell: H2
+    expected: 4
+    variants:
+      - set: { C2: 14 }
+        expected: 5
+    answer: =COUNT(B2:G2)
+    requiredFunctions:
+      - COUNT
+    hints:
+      nudge: COUNT counts only the cells that hold numbers.
+      rule: COUNT(B2:G2) counts the numbers along the row and skips the word off.
+    misses:
+      value: There are 4 readings. COUNT skips the days marked off.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNT(B2:G2)
+      - =count(b2:g2)
+    reject:
+      - formula: =COUNTA(B2:G2)
+        rule: required-function
+      - formula: =COUNT(B2:F2)
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =COUNT(B2:G2
+        rule: syntax

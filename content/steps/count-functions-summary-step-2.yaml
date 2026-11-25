@@ -1,0 +1,51 @@
+id: count-functions-summary-step-2
+slug: count-functions-summary-step-2
+level: 2
+title: Items with no stock number
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-functions-summary
+step: 2
+screens:
+  - prompt: "In B11, count the items that have no stock number: every item in column A, minus the stock figures that are numbers. Use COUNTA and COUNT."
+    rows:
+      - [Item, Stock]
+      - [Pens, 40]
+      - [Pads, ask]
+      - [Clips, 120]
+      - [Tape, null]
+      - [Glue, 18]
+      - [Files, n/a]
+      - [Ink, 6]
+      - [Rulers, 25]
+      - [null, null]
+      - [No number, null]
+    answerCell: B11
+    expected: 3
+    variants:
+      - set: { B3: 12 }
+        expected: 2
+    answer: =COUNTA(A2:A9)-COUNT(B2:B9)
+    requiredFunctions:
+      - COUNTA
+      - COUNT
+    hints:
+      nudge: Count the items, then take away the ones with a number.
+      rule: COUNTA(A2:A9) counts every item and COUNT(B2:B9) the stock numbers; the difference is the items with text or nothing.
+    misses:
+      value: 3 items have no stock number. Count the items in column A, not the stock cells.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTA and COUNT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTA(A2:A9)-COUNT(B2:B9)
+      - =-COUNT(B2:B9)+COUNTA(A2:A9)
+    reject:
+      - formula: =COUNTA(B2:B9)-COUNT(B2:B9)
+        rule: value
+      - formula: =8-COUNT(B2:B9)
+        rule: required-function
+      - formula: =3
+        rule: required-function
+      - formula: =COUNTA(A2:A9)-COUNT(B2:B9
+        rule: syntax

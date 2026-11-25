@@ -1,0 +1,43 @@
+id: count-booked-seats-step-2
+slug: count-booked-seats-step-2
+level: 1
+title: Count the names along a row
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-booked-seats
+step: 2
+screens:
+  - prompt: Each class that has a teacher shows a name. In H2, count the classes that have a teacher, from B2 to G2. Use COUNTA.
+    rows:
+      - [Class, 7A, 7B, 8A, 8B, 9A, 9B, Staffed]
+      - [Teacher, Ms Lee, null, Mr Ode, Ms Kay, null, Mr Roy, null]
+    answerCell: H2
+    expected: 4
+    variants:
+      - set: { C2: Ms Bell }
+        expected: 5
+      - set: { G2: null }
+        expected: 3
+    answer: =COUNTA(B2:G2)
+    requiredFunctions:
+      - COUNTA
+    hints:
+      nudge: COUNTA counts every cell that is not empty, text included.
+      rule: COUNTA(B2:G2) counts the names along the row and skips the empty cells.
+    misses:
+      value: 4 classes have a teacher. COUNTA counts the cells with a name.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTA.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTA(B2:G2)
+      - =counta(b2:g2)
+    reject:
+      - formula: =COUNT(B2:G2)
+        rule: required-function
+      - formula: =COUNTA(B2:F2)
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =COUNTA(B2:G2
+        rule: syntax

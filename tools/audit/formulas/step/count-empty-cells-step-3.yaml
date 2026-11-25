@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTBLANK($B$2:$D$6)
+      - =COUNTBLANK(B$2:D$6)
+      - =countblank(b2:d6)
+      - =LET(data,B2:D6,COUNTBLANK(data))
+    wrong: []
+    equivalent: []

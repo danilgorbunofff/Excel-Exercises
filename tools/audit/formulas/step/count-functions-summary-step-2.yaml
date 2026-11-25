@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTA($A$2:$A$9)-COUNT($B$2:$B$9)
+      - =COUNTA(A$2:A$9)-COUNT(B2:B9)
+      - =counta(a2:a9)-count(b2:b9)
+      - =LET(data,A2:A9,COUNTA(data)-COUNT(B2:B9))
+    wrong: []
+    equivalent:
+      - formula: =COUNTA(A2:A10)-COUNT(B2:B9)
+        why: "range A2:A9 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =COUNTA(A2:A9)-COUNT(B2:B10)
+        why: "range B2:B9 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

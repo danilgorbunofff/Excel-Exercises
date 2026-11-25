@@ -1,0 +1,46 @@
+id: count-booked-seats-step-5
+slug: count-booked-seats-step-5
+level: 3
+title: Free seats in the room
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-booked-seats
+step: 5
+screens:
+  - prompt: In H2, how many seats in the room B2 to F5 are still free? A taken seat shows a name or the word reserved.
+    rows:
+      - [Row, Seat 1, Seat 2, Seat 3, Seat 4, Seat 5, null, null]
+      - [A, Ana, null, Lu, reserved, null, Free seats, null]
+      - [B, null, Ravi, null, null, Omar, null, null]
+      - [C, Kim, Sam, reserved, null, Jo, null, null]
+      - [D, null, null, Eve, Ben, null, null, null]
+    answerCell: H2
+    expected: 9
+    variants:
+      - set: { C2: Cy }
+        expected: 8
+      - set: { E3: reserved }
+        expected: 8
+    answer: =COUNTBLANK(B2:F5)
+    requiredFunctions: []
+    hints:
+      nudge: A free seat is an empty cell in the block.
+      rule: COUNTBLANK(B2:F5) counts the empty seats in the whole room, rows and columns together.
+    misses:
+      value: 9 seats are free. Count the empty cells in B2 to F5.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTBLANK(B2:F5)
+      - =ROWS(B2:F5)*COLUMNS(B2:F5)-COUNTA(B2:F5)
+      - =20-COUNTA(B2:F5)
+    reject:
+      - formula: =COUNTA(B2:F5)
+        rule: value
+      - formula: =COUNTBLANK(B2:F4)
+        rule: value
+      - formula: =9
+        rule: reference
+      - formula: =COUNTBLANK(B2:F5
+        rule: syntax

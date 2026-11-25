@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNT(C$2:C$13)/COUNTA(C2:C13)
+      - =count(c2:c13)/counta(c2:c13)
+      - =LET(data,C2:C13,COUNT(data)/COUNTA(data))
+    wrong:
+      - formula: =COUNT(C2:C12)/COUNTA(C2:C13)
+        rule: fragile
+        why: range C2:C13 one row short at the end
+    equivalent: []

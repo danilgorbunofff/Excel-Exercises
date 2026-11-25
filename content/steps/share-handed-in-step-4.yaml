@@ -1,0 +1,56 @@
+id: share-handed-in-step-4
+slug: share-handed-in-step-4
+level: 2
+title: Share of answers that are numbers
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: share-handed-in
+step: 4
+screens:
+  - prompt: In C14, work out the share of survey answers that are a number, out of all the answers given, as a fraction. Some people wrote n/a. Use COUNT and COUNTA.
+    rows:
+      - [Person, Team, Score]
+      - [Ana, Sales, 8]
+      - [Ben, Sales, n/a]
+      - [Cy, HR, 7]
+      - [Di, HR, null]
+      - [Ed, IT, 9]
+      - [Flo, IT, n/a]
+      - [Gil, Sales, 6]
+      - [Hu, HR, 10]
+      - [Ida, IT, null]
+      - [Jo, Sales, 7]
+      - [Kai, HR, 8]
+      - [Lee, IT, n/a]
+      - [Share that are numbers, null, null]
+    answerCell: C14
+    expected: 0.7
+    variants:
+      - set: { C3: 5 }
+        expected: 0.8
+      - set: { C13: 9 }
+        expected: 0.8
+    answer: =COUNT(C2:C13)/COUNTA(C2:C13)
+    requiredFunctions:
+      - COUNT
+      - COUNTA
+    hints:
+      nudge: Count the numbers, then divide by every answer given, words included.
+      rule: COUNTA counts every answer given, so COUNT(C2:C13)/COUNTA(C2:C13) is the share that are numbers. Empty cells count in neither.
+    misses:
+      value: The share is 0.70. Divide by the answers given, not by everyone on the list.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNT and COUNTA.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNT(C2:C13)/COUNTA(C2:C13)
+      - =COUNT($C$2:$C$13)/COUNTA($C$2:$C$13)
+    reject:
+      - formula: =COUNT(C2:C13)/COUNTA(A2:A13)
+        rule: value
+      - formula: =COUNT(C2:C13)/10
+        rule: required-function
+      - formula: =0.7
+        rule: required-function
+      - formula: =COUNT(C2:C13)/COUNTA(C2:C13
+        rule: syntax

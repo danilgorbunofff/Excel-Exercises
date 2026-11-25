@@ -1,0 +1,56 @@
+id: count-empty-cells-step-5
+slug: count-empty-cells-step-5
+level: 3
+title: Unowned tasks that are still open
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-empty-cells
+step: 5
+screens:
+  - prompt: In F2, how many tasks have no owner and are not marked Done yet?
+    rows:
+      - [Task, Owner, Status, null, null, null]
+      - [Order stock, Kim, Done, null, Open and unowned, null]
+      - [Book a van, null, Open, null, null, null]
+      - [Call the printer, Sam, Open, null, null, null]
+      - [Pay the invoice, null, Done, null, null, null]
+      - [Update prices, Kim, Open, null, null, null]
+      - [Email the team, null, Open, null, null, null]
+      - [Fix the lift, Ali, Done, null, null, null]
+      - [Plan the party, null, Waiting, null, null, null]
+      - [Renew insurance, Sam, Open, null, null, null]
+      - [Check the alarm, null, Done, null, null, null]
+      - [Order chairs, Lee, Open, null, null, null]
+      - [Clean the van, null, Open, null, null, null]
+      - [Book a room, Kim, Waiting, null, null, null]
+      - [Send the post, null, Open, null, null, null]
+      - [Count stock, Ali, Done, null, null, null]
+    answerCell: F2
+    expected: 5
+    variants:
+      - set: { B3: Lee }
+        expected: 4
+      - set: { C5: Open }
+        expected: 6
+    answer: =COUNTIFS(B2:B16,"",C2:C16,"<>Done")
+    requiredFunctions: []
+    hints:
+      nudge: "Two tests on each row: the owner is empty and the status is not Done."
+      rule: COUNTIFS(B2:B16,"",C2:C16,"<>Done") counts the rows where both tests pass. "" matches an empty cell and "<>Done" anything but Done.
+    misses:
+      value: 5 tasks are unowned and not Done, Waiting ones included.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIFS(B2:B16,"",C2:C16,"<>Done")
+      - =SUMPRODUCT((B2:B16="")*(C2:C16<>"Done"))
+    reject:
+      - formula: =COUNTBLANK(B2:B16)
+        rule: value
+      - formula: =COUNTIFS(B2:B16,"",C2:C16,"Open")
+        rule: value
+      - formula: =5
+        rule: reference
+      - formula: =COUNTIFS(B2:B16,"",C2:C16,"<>Done"
+        rule: syntax

@@ -256,6 +256,8 @@ describe("SUBTOTAL and AGGREGATE", () => {
     ["=SUBTOTAL(1,A4:A5)", "#DIV/0!"],
     ["=AGGREGATE(9,8,B1:B5)", "#VALUE!"],
     ["=AGGREGATE(14,6,B1:B5)", "#VALUE!"],
+    ["=AGGREGATE(15,5,B1:B5/(B1:B5>1),1)", "#DIV/0!"],
+    ["=AGGREGATE(9,0,B1:B5/(B1:B5>1))", "#DIV/0!"],
   ])("%s is %s", (f, code) => {
     expect(ev(f)).toBe(E(code as ErrorCode));
   });

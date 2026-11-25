@@ -241,6 +241,8 @@ export const LOOKUP: Record<string, FunctionSpec> = {
         col = row;
         row = 1;
       }
+      // Excel needs a column number for a range that is more than one row and one column wide.
+      if (!args[2] && h > 1 && w > 1) return fail("#REF!");
       if (row < 0 || col < 0 || row > h || col > w) return fail("#REF!");
       if (row === 0 && col === 0) return r;
       if (row === 0)

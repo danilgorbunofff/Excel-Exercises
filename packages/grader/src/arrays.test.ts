@@ -26,6 +26,8 @@ describe("arrays: operators and IF", () => {
     ['=SUM(IF(A2:A6="South",C2:C6))', 240],
     ["=SUM(IF(C2:C6>200,1,0))", 2],
     ['=MAX(IF(A2:A6="South",C2:C6))', 120],
+    ["=SUM(IFS(C2:C6>200,1,TRUE,0))", 2],
+    ['=SUM(IFS((C2:C6>100)*(A2:A6<>"South"),C2:C6,TRUE,0))', 750],
   ])("%s is %j", (f, v) => {
     expect(ev(f)).toBe(v);
   });

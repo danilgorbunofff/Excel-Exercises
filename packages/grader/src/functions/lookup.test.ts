@@ -66,6 +66,7 @@ describe("MATCH and INDEX", () => {
     ["=MATCH(999,A2:A6,0)", "#N/A"],
     ["=MATCH(1,A2:B3,0)", "#N/A"],
     ["=INDEX(B2:B6,9)", "#REF!"],
+    ["=INDEX(A2:C6,2)", "#REF!"],
   ])("%s is %s", (f, code) => {
     expect(ev(f)).toBe(E(code as ErrorCode));
   });

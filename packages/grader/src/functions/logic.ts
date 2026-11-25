@@ -112,6 +112,27 @@ export const LOGIC: Record<string, FunctionSpec> = {
     254,
     safe((args) => {
       if (args.length % 2) return fail("#N/A");
+      const tests = args.filter((_, i) => i % 2 === 0).map((a) => a?.get() ?? null);
+      if (tests.some((t) => isRange(t) && (t.rows.length > 1 || (t.rows[0]?.length ?? 0) > 1))) {
+        // Array tests, as in IFS(B2:B7<C2:C7,"REORDER",TRUE,"OK"): each cell picks its own result.
+        const conds = tests.map((t) => (isRange(t) ? t.rows : [[t]]));
+        const values = args.filter((_, i) => i % 2 === 1).map((a) => rowsOf(branch(a, false)));
+        const all = [...conds, ...values];
+        const h = Math.max(...all.map((r) => r.length));
+        const w = Math.max(...all.map((r) => r[0]?.length ?? 0));
+        return array(
+          Array.from({ length: h }, (_, i) =>
+            Array.from({ length: w }, (_, j) => {
+              for (let k = 0; k < conds.length; k++) {
+                const t = toBool(cellAt(conds[k] ?? [], i, j));
+                if (isError(t)) return t;
+                if (t) return cellAt(values[k] ?? [], i, j);
+              }
+              return errorValue("#N/A");
+            }),
+          ),
+        );
+      }
       for (let i = 0; i < args.length; i += 2) {
         if (bool(args[i], false)) return branch(args[i + 1], 0);
       }

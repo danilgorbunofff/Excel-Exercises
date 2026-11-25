@@ -2,6 +2,7 @@
 // two code-driven totals. SUBTOTAL and AGGREGATE take a number that names the
 // function to run. The sheets here have no hidden rows, so SUBTOTAL's 101 to
 // 111 codes give the same results as 1 to 11.
+import { isError } from "../errors.ts";
 import type { Arg, FunctionSpec } from "../values.ts";
 import { cells, fail, fn, num, numbersFrom, range, safe } from "./helpers.ts";
 import { MATH } from "./math.ts";
@@ -111,6 +112,14 @@ export const STATS: Record<string, FunctionSpec> = {
       const options = Math.trunc(num(args[1]));
       if (options < 0 || options > 7) return fail("#VALUE!");
       const rest = args.slice(2);
+      // Options 0, 1, 4 and 5 keep error values, so the first one in the data is the result.
+      if ([0, 1, 4, 5].includes(options)) {
+        const data = code >= 14 ? rest.slice(0, 1) : rest;
+        for (const a of data) {
+          const bad = cells(range(a)).find(isError);
+          if (bad) return bad;
+        }
+      }
       if (code === 12) return run("MEDIAN", rest);
       if (code === 13) return mode(rest);
       if (code === 14 || code === 15) {

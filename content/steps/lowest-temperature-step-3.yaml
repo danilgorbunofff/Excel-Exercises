@@ -1,0 +1,52 @@
+id: lowest-temperature-step-3
+slug: lowest-temperature-step-3
+level: 2
+title: Lowest of two weeks
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: lowest-temperature
+step: 3
+screens:
+  - prompt: "In B10, find the coldest night of both weeks: week 1 in B2 to B8 and week 2 in D2 to D8. Use MIN."
+    rows:
+      - [Night, Week 1, null, Week 2]
+      - [Mon, 4, null, 2]
+      - [Tue, 3, null, -1]
+      - [Wed, 1, null, 0]
+      - [Thu, -2, null, 3]
+      - [Fri, 0, null, -3]
+      - [Sat, 2, null, 1]
+      - [Sun, 5, null, 4]
+      - [null, null, null, null]
+      - [Coldest, null, null, null]
+    answerCell: B10
+    expected: -3
+    variants:
+      - { set: { B2: -8 }, expected: -8 }
+      - { set: { B8: -6 }, expected: -6 }
+      - { set: { D2: -9 }, expected: -9 }
+      - { set: { D8: -7 }, expected: -7 }
+    answer: =MIN(B2:B8,D2:D8)
+    requiredFunctions:
+      - MIN
+    hints:
+      nudge: MIN takes more than one range, separated by commas.
+      rule: MIN(B2:B8,D2:D8) looks at both weeks at once and gives the single lowest reading.
+    misses:
+      value: The coldest night of both weeks is -3 degrees. Include both columns.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for MIN.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MIN(B2:B8,D2:D8)
+      - =MIN(B2:D8)
+      - =MIN(MIN(B2:B8),MIN(D2:D8))
+    reject:
+      - formula: =MIN(B2:B8)
+        rule: value
+      - formula: =MIN(D2:D8)
+        rule: fragile
+      - formula: =-3
+        rule: required-function
+      - formula: =MIN(B2:B8,D2:D8
+        rule: syntax

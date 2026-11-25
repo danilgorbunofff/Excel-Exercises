@@ -6,7 +6,7 @@ import { assessmentsSchema } from "../src/content/schema.ts";
 import { isLocked, topicNumbers } from "../src/lib/access.ts";
 import { checkAssessments } from "../src/lib/assessments.ts";
 import { listFiles } from "./lib/fs.ts";
-import { validateContent } from "./lib/validate-content.ts";
+import { validateContent, validateSteps } from "./lib/validate-content.ts";
 
 const read = (file: string) => ({ file, data: parse(readFileSync(file, "utf8")) as unknown });
 const exerciseFiles = listFiles("content/exercises", (n) => n.endsWith(".yaml"));
@@ -14,6 +14,7 @@ const functionFiles = listFiles("content/functions", (n) => n.endsWith(".yaml"))
 const dailyFiles = listFiles("content/daily", (n) => n.endsWith(".yaml"));
 const mockFiles = listFiles("content/mocks", (n) => n.endsWith(".yaml"));
 const drillFiles = listFiles("content/drills", (n) => n.endsWith(".yaml"));
+const stepFiles = listFiles("content/steps", (n) => n.endsWith(".yaml"));
 const indexNames = (
   (read("content/function-index.yaml").data as { functions?: { name: string }[] }).functions ?? []
 ).map((f) => f.name);
@@ -25,6 +26,12 @@ const errors = validateContent(
   mockFiles.map(read),
   drillFiles.map(read),
   indexNames,
+);
+errors.push(
+  ...validateSteps(
+    stepFiles.map(read),
+    exerciseFiles.map((f) => read(f).data as { id: string; level: number }),
+  ),
 );
 
 // The assessment sets name exercises and screens; check they exist.
@@ -76,5 +83,5 @@ if (errors.length > 0) {
   process.exit(1);
 }
 console.log(
-  `Content valid: ${exerciseFiles.length} exercise file(s), ${dailyFiles.length} daily task(s), ${mockFiles.length} mock task(s), ${drillFiles.length} drill(s), ${functionFiles.length} function page(s), the track file and the assessment sets.`,
+  `Content valid: ${exerciseFiles.length} exercise file(s), ${dailyFiles.length} daily task(s), ${mockFiles.length} mock task(s), ${drillFiles.length} drill(s), ${stepFiles.length} ladder step(s), ${functionFiles.length} function page(s), the track file and the assessment sets.`,
 );

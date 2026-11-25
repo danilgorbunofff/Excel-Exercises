@@ -1,0 +1,44 @@
+id: multiply-price-by-quantity-step-3
+slug: multiply-price-by-quantity-step-3
+level: 2
+title: Convert a price with a rate in one cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: multiply-price-by-quantity
+step: 3
+screens:
+  - prompt: In C4, convert the price of the chair in B4 to euros, using the exchange rate in F1.
+    rows:
+      - [Item, Price (USD), Price (EUR), null, Rate, 0.92]
+      - [Desk, 249, null, null, null, null]
+      - [Shelf, 89, null, null, null, null]
+      - [Chair, 159, null, null, null, null]
+      - [Lamp, 45, null, null, null, null]
+    answerCell: C4
+    expected: 146.28
+    variants:
+      - set: { F1: 0.95 }
+        expected: 151.05
+    answer: =B4*$F$1
+    requiredFunctions: []
+    hints:
+      nudge: The rate sits in F1, at the top right.
+      rule: Multiply the price by F1. Writing it as $F$1 keeps it fixed if the formula is copied down.
+    misses:
+      value: The chair costs 146.28 in euros. Multiply B4 by F1.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B4*$F$1
+      - =B4*F1
+      - =$F$1*B4
+    reject:
+      - formula: =B4*0.92
+        rule: reference
+      - formula: =B4/$F$1
+        rule: value
+      - formula: =146.28
+        rule: reference
+      - formula: =B4*$F$1,
+        rule: syntax

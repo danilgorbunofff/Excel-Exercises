@@ -8,6 +8,7 @@ import { parse } from "yaml";
 import type { IconName } from "../components/Icon.astro";
 import { type Track, trackSchema } from "../content/schema.ts";
 import { coverOf, loadAssessments, skillsOf } from "./assessments.ts";
+import { originalSlot, type Rung, stepPath } from "./steps.ts";
 
 export type ExerciseEntry = CollectionEntry<"exercises">;
 
@@ -121,6 +122,61 @@ export async function drillTasks(): Promise<Drill[]> {
       next: null,
     };
   });
+}
+
+/** The next few exercises in track order after this one, wrapping round to the start. */
+export const moreAfter = (all: readonly Placed[], placed: Placed): Placed[] => {
+  const i = all.indexOf(placed);
+  return [1, 2, 3]
+    .map((d) => all[(i + d) % all.length])
+    .filter((p): p is Placed => p !== undefined && p !== placed);
+};
+
+/** A ladder step: shaped like its exercise, with the same topic, place and next, so it shares the lock. */
+export type LadderStep = Placed & { parent: Placed; step: number };
+
+/** The ladder steps from content/steps/, each placed where its exercise is. */
+export async function stepTasks(): Promise<LadderStep[]> {
+  const byId = new Map((await placedExercises()).map((p) => [p.exercise.id, p]));
+  return (await getCollection("steps")).flatMap(({ data }) => {
+    const parent = byId.get(data.parent);
+    if (!parent) return [];
+    const { parent: _p, step, ...task } = data;
+    return [
+      {
+        ...parent,
+        exercise: { ...task, topic: parent.exercise.topic, notes: parent.exercise.notes },
+        parent,
+        step,
+      },
+    ];
+  });
+}
+
+/** Each exercise's ladder, by exercise id, in step order: the exercise in its slot and its steps. Exercises without steps have none. */
+export function laddersOf(steps: readonly LadderStep[]): Map<string, Rung[]> {
+  const out = new Map<string, Rung[]>();
+  for (const s of steps) {
+    const id = s.parent.exercise.id;
+    out.set(id, [
+      ...(out.get(id) ?? []),
+      { id: s.exercise.id, step: s.step, href: stepPath(s.parent.exercise.slug, s.step) },
+    ]);
+  }
+  for (const [id, rungs] of out) {
+    const slot = originalSlot(rungs.map((r) => r.step));
+    const parent = steps.find((s) => s.parent.exercise.id === id)?.parent;
+    // A ladder still being written shows nowhere.
+    if (slot === null || !parent) out.delete(id);
+    else
+      out.set(
+        id,
+        [...rungs, { id, step: slot, href: exercisePath(parent.exercise.slug) }].sort(
+          (a, b) => a.step - b.step,
+        ),
+      );
+  }
+  return out;
 }
 
 /** Where a drill session starts: one function, or a single drill by id. */

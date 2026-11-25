@@ -1,0 +1,39 @@
+id: multiply-price-by-quantity-step-2
+slug: multiply-price-by-quantity-step-2
+level: 1
+title: Multiply three cells
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: multiply-price-by-quantity
+step: 2
+screens:
+  - prompt: "In E2, work out the volume of the box: the length times the width times the height."
+    rows:
+      - [Box, Length, Width, Height, Volume]
+      - [Large, 60, 40, 35, null]
+    answerCell: E2
+    expected: 84000
+    variants:
+      - set: { D2: 50 }
+        expected: 120000
+    answer: =B2*C2*D2
+    requiredFunctions: []
+    hints:
+      nudge: Join the three cells with the * sign.
+      rule: The * sign multiplies, so B2*C2*D2 multiplies all three.
+    misses:
+      value: The volume is 84000. Multiply all three sizes.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2*C2*D2
+      - =D2*C2*B2
+      - =PRODUCT(B2:D2)
+    reject:
+      - formula: =B2*C2
+        rule: value
+      - formula: =84000
+        rule: reference
+      - formula: =B2*C2*D2,
+        rule: syntax

@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUM($B$2:$B$5)-SUM($C$2:$C$5)
+      - =SUM(B$2:B$5)-SUM(C$2:C5)
+      - =sum(b$2:b5)-sum(c$2:c5)
+      - =SUMPRODUCT(B$2:B5)-SUM(C$2:C5)
+      - =SUM(B$2:B5)-SUMPRODUCT(C$2:C5)
+      - =LET(data,B$2:B5,SUM(data)-SUM(C$2:C5))
+    wrong:
+      - formula: =SUM(B$2:B4)-SUM(C$2:C5)
+        rule: fragile
+        why: range B$2:B5 one row short at the end
+      - formula: =SUM(B$2:B5)-SUM(C$3:C5)
+        rule: fragile
+        why: range C$2:C5 skips its first row
+    equivalent: []

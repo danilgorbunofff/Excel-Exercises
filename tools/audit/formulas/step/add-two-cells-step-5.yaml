@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =$B$2+IF($B$2>=$B$4,0,$B$3)
+      - =B$2+IF(B2>=B4,0,B3)
+      - =b2+if(b2>=b4, 0, b3)
+      - =B2+IFS(B2>=B4,0,TRUE,B3)
+    wrong: []
+    equivalent: []

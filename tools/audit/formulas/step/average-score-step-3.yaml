@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AVERAGE(B$2:B$9)
+      - =average(b2:b9)
+      - =LET(data,B2:B9,AVERAGE(data))
+    wrong: []
+    equivalent: []

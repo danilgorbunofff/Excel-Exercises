@@ -1,0 +1,49 @@
+id: average-score-step-3
+slug: average-score-step-3
+level: 2
+title: Average with an absent note
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: average-score
+step: 3
+screens:
+  - prompt: In B10, work out the average score. Two students were absent, and the sheet says so in words. Use AVERAGE.
+    rows:
+      - [Student, Score]
+      - [Ana, 68]
+      - [Ben, absent]
+      - [Cara, 74]
+      - [Dev, 81]
+      - [Eli, 59]
+      - [Fay, absent]
+      - [Gus, 88]
+      - [Hal, 70]
+      - [Average, null]
+    answerCell: B10
+    expected: 73.3333333333
+    variants:
+      - set: { B5: 91 }
+        expected: 75
+    answer: =AVERAGE(B2:B9)
+    requiredFunctions:
+      - AVERAGE
+    hints:
+      nudge: AVERAGE leaves text out of both the total and the count.
+      rule: Give AVERAGE the whole column. The words absent are skipped, so only the six real scores count.
+    misses:
+      value: The six real scores average 73.33. Check that the range runs from B2 to B9.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for AVERAGE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AVERAGE(B2:B9)
+      - =AVERAGE($B$2:$B$9)
+    reject:
+      - formula: =SUM(B2:B9)/8
+        rule: required-function
+      - formula: =AVERAGE(B2:B8)
+        rule: value
+      - formula: =73.3333333333
+        rule: required-function
+      - formula: =AVERAGE(B2:B9
+        rule: syntax

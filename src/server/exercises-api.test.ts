@@ -24,6 +24,11 @@ vi.mock("../lib/exercises.ts", () => ({
     { exercise: { slug: "free-one", ...screen("=FREE()") }, topicNumber: 1 },
     { exercise: { slug: "pro-one", ...screen("=PRO()") }, topicNumber: 3 },
   ],
+  // Ladder steps carry their exercise's place, so its lock.
+  stepTasks: async () => [
+    { exercise: { slug: "free-one-step-4", ...screen("=FREE4()") }, topicNumber: 1 },
+    { exercise: { slug: "pro-one-step-2", ...screen("=PRO2()") }, topicNumber: 3 },
+  ],
 }));
 // meeting-room-hours is a held-out task of the real "beginner" set.
 vi.mock("astro:content", () => ({
@@ -69,6 +74,16 @@ describe("GET /api/exercises/[slug]", () => {
     expect((await call("pro-one")).status).toBe(403);
     mocks.handler = answer(pro, []);
     expect(await (await call("pro-one")).json()).toEqual({ answers: ["=PRO()"] });
+  });
+
+  it("locks a ladder step exactly like its exercise", async () => {
+    mocks.user = null;
+    expect(await (await call("free-one-step-4")).json()).toEqual({ answers: ["=FREE4()"] });
+    expect((await call("pro-one-step-2")).status).toBe(401);
+    mocks.user = { id: "user-1" };
+    expect((await call("pro-one-step-2")).status).toBe(403);
+    mocks.handler = answer(pro, []);
+    expect(await (await call("pro-one-step-2")).json()).toEqual({ answers: ["=PRO2()"] });
   });
 
   it("gives a drill's answers only with PRO, with no attempt needed", async () => {

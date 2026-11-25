@@ -1,0 +1,46 @@
+id: sum-across-several-blocks-step-2
+slug: sum-across-several-blocks-step-2
+level: 2
+title: Add three separate blocks
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sum-across-several-blocks
+step: 2
+screens:
+  - prompt: In B7, total the three stores, which sit in B2 to B5, D2 to D5 and F2 to F5 with empty columns between them. Use SUM.
+    rows:
+      - [Week, Store 1, null, Store 2, null, Store 3]
+      - ["1", 320, null, 280, null, 305]
+      - ["2", 295, null, 310, null, 290]
+      - ["3", 340, null, 300, null, 315]
+      - ["4", 310, null, 325, null, 330]
+      - [null, null, null, null, null, null]
+      - [All stores, null, null, null, null, null]
+    answerCell: B7
+    expected: 3720
+    variants:
+      - set: { F3: 400 }
+        expected: 3830
+    answer: =SUM(B2:B5,D2:D5,F2:F5)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: List every block inside one SUM.
+      rule: SUM(B2:B5,D2:D5,F2:F5) adds the three blocks. The empty columns between them add nothing.
+    misses:
+      value: The three stores add up to 3720. Check that all three ranges are in the SUM.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:B5,D2:D5,F2:F5)
+      - =SUM(B2:F5)
+    reject:
+      - formula: =SUM(B2:B5,D2:D5)
+        rule: value
+      - formula: =SUM(B2:B5)+SUM(D2:D5)
+        rule: value
+      - formula: =3720
+        rule: required-function
+      - formula: =SUM(B2:B5,D2:D5,F2:F5
+        rule: syntax

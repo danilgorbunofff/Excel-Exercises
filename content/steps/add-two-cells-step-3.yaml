@@ -1,0 +1,44 @@
+id: add-two-cells-step-3
+slug: add-two-cells-step-3
+level: 2
+title: Add a charge kept in one cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: add-two-cells
+step: 3
+screens:
+  - prompt: In C4, add the delivery charge in F1 to the price of the lamp in B4. The charge is the same for every item.
+    rows:
+      - [Item, Price, With delivery, null, Delivery, 3.95]
+      - [Mug, 8.5, null, null, null, null]
+      - [Vase, 24, null, null, null, null]
+      - [Lamp, 39.9, null, null, null, null]
+      - [Rug, 64, null, null, null, null]
+    answerCell: C4
+    expected: 43.85
+    variants:
+      - set: { F1: 5.5 }
+        expected: 45.4
+    answer: =B4+$F$1
+    requiredFunctions: []
+    hints:
+      nudge: The delivery charge sits in F1, at the top right.
+      rule: Point at F1 for the charge. Writing it as $F$1 keeps it fixed if the formula is copied down to the other items.
+    misses:
+      value: The lamp with delivery comes to 43.85. Add B4 and F1.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B4+$F$1
+      - =B4+F1
+      - =$F$1+B4
+    reject:
+      - formula: =B4+B3
+        rule: value
+      - formula: =B4+3.95
+        rule: reference
+      - formula: =43.85
+        rule: reference
+      - formula: =B4+$F$1,
+        rule: syntax

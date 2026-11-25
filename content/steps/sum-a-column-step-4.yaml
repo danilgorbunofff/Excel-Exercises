@@ -1,0 +1,53 @@
+id: sum-a-column-step-4
+slug: sum-a-column-step-4
+level: 2
+title: Total a column with gaps and notes
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sum-a-column
+step: 4
+screens:
+  - prompt: In B14, total the takings for the 12 days. Some days have a note or are empty. Use SUM.
+    rows:
+      - [Day, Takings]
+      - ["1", 212.5]
+      - ["2", 198]
+      - ["3", Closed]
+      - ["4", 240.25]
+      - ["5", 225]
+      - ["6", null]
+      - ["7", 260.75]
+      - ["8", 230]
+      - ["9", Closed]
+      - ["10", 215.5]
+      - ["11", 248]
+      - ["12", 236]
+      - [Total, null]
+    answerCell: B14
+    expected: 2066
+    variants:
+      - set: { B7: 199.5 }
+        expected: 2265.5
+    answer: =SUM(B2:B13)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: SUM skips text and empty cells by itself.
+      rule: Give SUM the whole column of days, B2 to B13. The notes and gaps do not need any special care.
+    misses:
+      value: The 12 days add up to 2066. Check that the range runs from B2 to B13.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:B13)
+      - =SUM($B$2:$B$13)
+    reject:
+      - formula: =SUM(B2:B12)
+        rule: value
+      - formula: =SUM(B3:B13)
+        rule: value
+      - formula: =2066
+        rule: required-function
+      - formula: =SUM(B2:B13
+        rule: syntax

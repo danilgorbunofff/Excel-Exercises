@@ -3,6 +3,8 @@
 // page works without it. Solved exercises come back for review after growing
 // gaps, so practice is spaced out over weeks.
 
+import { parentOf } from "../lib/steps.ts";
+
 /**
  * tried: checked with a wrong formula, not solved yet. revealed: the answer was
  * shown, not yet solved. helped: solved after the answer was shown.
@@ -172,6 +174,47 @@ export function dropClearedBefore(progress: Progress, day: string): Progress {
       .sort()
       .at(-1) ?? e.date;
   return Object.fromEntries(Object.entries(progress).filter(([, e]) => touched(e) >= day));
+}
+
+/**
+ * Progress by track exercise: each exercise's ladder steps (<id>-step-<n>,
+ * lib/steps.ts) fold into it, so solving any step counts as solving the
+ * exercise. Its state is the best, its first day the earliest, its latest
+ * solve and miss the latest, its misses added up, and each further step solved
+ * counts as a review.
+ * shortcut: two steps solved on the same day count as two reviews; store solve
+ * days on entries if that skews the review gaps.
+ */
+export function foldSets(progress: Progress): Progress {
+  const groups = new Map<string, ProgressEntry[]>();
+  for (const [id, e] of Object.entries(progress)) {
+    const key = parentOf(id) ?? id;
+    groups.set(key, [...(groups.get(key) ?? []), e]);
+  }
+  const out: Progress = {};
+  for (const [id, entries] of groups) {
+    const [only] = entries;
+    if (entries.length === 1 && only) {
+      out[id] = only;
+      continue;
+    }
+    const best = entries.reduce((a, b) => (RANK[b.state] > RANK[a.state] ? b : a));
+    const solved = entries.filter(isSolved).length;
+    const entry: ProgressEntry = {
+      state: best.state,
+      date: entries.map((e) => e.date).sort()[0] ?? best.date,
+    };
+    const last = latest(...entries.map((e) => e.last));
+    const missed = latest(...entries.map((e) => e.missed));
+    const misses = entries.reduce((n, e) => n + (e.misses ?? 0), 0);
+    const reviews = entries.reduce((n, e) => n + (e.reviews ?? 0), 0) + Math.max(0, solved - 1);
+    if (last !== undefined) entry.last = last;
+    if (reviews > 0) entry.reviews = reviews;
+    if (misses > 0) entry.misses = misses;
+    if (missed !== undefined) entry.missed = missed;
+    out[id] = entry;
+  }
+  return out;
 }
 
 export function mergeProgress(a: Progress, b: Progress): Progress {

@@ -20,6 +20,7 @@ describe("hiddenFromSearch", () => {
     expect(hiddenFromSearch("/exercises/drills/sum-drill-1/", true)).toBe(true);
     expect(hiddenFromSearch("/exercises/drills/", true)).toBe(false);
     expect(hiddenFromSearch("/exercises/sum-basics/", true)).toBe(false);
+    expect(hiddenFromSearch("/exercises/sum-basics/2/", true)).toBe(true);
   });
 
   it("hides every account page while accounts are closed", () => {

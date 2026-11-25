@@ -5,7 +5,9 @@ import {
   exercisePath,
   functionsOf,
   LEVELS,
+  laddersOf,
   placedExercises,
+  stepTasks,
 } from "../lib/exercises.ts";
 import { ACCOUNT_NAV } from "../lib/nav.ts";
 // Why this exists: the body of the progress page, shared by /progress/ (guests
@@ -19,6 +21,7 @@ import "../styles/assessments.css";
 const placed = await placedExercises();
 const first = placed[0];
 if (!first) throw new Error("The track has no exercises");
+const ladders = laddersOf(await stepTasks());
 const list = placed.map((p) => ({
   id: p.exercise.id,
   number: p.number,
@@ -29,6 +32,7 @@ const list = placed.map((p) => ({
   track: p.topic.slug,
   trackTitle: p.topic.title,
   fns: functionsOf(p.exercise),
+  ladder: ladders.get(p.exercise.id),
 }));
 // Drills come back on the review list too, but never count as exercises solved.
 const drills = (await drillTasks()).map((d, i) => ({

@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUM($B$2:$B$5,$D$2:$D$5,$F$2:$F$5)
+      - =SUM(B$2:B$5,D2:D5,F2:F5)
+      - =sum(b2:b5, d2:d5, f2:f5)
+      - =LET(data,B2:B5,SUM(data,D2:D5,F2:F5))
+    wrong: []
+    equivalent:
+      - formula: =SUM(B2:B6,D2:D5,F2:F5)
+        why: "range B2:B5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =SUM(B2:B5,D2:D6,F2:F5)
+        why: "range D2:D5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =SUM(B2:B5,D2:D5,F2:F6)
+        why: "range F2:F5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

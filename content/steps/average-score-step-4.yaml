@@ -1,0 +1,47 @@
+id: average-score-step-4
+slug: average-score-step-4
+level: 2
+title: Average across two groups
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: average-score
+step: 4
+screens:
+  - prompt: "In B8, work out the average score of both groups together: group A in B2 to B6 and group B in D2 to D6. Use AVERAGE."
+    rows:
+      - [Group A, Score, null, Group B]
+      - [Ana, 64, null, 77]
+      - [Ben, 71, null, 82]
+      - [Cara, 58, null, 69]
+      - [Dev, 90, null, 74]
+      - [Eli, 77, null, 88]
+      - [null, null, null, null]
+      - [Both groups, null, null, null]
+    answerCell: B8
+    expected: 75
+    variants:
+      - set: { D3: 60 }
+        expected: 72.8
+    answer: =AVERAGE(B2:B6,D2:D6)
+    requiredFunctions:
+      - AVERAGE
+    hints:
+      nudge: AVERAGE takes more than one range, separated by commas.
+      rule: AVERAGE(B2:B6,D2:D6) averages all ten scores at once.
+    misses:
+      value: All ten scores average 75. Include both B2:B6 and D2:D6.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for AVERAGE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AVERAGE(B2:B6,D2:D6)
+      - =AVERAGE(D2:D6,B2:B6)
+    reject:
+      - formula: =AVERAGE(B2:B6)
+        rule: value
+      - formula: =AVERAGE(D2:D6)
+        rule: value
+      - formula: =75
+        rule: required-function
+      - formula: =AVERAGE(B2:B6,D2:D6
+        rule: syntax

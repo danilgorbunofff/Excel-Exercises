@@ -1,0 +1,44 @@
+id: add-two-cells-step-4
+slug: add-two-cells-step-4
+level: 2
+title: Running balance with plus and minus
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: add-two-cells
+step: 4
+screens:
+  - prompt: "In D4, give the balance after line 2: the balance above in D3, plus the money in from B4, minus the money out in C4."
+    rows:
+      - [Line, In, Out, Balance]
+      - [Opening, 0, 0, 250]
+      - ["1", 120, 45, 325]
+      - ["2", 0, 80, null]
+      - ["3", 60, 15, null]
+    answerCell: D4
+    expected: 245
+    variants:
+      - set: { C4: 100 }
+        expected: 225
+    answer: =D3+B4-C4
+    requiredFunctions: []
+    hints:
+      nudge: Start from the balance above, add what came in, take away what went out.
+      rule: D3+B4-C4 carries the balance forward one line.
+    misses:
+      value: The balance after line 2 is 245. Start from D3, add B4 and take away C4.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =D3+B4-C4
+      - =B4-C4+D3
+      - =D3+(B4-C4)
+    reject:
+      - formula: =D3+B4+C4
+        rule: value
+      - formula: =B4-C4
+        rule: value
+      - formula: =245
+        rule: reference
+      - formula: =D3+B4-C4,
+        rule: syntax

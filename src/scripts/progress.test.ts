@@ -5,6 +5,7 @@ import {
   clearProgress,
   dropClearedBefore,
   dueDate,
+  foldSets,
   isDue,
   mergeProgress,
   needsReview,
@@ -245,5 +246,32 @@ describe("activeDays", () => {
       "2026-11-12": 3,
       "2026-11-13": 1,
     });
+  });
+});
+
+describe("foldSets", () => {
+  it("counts a solved ladder step as its exercise solved, a later step as a review", () => {
+    const folded = foldSets({
+      "sum-a-column": { state: "tried", date: "2026-11-01", misses: 2, missed: "2026-11-01" },
+      "sum-a-column-step-2": { state: "solved", date: "2026-11-02", last: "2026-11-02" },
+      "sum-a-column-step-4": { state: "helped", date: "2026-11-05", last: "2026-11-05", misses: 1 },
+      "sum-drill-1": { state: "solved", date: "2026-11-03", last: "2026-11-03" },
+    });
+    expect(folded).toEqual({
+      "sum-a-column": {
+        state: "solved",
+        date: "2026-11-01",
+        last: "2026-11-05",
+        reviews: 1,
+        misses: 3,
+        missed: "2026-11-01",
+      },
+      "sum-drill-1": { state: "solved", date: "2026-11-03", last: "2026-11-03" },
+    });
+  });
+
+  it("leaves a lone step under its exercise id", () => {
+    const entry = { state: "solved" as const, date: "2026-11-02", last: "2026-11-02" };
+    expect(foldSets({ "sum-a-column-step-5": entry })).toEqual({ "sum-a-column": entry });
   });
 });

@@ -1,4 +1,4 @@
-// Why this exists: hands the answers of a PRO exercise or a function drill to a
+// Why this exists: hands the answers of a PRO exercise (or a step of one) or a function drill to a
 // visitor with PRO, and those of a held-out mock task to one with PRO who has
 // finished a set that holds it. The static pages leave them out; see locked-exercise.ts, and
 // assessment.ts, which asks only once the attempt is saved.
@@ -7,7 +7,7 @@ import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
 import { hasPro, isLocked } from "../../../lib/access.ts";
 import { loadAssessments } from "../../../lib/assessments.ts";
-import { placedExercises } from "../../../lib/exercises.ts";
+import { placedExercises, stepTasks } from "../../../lib/exercises.ts";
 import { json } from "../../../server/http.ts";
 import { currentUser } from "../../../server/supabase.ts";
 
@@ -16,7 +16,10 @@ export const prerender = false;
 export const GET: APIRoute = async (ctx) => {
   const all = await placedExercises();
   const slug = ctx.params["slug"] ?? "";
-  const placed = all.find((p) => p.exercise.slug === slug);
+  // A ladder step is placed where its exercise is, so it shares the exercise's lock.
+  const placed =
+    all.find((p) => p.exercise.slug === slug) ??
+    (await stepTasks()).find((s) => s.exercise.slug === slug);
   const mock = placed
     ? undefined
     : (await getCollection("mocks")).find((e) => e.data.slug === slug);

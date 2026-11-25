@@ -1,0 +1,42 @@
+id: sum-a-column-step-2
+slug: sum-a-column-step-2
+level: 1
+title: Add up a row
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sum-a-column
+step: 2
+screens:
+  - prompt: In G2, add up the visitors from Monday in B2 to Friday in F2. Use SUM.
+    rows:
+      - [Week, Mon, Tue, Wed, Thu, Fri, Total]
+      - [Visitors, 140, 165, 152, 171, 198, null]
+    answerCell: G2
+    expected: 826
+    variants:
+      - set: { D2: 200 }
+        expected: 874
+    answer: =SUM(B2:F2)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: SUM works along a row the same way as down a column.
+      rule: SUM(B2:F2) adds the five cells from B2 to F2.
+    misses:
+      value: The week adds up to 826. Check that the range runs from B2 to F2.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:F2)
+      - =sum(b2:f2)
+      - =SUM($B$2:$F$2)
+    reject:
+      - formula: =SUM(B2:E2)
+        rule: value
+      - formula: =B2+C2+D2+E2+F2
+        rule: required-function
+      - formula: =826
+        rule: required-function
+      - formula: =SUM(B2:F2
+        rule: syntax

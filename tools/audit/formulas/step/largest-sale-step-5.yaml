@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MAXIFS($C$2:$C$16,$B$2:$B$16,"West")
+      - =MAXIFS(C$2:C$16,B2:B16,"West")
+      - =maxifs(c2:c16, b2:b16, "West")
+      - =LET(data,C2:C16,MAXIFS(data,B2:B16,"West"))
+    wrong: []
+    equivalent: []

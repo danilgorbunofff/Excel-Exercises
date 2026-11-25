@@ -6,8 +6,10 @@ import {
   exerciseSchema,
   functionSchema,
   mockSchema,
+  stepSchema,
   trackSchema,
 } from "../../src/content/schema.ts";
+import { LADDER_SIZE, originalSlot } from "../../src/lib/steps.ts";
 
 export interface SourceFile {
   file: string;
@@ -234,6 +236,61 @@ export function validateContent(
       errors.push(`${file}: slug should be "${fn.name.toLowerCase()}"`);
     if (!ids.has(fn.exercise))
       errors.push(`${file}: exercise "${fn.exercise}" has no exercise file`);
+  }
+  return errors;
+}
+
+/**
+ * The ladder steps in content/steps/. Each belongs to a track exercise, a
+ * ladder has all four steps or none yet, the exercise fills the one slot left,
+ * and the level never drops going up the ladder.
+ */
+export function validateSteps(
+  steps: readonly SourceFile[],
+  /** The track exercises: id and level. */
+  parents: readonly { id: string; level: number }[],
+): string[] {
+  const errors: string[] = [];
+  const levelOf = new Map(parents.map((p) => [p.id, p.level]));
+  const ladders = new Map<string, Map<number, { file: string; level: number }>>();
+  for (const { file, data } of steps) {
+    const parsed = stepSchema.safeParse(data);
+    if (!parsed.success) {
+      errors.push(...issuesOf(file, parsed.error));
+      continue;
+    }
+    const step = parsed.data;
+    errors.push(...advancedProblems(step).map((e) => `${file}: ${e}`));
+    errors.push(...unstatedRequirements(step).map((e) => `${file}: ${e}`));
+    if (!levelOf.has(step.parent)) {
+      errors.push(`${file}: parent "${step.parent}" is not a track exercise`);
+      continue;
+    }
+    const ladder = ladders.get(step.parent) ?? new Map();
+    if (ladder.has(step.step))
+      errors.push(
+        `${file}: step ${step.step} of ${step.parent} is also ${ladder.get(step.step)?.file}`,
+      );
+    ladder.set(step.step, { file, level: step.level });
+    ladders.set(step.parent, ladder);
+  }
+  for (const [parent, ladder] of ladders) {
+    const slot = originalSlot([...ladder.keys()]);
+    if (slot === null) {
+      errors.push(
+        `content/steps: ${parent} has steps ${[...ladder.keys()].sort().join(", ")}; it needs ${LADDER_SIZE - 1}, leaving one slot for the exercise`,
+      );
+      continue;
+    }
+    const levels = [1, 2, 3, 4, 5].map((n) =>
+      n === slot ? (levelOf.get(parent) ?? 0) : (ladder.get(n)?.level ?? 0),
+    );
+    levels.forEach((level, i) => {
+      if (i > 0 && level < (levels[i - 1] ?? 0))
+        errors.push(
+          `content/steps: ${parent} step ${i + 1} is level ${level}, below step ${i} (level ${levels[i - 1]})`,
+        );
+    });
   }
   return errors;
 }

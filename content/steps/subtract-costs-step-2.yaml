@@ -1,0 +1,41 @@
+id: subtract-costs-step-2
+slug: subtract-costs-step-2
+level: 1
+title: Budget left after two costs
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: subtract-costs
+step: 2
+screens:
+  - prompt: In E2, work out what is left of the budget in B2 after the amount spent in C2 and the amount booked in D2.
+    rows:
+      - [Project, Budget, Spent, Booked, Left]
+      - [Website, 12000, 7450, 2300, null]
+    answerCell: E2
+    expected: 2250
+    variants:
+      - set: { D2: 3000 }
+        expected: 1550
+    answer: =B2-C2-D2
+    requiredFunctions: []
+    hints:
+      nudge: Take both costs away from the budget.
+      rule: B2-C2-D2 takes the spent amount and then the booked amount off the budget.
+    misses:
+      value: The budget left is 2250. Take away both C2 and D2.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2-C2-D2
+      - =B2-(C2+D2)
+      - =B2-SUM(C2:D2)
+    reject:
+      - formula: =B2-C2
+        rule: value
+      - formula: =B2-C2+D2
+        rule: value
+      - formula: =2250
+        rule: reference
+      - formula: =B2-C2-D2,
+        rule: syntax

@@ -307,6 +307,33 @@ test("signed in, Clear my progress clears the account first, and keeps everythin
   expect(deletes).toHaveLength(2);
 });
 
+test("a due exercise comes back as another step of its ladder, the next one up", async ({
+  page,
+}) => {
+  const day = (offset: number) => {
+    const d = new Date();
+    d.setDate(d.getDate() + offset);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  };
+  await page.addInitScript(
+    (value) => {
+      if (!sessionStorage.getItem("seeded")) {
+        localStorage.setItem("formula-practice:progress:v1", value);
+        sessionStorage.setItem("seeded", "1");
+      }
+    },
+    JSON.stringify({
+      "sum-a-column": { state: "solved", date: day(-9), last: day(-9), reviews: 0 },
+      "sum-a-column-step-2": { state: "solved", date: day(-4), last: day(-4), reviews: 0 },
+    }),
+  );
+  await page.goto("/progress/");
+  // Two steps solved count as one exercise, and the second as its first review.
+  await expect(page.locator('[data-stat="solved"]')).toHaveText("1");
+  const row = page.locator("[data-review-rows] tr", { hasText: "Add up a column" });
+  await expect(row.locator(".r-title")).toHaveAttribute("href", "/exercises/sum-a-column/3/");
+});
+
 test("the progress page shows what is next, what is due, and clears", async ({ page }) => {
   const day = (offset: number) => {
     const d = new Date();

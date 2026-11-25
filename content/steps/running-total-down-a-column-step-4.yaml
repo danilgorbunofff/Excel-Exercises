@@ -1,0 +1,46 @@
+id: running-total-down-a-column-step-4
+slug: running-total-down-a-column-step-4
+level: 2
+title: Running balance of an account
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: running-total-down-a-column
+step: 4
+screens:
+  - prompt: "In D5, give the balance after the fourth line: all money in so far, B2 to B5, minus all money out so far, C2 to C5. Use SUM."
+    rows:
+      - [Line, In, Out, Balance]
+      - ["1", 500, 0, null]
+      - ["2", 0, 120, null]
+      - ["3", 250, 80, null]
+      - ["4", 0, 210, null]
+      - ["5", 300, 45, null]
+    answerCell: D5
+    expected: 340
+    variants:
+      - { set: { C3: 150 }, expected: 310 }
+      - { set: { B5: 500, C2: 120 }, expected: 720 }
+    answer: =SUM(B$2:B5)-SUM(C$2:C5)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: Total the money in, total the money out, then take one from the other.
+      rule: SUM(B$2:B5)-SUM(C$2:C5) gives the balance after line 4. The $ keeps both ranges starting at row 2 as the formula fills down.
+    misses:
+      value: The balance after line 4 is 340. Stop both ranges at row 5.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B$2:B5)-SUM(C$2:C5)
+      - =SUM(B2:B5)-SUM(C2:C5)
+      - =SUM(B$2:B5,-C$2:C5)
+    reject:
+      - formula: =SUM(B$2:B5)
+        rule: value
+      - formula: =SUM(B$2:B6)-SUM(C$2:C6)
+        rule: value
+      - formula: =340
+        rule: required-function
+      - formula: =SUM(B$2:B5)-SUM(C$2:C5
+        rule: syntax

@@ -1,0 +1,49 @@
+id: lowest-temperature-step-4
+slug: lowest-temperature-step-4
+level: 2
+title: Lowest reading with gaps
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: lowest-temperature
+step: 4
+screens:
+  - prompt: In B12, find the lowest reading. The sensor was off on one night, and one reading is missing. Use MIN.
+    rows:
+      - [Night, Low]
+      - ["1", 6]
+      - ["2", 4]
+      - ["3", sensor off]
+      - ["4", 3]
+      - ["5", null]
+      - ["6", 5]
+      - ["7", 2]
+      - ["8", 7]
+      - ["9", 3]
+      - [null, null]
+      - [Lowest, null]
+    answerCell: B12
+    expected: 2
+    variants:
+      - { set: { B10: 1 }, expected: 1 }
+      - { set: { B2: 1 }, expected: 1 }
+    answer: =MIN(B2:B10)
+    requiredFunctions:
+      - MIN
+    hints:
+      nudge: MIN skips text and empty cells; it does not treat them as 0.
+      rule: Give MIN the whole column, B2 to B10. The note and the gap are ignored.
+    misses:
+      value: The lowest reading is 2. Check that the range runs from B2 to B10.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for MIN.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MIN(B2:B10)
+      - =MIN($B$2:$B$10)
+    reject:
+      - formula: =MIN(B2:B7)
+        rule: value
+      - formula: =2
+        rule: required-function
+      - formula: =MIN(B2:B10
+        rule: syntax

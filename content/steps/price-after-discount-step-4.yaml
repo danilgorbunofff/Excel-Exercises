@@ -1,0 +1,44 @@
+id: price-after-discount-step-4
+slug: price-after-discount-step-4
+level: 2
+title: Sale price with one discount for all
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: price-after-discount
+step: 4
+screens:
+  - prompt: In C4, work out the sale price of the coat in B4. The store-wide discount is in F1 as a fraction, so 0.3 means 30% off.
+    rows:
+      - [Item, Price, Sale price, null, Discount, 0.3]
+      - [Shirt, 40, null, null, null, null]
+      - [Jeans, 70, null, null, null, null]
+      - [Coat, 150, null, null, null, null]
+      - [Scarf, 25, null, null, null, null]
+    answerCell: C4
+    expected: 105
+    variants:
+      - set: { F1: 0.25 }
+        expected: 112.5
+    answer: =B4*(1-$F$1)
+    requiredFunctions: []
+    hints:
+      nudge: The discount is in F1. What is left to pay is 1 minus the discount.
+      rule: B4*(1-$F$1) gives the price after the discount. $F$1 keeps the discount cell fixed if the formula is copied down.
+    misses:
+      value: The coat costs 105 in the sale. Multiply B4 by 1 minus F1.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B4*(1-$F$1)
+      - =B4*(1-F1)
+      - =B4-B4*$F$1
+    reject:
+      - formula: =B4*$F$1
+        rule: value
+      - formula: =B4*0.7
+        rule: fragile
+      - formula: =105
+        rule: reference
+      - formula: =B4*(1-$F$1
+        rule: syntax

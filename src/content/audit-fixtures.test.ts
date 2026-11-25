@@ -9,7 +9,7 @@ import { type AuditScreen, loadTasks, specOf } from "../../tools/lib/audit-tasks
 
 const ROOT = "tools/audit/formulas";
 const tasks = loadTasks();
-const cases = ["exercise", "daily", "mock", "drill"].flatMap((kind) =>
+const cases = ["exercise", "daily", "mock", "drill", "step"].flatMap((kind) =>
   existsSync(`${ROOT}/${kind}`)
     ? readdirSync(`${ROOT}/${kind}`)
         .filter((f) => f.endsWith(".yaml"))

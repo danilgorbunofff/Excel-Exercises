@@ -1,0 +1,41 @@
+id: average-score-step-2
+slug: average-score-step-2
+level: 1
+title: Average of a row
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: average-score
+step: 2
+screens:
+  - prompt: In G2, work out Maya's average quiz score from B2 to F2. Use AVERAGE.
+    rows:
+      - [Student, Quiz 1, Quiz 2, Quiz 3, Quiz 4, Quiz 5, Average]
+      - [Maya, 72, 85, 90, 64, 79, null]
+    answerCell: G2
+    expected: 78
+    variants:
+      - set: { C2: 95 }
+        expected: 80
+    answer: =AVERAGE(B2:F2)
+    requiredFunctions:
+      - AVERAGE
+    hints:
+      nudge: AVERAGE works along a row too.
+      rule: AVERAGE(B2:F2) adds the five scores and divides by how many there are.
+    misses:
+      value: Maya's average is 78. Check that the range runs from B2 to F2.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for AVERAGE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AVERAGE(B2:F2)
+      - =average(b2:f2)
+    reject:
+      - formula: =SUM(B2:F2)/5
+        rule: required-function
+      - formula: =AVERAGE(B2:E2)
+        rule: value
+      - formula: =78
+        rule: required-function
+      - formula: =AVERAGE(B2:F2
+        rule: syntax

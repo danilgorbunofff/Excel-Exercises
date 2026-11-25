@@ -1,0 +1,41 @@
+id: price-after-discount-step-2
+slug: price-after-discount-step-2
+level: 2
+title: Price with tax added
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: price-after-discount
+step: 2
+screens:
+  - prompt: "In D2, work out the price with tax: the price in B2 plus the tax rate in C2 on top. The rate is a fraction, so 0.2 means 20%."
+    rows:
+      - [Item, Price, Tax rate, With tax]
+      - [Headphones, 65, 0.2, null]
+    answerCell: D2
+    expected: 78
+    variants:
+      - set: { C2: 0.15 }
+        expected: 74.75
+    answer: =B2*(1+C2)
+    requiredFunctions: []
+    hints:
+      nudge: "With tax, the price is the whole price plus the rate on top: 1 plus the rate."
+      rule: B2*(1+C2) adds the tax in one step. The brackets make Excel add before it multiplies.
+    misses:
+      value: The price with tax is 78. Multiply B2 by 1 plus C2.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2*(1+C2)
+      - =B2+B2*C2
+      - =(1+C2)*B2
+    reject:
+      - formula: =B2+C2
+        rule: value
+      - formula: =B2*1+C2
+        rule: value
+      - formula: =78
+        rule: reference
+      - formula: =B2*(1+C2
+        rule: syntax

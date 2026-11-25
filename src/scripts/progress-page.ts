@@ -13,6 +13,7 @@ import {
   type SortKey,
 } from "../lib/catalogue.ts";
 import { bestStreak, currentStreak } from "../lib/daily.ts";
+import { type Rung, reviewStep } from "../lib/steps.ts";
 import { readDaily } from "./daily-store.ts";
 import { dayCount, longDate } from "./daily-view.ts";
 import { saveSession } from "./drill-session.ts";
@@ -22,6 +23,7 @@ import {
   addDays,
   clearProgress,
   dueDate,
+  foldSets,
   isSolved,
   localDay,
   needsReview,
@@ -42,6 +44,8 @@ interface Item {
   track: string;
   trackTitle: string;
   fns: string[];
+  /** The exercise's five steps, when it has them: a review opens another step. */
+  ladder?: Rung[];
 }
 // Same words as LEVELS in lib/exercises.ts, which cannot load in the browser.
 const LEVEL_NAMES: Record<number, string> = { 1: "Beginner", 2: "Intermediate", 3: "Advanced" };
@@ -135,7 +139,7 @@ function reviewItems(progress: Progress, today: string): Item[] {
 function reasonOf(
   progress: Progress,
   id: string,
-): { key: string; text: string; note?: string } {
+): { key: string; text: string; note?: string | undefined } {
   const e = progress[id];
   const misses = e?.misses ?? 0;
   if (!isSolved(e))
@@ -267,7 +271,10 @@ function buildRow(item: Item, progress: Progress, urgency: number): ReviewRow {
   whyCell.firstElementChild?.setAttribute("data-why", reason.key);
   if (reason.note)
     whyCell.append(
-      Object.assign(document.createElement("span"), { className: "why-note", textContent: reason.note }),
+      Object.assign(document.createElement("span"), {
+        className: "why-note",
+        textContent: reason.note,
+      }),
     );
   const titleCell = document.createElement("th");
   titleCell.scope = "row";
@@ -305,11 +312,27 @@ function buildRow(item: Item, progress: Progress, urgency: number): ReviewRow {
   };
 }
 
-function paintReview(progress: Progress, today: string): void {
+/**
+ * Which step of its ladder a due exercise opens: for a review, another step,
+ * harder where one is left (lib/steps.ts); after a miss, the step missed last.
+ */
+function withStep(item: Item, progress: Progress, raw: Progress): Item {
+  if (!item.ladder) return item;
+  const rung =
+    reasonOf(progress, item.id).key === "due"
+      ? reviewStep(item.ladder, (id) => raw[id]?.last)
+      : [...item.ladder]
+          .filter((r) => raw[r.id]?.missed)
+          .sort((a, b) => (raw[a.id]?.missed ?? "").localeCompare(raw[b.id]?.missed ?? ""))
+          .at(-1);
+  return rung ? { ...item, href: rung.href } : item;
+}
+
+function paintReview(progress: Progress, raw: Progress, today: string): void {
   const box = q<HTMLElement>("[data-review]");
   const empty = q<HTMLElement>("[data-review-empty]");
   if (!box || !empty) return;
-  const due = reviewItems(progress, today);
+  const due = reviewItems(progress, today).map((i) => withStep(i, progress, raw));
   dueNow = due;
   stat("due", String(due.length));
   if (reviewNext && today0) {
@@ -375,10 +398,12 @@ reviewBody?.addEventListener("click", (e) => {
 });
 
 function paint(): void {
-  const progress = readProgress();
+  const raw = readProgress();
+  // By exercise: a solved ladder step counts as its exercise solved.
+  const progress = foldSets(raw);
   const today = localDay();
-  paintReview(progress, today);
-  paintActivity(progress, today);
+  paintReview(progress, raw, today);
+  paintActivity(raw, today);
   const solved = items.filter((i) => isSolved(progress[i.id]));
   const helped = solved.filter((i) => progress[i.id]?.state === "helped").length;
 

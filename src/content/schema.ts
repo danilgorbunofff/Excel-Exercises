@@ -211,6 +211,23 @@ export const drillSchema = mockSchema.extend({
   screens: z.array(screenSchema).length(1),
 });
 
+/**
+ * One step of a track exercise's ladder, in content/steps/: the same theme,
+ * easiest (1) to hardest (5). The exercise itself fills the one step no file
+ * covers. A step opens at /exercises/<parent slug>/<step>/, shares the parent's
+ * free or PRO access, and a solve of any step counts as the exercise solved.
+ */
+export const stepSchema = mockSchema
+  .extend({
+    /** The track exercise this step belongs to. */
+    parent: kebab,
+    step: z.number().int().min(1).max(5),
+  })
+  .refine((s) => s.id === `${s.parent}-step-${s.step}` && s.slug === s.id, {
+    message: "id and slug must be <parent>-step-<step>",
+    path: ["id"],
+  });
+
 export const trackSchema = z.object({
   topics: z
     .array(

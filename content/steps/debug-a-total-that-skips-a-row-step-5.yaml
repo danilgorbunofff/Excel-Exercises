@@ -1,0 +1,55 @@
+id: debug-a-total-that-skips-a-row-step-5
+slug: debug-a-total-that-skips-a-row-step-5
+level: 3
+title: Total that ignores numbers stored as text
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: debug-a-total-that-skips-a-row
+step: 5
+screens:
+  - prompt: In B13, what is the true total of the invoices? Some amounts were pasted in as text, so a plain total leaves them out.
+    rows:
+      - [Invoice, Amount]
+      - [INV-01, 450]
+      - [INV-02, "320"]
+      - [INV-03, 275]
+      - [INV-04, "510"]
+      - [INV-05, 390]
+      - [INV-06, 615]
+      - [INV-07, "180"]
+      - [INV-08, 240]
+      - [INV-09, 455]
+      - [INV-10, "300"]
+      - [null, null]
+      - [Total, null]
+    answerCell: B13
+    expected: 3735
+    variants:
+      - set: { B3: "350" }
+        expected: 3765
+      - set: { B6: 400 }
+        expected: 3745
+    answer: =SUMPRODUCT(--B2:B11)
+    requiredFunctions: []
+    hints:
+      nudge: Turn every amount into a number before adding.
+      rule: SUMPRODUCT(--B2:B11) turns text that looks like a number into a number, then adds them all. SUM alone skips the text.
+    misses:
+      value: All ten invoices add up to 3735. SUM on its own leaves out the amounts stored as text.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(--B2:B11)
+      - =SUM(VALUE(B2:B11))
+      - =SUMPRODUCT(B2:B11*1)
+      - =SUM(--B2:B11)
+    reject:
+      - formula: =SUM(B2:B11)
+        rule: value
+      - formula: =SUM(B2:B11)+1310
+        rule: fragile
+      - formula: =3735
+        rule: reference
+      - formula: =SUMPRODUCT(--B2:B11
+        rule: syntax

@@ -1,0 +1,40 @@
+id: price-after-discount-step-1
+slug: price-after-discount-step-1
+level: 1
+title: How much the discount takes off
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: price-after-discount
+step: 1
+screens:
+  - prompt: "In D2, work out how much the discount takes off: the price in B2 times the discount in C2. The discount is a fraction, so 0.2 means 20% off."
+    rows:
+      - [Item, Price, Discount, Amount off]
+      - [Boots, 95, 0.2, null]
+    answerCell: D2
+    expected: 19
+    variants:
+      - set: { C2: 0.3 }
+        expected: 28.5
+    answer: =B2*C2
+    requiredFunctions: []
+    hints:
+      nudge: A fraction of a price is the price times the fraction.
+      rule: B2*C2 gives the part of the price the discount removes.
+    misses:
+      value: The discount takes 19 off. Multiply the price by the discount.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2*C2
+      - =C2*B2
+    reject:
+      - formula: =B2-C2
+        rule: value
+      - formula: =B2*(1-C2)
+        rule: value
+      - formula: =19
+        rule: reference
+      - formula: =B2*C2,
+        rule: syntax

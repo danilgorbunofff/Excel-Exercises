@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { validateContent } from "./validate-content.ts";
+import { validateContent, validateSteps } from "./validate-content.ts";
 
 const screen = {
   prompt: "Add up the sales in B2 to B3.",
@@ -284,5 +284,43 @@ describe("drills", () => {
     d.data.screens[0] = { ...d.data.screens[0], requiredFunctions: [] } as never;
     const errors = run([d, ...[2, 3, 4, 5].map((n) => drill(n))]);
     expect(errors).toContain("sum-drill-1.yaml: screens.0.requiredFunctions must include SUM");
+  });
+});
+
+describe("validateSteps", () => {
+  const step = (n: number, level = 1, parent = "a") => {
+    const { topic: _t, notes: _n, ...rest } = exercise(`${parent}-step-${n}`).data;
+    return { file: `${parent}-step-${n}.yaml`, data: { ...rest, level, parent, step: n } };
+  };
+  const parents = [{ id: "a", level: 1 }];
+
+  it("accepts four steps that leave one slot for the exercise", () => {
+    expect(
+      validateSteps(
+        [2, 3, 4, 5].map((n) => step(n)),
+        parents,
+      ),
+    ).toEqual([]);
+  });
+
+  it("needs all four steps, an existing parent and matching ids", () => {
+    expect(validateSteps([step(2), step(3)], parents)).toEqual([
+      "content/steps: a has steps 2, 3; it needs 4, leaving one slot for the exercise",
+    ]);
+    expect(validateSteps([step(2, 1, "nope")], parents)).toEqual([
+      'nope-step-2.yaml: parent "nope" is not a track exercise',
+    ]);
+    const wrong = step(2);
+    wrong.data.id = "a-step-3";
+    wrong.data.slug = "a-step-3";
+    expect(validateSteps([wrong], parents)[0]).toContain(
+      "id and slug must be <parent>-step-<step>",
+    );
+  });
+
+  it("keeps the level from dropping up the ladder", () => {
+    expect(validateSteps([step(2, 2), step(3, 1), step(4, 2), step(5, 2)], parents)).toEqual([
+      "content/steps: a step 3 is level 1, below step 2 (level 2)",
+    ]);
   });
 });

@@ -1,0 +1,49 @@
+id: sum-across-several-blocks-step-5
+slug: sum-across-several-blocks-step-5
+level: 3
+title: Sales in the first and third quarters
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sum-across-several-blocks
+step: 5
+screens:
+  - prompt: In H2, what did all the regions sell in Q1 and Q3 together? The South's Q3 figure has not come in yet.
+    rows:
+      - [Region, Q1, Q2, Q3, Q4, null, null, null]
+      - [North, 410, 395, 455, 470, null, Q1 and Q3, null]
+      - [South, 380, 360, pending, 405, null, null, null]
+      - [East, 520, 545, 560, 590, null, null, null]
+      - [West, 295, 310, 330, 345, null, null, null]
+      - [Central, 450, 440, 470, 485, null, null, null]
+      - [Coast, 365, 380, 400, 395, null, null, null]
+      - [Hills, 240, 255, 270, 260, null, null, null]
+      - [Valley, 315, 300, 335, 350, null, null, null]
+    answerCell: H2
+    expected: 5795
+    variants:
+      - set: { D3: 390 }
+        expected: 6185
+      - set: { B5: 300 }
+        expected: 5800
+    answer: =SUM(B2:B9,D2:D9)
+    requiredFunctions: []
+    hints:
+      nudge: Q1 is column B and Q3 is column D, with Q2 between them.
+      rule: SUM(B2:B9,D2:D9) adds the two quarter columns and skips Q2. The pending note is ignored until a number replaces it.
+    misses:
+      value: Q1 and Q3 add up to 5795. Leave out Q2 in column C.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:B9,D2:D9)
+      - =SUM(B2:B9)+SUM(D2:D9)
+    reject:
+      - formula: =SUM(B2:E9)
+        rule: value
+      - formula: =SUM(B2:D9)
+        rule: value
+      - formula: =5795
+        rule: reference
+      - formula: =SUM(B2:B9,D2:D9
+        rule: syntax

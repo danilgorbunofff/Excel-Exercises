@@ -1,0 +1,41 @@
+id: subtract-costs-step-4
+slug: subtract-costs-step-4
+level: 2
+title: Profit as a share of revenue
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: subtract-costs
+step: 4
+screens:
+  - prompt: "In D2, work out the profit margin: the profit, revenue minus costs, divided by the revenue. Show it as a fraction, so 0.25 means 25%."
+    rows:
+      - [Month, Revenue, Costs, Margin]
+      - [April, 9600, 7200, null]
+    answerCell: D2
+    expected: 0.25
+    variants:
+      - set: { C2: 6000 }
+        expected: 0.375
+    answer: =(B2-C2)/B2
+    requiredFunctions: []
+    hints:
+      nudge: Work out the profit first, in brackets, then divide.
+      rule: Excel divides before it subtracts, so the brackets in (B2-C2)/B2 make the subtraction happen first.
+    misses:
+      value: "The margin is 0.25: the profit, in brackets, divided by the revenue in B2."
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =(B2-C2)/B2
+      - =1-C2/B2
+      - =(B2-C2)/B2*1
+    reject:
+      - formula: =B2-C2/B2
+        rule: value
+      - formula: =(B2-C2)/C2
+        rule: value
+      - formula: =0.25
+        rule: reference
+      - formula: =(B2-C2)/B2,
+        rule: syntax

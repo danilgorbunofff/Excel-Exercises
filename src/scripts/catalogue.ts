@@ -12,10 +12,11 @@ import {
   type SortKey,
 } from "../lib/catalogue.ts";
 import { collapse } from "./collapse.ts";
-import { readProgress } from "./progress.ts";
+import { foldSets, readProgress } from "./progress.ts";
 import { paintStatus } from "./status.ts";
 
-const progress = readProgress();
+// By exercise: a solved ladder step counts as its exercise solved.
+const progress = foldSets(readProgress());
 paintStatus(progress);
 
 const rowOf = (el: HTMLElement): CatalogueRow => ({

@@ -352,3 +352,29 @@ test("the panel divider moves with the keyboard and remembers the width", async 
   await page.reload();
   await expect(divider).toHaveAttribute("aria-valuenow", "65");
 });
+
+test("an exercise is one step of five; solving any step counts it solved, and a free one's steps are free", async ({
+  page,
+}) => {
+  await page.goto(SUM);
+  const ladder = page.getByRole("navigation", { name: "Same task, easier to harder" });
+  await expect(ladder.getByRole("link")).toHaveCount(5);
+  await expect(ladder.getByRole("link", { name: "1" })).toHaveAttribute("aria-current", "step");
+  await ladder.getByRole("link", { name: "2" }).click();
+  await expect(page).toHaveURL(/\/exercises\/sum-a-column\/2\/$/u);
+  // Free like its exercise: no paywall, and the robots tag keeps it out of search.
+  await expect(page.locator("[data-paywall]")).toHaveCount(0);
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "noindex");
+  await page.locator("#formula").fill("=SUM(B2:F2)");
+  await page.getByRole("button", { name: "Check" }).click();
+  const dialog = page.getByRole("dialog", { name: "Exercise solved" });
+  await expect(dialog.getByRole("link", { name: "Try a harder one" })).toHaveAttribute(
+    "href",
+    "/exercises/sum-a-column/3/",
+  );
+  await page.keyboard.press("Escape");
+  await expect(ladder.getByRole("link", { name: "2 (solved)" })).toBeVisible();
+
+  await page.goto("/exercises/tracks/totals/");
+  await expect(page.locator('[data-status-for="sum-a-column"]')).toContainText("Solved");
+});

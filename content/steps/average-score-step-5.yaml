@@ -1,0 +1,57 @@
+id: average-score-step-5
+slug: average-score-step-5
+level: 3
+title: Average order without cancellations
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: average-score
+step: 5
+screens:
+  - prompt: In E2, what is the average order value? Cancelled orders are kept on the sheet with a value of 0 and should not count.
+    rows:
+      - [Order, Value, null, Average order, null]
+      - ["1001", 54, null, null, null]
+      - ["1002", 0, null, null, null]
+      - ["1003", 120, null, null, null]
+      - ["1004", 86, null, null, null]
+      - ["1005", 42, null, null, null]
+      - ["1006", 0, null, null, null]
+      - ["1007", 98, null, null, null]
+      - ["1008", 75, null, null, null]
+      - ["1009", 61, null, null, null]
+      - ["1010", 0, null, null, null]
+      - ["1011", 133, null, null, null]
+      - ["1012", 47, null, null, null]
+      - ["1013", 89, null, null, null]
+      - ["1014", 70, null, null, null]
+      - ["1015", 104, null, null, null]
+    answerCell: E2
+    expected: 81.5833333333
+    variants:
+      - set: { B5: 0 }
+        expected: 81.1818181818
+      - set: { B3: 66 }
+        expected: 80.3846153846
+    answer: =AVERAGEIF(B2:B16,">0")
+    requiredFunctions: []
+    hints:
+      nudge: Average only the orders worth more than 0.
+      rule: AVERAGEIF(range, ">0") averages only the cells that pass the test, so cancelled orders drop out of the count.
+    misses:
+      value: The orders that went through average 81.58. A plain average counts the cancelled ones as 0.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AVERAGEIF(B2:B16,">0")
+      - =SUM(B2:B16)/COUNTIF(B2:B16,">0")
+      - =AVERAGEIF(B2:B16,"<>0")
+    reject:
+      - formula: =AVERAGE(B2:B16)
+        rule: value
+      - formula: =SUM(B2:B16)/12
+        rule: fragile
+      - formula: =81.5833333333
+        rule: reference
+      - formula: =AVERAGEIF(B2:B16,">0"
+        rule: syntax

@@ -1,7 +1,7 @@
 // Why this exists: the Status column and the track progress bars read the
 // same progress store, so every list shows the same state with the same words.
 import { exerciseAction, isDone, trackStatus } from "../lib/catalogue.ts";
-import { type Progress, readProgress } from "./progress.ts";
+import { foldSets, type Progress, readProgress } from "./progress.ts";
 
 const LABELS = {
   solved: "Solved",
@@ -15,7 +15,7 @@ const LABELS = {
  * Fills every [data-status-for] mark and [data-track-progress] bar on the
  * page, with the button label beside each: Start, Continue or Review.
  */
-export function paintStatus(progress: Progress = readProgress()): void {
+export function paintStatus(progress: Progress = foldSets(readProgress())): void {
   for (const el of document.querySelectorAll<HTMLElement>("[data-status-for]")) {
     const state = progress[el.dataset["statusFor"] ?? ""]?.state ?? "";
     el.dataset["state"] = state;

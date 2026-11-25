@@ -1,0 +1,39 @@
+id: largest-sale-step-2
+slug: largest-sale-step-2
+level: 1
+title: Largest value in a row
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: largest-sale
+step: 2
+screens:
+  - prompt: In H2, find the busiest day's number of orders, from B2 to G2. Use MAX.
+    rows:
+      - [Day, Mon, Tue, Wed, Thu, Fri, Sat, Busiest]
+      - [Orders, 38, 42, 35, 51, 47, 44, null]
+    answerCell: H2
+    expected: 51
+    variants:
+      - { set: { C2: 60 }, expected: 60 }
+      - { set: { G2: 60 }, expected: 60 }
+    answer: =MAX(B2:G2)
+    requiredFunctions:
+      - MAX
+    hints:
+      nudge: MAX works along a row the same way as down a column.
+      rule: MAX(B2:G2) gives the largest number in the six cells.
+    misses:
+      value: The busiest day has 51 orders. Check that the range runs from B2 to G2.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for MAX.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MAX(B2:G2)
+      - =max(b2:g2)
+    reject:
+      - formula: =MAX(B2:D2)
+        rule: value
+      - formula: =51
+        rule: required-function
+      - formula: =MAX(B2:G2
+        rule: syntax

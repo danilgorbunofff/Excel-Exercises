@@ -1,0 +1,51 @@
+id: sum-across-several-blocks-step-4
+slug: sum-across-several-blocks-step-4
+level: 2
+title: Total a block and a late row
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sum-across-several-blocks
+step: 4
+screens:
+  - prompt: "In B11, total every expense: the block in B2 to D5 and the late claims in row 8, B8 to D8. Use SUM."
+    rows:
+      - [Person, Travel, Meals, Hotel]
+      - [Ann, 120, 45, 210]
+      - [Ben, 85, 30, 180]
+      - [Cy, 140, 52, 0]
+      - [Di, 60, 28, 160]
+      - [null, null, null, null]
+      - [Late claims, null, null, null]
+      - [Ed, 95, 40, 175]
+      - [null, null, null, null]
+      - [null, null, null, null]
+      - [All expenses, null, null, null]
+    answerCell: B11
+    expected: 1420
+    variants:
+      - set: { C8: 60 }
+        expected: 1440
+    answer: =SUM(B2:D5,B8:D8)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: "Two ranges: the main block and the extra row."
+      rule: SUM(B2:D5,B8:D8) adds the block and the late row together.
+    misses:
+      value: All the expenses add up to 1420. Include the late row 8 as well.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:D5,B8:D8)
+      - =SUM(B2:D8)
+      - =SUM(B8:D8,B2:D5)
+    reject:
+      - formula: =SUM(B2:D5)
+        rule: value
+      - formula: =SUM(B2:B5,B8)
+        rule: value
+      - formula: =1420
+        rule: required-function
+      - formula: =SUM(B2:D5,B8:D8
+        rule: syntax

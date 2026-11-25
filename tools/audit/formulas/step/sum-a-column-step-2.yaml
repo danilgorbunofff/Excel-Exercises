@@ -1,0 +1,7 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUM(B$2:F$2)
+      - =LET(data,B2:F2,SUM(data))
+    wrong: []
+    equivalent: []

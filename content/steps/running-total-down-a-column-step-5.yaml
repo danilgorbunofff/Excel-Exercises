@@ -1,0 +1,59 @@
+id: running-total-down-a-column-step-5
+slug: running-total-down-a-column-step-5
+level: 3
+title: Running total for one kind of expense
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: running-total-down-a-column
+step: 5
+screens:
+  - prompt: In C9, how much has been spent on Travel so far, up to and including this row? Write it so it could fill down column C.
+    rows:
+      - [Kind, Amount, Spent on this kind so far]
+      - [Travel, 120, null]
+      - [Meals, 35, null]
+      - [Travel, 80, null]
+      - [Hotel, 210, null]
+      - [Meals, 42, null]
+      - [Travel, 95, null]
+      - [Hotel, 180, null]
+      - [Travel, 60, null]
+      - [Meals, 28, null]
+      - [Travel, 110, null]
+      - [Hotel, 195, null]
+      - [Travel, 75, null]
+      - [Meals, 31, null]
+      - [Travel, 140, null]
+      - [Hotel, 205, null]
+    answerCell: C9
+    expected: 355
+    variants:
+      - set: { B4: 100 }
+        expected: 375
+      - set: { A6: Travel }
+        expected: 397
+      - set: { A10: Travel, B9: 70 }
+        expected: 365
+    answer: =SUMIFS(B$2:B9,A$2:A9,A9)
+    requiredFunctions: []
+    hints:
+      nudge: Add up the Amount only on the Travel rows from the top down to row 9.
+      rule: SUMIFS(B$2:B9,A$2:A9,A9) adds the amounts whose kind matches this row's kind, from row 2 to this row. The $ keeps the start fixed as it fills down.
+    misses:
+      value: Travel up to row 9 adds up to 355. Stop both ranges at row 9.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIFS(B$2:B9,A$2:A9,A9)
+      - =SUMIF(A$2:A9,A9,B$2:B9)
+      - =SUMIF(A$2:A9,"Travel",B$2:B9)
+    reject:
+      - formula: =SUMIF(A$2:A16,A9,B$2:B16)
+        rule: value
+      - formula: =SUM(B$2:B9)
+        rule: value
+      - formula: =355
+        rule: reference
+      - formula: =SUMIF(A$2:A9,A9,B$2:B9
+        rule: syntax

@@ -1,0 +1,25 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MIN($B$2:$B$8,$D$2:$D$8)
+      - =MIN(B$2:B$8,D2:D8)
+      - =min(b2:b8, d2:d8)
+      - =LET(data,B2:B8,MIN(data,D2:D8))
+    wrong:
+      - formula: =MIN(B2:B7,D2:D8)
+        rule: fragile
+        why: range B2:B8 one row short at the end
+      - formula: =MIN(B3:B8,D2:D8)
+        rule: fragile
+        why: range B2:B8 skips its first row
+      - formula: =MIN(B2:B8,D2:D7)
+        rule: fragile
+        why: range D2:D8 one row short at the end
+      - formula: =MIN(B2:B8,D3:D8)
+        rule: fragile
+        why: range D2:D8 skips its first row
+    equivalent:
+      - formula: =MIN(B2:B9,D2:D8)
+        why: "range B2:B8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =MIN(B2:B8,D2:D9)
+        why: "range D2:D8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

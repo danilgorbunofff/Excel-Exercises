@@ -1,0 +1,41 @@
+id: running-total-down-a-column-step-1
+slug: running-total-down-a-column-step-1
+level: 1
+title: Add the next day to the total
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: running-total-down-a-column
+step: 1
+screens:
+  - prompt: In C4, add Wednesday's sales in B4 to the total so far in C3.
+    rows:
+      - [Day, Sales, Total so far]
+      - [Mon, 240, 240]
+      - [Tue, 185, 425]
+      - [Wed, 210, null]
+    answerCell: C4
+    expected: 635
+    variants:
+      - set: { B4: 200 }
+        expected: 625
+    answer: =C3+B4
+    requiredFunctions: []
+    hints:
+      nudge: The total so far plus today's sales gives the new total.
+      rule: Add the cell above in column C to today's sales in column B.
+    misses:
+      value: The total after Wednesday is 635. Add C3 and B4.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =C3+B4
+      - =B4+C3
+      - =SUM(C3,B4)
+    reject:
+      - formula: =B3+B4
+        rule: value
+      - formula: =635
+        rule: reference
+      - formula: =C3+B4,
+        rule: syntax

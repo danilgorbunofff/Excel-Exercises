@@ -6,30 +6,30 @@ import ExerciseWorkbench from "../../components/ExerciseWorkbench.astro";
 import Base from "../../layouts/Base.astro";
 import {
   functionsOf,
+  laddersOf,
   listWords as list,
+  moreAfter,
   type Placed,
   placedExercises,
+  stepTasks,
 } from "../../lib/exercises.ts";
+import type { Rung } from "../../lib/steps.ts";
 
 export async function getStaticPaths() {
   const all = await placedExercises();
-  return all.map((placed, i) => ({
+  const ladders = laddersOf(await stepTasks());
+  return all.map((placed) => ({
     params: { slug: placed.exercise.slug },
-    // The next few in track order, wrapping round to the start.
-    props: {
-      placed,
-      more: [1, 2, 3]
-        .map((d) => all[(i + d) % all.length])
-        .filter((p) => p !== undefined && p !== placed),
-    },
+    props: { placed, more: moreAfter(all, placed), ladder: ladders.get(placed.exercise.id) },
   }));
 }
 
 interface Props {
   placed: Placed;
   more: Placed[];
+  ladder?: Rung[] | undefined;
 }
-const { placed, more } = Astro.props;
+const { placed, more, ladder } = Astro.props;
 const { exercise } = placed;
 const first = exercise.screens[0];
 if (!first) throw new Error(`${exercise.id} has no screens`);
@@ -43,5 +43,5 @@ const description = `Practise ${functions.length > 0 ? list(functions) : "Excel 
   skipTo={{ href: "#formula", label: "Skip to the formula" }}
   layout="exercise"
 >
-  <ExerciseWorkbench placed={placed} more={more} />
+  <ExerciseWorkbench placed={placed} more={more} ladder={ladder} />
 </Base>

@@ -25,10 +25,11 @@ import {
   exerciseSchema,
   mockSchema,
   type Screen,
+  stepSchema,
 } from "../../src/content/schema.ts";
 import type { ExcelResult, ExcelScalar } from "./excel-bridge.ts";
 
-export type Kind = "exercise" | "daily" | "mock" | "drill";
+export type Kind = "exercise" | "daily" | "mock" | "drill" | "step";
 
 export interface TaskScreen {
   kind: Kind;
@@ -46,6 +47,7 @@ const DIRS: [Kind, string][] = [
   ["daily", "content/daily"],
   ["mock", "content/mocks"],
   ["drill", "content/drills"],
+  ["step", "content/steps"],
 ];
 
 const SCHEMAS = {
@@ -53,6 +55,7 @@ const SCHEMAS = {
   daily: dailySchema,
   mock: mockSchema,
   drill: drillSchema,
+  step: stepSchema,
 } as const;
 
 export function loadTasks(root = "."): TaskScreen[] {

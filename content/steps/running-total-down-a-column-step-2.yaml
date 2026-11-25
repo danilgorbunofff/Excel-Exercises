@@ -1,0 +1,43 @@
+id: running-total-down-a-column-step-2
+slug: running-total-down-a-column-step-2
+level: 2
+title: Running total along a row
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: running-total-down-a-column
+step: 2
+screens:
+  - prompt: In E3, give the running total of savings up to April, with a SUM that starts at the fixed cell B2 and could fill right.
+    rows:
+      - [Month, Jan, Feb, Mar, Apr, May]
+      - [Saved, 50, 75, 60, 90, 80]
+      - [Running total, null, null, null, null, null]
+    answerCell: E3
+    expected: 275
+    variants:
+      - set: { C2: 100 }
+        expected: 300
+    answer: =SUM($B2:E2)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: Start the range at January and end it at April.
+      rule: SUM($B2:E2) adds from January to the current month. The $ keeps the start on column B when the formula fills right.
+    misses:
+      value: The savings up to April add up to 275. The range runs from B2 to E2.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM($B2:E2)
+      - =SUM($B$2:E2)
+      - =SUM(B2:E2)
+    reject:
+      - formula: =SUM(B2:F2)
+        rule: value
+      - formula: =SUM(E2)
+        rule: value
+      - formula: =275
+        rule: required-function
+      - formula: =SUM($B2:E2
+        rule: syntax

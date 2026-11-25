@@ -1,0 +1,56 @@
+id: lowest-temperature-step-5
+slug: lowest-temperature-step-5
+level: 3
+title: Lowest stock still on sale
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: lowest-temperature
+step: 5
+screens:
+  - prompt: In G2, which item still on sale has the fewest units in stock? Give that number of units.
+    rows:
+      - [Item, Stock, On sale, null, null, null, null]
+      - [Pens, 120, Yes, null, null, Fewest units on sale, null]
+      - [Pads, 45, Yes, null, null, null, null]
+      - [Clips, 8, No, null, null, null, null]
+      - [Tape, 30, Yes, null, null, null, null]
+      - [Files, 64, Yes, null, null, null, null]
+      - [Ink, 12, No, null, null, null, null]
+      - [Glue, 22, Yes, null, null, null, null]
+      - [Rulers, 51, Yes, null, null, null, null]
+      - [Folders, 5, No, null, null, null, null]
+      - [Labels, 37, Yes, null, null, null, null]
+      - [Staples, 26, Yes, null, null, null, null]
+      - [Markers, 41, Yes, null, null, null, null]
+      - [Erasers, 18, No, null, null, null, null]
+      - [Binders, 33, Yes, null, null, null, null]
+      - [Sticky notes, 59, Yes, null, null, null, null]
+    answerCell: G2
+    expected: 22
+    variants:
+      - set: { B9: 15 }
+        expected: 15
+      - set: { C4: Yes }
+        expected: 8
+    answer: =MINIFS(B2:B16,C2:C16,"Yes")
+    requiredFunctions: []
+    hints:
+      nudge: Look for the smallest stock only among the rows marked Yes.
+      rule: MINIFS(stock, on sale, "Yes") gives the smallest stock where the item is on sale.
+    misses:
+      value: The fewest units on sale is 22. Items not on sale should not count.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MINIFS(B2:B16,C2:C16,"Yes")
+      - =MIN(FILTER(B2:B16,C2:C16="Yes"))
+    reject:
+      - formula: =MIN(B2:B16)
+        rule: value
+      - formula: =MIN(B3,B5,B8)
+        rule: fragile
+      - formula: =22
+        rule: reference
+      - formula: =MINIFS(B2:B16,C2:C16,"Yes"
+        rule: syntax

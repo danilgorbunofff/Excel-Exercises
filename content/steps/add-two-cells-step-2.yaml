@@ -1,0 +1,42 @@
+id: add-two-cells-step-2
+slug: add-two-cells-step-2
+level: 1
+title: Add three cells
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: add-two-cells
+step: 2
+screens:
+  - prompt: In B5, add the price in B2, the delivery in B3 and the gift wrap in B4.
+    rows:
+      - [Item, Cost]
+      - [Price, 36]
+      - [Delivery, 4.5]
+      - [Gift wrap, 2.25]
+      - [Total, null]
+    answerCell: B5
+    expected: 42.75
+    variants:
+      - set: { B3: 6 }
+        expected: 44.25
+    answer: =B2+B3+B4
+    requiredFunctions: []
+    hints:
+      nudge: Join the three cells with plus signs.
+      rule: A plus sign adds the cell on each side, so B2+B3+B4 adds all three.
+    misses:
+      value: The three costs add up to 42.75. Include B2, B3 and B4.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2+B3+B4
+      - =B4+B3+B2
+      - =SUM(B2:B4)
+    reject:
+      - formula: =B2+B3
+        rule: value
+      - formula: =42.75
+        rule: reference
+      - formula: =B2+B3+B4,
+        rule: syntax

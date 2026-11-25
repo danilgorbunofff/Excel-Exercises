@@ -9,6 +9,7 @@ import {
   exerciseSchema,
   functionSchema,
   mockSchema,
+  stepSchema,
 } from "./content/schema.ts";
 
 const exercises = defineCollection({
@@ -31,6 +32,11 @@ const drills = defineCollection({
   schema: drillSchema,
 });
 
+const steps = defineCollection({
+  loader: glob({ base: "./content/steps", pattern: "*.yaml" }),
+  schema: stepSchema,
+});
+
 const functions = defineCollection({
   loader: glob({ base: "./content/functions", pattern: "*.yaml" }),
   schema: functionSchema,
@@ -41,4 +47,4 @@ const articles = defineCollection({
   schema: articleSchema,
 });
 
-export const collections = { exercises, daily, mocks, drills, functions, articles };
+export const collections = { exercises, daily, mocks, drills, steps, functions, articles };

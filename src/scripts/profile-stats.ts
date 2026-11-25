@@ -1,7 +1,14 @@
 // Why this exists: the profile page's numbers, counted from progress without
 // the DOM, so they can be tested: totals, per difficulty, per track, the
 // next exercise and practice days.
-import { activeDays, isSolved, localDay, needsReview, type Progress } from "./progress.ts";
+import {
+  activeDays,
+  foldSets,
+  isSolved,
+  localDay,
+  needsReview,
+  type Progress,
+} from "./progress.ts";
 
 export interface ProfileItem {
   id: string;
@@ -52,8 +59,10 @@ export function profileStats(
   let helped = 0;
   let due = 0;
   let next: ProfileItem | null = null;
+  // By exercise, so a solved ladder step counts; the practice days below keep every task.
+  const sets = foldSets(progress);
   for (const item of items) {
-    const entry = progress[item.id];
+    const entry = sets[item.id];
     const done = isSolved(entry);
     if (done) solved += 1;
     if (entry?.state === "helped") helped += 1;

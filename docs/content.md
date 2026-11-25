@@ -77,6 +77,18 @@ At levels 1 and 2, a required function is named in the prompt or the exercise ti
 
 `src/content/fixtures.test.ts` runs every reference answer, accepted formula and rejected formula through the grader. It writes every reject verdict, with its miss text, to `src/content/__snapshots__/verdicts.txt`, and checks both against the copy rules. A change to what a learner reads shows up as a diff in that file.
 
+## Ladder steps
+
+Every track exercise is one step of a five-step ladder on the same theme, easiest (1) to hardest (5). The other four steps are files in `content/steps/`, named `<exercise id>-step-<n>.yaml`, with `parent` and `step`. The exercise fills the one step no file covers: by default step 1 for a level-1 exercise, step 3 for level 2 and step 4 for level 3.
+
+- Solving any step counts as solving the exercise, for the track, progress and certificates. Nobody has to solve all five.
+- A step opens at `/exercises/<exercise slug>/<step>/`, shares the exercise's track place, Next and free or PRO access, and is left out of search (`noindex`, no sitemap entry).
+- When the exercise comes back for review, the progress page opens another step: the first unsolved one above the hardest solved.
+- Each step is a distinct task: new data, a new layout or a new twist, not the same sheet with other numbers. The level never drops going up the ladder (`npm run content:validate` checks it), and a level-3 step follows the level-3 rules above.
+- A ladder shows only once all four step files exist.
+
+Write a track's steps as a compact spec in `tools/step-specs/<track>.mjs` and run `node tools/new-steps.ts <spec>`: it fills in expected values from the grader and checks every accept and reject. Add `--write` to create the files. Then run the same checks as drills, with `--kind=step`: `npm run content:validate`, `npm run lint:copy`, `node tools/audit-tasks.ts --kind=step` and `node tools/write-audit-fixtures.ts` with Excel open, set `checkedInExcel`, then `npx vitest run src/content -u` and read the new lines in `verdicts.txt`.
+
 ## Changing the order
 
 Move lines in the `order` list of `content/track.yaml`. Topics can be reordered the same way. Run `npm run content:validate` afterwards.

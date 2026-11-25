@@ -1,10 +1,11 @@
 // Why this exists: Phase 3 of the reverification, run after `npm run build`.
 // Checks the free and PRO split per track, then scans dist/client for any PRO
-// mock or drill reference answer and for daily-only tasks outside /daily/.
+// mock, drill or ladder step reference answer and for daily-only tasks outside /daily/.
 // Usage: node tools/audit-access.ts
 import { readFileSync } from "node:fs";
 import { parse } from "yaml";
 import { isLocked, topicNumbers } from "../src/lib/access.ts";
+import { parentOf } from "../src/lib/steps.ts";
 import { loadTasks } from "./lib/audit-tasks.ts";
 import { findDailyMentions, findLeaks } from "./lib/leak-scan.ts";
 
@@ -39,7 +40,9 @@ const pro = tasks.filter(
   (t) =>
     t.kind === "mock" ||
     t.kind === "drill" ||
-    (t.kind === "exercise" && isLocked({ topicNumber: numbers.get(t.id) ?? 0 })),
+    (t.kind === "exercise" && isLocked({ topicNumber: numbers.get(t.id) ?? 0 })) ||
+    // A ladder step shares its exercise's lock.
+    (t.kind === "step" && isLocked({ topicNumber: numbers.get(parentOf(t.id) ?? "") ?? 0 })),
 );
 const secrets = pro.map((t) => ({
   owner: `${t.kind}/${t.id}#${t.index + 1}`,

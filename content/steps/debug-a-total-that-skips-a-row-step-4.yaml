@@ -1,0 +1,49 @@
+id: debug-a-total-that-skips-a-row-step-4
+slug: debug-a-total-that-skips-a-row-step-4
+level: 2
+title: Total the items, not the subtotals
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: debug-a-total-that-skips-a-row
+step: 4
+screens:
+  - prompt: In B14, total the nine items. Rows 5, 9 and 13 hold subtotals for each shelf and must not be counted again. Use SUM.
+    rows:
+      - [Item, Value]
+      - [A1, 120]
+      - [A2, 85]
+      - [A3, 140]
+      - [Shelf A, 345]
+      - [B1, 60]
+      - [B2, 95]
+      - [B3, 110]
+      - [Shelf B, 265]
+      - [C1, 75]
+      - [C2, 130]
+      - [C3, 90]
+      - [Shelf C, 295]
+      - [All items, null]
+    answerCell: B14
+    expected: 905
+    answer: =SUM(B2:B4,B6:B8,B10:B12)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: Three ranges, one for each shelf's items.
+      rule: SUM(B2:B4,B6:B8,B10:B12) adds the nine items and skips the three subtotal rows.
+    misses:
+      value: The nine items add up to 905. Counting the subtotal rows doubles the total.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+    accept:
+      - =SUM(B2:B4,B6:B8,B10:B12)
+      - =SUM(B5,B9,B13)
+    reject:
+      - formula: =SUM(B2:B13)
+        rule: value
+      - formula: =SUM(B2:B4,B6:B8)
+        rule: value
+      - formula: =905
+        rule: required-function
+      - formula: =SUM(B2:B4,B6:B8,B10:B12
+        rule: syntax

@@ -2,7 +2,7 @@
 // reverification steps 3 to 7: shape, expected value against Excel, every
 // candidate formula judged by Excel and by the grader, feedback coverage and
 // variants. Writes tools/audit/tasks-report.txt and tasks-findings.json.
-// Usage: node tools/audit-tasks.ts [--only=<id>] [--kind=exercise|daily|mock|drill] [--cached-only]
+// Usage: node tools/audit-tasks.ts [--only=<id>] [--kind=exercise|daily|mock|drill|step] [--cached-only]
 import { writeFileSync } from "node:fs";
 import { grade } from "@practice/grader";
 import {

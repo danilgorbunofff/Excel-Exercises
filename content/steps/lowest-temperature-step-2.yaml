@@ -1,0 +1,39 @@
+id: lowest-temperature-step-2
+slug: lowest-temperature-step-2
+level: 1
+title: Lowest price in a row
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: lowest-temperature
+step: 2
+screens:
+  - prompt: In G2, find the lowest price the five shops charge, from B2 to F2. Use MIN.
+    rows:
+      - [Item, Shop A, Shop B, Shop C, Shop D, Shop E, Lowest]
+      - [Kettle, 34.99, 29.5, 31, 32.4, 27.95, null]
+    answerCell: G2
+    expected: 27.95
+    variants:
+      - set: { C2: 25 }
+        expected: 25
+    answer: =MIN(B2:F2)
+    requiredFunctions:
+      - MIN
+    hints:
+      nudge: MIN works along a row the same way as down a column.
+      rule: MIN(B2:F2) gives the smallest number in the five cells.
+    misses:
+      value: The lowest price is 27.95. Check that the range runs from B2 to F2.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for MIN.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MIN(B2:F2)
+      - =min(b2:f2)
+    reject:
+      - formula: =MIN(B2:E2)
+        rule: value
+      - formula: =27.95
+        rule: required-function
+      - formula: =MIN(B2:F2
+        rule: syntax

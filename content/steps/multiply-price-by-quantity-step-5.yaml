@@ -1,0 +1,57 @@
+id: multiply-price-by-quantity-step-5
+slug: multiply-price-by-quantity-step-5
+level: 3
+title: What the whole order is worth
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: multiply-price-by-quantity
+step: 5
+screens:
+  - prompt: In F2, what is the whole order worth? Each line has a price and a quantity.
+    rows:
+      - [Product, Price, Quantity, null, null, null]
+      - [Pens, 1.2, 40, null, Order value, null]
+      - [Pads, 3.5, 15, null, null, null]
+      - [Clips, 0.05, 500, null, null, null]
+      - [Tape, 2.1, 12, null, null, null]
+      - [Files, 4.75, 20, null, null, null]
+      - [Ink, 18.9, 6, null, null, null]
+      - [Glue, 1.85, 30, null, null, null]
+      - [Rulers, 0.9, 25, null, null, null]
+      - [Folders, 0.6, 100, null, null, null]
+      - [Labels, 5.4, 8, null, null, null]
+      - [Staples, 1.1, 18, null, null, null]
+      - [Markers, 7.25, 10, null, null, null]
+      - [Erasers, 0.35, 60, null, null, null]
+      - [Binders, 3.9, 14, null, null, null]
+      - [Sticky notes, 2.6, 22, null, null, null]
+    answerCell: F2
+    expected: 765.4
+    variants:
+      - set: { C7: 10 }
+        expected: 841
+      - set: { B16: 3 }
+        expected: 774.2
+    answer: =SUMPRODUCT(B2:B16,C2:C16)
+    requiredFunctions: []
+    hints:
+      nudge: Multiply each price by its quantity, then add up all the lines.
+      rule: SUMPRODUCT(B2:B16,C2:C16) multiplies each pair of cells and adds the results in one step.
+    misses:
+      value: "The order is worth 765.40: each price times its quantity, added up over all 15 lines."
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(B2:B16,C2:C16)
+      - =SUM(B2:B16*C2:C16)
+      - =SUMPRODUCT(B2:B16*C2:C16)
+    reject:
+      - formula: =SUM(B2:B16)*SUM(C2:C16)
+        rule: value
+      - formula: =SUMPRODUCT(B2:B15,C2:C15)
+        rule: value
+      - formula: =765.4
+        rule: reference
+      - formula: =SUMPRODUCT(B2:B16,C2:C16
+        rule: syntax

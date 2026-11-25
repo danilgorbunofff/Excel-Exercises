@@ -1,0 +1,50 @@
+id: debug-a-total-that-skips-a-row-step-2
+slug: debug-a-total-that-skips-a-row-step-2
+level: 2
+title: Total around a subtotal row
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: debug-a-total-that-skips-a-row
+step: 2
+screens:
+  - prompt: In B10, total all six months without counting the Q1 subtotal in row 5. Use SUM with two ranges.
+    rows:
+      - [Month, Sales]
+      - [Jan, 310]
+      - [Feb, 285]
+      - [Mar, 340]
+      - [Q1, 935]
+      - [Apr, 300]
+      - [May, 325]
+      - [Jun, 355]
+      - [null, null]
+      - [Total, null]
+    answerCell: B10
+    expected: 1915
+    variants:
+      - set: { B7: 400 }
+        expected: 1990
+    answer: =SUM(B2:B4,B6:B8)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: Leave row 5 out by splitting the range around it.
+      rule: SUM(B2:B4,B6:B8) adds the months above and below the subtotal row, so Q1 is not counted twice.
+    misses:
+      value: The six months add up to 1915. Including row 5 counts Q1 twice.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:B4,B6:B8)
+      - =SUM(B6:B8,B2:B4)
+    reject:
+      - formula: =SUM(B2:B8)
+        rule: value
+      - formula: =SUM(B2:B8)-935
+        rule: reference
+      - formula: =1915
+        rule: required-function
+      - formula: =SUM(B2:B4,B6:B8
+        rule: syntax

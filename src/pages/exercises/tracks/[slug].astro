@@ -233,10 +233,10 @@ const jsonLd = JSON.stringify({
 <script>
   import "../../../scripts/catalogue.ts";
   import { isDone, trackStatus } from "../../../lib/catalogue.ts";
-  import { readProgress } from "../../../scripts/progress.ts";
+  import { foldSets, readProgress } from "../../../scripts/progress.ts";
 
   // Mark the first exercise not yet done as "Up next", and point Start there.
-  const progress = readProgress();
+  const progress = foldSets(readProgress());
   const steps = [...document.querySelectorAll<HTMLElement>("[data-exercise-id]")];
   const doneCount = steps.filter((s) => isDone(progress[s.dataset["exerciseId"] ?? ""]?.state ?? "")).length;
   const next = steps.find((s) => !isDone(progress[s.dataset["exerciseId"] ?? ""]?.state ?? ""));

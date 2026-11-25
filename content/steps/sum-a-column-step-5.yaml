@@ -1,0 +1,53 @@
+id: sum-a-column-step-5
+slug: sum-a-column-step-5
+level: 3
+title: Sales in the second half of the year
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sum-a-column
+step: 5
+screens:
+  - prompt: In E2, how much did the shop sell from July to December? One month's figure is still missing.
+    rows:
+      - [Month, Sales, null, null, null]
+      - [Jan, 820, null, July to December, null]
+      - [Feb, 760, null, null, null]
+      - [Mar, 905, null, null, null]
+      - [Apr, 880, null, null, null]
+      - [May, 940, null, null, null]
+      - [Jun, 1010, null, null, null]
+      - [Jul, 1120, null, null, null]
+      - [Aug, 1085, null, null, null]
+      - [Sep, 970, null, null, null]
+      - [Oct, n/a, null, null, null]
+      - [Nov, 1150, null, null, null]
+      - [Dec, 1390, null, null, null]
+    answerCell: E2
+    expected: 5715
+    variants:
+      - set: { B11: 990 }
+        expected: 6705
+      - set: { B9: 1200 }
+        expected: 5830
+    answer: =SUM(B8:B13)
+    requiredFunctions: []
+    hints:
+      nudge: July is row 8 and December is row 13.
+      rule: SUM over July to December skips the n/a note, so the total is right now and still right when the figure arrives.
+    misses:
+      value: July to December adds up to 5715. Check that the range starts at July in row 8.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B8:B13)
+      - =SUM($B$8:$B$13)
+    reject:
+      - formula: =SUM(B2:B13)
+        rule: value
+      - formula: =SUM(B7:B13)
+        rule: value
+      - formula: =5715
+        rule: reference
+      - formula: =SUM(B8:B13
+        rule: syntax

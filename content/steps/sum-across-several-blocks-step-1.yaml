@@ -1,0 +1,46 @@
+id: sum-across-several-blocks-step-1
+slug: sum-across-several-blocks-step-1
+level: 1
+title: Add two blocks side by side
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sum-across-several-blocks
+step: 1
+screens:
+  - prompt: In B6, add up March in B2 to B4 and April in D2 to D4. Use SUM with both ranges.
+    rows:
+      - [Team, March, null, April]
+      - [Red, 14, null, 16]
+      - [Blue, 11, null, 13]
+      - [Green, 9, null, 12]
+      - [null, null, null, null]
+      - [Total, null, null, null]
+    answerCell: B6
+    expected: 75
+    variants:
+      - set: { D3: 20 }
+        expected: 82
+    answer: =SUM(B2:B4,D2:D4)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: SUM takes more than one range, separated by commas.
+      rule: SUM(B2:B4,D2:D4) adds both blocks in one formula.
+    misses:
+      value: March and April add up to 75. Include both B2:B4 and D2:D4.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:B4,D2:D4)
+      - =SUM(D2:D4,B2:B4)
+      - =SUM(B2:D4)
+    reject:
+      - formula: =SUM(B2:B4)
+        rule: value
+      - formula: =B2+B3+B4+D2+D3+D4
+        rule: required-function
+      - formula: =75
+        rule: required-function
+      - formula: =SUM(B2:B4,D2:D4
+        rule: syntax

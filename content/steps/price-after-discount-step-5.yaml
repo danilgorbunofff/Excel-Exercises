@@ -1,0 +1,43 @@
+id: price-after-discount-step-5
+slug: price-after-discount-step-5
+level: 3
+title: Price after two discounts in a row
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: price-after-discount
+step: 5
+screens:
+  - prompt: In E2, what does the sofa cost after the sale discount in C2 and then the member discount in D2 on what is left? Both are fractions.
+    rows:
+      - [Item, Price, Sale, Member, To pay]
+      - [Sofa, 900, 0.2, 0.1, null]
+    answerCell: E2
+    expected: 648
+    variants:
+      - set: { D2: 0.15 }
+        expected: 612
+      - set: { C2: 0.25 }
+        expected: 607.5
+    answer: =B2*(1-C2)*(1-D2)
+    requiredFunctions: []
+    hints:
+      nudge: Take the first discount off, then take the second off what is left.
+      rule: B2*(1-C2)*(1-D2) applies one discount after the other. Adding the two rates first takes off too much.
+    misses:
+      value: The sofa costs 648 after both discounts, the second taken off what is left after the first.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2*(1-C2)*(1-D2)
+      - =B2*(1-C2)-B2*(1-C2)*D2
+      - =(B2-B2*C2)*(1-D2)
+    reject:
+      - formula: =B2*(1-C2-D2)
+        rule: value
+      - formula: =B2*(1-C2)
+        rule: value
+      - formula: =648
+        rule: reference
+      - formula: =B2*(1-C2)*(1-D2
+        rule: syntax

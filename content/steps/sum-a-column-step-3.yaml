@@ -1,0 +1,51 @@
+id: sum-a-column-step-3
+slug: sum-a-column-step-3
+level: 2
+title: Total two columns at once
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sum-a-column
+step: 3
+screens:
+  - prompt: In B11, give the total of all sales, online and in store, with one SUM.
+    rows:
+      - [Week, Online, Store]
+      - ["1", 420, 310]
+      - ["2", 385, 295]
+      - ["3", 450, 330]
+      - ["4", 410, 360]
+      - ["5", 395, 340]
+      - ["6", 470, 325]
+      - ["7", 430, 355]
+      - ["8", 445, 370]
+      - [null, null, null]
+      - [All sales, null, null]
+    answerCell: B11
+    expected: 6090
+    variants:
+      - set: { C5: 500 }
+        expected: 6230
+    answer: =SUM(B2:C9)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: One range can cover two columns side by side.
+      rule: SUM(B2:C9) adds the whole block, from the top-left cell to the bottom-right cell.
+    misses:
+      value: Both columns together add up to 6090. The range has to cover B and C.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:C9)
+      - =SUM(B2:B9,C2:C9)
+      - =SUM(B2:B9)+SUM(C2:C9)
+    reject:
+      - formula: =SUM(B2:B9)
+        rule: value
+      - formula: =SUM(C2:C9)
+        rule: value
+      - formula: =6090
+        rule: required-function
+      - formula: =SUM(B2:C9
+        rule: syntax

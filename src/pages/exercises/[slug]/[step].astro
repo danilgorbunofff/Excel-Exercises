@@ -1,0 +1,52 @@
+---
+// Why this exists: one page per ladder step, /exercises/<exercise>/<step>/. A
+// step is an easier or harder task on its exercise's theme, placed where the
+// exercise is: same track, same free or PRO access, same Next. Search finds
+// the exercise page, not its steps (routes.ts).
+import ExerciseWorkbench from "../../../components/ExerciseWorkbench.astro";
+import Base from "../../../layouts/Base.astro";
+import {
+  type LadderStep,
+  laddersOf,
+  moreAfter,
+  type Placed,
+  placedExercises,
+  stepTasks,
+} from "../../../lib/exercises.ts";
+import type { Rung } from "../../../lib/steps.ts";
+
+export async function getStaticPaths() {
+  const all = await placedExercises();
+  const steps = await stepTasks();
+  const ladders = laddersOf(steps);
+  return steps.flatMap((step) => {
+    const ladder = ladders.get(step.parent.exercise.id);
+    // A ladder still being written has no pages yet.
+    if (!ladder) return [];
+    return [
+      {
+        params: { slug: step.parent.exercise.slug, step: String(step.step) },
+        props: { step, ladder, more: moreAfter(all, step.parent) },
+      },
+    ];
+  });
+}
+
+interface Props {
+  step: LadderStep;
+  ladder: Rung[];
+  more: Placed[];
+}
+const { step, ladder, more } = Astro.props;
+const first = step.exercise.screens[0];
+if (!first) throw new Error(`${step.exercise.id} has no screens`);
+---
+
+<Base
+  title={step.exercise.title}
+  description={`Step ${step.step} of 5 for ${step.parent.exercise.title}. ${first.prompt}`}
+  skipTo={{ href: "#formula", label: "Skip to the formula" }}
+  layout="exercise"
+>
+  <ExerciseWorkbench placed={step} more={more} ladder={ladder} />
+</Base>

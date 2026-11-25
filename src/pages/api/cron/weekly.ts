@@ -2,7 +2,7 @@
 // the weekly email to each person who turned it on, and deletes usage events
 // older than 13 months, as the privacy page promises.
 import type { APIRoute } from "astro";
-import { localDay, type Progress } from "../../../scripts/progress.ts";
+import { foldSets, localDay, type Progress } from "../../../scripts/progress.ts";
 import { weeklyDigest } from "../../../server/digest.ts";
 import { sendMail, unsubscribeToken } from "../../../server/email.ts";
 import { env } from "../../../server/env.ts";
@@ -40,7 +40,7 @@ export const GET: APIRoute = async ({ request, url }) => {
       (rows ?? []).map((r) => [r.exercise_id, r.entry]),
     );
     const unsubscribe = `${url.origin}/api/email/unsubscribe/?t=${unsubscribeToken(env.unsubscribeKey(), id)}`;
-    const digest = weeklyDigest(progress, today, {
+    const digest = weeklyDigest(foldSets(progress), today, {
       progress: `${url.origin}/account/progress/`,
       unsubscribe,
     });

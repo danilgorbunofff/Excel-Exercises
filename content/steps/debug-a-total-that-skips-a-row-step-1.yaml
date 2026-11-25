@@ -1,0 +1,44 @@
+id: debug-a-total-that-skips-a-row-step-1
+slug: debug-a-total-that-skips-a-row-step-1
+level: 1
+title: Fix a total that stops short
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: debug-a-total-that-skips-a-row
+step: 1
+screens:
+  - prompt: The old total in B7 only added B2 to B5, so Friday was left out. In B7, add B2 to B6. Use SUM.
+    rows:
+      - [Day, Calls]
+      - [Mon, 42]
+      - [Tue, 38]
+      - [Wed, 45]
+      - [Thu, 40]
+      - [Fri, 51]
+      - [Total, null]
+    answerCell: B7
+    expected: 216
+    variants:
+      - set: { B6: 60 }
+        expected: 225
+    answer: =SUM(B2:B6)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: The range has to reach the last day.
+      rule: SUM(B2:B6) runs from Monday to Friday.
+    misses:
+      value: Monday to Friday adds up to 216. The range has to end at B6.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:B6)
+      - =SUM($B$2:$B$6)
+    reject:
+      - formula: =SUM(B2:B5)
+        rule: value
+      - formula: =216
+        rule: required-function
+      - formula: =SUM(B2:B6
+        rule: syntax

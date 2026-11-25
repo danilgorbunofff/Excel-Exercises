@@ -22,6 +22,7 @@ import {
   stepsFor,
   topicPath,
 } from "../lib/exercises.ts";
+import type { Rung } from "../lib/steps.ts";
 import Breadcrumbs from "./Breadcrumbs.astro";
 import CompletionDialog from "./CompletionDialog.astro";
 import ExerciseData from "./ExerciseData.astro";
@@ -33,6 +34,7 @@ import RichText from "./RichText.astro";
 import Sheet from "./Sheet.astro";
 import SplitDivider from "./SplitDivider.astro";
 import StatusBar from "./StatusBar.astro";
+import StepLadder from "./StepLadder.astro";
 
 interface Props {
   placed: Placed;
@@ -40,8 +42,10 @@ interface Props {
   more?: Placed[];
   /** A PRO function drill: always locked, with the session bar. Its function's name. */
   drill?: string;
+  /** The exercise's five steps, easiest to hardest, when it has them; this page is one of them. */
+  ladder?: readonly Rung[] | undefined;
 }
-const { placed, more = [], drill } = Astro.props;
+const { placed, more = [], drill, ladder } = Astro.props;
 const { exercise, topic } = placed;
 const locked = drill !== undefined || isLocked(placed);
 const proCount = (await placedExercises()).filter((p) => isLocked(p)).length;
@@ -59,7 +63,12 @@ const perks = [
   "Hints and full answers for every step",
 ];
 const { screens, notes } = exercise;
-const path = drill ? `/exercises/drills/${exercise.slug}/` : exercisePath(exercise.slug);
+const rung = ladder?.find((r) => r.id === exercise.id);
+const path = drill
+  ? `/exercises/drills/${exercise.slug}/`
+  : (rung?.href ?? exercisePath(exercise.slug));
+// The step above this one, offered once it is solved.
+const harder = rung ? ladder?.find((r) => r.step === rung.step + 1) : undefined;
 const functions = drill ? [drill] : functionsOf(exercise);
 // Outside a session a drill leads back to the picker; drill-session.ts points it at the next task.
 const nextOf = (i: number) =>
@@ -119,6 +128,7 @@ const nextOf = (i: number) =>
       <span class={`level level-${exercise.level}`}>{LEVELS[exercise.level as 1 | 2 | 3]}</span>
       {locked && <span class="tag">PRO</span>}
     </div>
+    {ladder && <StepLadder ladder={ladder} current={exercise.id} />}
     {
       screens.map((s, i) => (
         <p class="prompt" data-prompt={i} hidden={i > 0}>
@@ -328,6 +338,7 @@ const nextOf = (i: number) =>
     <ExerciseData exercise={exercise} locked={locked} />
     <CompletionDialog
       next={nextOf(screens.length - 1)}
+      harder={harder?.href}
     />
   </div>
 

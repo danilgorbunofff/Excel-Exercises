@@ -1,0 +1,51 @@
+id: largest-sale-step-4
+slug: largest-sale-step-4
+level: 2
+title: Largest sale with notes in the column
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: largest-sale
+step: 4
+screens:
+  - prompt: In B13, find the largest sale. Some rows hold a note instead of a number, and one is empty. Use MAX.
+    rows:
+      - [Rep, Sale]
+      - [Ann, 1250]
+      - [Bo, on leave]
+      - [Cy, 980]
+      - [Di, 1420]
+      - [Ed, null]
+      - [Flo, 1310]
+      - [Gil, refund pending]
+      - [Hu, 1185]
+      - [Ida, 1395]
+      - [Jo, 1060]
+      - [null, null]
+      - [Largest, null]
+    answerCell: B13
+    expected: 1420
+    variants:
+      - { set: { B8: 1600 }, expected: 1600 }
+      - { set: { B2: 1713 }, expected: 1713 }
+      - { set: { B11: 1452 }, expected: 1452 }
+    answer: =MAX(B2:B11)
+    requiredFunctions:
+      - MAX
+    hints:
+      nudge: MAX skips text and empty cells by itself.
+      rule: Give MAX the whole column, B2 to B11. The notes and the gap are ignored.
+    misses:
+      value: The largest sale is 1420. Check that the range runs from B2 to B11.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for MAX.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MAX(B2:B11)
+      - =MAX($B$2:$B$11)
+    reject:
+      - formula: =MAX(B6:B11)
+        rule: value
+      - formula: =1420
+        rule: required-function
+      - formula: =MAX(B2:B11
+        rule: syntax

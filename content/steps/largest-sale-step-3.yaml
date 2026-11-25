@@ -1,0 +1,53 @@
+id: largest-sale-step-3
+slug: largest-sale-step-3
+level: 2
+title: Largest sale in two regions
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: largest-sale
+step: 3
+screens:
+  - prompt: "In B10, find the largest sale in either region: North in B2 to B8 or South in D2 to D8. Use MAX."
+    rows:
+      - [North, Sale, null, South]
+      - ["1", 420, null, 380]
+      - ["2", 515, null, 610]
+      - ["3", 390, null, 455]
+      - ["4", 580, null, 520]
+      - ["5", 470, null, 495]
+      - ["6", 505, null, 430]
+      - ["7", 440, null, 575]
+      - [null, null, null, null]
+      - [Largest, null, null, null]
+    answerCell: B10
+    expected: 610
+    variants:
+      - { set: { B3: 700 }, expected: 700 }
+      - { set: { B2: 840 }, expected: 840 }
+      - { set: { B8: 880 }, expected: 880 }
+      - { set: { D2: 760 }, expected: 760 }
+      - { set: { D8: 788 }, expected: 788 }
+    answer: =MAX(B2:B8,D2:D8)
+    requiredFunctions:
+      - MAX
+    hints:
+      nudge: MAX takes more than one range, separated by commas.
+      rule: MAX(B2:B8,D2:D8) looks at both regions at once and gives the single largest sale.
+    misses:
+      value: The largest sale in either region is 610. Include both columns.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for MAX.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MAX(B2:B8,D2:D8)
+      - =MAX(B2:D8)
+      - =MAX(MAX(B2:B8),MAX(D2:D8))
+    reject:
+      - formula: =MAX(B2:B8)
+        rule: value
+      - formula: =MAX(D2:D8)
+        rule: fragile
+      - formula: =610
+        rule: required-function
+      - formula: =MAX(B2:B8,D2:D8
+        rule: syntax

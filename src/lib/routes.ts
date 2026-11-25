@@ -53,6 +53,8 @@ export function hiddenFromSearch(path: string, accountsOpen: boolean): boolean {
   if (path.startsWith("/certificates/")) return true;
   // A function drill page is a step of a practice session, not a landing page.
   if (/^\/exercises\/drills\/[^/]+\/$/u.test(path)) return true;
+  // A ladder step is a harder or easier take on its exercise, which is the page to find.
+  if (/^\/exercises\/[^/]+\/[1-5]\/$/u.test(path)) return true;
   const list: readonly string[] = accountsOpen ? PRIVATE_PATHS : ACCOUNT_PATHS;
   return list.includes(path);
 }

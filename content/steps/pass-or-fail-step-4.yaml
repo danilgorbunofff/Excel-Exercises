@@ -22,7 +22,7 @@ screens:
       - IF
     hints:
       nudge: "When late, the fee is a sum: the amount times 2%."
-      rule: "IF can return a calculation: IF(C2>0,B2*2%,0) gives 2% of the amount when late and 0 when not."
+      rule: "IF can return a calculation as well as a value: the amount times 2% when late, and 0 when not."
     misses:
       value: "The fee is 24: 2% of the amount, because the invoice is late."
       syntax: Check the brackets, commas and quotes.

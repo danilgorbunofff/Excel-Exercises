@@ -23,7 +23,7 @@ screens:
       - RANK
     hints:
       nudge: A third part of 1 ranks from the lowest.
-      rule: RANK(B3,B2:B7,1) counts the cheapest as place 1.
+      rule: A third part of 1 makes RANK count from the lowest, so the cheapest is place 1.
     misses:
       value: Q-2 is in place 2, cheapest first.
       syntax: Check the brackets, commas and quotes.

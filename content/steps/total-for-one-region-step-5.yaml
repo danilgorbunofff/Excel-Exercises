@@ -1,13 +1,13 @@
 id: total-for-one-region-step-5
 slug: total-for-one-region-step-5
 level: 3
-title: How far apart North and South are
+title: How much more the North sold
 updated: 2026-11-25
 checkedInExcel: 2026-11-25
 parent: total-for-one-region
 step: 5
 screens:
-  - prompt: In H2, by how much does the bigger of the North and South totals beat the other? Give a positive number.
+  - prompt: In H2, how much more did the North sell than the South? A negative number means the South sold more.
     rows:
       - [Order, Region, Rep, Status, Units, Amount, null, null]
       - [SO-01, North, Ada, Open, 5, 320, North vs South, null]
@@ -28,29 +28,37 @@ screens:
     answerCell: H2
     expected: 1100
     variants:
-      - { set: { F12: 2000 }, expected: 290 }
-      - { set: { B9: South }, expected: 720 }
-      - { set: { B16: North }, expected: 1145 }
-      - { set: { B16: South }, expected: 1055 }
-    answer: =ABS(SUMIF(B2:B16,"North",F2:F16)-SUMIF(B2:B16,"South",F2:F16))
+      - set: { F12: 2000 }
+        expected: -290
+      - set: { B9: South }
+        expected: 720
+      - set: { B16: North }
+        expected: 1145
+      - set: { B16: South }
+        expected: 1055
+    answer: =SUMIF(B2:B16,"North",F2:F16)-SUMIF(B2:B16,"South",F2:F16)
     requiredFunctions: []
     hints:
-      nudge: Total each region, take one from the other, then drop the sign.
-      rule: ABS of the difference gives the gap whichever region is ahead.
+      nudge: Total each region, then take the South's total from the North's.
+      rule: One SUMIF per region. Subtracting the South from the North keeps the sign, so a negative result means the South sold more.
     misses:
-      value: The gap between North and South is 1100.
+      value: The North sold 1100 more than the South.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =ABS(SUMIF(B2:B16,"North",F2:F16)-SUMIF(B2:B16,"South",F2:F16))
-      - =ABS(SUMIFS(F2:F16,B2:B16,"North")-SUMIFS(F2:F16,B2:B16,"South"))
+      - =SUMIF(B2:B16,"North",F2:F16)-SUMIF(B2:B16,"South",F2:F16)
+      - =SUMIFS(F2:F16,B2:B16,"North")-SUMIFS(F2:F16,B2:B16,"South")
+      - =-(SUMIF(B2:B16,"South",F2:F16)-SUMIF(B2:B16,"North",F2:F16))
+      - =SUMPRODUCT((B2:B16="North")*F2:F16)-SUMPRODUCT((B2:B16="South")*F2:F16)
     reject:
-      - formula: =SUMIF(B2:B16,"North",F2:F16)-SUMIF(B2:B16,"South",F2:F16)
-        rule: fragile
+      - formula: =SUMIF(B2:B16,"South",F2:F16)-SUMIF(B2:B16,"North",F2:F16)
+        rule: value
       - formula: =SUMIF(B2:B16,"North",F2:F16)
+        rule: value
+      - formula: =SUMIF(B2:B16,"North",E2:E16)-SUMIF(B2:B16,"South",E2:E16)
         rule: value
       - formula: =1100
         rule: reference
-      - formula: =ABS(SUMIF(B2:B16,"North",F2:F16)-SUMIF(B2:B16,"South",F2:F16)
+      - formula: =SUMIF(B2:B16,"North",F2:F16)-SUMIF(B2:B16,"South",F2:F16
         rule: syntax

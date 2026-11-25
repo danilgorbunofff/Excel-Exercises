@@ -7,42 +7,46 @@ checkedInExcel: 2026-11-25
 parent: add-two-cells
 step: 5
 screens:
-  - prompt: In B5, what does the customer pay in total? Delivery in B3 is free when the price in B2 is 50 or more.
+  - prompt: In B6, what does the customer pay for the order? The delivery charge in B2 is paid once, B3 is the quantity, and the price in B4 is for one item.
     rows:
       - [Item, Cost]
-      - [Price, 42]
       - [Delivery, 4.99]
-      - [Free delivery from, 50]
+      - [Quantity, 4]
+      - [Price each, 12.5]
+      - [null, null]
       - [To pay, null]
-    answerCell: B5
-    expected: 46.99
+    answerCell: B6
+    expected: 54.99
     variants:
-      - set: { B2: 60 }
-        expected: 60
-      - set: { B2: 50 }
+      - set: { B3: 7 }
+        expected: 92.49
+      - set: { B2: 0 }
         expected: 50
-      - set: { B3: 6.5 }
-        expected: 48.5
-    answer: =B2+IF(B2>=B4,0,B3)
+      - set: { B4: 8.25 }
+        expected: 37.99
+    answer: =B4*B3+B2
     requiredFunctions: []
     hints:
-      nudge: Add the delivery only when the price is under the limit in B4.
-      rule: IF(B2>=B4,0,B3) gives 0 for delivery at the limit or above, and the charge below it. Add that to the price.
+      nudge: The price counts once for each item; the delivery counts only once.
+      rule: Excel multiplies before it adds, so the items are worked out first and the delivery is added after, with no brackets needed.
     misses:
-      value: The customer pays 46.99 here. Delivery counts only below the limit.
+      value: "The customer pays 54.99: the items, then the delivery once."
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =B2+IF(B2>=B4,0,B3)
-      - =IF(B2>=B4,B2,B2+B3)
-      - =B2+(B2<B4)*B3
+      - =B4*B3+B2
+      - =B2+B3*B4
+      - =B2+B4*B3
+      - =(B3*B4)+B2
     reject:
-      - formula: =B2+B3
-        rule: fragile
-      - formula: =B2+IF(B2>B4,0,B3)
-        rule: fragile
-      - formula: =46.99
+      - formula: =(B4+B2)*B3
+        rule: value
+      - formula: =B2+B3+B4
+        rule: value
+      - formula: =B3*B4
+        rule: value
+      - formula: =54.99
         rule: reference
-      - formula: =B2+IF(B2>=B4,0,B3
+      - formula: =B4*B3+B2,
         rule: syntax

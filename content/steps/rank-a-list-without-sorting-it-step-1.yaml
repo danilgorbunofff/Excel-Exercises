@@ -27,7 +27,7 @@ screens:
       - RANK
     hints:
       nudge: RANK takes the value to place, then the whole list.
-      rule: RANK(B4,B2:B8) gives Cy's place, highest first.
+      rule: RANK takes the value to place, then the whole list. With no third part, the highest is place 1.
     misses:
       value: Cy is in place 4.
       syntax: Check the brackets, commas and quotes.

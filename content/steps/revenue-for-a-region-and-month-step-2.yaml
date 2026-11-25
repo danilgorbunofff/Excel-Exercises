@@ -30,7 +30,7 @@ screens:
       - SUMIF
     hints:
       nudge: Point the condition at F2 instead of typing the region.
-      rule: SUMIF(A2:A11,F2,C2:C11) follows whatever region F2 holds.
+      rule: Give SUMIF the cell that holds the region as its criteria, so the total follows whatever F2 holds.
     misses:
       value: The West made 14500.
       syntax: Check the brackets, commas and quotes.

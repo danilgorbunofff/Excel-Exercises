@@ -22,7 +22,7 @@ screens:
       - IF
     hints:
       nudge: Test whether B2 is over 5000.
-      rule: IF(B2>5000,100,0) gives 100 above the target and 0 at or below it.
+      rule: IF shows one value when the test is true and another when it is false. Over means strictly greater, so exactly 5,000 earns 0.
     misses:
       value: Ana's bonus is 100. Her sales are over 5,000.
       syntax: Check the brackets, commas and quotes.

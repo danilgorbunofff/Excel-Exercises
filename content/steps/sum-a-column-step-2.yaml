@@ -21,7 +21,7 @@ screens:
       - SUM
     hints:
       nudge: SUM works along a row the same way as down a column.
-      rule: SUM(B2:F2) adds the five cells from B2 to F2.
+      rule: SUM takes a range written as first cell, colon, last cell, across a row as well as down a column.
     misses:
       value: The week adds up to 826. Check that the range runs from B2 to F2.
       syntax: Check the brackets, commas and quotes.

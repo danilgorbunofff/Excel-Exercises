@@ -35,7 +35,7 @@ screens:
       - COUNTBLANK
     hints:
       nudge: COUNTBLANK counts only the truly empty cells, not the ones with a word.
-      rule: COUNTBLANK(B2:B10) counts the empty stock cells and leaves out ask and n/a.
+      rule: COUNTBLANK counts only truly empty cells. Words such as ask and n/a are not empty.
     misses:
       value: 3 stock cells are empty. Text such as ask is not empty.
       syntax: Check the brackets, commas and quotes.

@@ -28,7 +28,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: XLOOKUP takes what to find, where to find it, and what to return.
-      rule: XLOOKUP(H1,A2:A9,B2:B9) finds the code in column A and returns the name from column B.
+      rule: XLOOKUP searches the code column and returns the value from the same row of the column you choose.
     misses:
       value: Code P-103 is the Shelf.
       syntax: Check the brackets, commas and quotes.

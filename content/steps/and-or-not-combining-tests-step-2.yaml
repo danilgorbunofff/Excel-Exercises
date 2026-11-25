@@ -23,9 +23,9 @@ screens:
       - NOT
     hints:
       nudge: NOT goes inside AND as one of its tests.
-      rule: AND(B2>0,NOT(C2="Yes")) needs stock and a product that is still sold.
+      rule: A NOT test can sit inside AND as one of its tests. AND is TRUE only when every test holds.
     misses:
-      value: The lamp is in stock and still sold, so D2 should show true.
+      value: The lamp is in stock and still sold, so D2 should show TRUE.
       syntax: Check the brackets, commas and quotes.
       required-function: This task asks for AND and NOT.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.

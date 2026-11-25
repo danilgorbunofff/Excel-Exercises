@@ -21,7 +21,7 @@ screens:
       - ABS
     hints:
       nudge: ABS drops the minus sign.
-      rule: ABS(C2-B2) gives the distance from budget in either direction.
+      rule: Take the actual minus the budget inside ABS, which drops the minus sign.
     misses:
       value: Training is 1050 away from budget.
       syntax: Check the brackets, commas and quotes.

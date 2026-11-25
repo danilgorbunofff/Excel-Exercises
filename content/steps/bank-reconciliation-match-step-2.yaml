@@ -27,7 +27,7 @@ screens:
       - COUNTIF
     hints:
       nudge: A count above 0 means the reference is on the statement.
-      rule: IF(COUNTIF(...)>0,"Found","Missing") turns the count into a status.
+      rule: A COUNTIF above 0 means the reference is on the statement. Use that test inside IF.
     misses:
       value: R-104 is not on the statement, so C5 should show Missing.
       syntax: Check the brackets, commas and quotes.

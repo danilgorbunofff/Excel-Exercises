@@ -36,7 +36,7 @@ screens:
       - AGGREGATE
     hints:
       nudge: "Functions 14 and 15 take one more part: which place you want."
-      rule: AGGREGATE(14,6,D2:D16,2) works like LARGE(D2:D16,2) but can skip errors.
+      rule: "With function 14, AGGREGATE works like LARGE: the place you want goes after the range."
     misses:
       value: The second-largest line is 95.
       syntax: Check the brackets, commas and quotes.

@@ -1,8 +1,8 @@
 # Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
 screens:
   - correct:
-      - =CEILING($B$2,$C$2)
-      - =CEILING(B$2,C2)
-      - =ceiling(b2, c2)
+      - =ROUNDUP($B$2/$C$2,0)*$C$2
+      - =ROUNDUP(B$2/C2,0)*C2
+      - =roundup(b2/c2, 0)*c2
     wrong: []
     equivalent: []

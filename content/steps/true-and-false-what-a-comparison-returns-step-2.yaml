@@ -20,9 +20,9 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Compare the cell with the word, written in quotes.
-      rule: B2="Paid" is TRUE when the cell holds exactly the word Paid.
+      rule: A text comparison is TRUE when the cell holds exactly that word. The word goes in quotes.
     misses:
-      value: The status is Paid, so C2 should show true.
+      value: The status is Paid, so C2 should show TRUE.
       syntax: Check the brackets, commas and quotes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:

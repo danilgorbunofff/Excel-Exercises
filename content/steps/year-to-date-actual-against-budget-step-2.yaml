@@ -32,7 +32,7 @@ screens:
       - SUMIF
     hints:
       nudge: 'Build the test from D2: "<="&D2.'
-      rule: SUMIF(A2:A13,"<="&D2,B2:B13) follows the months closed as the year goes on.
+      rule: Build the test by joining "<=" and D2 with &, so the total follows the months closed as the year goes on.
     misses:
       value: The actual to date is 168600.
       syntax: Check the brackets, commas and quotes.

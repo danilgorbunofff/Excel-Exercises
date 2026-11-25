@@ -21,7 +21,7 @@ screens:
       - DATE
     hints:
       nudge: DATE takes the year, the month and the day.
-      rule: DATE(B2,1,1) gives 1 January of that year as a real date.
+      rule: DATE builds a real date from a year, a month and a day. Month 1 and day 1 give 1 January.
     misses:
       value: 1 January of that year is serial 45658.
       syntax: Check the brackets, commas and quotes.

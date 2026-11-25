@@ -21,7 +21,7 @@ screens:
       - AVERAGE
     hints:
       nudge: AVERAGE works along a row too.
-      rule: AVERAGE(B2:F2) adds the five scores and divides by how many there are.
+      rule: AVERAGE adds the numbers in a range and divides by how many there are.
     misses:
       value: Maya's average is 78. Check that the range runs from B2 to F2.
       syntax: Check the brackets, commas and quotes.

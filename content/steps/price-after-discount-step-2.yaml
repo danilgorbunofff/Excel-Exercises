@@ -20,7 +20,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: "With tax, the price is the whole price plus the rate on top: 1 plus the rate."
-      rule: B2*(1+C2) adds the tax in one step. The brackets make Excel add before it multiplies.
+      rule: Multiplying by 1 plus the rate adds the tax in one step. Brackets make Excel add before it multiplies.
     misses:
       value: The price with tax is 78. Multiply B2 by 1 plus C2.
       syntax: Check the brackets, commas and quotes.

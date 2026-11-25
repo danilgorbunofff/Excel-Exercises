@@ -7,7 +7,7 @@ checkedInExcel: 2026-11-25
 parent: count-orders-by-region
 step: 3
 screens:
-  - prompt: In F2, count the orders from the region typed in E1. Use COUNTIF.
+  - prompt: In F2, count the orders from the region typed in F1. Use COUNTIF.
     rows:
       - [Order, Region, null, null, Region, South]
       - ["1001", North, null, null, Orders, null]
@@ -29,7 +29,7 @@ screens:
       - COUNTIF
     hints:
       nudge: Point the criteria at the cell that holds the region.
-      rule: COUNTIF(B2:B10,F1) counts whatever region is typed in F1, so changing F1 changes the count.
+      rule: Give COUNTIF the cell that holds the region as its criteria, so changing that cell changes the count.
     misses:
       value: There are 4 orders from the region in F1.
       syntax: Check the brackets, commas and quotes.

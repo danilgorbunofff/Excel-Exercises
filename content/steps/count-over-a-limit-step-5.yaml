@@ -35,7 +35,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Count those over the limit, then divide by the invoices that have an amount.
-      rule: COUNTIF(B2:B16,">"&E1) counts invoices over the limit; COUNT(B2:B16) counts the priced ones, leaving out tbc.
+      rule: Count the invoices over the limit with a test built from E1, then divide by COUNT of the amounts, which leaves out tbc.
     misses:
       value: The share over the limit is 0.38. Divide by the priced invoices only.
       syntax: Check the brackets, commas and quotes.

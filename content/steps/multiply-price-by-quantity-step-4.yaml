@@ -23,7 +23,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Work out each line's total, then add the two.
-      rule: Excel multiplies before it adds, so B2*C2+B3*C3 needs no brackets.
+      rule: Excel multiplies before it adds, so each price times quantity is worked out first with no brackets needed.
     misses:
       value: The order comes to 72. Multiply each line, then add.
       syntax: Check the brackets, commas and quotes.

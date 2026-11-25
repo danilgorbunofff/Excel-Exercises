@@ -22,7 +22,7 @@ screens:
       - LEN
     hints:
       nudge: The length minus 3 is how many characters to keep from the left.
-      rule: LEFT(A2,LEN(A2)-3) works for any length, as long as the suffix is 3 letters.
+      rule: LEN gives the full length, so the length minus 3 is how many characters LEFT should keep.
     misses:
       value: Without the currency, A2 reads 1250.00.
       syntax: Check the brackets, commas and quotes.

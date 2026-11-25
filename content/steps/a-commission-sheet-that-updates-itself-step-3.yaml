@@ -21,7 +21,7 @@ screens:
       - ROUND
     hints:
       nudge: Work out the commission, then round it to the cent.
-      rule: ROUND(B2*$F$1,2) pays to the nearest cent.
+      rule: Work out the commission inside ROUND, with 2 decimal places, so it pays to the nearest cent.
     misses:
       value: Ben's commission is 510.26.
       syntax: Check the brackets, commas and quotes.

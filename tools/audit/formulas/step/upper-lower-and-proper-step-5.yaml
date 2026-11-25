@@ -1,9 +1,9 @@
 # Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
 screens:
   - correct:
-      - =SUMPRODUCT(--EXACT($A$2:$A$16,$D$1))
-      - =SUMPRODUCT(--EXACT(A$2:A$16,D1))
-      - =sumproduct(--exact(a2:a16, d1))
-      - =LET(data,A2:A16,SUMPRODUCT(--EXACT(data,D1)))
+      - =SUM(--ISNUMBER(FIND($D$1,$A$2:$A$16)))
+      - =SUM(--ISNUMBER(FIND(D$1,A2:A16)))
+      - =sum(--isnumber(find(d1, a2:a16)))
+      - =LET(data,A2:A16,SUM(--ISNUMBER(FIND(D1,data))))
     wrong: []
     equivalent: []

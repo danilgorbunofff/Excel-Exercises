@@ -31,7 +31,7 @@ screens:
       - MIN
     hints:
       nudge: MIN takes more than one range, separated by commas.
-      rule: MIN(B2:B8,D2:D8) looks at both weeks at once and gives the single lowest reading.
+      rule: MIN takes several ranges separated by commas and gives the single lowest number across all of them.
     misses:
       value: The coldest night of both weeks is -3 degrees. Include both columns.
       syntax: Check the brackets, commas and quotes.

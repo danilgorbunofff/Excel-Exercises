@@ -21,9 +21,9 @@ screens:
       - OR
     hints:
       nudge: OR is TRUE when at least one test is TRUE.
-      rule: OR(B2="Yes",C2="Yes") is TRUE if either day says Yes.
+      rule: OR is TRUE if any of its tests is TRUE. Text in a test goes in quotes.
     misses:
-      value: Ana works on Sunday, so D2 should show true.
+      value: Ana works on Sunday, so D2 should show TRUE.
       syntax: Check the brackets, commas and quotes.
       required-function: This task asks for OR.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.

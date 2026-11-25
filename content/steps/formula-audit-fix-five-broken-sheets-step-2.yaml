@@ -22,7 +22,7 @@ screens:
       - IFERROR
     hints:
       nudge: Wrap the division in IFERROR.
-      rule: 'IFERROR(C3/B3,"none") shows none instead of `#DIV/0!` for a rep with no visits.'
+      rule: "IFERROR shows its fallback, the word none in quotes, instead of `#DIV/0!` for a rep with no visits."
     misses:
       value: With no visits, D3 should show none.
       syntax: Check the brackets, commas and quotes.

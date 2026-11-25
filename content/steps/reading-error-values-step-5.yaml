@@ -31,17 +31,18 @@ screens:
       - { set: { B3: "88" }, expected: 5 }
       - { set: { B4: eighty }, expected: 7 }
       - { set: { B2: n/a }, expected: 7 }
-    answer: =SUMPRODUCT(--ISERROR(VALUE(B2:B16)))
+    answer: =SUM(--ISERROR(VALUE(B2:B16)))
     requiredFunctions: []
     hints:
       nudge: Try VALUE on every reading at once and count the failures.
-      rule: "VALUE(B2:B16) gives a number or `#VALUE!` per reading; ISERROR marks the failures and SUMPRODUCT counts them."
+      rule: "VALUE works on the whole column at once and gives `#VALUE!` for each reading it cannot read. ISERROR marks those; -- makes them 1, and SUM counts them."
     misses:
       value: 6 readings cannot be read as numbers.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
+      - =SUM(--ISERROR(VALUE(B2:B16)))
       - =SUMPRODUCT(--ISERROR(VALUE(B2:B16)))
       - =ROWS(B2:B16)-SUMPRODUCT(--ISNUMBER(VALUE(B2:B16)))
     reject:

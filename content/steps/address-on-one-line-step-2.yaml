@@ -21,7 +21,7 @@ screens:
       - CONCAT
     hints:
       nudge: The separator ", " is its own argument.
-      rule: CONCAT(A2,", ",C2) joins the parts in order.
+      rule: CONCAT joins its pieces in order, and the separator, a comma and a space in quotes, is a piece of its own.
     misses:
       value: E2 shows 12 Mill Lane, Hebden.
       syntax: Check the brackets, commas and quotes.

@@ -24,7 +24,7 @@ screens:
       nudge: First the OR test for qualifying, then AND it with not being a sale item.
       rule: OR(B2>100,C2="Yes") decides who qualifies; AND with D2<>"Sale" removes sale items.
     misses:
-      value: "This order's answer is false: it is a sale item."
+      value: "This order's answer is FALSE: it is a sale item."
       syntax: Check the brackets, commas and quotes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:

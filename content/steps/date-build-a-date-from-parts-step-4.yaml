@@ -23,7 +23,7 @@ screens:
       - DATE
     hints:
       nudge: Day 0 of next month is the last day of this month.
-      rule: DATE(B2,C2+1,0) handles months of any length and leap years.
+      rule: Give DATE the following month, C2 plus 1, and day 0. DATE handles months of any length and leap years.
     misses:
       value: The last day of February 2024 is serial 45351.
       syntax: Check the brackets, commas and quotes.

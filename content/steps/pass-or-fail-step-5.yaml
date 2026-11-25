@@ -24,7 +24,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: "Two tests must both hold: the average and the lowest score."
-      rule: AND(AVERAGE(B2:D2)>=50,MIN(B2:D2)>=40) is TRUE only when both rules hold; IF turns it into "Pass" or "Fail".
+      rule: AND is TRUE only when every test inside it holds. Test the average and the lowest score, then let IF turn the result into Pass or Fail.
     misses:
       value: Ana's result is Pass. Check both the average and the lowest test.
       syntax: Check the brackets, commas and quotes.

@@ -41,7 +41,7 @@ screens:
       - FILTER
     hints:
       nudge: The third part of FILTER is what to show when nothing matches.
-      rule: 'FILTER(C2:C19,B2:B19=I1,"none") follows the region in I1 and never shows `#CALC!`.'
+      rule: "FILTER's third part is what to show when nothing matches, instead of `#CALC!`. Point the test at I1."
     misses:
       value: For a region with no orders, F2 should show none.
       syntax: Check the brackets, commas and quotes.

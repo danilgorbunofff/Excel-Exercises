@@ -28,7 +28,7 @@ screens:
       - SUMIF
     hints:
       nudge: 'Build the test from the cell: ">="&E1.'
-      rule: SUMIF(B2:B9,">="&E1) adds the sales at or above the amount in E1.
+      rule: Build the test by joining ">=" and the cell with &, so it follows the amount in E1.
     misses:
       value: Sales of at least the amount in E1 add up to 1190.
       syntax: Check the brackets, commas and quotes.

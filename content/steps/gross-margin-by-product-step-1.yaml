@@ -27,7 +27,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Revenue minus the cost of what was sold.
-      rule: B2-C2 is the gross profit.
+      rule: Gross profit is revenue minus the cost of what was sold.
     misses:
       value: Gross profit on desk lamps is 8400.
       syntax: Check the brackets, commas and quotes.

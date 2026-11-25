@@ -30,11 +30,11 @@ screens:
     variants:
       - set: { B16: 6.9 }
         expected: 95.75
-    answer: =SUMPRODUCT(ROUND(B2:B16*4,0)/4)
+    answer: =SUM(ROUND(B2:B16*4,0)/4)
     requiredFunctions: []
     hints:
       nudge: "Four quarters make an hour: times 4, round, then divide by 4."
-      rule: ROUND(B2:B16*4,0)/4 rounds each shift to a quarter hour; SUMPRODUCT adds them.
+      rule: Multiply by 4, round to a whole number, then divide by 4 to get each shift to the nearest quarter hour. ROUND works on the whole column at once, and SUM adds the results.
     misses:
       value: The paid hours add up to 95.5.
       syntax: Check the brackets, commas and quotes.

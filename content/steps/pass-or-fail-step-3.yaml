@@ -23,7 +23,7 @@ screens:
       - IF
     hints:
       nudge: Compare B3 with F1, and remember that exactly the pass mark is a pass.
-      rule: '>= means at least, so IF(B3>=$F$1,"Pass","Fail") passes a score equal to the mark.'
+      rule: ">= means at least, so a score equal to the pass mark passes. Dollar signs keep F1 fixed if the formula is copied down."
     misses:
       value: Ben scored exactly the pass mark, so C3 should show Pass. Use >= rather than >.
       syntax: Check the brackets, commas and quotes.

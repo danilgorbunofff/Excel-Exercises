@@ -26,13 +26,7 @@ screens:
     equivalent:
       - formula: =IFERROR(ROUND((SUMIF(A2:A6,"North",B2:B5)-SUMIF(A2:A5,"North",C2:C5))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
         why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
-      - formula: =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B6)-SUMIF(A2:A5,"North",C2:C5))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
-        why: "range B2:B5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
       - formula: =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUMIF(A2:A6,"North",C2:C5))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
         why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
-      - formula: =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUMIF(A2:A5,"North",C2:C6))/SUMIF(A2:A5,"North",B2:B5)*100,1),"")
-        why: "range C2:C5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
       - formula: =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUMIF(A2:A5,"North",C2:C5))/SUMIF(A2:A6,"North",B2:B5)*100,1),"")
         why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
-      - formula: =IFERROR(ROUND((SUMIF(A2:A5,"North",B2:B5)-SUMIF(A2:A5,"North",C2:C5))/SUMIF(A2:A5,"North",B2:B6)*100,1),"")
-        why: "range B2:B5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

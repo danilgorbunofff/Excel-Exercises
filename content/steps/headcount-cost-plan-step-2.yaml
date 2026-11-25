@@ -25,7 +25,7 @@ screens:
       - SUMIF
     hints:
       nudge: Test the team column against G1, add the heads.
-      rule: SUMIF(A2:A6,G1,C2:C6) totals whichever team is in G1.
+      rule: Give SUMIF the cell that holds the team as its criteria, and the heads column to add.
     misses:
       value: IT has 6 heads.
       syntax: Check the brackets, commas and quotes.

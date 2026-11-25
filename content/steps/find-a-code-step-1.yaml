@@ -31,7 +31,7 @@ screens:
       - MATCH
     hints:
       nudge: MATCH finds the row number; INDEX reads the stock at that row.
-      rule: INDEX(E2:E9,MATCH(H1,B2:B9,0)) returns the stock on the row where the name matches.
+      rule: MATCH with 0 gives the row where the name matches exactly; INDEX reads the stock column at that row.
     misses:
       value: The Mirror has 11 in stock.
       syntax: Check the brackets, commas and quotes.

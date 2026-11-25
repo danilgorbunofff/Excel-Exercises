@@ -23,7 +23,7 @@ screens:
       - MATCH
     hints:
       nudge: MATCH works along a row the same way.
-      rule: MATCH(B3,B1:G1,0) counts from Jan as 1.
+      rule: MATCH works along a row the same way, counting from the first cell of the range as 1.
     misses:
       value: May is at position 5.
       syntax: Check the brackets, commas and quotes.

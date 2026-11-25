@@ -39,7 +39,7 @@ screens:
       - AGGREGATE
     hints:
       nudge: AGGREGATE takes the function number, the option, then the range.
-      rule: AGGREGATE(4,6,B2:B16) gives the largest price and would skip any error cells.
+      rule: Function 4 is the largest value, and option 6 tells AGGREGATE to skip any error cells.
     misses:
       value: The largest price is 18.90.
       syntax: Check the brackets, commas and quotes.

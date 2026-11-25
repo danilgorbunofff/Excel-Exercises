@@ -32,7 +32,7 @@ screens:
       - SUMIF
     hints:
       nudge: Test the quarter column, add the forecast.
-      rule: SUMIF(B2:B13,"Q1",C2:C13) adds the three Q1 months.
+      rule: SUMIF tests the quarter column and adds the forecast column on the matching months.
     misses:
       value: The Q1 forecast is 123500.
       syntax: Check the brackets, commas and quotes.

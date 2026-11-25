@@ -29,7 +29,7 @@ screens:
       - SUM
     hints:
       nudge: Leave row 5 out by splitting the range around it.
-      rule: SUM(B2:B4,B6:B8) adds the months above and below the subtotal row, so Q1 is not counted twice.
+      rule: List the months above and below the subtotal as two ranges, so Q1 is not counted twice.
     misses:
       value: The six months add up to 1915. Including row 5 counts Q1 twice.
       syntax: Check the brackets, commas and quotes.

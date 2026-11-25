@@ -31,17 +31,18 @@ screens:
       - { set: { B5: 9000 }, expected: 5900 }
       - { set: { B10: 4300 }, expected: 5242.85714286 }
       - { set: { B2: 5800, B16: 5800 }, expected: 5592.857142857143 }
-    answer: =AVERAGEIF(B2:B16,">"&MEDIAN(B2:B16))
+    answer: =AVERAGE(IF(B2:B16>MEDIAN(B2:B16),B2:B16))
     requiredFunctions: []
     hints:
       nudge: 'Build the test from the median: ">"&MEDIAN(...).'
-      rule: AVERAGEIF(B2:B16,">"&MEDIAN(B2:B16)) averages only the sales above the middle one.
+      rule: IF can test the whole column against the median and keep only the sales above it. AVERAGE then skips the FALSE values IF gives for the rest.
     misses:
       value: The above-median sales average 5242.86.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
+      - =AVERAGE(IF(B2:B16>MEDIAN(B2:B16),B2:B16))
       - =AVERAGEIF(B2:B16,">"&MEDIAN(B2:B16))
       - =AVERAGE(FILTER(B2:B16,B2:B16>MEDIAN(B2:B16)))
     reject:

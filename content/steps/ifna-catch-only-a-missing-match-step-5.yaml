@@ -23,17 +23,18 @@ screens:
     variants:
       - { set: { D3: C-3 }, expected: 2 }
       - { set: { D2: Q-9, D9: Q-9 }, expected: 5 }
-    answer: =SUMPRODUCT(--ISNA(MATCH(D2:D9,A2:A6,0)))
+    answer: =SUM(--ISNA(MATCH(D2:D9,A2:A6,0)))
     requiredFunctions: []
     hints:
       nudge: "Match every ordered code at once and count the #N/A results."
-      rule: "MATCH(D2:D9,A2:A6,0) gives a position or #N/A for each code; ISNA marks the missing ones and SUMPRODUCT counts them."
+      rule: "MATCH works on all the ordered codes at once, giving a position or `#N/A` for each. ISNA marks the missing ones; -- makes them 1, and SUM counts them."
     misses:
       value: 3 ordered codes are missing from the price list.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
+      - =SUM(--ISNA(MATCH(D2:D9,A2:A6,0)))
       - =SUMPRODUCT(--ISNA(MATCH(D2:D9,A2:A6,0)))
       - =SUMPRODUCT(--(COUNTIF(A2:A6,D2:D9)=0))
       - =ROWS(D2:D9)-SUMPRODUCT(--ISNUMBER(MATCH(D2:D9,A2:A6,0)))

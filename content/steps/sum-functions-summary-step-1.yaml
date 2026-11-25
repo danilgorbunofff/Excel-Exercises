@@ -27,7 +27,7 @@ screens:
       - SUM
     hints:
       nudge: SUM adds the whole column of amounts.
-      rule: SUM(B2:B6) adds the five expenses.
+      rule: SUM adds every number in a range. Point it at the whole column of amounts.
     misses:
       value: The expenses add up to 1200.
       syntax: Check the brackets, commas and quotes.

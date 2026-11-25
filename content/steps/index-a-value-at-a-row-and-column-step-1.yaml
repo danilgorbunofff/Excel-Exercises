@@ -27,7 +27,7 @@ screens:
       - INDEX
     hints:
       nudge: INDEX takes the list and a position in it.
-      rule: INDEX(A2:A6,4) returns the 4th item, counting from A2.
+      rule: INDEX takes a list and a position, and returns the item at that position, counting from the first cell.
     misses:
       value: The 4th name is Dev.
       syntax: Check the brackets, commas and quotes.

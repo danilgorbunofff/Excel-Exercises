@@ -36,7 +36,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Count everything that is not empty, then take away the numbers.
-      rule: COUNTA counts words and numbers; COUNT counts only numbers. COUNTA(B2:B16)-COUNT(B2:B16) leaves the words.
+      rule: COUNTA counts words and numbers; COUNT counts only numbers. Take one from the other to leave the words.
     misses:
       value: 5 stock cells hold a word. Leave out both the numbers and the empty cells.
       syntax: Check the brackets, commas and quotes.

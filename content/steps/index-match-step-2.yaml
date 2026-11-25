@@ -26,7 +26,7 @@ screens:
       - MATCH
     hints:
       nudge: Search the names, return from the ID column.
-      rule: INDEX(A2:A6,MATCH(D3,B2:B6,0)) looks left, which VLOOKUP cannot.
+      rule: MATCH searches the names, and INDEX returns from the ID column, which can sit to the left.
     misses:
       value: Cy's ID is E-103.
       syntax: Check the brackets, commas and quotes.

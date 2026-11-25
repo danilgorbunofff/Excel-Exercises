@@ -55,7 +55,7 @@ screens:
       - UNIQUE
     hints:
       nudge: UNIQUE removes the repeats from a list.
-      rule: UNIQUE(C2:C19) spills each rep once.
+      rule: UNIQUE spills each value once, in the order it first appears.
     misses:
       value: The list should show each rep once, in order of first appearance.
       syntax: Check the brackets, commas and quotes.

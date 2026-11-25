@@ -7,7 +7,7 @@ checkedInExcel: 2026-11-25
 parent: month-end-accrual-for-part-of-a-month
 step: 5
 screens:
-  - prompt: In D2, how much of the monthly fee should be accrued for a contract that ends on the date in C2? Count the days from the 1st of that month to the end date, both included, as a share of the days in the month.
+  - prompt: In D2, what should be accrued for a contract ending on the date in C2? Accrue the fee for the days from the 1st of that month to the end date, both included, as a share of the month's days.
     rows:
       - [Contract, Monthly fee, End date, Accrual]
       - [Security, 4650, 45387, null]

@@ -26,7 +26,7 @@ screens:
       - VLOOKUP
     hints:
       nudge: The extension is the third column of the table.
-      rule: VLOOKUP(E2,A2:C7,3,FALSE) returns column 3 of the matching row.
+      rule: "VLOOKUP with FALSE finds the name in the first column of the table and returns the column number you give it: the extension is column 3."
     misses:
       value: Cleo's extension is 3187.
       syntax: Check the brackets, commas and quotes.

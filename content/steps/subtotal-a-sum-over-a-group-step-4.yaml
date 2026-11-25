@@ -35,7 +35,7 @@ screens:
       - SUBTOTAL
     hints:
       nudge: SUBTOTAL takes several ranges after the function number.
-      rule: SUBTOTAL(9,D2:D6,D12:D16) adds both blocks in one function.
+      rule: After the function number, SUBTOTAL takes several ranges separated by commas, and 9 adds them all.
     misses:
       value: The two blocks add up to 470.80.
       syntax: Check the brackets, commas and quotes.

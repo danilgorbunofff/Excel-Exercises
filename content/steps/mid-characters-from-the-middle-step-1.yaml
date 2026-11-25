@@ -21,7 +21,7 @@ screens:
       - MID
     hints:
       nudge: MID takes the text, where to start, and how many characters.
-      rule: MID(A2,6,2) starts at character 6 and takes 2.
+      rule: MID takes the text, the position to start from, and how many characters to take.
     misses:
       value: The month is 03.
       syntax: Check the brackets, commas and quotes.

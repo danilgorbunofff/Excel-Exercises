@@ -21,7 +21,7 @@ screens:
       - MID
     hints:
       nudge: "Count the characters: U, K and the dash come first."
-      rule: MID(A2,4,3) returns characters 4 to 6.
+      rule: MID starts at the position you give, counting the first character as 1, and takes that many characters.
     misses:
       value: The product part is PEN.
       syntax: Check the brackets, commas and quotes.

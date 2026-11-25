@@ -28,7 +28,7 @@ screens:
       - INDEX
     hints:
       nudge: Row first, then column, both counted inside the grid.
-      rule: INDEX(B2:E5,B7,B8) reads the cell at that row and column of the grid.
+      rule: INDEX takes the grid, then a row number and a column number, both counted inside the grid.
     misses:
       value: Row 2, quarter 4 holds 145.
       syntax: Check the brackets, commas and quotes.

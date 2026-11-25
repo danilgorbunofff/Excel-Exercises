@@ -1,57 +1,62 @@
 id: average-score-step-5
 slug: average-score-step-5
 level: 3
-title: Average order without cancellations
+title: Average price per unit
 updated: 2026-11-25
 checkedInExcel: 2026-11-25
 parent: average-score
 step: 5
 screens:
-  - prompt: In E2, what is the average order value? Cancelled orders are kept on the sheet with a value of 0 and should not count.
+  - prompt: In E2, what is the average price paid per unit across all the orders? Some orders were for many more units than others.
     rows:
-      - [Order, Value, null, Average order, null]
-      - ["1001", 54, null, null, null]
-      - ["1002", 0, null, null, null]
-      - ["1003", 120, null, null, null]
-      - ["1004", 86, null, null, null]
-      - ["1005", 42, null, null, null]
-      - ["1006", 0, null, null, null]
-      - ["1007", 98, null, null, null]
-      - ["1008", 75, null, null, null]
-      - ["1009", 61, null, null, null]
-      - ["1010", 0, null, null, null]
-      - ["1011", 133, null, null, null]
-      - ["1012", 47, null, null, null]
-      - ["1013", 89, null, null, null]
-      - ["1014", 70, null, null, null]
-      - ["1015", 104, null, null, null]
+      - [Order, Units, Value, null, Price per unit]
+      - [1001, 10, 45, null, null]
+      - [1002, 200, 600, null, null]
+      - [1003, 5, 30, null, null]
+      - [1004, 40, 140, null, null]
+      - [1005, 12, 54, null, null]
+      - [1006, 150, 480, null, null]
+      - [1007, 8, 40, null, null]
+      - [1008, 25, 100, null, null]
+      - [1009, 60, 204, null, null]
+      - [1010, 3, 18, null, null]
+      - [1011, 90, 297, null, null]
+      - [1012, 15, 63, null, null]
+      - [1013, 30, 117, null, null]
+      - [1014, 7, 35, null, null]
+      - [1015, 45, 162, null, null]
     answerCell: E2
-    expected: 81.5833333333
+    expected: 3.40714285714
     variants:
-      - set: { B5: 0 }
-        expected: 81.1818181818
-      - set: { B3: 66 }
-        expected: 80.3846153846
-    answer: =AVERAGEIF(B2:B16,">0")
+      - set: { B3: 400 }
+        expected: 2.65
+      - set: { C11: 30 }
+        expected: 3.42428571429
+      - set: { B16: 5 }
+        expected: 3.61363636364
+    answer: =SUM(C2:C16)/SUM(B2:B16)
     requiredFunctions: []
     hints:
-      nudge: Average only the orders worth more than 0.
-      rule: AVERAGEIF(range, ">0") averages only the cells that pass the test, so cancelled orders drop out of the count.
+      nudge: A big order should count for more than a small one.
+      rule: Divide the total value by the total units. An average of each order's own price would treat a 3-unit order like a 200-unit one.
     misses:
-      value: The orders that went through average 81.58. A plain average counts the cancelled ones as 0.
+      value: "The average price per unit is about 3.41: total value over total units."
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =AVERAGEIF(B2:B16,">0")
-      - =SUM(B2:B16)/COUNTIF(B2:B16,">0")
-      - =AVERAGEIF(B2:B16,"<>0")
+      - =SUM(C2:C16)/SUM(B2:B16)
+      - =AVERAGE(C2:C16)/AVERAGE(B2:B16)
+      - =SUMPRODUCT(C2:C16)/SUMPRODUCT(B2:B16)
+      - =1/(SUM(B2:B16)/SUM(C2:C16))
     reject:
-      - formula: =AVERAGE(B2:B16)
+      - formula: =AVERAGE(C2:C16/B2:B16)
         rule: value
-      - formula: =SUM(B2:B16)/12
-        rule: fragile
-      - formula: =81.5833333333
+      - formula: =SUM(B2:B16)/SUM(C2:C16)
+        rule: value
+      - formula: =SUM(C2:C15)/SUM(B2:B15)
+        rule: value
+      - formula: =3.40714285714
         rule: reference
-      - formula: =AVERAGEIF(B2:B16,">0"
+      - formula: =SUM(C2:C16)/SUM(B2:B16
         rule: syntax

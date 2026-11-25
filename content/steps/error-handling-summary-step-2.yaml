@@ -29,7 +29,7 @@ screens:
       - VLOOKUP
     hints:
       nudge: "IFNA catches #N/A and lets any other error show, so a broken formula is not hidden."
-      rule: IFNA(VLOOKUP(...),"no match") replaces only the missing-code error.
+      rule: IFNA replaces only the missing-code error, `#N/A`, and lets any other error show.
     misses:
       value: H-8 is not listed, so B9 should show no match.
       syntax: Check the brackets, commas and quotes.

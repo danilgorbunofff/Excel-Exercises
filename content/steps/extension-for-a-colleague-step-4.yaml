@@ -26,7 +26,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: XLOOKUP's fourth argument is what to show when nothing matches.
-      rule: 'XLOOKUP(E2,A2:A7,C2:C7,"Not found") replaces #N/A with a message.'
+      rule: "XLOOKUP's fourth part, the message in quotes, replaces `#N/A` when the name is not in the list."
     misses:
       value: F2 shows Not found.
       syntax: Check the brackets, commas and quotes.

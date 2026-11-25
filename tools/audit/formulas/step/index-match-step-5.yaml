@@ -5,5 +5,10 @@ screens:
       - =INDEX(B$2:B$9,MATCH(MAXIFS(D2:D9,C2:C9,G1),D2:D9,0))
       - =index(b2:b9, match(maxifs(d2:d9, c2:c9, g1), d2:d9, 0))
       - =LET(data,B2:B9,INDEX(data,MATCH(MAXIFS(D2:D9,C2:C9,G1),D2:D9,0)))
+      - =INDEX($B$2:$B$9,MATCH(MAX(IF($C$2:$C$9=$G$1,$D$2:$D$9)),$D$2:$D$9,0))
+      - =INDEX(B$2:B$9,MATCH(MAX(IF(C2:C9=G1,D2:D9)),D2:D9,0))
+      - =index(b2:b9, match(max(if(c2:c9=g1, d2:d9)), d2:d9, 0))
+      - =XLOOKUP(MAX(IF(C2:C9=G1,D2:D9)),D2:D9,B2:B9)
+      - =LET(data,B2:B9,INDEX(data,MATCH(MAX(IF(C2:C9=G1,D2:D9)),D2:D9,0)))
     wrong: []
     equivalent: []

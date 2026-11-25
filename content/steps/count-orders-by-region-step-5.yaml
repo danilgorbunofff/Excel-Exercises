@@ -36,7 +36,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: '"<>North" also counts the empty region, so add a second test that the region is not empty.'
-      rule: COUNTIFS(B2:B16,"<>North",B2:B16,"<>") counts regions that are filled in and not North.
+      rule: 'COUNTIFS can test the same range twice: once for not North, and once with "<>" for not empty.'
     misses:
       value: 8 orders came from outside the North. The order with no region does not count.
       syntax: Check the brackets, commas and quotes.

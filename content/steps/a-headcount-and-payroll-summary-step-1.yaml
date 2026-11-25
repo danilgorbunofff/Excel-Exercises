@@ -24,7 +24,7 @@ screens:
       - SUM
     hints:
       nudge: SUM the Heads column.
-      rule: SUM(B2:B5) adds the heads of the four teams.
+      rule: SUM adds every number in the Heads column.
     misses:
       value: There are 29 heads.
       syntax: Check the brackets, commas and quotes.

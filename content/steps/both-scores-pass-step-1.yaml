@@ -21,9 +21,9 @@ screens:
       - AND
     hints:
       nudge: AND is TRUE only when every test is TRUE.
-      rule: AND(B2="Yes",C2="Yes") checks both cells. Text in a test goes in quotes.
+      rule: AND checks each test and is TRUE only when all of them are. Text in a test goes in quotes.
     misses:
-      value: Both cells say Yes, so D2 should show true.
+      value: Both cells say Yes, so D2 should show TRUE.
       syntax: Check the brackets, commas and quotes.
       required-function: This task asks for AND.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.

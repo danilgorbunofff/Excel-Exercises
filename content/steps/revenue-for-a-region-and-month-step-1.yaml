@@ -30,7 +30,7 @@ screens:
       - SUMIF
     hints:
       nudge: Test the Region column, add the Revenue column.
-      rule: SUMIF(A2:A11,"North",C2:C11) adds the North rows.
+      rule: SUMIF tests the Region column and adds the Revenue column on the North rows.
     misses:
       value: The North made 40300.
       syntax: Check the brackets, commas and quotes.

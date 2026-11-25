@@ -36,7 +36,7 @@ screens:
       - AGGREGATE
     hints:
       nudge: Function 5 is the minimum.
-      rule: AGGREGATE(5,6,C2:C16) gives the smallest quantity.
+      rule: Option 6 tells AGGREGATE to skip error cells, and the range comes last.
     misses:
       value: The smallest quantity is 6.
       syntax: Check the brackets, commas and quotes.

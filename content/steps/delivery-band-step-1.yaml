@@ -30,7 +30,7 @@ screens:
       - VLOOKUP
     hints:
       nudge: With TRUE, VLOOKUP finds the largest band start that is not above the score.
-      rule: VLOOKUP(B8,A2:B6,2,TRUE) needs the band starts sorted from low to high.
+      rule: TRUE as the last part makes VLOOKUP an approximate match. The band starts must be sorted from low to high.
     misses:
       value: A score of 74 gets B.
       syntax: Check the brackets, commas and quotes.

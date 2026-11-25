@@ -31,17 +31,18 @@ screens:
       - { set: { A3: Refund for late delivery }, expected: 7 }
       - { set: { A11: Paid back already? }, expected: 5 }
       - { set: { A16: Refund not received }, expected: 7 }
-    answer: =SUMPRODUCT(--ISNUMBER(SEARCH("refund",A2:A16)))
+    answer: =SUM(--ISNUMBER(SEARCH("refund",A2:A16)))
     requiredFunctions: []
     hints:
       nudge: Search every ticket at once, ignoring case.
-      rule: SEARCH ignores case, so ISNUMBER(SEARCH("refund",A2:A16)) is TRUE for every mention; SUMPRODUCT counts them.
+      rule: SEARCH works on the whole column at once and ignores case. ISNUMBER turns each result into TRUE or FALSE; -- makes them 1 or 0, and SUM counts them.
     misses:
       value: 6 tickets mention refund in some form.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
+      - =SUM(--ISNUMBER(SEARCH("refund",A2:A16)))
       - =SUMPRODUCT(--ISNUMBER(SEARCH("refund",A2:A16)))
       - =COUNTIF(A2:A16,"*refund*")
     reject:

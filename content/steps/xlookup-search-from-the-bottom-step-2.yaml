@@ -26,7 +26,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: The sixth part of XLOOKUP, -1, searches from the last row up.
-      rule: XLOOKUP(E1,A2:A7,B2:B7,,0,-1) returns the last status logged for the ticket.
+      rule: Leave the fourth part empty, give 0 for an exact match as the fifth and -1 as the sixth, so XLOOKUP searches from the last row up.
     misses:
       value: T-7's latest status is Waiting.
       syntax: Check the brackets, commas and quotes.

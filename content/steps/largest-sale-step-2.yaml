@@ -21,7 +21,7 @@ screens:
       - MAX
     hints:
       nudge: MAX works along a row the same way as down a column.
-      rule: MAX(B2:G2) gives the largest number in the six cells.
+      rule: MAX gives the largest number in a range, across a row as well as down a column.
     misses:
       value: The busiest day has 51 orders. Check that the range runs from B2 to G2.
       syntax: Check the brackets, commas and quotes.

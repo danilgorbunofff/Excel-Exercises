@@ -1,56 +1,102 @@
 id: rank-a-list-without-sorting-it-step-5
 slug: rank-a-list-without-sorting-it-step-5
 level: 3
-title: Place of the rep named in a cell
+title: Every rep's place at once
 updated: 2026-11-25
 checkedInExcel: 2026-11-25
 parent: rank-a-list-without-sorting-it
 step: 5
 screens:
-  - prompt: In E2, what place in sales, highest first, does the rep named in E1 hold?
+  - prompt: In C2, show every rep's place in sales, highest first, for the whole list at once.
     rows:
-      - [Rep, Sales, null, Rep, Hu]
-      - [Ana, 4200, null, Place, null]
-      - [Ben, 3150, null, null, null]
-      - [Cy, 5800, null, null, null]
-      - [Di, 2900, null, null, null]
-      - [Ed, 4750, null, null, null]
-      - [Flo, 6100, null, null, null]
-      - [Gil, 3600, null, null, null]
-      - [Hu, 5200, null, null, null]
-      - [Ida, 2750, null, null, null]
-      - [Jo, 4400, null, null, null]
-      - [Kai, 3900, null, null, null]
-      - [Lee, 5500, null, null, null]
-      - [Mo, 3300, null, null, null]
-      - [Nia, 4950, null, null, null]
-      - [Ola, 3050, null, null, null]
-    answerCell: E2
-    expected: 4
+      - [Rep, Sales, Place]
+      - [Ana, 4200, null]
+      - [Ben, 3150, null]
+      - [Cy, 5800, null]
+      - [Di, 2900, null]
+      - [Ed, 4750, null]
+      - [Flo, 6100, null]
+      - [Gil, 3600, null]
+      - [Hu, 5200, null]
+      - [Ida, 2750, null]
+      - [Jo, 4400, null]
+      - [Kai, 3900, null]
+      - [Lee, 5500, null]
+      - [Mo, 3300, null]
+      - [Nia, 4950, null]
+      - [Ola, 3050, null]
+    answerCell: C2
+    expected:
+      - [8]
+      - [12]
+      - [2]
+      - [14]
+      - [6]
+      - [1]
+      - [10]
+      - [4]
+      - [15]
+      - [7]
+      - [9]
+      - [3]
+      - [11]
+      - [5]
+      - [13]
     variants:
-      - { set: { E1: Ed }, expected: 6 }
-      - { set: { B9: 6500 }, expected: 1 }
-      - { set: { A5: Hu }, expected: 14 }
-    answer: =RANK(XLOOKUP(E1,A2:A16,B2:B16),B2:B16)
+      - set: { B2: 7000 }
+        expected:
+          - - 1
+          - - 12
+          - - 3
+          - - 14
+          - - 7
+          - - 2
+          - - 10
+          - - 5
+          - - 15
+          - - 8
+          - - 9
+          - - 4
+          - - 11
+          - - 6
+          - - 13
+      - set: { B9: 2000 }
+        expected:
+          - - 7
+          - - 11
+          - - 2
+          - - 13
+          - - 5
+          - - 1
+          - - 9
+          - - 15
+          - - 14
+          - - 6
+          - - 8
+          - - 3
+          - - 10
+          - - 4
+          - - 12
+    answer: =RANK(B2:B16,B2:B16)
     requiredFunctions: []
     hints:
-      nudge: First find the rep's sales from the name, then rank that number in the list.
-      rule: XLOOKUP(E1,A2:A16,B2:B16) finds the sales for the name in E1; RANK places them in B2:B16.
+      nudge: RANK can place a whole column of values at once, against the same column.
+      rule: Give RANK the whole sales column as the values to place and as the list. The places spill down beside the reps.
     misses:
-      value: The rep in E1 is in place 4.
+      value: C2 down to C16 should show each rep's place, highest sales first.
       syntax: Check the brackets, commas and quotes.
-      reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =RANK(XLOOKUP(E1,A2:A16,B2:B16),B2:B16)
-      - =RANK(INDEX(B2:B16,MATCH(E1,A2:A16,0)),B2:B16)
-      - =COUNTIF(B2:B16,">"&VLOOKUP(E1,A2:B16,2,FALSE))+1
+      - =RANK(B2:B16,B2:B16)
+      - =RANK(B2:B16,$B$2:$B$16)
+      - =RANK(B2:B16,B$2:B$16,0)
+      - =COUNTIF(B2:B16,">"&B2:B16)+1
     reject:
-      - formula: =RANK(B9,B2:B16)
-        rule: fragile
-      - formula: =MATCH(E1,A2:A16,0)
+      - formula: =RANK(B2:B16,B2:B16,1)
         rule: value
-      - formula: =4
-        rule: reference
-      - formula: =RANK(XLOOKUP(E1,A2:A16,B2:B16),B2:B16
+      - formula: =RANK(B2,B2:B16)
+        rule: value
+      - formula: =SORT(B2:B16,,-1)
+        rule: value
+      - formula: =RANK(B2:B16,B2:B16
         rule: syntax

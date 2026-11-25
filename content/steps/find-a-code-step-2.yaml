@@ -31,7 +31,7 @@ screens:
       - MATCH
     hints:
       nudge: INDEX can return from any column, left or right of where MATCH searches.
-      rule: INDEX(A2:A9,MATCH(H1,B2:B9,0)) searches the names and returns the code on that row.
+      rule: MATCH searches the names, and INDEX can return from any column, the code column included.
     misses:
       value: The Chair's code is P-102.
       syntax: Check the brackets, commas and quotes.

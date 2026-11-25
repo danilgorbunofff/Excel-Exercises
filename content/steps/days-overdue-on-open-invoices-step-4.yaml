@@ -29,7 +29,7 @@ screens:
       - SUMIF
     hints:
       nudge: Test the due dates, add the amounts.
-      rule: SUMIF(B2:B6,"<"&D2,C2:C6) totals what is overdue on the report date.
+      rule: Test the due dates against a "<" test built from D2, and add the amounts column on the rows that pass.
     misses:
       value: 4440 is past due.
       syntax: Check the brackets, commas and quotes.

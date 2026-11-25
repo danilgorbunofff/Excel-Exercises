@@ -31,7 +31,7 @@ screens:
       - MIN
     hints:
       nudge: If the smallest stock is under 10, at least one item is low.
-      rule: MIN(B2:B7) is the lowest stock; IF(MIN(B2:B7)<10,"ALERT","OK") raises the alert.
+      rule: MIN gives the lowest stock. If even the lowest is under 10, IF should raise the alert.
     misses:
       value: The washers are down to 8, so B9 should show ALERT.
       syntax: Check the brackets, commas and quotes.

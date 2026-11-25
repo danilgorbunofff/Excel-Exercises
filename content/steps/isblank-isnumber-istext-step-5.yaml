@@ -32,17 +32,18 @@ screens:
         expected: 4
       - set: { A6: C-05 }
         expected: 6
-    answer: =SUMPRODUCT((A2:A16<>"")*NOT(ISNUMBER(B2:B16)))
+    answer: =SUM((A2:A16<>"")*NOT(ISNUMBER(B2:B16)))
     requiredFunctions: []
     hints:
       nudge: "Each row passes two tests: a code is there, and the amount is not a number."
-      rule: A2:A16<>"" and NOT(ISNUMBER(B2:B16)) give TRUE or FALSE per row; multiplying them keeps rows where both are TRUE, and SUMPRODUCT counts them.
+      rule: "Test each row twice: a code is there, and the amount is not a number. Multiplying the two tests gives 1 only where both hold, and SUM adds up the ones."
     misses:
       value: 5 rows have a code but no amount. Rows without a code do not count.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
+      - =SUM((A2:A16<>"")*NOT(ISNUMBER(B2:B16)))
       - =SUMPRODUCT((A2:A16<>"")*NOT(ISNUMBER(B2:B16)))
       - =SUMPRODUCT(--(A2:A16<>""),--NOT(ISNUMBER(B2:B16)))
       - =COUNTA(A2:A16)-COUNTIFS(A2:A16,"<>",B2:B16,">-1E+300")

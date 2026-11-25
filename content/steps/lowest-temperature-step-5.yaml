@@ -1,56 +1,64 @@
 id: lowest-temperature-step-5
 slug: lowest-temperature-step-5
 level: 3
-title: Lowest stock still on sale
+title: Best price after a discount
 updated: 2026-11-25
 checkedInExcel: 2026-11-25
 parent: lowest-temperature
 step: 5
 screens:
-  - prompt: In G2, which item still on sale has the fewest units in stock? Give that number of units.
+  - prompt: In F2, what is the cheapest price on the list once the discount in F1 is taken off? Some suppliers have not quoted yet.
     rows:
-      - [Item, Stock, On sale, null, null, null, null]
-      - [Pens, 120, Yes, null, null, Fewest units on sale, null]
-      - [Pads, 45, Yes, null, null, null, null]
-      - [Clips, 8, No, null, null, null, null]
-      - [Tape, 30, Yes, null, null, null, null]
-      - [Files, 64, Yes, null, null, null, null]
-      - [Ink, 12, No, null, null, null, null]
-      - [Glue, 22, Yes, null, null, null, null]
-      - [Rulers, 51, Yes, null, null, null, null]
-      - [Folders, 5, No, null, null, null, null]
-      - [Labels, 37, Yes, null, null, null, null]
-      - [Staples, 26, Yes, null, null, null, null]
-      - [Markers, 41, Yes, null, null, null, null]
-      - [Erasers, 18, No, null, null, null, null]
-      - [Binders, 33, Yes, null, null, null, null]
-      - [Sticky notes, 59, Yes, null, null, null, null]
-    answerCell: G2
-    expected: 22
+      - [Supplier, Price, null, null, Discount, 0.15]
+      - [Acme, 34.99, null, null, Best price, null]
+      - [Bolt, 29.5, null, null, null, null]
+      - [Crane, n/a, null, null, null, null]
+      - [Delta, 31, null, null, null, null]
+      - [Eagle, 32.4, null, null, null, null]
+      - [Fern, 27.95, null, null, null, null]
+      - [Grove, 30.25, null, null, null, null]
+      - [Hale, 33.1, null, null, null, null]
+      - [Iris, call, null, null, null, null]
+      - [Jet, 28.75, null, null, null, null]
+      - [Kite, 35.6, null, null, null, null]
+      - [Lark, 29.99, null, null, null, null]
+      - [Moss, 31.45, null, null, null, null]
+      - [Nova, 28.1, null, null, null, null]
+      - [Oak, 30.8, null, null, null, null]
+    answerCell: F2
+    expected: 23.7575
     variants:
-      - set: { B9: 15 }
-        expected: 15
-      - set: { C4: Yes }
-        expected: 8
-    answer: =MINIFS(B2:B16,C2:C16,"Yes")
+      - set: { F1: 0.2 }
+        expected: 22.36
+      - set: { B5: 25 }
+        expected: 21.25
+      - set: { B2: 20 }
+        expected: 17
+      - set: { B16: 21 }
+        expected: 17.85
+    answer: =MIN(B2:B16)*(1-F1)
     requiredFunctions: []
     hints:
-      nudge: Look for the smallest stock only among the rows marked Yes.
-      rule: MINIFS(stock, on sale, "Yes") gives the smallest stock where the item is on sale.
+      nudge: Find the cheapest price first, then take the discount off it.
+      rule: MIN skips notes such as n/a and gives the cheapest price. What is left to pay is 1 minus the discount.
     misses:
-      value: The fewest units on sale is 22. Items not on sale should not count.
+      value: The best price after the discount is 23.7575.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =MINIFS(B2:B16,C2:C16,"Yes")
-      - =MIN(FILTER(B2:B16,C2:C16="Yes"))
+      - =MIN(B2:B16)*(1-F1)
+      - =(1-F1)*MIN(B2:B16)
+      - =MIN(B2:B16)-MIN(B2:B16)*F1
+      - =SMALL(B2:B16,1)*(1-F1)
     reject:
+      - formula: =MIN(B2:B16)*F1
+        rule: value
       - formula: =MIN(B2:B16)
         rule: value
-      - formula: =MIN(B3,B5,B8)
+      - formula: =B7*(1-F1)
         rule: fragile
-      - formula: =22
+      - formula: =23.7575
         rule: reference
-      - formula: =MINIFS(B2:B16,C2:C16,"Yes"
+      - formula: =MIN(B2:B16)*(1-F1
         rule: syntax

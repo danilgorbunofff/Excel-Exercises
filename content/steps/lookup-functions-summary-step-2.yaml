@@ -26,7 +26,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: The fourth part of XLOOKUP is what to show when nothing matches.
-      rule: XLOOKUP(B6,B2:B5,A2:A5,"unknown SKU") returns the name to the left, or the message.
+      rule: XLOOKUP can return a column to the left of the one it searches, and its fourth part is the message when nothing matches.
     misses:
       value: For a SKU not in the list, B7 should show unknown SKU.
       syntax: Check the brackets, commas and quotes.

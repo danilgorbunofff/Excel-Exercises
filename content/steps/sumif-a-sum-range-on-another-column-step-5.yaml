@@ -32,17 +32,18 @@ screens:
         expected: 189.35
       - set: { B3: 20 }
         expected: 246.35
-    answer: =SUMPRODUCT((B2:B16<C2:C16)*D2:D16)
+    answer: =SUM((B2:B16<C2:C16)*D2:D16)
     requiredFunctions: []
     hints:
       nudge: Each row compares its own stock with its own reorder level, which SUMIF cannot do.
-      rule: B2:B16<C2:C16 gives TRUE or FALSE per row; times the values, SUMPRODUCT adds only the rows to reorder.
+      rule: B2:B16<C2:C16 gives TRUE or FALSE for each row. Multiplying by the values keeps only the rows to reorder, and SUM adds them.
     misses:
       value: The stock value to reorder is 126.35. Stock equal to the level does not need reordering.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
+      - =SUM((B2:B16<C2:C16)*D2:D16)
       - =SUMPRODUCT((B2:B16<C2:C16)*D2:D16)
       - =SUM(FILTER(D2:D16,B2:B16<C2:C16))
       - =SUMPRODUCT(--(B2:B16<C2:C16),D2:D16)

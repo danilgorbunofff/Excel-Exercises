@@ -23,7 +23,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: The discount is in F1. What is left to pay is 1 minus the discount.
-      rule: B4*(1-$F$1) gives the price after the discount. $F$1 keeps the discount cell fixed if the formula is copied down.
+      rule: The price after a discount is the price times 1 minus the discount. Dollar signs keep the discount cell fixed if the formula is copied down.
     misses:
       value: The coat costs 105 in the sale. Multiply B4 by 1 minus F1.
       syntax: Check the brackets, commas and quotes.

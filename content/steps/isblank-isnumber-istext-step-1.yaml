@@ -21,9 +21,9 @@ screens:
       - ISNUMBER
     hints:
       nudge: ISNUMBER looks at what kind of value the cell holds.
-      rule: ISNUMBER(B2) is TRUE for a number and FALSE for text or an empty cell.
+      rule: ISNUMBER is TRUE when the cell holds a number, and FALSE for text or an empty cell.
     misses:
-      value: B2 holds 42, so C2 should show true.
+      value: B2 holds 42, so C2 should show TRUE.
       syntax: Check the brackets, commas and quotes.
       required-function: This task asks for ISNUMBER.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.

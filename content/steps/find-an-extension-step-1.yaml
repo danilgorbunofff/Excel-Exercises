@@ -29,7 +29,7 @@ screens:
       - VLOOKUP
     hints:
       nudge: The name is the 2nd column of the table.
-      rule: VLOOKUP(B8,A2:D6,2,FALSE) finds the ID in the first column and returns column 2.
+      rule: VLOOKUP finds the ID in the first column of the table and returns the column number you give it. FALSE asks for an exact match.
     misses:
       value: ID 1044 belongs to Dev.
       syntax: Check the brackets, commas and quotes.

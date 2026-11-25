@@ -8,5 +8,3 @@ screens:
     equivalent:
       - formula: =SUMIF(A2:A12,"<="&D2,B2:B13)
         why: "range A2:A13 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
-      - formula: =SUMIF(A2:A13,"<="&D2,B2:B12)
-        why: "range B2:B13 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

@@ -6,17 +6,9 @@ screens:
       - =averageif(b2:b16, ">"&median(b2:b16))
       - =AVERAGEIFS(B2:B16,B2:B16,">"&MEDIAN(B2:B16))
       - =LET(data,B2:B16,AVERAGEIF(data,">"&MEDIAN(data)))
-    wrong:
-      - formula: =AVERAGEIF(B2:B15,">"&MEDIAN(B2:B16))
-        rule: fragile
-        why: range B2:B16 one row short at the end
-      - formula: =AVERAGEIF(B3:B16,">"&MEDIAN(B2:B16))
-        rule: fragile
-        why: range B2:B16 skips its first row
-      - formula: =AVERAGEIF(B2:B16,">"&AVERAGE(B2:B16))
-        rule: fragile
-        why: AVERAGE instead of MEDIAN
-      - formula: =AVERAGEIF(B2:B16,">"&MEDIAN(B2:B15))
-        rule: fragile
-        why: range B2:B16 one row short at the end
+      - =AVERAGE(IF($B$2:$B$16>MEDIAN($B$2:$B$16),$B$2:$B$16))
+      - =AVERAGE(IF(B$2:B$16>MEDIAN(B2:B16),B2:B16))
+      - =average(if(b2:b16>median(b2:b16), b2:b16))
+      - =LET(data,B2:B16,AVERAGE(IF(data>MEDIAN(data),data)))
+    wrong: []
     equivalent: []

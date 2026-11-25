@@ -39,7 +39,7 @@ screens:
       - FILTER
     hints:
       nudge: FILTER the East amounts, then ask LARGE for the 2nd.
-      rule: LARGE(FILTER(D2:D19,B2:B19="East"),2) works on the East orders only.
+      rule: FILTER keeps the East amounts, and LARGE with 2 picks the second-largest of those.
     misses:
       value: The second-largest East order is 540.
       syntax: Check the brackets, commas and quotes.

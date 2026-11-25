@@ -27,7 +27,7 @@ screens:
       - COUNTBLANK
     hints:
       nudge: One range can cover all three columns of details.
-      rule: COUNTBLANK(B2:D6) counts every empty field in the block.
+      rule: COUNTBLANK counts every empty cell in a block that covers several columns.
     misses:
       value: 6 fields are missing. The range has to cover B to D.
       syntax: Check the brackets, commas and quotes.

@@ -21,7 +21,7 @@ screens:
       - IF
     hints:
       nudge: Compare the two balances inside IF.
-      rule: IF(B2=C2,"ready","check") passes only when the balances agree exactly.
+      rule: IF shows the first text when the test is TRUE and the second when it is FALSE. Compare the two balances with =.
     misses:
       value: The balances agree, so D2 should show ready.
       syntax: Check the brackets, commas and quotes.

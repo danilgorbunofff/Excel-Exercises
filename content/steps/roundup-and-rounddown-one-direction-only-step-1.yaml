@@ -21,7 +21,7 @@ screens:
       - ROUNDUP
     hints:
       nudge: ROUNDUP never rounds down, however small the part left over.
-      rule: ROUNDUP(B2,0) turns 4.01 into 5.
+      rule: ROUNDUP with 0 places goes up to the next whole number, however small the part left over.
     misses:
       value: 4.01 km is charged as 5.
       syntax: Check the brackets, commas and quotes.

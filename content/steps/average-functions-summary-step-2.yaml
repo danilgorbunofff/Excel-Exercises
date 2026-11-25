@@ -29,7 +29,7 @@ screens:
       - LARGE
     hints:
       nudge: Pick the three highest with LARGE, then average them.
-      rule: AVERAGE of the 1st, 2nd and 3rd LARGE values averages the top three.
+      rule: LARGE with 1, 2 and 3 picks the top three. AVERAGE can take those three values as its arguments.
     misses:
       value: The top three average 87.67.
       syntax: Check the brackets, commas and quotes.

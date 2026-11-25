@@ -27,7 +27,7 @@ screens:
       - MATCH
     hints:
       nudge: Look up the salary, then multiply by 1 plus the raise.
-      rule: INDEX/MATCH gives the salary; times (1+D4) adds the raise.
+      rule: INDEX with MATCH gives the salary; multiplying by 1 plus the raise adds it.
     misses:
       value: After the raise, E-102 earns 59850.
       syntax: Check the brackets, commas and quotes.

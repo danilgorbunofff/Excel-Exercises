@@ -1,56 +1,63 @@
 id: largest-sale-step-5
 slug: largest-sale-step-5
 level: 3
-title: Biggest sale in the West
+title: Gap between the best and worst month
 updated: 2026-11-25
 checkedInExcel: 2026-11-25
 parent: largest-sale
 step: 5
 screens:
-  - prompt: In F2, what is the biggest single sale made in the West region?
+  - prompt: In E2, by how much did the best month's sales beat the worst month's?
     rows:
-      - [Date, Region, Sale, null, null, null]
-      - [Jan 03, East, 640, null, West's biggest sale, null]
-      - [Jan 05, West, 720, null, null, null]
-      - [Jan 08, North, 910, null, null, null]
-      - [Jan 11, West, 860, null, null, null]
-      - [Jan 14, East, 1020, null, null, null]
-      - [Jan 16, West, 540, null, null, null]
-      - [Jan 19, South, 980, null, null, null]
-      - [Jan 22, West, 795, null, null, null]
-      - [Jan 25, North, 455, null, null, null]
-      - [Jan 27, West, 610, null, null, null]
-      - [Jan 29, East, 1150, null, null, null]
-      - [Jan 30, South, 705, null, null, null]
-      - [Jan 31, West, 690, null, null, null]
-      - [Feb 02, North, 820, null, null, null]
-      - [Feb 04, West, 735, null, null, null]
-    answerCell: F2
-    expected: 860
+      - [Month, Sales, null, null, Gap]
+      - [Jan, 820, null, null, null]
+      - [Feb, 760, null, null, null]
+      - [Mar, 905, null, null, null]
+      - [Apr, 880, null, null, null]
+      - [May, 940, null, null, null]
+      - [Jun, 1010, null, null, null]
+      - [Jul, 1120, null, null, null]
+      - [Aug, 1085, null, null, null]
+      - [Sep, 970, null, null, null]
+      - [Oct, 1040, null, null, null]
+      - [Nov, 1190, null, null, null]
+      - [Dec, 1260, null, null, null]
+    answerCell: E2
+    expected: 500
     variants:
-      - set: { C5: 990 }
-        expected: 990
-      - set: { B6: West }
-        expected: 1020
-    answer: =MAXIFS(C2:C16,B2:B16,"West")
+      - set: { B3: 700 }
+        expected: 560
+      - set: { B13: 1400 }
+        expected: 640
+      - set: { B2: 600 }
+        expected: 660
+      - set: { B2: 1500 }
+        expected: 740
+      - set: { B13: 700 }
+        expected: 490
+    answer: =MAX(B2:B13)-MIN(B2:B13)
     requiredFunctions: []
     hints:
-      nudge: Look for the largest sale only among the West rows.
-      rule: MAXIFS(sales, regions, "West") gives the largest sale where the region is West.
+      nudge: Find the best month and the worst month first, then subtract.
+      rule: MAX gives the best month and MIN the worst, wherever they sit in the list. The gap is one minus the other.
     misses:
-      value: West's biggest sale is 860. The largest sale overall is in another region.
+      value: The best month beat the worst by 500.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =MAXIFS(C2:C16,B2:B16,"West")
-      - =MAX(FILTER(C2:C16,B2:B16="West"))
+      - =MAX(B2:B13)-MIN(B2:B13)
+      - =-MIN(B2:B13)+MAX(B2:B13)
+      - =LARGE(B2:B13,1)-MIN(B2:B13)
+      - =MAX(B2:B13)-SMALL(B2:B13,1)
     reject:
-      - formula: =MAX(C2:C16)
+      - formula: =MAX(B2:B13)-B2
         rule: value
-      - formula: =MAX(C3,C5,C7,C9,C11,C14,C16)
+      - formula: =MAX(B2:B12)-MIN(B2:B12)
+        rule: value
+      - formula: =B13-B3
         rule: fragile
-      - formula: =860
+      - formula: =500
         rule: reference
-      - formula: =MAXIFS(C2:C16,B2:B16,"West"
+      - formula: =MAX(B2:B13)-MIN(B2:B13
         rule: syntax

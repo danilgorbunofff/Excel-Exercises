@@ -32,7 +32,7 @@ screens:
       - COUNTIF
     hints:
       nudge: Count the status column for On time.
-      rule: COUNTIF(C2:C13,"On time") counts every on-time shipment.
+      rule: COUNTIF counts the cells in the status column that say On time, written in quotes.
     misses:
       value: 8 shipments were on time.
       syntax: Check the brackets, commas and quotes.

@@ -28,7 +28,7 @@ screens:
       - SUMIF
     hints:
       nudge: Point the criteria at F1 instead of typing the region.
-      rule: SUMIF(A2:A9,F1,B2:B9) totals whichever region is typed in F1.
+      rule: Give SUMIF the cell that holds the region as its criteria, so the total follows whatever region is typed there.
     misses:
       value: The region in F1 sold 685.
       syntax: Check the brackets, commas and quotes.

@@ -25,7 +25,7 @@ screens:
       - AVERAGE
     hints:
       nudge: The average month, twelve times.
-      rule: AVERAGE(B2:B6)*12 assumes every month of the year looks like the average so far.
+      rule: Multiplying the average month by 12 assumes every month of the year looks like the average so far.
     misses:
       value: The annualised run rate is 514080.
       syntax: Check the brackets, commas and quotes.

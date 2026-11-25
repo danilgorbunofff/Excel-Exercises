@@ -28,7 +28,7 @@ screens:
       - COUNTA
     hints:
       nudge: COUNTA takes more than one range, separated by commas.
-      rule: COUNTA(B2:B7,D2:D7) counts the names on both days.
+      rule: COUNTA takes several ranges separated by commas and counts the filled cells in all of them.
     misses:
       value: 8 slots are booked across both days. Include both columns.
       syntax: Check the brackets, commas and quotes.

@@ -26,7 +26,7 @@ screens:
       - SUMIF
     hints:
       nudge: Test the days column, add the balances.
-      rule: SUMIF(B2:B7,">30",C2:C7) leaves out exactly 30 days.
+      rule: SUMIF with ">30" tests the days and adds the balances; exactly 30 days is left out.
     misses:
       value: Balances over 30 days total 8850.
       syntax: Check the brackets, commas and quotes.

@@ -29,7 +29,7 @@ screens:
       - SUMIF
     hints:
       nudge: Test the department column, add the amount column.
-      rule: SUMIF(A2:A10,"Marketing",C2:C10) adds every Marketing cost.
+      rule: SUMIF tests the department column and adds the amount column on the matching rows.
     misses:
       value: Marketing costs 103900.
       syntax: Check the brackets, commas and quotes.

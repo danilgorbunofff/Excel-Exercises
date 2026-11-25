@@ -20,7 +20,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Take both costs away from the budget.
-      rule: B2-C2-D2 takes the spent amount and then the booked amount off the budget.
+      rule: Chain minus signs to take several amounts off one starting value.
     misses:
       value: The budget left is 2250. Take away both C2 and D2.
       syntax: Check the brackets, commas and quotes.

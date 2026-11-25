@@ -107057,5 +107057,7851 @@
  },
  "3a4f165845754aa21c49": {
   "value": 290
+ },
+ "8708bce23b11e2efec65": {
+  "value": true
+ },
+ "1c1a0e8c576b04a3fa22": {
+  "value": 0
+ },
+ "52bf58508668368fdfdd": {
+  "value": true
+ },
+ "be123e07be385853c4c7": {
+  "value": 4
+ },
+ "fb628bb0e5dc4efd2f41": {
+  "value": true
+ },
+ "94fadcd4d22cc63ac0ec": {
+  "value": 1
+ },
+ "a9313449241372fd6d80": {
+  "value": 3
+ },
+ "410d63eb7c4eedf933d5": {
+  "value": 11
+ },
+ "9a7b71cadba3ddd05005": {
+  "value": 3
+ },
+ "05cec7e0f62fea41a7c5": {
+  "value": {
+   "error": "#VALUE!"
+  }
+ },
+ "d54891ed842817a8742e": {
+  "value": {
+   "error": "#VALUE!"
+  }
+ },
+ "7155e04e430588667102": {
+  "value": {
+   "error": "#VALUE!"
+  }
+ },
+ "8b3bf39180296db57db7": {
+  "value": 5
+ },
+ "a68ce3a1f871de06d55c": {
+  "value": {
+   "error": "#DIV/0!"
+  }
+ },
+ "b16ee7ae91ddce33956f": {
+  "value": 2
+ },
+ "b78c81fb39b8313cd438": {
+  "value": {
+   "error": "#DIV/0!"
+  }
+ },
+ "c5c87499283b99066305": {
+  "value": 17
+ },
+ "7fca0ecf7a44cf1f6bac": {
+  "value": {
+   "error": "#REF!"
+  }
+ },
+ "15db9f4545980ab5267e": {
+  "value": {
+   "error": "#REF!"
+  }
+ },
+ "0e86eac70f2594dbc63f": {
+  "value": "South"
+ },
+ "8a876d463482b8b74769": {
+  "value": 7
+ },
+ "6dea88d8c3dc49529ce8": {
+  "value": 2
+ },
+ "4ce60cb74e8715ef4616": {
+  "value": "12 High St"
+ },
+ "3324daba276fd1edb253": {
+  "value": "4 Mill St East"
+ },
+ "e03f2ec3fb3fdac976fa": {
+  "value": "Junior"
+ },
+ "ea599d18a9b4ede5c104": {
+  "value": "Junior"
+ },
+ "3d6cd17e60182a83c9b8": {
+  "value": "Mid"
+ },
+ "6a7da3830c9f639e2607": {
+  "value": "Senior"
+ },
+ "9747787f635cce105f03": {
+  "value": "Mid"
+ },
+ "d8ea45a50aee351e582c": {
+  "value": "Senior"
+ },
+ "4d200b19bfa986ac1ab7": {
+  "value": 20
+ },
+ "503bbbc7b49391de168a": {
+  "value": 25
+ },
+ "df7d117e710e07295c3d": {
+  "value": 30
+ },
+ "ce7b9387a42e84caec7c": {
+  "value": 20
+ },
+ "64e070bfc3341c43a3f9": {
+  "value": 25
+ },
+ "9756c798de7a0c85fbd8": {
+  "value": false
+ },
+ "3303a61f889462fb8f1e": {
+  "value": false
+ },
+ "15153653b0a2c3de7ca8": {
+  "value": true
+ },
+ "84ff8a320d9ee82d730b": {
+  "value": false
+ },
+ "c9c5765346fa36068dc7": {
+  "value": false
+ },
+ "d47716bb68eddc27c121": {
+  "value": true
+ },
+ "1fd6441710c2a93e09f8": {
+  "value": 11
+ },
+ "06c369a93ca57f265a14": {
+  "value": "New York City"
+ },
+ "cd306ca53fafee0798c2": {
+  "value": 8
+ },
+ "87fce13bb7aa40347ab8": {
+  "value": 5
+ },
+ "76cefb4f02cf622fada0": {
+  "value": "San Jose"
+ },
+ "4239e12382380b9c0c95": {
+  "value": "N"
+ },
+ "07c6eceafec45ea971f1": {
+  "value": "NORTH-WEST"
+ },
+ "cf89c1d9562ec76f35f0": {
+  "value": "NORTH"
+ },
+ "08bb54bbea6d3ef85056": {
+  "value": "NORTH-WEST-04"
+ },
+ "0da4c1b4424305fd9199": {
+  "value": "04"
+ },
+ "30860773e61af71483c7": {
+  "value": "WEST-04"
+ },
+ "865bbc74c914d38f64a7": {
+  "value": "CRD"
+ },
+ "7448a8b13711f4a57d49": {
+  "value": "INV"
+ },
+ "63088ae1e0c4fbdc32be": {
+  "value": "East"
+ },
+ "26345e457927c8bfcb20": {
+  "value": "North"
+ },
+ "0aca37088189903fa618": {
+  "value": "West"
+ },
+ "a0a29fcda4bdb841d9e7": {
+  "value": true
+ },
+ "d985c350c847c068a1d9": {
+  "value": false
+ },
+ "90775eb6d1ed0f9178f7": {
+  "value": "AB12CD"
+ },
+ "04f8870ebc9d161d0da8": {
+  "value": false
+ },
+ "828f8e1d09d0f6ca2b4d": {
+  "value": true
+ },
+ "87cbb345a322ddd10654": {
+  "value": false
+ },
+ "e8c11a6b88f46cc0d3fe": {
+  "value": "ABC123"
+ },
+ "9d4f8691fff5e2b72fed": {
+  "value": "XY99887766"
+ },
+ "2dc97ea26d5f574b3df0": {
+  "value": "CR91702"
+ },
+ "63bc2275b53ca97569d2": {
+  "value": "CR-9/17-02"
+ },
+ "662ae83bb97b37e210a3": {
+  "value": "CR-9"
+ },
+ "3f9708bb8fcea8981cf7": {
+  "value": "917"
+ },
+ "dbb82011a473d16bc38e": {
+  "value": "1002"
+ },
+ "b2f5a46c8d7158d3a540": {
+  "value": "CRD-17B"
+ },
+ "231eaf88fe8c4b96af68": {
+  "value": "crd-17b"
+ },
+ "6256490ab74683f4fc0f": {
+  "value": "917"
+ },
+ "ba612633acd500cdcd02": {
+  "value": "204"
+ },
+ "d755715070c7b583fbd9": {
+  "value": "204"
+ },
+ "d498e7bdf2fd6059e41f": {
+  "value": "INV20481"
+ },
+ "6488b3e4a39bc5a98438": {
+  "value": "INV-204/81"
+ },
+ "be900fc495d422be46b7": {
+  "value": "INV-204"
+ },
+ "14472e06abe8adb4572b": {
+  "value": "INV-204"
+ },
+ "a905bcc622d47172a518": {
+  "value": 4
+ },
+ "5e9f8e18cdc4eef7720e": {
+  "value": "inv-204"
+ },
+ "5ce684c5a0d88748734e": {
+  "value": "0481"
+ },
+ "fb750ef39e9a1e16b9df": {
+  "value": 6
+ },
+ "4c8ab07bbca3fa96f28d": {
+  "value": "555"
+ },
+ "2e45450d1cdee2e8b22e": {
+  "value": "XY9Z"
+ },
+ "c0964f891c0b46f13c5b": {
+  "value": "NORTH"
+ },
+ "c673a1336366e614b3b4": {
+  "value": "04"
+ },
+ "7e9598fe42bea1f0da33": {
+  "value": "WEST"
+ },
+ "7731240f32f8763803dc": {
+  "value": 4
+ },
+ "361fbe1e9e4ece521414": {
+  "value": 8
+ },
+ "7dd55c04cb85c50d4928": {
+  "value": 46142
+ },
+ "29d79464cf0a16ff5af9": {
+  "value": 46477
+ },
+ "b2106610d1c2a0750e2b": {
+  "value": 46295
+ },
+ "5a267315186843194dd7": {
+  "value": "2026"
+ },
+ "077cabdc65ec5f090bca": {
+  "value": "2031"
+ },
+ "bc3bca1751d1d636d2db": {
+  "value": "Mon"
+ },
+ "099fddb015fb7ec290ab": {
+  "value": "Tue"
+ },
+ "8825a68b6adb80a3d035": {
+  "value": "Wed"
+ },
+ "0fef7b2c354aaff80353": {
+  "value": "Other"
+ },
+ "3a3abdcce80b8bbef929": {
+  "value": "Normal"
+ },
+ "8c13f0a35133bfcd3723": {
+  "value": "Double"
+ },
+ "ff4837e5f4e0a0fb9aff": {
+  "value": "shop"
+ },
+ "7a3b059ec1355e8e8487": {
+  "value": "shop.org"
+ },
+ "7a7c05e783830b81f8ab": {
+  "value": "al"
+ },
+ "bb2f4c3a1bdf9b6cf7be": {
+  "value": "al@shop.org"
+ },
+ "6cf949bebff73ee52cc7": {
+  "value": "example.com"
+ },
+ "9faf0b52cfa188dd0f54": {
+  "value": "example"
+ },
+ "b2b2af65b2459c6c3210": {
+  "value": "rosa.diaz"
+ },
+ "b01ca9688751b7a2f460": {
+  "value": "rosa.diaz@example.com"
+ },
+ "f69a697c24acc9eec13f": {
+  "value": false
+ },
+ "33639b2328e9ed5cb3e1": {
+  "value": true
+ },
+ "255db48899f8f0f07827": {
+  "value": "xlsx"
+ },
+ "c0b0ee3a9c79569191ee": {
+  "value": "a.b.c"
+ },
+ "86e6cf6a40fcf12c62ea": {
+  "value": "docx"
+ },
+ "440aeb7e5deef650cb9e": {
+  "value": "notes"
+ },
+ "6b8b3663da299311d02b": {
+  "value": "pdf"
+ },
+ "597e5411d9533f31b8d8": {
+  "value": "report.final"
+ },
+ "0d99b7b2ea308871589a": {
+  "value": "Al Brook"
+ },
+ "192a41f7d2a4ef603940": {
+  "value": "Rosa Diaz"
+ },
+ "3f072daf1444fb974604": {
+  "value": "New York"
+ },
+ "6b1b8c47f19b1e64a3fc": {
+  "value": "San Jose Hub"
+ },
+ "872c99757a88bb621a79": {
+  "value": "Rosa Diaz"
+ },
+ "8989f6deb726869d382b": {
+  "value": "Al Brook"
+ },
+ "4a00887238cda82dc839": {
+  "value": "42"
+ },
+ "ebf7c306e92205e0b4a3": {
+  "value": "1250"
+ },
+ "89ecb80503831550acf2": {
+  "value": 46081
+ },
+ "4f467f9aa8883ae4760b": {
+  "value": 46387
+ },
+ "ddfe91ba75e89c16f4b9": {
+  "value": 46812
+ },
+ "d912db7f6622150f12df": {
+  "value": 46081
+ },
+ "5650caa943f480294ef8": {
+  "value": 46142
+ },
+ "46d261561194fdb5fc79": {
+  "value": 46387
+ },
+ "16158809a768dc11bc2f": {
+  "value": 2
+ },
+ "5a429569f38c76e54896": {
+  "value": 23
+ },
+ "28fa69bc26ec63ac7b20": {
+  "value": "Not a number"
+ },
+ "a32c8aac8b9bceb7067c": {
+  "value": 24
+ },
+ "4c6078d662d4d41a0e4e": {
+  "value": false
+ },
+ "e75b9d4403290a54f4cd": {
+  "value": true
+ },
+ "07fd3fa4291bc6fb9023": {
+  "value": false
+ },
+ "81ef1a7010d7c3ba5635": {
+  "value": true
+ },
+ "7d59a8d5cda432be77e7": {
+  "value": 2.3499999999999996
+ },
+ "8b3787e01f19aca6106e": {
+  "value": 5.01
+ },
+ "10b64d47a8e7dea33c0a": {
+  "value": 660
+ },
+ "9a0328873652fe7434ba": {
+  "value": 620
+ },
+ "6ae2b7b753298086ca97": {
+  "value": 1060
+ },
+ "852783340b050f13db4f": {
+  "value": 2
+ },
+ "f88561ba690d43fbe416": {
+  "value": 4.3500000000000005
+ },
+ "b7f13c592943612e9ee6": {
+  "value": 4.4
+ },
+ "0584a71eba0295b7397e": {
+  "value": 12.35
+ },
+ "e4acd59e83d70945b1cd": {
+  "value": 3.14
+ },
+ "4a2d68599a3d17c6cb3f": {
+  "value": 7
+ },
+ "3c47a21483a16c8b8d14": {
+  "value": 46
+ },
+ "3e4518679311ed010e53": {
+  "value": 45
+ },
+ "8539c6468a58ca8a821b": {
+  "value": 2.34
+ },
+ "fcfaf65cdc5183e14000": {
+  "value": 2.35
+ },
+ "d015ffdd76fa2826ae67": {
+  "value": 9.99
+ },
+ "79373a24d18ddfde3ccd": {
+  "value": 0.1
+ },
+ "916519615d5f07d1b5ad": {
+  "value": 0.055
+ },
+ "ca3607af508e733039dc": {
+  "value": 0.0547
+ },
+ "29b225b34a5cffd9144f": {
+  "value": "-"
+ },
+ "5111f9fb48894af70f43": {
+  "value": 3
+ },
+ "40d33320ee4083462f78": {
+  "value": "Check"
+ },
+ "5e9eb638b040d167634f": {
+  "value": 0
+ },
+ "59d0118815b6ce19411a": {
+  "value": "Check"
+ },
+ "7f297a758c429074825b": {
+  "value": 40
+ },
+ "c0df86c75060d8380a3e": {
+  "value": 30
+ },
+ "3ecd6bc68b5ecc26c1ab": {
+  "value": 30
+ },
+ "599d7c307ce65c4c530f": {
+  "value": true
+ },
+ "744216c862aee4c1b447": {
+  "value": true
+ },
+ "38fd5cd73aaa4af85c5d": {
+  "value": false
+ },
+ "2bc3d3a0cced59c75f69": {
+  "value": true
+ },
+ "3d031df9fc2c28514251": {
+  "value": true
+ },
+ "356d12cc8176d0b4a21c": {
+  "value": false
+ },
+ "7ec61f9fe5e51240609b": {
+  "value": false
+ },
+ "07d2eb2c0dc0ae7bbb34": {
+  "value": 3
+ },
+ "9643413839ea75c818f4": {
+  "value": 2
+ },
+ "e0c6aba8d6273fa4cb50": {
+  "value": 4
+ },
+ "c36b4e3905cf053e9681": {
+  "value": 5
+ },
+ "d7e4ae41f150026de006": {
+  "value": 7.75
+ },
+ "52ea3670f27f5f4be0ff": {
+  "value": 3
+ },
+ "d427c03578fac37bef09": {
+  "value": 7
+ },
+ "23333c77e96d65a43ef2": {
+  "value": 3
+ },
+ "e915ee2bf6b97495f047": {
+  "value": 7
+ },
+ "05724b36f0436ae0cf61": {
+  "value": 8
+ },
+ "7370f8d2544d71b7934c": {
+  "value": "box 7-a"
+ },
+ "c522cfb7e8d5296159c2": {
+  "value": "room 12b, floor 3"
+ },
+ "6c51f94fd32f581d1960": {
+  "value": "Q-12"
+ },
+ "07fa99f31eb710a8a33b": {
+  "value": "Q-7"
+ },
+ "bc6c37f0d59a3e070734": {
+  "value": "Z-7"
+ },
+ "cb90b2056776822ee35a": {
+  "value": 5
+ },
+ "637bef1e59e3cc5a8a06": {
+  "value": 3
+ },
+ "7642f3b627edff1800d1": {
+  "value": 0
+ },
+ "b221b1f7c2ed27f74ef4": {
+  "value": false
+ },
+ "0bbf19cbe6d8bae0189a": {
+  "value": false
+ },
+ "4856f7c07adbb10c49f1": {
+  "value": true
+ },
+ "883f26c05ced63ee329e": {
+  "value": false
+ },
+ "0d6179c71bd00f86c998": {
+  "value": true
+ },
+ "d9dd1a6e3bef5a492dc6": {
+  "value": 9.9
+ },
+ "563e8c217268dbedc579": {
+  "value": 0
+ },
+ "0dca55e36a01ffa8bd8a": {
+  "value": 4.5
+ },
+ "c4eeeb7708fc23d93af5": {
+  "value": 30
+ },
+ "db59c71717f5e2909fcf": {
+  "value": 28
+ },
+ "ee0b64225ba56a336f91": {
+  "value": 29
+ },
+ "15b911036ad5fb0ab940": {
+  "value": "36 years, 2 months"
+ },
+ "b6648f47833b185d8a75": {
+  "value": "36 years, 5 months"
+ },
+ "40a04e3e740e2ab5cbfa": {
+  "value": 2
+ },
+ "30baf1a137f163a0f2a8": {
+  "value": 3
+ },
+ "2dd73ffd86ee843bf08c": {
+  "value": 5
+ },
+ "ced97e8387b1cf057fe4": {
+  "value": "Al"
+ },
+ "8958a66c2c6053af89d8": {
+  "value": "Christopher"
+ },
+ "c715a61742d3258f2200": {
+  "value": "Rosa"
+ },
+ "19753855bf99e1439a41": {
+  "value": 5
+ },
+ "e062670deb14b912cdee": {
+  "value": "Al Brook"
+ },
+ "626881c38d0d3ffce84e": {
+  "value": "AL"
+ },
+ "563a126214b6d82910ff": {
+  "value": 0
+ },
+ "ef3b484805cff9bc7022": {
+  "value": "Brookfield"
+ },
+ "b109f6ac3f86bd71563b": {
+  "value": "Lane"
+ },
+ "7814edcc8e72f4894baf": {
+  "value": "Lane"
+ },
+ "fefc20fb1ac71dbca5e5": {
+  "value": "Christopher"
+ },
+ "1cf0fdd46e3ff17ef1b5": {
+  "value": "Jean-Luc D'Arc"
+ },
+ "35c20a8da51b045ff144": {
+  "value": "Mary-Jane O'Neil"
+ },
+ "455baf696bbebf703585": {
+  "value": "Rosa Diaz"
+ },
+ "71a8617ff697773b1fb3": {
+  "value": "Diaz"
+ },
+ "4819b10f78a220639eed": {
+  "value": "Diaz"
+ },
+ "83fa8a2428208935d807": {
+  "value": "Rosa"
+ },
+ "8c4d7dc3e2a59a002577": {
+  "value": "ROSA"
+ },
+ "5a95544ddde39699a865": {
+  "value": 31
+ },
+ "f86f958b6dcd9e84f732": {
+  "value": 32
+ },
+ "b159ca0d7fcffb2e3803": {
+  "value": 22
+ },
+ "b6d62440601e76d9c38c": {
+  "value": 6
+ },
+ "c0a53b5c6f31030d2240": {
+  "value": 9
+ },
+ "2a4f407f1a0d4a3bc52d": {
+  "value": "BOX 7-A"
+ },
+ "636940e513bd91001a61": {
+  "value": "No"
+ },
+ "a597bb85de10f846b10a": {
+  "value": "Yes"
+ },
+ "ab6d724b9f7ea7799b7b": {
+  "value": "ORDER #12B, DUE 3PM"
+ },
+ "9be7ea1c0c15fb79a286": {
+  "value": false
+ },
+ "4bfe233b4c0a0d8669bf": {
+  "value": true
+ },
+ "506119bbd95034bf8727": {
+  "value": 15
+ },
+ "f380342f423fcaeb3406": {
+  "value": 4
+ },
+ "d7b03b711bf3bf932b77": {
+  "value": 31
+ },
+ "a8c5a00d0550c9754e4b": {
+  "value": 13
+ },
+ "15438fdc38ae09c61529": {
+  "value": 11
+ },
+ "47ed03676ba2761592e2": {
+  "value": 12
+ },
+ "bc14a090d2c0d6d8207f": {
+  "value": "Open"
+ },
+ "8aeba360cb43cecdb680": {
+  "value": "Open"
+ },
+ "3d6ad06acf3c671d479b": {
+  "value": "Complete"
+ },
+ "297ad82bf25e2466e8e4": {
+  "value": false
+ },
+ "6bd4514e111b14acc694": {
+  "value": true
+ },
+ "3f4509e8acb51d6d8fe4": {
+  "value": false
+ },
+ "19229a6d0df7557501a7": {
+  "value": true
+ },
+ "0a169c01b23f482ba43f": {
+  "value": false
+ },
+ "8373412f88318464889d": {
+  "value": false
+ },
+ "ebf3695fdd3a1ba73c0f": {
+  "value": false
+ },
+ "33bfabd0c642d1a70d94": {
+  "value": "Leave"
+ },
+ "b297c595b52e58917da6": {
+  "value": "2026/North"
+ },
+ "5141bc9ec2f6e89be232": {
+  "value": "North"
+ },
+ "f198869184b9d259caae": {
+  "value": "CRD7"
+ },
+ "ffc86ed421d90f5ae746": {
+  "value": "INV204"
+ },
+ "e7b425950b90345c8e2a": {
+  "value": true
+ },
+ "32a2a8564e23f6e88bac": {
+  "value": false
+ },
+ "8eb08fc539656d172ce2": {
+  "value": 6
+ },
+ "4ad396b26f749a35b22b": {
+  "value": 7
+ },
+ "9542a6e3e3d289c1faf6": {
+  "value": 0
+ },
+ "dbb3c5dd84ddfc778da4": {
+  "value": 0
+ },
+ "3d785b3ac56684542bf1": {
+  "value": 7
+ },
+ "fe2230bdf94dd9637103": {
+  "value": 8
+ },
+ "b5be61eec3af676d89e9": {
+  "value": 1200
+ },
+ "824fe46d998e9cac2365": {
+  "value": 1300
+ },
+ "65acd3904ef9beb7fb28": {
+  "value": "Silver"
+ },
+ "c47f8ec8e11b948e9599": {
+  "value": "Gold"
+ },
+ "07e78aa768a5428bac45": {
+  "value": "Silver"
+ },
+ "05f391acf4f2f18df0fd": {
+  "value": "Bronze"
+ },
+ "44c1ade9d15f10a86249": {
+  "value": "Gold"
+ },
+ "3dea5b1410671381265c": {
+  "value": 46022
+ },
+ "ac7034ce0a7c892c6921": {
+  "value": 46446
+ },
+ "f004810b616ffd826dcc": {
+  "value": 46812
+ },
+ "414bff84c3a2eab01deb": {
+  "value": 20
+ },
+ "6c540f3095b53e2f6593": {
+  "value": 9
+ },
+ "f74574501fdcb86d1054": {
+  "value": 1
+ },
+ "0a23fff03c561d6fbf37": {
+  "value": 10
+ },
+ "139ab213ec8d22c8fb58": {
+  "value": 1
+ },
+ "94f8652513821d5e9d18": {
+  "value": 16
+ },
+ "d95016eac06f8b4bb412": {
+  "value": 1
+ },
+ "c6a6d1542371459b28a4": {
+  "value": 25
+ },
+ "a7924450e68037e7a0d9": {
+  "value": 2
+ },
+ "5aac32767e9bb98f7bc7": {
+  "value": 3
+ },
+ "625672a585ed7c528267": {
+  "value": "OK"
+ },
+ "61ff942c0e58d0ea448d": {
+  "value": "Missing"
+ },
+ "15e4b965e3958449154d": {
+  "value": "Poor"
+ },
+ "fa2c49fb2374e9a00144": {
+  "value": "Poor"
+ },
+ "f5ba2df1b79292296ca6": {
+  "value": "Fair"
+ },
+ "b7a8ebcdbff3c27abb0d": {
+  "value": "Fair"
+ },
+ "461d8ea4ccf08d53b76b": {
+  "value": "Fair"
+ },
+ "d83234a71a8ade06098a": {
+  "value": "Good"
+ },
+ "47a76b70db3e4e2e45a0": {
+  "value": "Good"
+ },
+ "1f1207510b9be4fd18b5": {
+  "value": "Good"
+ },
+ "540379ec97349354d254": {
+  "value": "Excellent"
+ },
+ "ae3060ddbfb5aec24261": {
+  "value": "Excellent"
+ },
+ "e92c44f99f1a7c85a366": {
+  "value": "C"
+ },
+ "4af0b29bd48c802249b5": {
+  "value": "C"
+ },
+ "9b5de25e3711108be6e4": {
+  "value": "B"
+ },
+ "e7ec23a4f23aa3e86fa4": {
+  "value": "B"
+ },
+ "43226dee9f4daf0f8d6f": {
+  "value": "B"
+ },
+ "bf5c9054ae0a2d52ab4e": {
+  "value": "A"
+ },
+ "a35878bc7d64e6aaf689": {
+  "value": "A"
+ },
+ "1b32a47176064207c501": {
+  "value": "Resit"
+ },
+ "9b227082d9fd799b1273": {
+  "value": "Pass"
+ },
+ "21a2bc3f4fe06062d08d": {
+  "value": "Resit"
+ },
+ "d51158466375706922fc": {
+  "value": "Resit"
+ },
+ "aac1c5170e70efa10c44": {
+  "value": "Pass"
+ },
+ "ebf1ec4673d79ad797a9": {
+  "value": 50
+ },
+ "c35ae2875a3a16765d2e": {
+  "value": 45
+ },
+ "57499f958ce46ef68bd3": {
+  "value": false
+ },
+ "22189a933c23ad819648": {
+  "value": true
+ },
+ "39784e0637253d2045de": {
+  "value": false
+ },
+ "1d72fca510341c54606c": {
+  "value": true
+ },
+ "c88f0eae7793ed135440": {
+  "value": 28
+ },
+ "8df6e01f66155a561fc4": {
+  "value": 18
+ },
+ "1cd1dbd45bc44e251038": {
+  "value": 18
+ },
+ "ebf8d1470096b9f5eb1d": {
+  "value": 30
+ },
+ "45abf6a972d01395c86d": {
+  "value": 30
+ },
+ "403bc3b99bc6ee4e7d72": {
+  "value": "2Nd Floor"
+ },
+ "b1f78a8c9e5e7dcdf49f": {
+  "value": "3Rd Street"
+ },
+ "a44823803fba6478f277": {
+  "value": 3
+ },
+ "255967fe6ea6af80a889": {
+  "value": "Alpoco o"
+ },
+ "1523807a8e4517c69c7a": {
+  "value": 6
+ },
+ "6cbf976c96146eeb8508": {
+  "value": "Bonono A"
+ },
+ "265d3e6b04b655c1eff0": {
+  "value": 3
+ },
+ "ab74e02132bc2b097f44": {
+  "value": 5
+ },
+ "cd83c48a44ad716cefd5": {
+  "value": 2
+ },
+ "b90aa00ffeffb77aa3ed": {
+  "value": 6
+ },
+ "781940a9aa9bfee778ef": {
+  "value": 11
+ },
+ "010911ff0a2e63e53c97": {
+  "value": 9
+ },
+ "56298e9d53f0e7ef5e92": {
+  "value": 31
+ },
+ "4db26da217b706a48d6a": {
+  "value": 38
+ },
+ "53e4c5d2aa52dd6004dc": {
+  "value": 24
+ },
+ "2352175443f7adc8e912": {
+  "value": -1
+ },
+ "7b2a740fdd6288f8d942": {
+  "value": 0
+ },
+ "8209ffc8c49f8fc8eaeb": {
+  "value": -1
+ },
+ "f339d9abcdadb0a466d8": {
+  "value": -3
+ },
+ "8273dfeee921731deb01": {
+  "value": -3
+ },
+ "a4d0dd0d5512c228841a": {
+  "value": -2
+ },
+ "62a90f9cb9c841110693": {
+  "value": -20
+ },
+ "f9c16306efa3e90f5671": {
+  "value": -25
+ },
+ "c13482d3c9f07635a13b": {
+  "value": -30
+ },
+ "f05a2e461fcc099ef217": {
+  "value": 3
+ },
+ "2d0f256ea224fb8c6ba2": {
+  "value": 2
+ },
+ "2004717307dec5162c63": {
+  "value": 2
+ },
+ "0196328acbc0ac24e49d": {
+  "value": 42
+ },
+ "763218f6c4505903f351": {
+  "value": 7.5
+ },
+ "ad9d72e4a4b688d7afdc": {
+  "value": "S"
+ },
+ "9d4e73704c08b82d7eb6": {
+  "value": "t"
+ },
+ "9605acecd87f33249618": {
+  "value": "e"
+ },
+ "06859818171cc74b134b": {
+  "value": 4
+ },
+ "dbc67ce129e0f1bd408d": {
+  "value": 11
+ },
+ "0d768f9319048232fdb3": {
+  "value": 46387
+ },
+ "856e5ba02d379b5ed839": {
+  "value": 46082
+ },
+ "1ab2d41144fcfca9467c": {
+  "value": 46096
+ },
+ "61dc1e2d30bd07efe41a": {
+  "value": 46054
+ },
+ "7188d596952c826bcf26": {
+  "value": 46204
+ },
+ "086f80a68b836c1ef0c5": {
+  "value": 46935
+ },
+ "7a723750483618a35f70": {
+  "value": "99"
+ },
+ "084cba375af7d95f8df2": {
+  "value": "26"
+ },
+ "c80abe10de3ac1a04356": {
+  "value": 9
+ },
+ "00a58a08256172385e54": {
+  "value": 12
+ },
+ "d04fe2ceda74c5721176": {
+  "value": "Normal"
+ },
+ "cd12221784efbdd75719": {
+  "value": "Normal"
+ },
+ "07960e5e47f510c980da": {
+  "value": "Normal"
+ },
+ "257c96e1e8a517ff0247": {
+  "value": "Double"
+ },
+ "a143a80903179cc5a8ed": {
+  "value": "Double"
+ },
+ "050e21d34b21191f86ca": {
+  "value": "Double"
+ },
+ "8dd19795b131c209ff4c": {
+  "value": false
+ },
+ "f497ffd288b0a9f663f0": {
+  "value": false
+ },
+ "aa57f47b229d96571c95": {
+  "value": false
+ },
+ "94b0e270b3b3c57a977a": {
+  "value": false
+ },
+ "3c504b4cde036f89ae73": {
+  "value": false
+ },
+ "10ad85d99fd10a6c3125": {
+  "value": false
+ },
+ "0081a733d347e8e36331": {
+  "value": false
+ },
+ "dc4478ab52c97f5faef8": {
+  "value": false
+ },
+ "dc42d36f80563ead4df3": {
+  "value": true
+ },
+ "5447ec2cbef953200d38": {
+  "value": true
+ },
+ "a2cc820a6a07578d3e67": {
+  "value": true
+ },
+ "ed43787dba05db0b0fec": {
+  "value": true
+ },
+ "ce457092a0026b4322db": {
+  "value": false
+ },
+ "758e706a01624a96b802": {
+  "value": false
+ },
+ "353f09a1fa5add91049b": {
+  "value": false
+ },
+ "e668c2b28ed30cad21cc": {
+  "value": false
+ },
+ "dd3e1ed82d133877e28a": {
+  "value": true
+ },
+ "eadf92a84ba7f01dfdf4": {
+  "value": true
+ },
+ "81f7f24a694a925a03e8": {
+  "value": true
+ },
+ "6c09356c28a1bf47f651": {
+  "value": true
+ },
+ "084b057b0a258c80d8a7": {
+  "value": false
+ },
+ "938309025747837405c5": {
+  "value": false
+ },
+ "6b9f93b0fb9f603fc4b8": {
+  "value": false
+ },
+ "bdedbb596b26591251ef": {
+  "value": false
+ },
+ "dd69d176143154e03257": {
+  "value": false
+ },
+ "377eecf1fa80f5682005": {
+  "value": false
+ },
+ "c62722e39ae9a1153419": {
+  "value": true
+ },
+ "817ae45cec30cd0549f6": {
+  "value": true
+ },
+ "c1ed53ef61d647fb92c9": {
+  "value": true
+ },
+ "7fc197b5ec00ce027eb7": {
+  "value": true
+ },
+ "4f3d78a7bed7ef3f828e": {
+  "value": true
+ },
+ "69a448553dbf1705d53a": {
+  "value": true
+ },
+ "40c49c492a84c7803773": {
+  "value": false
+ },
+ "bdeae9b0de42d5e4ffbf": {
+  "value": false
+ },
+ "67af0cf66105dcb60b2a": {
+  "value": false
+ },
+ "c87f991abd1d6c87c54e": {
+  "value": false
+ },
+ "a8643253ba70e4f705ca": {
+  "value": false
+ },
+ "12e0994c244b3170ea05": {
+  "value": true
+ },
+ "64fdb4138081c4bdc3c5": {
+  "value": true
+ },
+ "56614564d0f1c0ba1e46": {
+  "value": true
+ },
+ "cce038fa21bf8028227a": {
+  "value": true
+ },
+ "cf758816931904ade5be": {
+  "value": true
+ },
+ "eb64f5dfefd45579b97c": {
+  "value": false
+ },
+ "d931174b017bd1eb304b": {
+  "value": false
+ },
+ "bebe44d3a1a9b08ffdfb": {
+  "value": false
+ },
+ "b0a1189dc278153448b1": {
+  "value": false
+ },
+ "38aa29870fe7f3aea74f": {
+  "value": false
+ },
+ "87762708ca31e1153696": {
+  "value": false
+ },
+ "53e072b5c9bc48b9c1a5": {
+  "value": false
+ },
+ "66f205778aba813e9531": {
+  "value": false
+ },
+ "8bf4b4bc67c030de0638": {
+  "value": false
+ },
+ "0bd7300ea8bdfb4a80b3": {
+  "value": false
+ },
+ "aa95d8c9b3fd6e2bc607": {
+  "value": false
+ },
+ "4aef8973627848db62e7": {
+  "value": false
+ },
+ "47ddb33b4e619f310a57": {
+  "value": false
+ },
+ "ec06ca98179477b3a3a8": {
+  "value": false
+ },
+ "5a9ad8c7b628007b9d90": {
+  "value": false
+ },
+ "b632c4294d0643cf8d6e": {
+  "value": "C"
+ },
+ "84f6c17c5413ec252a29": {
+  "value": "C"
+ },
+ "2f195375af872d96541d": {
+  "value": "C"
+ },
+ "6e88110f5ab87840ee0e": {
+  "value": "C"
+ },
+ "d825949e3300a658bfab": {
+  "value": "C"
+ },
+ "ad1bfbbe9c3fda586fe5": {
+  "value": "C"
+ },
+ "35496eccbd031a761e3d": {
+  "value": "C"
+ },
+ "e0635c6e7d41e9fdd84c": {
+  "value": "C"
+ },
+ "87f8bdcec0b5691381e2": {
+  "value": "B"
+ },
+ "d49afae2b8245cf64eb5": {
+  "value": "B"
+ },
+ "2f1343f69265eb4104f9": {
+  "value": "B"
+ },
+ "417d1a98ba1dd8fa0a32": {
+  "value": "B"
+ },
+ "ec835942b94b4766ecf2": {
+  "value": "B"
+ },
+ "666603909283bda3fc87": {
+  "value": "B"
+ },
+ "14a3a06117380b245d9f": {
+  "value": "B"
+ },
+ "ca9531b72bc746f9bd3e": {
+  "value": "B"
+ },
+ "b094e76beea4e40061bc": {
+  "value": "A"
+ },
+ "e00a59847325e11faa38": {
+  "value": "A"
+ },
+ "42065c7e1ead6bc4b5e4": {
+  "value": "A"
+ },
+ "2da0ad04e982792de576": {
+  "value": "A"
+ },
+ "c2f885ca4e545ea6ffdf": {
+  "value": "A"
+ },
+ "ba0a18afcdd16ddb6c20": {
+  "value": "A"
+ },
+ "f86753796c456e597150": {
+  "value": "A"
+ },
+ "affde8cc10e3c470fee1": {
+  "value": "A"
+ },
+ "8c2efa9cf39c0b83e0fc": {
+  "value": 9.1
+ },
+ "4da014ca129c7eb7eb25": {
+  "value": "Normal"
+ },
+ "49b77111b764aac5d7ec": {
+  "value": "Normal"
+ },
+ "3eec626a6e457239154f": {
+  "value": "Normal"
+ },
+ "5feca975f4d3eb2d141c": {
+  "value": false
+ },
+ "e60640f337b4bd06b7b6": {
+  "value": false
+ },
+ "f9221d888aff7b05ee4a": {
+  "value": false
+ },
+ "e45b3437d4dba35e376e": {
+  "value": false
+ },
+ "0cbcce81fbb293852dd8": {
+  "value": false
+ },
+ "fdda0e6ac5cad0c31f42": {
+  "value": false
+ },
+ "177877f0a006d9b246ed": {
+  "value": false
+ },
+ "7e3ba8edd1694798f242": {
+  "value": true
+ },
+ "e0237b8645258e920ec0": {
+  "value": true
+ },
+ "c958fd03ec5571dea664": {
+  "value": true
+ },
+ "a79bddcc91dd1b339543": {
+  "value": true
+ },
+ "0e43b8b45d4d16066f92": {
+  "value": true
+ },
+ "d057318e7f15d92940b3": {
+  "value": true
+ },
+ "34f2373c9f657599c42f": {
+  "value": false
+ },
+ "b6a7ab482f589ab73980": {
+  "value": false
+ },
+ "232392f487ea76c23e52": {
+  "value": false
+ },
+ "a136100063cfe47de517": {
+  "value": false
+ },
+ "c214837d433dc88e1404": {
+  "value": false
+ },
+ "8746be184d93abe12bde": {
+  "value": false
+ },
+ "02b776df26aa53525c54": {
+  "value": false
+ },
+ "77b41e97a4592cf80853": {
+  "value": false
+ },
+ "ed63c77a53ce514cfda1": {
+  "value": "C"
+ },
+ "c71664840a1ada925db0": {
+  "value": "C"
+ },
+ "715670d5cdd8419aa77c": {
+  "value": "C"
+ },
+ "d57c3be7d69d6934e8e7": {
+  "value": "C"
+ },
+ "0f6bdecdb34239014bee": {
+  "value": "Double"
+ },
+ "3e7bcb28a87054edd2bb": {
+  "value": true
+ },
+ "b0c88fbfbe92686a33af": {
+  "value": true
+ },
+ "b28c5a85f437e59abb21": {
+  "value": true
+ },
+ "3697f8ba36140fdc45d9": {
+  "value": true
+ },
+ "ce4a161a39a673287a5e": {
+  "value": [
+   [
+    3
+   ],
+   [
+    6
+   ],
+   [
+    4
+   ]
+  ]
+ },
+ "fa0c6d27e73cf3fbe7d9": {
+  "value": 14
+ },
+ "f79f5211a1857891d622": {
+  "value": "York"
+ },
+ "0983a39a7754b1303c0c": {
+  "value": "York"
+ },
+ "b490c1f7b07f5a57c5b0": {
+  "value": "York"
+ },
+ "3e0a6c543282d8a7a1fb": {
+  "value": "Newcastle upon Tyne"
+ },
+ "f1556de23d7ce956f6ee": {
+  "value": "Newcastle upon Tyne"
+ },
+ "c3de8a470a0c00fb4404": {
+  "value": "Newcastle upon Tyne"
+ },
+ "edb7532654d7d2557ada": {
+  "value": "Hull"
+ },
+ "17632ad12db5af4b8b1c": {
+  "value": "Hull"
+ },
+ "966dba8ba50531f66ca6": {
+  "value": "Hull"
+ },
+ "ee2a6863cb4e8bce67e8": {
+  "value": "check"
+ },
+ "242887531188bee1e028": {
+  "value": "check"
+ },
+ "f8aa729c6ea62c7f7341": {
+  "value": "check"
+ },
+ "c0478d15afa36fb99acd": {
+  "value": "check"
+ },
+ "b4a32126ffdb55826d37": {
+  "value": "check"
+ },
+ "cbf7f51cc44cec3528ce": {
+  "value": "check"
+ },
+ "552c74398f68447df4c5": {
+  "value": "check"
+ },
+ "af3dc8fc5344ef2875a2": {
+  "value": "check"
+ },
+ "f7d3554469b86515fa9c": {
+  "value": "ready"
+ },
+ "c63f2addb12aeb76bdb2": {
+  "value": "ready"
+ },
+ "769f14070dee59f5293d": {
+  "value": "ready"
+ },
+ "d02f5032126c16e953d4": {
+  "value": "ready"
+ },
+ "38b91a8df2b15d97746f": {
+  "value": "ready"
+ },
+ "f40e8cdb44ebc1b8dc1e": {
+  "value": "ready"
+ },
+ "cda48c53c0815935a084": {
+  "value": "ready"
+ },
+ "4b6efa91d2cf77a84dd4": {
+  "value": "ready"
+ },
+ "b815b732f993365ff9cc": {
+  "value": "check"
+ },
+ "cbd2d2691bbdf2e632aa": {
+  "value": "check"
+ },
+ "2dd06b47ad31c18d4fa5": {
+  "value": "check"
+ },
+ "4826e8c736bf16fa4b65": {
+  "value": "check"
+ },
+ "3cf8aaaaf66d41e2563c": {
+  "value": "check"
+ },
+ "9fdef0a2cfeec8e0233b": {
+  "value": "check"
+ },
+ "c3062fb6f888f9bfa525": {
+  "value": "check"
+ },
+ "cc332acece3ea32a291d": {
+  "value": "check"
+ },
+ "6f9edccdb42335cc0333": {
+  "value": "ready"
+ },
+ "9073c2059aed103bf664": {
+  "value": "ready"
+ },
+ "bab01077cdc3320d67e1": {
+  "value": "ready"
+ },
+ "f92c27653d83c49db8ef": {
+  "value": "ready"
+ },
+ "ea64cae4af129a4e442c": {
+  "value": "ready"
+ },
+ "c64a5e5daadd0592a1bd": {
+  "value": "ready"
+ },
+ "ce372270d8cf39400ea4": {
+  "value": "ready"
+ },
+ "e558f5e2366223ff10a7": {
+  "value": "ready"
+ },
+ "b495e195b127b306a1e6": {
+  "value": 1
+ },
+ "dfd639811a268ac87a62": {
+  "value": 1
+ },
+ "afbfcecb0fb6b276f07c": {
+  "value": 1
+ },
+ "111034be5b139b8f6776": {
+  "value": 1
+ },
+ "1c588a15b8a613f91717": {
+  "value": 1
+ },
+ "fff38ea14233beca862b": {
+  "value": 1
+ },
+ "db6d2ea043b9cfcbd1f2": {
+  "value": 1
+ },
+ "b319230ff6b03cdf6f52": {
+  "value": 1
+ },
+ "7b40ae5cf4c1eb4b814b": {
+  "value": 1
+ },
+ "b9f18bfb2c1c95222059": {
+  "value": 1
+ },
+ "8fc06e904987253099cc": {
+  "value": 3
+ },
+ "2bfa926dc446dd04fef4": {
+  "value": 3
+ },
+ "f25f91dbde2d83ce1ccf": {
+  "value": 3
+ },
+ "9995de51cdeb86e25d7f": {
+  "value": 3
+ },
+ "1d625ab2637fd0ef7783": {
+  "value": 3
+ },
+ "63aa657f34a9f11e7ab5": {
+  "value": 3
+ },
+ "a910915a241010852213": {
+  "value": 3
+ },
+ "b24cb3b53ef5495e4f91": {
+  "value": 3
+ },
+ "106b19fea38756c8be0c": {
+  "value": 3
+ },
+ "6fd3fe6e4ae1bd169d1e": {
+  "value": 3
+ },
+ "565fd5156ff29f2265eb": {
+  "value": 1
+ },
+ "e6faea520723b90a33e7": {
+  "value": 1
+ },
+ "b9956c87cc3b844703e1": {
+  "value": 1
+ },
+ "71d35f81d8da5c26d0c2": {
+  "value": 1
+ },
+ "c695b739f00e664784db": {
+  "value": 1
+ },
+ "beea74dea0d8872214fd": {
+  "value": 1
+ },
+ "3bc378695206bca887b0": {
+  "value": 1
+ },
+ "34c4b7bbb6bf88e7694e": {
+  "value": 1
+ },
+ "c02b841e5ee3a7f9049a": {
+  "value": 1
+ },
+ "4a0f89ce0edd5a055211": {
+  "value": 1
+ },
+ "4bc21fdd2df97a332df4": {
+  "value": 2
+ },
+ "200756f66ada2d984171": {
+  "value": 2
+ },
+ "d518bbd4ba52a92c1ec6": {
+  "value": 2
+ },
+ "292bc692eb1287cdcb78": {
+  "value": 2
+ },
+ "932776f8de7c74245ff8": {
+  "value": 2
+ },
+ "61e77b8b9ca21b2a308a": {
+  "value": 2
+ },
+ "e4f7e1e8605933dc7c19": {
+  "value": 2
+ },
+ "601fe9356dddac7a7391": {
+  "value": 2
+ },
+ "4fb9a2e75fab57109f58": {
+  "value": 2
+ },
+ "15ed57ce2cc9cb7325e6": {
+  "value": 2
+ },
+ "ac9831b77271ca75a31f": {
+  "value": "close"
+ },
+ "adca0e0264ca1d8575ad": {
+  "value": "close"
+ },
+ "aa40d85da9dd464d739f": {
+  "value": "close"
+ },
+ "77a4a72e1239b08c5a9b": {
+  "value": "close"
+ },
+ "4bedf34e860d652ecaba": {
+  "value": "close"
+ },
+ "019f4b1bd4b11f879858": {
+  "value": "close"
+ },
+ "16735124cf2101508b97": {
+  "value": "close"
+ },
+ "a1b1a92384b013309aa5": {
+  "value": "close"
+ },
+ "02dac43f461b8d94eeec": {
+  "value": "close"
+ },
+ "9115da900040ce259e42": {
+  "value": "close"
+ },
+ "f7164630e9fdbf187420": {
+  "value": "close"
+ },
+ "0d4455d0595ec942b343": {
+  "value": "close"
+ },
+ "fee422e14d682d9e2259": {
+  "value": "close"
+ },
+ "24b668601134570d3c74": {
+  "value": "close"
+ },
+ "3ae73eccd5500210ea19": {
+  "value": "close"
+ },
+ "4c7bd9dbf3bb57e07824": {
+  "value": "close"
+ },
+ "d8321cfba2145c688e73": {
+  "value": "close"
+ },
+ "da1a653fd541101de186": {
+  "value": "close"
+ },
+ "5903d1320b4ef0c21cfb": {
+  "value": "close"
+ },
+ "7e5b2040ade8c2e08945": {
+  "value": "close"
+ },
+ "02024f0be5bdc09d46eb": {
+  "value": 3
+ },
+ "d7a91b0d64bae251b274": {
+  "value": 3
+ },
+ "1755b34b1897b5427588": {
+  "value": 3
+ },
+ "259d65022d7f3b6ead41": {
+  "value": 3
+ },
+ "8e962f7fbb5bca0ca2ad": {
+  "value": 3
+ },
+ "d42f25e929838ef505da": {
+  "value": 3
+ },
+ "673fd6111d60560a19e4": {
+  "value": 3
+ },
+ "5413df36d668e95a71c7": {
+  "value": 3
+ },
+ "63e7f85a97429a72e248": {
+  "value": 3
+ },
+ "0d6146e3cba69ce9c5a8": {
+  "value": 3
+ },
+ "ed621818da564a13b49c": {
+  "value": 1
+ },
+ "3016137bb361d353fc4c": {
+  "value": 1
+ },
+ "6cb14fffeef653dd4e2c": {
+  "value": 1
+ },
+ "c0521873aca5b7f7834b": {
+  "value": 1
+ },
+ "f0a501e4f22d6b97e8a1": {
+  "value": 1
+ },
+ "b9df9770a906cfaa1cab": {
+  "value": 1
+ },
+ "6c2c7602e17ae3a84ef4": {
+  "value": 1
+ },
+ "85d9686ce8ebf4545279": {
+  "value": 1
+ },
+ "12da0fada0b9d3acb19e": {
+  "value": 1
+ },
+ "99c33494c8ebff4b0aad": {
+  "value": 1
+ },
+ "f2167af5ea82d03fd8fb": {
+  "value": 6
+ },
+ "32af3d7fb9948f91f70e": {
+  "value": 6
+ },
+ "3abea50954e2bb495537": {
+  "value": 6
+ },
+ "d172e8f4a484ae1be8c4": {
+  "value": 6
+ },
+ "57484ef6ea0888253a13": {
+  "value": 6
+ },
+ "376279f09e4a15b86b98": {
+  "value": 5
+ },
+ "319b07e6d12049e8015d": {
+  "value": 5
+ },
+ "e4dabd5209c8a08a6ead": {
+  "value": 5
+ },
+ "cb0014c4f067d5556dba": {
+  "value": 5
+ },
+ "6f843399ed8b95a0b563": {
+  "value": 5
+ },
+ "d7b49084bf5d85ef0417": {
+  "value": 4
+ },
+ "8f167eb29088e8b6a8fb": {
+  "value": 4
+ },
+ "c3cfd8951741c659b520": {
+  "value": 4
+ },
+ "20616889727e52ad6a1b": {
+  "value": 4
+ },
+ "aeedb22f5755df7e9f82": {
+  "value": 4
+ },
+ "ff43caa43608a1f9fc2f": {
+  "value": 2
+ },
+ "50c41f1fb6416ba17edd": {
+  "value": 2
+ },
+ "e97a926a2fc0689d7789": {
+  "value": 2
+ },
+ "cc42eb9418117e775b47": {
+  "value": 2
+ },
+ "8877ef05e85b8aa451e8": {
+  "value": 2
+ },
+ "0de9137703d27fe73ee1": {
+  "value": 3
+ },
+ "cda11be373ecfeb55c15": {
+  "value": 3
+ },
+ "6c4d91c324b5dee26937": {
+  "value": 3
+ },
+ "e31e4d5cb7222344322a": {
+  "value": 3
+ },
+ "d2fd6b7a20828542e932": {
+  "value": 3
+ },
+ "0fc87feff60acf508679": {
+  "value": 5
+ },
+ "0cb353c7c6cba3aea726": {
+  "value": 5
+ },
+ "efb8d8251eb30de21d7c": {
+  "value": 5
+ },
+ "0d0a312cd15312e3af61": {
+  "value": 5
+ },
+ "5ae8e77ae46a1d01446f": {
+  "value": 5
+ },
+ "b07ec6e00348a9ef5ce8": {
+  "value": 830
+ },
+ "c4ba5d80d5be52bfdd56": {
+  "value": 830
+ },
+ "ce327763b083207793cf": {
+  "value": 830
+ },
+ "ea2196f39af2b25d435e": {
+  "value": 830
+ },
+ "5ad6dc712e68f2688303": {
+  "value": 830
+ },
+ "a73b86857295f9d86f33": {
+  "value": 860
+ },
+ "f17faee9a8f84d741ddd": {
+  "value": 860
+ },
+ "1c8696c3d3c34700fefb": {
+  "value": 860
+ },
+ "e81c261115cd9358db6a": {
+  "value": 860
+ },
+ "c8726c9c091d7070b4c8": {
+  "value": 860
+ },
+ "c6ec579f35c5341891c5": {
+  "value": 830
+ },
+ "ca1f06a498018f4e93bc": {
+  "value": 830
+ },
+ "12783bba2c0213b92e22": {
+  "value": 830
+ },
+ "4d75dc7c530a5db95db5": {
+  "value": 830
+ },
+ "18c39f7fa05c37436645": {
+  "value": 830
+ },
+ "1c32fec1a409eb409e63": {
+  "value": 910
+ },
+ "43fdd82f4548e9014770": {
+  "value": 910
+ },
+ "bc07790d534e498d51a1": {
+  "value": 910
+ },
+ "c36d9a044f7efd59040b": {
+  "value": 910
+ },
+ "1688a0e16e6ef981e09b": {
+  "value": 910
+ },
+ "73503d09a7dc84336a11": {
+  "value": 910
+ },
+ "eccbb5399c1ca0584b3e": {
+  "value": 910
+ },
+ "5539ea37dd44afd47c03": {
+  "value": 910
+ },
+ "180bc25a17d92e8e2960": {
+  "value": 910
+ },
+ "d5e926f3b561161da5e2": {
+  "value": 910
+ },
+ "e9ce515dac9e33ce3e51": {
+  "value": 4
+ },
+ "7ab2ccb33339be207776": {
+  "value": 4
+ },
+ "72295ff92ca96fd8a90b": {
+  "value": 4
+ },
+ "7ca4068e3e95ce79aa81": {
+  "value": 4
+ },
+ "9ede20d0df9f08efd88d": {
+  "value": 5
+ },
+ "f97f56f23d18a9c55b03": {
+  "value": 5
+ },
+ "2c6b4d860c84242515ca": {
+  "value": 5
+ },
+ "c3f56057ebef5288e379": {
+  "value": 5
+ },
+ "d77c6da7bfb760048111": {
+  "value": 7
+ },
+ "6b540fd16973a1d7a015": {
+  "value": 7
+ },
+ "cfdd12140664d0802c3e": {
+  "value": 7
+ },
+ "0e12f81c15d8973f0326": {
+  "value": 7
+ },
+ "0018bc175731cee7eeb8": {
+  "value": 8
+ },
+ "7e619bcc3f0e452206b5": {
+  "value": 8
+ },
+ "10cd4300e1cca6c96375": {
+  "value": 8
+ },
+ "1987d0a0ba45196d3cd4": {
+  "value": 8
+ },
+ "2ec00174ad4ad4a66854": {
+  "value": 8
+ },
+ "0bc1d793dc18b1f76a00": {
+  "value": 8
+ },
+ "79ac8d6bcd7c7a55c006": {
+  "value": 8
+ },
+ "b0488c6872d513d79605": {
+  "value": 8
+ },
+ "2f11ef081227f607ffa0": {
+  "value": 7
+ },
+ "7b7f635d5b15a886484e": {
+  "value": 7
+ },
+ "e6393aa7f78198eb67d5": {
+  "value": 7
+ },
+ "08fa413e5b1b907f8a60": {
+  "value": 7
+ },
+ "027db4fa6c75f951c3ce": {
+  "value": 7
+ },
+ "dbb85492b966e6056744": {
+  "value": 7
+ },
+ "a3d7c4870a6da190b590": {
+  "value": 7
+ },
+ "42ef1748bff717eee956": {
+  "value": 7
+ },
+ "3779a23848d092b83649": {
+  "value": 1
+ },
+ "fd45bd5fef9e3def9a2c": {
+  "value": 1
+ },
+ "71d6e7bb272e878feb1e": {
+  "value": 1
+ },
+ "69f13ac074cea70527a8": {
+  "value": 1
+ },
+ "666c83f1482f5d2a6310": {
+  "value": 1
+ },
+ "a8ed8cdfa51953680239": {
+  "value": 1
+ },
+ "0711253e2f1f23f1bbd3": {
+  "value": 1
+ },
+ "55c2a872898d39283678": {
+  "value": 1
+ },
+ "683dc6cf08b5d10d33f4": {
+  "value": 495
+ },
+ "cb3ddda676fb3558203f": {
+  "value": 495
+ },
+ "93df85cfea38aeef1b55": {
+  "value": 495
+ },
+ "6745ee8e649666e96717": {
+  "value": 495
+ },
+ "a47b3c09c3377ccda4d0": {
+  "value": 175
+ },
+ "60ad973ae2a2e3158362": {
+  "value": 175
+ },
+ "b08622c3e4e60c3d0bf1": {
+  "value": 175
+ },
+ "ab90ffec385dccd79c7a": {
+  "value": 175
+ },
+ "299794ba9863c538a5ac": {
+  "value": 175
+ },
+ "34ebffd2d680ab7b7c8f": {
+  "value": 175
+ },
+ "71f69ac6dbf304886a9a": {
+  "value": 495
+ },
+ "e5f01b008f57a50bf363": {
+  "value": 495
+ },
+ "9f390d7b26f864135251": {
+  "value": 495
+ },
+ "2cd662bd25f880a3663c": {
+  "value": 495
+ },
+ "49ed79778750c37c26f8": {
+  "value": 495
+ },
+ "867e840d4123f42138f1": {
+  "value": 695
+ },
+ "1b73ac728f425795c81b": {
+  "value": 695
+ },
+ "f957229fe1fb4d65db72": {
+  "value": 695
+ },
+ "1c3b713c2da3cf92c237": {
+  "value": 695
+ },
+ "d815323e8de7f0c8d757": {
+  "value": 175
+ },
+ "52540d2fda28ace4601c": {
+  "value": 175
+ },
+ "5e791e6f71b0ec7e5fae": {
+  "value": 175
+ },
+ "f53169a3b43fa9ae7c54": {
+  "value": 175
+ },
+ "9cab104ea897cdd9e4b4": {
+  "value": 175
+ },
+ "bf60d789840e882a8724": {
+  "value": 175
+ },
+ "61d07505e9af0bd9f6e3": {
+  "value": 695
+ },
+ "70ff6499b8e61218860a": {
+  "value": 695
+ },
+ "2e4adf40a251cc09349a": {
+  "value": 695
+ },
+ "3113b4d7e2aba693dc5a": {
+  "value": 695
+ },
+ "6df29d6e686bba4b12e1": {
+  "value": 695
+ },
+ "e3232690cfee48db4df5": {
+  "value": 920
+ },
+ "ec32bdce5f241652c936": {
+  "value": 920
+ },
+ "8a6989ed595be55d46f5": {
+  "value": 920
+ },
+ "1b196e9c50d1a10095f7": {
+  "value": 920
+ },
+ "2cf0105049bd185ddebd": {
+  "value": 400
+ },
+ "3eb972628cc40614ecbd": {
+  "value": 400
+ },
+ "e91e5e9c40f1e3f906e2": {
+  "value": 400
+ },
+ "b0d2ea495bfbbfd8e8b9": {
+  "value": 400
+ },
+ "35ebdcf2caf530034344": {
+  "value": 400
+ },
+ "d081d76147e3b04bc1bc": {
+  "value": 400
+ },
+ "3229be1ded2eef942c14": {
+  "value": 920
+ },
+ "98511c5e01c96bb6c6e8": {
+  "value": 920
+ },
+ "3350b14f0ecbdaa0c015": {
+  "value": 920
+ },
+ "4c5e2f06772165410c8f": {
+  "value": 920
+ },
+ "ea191c0d5af24d0e324f": {
+  "value": 920
+ },
+ "f751394f057cc6b278c1": {
+  "value": 525
+ },
+ "c02ab672f21f874681a4": {
+  "value": 525
+ },
+ "d6c7f5623d5a46e8428e": {
+  "value": 525
+ },
+ "a8178fd9f12c33356ca8": {
+  "value": 525
+ },
+ "e70d267f8412008142e9": {
+  "value": 175
+ },
+ "e7b7f8e03b02a148b661": {
+  "value": 175
+ },
+ "2f91de89e3975046050f": {
+  "value": 175
+ },
+ "b2eed8a4ba94848e0f48": {
+  "value": 175
+ },
+ "65d8b906193238e47a2e": {
+  "value": 175
+ },
+ "dc7fa4a177f84ddedd37": {
+  "value": 175
+ },
+ "18e464b898c23a2abe08": {
+  "value": 525
+ },
+ "7a2a4c23ce5acafad629": {
+  "value": 525
+ },
+ "9e17b2b201ef48c6ba12": {
+  "value": 525
+ },
+ "24a2ddce8d191c8da5c6": {
+  "value": 525
+ },
+ "712f2c382a0144b22256": {
+  "value": 525
+ },
+ "1d8b08538599bc6e41d3": {
+  "value": "engines"
+ },
+ "0105568517d7426c83e4": {
+  "value": "engines"
+ },
+ "1baf47b91e6df99fa26b": {
+  "value": "engines"
+ },
+ "50c73bd145e0c7212d38": {
+  "value": "engines"
+ },
+ "82132441486a26ad560f": {
+  "value": "engines.co.uk"
+ },
+ "95e2432b1c186942624b": {
+  "value": "engines.co.uk"
+ },
+ "2dec0dc9d0b131c20457": {
+  "value": "engines.co.uk"
+ },
+ "2685116095296167fe8d": {
+  "value": "engines"
+ },
+ "16d3b523a8d24ea3569d": {
+  "value": "engines"
+ },
+ "5d7f0cdb2f506f8a4e1f": {
+  "value": "engines"
+ },
+ "9e6da77e1c1320620f67": {
+  "value": "bletchley"
+ },
+ "52c3b80c9d90b519b5ae": {
+  "value": "bletchley"
+ },
+ "52df9d9c3f10cf3fab31": {
+  "value": "bletchley"
+ },
+ "23db16f2f795e3c14e0b": {
+  "value": "bletchley"
+ },
+ "659a2df6f79491d35c9d": {
+  "value": "bletchley.org"
+ },
+ "97ffa0176087bdb58c6b": {
+  "value": "bletchley.org"
+ },
+ "4cc5c6f7ad2bb3d2053c": {
+  "value": "bletchley.org"
+ },
+ "52be26c73dfc2b113249": {
+  "value": "bletchley"
+ },
+ "940854cc8d0b3a0a2eb5": {
+  "value": "bletchley"
+ },
+ "e3972fe21608e1224a8b": {
+  "value": "bletchley"
+ },
+ "0337ec967abcffa4fa6e": {
+  "value": "navy"
+ },
+ "ddddad5b743a462d9013": {
+  "value": "navy"
+ },
+ "9793962f4334ad98cd88": {
+  "value": "navy"
+ },
+ "f970865909b40a4fb11b": {
+  "value": "navy"
+ },
+ "62afe893963709ef2706": {
+  "value": "navy.mil"
+ },
+ "210461f73c993a384d71": {
+  "value": "navy.mil"
+ },
+ "b5699e9c2ed9c0c7383e": {
+  "value": "navy.mil"
+ },
+ "ab9f7129a4642eaafa19": {
+  "value": "navy"
+ },
+ "a0a9ae9e9fc138b3f414": {
+  "value": "navy"
+ },
+ "7d3490986b5896ea5f44": {
+  "value": "navy"
+ },
+ "bf8154bb6e7418986f0c": {
+  "value": "nasa"
+ },
+ "8173724d681bbb41abac": {
+  "value": "nasa"
+ },
+ "05df773db85f5b0ed344": {
+  "value": "nasa"
+ },
+ "136cd3baf797dea078e4": {
+  "value": "nasa"
+ },
+ "fbe89bdf4ff3c919fc62": {
+  "value": "nasa.gov"
+ },
+ "6e4e81121325cca89730": {
+  "value": "nasa.gov"
+ },
+ "fbaa1b3662d9b241bdf1": {
+  "value": "nasa.gov"
+ },
+ "8bac33d97bc78ac79358": {
+  "value": "nasa"
+ },
+ "b0688389d3e4820ac71b": {
+  "value": "nasa"
+ },
+ "406e38baaf4731d7cb48": {
+  "value": "nasa"
+ },
+ "3435dcf2d2462e061584": {
+  "value": 38
+ },
+ "3204e46e48aa79e0b7ed": {
+  "value": 38
+ },
+ "8430532213728883c3c7": {
+  "value": 38
+ },
+ "2ce29995e59dfc9487fe": {
+  "value": 3
+ },
+ "f824bfec88c29a9ad29a": {
+  "value": 3
+ },
+ "c789741b539b3a3e73a5": {
+  "value": 3
+ },
+ "2a1204f5b2eedb23d8e1": {
+  "value": 38
+ },
+ "73693d8f70f4302ed6b7": {
+  "value": 38
+ },
+ "9712499c9f5b8949cfe2": {
+  "value": 26
+ },
+ "b34ae36e997f77a4218e": {
+  "value": 26
+ },
+ "1bf1c1d1275d0f37c3b4": {
+  "value": 26
+ },
+ "0559dba864a939b3f2bc": {
+  "value": 2
+ },
+ "8a0e2f3ed9a899fbadb7": {
+  "value": 2
+ },
+ "f822dc80507f8e321999": {
+  "value": 2
+ },
+ "f5f6d2f98f1f74c4f130": {
+  "value": 26
+ },
+ "f76ba2303b6d85599e72": {
+  "value": 26
+ },
+ "5838831355ee3966df35": {
+  "value": 2
+ },
+ "2187d234258211e846cd": {
+  "value": 2
+ },
+ "d591eb91827edee88a71": {
+  "value": 2
+ },
+ "b1b0461dbe72187eb37b": {
+  "value": 2
+ },
+ "77b054ce5f0084b90474": {
+  "value": 1
+ },
+ "3726d4c70bd60d599b0f": {
+  "value": 1
+ },
+ "4cce76848ca38f162638": {
+  "value": 1
+ },
+ "ddf906bf10c90250317c": {
+  "value": 2
+ },
+ "b4acb7d0d919eeeec33b": {
+  "value": 2
+ },
+ "7918d4e74655377dc6a6": {
+  "value": 2
+ },
+ "a1d18a6917007f2e468c": {
+  "value": 4
+ },
+ "f65ff56678202a15f046": {
+  "value": 4
+ },
+ "8b28fb4b41a28a671316": {
+  "value": 4
+ },
+ "2ed74b01a0df7b2d9642": {
+  "value": 4
+ },
+ "c54628a60cc33b643b72": {
+  "value": 1
+ },
+ "4980209ba4803d2373c8": {
+  "value": 1
+ },
+ "14d5f3e182b152d1deac": {
+  "value": 1
+ },
+ "b7c59c9463175565e5b9": {
+  "value": 4
+ },
+ "b23be7d08868b90624b8": {
+  "value": 4
+ },
+ "1dd5d753dc913a06afde": {
+  "value": 4
+ },
+ "171cd38697804c6bc89d": {
+  "value": 3
+ },
+ "080d1d1cabe0949a7690": {
+  "value": 3
+ },
+ "820298062b0c46b3c396": {
+  "value": 3
+ },
+ "c4e18c2766d4c4db34f4": {
+  "value": 3
+ },
+ "e6ce48bb01d707f012a2": {
+  "value": 1
+ },
+ "8aec2147a2596a6a2820": {
+  "value": 1
+ },
+ "633d8ef6d4dcf44610f2": {
+  "value": 1
+ },
+ "5bfb3d374019b4b18349": {
+  "value": 3
+ },
+ "948b1a4650f4af8377f1": {
+  "value": 3
+ },
+ "685321b5a13dd425e4f8": {
+  "value": 3
+ },
+ "61ffb5735bd92d2b6c66": {
+  "value": "Alan TURING"
+ },
+ "523bbda22ba88d348f41": {
+  "value": "Alan TURING"
+ },
+ "5051dd067cb0495b2f81": {
+  "value": "Alan TURING"
+ },
+ "64b40826ce92a8cc3706": {
+  "value": "Alan TURING"
+ },
+ "3e710c7f93b9436e82fd": {
+  "value": "Alan"
+ },
+ "42cfcd4c788616fbb3ca": {
+  "value": "Alan"
+ },
+ "fd14115f5d9e2050049e": {
+  "value": "Alan"
+ },
+ "e02ffa7b007b422afca3": {
+  "value": "Alan TURING"
+ },
+ "667b964ab7511a574033": {
+  "value": "Alan TURING"
+ },
+ "38198d46286864ff8e60": {
+  "value": "Alan TURING"
+ },
+ "675e9e587df7dcf962b6": {
+  "value": "Mary JACKSON"
+ },
+ "7134c3de67a6a8d0acef": {
+  "value": "Mary JACKSON"
+ },
+ "2d18d7f3ef77274cd902": {
+  "value": "Mary JACKSON"
+ },
+ "a212a67e50471a42ccd4": {
+  "value": "Mary JACKSON"
+ },
+ "1ce494602cae4a3547a9": {
+  "value": "Mary"
+ },
+ "d9024e2a895cb0104673": {
+  "value": "Mary"
+ },
+ "cec452b389e653616d4d": {
+  "value": "Mary"
+ },
+ "edd123c2fc75fba2bd38": {
+  "value": "Mary JACKSON"
+ },
+ "facc80c747602983fbce": {
+  "value": "Mary JACKSON"
+ },
+ "63c02e12b900350e63eb": {
+  "value": "Mary JACKSON"
+ },
+ "886fda44afb421b57a6d": {
+  "value": "Mary O'NEIL"
+ },
+ "b62bf9f527b69f637242": {
+  "value": "Mary O'NEIL"
+ },
+ "bb2e6664ffde3d7d7f79": {
+  "value": "Mary O'NEIL"
+ },
+ "f540aaea933b8827665c": {
+  "value": "Mary O'NEIL"
+ },
+ "5693cfab431b6ae00d0f": {
+  "value": "Mary"
+ },
+ "7353edb2257ff2df8e91": {
+  "value": "Mary"
+ },
+ "e2f29d3d4003ab782c03": {
+  "value": "Mary"
+ },
+ "e193eb8d932b2ca095d6": {
+  "value": "Mary O'NEIL"
+ },
+ "daa25978f05aba29f781": {
+  "value": "Mary O'NEIL"
+ },
+ "7ccb31bccaca827113ed": {
+  "value": "Mary O'NEIL"
+ },
+ "82cfc685d0ec4784f4f1": {
+  "value": "Hal"
+ },
+ "2c2f643df0695df8d485": {
+  "value": "Hal"
+ },
+ "f953e7fec4234c812a79": {
+  "value": "Hal"
+ },
+ "40727d43e27c290413c3": {
+  "value": "Hal"
+ },
+ "61bdf9c078cc3fcd7603": {
+  "value": "Hal"
+ },
+ "ad42781cb3a04ea0d530": {
+  "value": "Hal"
+ },
+ "7ccaa293c9f9645d6f95": {
+  "value": "Dee"
+ },
+ "c53d77480d7190d2ede5": {
+  "value": "Dee"
+ },
+ "594977209020a45d665d": {
+  "value": "Dee"
+ },
+ "c1de867aa6a43bdf84f1": {
+  "value": "Dee"
+ },
+ "996b93efef85f2d550c8": {
+  "value": "Dee"
+ },
+ "0de8571bfcb5483ed78f": {
+  "value": "Dee"
+ },
+ "2daae39031a4138df4af": {
+  "value": "Fay"
+ },
+ "f7840228f3aa038ce60b": {
+  "value": "Fay"
+ },
+ "00d9b5f2cb334403035a": {
+  "value": "Fay"
+ },
+ "e4d21b1655b5b9a210d0": {
+  "value": "Fay"
+ },
+ "e03b6fc1f4741f933544": {
+  "value": "Fay"
+ },
+ "5738d3982988aed36a52": {
+  "value": "Fay"
+ },
+ "e5b299a3ab290c3689c8": {
+  "value": 3735
+ },
+ "6b776c5fdc2834dca449": {
+  "value": 3735
+ },
+ "1ad6744643dc3175f62a": {
+  "value": 3735
+ },
+ "8137d5bf299b080d0433": {
+  "value": 3735
+ },
+ "e6b10df5d1ca010708ac": {
+  "value": 3745
+ },
+ "938762609afdcd1546ab": {
+  "value": 3745
+ },
+ "c62d3a14e929e8e74dab": {
+  "value": 3745
+ },
+ "a90a6a65483d307133ff": {
+  "value": 3745
+ },
+ "7302d3055580bc93f859": {
+  "value": 3765
+ },
+ "b97a57438acb78114f2d": {
+  "value": 3765
+ },
+ "2e461a7782fe5c5c628d": {
+  "value": 3765
+ },
+ "1b6b25e204addaa9b947": {
+  "value": 3765
+ },
+ "e500a71302b143ae1896": {
+  "value": 45322
+ },
+ "7ace77f96a7022f5c264": {
+  "value": 45322
+ },
+ "2c6057edb574ee527981": {
+  "value": 45322
+ },
+ "0d7612d433c2148d2916": {
+  "value": 45322
+ },
+ "4cc659b967ac2bdfdbb4": {
+  "value": 2070
+ },
+ "61b77b1298124043ce9a": {
+  "value": 2070
+ },
+ "7cb04f33835bb4f6c5e2": {
+  "value": 2070
+ },
+ "8c32a83e1a5789aebb47": {
+  "value": 45322
+ },
+ "278531164c6ca2b1ac4c": {
+  "value": 45322
+ },
+ "33519b1af7af02446d57": {
+  "value": 45322
+ },
+ "a5e0f4ed4a95700a5a67": {
+  "value": 45351
+ },
+ "61e20a4fe98026110e9c": {
+  "value": 45351
+ },
+ "9f1c1d534987419c6db3": {
+  "value": null,
+  "invalid": "Error: AppleEvent timed out."
+ },
+ "9e9bc729e1e17c2ef1cd": {
+  "value": 45351
+ },
+ "42a15ff609b91324f630": {
+  "value": 2070
+ },
+ "d6f43b307feb31c5fba5": {
+  "value": 2070
+ },
+ "9f25a98db82e1dbe60c9": {
+  "value": 2070
+ },
+ "9ce5173d9983f51d6048": {
+  "value": 45351
+ },
+ "d7c8be984173d9dd8eee": {
+  "value": 45351
+ },
+ "35303542665bcb7d5977": {
+  "value": 45351
+ },
+ "e9b4aff3b8e0e56a8529": {
+  "value": 45657
+ },
+ "e80ba08a02fe5b88c722": {
+  "value": 45657
+ },
+ "dfc9de608162d7d0c4c1": {
+  "value": 45657
+ },
+ "8dee9e9d3b9496afd444": {
+  "value": 45657
+ },
+ "6340d693df26caede3dd": {
+  "value": 2070
+ },
+ "e4eb34c605c4b5c701ac": {
+  "value": 2070
+ },
+ "4add8247245aace075b8": {
+  "value": 2070
+ },
+ "a21037acd0ddf1a791ad": {
+  "value": 45657
+ },
+ "6bc333a52e454dbb5c7c": {
+  "value": 45657
+ },
+ "4951c21ec079d11521b4": {
+  "value": 45657
+ },
+ "de6c609a2115b244a2c7": {
+  "value": 45412
+ },
+ "f95e62d638e6f8b7ab7c": {
+  "value": 45412
+ },
+ "2e1e02c9dd4d03b18588": {
+  "value": 45412
+ },
+ "0e05b361249f86f6c973": {
+  "value": 45412
+ },
+ "41bba062d2fc1ff3f3d1": {
+  "value": 2070
+ },
+ "a5e8c6ebd2d6ec729258": {
+  "value": 2070
+ },
+ "fa4c443799db41af4d41": {
+  "value": 2070
+ },
+ "857398e267bebbe20876": {
+  "value": 45412
+ },
+ "c8f06f29ea2dde0e7422": {
+  "value": 45412
+ },
+ "8b38f0bfb7d7596f63af": {
+  "value": 45412
+ },
+ "18456ac291d8460d6ef8": {
+  "value": 50
+ },
+ "14a8e9043c5416b48a4d": {
+  "value": 50
+ },
+ "a9b247c1d14410bf352d": {
+  "value": 50
+ },
+ "f7cc771c0bd05316f8d5": {
+  "value": 50
+ },
+ "42daed5ad03e42235c9a": {
+  "value": 12.5
+ },
+ "6b06bddb8b98a2b18da9": {
+  "value": 12.5
+ },
+ "08e8210440ea59b44770": {
+  "value": 12.5
+ },
+ "c431c40636b0e54a26a2": {
+  "value": 12.5
+ },
+ "5e861191063e09d763b3": {
+  "value": 50
+ },
+ "9fac1b3453a09e60b4d7": {
+  "value": 50
+ },
+ "961c834d7e7a3642c998": {
+  "value": 50
+ },
+ "395f9a1c5af7e1e4186c": {
+  "value": 54.99
+ },
+ "b5b4300b37f637df7d8c": {
+  "value": 54.99
+ },
+ "6de79a723e49680b72de": {
+  "value": 54.99
+ },
+ "3562a9fdb1e3848b5929": {
+  "value": 54.99
+ },
+ "c0e7ce3d6cf673601c9b": {
+  "value": 12.5
+ },
+ "2837d6703c10f96795e2": {
+  "value": 12.5
+ },
+ "c6cdc62882a41d8a96f8": {
+  "value": 12.5
+ },
+ "def66967d61572cd9db3": {
+  "value": 12.5
+ },
+ "e3e6285c57b12aea93bf": {
+  "value": 54.99
+ },
+ "156510c3e1b372ea7ab1": {
+  "value": 54.99
+ },
+ "1a5bb98acc256adbc114": {
+  "value": 54.99
+ },
+ "35c8269cfe7f864cdd64": {
+  "value": 92.49
+ },
+ "cc5ff38cac275e638157": {
+  "value": 92.49
+ },
+ "64802e2f2df9e54c00ec": {
+  "value": 92.49
+ },
+ "e5af36953b99c30cff08": {
+  "value": 92.49
+ },
+ "f448dae05df0917db25a": {
+  "value": 12.5
+ },
+ "522b068ec4a73164b14e": {
+  "value": 12.5
+ },
+ "fed94eb45d577ef4d9cb": {
+  "value": 12.5
+ },
+ "53110daed683b5ef14b8": {
+  "value": 12.5
+ },
+ "93038e3ee02a951ceda6": {
+  "value": 92.49
+ },
+ "218e2d07db4ae573959e": {
+  "value": 92.49
+ },
+ "b9c384c743e4aa95a31a": {
+  "value": 92.49
+ },
+ "2c5d5f1534e4c5ff0469": {
+  "value": 37.99
+ },
+ "c3f16503e05f8d32806f": {
+  "value": 37.99
+ },
+ "24ac8905d9b84f026e37": {
+  "value": 37.99
+ },
+ "ec9631df6e307a96e515": {
+  "value": 37.99
+ },
+ "8ea51d9611f897b2c23d": {
+  "value": 8.25
+ },
+ "3eb958a769c41dbd2f9b": {
+  "value": 8.25
+ },
+ "07c7cdd563e3198adaf1": {
+  "value": 8.25
+ },
+ "8b573157704f95d41212": {
+  "value": 8.25
+ },
+ "8844613421872ccad95a": {
+  "value": 37.99
+ },
+ "3e708130c9d5bf4b9946": {
+  "value": 37.99
+ },
+ "0ced71d7962645afc768": {
+  "value": 37.99
+ },
+ "0d3b34d50c577df2a732": {
+  "value": 6
+ },
+ "a8f3ceb5d23c7a728afd": {
+  "value": 6
+ },
+ "b1c76e6e9cceb4b1d2d3": {
+  "value": 6
+ },
+ "77543158ce60be2e1f1c": {
+  "value": 6
+ },
+ "af31d87c43089de4cd84": {
+  "value": 5
+ },
+ "cfedf16a92b0881f137a": {
+  "value": 5
+ },
+ "8fdff9b50b59c6373326": {
+  "value": 5
+ },
+ "82e9c28be7ff9df8adf1": {
+  "value": 5
+ },
+ "a6f8c9659f74a92ec90f": {
+  "value": 4
+ },
+ "e778fa82edfb346345b5": {
+  "value": 4
+ },
+ "0738f8d6049cda211bac": {
+  "value": 4
+ },
+ "e86619c932cafc082a38": {
+  "value": 4
+ },
+ "4538ccecb1d8c344a31f": {
+  "value": 3
+ },
+ "f70a3f3aebc2b13d9484": {
+  "value": 3
+ },
+ "016e11f7b108ab35ac50": {
+  "value": 3
+ },
+ "9f5ee4235154f930c349": {
+  "value": 3
+ },
+ "8f9c1e39635ecc4afb7e": {
+  "value": 3
+ },
+ "dd3e5240f33003b667fe": {
+  "value": 3
+ },
+ "134896de8f5070f23156": {
+  "value": 3
+ },
+ "ecf9cb2282f0b1d45e01": {
+  "value": 3
+ },
+ "c6f545f68ddfe8a83f46": {
+  "value": 1
+ },
+ "b89fa3b2441400309cd2": {
+  "value": 1
+ },
+ "3c7495da85009b79142f": {
+  "value": 1
+ },
+ "e299dd5555983eef620b": {
+  "value": 1
+ },
+ "aa378b1691068a576188": {
+  "value": 1
+ },
+ "a61344597af6cc7d3197": {
+  "value": 1
+ },
+ "5c9a34ad5e7352695376": {
+  "value": 1
+ },
+ "cae3fee2636b60dd7c7c": {
+  "value": 1
+ },
+ "7c4a574ca9bb09f4761b": {
+  "value": 2
+ },
+ "2d40bc95e05b718fcc48": {
+  "value": 2
+ },
+ "b1dd3747bd97a4476d20": {
+  "value": 2
+ },
+ "d4db85c30492a25c1cfd": {
+  "value": 2
+ },
+ "8d5f5af84cb35bf0990e": {
+  "value": 2
+ },
+ "4f37952c664918126d44": {
+  "value": 2
+ },
+ "78f0a1733b7e8c46e074": {
+  "value": 2
+ },
+ "a701dfb2811b805d85c7": {
+  "value": 2
+ },
+ "a97c7323e5f5bb31a946": {
+  "value": 81.05000000000001
+ },
+ "6236267450dd2005bde2": {
+  "value": 81.05000000000001
+ },
+ "366ee358ab40e9705afb": {
+  "value": 81.05000000000001
+ },
+ "9bba76c83411241de775": {
+  "value": 81.05000000000001
+ },
+ "51fb89516fa2f63deb7c": {
+  "value": 81.17000000000002
+ },
+ "d2dfcc0dd8d028285dc7": {
+  "value": 81.17000000000002
+ },
+ "0e48a809cde3d69f0a78": {
+  "value": 81.17000000000002
+ },
+ "057941217c465cea238a": {
+  "value": 81.17000000000002
+ },
+ "fde0af28698f840c4992": {
+  "value": 84.11000000000001
+ },
+ "6a3e738bbb5d1754ef21": {
+  "value": 84.11000000000001
+ },
+ "6ee60114ba6da88b2534": {
+  "value": 84.11000000000001
+ },
+ "c6af89c89bea11da149e": {
+  "value": 84.11000000000001
+ },
+ "0eb4a13c49a8d6398904": {
+  "value": 81.25000000000001
+ },
+ "15d2edbf043b735ea10e": {
+  "value": 81.25000000000001
+ },
+ "c43611dc93ef1abd5467": {
+  "value": 81.25000000000001
+ },
+ "c234952a2555a5144e7e": {
+  "value": 81.25000000000001
+ },
+ "068cb0fec55165f22513": {
+  "value": 246.35
+ },
+ "c8d0c57f03402e6a0e4f": {
+  "value": 246.35
+ },
+ "056aacceb8ec0acddba4": {
+  "value": 246.35
+ },
+ "ef268fa5ac0f37a5ba39": {
+  "value": 246.35
+ },
+ "7473ad757336cd1aad01": {
+  "value": 246.35
+ },
+ "e2818970ef6561fa6b06": {
+  "value": 189.35
+ },
+ "7e63ca2300581c94e09b": {
+  "value": 189.35
+ },
+ "2ec04f626466fd175126": {
+  "value": 189.35
+ },
+ "f74e60f4a705da7eb181": {
+  "value": 189.35
+ },
+ "12d4065cf0b13a839bc3": {
+  "value": 189.35
+ },
+ "ba3e941abc0ee19c3491": {
+  "value": 126.35
+ },
+ "8f10d5034288e06058f8": {
+  "value": 126.35
+ },
+ "10697af64f2639887b3b": {
+  "value": 126.35
+ },
+ "a37a088101abcbdc80d0": {
+  "value": 126.35
+ },
+ "b694590da7b23983c775": {
+  "value": 126.35
+ },
+ "adafb2ac6b9ede5c3180": {
+  "value": 240
+ },
+ "833f1671c25ac4827d08": {
+  "value": 240
+ },
+ "64b9fe2b3a99d3fbfb8e": {
+  "value": 240
+ },
+ "8a8ef74213b3e4e5fef6": {
+  "value": 240
+ },
+ "cc8f81541ee757ad7b74": {
+  "value": 240
+ },
+ "34c2ff683e96f20f09d5": {
+  "value": 240
+ },
+ "e1a4c80d57a70a6e1543": {
+  "value": 240
+ },
+ "45c199add01422245768": {
+  "value": 250
+ },
+ "bc9bc15a7732cd212b06": {
+  "value": 250
+ },
+ "1728b4f2674d2ad121fe": {
+  "value": 250
+ },
+ "9dfa356962a5d1166758": {
+  "value": 250
+ },
+ "fe67343bc31529e35fde": {
+  "value": 250
+ },
+ "18b4fce13167ffc1b68b": {
+  "value": 250
+ },
+ "165ae8d131e9e5770f21": {
+  "value": 250
+ },
+ "dd2780bbcf6d0af2cfc4": {
+  "value": 0
+ },
+ "a681661b39e198d08b26": {
+  "value": 0
+ },
+ "addc31b4509c12c419b3": {
+  "value": 0
+ },
+ "ac97a1625e22b5eb575a": {
+  "value": 0
+ },
+ "62b2f37bcd4375267b1f": {
+  "value": 6
+ },
+ "590660d267cce4cdbe28": {
+  "value": 6
+ },
+ "ea0c99a657ca3d4d10ac": {
+  "value": 6
+ },
+ "24000deb9c0f2ed5c149": {
+  "value": 6
+ },
+ "178190ef2a7892514bff": {
+  "value": 1
+ },
+ "99340841e0c62fe11e17": {
+  "value": 1
+ },
+ "00bc3a7bbef3fe690574": {
+  "value": 1
+ },
+ "54d268b69ae00e72ef1b": {
+  "value": 1
+ },
+ "4e0099da98438933dbe5": {
+  "value": 4
+ },
+ "01b22f422521519f27d0": {
+  "value": 4
+ },
+ "ec679f418d3f298794b2": {
+  "value": 4
+ },
+ "7592c7681799438cf85e": {
+  "value": 4
+ },
+ "ce13ecc7d779ef2b8070": {
+  "value": 5
+ },
+ "371832d03761c4e33b00": {
+  "value": 5
+ },
+ "ced84738af28504739a6": {
+  "value": 5
+ },
+ "96e8777120378cbf7cd2": {
+  "value": 5
+ },
+ "9d86742d2a2d54f995c7": {
+  "value": 5
+ },
+ "289c9c3bba1d7ff8a23f": {
+  "value": 6
+ },
+ "dce6145d148c015cf748": {
+  "value": 6
+ },
+ "e1b56445d720d2e07d40": {
+  "value": 6
+ },
+ "11cd0623c0db1c32908b": {
+  "value": 6
+ },
+ "ab4fd779ff5e68819ac0": {
+  "value": 6
+ },
+ "a160edb879f0f356f126": {
+  "value": 7
+ },
+ "907c39789423d4b0c25a": {
+  "value": 7
+ },
+ "e3a9a9e172e17e357f9e": {
+  "value": 7
+ },
+ "da75c45cee6b8eb2626a": {
+  "value": 7
+ },
+ "7c798b7547f0c3e8fb7f": {
+  "value": 7
+ },
+ "50defcfa7ab761fd295d": {
+  "value": 7
+ },
+ "7620fa6fefadaac87eec": {
+  "value": 7
+ },
+ "3240f78cedddba217ae6": {
+  "value": 7
+ },
+ "9dcf78c11e3bf02c5966": {
+  "value": 7
+ },
+ "515272583d3db6d5cbbb": {
+  "value": 7
+ },
+ "ca7b731135e244447669": {
+  "value": 14
+ },
+ "39cf4186e9aa1aeba6c8": {
+  "value": 14
+ },
+ "d1fdb405a296e282651c": {
+  "value": 14
+ },
+ "946a24b5190529a14dff": {
+  "value": 14
+ },
+ "0f2803d82896357190ba": {
+  "value": 14
+ },
+ "b96d6b2361c195dac1f8": {
+  "value": 14
+ },
+ "e86de8ce899360ad669e": {
+  "value": 14
+ },
+ "188b50919a6d24da6b4d": {
+  "value": 14
+ },
+ "4828a6bd230cd68d70ea": {
+  "value": 14
+ },
+ "c14384ac821fb58d8759": {
+  "value": 14
+ },
+ "5c005eea2c9e4438c74f": {
+  "value": 14
+ },
+ "6965aa5e0e23ef899644": {
+  "value": 14
+ },
+ "d5ac25587131932e295a": {
+  "value": 14
+ },
+ "e5ad350fbd041788d0a0": {
+  "value": 12.4
+ },
+ "31016d69429ed104bc5b": {
+  "value": 12.4
+ },
+ "947edb04721a1c876d9b": {
+  "value": 12.4
+ },
+ "7b6d56d73737a8739b4e": {
+  "value": 12.4
+ },
+ "6030e0df568ddb2eb810": {
+  "value": 12.4
+ },
+ "64ec3b60182b17a60dcd": {
+  "value": 12.4
+ },
+ "5b0a584311c38b76ec2a": {
+  "value": 12.4
+ },
+ "4fdf0726ea9b2fbbb5c2": {
+  "value": 12.4
+ },
+ "8f7d70f511f2fd99c996": {
+  "value": 12.4
+ },
+ "d079bba5df839662e76e": {
+  "value": 12.4
+ },
+ "736793fd4604af109107": {
+  "value": 12.4
+ },
+ "8f186adf8d0927366dfc": {
+  "value": 12.4
+ },
+ "def26f5048f8e1532c66": {
+  "value": 12.4
+ },
+ "08551db0290cfd356975": {
+  "value": 550
+ },
+ "b70a125cfd920eb26354": {
+  "value": 550
+ },
+ "3c88568e5461b97851a8": {
+  "value": 550
+ },
+ "96b0d0afc4012d65c73f": {
+  "value": 550
+ },
+ "cd9b53910955a574dd0b": {
+  "value": 550
+ },
+ "94ef7b7c3df002dabda6": {
+  "value": 550
+ },
+ "db4b137cdbcef84cf9d8": {
+  "value": 550
+ },
+ "d99beaca2253dfe17474": {
+  "value": 550
+ },
+ "48765968c7410bbbf02a": {
+  "value": 550
+ },
+ "e6e9d3bf4767f69afd7b": {
+  "value": 550
+ },
+ "d48cdfa33830e9632f3a": {
+  "value": -700
+ },
+ "cee1d3af9d0ac36088a9": {
+  "value": -700
+ },
+ "f544b0dedf9ae9f7dd0d": {
+  "value": -700
+ },
+ "107ce9c1b58f44207eb0": {
+  "value": -700
+ },
+ "0c57ce1c0cb0b08cfcca": {
+  "value": 700
+ },
+ "cfcbb4749f4c6f986f22": {
+  "value": 700
+ },
+ "44d950ca1597daad1866": {
+  "value": 700
+ },
+ "8a68224acde90499d822": {
+  "value": -700
+ },
+ "4fd7ae8f4154b000a8ae": {
+  "value": -700
+ },
+ "c7858ad6534b1db95092": {
+  "value": -700
+ },
+ "ed176451b09cd770b397": {
+  "value": -1050
+ },
+ "a79f3a25b778194a1b59": {
+  "value": -1050
+ },
+ "e189d2cf295a3c9050fe": {
+  "value": -1050
+ },
+ "e5deee2be02ea817475d": {
+  "value": -1050
+ },
+ "b1b9b5f6c9090d56f35f": {
+  "value": 1050
+ },
+ "4c4afadc1febe01505ce": {
+  "value": 1050
+ },
+ "f9162cd245515182eabc": {
+  "value": 1050
+ },
+ "e18dbe52cd6d7ac96be6": {
+  "value": -1050
+ },
+ "610ff20af5e656bc67a1": {
+  "value": -1050
+ },
+ "f34f989d601abb5097ce": {
+  "value": -1050
+ },
+ "fc4dbee5b8727e747998": {
+  "value": 660
+ },
+ "f8bf3dce3c49b5a0992a": {
+  "value": 660
+ },
+ "33c1b93f0e98691da1bb": {
+  "value": 660
+ },
+ "403d78c3e5b22d59c893": {
+  "value": 660
+ },
+ "4f3d2e693d4007629ee1": {
+  "value": 0
+ },
+ "8a870da8a33178e968c0": {
+  "value": 0
+ },
+ "e7e19ab2fd8f7a7e1c97": {
+  "value": 0
+ },
+ "75567b123b3784cda100": {
+  "value": 0
+ },
+ "f698ea98dd519ce5a952": {
+  "value": 660
+ },
+ "21a08c2c91e9192ed2bb": {
+  "value": 660
+ },
+ "76801efa444577e251b2": {
+  "value": 660
+ },
+ "8b45478b75c2363c9a2f": {
+  "value": 660
+ },
+ "b01340eedd16c184f5bf": {
+  "value": 560
+ },
+ "5911c29440e49de2f298": {
+  "value": 560
+ },
+ "fb7a567290f275b2b0c9": {
+  "value": 560
+ },
+ "1c453ef0575040dbbf2b": {
+  "value": 560
+ },
+ "7602c6f4a263d0f224f8": {
+  "value": 0
+ },
+ "3b83331f08806f8469a0": {
+  "value": 0
+ },
+ "7968577ae7eacc9674dc": {
+  "value": 0
+ },
+ "520d9a434afa4582204d": {
+  "value": 0
+ },
+ "d2648327d6dab320cb62": {
+  "value": 560
+ },
+ "e3701b566bc3e9548853": {
+  "value": 560
+ },
+ "41473215d1c4f5d37604": {
+  "value": 560
+ },
+ "ce700553df899c276d4c": {
+  "value": 560
+ },
+ "1c25cf4e6f71ec53f0b9": {
+  "value": 500
+ },
+ "6a316fba882acc77fd64": {
+  "value": 500
+ },
+ "74a3601bd2bafd862263": {
+  "value": 500
+ },
+ "5a70294aedd5a984fd0d": {
+  "value": 500
+ },
+ "a09c970c7b02ad8f153b": {
+  "value": 0
+ },
+ "2105bc7f9d3111e91fd2": {
+  "value": 0
+ },
+ "b5b74012b0636fb272ea": {
+  "value": 0
+ },
+ "4c0fb94fc9ee60a483b0": {
+  "value": 0
+ },
+ "dad021206945afbe0862": {
+  "value": 500
+ },
+ "d87386608947898b0e75": {
+  "value": 500
+ },
+ "e41e663ee739bee0d6c1": {
+  "value": 500
+ },
+ "6c6ccead4dc04c291bc2": {
+  "value": 500
+ },
+ "54da1ce8ba569bbdbe97": {
+  "value": 640
+ },
+ "e47a335ebd33f72c0fe3": {
+  "value": 640
+ },
+ "48d1bb74c19dea533b31": {
+  "value": 640
+ },
+ "078397a29139647844a9": {
+  "value": 640
+ },
+ "9ebf9fc14d8feefab913": {
+  "value": 0
+ },
+ "181532fc5f516f2da1b6": {
+  "value": 0
+ },
+ "d4b7bcc2fda97ae864bd": {
+  "value": 0
+ },
+ "7158adbe22fffef3cfd1": {
+  "value": 0
+ },
+ "bec7326488412822efab": {
+  "value": 640
+ },
+ "78ff7b20b6e8eb47adae": {
+  "value": 640
+ },
+ "2b7394fbbd359c64a73b": {
+  "value": 640
+ },
+ "628c3ad8cc025f2dd56c": {
+  "value": 640
+ },
+ "66fa8037ae41b806ee29": {
+  "value": 4
+ },
+ "0eb1cbe9caabbfa26b62": {
+  "value": 4
+ },
+ "cfe3645f7fdc04ee6633": {
+  "value": 4
+ },
+ "a46ad4c43dd8bc4b11b0": {
+  "value": 4
+ },
+ "3415d45d56565fba2ce6": {
+  "value": 6
+ },
+ "6a4db04a5cdde7ad79fd": {
+  "value": 6
+ },
+ "291f9b4f81d6b08ca84e": {
+  "value": 6
+ },
+ "ea06888134dc0f9e3481": {
+  "value": 6
+ },
+ "50e43029ebf90a9ceb67": {
+  "value": 6
+ },
+ "62005d6b8885e9450ae1": {
+  "value": 6
+ },
+ "85b6cfbbc93cd5f277f5": {
+  "value": 6
+ },
+ "1e4146763b3eecc747b0": {
+  "value": 6
+ },
+ "e348a8400afa509859d4": {
+  "value": [
+   [
+    1300
+   ],
+   [
+    1500
+   ],
+   [
+    540
+   ],
+   [
+    380
+   ]
+  ]
+ },
+ "b68dbaeed9742d9acf8e": {
+  "value": [
+   [
+    1300
+   ],
+   [
+    1500
+   ],
+   [
+    540
+   ],
+   [
+    380
+   ]
+  ]
+ },
+ "7176cb257aed7c59cc1c": {
+  "value": [
+   [
+    1300
+   ],
+   [
+    1500
+   ],
+   [
+    540
+   ],
+   [
+    380
+   ]
+  ]
+ },
+ "3cfb5e29ea48ce84c491": {
+  "value": [
+   [
+    1300
+   ],
+   [
+    1500
+   ],
+   [
+    540
+   ],
+   [
+    380
+   ]
+  ]
+ },
+ "d67c74fc08a0d02c1a26": {
+  "value": [
+   [
+    1300
+   ],
+   [
+    1500
+   ],
+   [
+    540
+   ],
+   [
+    380
+   ]
+  ]
+ },
+ "9853056379d8d58e42e9": {
+  "value": [
+   [
+    1300
+   ],
+   [
+    1500
+   ],
+   [
+    540
+   ],
+   [
+    380
+   ]
+  ]
+ },
+ "89c609188bccf78858fb": {
+  "value": [
+   [
+    1300
+   ],
+   [
+    1500
+   ],
+   [
+    540
+   ],
+   [
+    380
+   ]
+  ]
+ },
+ "ae49e4f11ab2729b540a": {
+  "value": [
+   [
+    1300
+   ],
+   [
+    1500
+   ],
+   [
+    540
+   ],
+   [
+    380
+   ]
+  ]
+ },
+ "23d1d68f661cc18b61c8": {
+  "value": 757
+ },
+ "1c02348c9673df489c4b": {
+  "value": 757
+ },
+ "197f1282dc22934e299d": {
+  "value": 757
+ },
+ "5365f46e73f2d416fc9f": {
+  "value": 757
+ },
+ "b71ec2c101a161147895": {
+  "value": 757
+ },
+ "f071ecbe7f2f73eb75d6": {
+  "value": 757
+ },
+ "f9cd0097066189e225c6": {
+  "value": 757
+ },
+ "840d21d40cb8ca347475": {
+  "value": 757
+ },
+ "397a0f8934c8c2653b75": {
+  "value": 757
+ },
+ "20f44e75777d747a1920": {
+  "value": 757
+ },
+ "8920ec302bf5aad692dc": {
+  "value": 757
+ },
+ "d7e60ec34de41608cb15": {
+  "value": 757
+ },
+ "34f7eaba1fe61d1ddeaa": {
+  "value": 757
+ },
+ "aff3c7ed2eb3be1999fb": {
+  "value": [
+   [
+    1300
+   ],
+   [
+    220
+   ],
+   [
+    540
+   ],
+   [
+    380
+   ]
+  ]
+ },
+ "faeaeaf08566f998aacc": {
+  "value": [
+   [
+    1300
+   ],
+   [
+    220
+   ],
+   [
+    540
+   ],
+   [
+    380
+   ]
+  ]
+ },
+ "dbea8c52f52ba09dcff8": {
+  "value": [
+   [
+    1300
+   ],
+   [
+    220
+   ],
+   [
+    540
+   ],
+   [
+    380
+   ]
+  ]
+ },
+ "b7721ec17d85f7c8d58f": {
+  "value": [
+   [
+    1300
+   ],
+   [
+    220
+   ],
+   [
+    540
+   ],
+   [
+    380
+   ]
+  ]
+ },
+ "5b8602b3c6add797cad8": {
+  "value": [
+   [
+    1300
+   ],
+   [
+    220
+   ],
+   [
+    540
+   ],
+   [
+    380
+   ]
+  ]
+ },
+ "3ddcce4b2b6c775b705d": {
+  "value": [
+   [
+    1300
+   ],
+   [
+    220
+   ],
+   [
+    540
+   ],
+   [
+    380
+   ]
+  ]
+ },
+ "eb139609a23396d12be4": {
+  "value": [
+   [
+    1300
+   ],
+   [
+    220
+   ],
+   [
+    540
+   ],
+   [
+    380
+   ]
+  ]
+ },
+ "daf962ece3f237bbd2e3": {
+  "value": [
+   [
+    1300
+   ],
+   [
+    220
+   ],
+   [
+    540
+   ],
+   [
+    380
+   ]
+  ]
+ },
+ "18a8e91aa412af43ad46": {
+  "value": 703
+ },
+ "724ce480384d311cbc3c": {
+  "value": 703
+ },
+ "f84aff9b57f4c01de55b": {
+  "value": 703
+ },
+ "28599db6cb90824e140c": {
+  "value": 703
+ },
+ "f62f8c5aaf6c8213c73e": {
+  "value": 703
+ },
+ "eac22ef60a37fe46d908": {
+  "value": 703
+ },
+ "9995a7dec1ea2f7545fe": {
+  "value": 703
+ },
+ "bb7828c0448253b7d75e": {
+  "value": 703
+ },
+ "a73e64e5259ad67385bf": {
+  "value": 703
+ },
+ "670b2adf6f720aa90d66": {
+  "value": 703
+ },
+ "8751fefad8c302bfb6a8": {
+  "value": 703
+ },
+ "d2e4c52365869a0e1d93": {
+  "value": 703
+ },
+ "7cfd0a9bb1cc2ceaa4b2": {
+  "value": 703
+ },
+ "737e3ca2bfee86af326e": {
+  "value": 795
+ },
+ "0f3a94448070d09094b0": {
+  "value": 795
+ },
+ "1dc41d163298381483b2": {
+  "value": 795
+ },
+ "5d78e5e791f4ed0b069d": {
+  "value": 795
+ },
+ "0505afbb257d722bdc32": {
+  "value": 795
+ },
+ "9fb50eb3f11284d474a6": {
+  "value": 795
+ },
+ "5dfc0fd07755cb99e403": {
+  "value": 795
+ },
+ "4cf40cc0d4749cda4cce": {
+  "value": 795
+ },
+ "46924ef4fc9891f504e1": {
+  "value": 795
+ },
+ "1d4169989742db39a347": {
+  "value": 795
+ },
+ "bc9ec95db4b6a7fa1a17": {
+  "value": 795
+ },
+ "c63a1a7074ab26ea8fa6": {
+  "value": 795
+ },
+ "54e11fe497e584d52cba": {
+  "value": 795
+ },
+ "2a616d1d8ec9c3ccca07": {
+  "value": 720
+ },
+ "2cd48fd3324802df1d03": {
+  "value": 720
+ },
+ "62c1412e36eb0a4f78ca": {
+  "value": 720
+ },
+ "91a9012a93e166358108": {
+  "value": 720
+ },
+ "a7b45038e7ba1ebd83b9": {
+  "value": 720
+ },
+ "7946a7b852c6f1311a2d": {
+  "value": 720
+ },
+ "0c6bd83988e6c69fd785": {
+  "value": 720
+ },
+ "6d9ba7f9b1cdbcd4a914": {
+  "value": 720
+ },
+ "99035f5b362aa7142b88": {
+  "value": 720
+ },
+ "46077b860a67c33dd4e6": {
+  "value": 720
+ },
+ "644f0219525c333b390c": {
+  "value": 720
+ },
+ "a83d33d24d67a1d822c6": {
+  "value": 720
+ },
+ "2dc1541de7ffdb776b49": {
+  "value": 720
+ },
+ "4d43110c02017e1f71d9": {
+  "value": 720
+ },
+ "62853876ca478852940f": {
+  "value": -290
+ },
+ "5ea796d47f6386f9c716": {
+  "value": -290
+ },
+ "3442056a8d42652f5975": {
+  "value": -290
+ },
+ "ecfd1504a16b3867662c": {
+  "value": -290
+ },
+ "2503d1259c2b3baabae8": {
+  "value": -290
+ },
+ "c490ae932a47e48a0c23": {
+  "value": -290
+ },
+ "53e27a183f6b72b3d889": {
+  "value": -290
+ },
+ "a018096048d573c92550": {
+  "value": -290
+ },
+ "e50baa50b0e5baf84c79": {
+  "value": -290
+ },
+ "91f04acd71381f68964b": {
+  "value": -290
+ },
+ "0ae325011ea754be47e4": {
+  "value": -290
+ },
+ "f536a1d7d7720c281760": {
+  "value": -290
+ },
+ "ba22757a7f064c2ee51c": {
+  "value": -290
+ },
+ "0f015b92381fbcf743be": {
+  "value": -290
+ },
+ "eef64eb8c830295ad5a1": {
+  "value": 1100
+ },
+ "17c4d877142476488bba": {
+  "value": 1100
+ },
+ "5cb09a4882bf84c41f64": {
+  "value": 1100
+ },
+ "0d7b65f4ebf46b493094": {
+  "value": 1100
+ },
+ "6592ee40699c81664e2b": {
+  "value": 1100
+ },
+ "0eff4f972e2d9fd1d919": {
+  "value": 1100
+ },
+ "2ff9f3d40176230b95bc": {
+  "value": 1100
+ },
+ "99ee34ef078d16f02efd": {
+  "value": 1100
+ },
+ "30fa9603237c69711d23": {
+  "value": 1100
+ },
+ "9dd55246d54cbae7303a": {
+  "value": 1100
+ },
+ "ee6287a4ff545ab0ac5b": {
+  "value": 1100
+ },
+ "f12a8dc116fd59ded40c": {
+  "value": 1100
+ },
+ "681d66b08a94d2a81ff3": {
+  "value": 1100
+ },
+ "0d5b49fd5806e4126da3": {
+  "value": 1100
+ },
+ "d6d10562515d088ff53b": {
+  "value": 1145
+ },
+ "6c7a005e81cbfff3a941": {
+  "value": 1145
+ },
+ "a41a05e60dc9ac8858c5": {
+  "value": 1145
+ },
+ "a9eb28879dd454d8d37c": {
+  "value": 1145
+ },
+ "29676eb5f5d9fdea27bb": {
+  "value": 1145
+ },
+ "ee426654df1332c9ecfa": {
+  "value": 1145
+ },
+ "c537072fc42341ed31be": {
+  "value": 1145
+ },
+ "b89cad70a88cdd2429bc": {
+  "value": 1145
+ },
+ "b5a0ede1b2ca75c7a3e0": {
+  "value": 1145
+ },
+ "94654c9552d5d44be64d": {
+  "value": 1145
+ },
+ "98ff66768afa379c851d": {
+  "value": 1145
+ },
+ "c5aafc7270bcf1c5efbc": {
+  "value": 1145
+ },
+ "48856e54838508878d06": {
+  "value": 1145
+ },
+ "e10eafbc32277557f8d4": {
+  "value": 1145
+ },
+ "fb092433ea1d90fae8c6": {
+  "value": 1055
+ },
+ "cee76a4445a788ba2ad6": {
+  "value": 1055
+ },
+ "044f9fe346613a0c5679": {
+  "value": 1055
+ },
+ "b2da3ef9b90441ebd248": {
+  "value": 1055
+ },
+ "371f735667c7606e85c1": {
+  "value": 1055
+ },
+ "de69c3ca80cf7558e47b": {
+  "value": 1055
+ },
+ "91e2c2830ad2c0246ae3": {
+  "value": 1055
+ },
+ "ed45f0b9f055e54356c0": {
+  "value": 1055
+ },
+ "9890d0c31d28f35872e9": {
+  "value": 1055
+ },
+ "bbbd66a668ba588e87f2": {
+  "value": 1055
+ },
+ "58780e54e3a8bacf77e9": {
+  "value": 1055
+ },
+ "0de71b84192a1666e660": {
+  "value": 1055
+ },
+ "6d3492c93efa8ca40cf6": {
+  "value": 1055
+ },
+ "cd27ed910336d9c6ee38": {
+  "value": 1055
+ },
+ "ce8362eb82a30753e740": {
+  "value": 3.407142857142857
+ },
+ "1106b0a884ce9657ebae": {
+  "value": 3.4071428571428575
+ },
+ "cc663d580b7118a441e8": {
+  "value": 3.407142857142857
+ },
+ "185beea79687da1189de": {
+  "value": 3.407142857142857
+ },
+ "c0b94b2ad90f3013d1ef": {
+  "value": 46.666666666666664
+ },
+ "87045b22dc5bfbf90e64": {
+  "value": 46.666666666666664
+ },
+ "3e253a8c386922df7d2e": {
+  "value": 46.666666666666664
+ },
+ "6c5dee0214b1e8b618c4": {
+  "value": 46.666666666666664
+ },
+ "6561da833a6038df3b4e": {
+  "value": 46.666666666666664
+ },
+ "22f70f9d931aa4643381": {
+  "value": 46.666666666666664
+ },
+ "f0412122f3f0dcd1cf11": {
+  "value": 3.407142857142857
+ },
+ "c19631a43946720ba446": {
+  "value": 3.407142857142857
+ },
+ "119255c4671fe7e97a3a": {
+  "value": 3.407142857142857
+ },
+ "49c4979af71bc13014bf": {
+  "value": 3.407142857142857
+ },
+ "8c5c8e93d777ff47e55c": {
+  "value": 3.407142857142857
+ },
+ "250cdc7d40d1c4018f34": {
+  "value": 3.407142857142857
+ },
+ "2b879b5192dc4833911f": {
+  "value": 3.6136363636363638
+ },
+ "440935ad55df210f807c": {
+  "value": 3.6136363636363638
+ },
+ "dba830ada0bcb2ab46db": {
+  "value": 3.6136363636363638
+ },
+ "414be2fb788c14607246": {
+  "value": 3.6136363636363638
+ },
+ "3f194b920b4e9771e99b": {
+  "value": 44
+ },
+ "302836bf0553a1b62543": {
+  "value": 44
+ },
+ "39f605bf0a65c6d2bd09": {
+  "value": 44
+ },
+ "3b9c300e715ab0a81541": {
+  "value": 44
+ },
+ "8946dc47c2b94d2cc4c8": {
+  "value": 44
+ },
+ "1b1c962b7d34c55c3268": {
+  "value": 44
+ },
+ "d40115324d3d5ba3c8a1": {
+  "value": 3.6136363636363638
+ },
+ "0035ba18e114c1eae4d6": {
+  "value": 3.6136363636363638
+ },
+ "ca2b419764c06353c66d": {
+  "value": 3.6136363636363638
+ },
+ "26fbe6b766157357ee6b": {
+  "value": 3.6136363636363638
+ },
+ "b4539df8e7dfcdd25979": {
+  "value": 3.6136363636363638
+ },
+ "5c167d4e8d2af284558b": {
+  "value": 3.6136363636363638
+ },
+ "227012c56bab85e8e76a": {
+  "value": 3.4242857142857144
+ },
+ "17f027baa35b5b8580e7": {
+  "value": 3.424285714285715
+ },
+ "97c5aed7c6a0e039bcd8": {
+  "value": 3.4242857142857144
+ },
+ "ed49fccb06fae5c6c56d": {
+  "value": 3.424285714285714
+ },
+ "0cd0122964e159314836": {
+  "value": 46.666666666666664
+ },
+ "a6e654949a844ce45a92": {
+  "value": 46.666666666666664
+ },
+ "7382724a1256d23e2d65": {
+  "value": 46.666666666666664
+ },
+ "e697b35505d5cd8cbeff": {
+  "value": 46.666666666666664
+ },
+ "1b37da37c71e0f812863": {
+  "value": 46.666666666666664
+ },
+ "2c8dac3e6ed9a72b6c8a": {
+  "value": 46.666666666666664
+ },
+ "fdcfa06995232a8de872": {
+  "value": 3.4242857142857144
+ },
+ "0f4c5e73ff80024741d8": {
+  "value": 3.4242857142857144
+ },
+ "b686567b5e02d987891e": {
+  "value": 3.4242857142857144
+ },
+ "b917fb86913d4f095004": {
+  "value": 3.4242857142857144
+ },
+ "078a55871584a08a9f6c": {
+  "value": 3.4242857142857144
+ },
+ "b024b0253b7147d71701": {
+  "value": 3.4242857142857144
+ },
+ "3e403abff1771e9c8f60": {
+  "value": 2.65
+ },
+ "b31ee2b2b2da2d09d352": {
+  "value": 2.65
+ },
+ "81dc30727cbe1b683280": {
+  "value": 2.65
+ },
+ "66cfef4be9e07628216a": {
+  "value": 2.65
+ },
+ "c4298f4d8ee530839f5f": {
+  "value": 60
+ },
+ "cfe8f855895fea2bcc21": {
+  "value": 60
+ },
+ "8fc934845459a4e69767": {
+  "value": 60
+ },
+ "ceb332f38e96f4ea0f0d": {
+  "value": 60
+ },
+ "651af1d4dbd52741e8a0": {
+  "value": 60
+ },
+ "3ff082763c6e09840b03": {
+  "value": 60
+ },
+ "a601eac1bb873408b73f": {
+  "value": 2.65
+ },
+ "7d8e1638a0cfe1f0e13d": {
+  "value": 2.65
+ },
+ "c2105b173bdf3dec58b9": {
+  "value": 2.65
+ },
+ "4fb607491996a551a695": {
+  "value": 2.65
+ },
+ "f9638b4b773d29ad2022": {
+  "value": 2.65
+ },
+ "2f5189e3a4cd8c604a7a": {
+  "value": 2.65
+ },
+ "115a2a9e0255957fa803": {
+  "value": 45976
+ },
+ "25e28274cb78572e56dd": {
+  "value": 45976
+ },
+ "5b09e929b24d0f949fe6": {
+  "value": 45976
+ },
+ "d9b68a5368b4e94f6e92": {
+  "value": 45976
+ },
+ "11f7a5f4044e5f9f8a6e": {
+  "value": 1905
+ },
+ "b0ffaa7b5558c63457b4": {
+  "value": 1905
+ },
+ "bfe303f63a9aba72435f": {
+  "value": 45976
+ },
+ "e781b47e7fc27fc67db1": {
+  "value": 45976
+ },
+ "aa83320039968a59bdbf": {
+  "value": 45976
+ },
+ "96d26c7bf8769957ed7b": {
+  "value": 45731
+ },
+ "20eb1527be6bebc7aa23": {
+  "value": 45731
+ },
+ "6844a6abe079f475c261": {
+  "value": 45731
+ },
+ "973cc713b52eeb8af8c0": {
+  "value": 45731
+ },
+ "83196aca3f88b4876563": {
+  "value": 1905
+ },
+ "c641eb4252c5df00a728": {
+  "value": 1905
+ },
+ "c9cfc57b3635e873140b": {
+  "value": 45731
+ },
+ "6c276d6ab28af9be6e83": {
+  "value": 45731
+ },
+ "924ff209614f9d2d6728": {
+  "value": 45731
+ },
+ "2435894017d562e3cb2c": {
+  "value": 46096
+ },
+ "fa77f9d6597308b85761": {
+  "value": 46096
+ },
+ "c98ce4acf74ebe28f857": {
+  "value": 46096
+ },
+ "2255390886387a0c0f69": {
+  "value": 46096
+ },
+ "40721af563437d63cc3f": {
+  "value": 1905
+ },
+ "de54505c4f09828150b7": {
+  "value": 1905
+ },
+ "9a617143871de8c0841e": {
+  "value": 46096
+ },
+ "476803c5d3f18ca642c8": {
+  "value": 46096
+ },
+ "3a0c429feda3b8d626e8": {
+  "value": 46096
+ },
+ "27ba71f7525929e8da81": {
+  "value": 192.51
+ },
+ "dbd9345b286f027bebff": {
+  "value": 192.51
+ },
+ "f467b0a4f9e200525061": {
+  "value": 192.51
+ },
+ "4af89dcfcb39960b9471": {
+  "value": 192.51
+ },
+ "f867575660d7e904ef28": {
+  "value": 0
+ },
+ "94be328e83891462d50f": {
+  "value": 0
+ },
+ "019f157e1730f0cef7a8": {
+  "value": 0
+ },
+ "fcb65c84f6b66a069b35": {
+  "value": 0
+ },
+ "c444289fcd9095263320": {
+  "value": 192.51
+ },
+ "06636ab407ca7c3603a3": {
+  "value": 192.51
+ },
+ "f51e6bb2f44c96c02cf3": {
+  "value": 192.51
+ },
+ "6813528894e2241d8fe9": {
+  "value": 198.45000000000002
+ },
+ "43d1f1a3cac463038fbe": {
+  "value": 198.45000000000002
+ },
+ "364046184325bca7dbf1": {
+  "value": 198.45
+ },
+ "5f775751bf0ec5390e6c": {
+  "value": 198.45
+ },
+ "d8a31997dff9a9ff965a": {
+  "value": 0
+ },
+ "74fe394bdc19b374d748": {
+  "value": 0
+ },
+ "382c2abd249dfc40522e": {
+  "value": 0
+ },
+ "3c2351c0fed2c9b9a4ad": {
+  "value": 0
+ },
+ "147ec1f13d41518f50aa": {
+  "value": 198.45000000000002
+ },
+ "45032814d7339a4da7d7": {
+  "value": 198.45000000000002
+ },
+ "c9a25000a5eb04296911": {
+  "value": 198.45000000000002
+ },
+ "d85ddce8584d226bdbe9": {
+  "value": 208.26
+ },
+ "02711b6342b077a833c6": {
+  "value": 208.26
+ },
+ "8867ab0c60e31b3dbe0a": {
+  "value": 208.26
+ },
+ "2634b305b0e7093ea7bb": {
+  "value": 208.26
+ },
+ "e2acce10b4f1888fee8e": {
+  "value": 0
+ },
+ "84e39d4071bc4780ec4d": {
+  "value": 0
+ },
+ "f1bd062cb56a952699c9": {
+  "value": 0
+ },
+ "2f26978ad66d002a7da3": {
+  "value": 0
+ },
+ "325991c458f9d9940e55": {
+  "value": 208.26
+ },
+ "ca6de2bd3161a6884606": {
+  "value": 208.26
+ },
+ "42a83321a4413d792d3f": {
+  "value": 208.26
+ },
+ "683fe4d33e8d5103c44a": {
+  "value": 160.42499999999998
+ },
+ "c2f07bb30917255596ce": {
+  "value": 160.42499999999998
+ },
+ "94338947347d0be9ea0b": {
+  "value": 160.42499999999998
+ },
+ "6cf63baef5f196f475dd": {
+  "value": 160.425
+ },
+ "0a25fe022fb8d5d0d4d2": {
+  "value": 0
+ },
+ "b251baaf6175b9b91198": {
+  "value": 0
+ },
+ "e7b5551ef7b26081e2c2": {
+  "value": 0
+ },
+ "4a014d33c318f86177c8": {
+  "value": 0
+ },
+ "a8078da0a955995a5d68": {
+  "value": 160.42499999999998
+ },
+ "19bb8aa7ed0e65ccbff7": {
+  "value": 160.42499999999998
+ },
+ "4c74866be9af22411827": {
+  "value": 160.42499999999998
+ },
+ "304c97f56ef70b7929bb": {
+  "value": 20
+ },
+ "f89832f48708a271ea01": {
+  "value": 20
+ },
+ "5c241904ab085ff48b41": {
+  "value": 20
+ },
+ "95cf9e123e926af67d7e": {
+  "value": 20
+ },
+ "2be229a88b1bba51672a": {
+  "value": 60
+ },
+ "36782da2ec472e168410": {
+  "value": 60
+ },
+ "5a85a7ae4a4445f78dcb": {
+  "value": 60
+ },
+ "e894c9130b9aadebb27d": {
+  "value": 60
+ },
+ "a0ab59f9967aad8b7ee3": {
+  "value": 60
+ },
+ "03029ce479dc799c2419": {
+  "value": 20
+ },
+ "f708676db0eb28472815": {
+  "value": 20
+ },
+ "1fa83b39f77aec66ef10": {
+  "value": 20
+ },
+ "bd53f5d9864221194dd7": {
+  "value": 20
+ },
+ "413e44d2375e9c5fd547": {
+  "value": 20
+ },
+ "36ee62ccf887e01fdee9": {
+  "value": 20
+ },
+ "34650eb84e200e08e7e7": {
+  "value": 20
+ },
+ "571cf43e43b68dd27185": {
+  "value": 20
+ },
+ "26099620d20093358551": {
+  "value": 20
+ },
+ "24693899231d9ed4e551": {
+  "value": 20
+ },
+ "459a37113967ca5d4628": {
+  "value": 110
+ },
+ "a6896562d9c4b49840c8": {
+  "value": 110
+ },
+ "879ed5f0b047b006da7a": {
+  "value": 110
+ },
+ "c91839c70f79594ed19c": {
+  "value": 110
+ },
+ "b95bdea533f98cedf15f": {
+  "value": 110
+ },
+ "5ff4dbc336b6efd6c578": {
+  "value": 20
+ },
+ "90a4a330cae6c1649837": {
+  "value": 20
+ },
+ "1311db6339c26e508238": {
+  "value": 20
+ },
+ "870658daefdf633d1865": {
+  "value": 20
+ },
+ "c7ebc443d8f4493feaa5": {
+  "value": 20
+ },
+ "a80a817b8b48056aa167": {
+  "value": 20
+ },
+ "ea8c31c5ca11fa5ec9ac": {
+  "value": 45
+ },
+ "fb63d537667f43fdbb9f": {
+  "value": 45
+ },
+ "2b9921de9835b9d0ceb1": {
+  "value": 45
+ },
+ "30aebaf9cb236784817e": {
+  "value": 45
+ },
+ "2b3f055c2608eb3c4553": {
+  "value": 45
+ },
+ "015b64a6fe5a0c439bf5": {
+  "value": 45
+ },
+ "754d357ad48e11752bb3": {
+  "value": 45
+ },
+ "5c7883d61ceb38a510d4": {
+  "value": 45
+ },
+ "3f7409c5d6446fecf188": {
+  "value": 45
+ },
+ "5580212cc8647d8448d4": {
+  "value": 45
+ },
+ "39b1b0518ac872c69963": {
+  "value": 60
+ },
+ "124af2a59bd0a117be66": {
+  "value": 60
+ },
+ "31afae58170c29baaaca": {
+  "value": 60
+ },
+ "543dcec95485d60fa476": {
+  "value": 60
+ },
+ "fbd5ba9151ff59477826": {
+  "value": 150
+ },
+ "2db96fe8f360bc12538d": {
+  "value": 150
+ },
+ "9903f2bd8e907c48d58f": {
+  "value": 150
+ },
+ "1909cd326c4fbaabd791": {
+  "value": 150
+ },
+ "29588cbb9662cb20f2cb": {
+  "value": 150
+ },
+ "ef1e14476e1e359436e2": {
+  "value": 60
+ },
+ "f61a6ad1d77196157e5d": {
+  "value": 60
+ },
+ "968070f1b0aa795121cc": {
+  "value": 60
+ },
+ "66858df24747d67654f8": {
+  "value": 60
+ },
+ "b258071ba274b4d9ef58": {
+  "value": 60
+ },
+ "e769f741933ec506796a": {
+  "value": 60
+ },
+ "316b20cb23dd47b17b02": {
+  "value": [
+   [
+    7
+   ],
+   [
+    11
+   ],
+   [
+    2
+   ],
+   [
+    13
+   ],
+   [
+    5
+   ],
+   [
+    1
+   ],
+   [
+    9
+   ],
+   [
+    15
+   ],
+   [
+    14
+   ],
+   [
+    6
+   ],
+   [
+    8
+   ],
+   [
+    3
+   ],
+   [
+    10
+   ],
+   [
+    4
+   ],
+   [
+    12
+   ]
+  ]
+ },
+ "dbebb46fc5e11c6b365f": {
+  "value": [
+   [
+    7
+   ],
+   [
+    11
+   ],
+   [
+    2
+   ],
+   [
+    13
+   ],
+   [
+    5
+   ],
+   [
+    1
+   ],
+   [
+    9
+   ],
+   [
+    15
+   ],
+   [
+    14
+   ],
+   [
+    6
+   ],
+   [
+    8
+   ],
+   [
+    3
+   ],
+   [
+    10
+   ],
+   [
+    4
+   ],
+   [
+    12
+   ]
+  ]
+ },
+ "90357c55eedb6076d790": {
+  "value": [
+   [
+    7
+   ],
+   [
+    11
+   ],
+   [
+    2
+   ],
+   [
+    13
+   ],
+   [
+    5
+   ],
+   [
+    1
+   ],
+   [
+    9
+   ],
+   [
+    15
+   ],
+   [
+    14
+   ],
+   [
+    6
+   ],
+   [
+    8
+   ],
+   [
+    3
+   ],
+   [
+    10
+   ],
+   [
+    4
+   ],
+   [
+    12
+   ]
+  ]
+ },
+ "43b5dff6683f4c62e06f": {
+  "value": [
+   [
+    7
+   ],
+   [
+    11
+   ],
+   [
+    2
+   ],
+   [
+    13
+   ],
+   [
+    5
+   ],
+   [
+    1
+   ],
+   [
+    9
+   ],
+   [
+    15
+   ],
+   [
+    14
+   ],
+   [
+    6
+   ],
+   [
+    8
+   ],
+   [
+    3
+   ],
+   [
+    10
+   ],
+   [
+    4
+   ],
+   [
+    12
+   ]
+  ]
+ },
+ "74d8ed1341171c605797": {
+  "value": {
+   "error": "#N/A"
+  }
+ },
+ "5af00bf380b9b4c6665c": {
+  "value": {
+   "error": "#N/A"
+  }
+ },
+ "ea9d1f6da4c99d4f1169": {
+  "value": {
+   "error": "#N/A"
+  }
+ },
+ "0b5d67ef44f7359696a4": {
+  "value": {
+   "error": "#N/A"
+  }
+ },
+ "68cb29b87d21ff03e2c7": {
+  "value": {
+   "error": "#N/A"
+  }
+ },
+ "ff8db39960d3429b9bb9": {
+  "value": [
+   [
+    7
+   ],
+   [
+    11
+   ],
+   [
+    2
+   ],
+   [
+    13
+   ],
+   [
+    5
+   ],
+   [
+    1
+   ],
+   [
+    9
+   ],
+   [
+    15
+   ],
+   [
+    14
+   ],
+   [
+    6
+   ],
+   [
+    8
+   ],
+   [
+    3
+   ],
+   [
+    10
+   ],
+   [
+    4
+   ],
+   [
+    12
+   ]
+  ]
+ },
+ "dfbe3164aa849467e0b5": {
+  "value": [
+   [
+    7
+   ],
+   [
+    11
+   ],
+   [
+    2
+   ],
+   [
+    13
+   ],
+   [
+    5
+   ],
+   [
+    1
+   ],
+   [
+    9
+   ],
+   [
+    15
+   ],
+   [
+    14
+   ],
+   [
+    6
+   ],
+   [
+    8
+   ],
+   [
+    3
+   ],
+   [
+    10
+   ],
+   [
+    4
+   ],
+   [
+    12
+   ]
+  ]
+ },
+ "6a8570b026808ae31701": {
+  "value": [
+   [
+    7
+   ],
+   [
+    11
+   ],
+   [
+    2
+   ],
+   [
+    13
+   ],
+   [
+    5
+   ],
+   [
+    1
+   ],
+   [
+    9
+   ],
+   [
+    15
+   ],
+   [
+    14
+   ],
+   [
+    6
+   ],
+   [
+    8
+   ],
+   [
+    3
+   ],
+   [
+    10
+   ],
+   [
+    4
+   ],
+   [
+    12
+   ]
+  ]
+ },
+ "4591e0a6602dcf3f0b73": {
+  "value": [
+   [
+    7
+   ],
+   [
+    11
+   ],
+   [
+    2
+   ],
+   [
+    13
+   ],
+   [
+    5
+   ],
+   [
+    1
+   ],
+   [
+    9
+   ],
+   [
+    15
+   ],
+   [
+    14
+   ],
+   [
+    6
+   ],
+   [
+    8
+   ],
+   [
+    3
+   ],
+   [
+    10
+   ],
+   [
+    4
+   ],
+   [
+    12
+   ]
+  ]
+ },
+ "e95d5ca0d8e4ed5ced5b": {
+  "value": [
+   [
+    8
+   ],
+   [
+    12
+   ],
+   [
+    2
+   ],
+   [
+    14
+   ],
+   [
+    6
+   ],
+   [
+    1
+   ],
+   [
+    10
+   ],
+   [
+    4
+   ],
+   [
+    15
+   ],
+   [
+    7
+   ],
+   [
+    9
+   ],
+   [
+    3
+   ],
+   [
+    11
+   ],
+   [
+    5
+   ],
+   [
+    13
+   ]
+  ]
+ },
+ "d71070957ce31cda2049": {
+  "value": [
+   [
+    8
+   ],
+   [
+    12
+   ],
+   [
+    2
+   ],
+   [
+    14
+   ],
+   [
+    6
+   ],
+   [
+    1
+   ],
+   [
+    10
+   ],
+   [
+    4
+   ],
+   [
+    15
+   ],
+   [
+    7
+   ],
+   [
+    9
+   ],
+   [
+    3
+   ],
+   [
+    11
+   ],
+   [
+    5
+   ],
+   [
+    13
+   ]
+  ]
+ },
+ "672e8593405b9245cb50": {
+  "value": [
+   [
+    8
+   ],
+   [
+    12
+   ],
+   [
+    2
+   ],
+   [
+    14
+   ],
+   [
+    6
+   ],
+   [
+    1
+   ],
+   [
+    10
+   ],
+   [
+    4
+   ],
+   [
+    15
+   ],
+   [
+    7
+   ],
+   [
+    9
+   ],
+   [
+    3
+   ],
+   [
+    11
+   ],
+   [
+    5
+   ],
+   [
+    13
+   ]
+  ]
+ },
+ "d7724e91de8f532112b4": {
+  "value": [
+   [
+    8
+   ],
+   [
+    12
+   ],
+   [
+    2
+   ],
+   [
+    14
+   ],
+   [
+    6
+   ],
+   [
+    1
+   ],
+   [
+    10
+   ],
+   [
+    4
+   ],
+   [
+    15
+   ],
+   [
+    7
+   ],
+   [
+    9
+   ],
+   [
+    3
+   ],
+   [
+    11
+   ],
+   [
+    5
+   ],
+   [
+    13
+   ]
+  ]
+ },
+ "a533d1bd384e73d6e8f8": {
+  "value": {
+   "error": "#N/A"
+  }
+ },
+ "ee368a331ffbfbb69277": {
+  "value": {
+   "error": "#N/A"
+  }
+ },
+ "97af61f2e9a6ec3d828e": {
+  "value": {
+   "error": "#N/A"
+  }
+ },
+ "bf05169c633017058a80": {
+  "value": {
+   "error": "#N/A"
+  }
+ },
+ "89d7ef455e476810dd16": {
+  "value": {
+   "error": "#N/A"
+  }
+ },
+ "f23963f2b0d19be6e3a3": {
+  "value": [
+   [
+    8
+   ],
+   [
+    12
+   ],
+   [
+    2
+   ],
+   [
+    14
+   ],
+   [
+    6
+   ],
+   [
+    1
+   ],
+   [
+    10
+   ],
+   [
+    4
+   ],
+   [
+    15
+   ],
+   [
+    7
+   ],
+   [
+    9
+   ],
+   [
+    3
+   ],
+   [
+    11
+   ],
+   [
+    5
+   ],
+   [
+    13
+   ]
+  ]
+ },
+ "d80fdf3ee8789fe9d259": {
+  "value": [
+   [
+    8
+   ],
+   [
+    12
+   ],
+   [
+    2
+   ],
+   [
+    14
+   ],
+   [
+    6
+   ],
+   [
+    1
+   ],
+   [
+    10
+   ],
+   [
+    4
+   ],
+   [
+    15
+   ],
+   [
+    7
+   ],
+   [
+    9
+   ],
+   [
+    3
+   ],
+   [
+    11
+   ],
+   [
+    5
+   ],
+   [
+    13
+   ]
+  ]
+ },
+ "4282e8f16a37ad4f8913": {
+  "value": [
+   [
+    8
+   ],
+   [
+    12
+   ],
+   [
+    2
+   ],
+   [
+    14
+   ],
+   [
+    6
+   ],
+   [
+    1
+   ],
+   [
+    10
+   ],
+   [
+    4
+   ],
+   [
+    15
+   ],
+   [
+    7
+   ],
+   [
+    9
+   ],
+   [
+    3
+   ],
+   [
+    11
+   ],
+   [
+    5
+   ],
+   [
+    13
+   ]
+  ]
+ },
+ "ae6e084b9cad227da1a1": {
+  "value": [
+   [
+    8
+   ],
+   [
+    12
+   ],
+   [
+    2
+   ],
+   [
+    14
+   ],
+   [
+    6
+   ],
+   [
+    1
+   ],
+   [
+    10
+   ],
+   [
+    4
+   ],
+   [
+    15
+   ],
+   [
+    7
+   ],
+   [
+    9
+   ],
+   [
+    3
+   ],
+   [
+    11
+   ],
+   [
+    5
+   ],
+   [
+    13
+   ]
+  ]
+ },
+ "1ead6aec4ac2eab50fdf": {
+  "value": [
+   [
+    1
+   ],
+   [
+    12
+   ],
+   [
+    3
+   ],
+   [
+    14
+   ],
+   [
+    7
+   ],
+   [
+    2
+   ],
+   [
+    10
+   ],
+   [
+    5
+   ],
+   [
+    15
+   ],
+   [
+    8
+   ],
+   [
+    9
+   ],
+   [
+    4
+   ],
+   [
+    11
+   ],
+   [
+    6
+   ],
+   [
+    13
+   ]
+  ]
+ },
+ "ff3812b28d483ba6693f": {
+  "value": [
+   [
+    1
+   ],
+   [
+    12
+   ],
+   [
+    3
+   ],
+   [
+    14
+   ],
+   [
+    7
+   ],
+   [
+    2
+   ],
+   [
+    10
+   ],
+   [
+    5
+   ],
+   [
+    15
+   ],
+   [
+    8
+   ],
+   [
+    9
+   ],
+   [
+    4
+   ],
+   [
+    11
+   ],
+   [
+    6
+   ],
+   [
+    13
+   ]
+  ]
+ },
+ "0aa9b43ac61d379504e1": {
+  "value": [
+   [
+    1
+   ],
+   [
+    12
+   ],
+   [
+    3
+   ],
+   [
+    14
+   ],
+   [
+    7
+   ],
+   [
+    2
+   ],
+   [
+    10
+   ],
+   [
+    5
+   ],
+   [
+    15
+   ],
+   [
+    8
+   ],
+   [
+    9
+   ],
+   [
+    4
+   ],
+   [
+    11
+   ],
+   [
+    6
+   ],
+   [
+    13
+   ]
+  ]
+ },
+ "925f30ee1b2821fa51a6": {
+  "value": [
+   [
+    1
+   ],
+   [
+    12
+   ],
+   [
+    3
+   ],
+   [
+    14
+   ],
+   [
+    7
+   ],
+   [
+    2
+   ],
+   [
+    10
+   ],
+   [
+    5
+   ],
+   [
+    15
+   ],
+   [
+    8
+   ],
+   [
+    9
+   ],
+   [
+    4
+   ],
+   [
+    11
+   ],
+   [
+    6
+   ],
+   [
+    13
+   ]
+  ]
+ },
+ "3b98fa4f5bfdffcaf1c9": {
+  "value": {
+   "error": "#N/A"
+  }
+ },
+ "05e33e01f5d4c38e30df": {
+  "value": {
+   "error": "#N/A"
+  }
+ },
+ "4327208e74abdc918311": {
+  "value": {
+   "error": "#N/A"
+  }
+ },
+ "513d2e12476a6bc774c7": {
+  "value": {
+   "error": "#N/A"
+  }
+ },
+ "949da8b4dc9524bb1da5": {
+  "value": {
+   "error": "#N/A"
+  }
+ },
+ "784e6b475f9aec7b331f": {
+  "value": [
+   [
+    1
+   ],
+   [
+    12
+   ],
+   [
+    3
+   ],
+   [
+    14
+   ],
+   [
+    7
+   ],
+   [
+    2
+   ],
+   [
+    10
+   ],
+   [
+    5
+   ],
+   [
+    15
+   ],
+   [
+    8
+   ],
+   [
+    9
+   ],
+   [
+    4
+   ],
+   [
+    11
+   ],
+   [
+    6
+   ],
+   [
+    13
+   ]
+  ]
+ },
+ "f28c93d4eb6bc0023859": {
+  "value": [
+   [
+    1
+   ],
+   [
+    12
+   ],
+   [
+    3
+   ],
+   [
+    14
+   ],
+   [
+    7
+   ],
+   [
+    2
+   ],
+   [
+    10
+   ],
+   [
+    5
+   ],
+   [
+    15
+   ],
+   [
+    8
+   ],
+   [
+    9
+   ],
+   [
+    4
+   ],
+   [
+    11
+   ],
+   [
+    6
+   ],
+   [
+    13
+   ]
+  ]
+ },
+ "e6aed3b3a58471c57f52": {
+  "value": [
+   [
+    1
+   ],
+   [
+    12
+   ],
+   [
+    3
+   ],
+   [
+    14
+   ],
+   [
+    7
+   ],
+   [
+    2
+   ],
+   [
+    10
+   ],
+   [
+    5
+   ],
+   [
+    15
+   ],
+   [
+    8
+   ],
+   [
+    9
+   ],
+   [
+    4
+   ],
+   [
+    11
+   ],
+   [
+    6
+   ],
+   [
+    13
+   ]
+  ]
+ },
+ "9c9c40ee4cf0f084cf83": {
+  "value": [
+   [
+    1
+   ],
+   [
+    12
+   ],
+   [
+    3
+   ],
+   [
+    14
+   ],
+   [
+    7
+   ],
+   [
+    2
+   ],
+   [
+    10
+   ],
+   [
+    5
+   ],
+   [
+    15
+   ],
+   [
+    8
+   ],
+   [
+    9
+   ],
+   [
+    4
+   ],
+   [
+    11
+   ],
+   [
+    6
+   ],
+   [
+    13
+   ]
+  ]
+ },
+ "03f7ea85a5ffb53863fe": {
+  "value": 5242.857142857143
+ },
+ "831ee096595876598513": {
+  "value": 5242.857142857143
+ },
+ "b1547208def3c500a86d": {
+  "value": 5242.857142857143
+ },
+ "d2fd90e55d1bd691725b": {
+  "value": 5242.857142857143
+ },
+ "d1c0f647205feb1018cd": {
+  "value": 5242.857142857143
+ },
+ "768eba539c1d10f86478": {
+  "value": 5242.857142857143
+ },
+ "35bcfcb761335096b67b": {
+  "value": 5242.857142857143
+ },
+ "1ac7df18dbd51732244a": {
+  "value": 5242.857142857143
+ },
+ "2610c70d3df19099b1e5": {
+  "value": 5242.857142857143
+ },
+ "39e4c87fdd623071d22f": {
+  "value": 5242.857142857143
+ },
+ "65eae56db805e5a297f0": {
+  "value": 5900
+ },
+ "a926db4cfed4a9207d00": {
+  "value": 5900
+ },
+ "922dc3b26f5bef7d4ca8": {
+  "value": 5900
+ },
+ "200c63650774d474e44b": {
+  "value": 5900
+ },
+ "957a63c50ea006348db1": {
+  "value": 5900
+ },
+ "983392a08fc60215087f": {
+  "value": 5592.857142857143
+ },
+ "2a72f40d56ae55fc1c90": {
+  "value": 5592.857142857143
+ },
+ "cf7d83a12554be74900f": {
+  "value": 5592.857142857143
+ },
+ "8850c1c74de2d5e0271f": {
+  "value": 5592.857142857143
+ },
+ "650d11abbf5c69812871": {
+  "value": 5592.857142857143
+ },
+ "fd3d64d1913691850bca": {
+  "value": 95.5
+ },
+ "8548547416cced28c54b": {
+  "value": 95.5
+ },
+ "d252f78f8e9a2005bd28": {
+  "value": 95.5
+ },
+ "dc3fb5fd3bb961d9ea0a": {
+  "value": 95.5
+ },
+ "85e2c1ea9808bdaa0757": {
+  "value": 95.75
+ },
+ "3f4b05fec9f88183618e": {
+  "value": 95.75
+ },
+ "283abadcad6c12cac370": {
+  "value": 95.75
+ },
+ "d25c689b301e3ddae351": {
+  "value": 95.75
+ },
+ "72b3390492e2717a7cd0": {
+  "value": 0.6923076923076923
+ },
+ "d756669d5de0c1226ce9": {
+  "value": 0.6923076923076923
+ },
+ "06a471dedbc60e13cc73": {
+  "value": 0.6923076923076923
+ },
+ "58ecf806bdb7401ed4ce": {
+  "value": 0.6923076923076923
+ },
+ "153bd8651709814f4d82": {
+  "value": 0.8888888888888888
+ },
+ "9c5bd2eb8df8c6ae7507": {
+  "value": 0.8888888888888888
+ },
+ "4e500332a52096eca1ef": {
+  "value": 0.8888888888888888
+ },
+ "2ac790feb37558f613a0": {
+  "value": 0.8888888888888888
+ },
+ "7e05362cca5d5568d7aa": {
+  "value": 0.6923076923076923
+ },
+ "8229734829ee0c663526": {
+  "value": 0.6923076923076923
+ },
+ "b1cdba6a2ee0a78fd856": {
+  "value": 0.6923076923076923
+ },
+ "c0a82ec115f09ea63657": {
+  "value": 0.6923076923076923
+ },
+ "33350c435f395e9ce746": {
+  "value": 0.75
+ },
+ "06400f91d06fa304ca10": {
+  "value": 0.75
+ },
+ "eda303e388d078d90198": {
+  "value": 0.75
+ },
+ "ce859415e8315614b84b": {
+  "value": 0.75
+ },
+ "24f315eeb3a37713d562": {
+  "value": 0.8888888888888888
+ },
+ "7531fce0daf7e3012bb6": {
+  "value": 0.8888888888888888
+ },
+ "7435b10b8273b230bc58": {
+  "value": 0.8888888888888888
+ },
+ "617b242a30e0af6d2e67": {
+  "value": 0.8888888888888888
+ },
+ "3cd65520a8a7fa278de8": {
+  "value": 0.75
+ },
+ "f655194653f939d5f490": {
+  "value": 0.75
+ },
+ "b7558609627e78b21cc7": {
+  "value": 0.75
+ },
+ "ef27601fa618573096a9": {
+  "value": 0.75
+ },
+ "c197cf38c15d1c21933a": {
+  "value": 0.7272727272727273
+ },
+ "0ee2ab75624d1bf24569": {
+  "value": 0.7272727272727273
+ },
+ "edb2dac0553b74759a86": {
+  "value": 0.7272727272727273
+ },
+ "7c5c927100da4c045b18": {
+  "value": 0.7272727272727273
+ },
+ "304842b9d0403b68995c": {
+  "value": 0.875
+ },
+ "d47171c84133069501d7": {
+  "value": 0.875
+ },
+ "f6b483997fc7c6648705": {
+  "value": 0.875
+ },
+ "08d5de29e5e7f7f643e0": {
+  "value": 0.875
+ },
+ "ebed4a8fb3fc2f5ad6ad": {
+  "value": 0.7272727272727273
+ },
+ "43921c24ece7b1f81c6b": {
+  "value": 0.7272727272727273
+ },
+ "6475355e2a4fa9e581eb": {
+  "value": 0.7272727272727273
+ },
+ "41682cfeffbe30151800": {
+  "value": 0.7272727272727273
+ },
+ "084890408b6829be4e69": {
+  "value": 0.8333333333333334
+ },
+ "69c61a87317d4dbcef3b": {
+  "value": 0.8333333333333334
+ },
+ "69b73af2a7147af7fd55": {
+  "value": 0.8333333333333334
+ },
+ "8f82c9d37adc0fcb77ef": {
+  "value": 0.8333333333333334
+ },
+ "80b70dc9561ba4d77eeb": {
+  "value": 0.8
+ },
+ "eebc28791e46b346a5ab": {
+  "value": 0.8
+ },
+ "f878c67139eebc53b7fa": {
+  "value": 0.8
+ },
+ "70a5638ae830d5ba7341": {
+  "value": 0.8
+ },
+ "4f4a3507a8ef79ccb444": {
+  "value": 0.8333333333333334
+ },
+ "36c436c663cd4ed42fd3": {
+  "value": 0.8333333333333334
+ },
+ "76367097b6656079246a": {
+  "value": 0.8333333333333334
+ },
+ "8f4063f428fbc364fe04": {
+  "value": 0.8333333333333334
+ },
+ "a203749111d73724b3a2": {
+  "value": 17
+ },
+ "bbf093e9ef0364abbe41": {
+  "value": 17
+ },
+ "6947596a628accc49368": {
+  "value": 17
+ },
+ "1e1ac7bffabe96f87c54": {
+  "value": 17
+ },
+ "466c3c63f2dc90c71626": {
+  "value": 0
+ },
+ "c5ea00218818eda804d7": {
+  "value": 0
+ },
+ "36a619c7874e7febbcae": {
+  "value": 0
+ },
+ "08d5de0cbfd272dcdcfe": {
+  "value": 0
+ },
+ "a160b1ccb2ae16f3fa43": {
+  "value": 17
+ },
+ "bea482f7c92e6f620a98": {
+  "value": 17
+ },
+ "1ee6beb59fe0316a3254": {
+  "value": 17
+ },
+ "552372834608ab5f3678": {
+  "value": 17
+ },
+ "d1fc1d1a11b9c61cbf81": {
+  "value": 21.25
+ },
+ "ea990e7fca402d7f1c63": {
+  "value": 21.25
+ },
+ "d337de10efa861b22783": {
+  "value": 21.25
+ },
+ "a0a650a33a47001aed9a": {
+  "value": 21.25
+ },
+ "0a6234300dc9a3e468a5": {
+  "value": 0
+ },
+ "cbd572b32c8eeca9fe9f": {
+  "value": 0
+ },
+ "b878adc7d082641deb28": {
+  "value": 0
+ },
+ "9c2545cdfb7e491efeea": {
+  "value": 0
+ },
+ "96359cb3549e5089881e": {
+  "value": 21.25
+ },
+ "57cf3fc7a250a5331a62": {
+  "value": 21.25
+ },
+ "19e5f6c5a45be21f008e": {
+  "value": 21.25
+ },
+ "ca2131b1abb709727a53": {
+  "value": 21.25
+ },
+ "0333708e32f988469c3e": {
+  "value": 23.7575
+ },
+ "a2f6e06dc6227e5f5873": {
+  "value": 23.7575
+ },
+ "219c55045ab8b3fb5ba1": {
+  "value": 23.7575
+ },
+ "8dea7d2a712c9db329ce": {
+  "value": 23.7575
+ },
+ "bf76da5bb5f8e4d7fe4b": {
+  "value": 0
+ },
+ "e3bafc584058ca502aa8": {
+  "value": 0
+ },
+ "0692f8c84acc600606ea": {
+  "value": 0
+ },
+ "abce10d21ca310820866": {
+  "value": 0
+ },
+ "b82adf99153af90b041f": {
+  "value": 23.7575
+ },
+ "524136906ef201fb1e58": {
+  "value": 23.7575
+ },
+ "dbb8ef8e6bc43bcedeb9": {
+  "value": 23.7575
+ },
+ "d071f70442f7d3fc37ba": {
+  "value": 23.7575
+ },
+ "a306475ae5d99f5810d7": {
+  "value": 22.36
+ },
+ "0520fb7780d14ff85bdb": {
+  "value": 22.36
+ },
+ "acc5d4886ab15e73333c": {
+  "value": 22.36
+ },
+ "3ddc87f9049c7af667f9": {
+  "value": 22.36
+ },
+ "65a2d05ea84a46380569": {
+  "value": 0
+ },
+ "911f9ebe7db05b3e4e92": {
+  "value": 0
+ },
+ "19ac52e28c4bd7459561": {
+  "value": 0
+ },
+ "e5300c5f9cfdf80d5af4": {
+  "value": 0
+ },
+ "788e967efe0aff45556c": {
+  "value": 22.36
+ },
+ "211ed2c2df1468325236": {
+  "value": 22.36
+ },
+ "ecb4a47bb9ea925ca959": {
+  "value": 22.36
+ },
+ "5c81de0105344320b706": {
+  "value": 22.36
+ },
+ "6355f185695b01a52ae2": {
+  "value": 5
+ },
+ "74ef925d6febd6f7bfcb": {
+  "value": 5
+ },
+ "8a6e49be3b77e3f526ce": {
+  "value": 5
+ },
+ "c66b5db3c26005a80c53": {
+  "value": 5
+ },
+ "aba74b395958499465e1": {
+  "value": 7
+ },
+ "111c58e7ed4b56d731cb": {
+  "value": 7
+ },
+ "ae4b80dc18f31bb6cf34": {
+  "value": 7
+ },
+ "856d0ad407c26bb6f24a": {
+  "value": 7
+ },
+ "6577080ef80dd730b913": {
+  "value": 5
+ },
+ "7efcf95e8859d298c6cb": {
+  "value": 5
+ },
+ "0e35a4710cc65000e43f": {
+  "value": 5
+ },
+ "865c79b033d7a0a45881": {
+  "value": 5
+ },
+ "1acb4877f3426a406874": {
+  "value": 7
+ },
+ "868b78a2ae9bc69465ff": {
+  "value": 7
+ },
+ "b7253c8ee0d916803b51": {
+  "value": 7
+ },
+ "885fcfb6531bf31375f7": {
+  "value": 7
+ },
+ "25b366a2899d109cb855": {
+  "value": 8
+ },
+ "ea822b649bbf43773072": {
+  "value": 8
+ },
+ "af9ff2ef156780c2fefa": {
+  "value": 8
+ },
+ "4c963011c04bc71e2b5f": {
+  "value": 8
+ },
+ "34f427e82c15cf568aa8": {
+  "value": 7
+ },
+ "e405fb6bd0f99efe4f7d": {
+  "value": 7
+ },
+ "3cd029f534faa9c7fed3": {
+  "value": 7
+ },
+ "0eadf0ae0e294e772e90": {
+  "value": 7
+ },
+ "e7ee67682418ad1f5137": {
+  "value": 6
+ },
+ "4e91c191058e0d628584": {
+  "value": 6
+ },
+ "afe23d1355724e1de539": {
+  "value": 6
+ },
+ "93ea270919dca3289425": {
+  "value": 6
+ },
+ "0dd63ae2b9b1aa7951d7": {
+  "value": 8
+ },
+ "f43ce5fc4896cd438233": {
+  "value": 8
+ },
+ "086bd057c7edc6d1d980": {
+  "value": 8
+ },
+ "5d5aaf08a1ed0b19e0c4": {
+  "value": 8
+ },
+ "72c8f8bdf867db055001": {
+  "value": 6
+ },
+ "24f1ec7b9c5e83c26466": {
+  "value": 6
+ },
+ "16adcd70c9e55efb0a65": {
+  "value": 6
+ },
+ "ae61e4f03ef5716038fe": {
+  "value": 6
+ },
+ "52a882c27c6788367957": {
+  "value": 7
+ },
+ "f1c27c565fb1908f8c83": {
+  "value": 7
+ },
+ "5a2864c630242e0cdb59": {
+  "value": 7
+ },
+ "f895bfe1f56a4d493a81": {
+  "value": 7
+ },
+ "344a280a3d643156993d": {
+  "value": 9
+ },
+ "75f1387e453be7b5bbf9": {
+  "value": 9
+ },
+ "f001eadda6eb85c00051": {
+  "value": 9
+ },
+ "8671c4273f27524d5839": {
+  "value": 9
+ },
+ "be8b54e4c8355572fc45": {
+  "value": 7
+ },
+ "8e262d1d6ace3683545c": {
+  "value": 7
+ },
+ "d6f1810fc7b833543811": {
+  "value": 7
+ },
+ "29e9ce77cc2ffd4df6e6": {
+  "value": 7
+ },
+ "a17204b7ec2ff7437fb8": {
+  "value": 0.3
+ },
+ "7886691099bac0db7328": {
+  "value": 0.3
+ },
+ "ac40d649ceef13360ad4": {
+  "value": 0.3
+ },
+ "9d35232314d03c578bc4": {
+  "value": 0.3
+ },
+ "e36512575784fc33fa8e": {
+  "value": 0.3
+ },
+ "18f5d70fbd75e4d8c844": {
+  "value": 0.3
+ },
+ "140208a376863b33e088": {
+  "value": 0.3
+ },
+ "bf353cd299c98d4dfa50": {
+  "value": 0.4
+ },
+ "a90fd22ab4ba96ccd645": {
+  "value": 0.4
+ },
+ "e273d391d1d1c5ae81bf": {
+  "value": 0.4
+ },
+ "78e5d7952dac45ec3139": {
+  "value": 0.4
+ },
+ "906b6c80443adf056d07": {
+  "value": 0.4
+ },
+ "f874fcd4d5ec01be3820": {
+  "value": 0.4
+ },
+ "f519146aaa8dead00e99": {
+  "value": 0.4
+ },
+ "afb826edcc896707874b": {
+  "value": 0.5
+ },
+ "67aea55ee8aca6e4e014": {
+  "value": 0.5
+ },
+ "e6215e6906adeb13c64e": {
+  "value": 0.5
+ },
+ "8487587f94bc47e382f2": {
+  "value": 0.5
+ },
+ "65e2e939ce2c716e0429": {
+  "value": 0.5
+ },
+ "185efad33575e7403f8b": {
+  "value": 0.5
+ },
+ "1ae98e94afdfff802ca7": {
+  "value": 0.5
+ },
+ "053801c9eb83aab7ba4f": {
+  "value": 0.5
+ },
+ "a6ed60e4d4bbc721c33a": {
+  "value": 0.5
+ },
+ "809a73f0e9bd63e52d9d": {
+  "value": 0.5
+ },
+ "aa138bacb5bfb81ec7e8": {
+  "value": 0.5
+ },
+ "f4255da94b2e90a2d111": {
+  "value": 0.5
+ },
+ "bb266727e7341f87bf95": {
+  "value": 0.5
+ },
+ "432877ace6618d307bca": {
+  "value": 0.5
+ },
+ "f6d31e02c7d880834610": {
+  "value": 5
+ },
+ "7c61a7078eedf9a78227": {
+  "value": 5
+ },
+ "b3f04d3fcd7a9dadad42": {
+  "value": 5
+ },
+ "477a400654e945f9a3d0": {
+  "value": 5
+ },
+ "8c4f5980373cdef8ebed": {
+  "value": 5
+ },
+ "37983055ef1157a7a08b": {
+  "value": 6
+ },
+ "0b7b45b0c4ffe118b6e1": {
+  "value": 6
+ },
+ "02fc9be220f36ee90a1f": {
+  "value": 6
+ },
+ "4130c3912810518a7030": {
+  "value": 6
+ },
+ "8ab30f6a87f0d4087fec": {
+  "value": 6
+ },
+ "93eff0a704758f7404a5": {
+  "value": 7
+ },
+ "23ee37fb3a3ca26959c8": {
+  "value": 7
+ },
+ "c50b6c76ba2c156c1bbe": {
+  "value": 7
+ },
+ "916da6182aeebe45ab39": {
+  "value": 7
+ },
+ "4e1371155bbd83223793": {
+  "value": 7
+ },
+ "9ac246b9644ef6c97a0e": {
+  "value": 7
+ },
+ "e9a9d272427b7468c1d4": {
+  "value": 7
+ },
+ "4580ba5445acc38679ae": {
+  "value": 7
+ },
+ "c636033eed7dad5044cc": {
+  "value": 7
+ },
+ "69981dae0ec349accbe1": {
+  "value": 7
+ },
+ "9b5cb1c87e20b5de1d22": {
+  "value": 100
+ },
+ "6f18f007b2acb8abaaa8": {
+  "value": 100
+ },
+ "2b90de7152184e683f7f": {
+  "value": 100
+ },
+ "860b4275e5f908e990e6": {
+  "value": 100
+ },
+ "128dc4925678cc504e86": {
+  "value": 100
+ },
+ "d1497ad0834593ad701b": {
+  "value": 100
+ },
+ "c205b1758670293d69d7": {
+  "value": 55
+ },
+ "c5e3c45fe41447bf76d3": {
+  "value": 55
+ },
+ "bf0f46b69b2248eafd6d": {
+  "value": 55
+ },
+ "0fce393a9ac497712031": {
+  "value": 55
+ },
+ "f3b4d5373402c98c90ff": {
+  "value": 55
+ },
+ "8e0504a6852a3975f0d5": {
+  "value": 55
+ },
+ "c204f4fa49c4952a35b8": {
+  "value": 0
+ },
+ "b465209419811cda1474": {
+  "value": 0
+ },
+ "329abf77bc5418d9b7a4": {
+  "value": 0
+ },
+ "63154aaf1ccf9617a487": {
+  "value": 0
+ },
+ "7384fa675878b2b55f4a": {
+  "value": 0
+ },
+ "499b9265b24906f831a0": {
+  "value": 0
+ },
+ "979139d4445bf4b02df7": {
+  "value": 40
+ },
+ "574b1792dba2c83c96b8": {
+  "value": 40
+ },
+ "2a1e2fc832e6b73080e2": {
+  "value": 40
+ },
+ "3598554b9a1d1e8d5de0": {
+  "value": 40
+ },
+ "3980e5256bce133341f1": {
+  "value": 40
+ },
+ "230a44957878234c3882": {
+  "value": 40
+ },
+ "078ae361ce630fde1e14": {
+  "value": "check"
+ },
+ "9664d4b080e6f0d83bc0": {
+  "value": "check"
+ },
+ "78a2ebfbe6ebc6807026": {
+  "value": "check"
+ },
+ "74a18129a6f2c0bf72f6": {
+  "value": "ready"
+ },
+ "ea34197af9081b9a3edf": {
+  "value": "ready"
+ },
+ "74ef2336d475c414274b": {
+  "value": "ready"
+ },
+ "56396d794f701fd8d885": {
+  "value": "check"
+ },
+ "80495814a74ae7edd788": {
+  "value": "check"
+ },
+ "f8af66e72467d9ce63a1": {
+  "value": "check"
+ },
+ "c1e27f07cad22fb33b5d": {
+  "value": "ready"
+ },
+ "4ea236eeb1c5cce9b542": {
+  "value": "ready"
+ },
+ "7ba54d8b86831425311c": {
+  "value": "ready"
+ },
+ "0188f07da2d4af6afb8d": {
+  "value": 1
+ },
+ "432ef59e3751a7fb953d": {
+  "value": 1
+ },
+ "712c6d90dea155c25d3d": {
+  "value": 1
+ },
+ "3ebf63bcf94f21937146": {
+  "value": 1
+ },
+ "6a0725ea813eef3c566b": {
+  "value": 1
+ },
+ "827de7b4a34bfffd91f1": {
+  "value": 3
+ },
+ "2a0d807b9998a2dc7e51": {
+  "value": 3
+ },
+ "97a3e1307242061b1ea7": {
+  "value": 3
+ },
+ "84c3150061e4cf63954b": {
+  "value": 3
+ },
+ "7835dd292caec9cd9222": {
+  "value": 3
+ },
+ "c5cb4ac6dc6a1865f7e3": {
+  "value": 1
+ },
+ "f412722d941dff1c1f3b": {
+  "value": 1
+ },
+ "4936f3f61d5891892a2b": {
+  "value": 1
+ },
+ "c7312e0be52055ed9acc": {
+  "value": 1
+ },
+ "1e6db431c8a3eb997fba": {
+  "value": 1
+ },
+ "107f7251e9a98642a049": {
+  "value": 2
+ },
+ "599d789c10b42ad8b3dd": {
+  "value": 2
+ },
+ "b3376c863ad0dc06fc28": {
+  "value": 2
+ },
+ "9e1ca94a334e7f4c344b": {
+  "value": 2
+ },
+ "7239ad59e3e8a78805eb": {
+  "value": 2
+ },
+ "342977c25eb7178c1b0d": {
+  "value": "close"
+ },
+ "1f248a9143764ba254c1": {
+  "value": "close"
+ },
+ "719e1a795bd98ea30c9c": {
+  "value": "close"
+ },
+ "9f364405a902bcf59021": {
+  "value": "close"
+ },
+ "eadeca8a90cd226fc016": {
+  "value": "close"
+ },
+ "21a3c315d25f1630ff52": {
+  "value": "close"
+ },
+ "cfc5f67e8aa478cd5977": {
+  "value": "close"
+ },
+ "fad1d0350eb3aa7f4eea": {
+  "value": "close"
+ },
+ "f081254313282b7e0d72": {
+  "value": "close"
+ },
+ "93e31a1e0ba56734c6be": {
+  "value": "close"
+ },
+ "b8d1a722cfec1ac72a5c": {
+  "value": 3
+ },
+ "95c54c7afe9d400646b2": {
+  "value": 3
+ },
+ "ae4e298343f14c3bf3d5": {
+  "value": 3
+ },
+ "ddac753c365c0754b7d9": {
+  "value": 3
+ },
+ "d392b4ffb10161aa35dd": {
+  "value": 3
+ },
+ "70e78ba49a26203b15e7": {
+  "value": 1
+ },
+ "ddb0a60fa28e39116ef4": {
+  "value": 1
+ },
+ "13e4c87d9e9ba5d9d783": {
+  "value": 1
+ },
+ "c1a483f84fc2bde6a828": {
+  "value": 1
+ },
+ "048a2d72b13f96d47080": {
+  "value": 1
+ },
+ "5e14d53e93f434dcd76b": {
+  "value": 2
+ },
+ "b08da26e11ed73ba3ba4": {
+  "value": 3
+ },
+ "1ddf1deb7bf929b33991": {
+  "value": 5
+ },
+ "ded655c0e1ede009684c": {
+  "value": 830
+ },
+ "aac162322e3f69903316": {
+  "value": 860
+ },
+ "b44f9c367074d5221bb0": {
+  "value": 830
+ },
+ "0f04f9b421bb6e973fa3": {
+  "value": 910
+ },
+ "db6043ade292fb7dc13e": {
+  "value": 910
+ },
+ "dc6c4ff4f60fe1ee8380": {
+  "value": "engines"
+ },
+ "f3b72b0557d222059836": {
+  "value": "engines"
+ },
+ "4c398eae2308b073d61f": {
+  "value": "engines"
+ },
+ "118eb7d31bd60fc12304": {
+  "value": "engines"
+ },
+ "af176c976a3846eb585a": {
+  "value": "bletchley"
+ },
+ "96c329bc00f752f59fec": {
+  "value": "bletchley"
+ },
+ "fdae0e940f1e1a8b032c": {
+  "value": "bletchley"
+ },
+ "f846a4457194c879008e": {
+  "value": "bletchley"
+ },
+ "c80a2aab3381af67c996": {
+  "value": "navy"
+ },
+ "ddfb2c7600dae3066708": {
+  "value": "navy"
+ },
+ "a9fddc7caa95b4391292": {
+  "value": "navy"
+ },
+ "a5425683d6b799a48582": {
+  "value": "navy"
+ },
+ "e025df3e5edfcd13a758": {
+  "value": "nasa"
+ },
+ "d56e5d4b1912f08dacc6": {
+  "value": "nasa"
+ },
+ "30a9d41b51d2ab5f48b4": {
+  "value": "nasa"
+ },
+ "f8786b3ff00e42af1259": {
+  "value": "nasa"
+ },
+ "b2109746e040e943be15": {
+  "value": 3735
+ },
+ "ded1fb5ab71e72dfc5b2": {
+  "value": 3745
+ },
+ "627493033baf8d6cc55f": {
+  "value": 3765
+ },
+ "53fda359a3ec606dcaa5": {
+  "value": 6
+ },
+ "2af4fbbe6a72c48820f8": {
+  "value": 6
+ },
+ "ca9ad1ab0b344d1fc35b": {
+  "value": 6
+ },
+ "2886ef0de1745a986384": {
+  "value": 5
+ },
+ "be0b6ae69d6c1f0a0c84": {
+  "value": 5
+ },
+ "27a0c52507e6003ed26c": {
+  "value": 5
+ },
+ "8329d198f4d2ddb0b250": {
+  "value": 4
+ },
+ "6df7bd200125705d1e14": {
+  "value": 4
+ },
+ "eab2cf9428cbe98bdd02": {
+  "value": 4
+ },
+ "75ac5e943d5ee75d65e2": {
+  "value": 3
+ },
+ "c3b1e5254d5be1e25634": {
+  "value": 3
+ },
+ "dd005b8bd02c93a78eb9": {
+  "value": 3
+ },
+ "c40a35ca5d5ac4b35f23": {
+  "value": 1
+ },
+ "6aed6c747e0abd3308cb": {
+  "value": 1
+ },
+ "8f629391fe46a32c2190": {
+  "value": 1
+ },
+ "e64c1c8def25e2922d4b": {
+  "value": 2
+ },
+ "e1cef23d332ecb69a826": {
+  "value": 2
+ },
+ "bbc6785a58aa83fd0a39": {
+  "value": 2
+ },
+ "2958a40fc571b1b30dc4": {
+  "value": 14
+ },
+ "d9df8971c83c6b8e4174": {
+  "value": 14
+ },
+ "77a8dc2a82caf37863e6": {
+  "value": 14
+ },
+ "6d044b90fea70882cad8": {
+  "value": 12.4
+ },
+ "3579c3f42c41d8d3d4d0": {
+  "value": 12.4
+ },
+ "b7d8414befe059552617": {
+  "value": 12.4
+ },
+ "b4021b6e4237a0bc1a77": {
+  "value": 660
+ },
+ "2ce14158797d78eb1fa0": {
+  "value": 660
+ },
+ "d5ba69a907eb19a8d774": {
+  "value": 560
+ },
+ "c58440aa793e01b700d2": {
+  "value": 560
+ },
+ "7e4fe3778e2efaedebf2": {
+  "value": 500
+ },
+ "43eaad4b1fe50b98091c": {
+  "value": 500
+ },
+ "e98d2fb4cc3a07a6e09f": {
+  "value": 640
+ },
+ "447155520fe5cc39e764": {
+  "value": 640
+ },
+ "20088bca3f5a985de5c6": {
+  "value": 20
+ },
+ "f457c6ac09715196e9c1": {
+  "value": 20
+ },
+ "81cd0ade0866981c182e": {
+  "value": 20
+ },
+ "f80b2e3b20a890e0b933": {
+  "value": 20
+ },
+ "9a5b6251c573ea0cf194": {
+  "value": 20
+ },
+ "c658478ed0df66c04b18": {
+  "value": 20
+ },
+ "a7619be31f1819eef31a": {
+  "value": 20
+ },
+ "50cfbd2bd84c11708952": {
+  "value": 20
+ },
+ "7b9c84737baea9643c5f": {
+  "value": 20
+ },
+ "97c7f49a384da0860a0d": {
+  "value": 20
+ },
+ "f9593407bdc4696fe34a": {
+  "value": 45
+ },
+ "3cedabfe797ee1e7140a": {
+  "value": 45
+ },
+ "71e7b7bc255556b131ef": {
+  "value": 45
+ },
+ "00f82d796fd373ba5e84": {
+  "value": 45
+ },
+ "853eca58a3833c9a7823": {
+  "value": 45
+ },
+ "604306ae5c8ec7c7914c": {
+  "value": 60
+ },
+ "bbe1bb5ec383f6d55455": {
+  "value": 60
+ },
+ "44648cffb0018cefbd79": {
+  "value": 60
+ },
+ "5d2195fc66bd540587f6": {
+  "value": 60
+ },
+ "e0d8056bb03451167315": {
+  "value": 60
+ },
+ "0060a5908b89ddba93f5": {
+  "value": 17
+ },
+ "6e040c109668a26308b3": {
+  "value": 21.25
+ },
+ "708d154e3c056d0e04c0": {
+  "value": 23.7575
+ },
+ "176d8c2bd225d3f88c67": {
+  "value": 22.36
+ },
+ "87271cee6650fc8ea60c": {
+  "value": 0.3
+ },
+ "2849caec060c9f50d433": {
+  "value": 0.4
+ },
+ "f4a6f4f2d3d3d55a9dfe": {
+  "value": 0.5
+ },
+ "38ebbc689794a48674da": {
+  "value": 0.5
+ },
+ "012c1be1b82916055749": {
+  "value": 100
+ },
+ "5b552e52945e7cb75e89": {
+  "value": 100
+ },
+ "94e8f83bedc71f33d38b": {
+  "value": 100
+ },
+ "03659e1585d585ce4219": {
+  "value": 100
+ },
+ "e5ce92489071ac246ee4": {
+  "value": 100
+ },
+ "10552cc35ba13a86f7c8": {
+  "value": 55
+ },
+ "2951805df61d01ce8376": {
+  "value": 55
+ },
+ "e3243dee3bfc3b7a4dd8": {
+  "value": 55
+ },
+ "510a33e6f68545b93bef": {
+  "value": 55
+ },
+ "22fa3f9e3f05d9f15d46": {
+  "value": 55
+ },
+ "7b230aeec5bbe9fbe1a7": {
+  "value": 0
+ },
+ "600fbed33cee82925a63": {
+  "value": 0
+ },
+ "8b95f05e35f4f9bfa4c1": {
+  "value": 0
+ },
+ "a571c0da25ee800d004e": {
+  "value": 0
+ },
+ "410b35263c740404b657": {
+  "value": 0
+ },
+ "63576c2b59d15a8ab920": {
+  "value": 40
+ },
+ "0b33087f91cf96cd9f6d": {
+  "value": 40
+ },
+ "61ec89292daa49ee11c5": {
+  "value": 40
+ },
+ "58c73d6041d358c78a13": {
+  "value": 40
+ },
+ "417a559620bf952339c4": {
+  "value": 40
+ },
+ "250374d2a342af770bca": {
+  "value": "ready"
+ },
+ "e47210695d1545c72e58": {
+  "value": "ready"
+ },
+ "eedeee35c70b80ed1158": {
+  "value": "ready"
+ },
+ "276e3da268fa635bb9ef": {
+  "value": "ready"
+ },
+ "d555714d01f4fac855c3": {
+  "value": "ready"
+ },
+ "c2546b63b0882d910b4e": {
+  "value": "ready"
+ },
+ "a73a7b7ef447b5a21f08": {
+  "value": "ready"
+ },
+ "67fb1b140476ef811091": {
+  "value": "ready"
+ },
+ "2426296a1ec0c3a24bcf": {
+  "value": "check"
+ },
+ "a19752ccd097ccd45932": {
+  "value": "check"
+ },
+ "b0df39e6174e4a3d3218": {
+  "value": "check"
+ },
+ "ca49b07179206eed0ef2": {
+  "value": "check"
+ },
+ "a450125da381f2c1c132": {
+  "value": "check"
+ },
+ "a8887e5c692836f9a6b7": {
+  "value": "check"
+ },
+ "a1f6995377166c8e59e8": {
+  "value": "check"
+ },
+ "abf68f42dcac0f2bbfb1": {
+  "value": "check"
+ },
+ "e450b9577459f539594d": {
+  "value": 3
+ },
+ "66968507047f72829b5b": {
+  "value": 3
+ },
+ "1d2fa5a97e73b78ad5c4": {
+  "value": 3
+ },
+ "0482f0cbb946f089151c": {
+  "value": 3
+ },
+ "042ae182c7d2c3b5c305": {
+  "value": 3
+ },
+ "956b9216eb4388099d87": {
+  "value": 3
+ },
+ "972c9e4eb646f682790c": {
+  "value": 3
+ },
+ "141444730463f33f5bca": {
+  "value": 3
+ },
+ "a543da8d190308a290f9": {
+  "value": 3
+ },
+ "430e86784d1ed14287e0": {
+  "value": 3
+ },
+ "06723445f401156d7940": {
+  "value": 3
+ },
+ "ed2e97df2649a6662eb6": {
+  "value": 3
+ },
+ "ce56cf5c353d2bcd23ab": {
+  "value": 3
+ },
+ "44e5431f4097d42e4dd7": {
+  "value": 3
+ },
+ "85a68dc6786b5ccf9f80": {
+  "value": 3
+ },
+ "5622da14c805531d4f08": {
+  "value": 3
+ },
+ "40b04e6dc469894fbd1c": {
+  "value": 3
+ },
+ "024191b248237ffa4419": {
+  "value": 2
+ },
+ "48549b92119f361a8b6a": {
+  "value": 2
+ },
+ "ab6a45cf0a05f5f50974": {
+  "value": 2
+ },
+ "515aa9104319ddce0590": {
+  "value": 2
+ },
+ "fb105d571748a2893a16": {
+  "value": 2
+ },
+ "584e6d8346033b52dcfe": {
+  "value": 2
+ },
+ "140d5e914a4c043b0c4f": {
+  "value": 2
+ },
+ "b8e9ae4409ee0b551215": {
+  "value": 2
+ },
+ "3255810e66fb2aa70aba": {
+  "value": 2
+ },
+ "c41a4689640e091a08d9": {
+  "value": 2
+ },
+ "9131f839e21ededf4d56": {
+  "value": 2
+ },
+ "9bf6306bd9aafd409f57": {
+  "value": 2
+ },
+ "84641dcf82934e127fbb": {
+  "value": 2
+ },
+ "09676e7aa75f64fd8fb8": {
+  "value": 2
+ },
+ "6a0c3f9bd0c32cbfcdca": {
+  "value": 2
+ },
+ "9a2fb5a3bb70d9b6da22": {
+  "value": 2
+ },
+ "e8d1986ec55982073c5e": {
+  "value": 2
+ },
+ "81f7927e79467d36787f": {
+  "value": 3
+ },
+ "74dac52f522125148525": {
+  "value": 3
+ },
+ "25d8789ba2991304fb0f": {
+  "value": 3
+ },
+ "9cb29d0e4e512f809e4c": {
+  "value": 3
+ },
+ "6feeb561ccc9d55db9f7": {
+  "value": 3
+ },
+ "8563b5900f5f271f3c67": {
+  "value": 3
+ },
+ "59caf0aeed1ba39b7886": {
+  "value": 3
+ },
+ "9460c3a1d6414e44685e": {
+  "value": 3
+ },
+ "b432d7f586bc39e78091": {
+  "value": 3
+ },
+ "9fa8cc4c5fc3f6dae3ab": {
+  "value": 3
+ },
+ "f9a74e4a8eb618aa3966": {
+  "value": 3
+ },
+ "0e00c6d84167b78da571": {
+  "value": 3
+ },
+ "dd2b5b9085b7d777771a": {
+  "value": 3
+ },
+ "b056b3c512ce95c86799": {
+  "value": 3
+ },
+ "5a13dfc991b2cebec499": {
+  "value": 3
+ },
+ "8cc6085f4a240d80bb2f": {
+  "value": 3
+ },
+ "c676863aa57c0fd797a2": {
+  "value": 3
+ },
+ "caf23b900a75445d6979": {
+  "value": 50
+ },
+ "c5cac62c3d4b862f59e3": {
+  "value": 50
+ },
+ "a2a2f4685434610e0144": {
+  "value": 50
+ },
+ "7974239b7e48b947a6d8": {
+  "value": 50
+ },
+ "6f2a8efed10e0cf8922a": {
+  "value": 50
+ },
+ "a912c0052d3a1ac8eae1": {
+  "value": 50
+ },
+ "35591e528b4de8201c79": {
+  "value": 50
+ },
+ "a46b00d8831622961961": {
+  "value": 54.99
+ },
+ "de2a10ac39ce509473b7": {
+  "value": 54.99
+ },
+ "7497a71f10c710c0cc2f": {
+  "value": 54.99
+ },
+ "61a1311f67f2331c7843": {
+  "value": 54.99
+ },
+ "b72a4eeb4a13e855b463": {
+  "value": 54.99
+ },
+ "28ea4448a86381ebd3c9": {
+  "value": 54.99
+ },
+ "45b75d13dbd345b27a6d": {
+  "value": 54.99
+ },
+ "9e1c646d9c72a6ee95a9": {
+  "value": 37.99
+ },
+ "e2879a0794ebde8043f5": {
+  "value": 37.99
+ },
+ "90abd5e08320be2785f5": {
+  "value": 37.99
+ },
+ "e461af6d229b5397c0a1": {
+  "value": 37.99
+ },
+ "23d30a2249aac90c8f35": {
+  "value": 37.99
+ },
+ "e393361f1fb8b3b922f4": {
+  "value": 37.99
+ },
+ "27f577e71a33740c9011": {
+  "value": 37.99
+ },
+ "f21cc8fe4ec3c0c0c68f": {
+  "value": 92.49
+ },
+ "7b2ae764de8bf31d52e1": {
+  "value": 92.49
+ },
+ "51d218b9735dfd81382c": {
+  "value": 92.49
+ },
+ "27821aaf997d58fc8720": {
+  "value": 92.49
+ },
+ "f91447c9bb665a4360ba": {
+  "value": 92.49
+ },
+ "94254f08c2a987d3fcba": {
+  "value": 92.49
+ },
+ "07e0f5f24500da7375bc": {
+  "value": 92.49
+ },
+ "5213c55342bb97ae3fb1": {
+  "value": 740
+ },
+ "fbce4ea49ded5b34c3f6": {
+  "value": 740
+ },
+ "f95ba4ed63746b797adc": {
+  "value": 740
+ },
+ "bf87f7e22cd52774f588": {
+  "value": 740
+ },
+ "66087c117c18192b7580": {
+  "value": 740
+ },
+ "ac30870218094be4b358": {
+  "value": 740
+ },
+ "26fac0084c9f241f0bd9": {
+  "value": 740
+ },
+ "de7b49e6b68c102d01e3": {
+  "value": 740
+ },
+ "2a15cb3a04f8f6fdf351": {
+  "value": 490
+ },
+ "572c7bdfa88610b4ab94": {
+  "value": 490
+ },
+ "8fb6c9754c2c580638db": {
+  "value": 490
+ },
+ "57b7d69ac404746a7646": {
+  "value": 490
+ },
+ "0e5308e797ad43459047": {
+  "value": 490
+ },
+ "87ad5b94a978361413c6": {
+  "value": 490
+ },
+ "0c546148a26c1a15c6be": {
+  "value": 490
+ },
+ "f5da720acc77b705780c": {
+  "value": 490
+ },
+ "146002cd93876197c13b": {
+  "value": "aturing@acme.com"
+ },
+ "6d02cf75753fdda0dcbe": {
+  "value": "aturing@acme.com"
+ },
+ "31509f7ebdaeaa89de86": {
+  "value": "aturing@acme.com"
+ },
+ "c8f5abefc3ba37ad50f1": {
+  "value": "aturing@acme.com"
+ },
+ "50ac67f906b8e48414be": {
+  "value": "aturing@acme.com"
+ },
+ "2ccb43170575e2c26a95": {
+  "value": "aturing@acme.com"
+ },
+ "08958138075c2e67d496": {
+  "value": "ghopper@acme.com"
+ },
+ "85313e1ad35eabe5994d": {
+  "value": "ghopper@acme.com"
+ },
+ "99b218952d3d1a32e426": {
+  "value": "ghopper@acme.com"
+ },
+ "d88cfd4706ad71a91d81": {
+  "value": "ghopper@acme.com"
+ },
+ "199fc276a41a9761bf7b": {
+  "value": "ghopper@acme.com"
+ },
+ "10859e8e0acfa8139fe9": {
+  "value": "ghopper@acme.com"
+ },
+ "45af06d5ce57c861cac5": {
+  "value": "kjohnson@acme.com"
+ },
+ "f5753be241dfc15f3109": {
+  "value": "kjohnson@acme.com"
+ },
+ "b58383b8136202535c38": {
+  "value": "kjohnson@acme.com"
+ },
+ "150bc35dedebabf8232d": {
+  "value": "kjohnson@acme.com"
+ },
+ "0d34b15cd5dc4da1ec21": {
+  "value": "kjohnson@acme.com"
+ },
+ "ee1776e1f96656b905c4": {
+  "value": "kjohnson@acme.com"
+ },
+ "58445d386209da9748ed": {
+  "value": 17.849999999999998
+ },
+ "a89c2c28a99836a141f7": {
+  "value": 17.849999999999998
+ },
+ "750daf5c95bed82826c7": {
+  "value": 17.85
+ },
+ "f1dc58e47fb69e2408fe": {
+  "value": 17.849999999999998
+ },
+ "9ade0bab99ff9f59f3d2": {
+  "value": 17.849999999999998
+ },
+ "2a26c8a28b367baea780": {
+  "value": 17.849999999999998
+ },
+ "8a44e57adff33ac5b1da": {
+  "value": 17.849999999999998
+ },
+ "3b90599c70c53a583fc2": {
+  "value": 17.849999999999998
+ },
+ "5ec8237fc8eac8e6ed21": {
+  "value": 0
+ },
+ "19fd77acf603c4a85f64": {
+  "value": 0
+ },
+ "cfc6b7a5bc634c258ada": {
+  "value": 0
+ },
+ "4e027112170d125c2ae8": {
+  "value": 0
+ },
+ "498bf08bed1f3219b362": {
+  "value": 0
+ },
+ "c78386516a7e3e4cc93e": {
+  "value": 0
+ },
+ "001db047301fd220d48b": {
+  "value": 0
+ },
+ "505ed5bcc699e2c884dd": {
+  "value": 0
+ },
+ "2cea45deaab0df6187c2": {
+  "value": 0
+ },
+ "9d0a37a9fc9cd295c453": {
+  "value": 0
+ },
+ "1df88da9fd0831309d8f": {
+  "value": 0
+ },
+ "1b3244781d8b23804155": {
+  "value": 0
+ },
+ "a5b76d1c9ad39ca41aa0": {
+  "value": 3
+ },
+ "4fa4bdc5f2f25549123b": {
+  "value": 3
+ },
+ "076cfd67bedd49873aa9": {
+  "value": 3
+ },
+ "3cac9f6c8e3200a1aefb": {
+  "value": 2
+ },
+ "577a66c181ca01bce5e0": {
+  "value": 2
+ },
+ "79a2164fdf82941c7a3d": {
+  "value": 2
+ },
+ "a8de27654f0f16731eb0": {
+  "value": 3
+ },
+ "adaf60ef79bc968af7b6": {
+  "value": 3
+ },
+ "2842ad92f259ef5caa35": {
+  "value": 3
+ },
+ "8d10f2dabfe46aa6bb51": {
+  "value": 0
+ },
+ "3d51480cae24fc87d8e7": {
+  "value": 0
+ },
+ "7a058b1cf528bb1cd35f": {
+  "value": 0
+ },
+ "20c6f0a12a5d2a44cc5a": {
+  "value": 0
+ },
+ "d3fc27ea1b823f6a4b43": {
+  "value": "check"
+ },
+ "b80083093b6435df7401": {
+  "value": "ready"
+ },
+ "5065b5c3d4998ca19a8f": {
+  "value": "ready"
+ },
+ "d057b11e2239c2fbaa33": {
+  "value": "check"
+ },
+ "5bf38facbdb6051a66f4": {
+  "value": "ready"
+ },
+ "9b0355838967298e30b9": {
+  "value": "ready"
+ },
+ "1dae7b70ada245341b11": {
+  "value": 2
+ },
+ "96c68e09f7221756aa6e": {
+  "value": 3
+ },
+ "624160f83fd7e7f4e364": {
+  "value": 2
+ },
+ "114a3119ae1f93d52b3a": {
+  "value": 3
+ },
+ "ca6998bb1c05664d3a22": {
+  "value": 3
+ },
+ "580ebe79f1bc77dac5ca": {
+  "value": 3
+ },
+ "e7387b431f7a192326ae": {
+  "value": 500
+ },
+ "ee60b8925a3d501d90c3": {
+  "value": 740
+ },
+ "d4b9f4681fd01b8a3501": {
+  "value": 490
+ },
+ "203d849f70e727e7b91f": {
+  "value": 430
+ },
+ "6be62bda3ad9524ff916": {
+  "value": 23.7575
+ },
+ "cff57c151959f17f01eb": {
+  "value": {
+   "error": "#REF!"
+  }
  }
 }

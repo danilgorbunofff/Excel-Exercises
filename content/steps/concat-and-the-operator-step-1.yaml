@@ -20,7 +20,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: '& joins text; the space goes in quotes: " ".'
-      rule: A2&" "&B2 joins the first name, a space and the last name.
+      rule: "& joins text. Put the space between the two cells as text in quotes."
     misses:
       value: The full name is Grace Hopper.
       syntax: Check the brackets, commas and quotes.

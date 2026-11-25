@@ -24,7 +24,7 @@ screens:
       - AND
     hints:
       nudge: Put the AND test inside IF as its first part.
-      rule: IF(AND(B2>=60,C2>=60),"Hire","Reject") hires only when both tests pass.
+      rule: IF shows its second argument when the test is TRUE and its third when it is FALSE, so the AND test decides between Hire and Reject.
     misses:
       value: Lee's practical is under 60, so D2 should show Reject.
       syntax: Check the brackets, commas and quotes.

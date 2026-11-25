@@ -21,7 +21,7 @@ screens:
       - MIN
     hints:
       nudge: MIN works along a row the same way as down a column.
-      rule: MIN(B2:F2) gives the smallest number in the five cells.
+      rule: MIN gives the smallest number in a range, across a row as well as down a column.
     misses:
       value: The lowest price is 27.95. Check that the range runs from B2 to F2.
       syntax: Check the brackets, commas and quotes.

@@ -31,7 +31,7 @@ screens:
       - COUNT
     hints:
       nudge: Count the items, then take away the ones with a number.
-      rule: COUNTA(A2:A9) counts every item and COUNT(B2:B9) the stock numbers; the difference is the items with text or nothing.
+      rule: COUNTA on the item names counts every item, and COUNT on the stock counts the numbers. The difference is the items with text or nothing.
     misses:
       value: 3 items have no stock number. Count the items in column A, not the stock cells.
       syntax: Check the brackets, commas and quotes.

@@ -23,7 +23,7 @@ screens:
       - SUMPRODUCT
     hints:
       nudge: SUMPRODUCT multiplies each pair, then adds.
-      rule: SUMPRODUCT(B2:B4,C2:C4) is the total spend.
+      rule: SUMPRODUCT takes the units and the unit costs, multiplies them row by row and adds the results.
     misses:
       value: The batches cost 3110 in total.
       syntax: Check the brackets, commas and quotes.

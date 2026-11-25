@@ -28,7 +28,7 @@ screens:
       - MATCH
     hints:
       nudge: MATCH finds the quarter's column in the header B1:E1.
-      rule: INDEX(B2:E5,2,MATCH(B7,B1:E1,0)) reads the South row at that quarter.
+      rule: Give INDEX the fixed row 2 for the South, and let MATCH find the quarter's column in the header.
     misses:
       value: The South sold 145 in Q4.
       syntax: Check the brackets, commas and quotes.

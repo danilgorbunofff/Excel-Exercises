@@ -34,7 +34,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Each day of waiting uses the daily amount.
-      rule: C2*D2 is the stock used before a new delivery arrives.
+      rule: Daily use times the lead time is the stock used before a new delivery arrives.
     misses:
       value: 28 units are used during the lead time.
       syntax: Check the brackets, commas and quotes.

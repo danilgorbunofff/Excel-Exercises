@@ -23,7 +23,7 @@ screens:
       - SWITCH
     hints:
       nudge: SWITCH takes the cell, then pairs of value and result, then a fallback.
-      rule: SWITCH(B2,"Y","Yes","N","No","Unknown") matches B2 against each value in turn.
+      rule: SWITCH compares the cell with each value in turn and returns the result paired with the first match. A last single value is the fallback.
     misses:
       value: The code is N, so C2 should show No.
       syntax: Check the brackets, commas and quotes.

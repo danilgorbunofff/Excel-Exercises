@@ -21,7 +21,7 @@ screens:
       - TRIM
     hints:
       nudge: TRIM removes spaces at both ends and doubles in the middle.
-      rule: TRIM(A2) leaves single spaces between words.
+      rule: TRIM leaves single spaces between words, none at the ends, and keeps the capitals as they are.
     misses:
       value: B2 shows Office Supplies.
       syntax: Check the brackets, commas and quotes.

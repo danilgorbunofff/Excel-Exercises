@@ -1,9 +1,15 @@
 # Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
 screens:
   - correct:
-      - =MAXIFS($C$2:$C$16,$B$2:$B$16,"West")
-      - =MAXIFS(C$2:C$16,B2:B16,"West")
-      - =maxifs(c2:c16, b2:b16, "West")
-      - =LET(data,C2:C16,MAXIFS(data,B2:B16,"West"))
-    wrong: []
+      - =MAX($B$2:$B$13)-MIN($B$2:$B$13)
+      - =MAX(B$2:B$13)-MIN(B2:B13)
+      - =max(b2:b13)-min(b2:b13)
+      - =LET(data,B2:B13,MAX(data)-MIN(data))
+    wrong:
+      - formula: =MAX(B3:B13)-MIN(B2:B13)
+        rule: fragile
+        why: range B2:B13 skips its first row
+      - formula: =MAX(B2:B13)-MIN(B2:B12)
+        rule: fragile
+        why: range B2:B13 one row short at the end
     equivalent: []

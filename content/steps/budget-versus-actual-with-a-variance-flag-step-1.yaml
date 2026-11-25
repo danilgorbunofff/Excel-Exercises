@@ -20,7 +20,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Actual minus budget; a positive answer means overspent.
-      rule: C2-B2 is how far the actual is from the budget.
+      rule: Actual minus budget gives the variance; a positive result means overspent.
     misses:
       value: The variance is 1450.
       syntax: Check the brackets, commas and quotes.

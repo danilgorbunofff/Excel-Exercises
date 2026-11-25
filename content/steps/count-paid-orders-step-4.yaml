@@ -29,7 +29,7 @@ screens:
       - COUNT
     hints:
       nudge: COUNT takes more than one range, separated by commas.
-      rule: COUNT(B2:B8,D2:D8) counts the amounts in both months and skips the pending ones.
+      rule: COUNT takes several ranges separated by commas and skips text such as pending.
     misses:
       value: There are 10 paid orders across both months. Include both columns.
       syntax: Check the brackets, commas and quotes.

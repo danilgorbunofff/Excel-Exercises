@@ -34,7 +34,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: An invoice is too old when its date is before E1 minus 30.
-      rule: COUNTIF(B2:B16,"<"&E1-30) counts the dates more than 30 days before E1; exactly 30 days does not count.
+      rule: "Build the test from the cell: dates before E1 minus 30 are more than 30 days old. Exactly 30 days does not count."
     misses:
       value: 8 invoices are more than 30 days old.
       syntax: Check the brackets, commas and quotes.

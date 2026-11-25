@@ -26,9 +26,9 @@ screens:
       - AND
     hints:
       nudge: AND takes as many tests as you need, separated by commas.
-      rule: AND(B2>=60,C2>=60,D2>=60) is TRUE only when all three scores reach 60.
+      rule: AND takes as many tests as you need, separated by commas, and is TRUE only when all of them hold.
     misses:
-      value: Lee's result is true. Test all three scores.
+      value: Lee's result is TRUE. Test all three scores.
       syntax: Check the brackets, commas and quotes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:

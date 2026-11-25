@@ -21,7 +21,7 @@ screens:
       - EOMONTH
     hints:
       nudge: Both ends count, so add 1 to the difference.
-      rule: EOMONTH(C2,0)-C2+1 counts the start day and the last day.
+      rule: EOMONTH with 0 gives the month's last day. Subtract the start date and add 1, so both days count.
     misses:
       value: The contract runs 17 days this month.
       syntax: Check the brackets, commas and quotes.

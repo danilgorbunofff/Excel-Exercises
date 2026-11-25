@@ -37,7 +37,7 @@ screens:
       - AVERAGE
     hints:
       nudge: Test for any prices first, then round the average.
-      rule: COUNT(C2:C7)=0 catches a list with no prices; otherwise ROUND(AVERAGE(C2:C7),2) gives the average to 2 decimals.
+      rule: COUNT of the prices is 0 when none has been entered, so test that first. Otherwise round the average to 2 decimals.
     misses:
       value: The average of the four prices, to 2 decimals, is 4.69.
       syntax: Check the brackets, commas and quotes.

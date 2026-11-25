@@ -32,7 +32,7 @@ screens:
       - SUM
     hints:
       nudge: SUM the actual column for months 1 to 4.
-      rule: SUM(B2:B5) is the actual so far this year.
+      rule: SUM adds the actuals of the closed months, rows 2 to 5.
     misses:
       value: The actual to date is 168600.
       syntax: Check the brackets, commas and quotes.

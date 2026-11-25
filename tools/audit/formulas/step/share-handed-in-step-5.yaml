@@ -1,18 +1,9 @@
 # Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
 screens:
   - correct:
-      - =COUNTIF($B$2:$B$16,">=10")/COUNT($B$2:$B$16)
-      - =COUNTIF(B$2:B$16,">=10")/COUNT(B2:B16)
-      - =countif(b2:b16, ">=10")/count(b2:b16)
-      - =LET(data,B2:B16,COUNTIF(data,">=10")/COUNT(data))
-    wrong:
-      - formula: =COUNTIF(B2:B15,">=10")/COUNT(B2:B16)
-        rule: fragile
-        why: range B2:B16 one row short at the end
-      - formula: =COUNTIF(B2:B16,">=10")/COUNTA(B2:B16)
-        rule: fragile
-        why: COUNTA instead of COUNT
-      - formula: =COUNTIF(B2:B16,">=10")/COUNT(B2:B15)
-        rule: fragile
-        why: range B2:B16 one row short at the end
+      - =COUNT($B$2:$B$16)/COUNTA($B$2:$B$16)
+      - =COUNT(B$2:B$16)/COUNTA(B2:B16)
+      - =count(b2:b16)/counta(b2:b16)
+      - =LET(data,B2:B16,COUNT(data)/COUNTA(data))
+    wrong: []
     equivalent: []

@@ -21,7 +21,7 @@ screens:
       - COUNTIF
     hints:
       nudge: COUNTIF takes the range, then the word to count, in quotes.
-      rule: COUNTIF(B2:H2,"Closed") counts the cells along the row that say Closed.
+      rule: COUNTIF takes the range, then the word to count in quotes. It works along a row as well as down a column.
     misses:
       value: The shop was closed on 3 days.
       syntax: Check the brackets, commas and quotes.

@@ -21,7 +21,7 @@ screens:
       - MEDIAN
     hints:
       nudge: With an even count, the median is halfway between the two middle values.
-      rule: MEDIAN(B2:G2) sorts the six bills in its head and averages the middle two.
+      rule: MEDIAN works along a row too. It sorts the values in its head and, with six of them, averages the middle two.
     misses:
       value: The median bill is 64.
       syntax: Check the brackets, commas and quotes.

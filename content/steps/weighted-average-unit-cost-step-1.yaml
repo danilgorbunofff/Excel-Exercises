@@ -24,7 +24,7 @@ screens:
       - SUM
     hints:
       nudge: Add the Units column.
-      rule: SUM(B2:B5) gives all units bought.
+      rule: SUM adds every number in the Units column.
     misses:
       value: 1400 units were bought.
       syntax: Check the brackets, commas and quotes.

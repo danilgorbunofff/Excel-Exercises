@@ -1,14 +1,21 @@
 # Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
 screens:
   - correct:
-      - =IFERROR(VLOOKUP($A$8,$A$1:$E$6,MATCH($B$8,$A$1:$E$1,0),FALSE),"Not found")
-      - =IFERROR(VLOOKUP(A$8,A1:E6,MATCH(B8,A1:E1,0),FALSE),"Not found")
-      - =iferror(vlookup(a8, a1:e6, match(b8, a1:e1, 0), false), "Not found")
-      - =IFNA(VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,0),FALSE),"Not found")
-      - =LET(data,A1:E6,IFERROR(VLOOKUP(A8,data,MATCH(B8,A1:E1,0),FALSE),"Not found"))
+      - =VLOOKUP($A$8,$A$1:$E$6,MATCH($B$8,$A$1:$E$1,0),FALSE)-VLOOKUP($A$8,$A$1:$E$6,2,FALSE)
+      - =VLOOKUP(A$8,A1:E6,MATCH(B8,A1:E1,0),FALSE)-VLOOKUP(A8,A1:E6,2,FALSE)
+      - =vlookup(a8, a1:e6, match(b8, a1:e1, 0), false)-vlookup(a8, a1:e6, 2, false)
+      - =VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,0),FALSE)-XLOOKUP(A8,A1:A6,B1:B6)
+      - =VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,0),FALSE)-INDEX(B1:B6,MATCH(A8,A1:A6,0))
+      - =LET(data,A1:E6,VLOOKUP(A8,data,MATCH(B8,A1:E1,0),FALSE)-VLOOKUP(A8,data,2,FALSE))
     wrong: []
     equivalent:
-      - formula: =IFERROR(VLOOKUP(A8,A2:E6,MATCH(B8,A1:E1,0),FALSE),"Not found")
+      - formula: =VLOOKUP(A8,A2:E6,MATCH(B8,A1:E1,0),FALSE)-VLOOKUP(A8,A1:E6,2,FALSE)
         why: "range A1:E6 skips its first row: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
-      - formula: =IFERROR(VLOOKUP(A8,A1:E7,MATCH(B8,A1:E1,0),FALSE),"Not found")
+      - formula: =VLOOKUP(A8,A1:E7,MATCH(B8,A1:E1,0),FALSE)-VLOOKUP(A8,A1:E6,2,FALSE)
+        why: "range A1:E6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,1),FALSE)-VLOOKUP(A8,A1:E6,2,FALSE)
+        why: "0 written as 1: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,0),FALSE)-VLOOKUP(A8,A2:E6,2,FALSE)
+        why: "range A1:E6 skips its first row: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,0),FALSE)-VLOOKUP(A8,A1:E7,2,FALSE)
         why: "range A1:E6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

@@ -28,7 +28,7 @@ screens:
       - VLOOKUP
     hints:
       nudge: TRUE finds the largest band start not above the days.
-      rule: VLOOKUP(B3,$F$2:$G$5,2,TRUE) returns the band the days fall in.
+      rule: With TRUE, VLOOKUP finds the largest band start not above the days. Dollar signs keep the band table fixed when the formula is copied down.
     misses:
       value: Brook & Co is in the 31-60 band.
       syntax: Check the brackets, commas and quotes.

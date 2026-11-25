@@ -21,7 +21,7 @@ screens:
       - ROUND
     hints:
       nudge: -1 rounds to tens, -2 to hundreds.
-      rule: "A negative number of places rounds to the left of the decimal point: ROUND(B2,-2) gives the nearest hundred."
+      rule: "A negative number of places rounds to the left of the decimal point: -1 to tens, -2 to hundreds."
     misses:
       value: The budget to the nearest hundred is 48400.
       syntax: Check the brackets, commas and quotes.

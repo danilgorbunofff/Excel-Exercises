@@ -25,7 +25,7 @@ screens:
       - SUM
     hints:
       nudge: SUM takes more than one range, separated by commas.
-      rule: SUM(B2:B4,D2:D4) adds both blocks in one formula.
+      rule: SUM takes several ranges separated by commas and adds them all in one formula.
     misses:
       value: March and April add up to 75. Include both B2:B4 and D2:D4.
       syntax: Check the brackets, commas and quotes.

@@ -29,7 +29,7 @@ screens:
       - COUNT
     hints:
       nudge: Count the marks, which are numbers.
-      rule: COUNT(B2:B9) counts the cells with a mark and skips the empty ones.
+      rule: COUNT counts the cells with a mark, which are numbers, and skips the empty ones.
     misses:
       value: 6 essays were handed in. Count the marks from B2 to B9.
       syntax: Check the brackets, commas and quotes.

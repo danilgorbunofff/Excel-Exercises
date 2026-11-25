@@ -11,5 +11,3 @@ screens:
     equivalent:
       - formula: =SUMIF(A2:A6,"North",B2:B5)
         why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
-      - formula: =SUMIF(A2:A5,"North",B2:B6)
-        why: "range B2:B5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

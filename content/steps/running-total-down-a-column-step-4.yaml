@@ -25,7 +25,7 @@ screens:
       - SUM
     hints:
       nudge: Total the money in, total the money out, then take one from the other.
-      rule: SUM(B$2:B5)-SUM(C$2:C5) gives the balance after line 4. The $ keeps both ranges starting at row 2 as the formula fills down.
+      rule: Total the money in and the money out from row 2 to this line, then subtract. A $ before the row number keeps each range starting at row 2 as the formula fills down.
     misses:
       value: The balance after line 4 is 340. Stop both ranges at row 5.
       syntax: Check the brackets, commas and quotes.

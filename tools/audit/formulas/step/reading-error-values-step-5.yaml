@@ -5,8 +5,9 @@ screens:
       - =SUMPRODUCT(--ISERROR(VALUE(B$2:B$16)))
       - =sumproduct(--iserror(value(b2:b16)))
       - =LET(data,B2:B16,SUMPRODUCT(--ISERROR(VALUE(data))))
-    wrong:
-      - formula: =SUMPRODUCT(--ISERROR(VALUE(B3:B16)))
-        rule: fragile
-        why: range B2:B16 skips its first row
+      - =SUM(--ISERROR(VALUE($B$2:$B$16)))
+      - =SUM(--ISERROR(VALUE(B$2:B$16)))
+      - =sum(--iserror(value(b2:b16)))
+      - =LET(data,B2:B16,SUM(--ISERROR(VALUE(data))))
+    wrong: []
     equivalent: []

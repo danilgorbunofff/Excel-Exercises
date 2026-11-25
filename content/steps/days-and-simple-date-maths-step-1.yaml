@@ -20,7 +20,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: A later date minus an earlier one is the days between them.
-      rule: Dates are numbers of days, so C2-B2 counts the days.
+      rule: Dates are counts of days, so subtracting the earlier date from the later one gives the days between.
     misses:
       value: Delivery took 7 days.
       syntax: Check the brackets, commas and quotes.

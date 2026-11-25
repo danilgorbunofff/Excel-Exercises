@@ -1,42 +1,48 @@
 id: len-left-and-right-count-and-cut-step-4
 slug: len-left-and-right-count-and-cut-step-4
 level: 2
-title: Count the words
+title: Length of a file extension
 updated: 2026-11-25
 checkedInExcel: 2026-11-25
 parent: len-left-and-right-count-and-cut
 step: 4
 screens:
-  - prompt: "In B2, count the words in A2: the number of spaces plus 1, where the spaces are the length minus the length without spaces. Use LEN and SUBSTITUTE."
+  - prompt: "In B2, count the characters after the dot in the file name in A2: the length minus the dot's position. Use LEN and FIND."
     rows:
-      - [Title, Words]
-      - [Quarterly sales report for the board, null]
+      - [File, Extension length]
+      - [budget.xlsx, null]
     answerCell: B2
-    expected: 6
+    expected: 4
     variants:
-      - set: { A2: Budget plan }
+      - set: { A2: notes.txt }
+        expected: 3
+      - set: { A2: archive.gz }
         expected: 2
-    answer: =LEN(A2)-LEN(SUBSTITUTE(A2," ",""))+1
+    answer: =LEN(A2)-FIND(".",A2)
     requiredFunctions:
       - LEN
-      - SUBSTITUTE
+      - FIND
     hints:
-      nudge: Removing the spaces shortens the text by one for each space.
-      rule: The difference in length counts the spaces; one more than that is the number of words.
+      nudge: FIND gives the dot's position; everything after it is the rest of the length.
+      rule: LEN gives the whole length, and FIND the dot's position. The difference is how many characters follow the dot.
     misses:
-      value: The title has 6 words.
+      value: 4 characters follow the dot.
       syntax: Check the brackets, commas and quotes.
-      required-function: This task asks for LEN and SUBSTITUTE.
+      required-function: This task asks for LEN and FIND.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =LEN(A2)-LEN(SUBSTITUTE(A2," ",""))+1
-      - =1+LEN(A2)-LEN(SUBSTITUTE(A2," ",""))
+      - =LEN(A2)-FIND(".",A2)
+      - =-FIND(".",A2)+LEN(A2)
+      - =LEN(MID(A2,FIND(".",A2)+1,LEN(A2)))
+      - =LEN(A2)-(FIND(".",A2))
     reject:
-      - formula: =LEN(A2)-LEN(SUBSTITUTE(A2," ",""))
+      - formula: =LEN(A2)-FIND(".",A2)+1
+        rule: value
+      - formula: =LEN(A2)-FIND(".",A2)-1
         rule: value
       - formula: =LEN(A2)
         rule: required-function
-      - formula: =6
+      - formula: =4
         rule: required-function
-      - formula: =LEN(A2)-LEN(SUBSTITUTE(A2," ",""))+1,
+      - formula: =LEN(A2)-FIND(".",A2
         rule: syntax

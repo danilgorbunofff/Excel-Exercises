@@ -24,7 +24,7 @@ screens:
       nudge: The longest side is the one that matters for the size rule.
       rule: MAX(C2:E2)<=100 checks every side at once; AND joins it with the weight test.
     misses:
-      value: The parcel's answer is true. Check the weight and every side.
+      value: The parcel's answer is TRUE. Check the weight and every side.
       syntax: Check the brackets, commas and quotes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:

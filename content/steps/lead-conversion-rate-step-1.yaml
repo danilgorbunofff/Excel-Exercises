@@ -20,9 +20,9 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Sales over leads, not leads over sales.
-      rule: C2/B2 is the fraction of leads that bought.
+      rule: Divide the sales by the leads; the result is the fraction of leads that bought.
     misses:
-      value: D2 shows 0.0527173913043.
+      value: The share is about 0.0527 of the leads.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.

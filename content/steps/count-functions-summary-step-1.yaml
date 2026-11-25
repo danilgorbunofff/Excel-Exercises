@@ -28,7 +28,7 @@ screens:
       - COUNT
     hints:
       nudge: COUNT counts only numbers.
-      rule: COUNT(B2:B7) counts the stock figures and skips the word ask and the blank.
+      rule: COUNT counts the cells that hold numbers and skips words such as ask and blanks.
     misses:
       value: 4 items have a stock number. COUNT skips text and blanks.
       syntax: Check the brackets, commas and quotes.

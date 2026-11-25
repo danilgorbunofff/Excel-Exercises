@@ -25,7 +25,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: Search the reps, return their sales.
-      rule: XLOOKUP(D1,A2:A6,C2:C6) returns the sales of the rep in D1.
+      rule: XLOOKUP searches the rep column and returns the value from the same row of the sales column.
     misses:
       value: Dev's sales are 52300.
       syntax: Check the brackets, commas and quotes.

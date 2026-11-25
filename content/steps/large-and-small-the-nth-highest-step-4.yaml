@@ -35,7 +35,7 @@ screens:
       - LARGE
     hints:
       nudge: Point LARGE's second part at E1.
-      rule: LARGE(B2:B16,E1) gives whichever place is typed in E1.
+      rule: LARGE's second part can be a cell, so the place follows whatever is typed in E1.
     misses:
       value: The sale at that place is 5200.
       syntax: Check the brackets, commas and quotes.

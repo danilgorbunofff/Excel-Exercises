@@ -30,11 +30,11 @@ screens:
     variants:
       - { set: { A3: PX-10043 }, expected: 4 }
       - { set: { A2: PX-1043, A16: PX-1043 }, expected: 7 }
-    answer: =SUMPRODUCT(--(LEN(A2:A16)<>8))
+    answer: =SUM(--(LEN(A2:A16)<>8))
     requiredFunctions: []
     hints:
       nudge: Work out every length at once and compare each with 8.
-      rule: LEN(A2:A16)<>8 is TRUE for each wrong code; -- turns TRUE into 1 and SUMPRODUCT counts them. A trailing space counts as a character.
+      rule: LEN works on the whole column at once. Compare each length with 8; -- turns TRUE into 1, and SUM counts them. A trailing space counts as a character.
     misses:
       value: 5 codes have the wrong length, including the one with a trailing space.
       syntax: Check the brackets, commas and quotes.

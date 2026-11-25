@@ -21,7 +21,7 @@ screens:
       - FIND
     hints:
       nudge: FIND takes the text to look for, then where to look.
-      rule: FIND("-",A2) gives the position of the first dash.
+      rule: FIND gives the position of the first match, counting the first character as 1.
     misses:
       value: The first dash is character 4.
       syntax: Check the brackets, commas and quotes.

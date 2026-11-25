@@ -27,7 +27,7 @@ screens:
       - VLOOKUP
     hints:
       nudge: The country is the 2nd column.
-      rule: VLOOKUP(A8,A2:C6,2,FALSE) finds the full name and returns the country.
+      rule: VLOOKUP with FALSE finds the exact full name in the first column and returns the column number you give it.
     misses:
       value: Northwind Rail is in Ireland.
       syntax: Check the brackets, commas and quotes.

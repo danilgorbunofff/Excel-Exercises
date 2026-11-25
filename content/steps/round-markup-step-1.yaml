@@ -21,7 +21,7 @@ screens:
       - ROUND
     hints:
       nudge: The second part of ROUND is how many decimal places to keep.
-      rule: ROUND(B2,2) keeps two decimals, rounding the third one up from 5.
+      rule: ROUND takes the number, then how many decimal places to keep. A 5 or more in the next place rounds up.
     misses:
       value: The price rounds to 12.35.
       syntax: Check the brackets, commas and quotes.

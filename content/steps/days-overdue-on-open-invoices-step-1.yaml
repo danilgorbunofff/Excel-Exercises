@@ -24,7 +24,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: The report date minus the due date.
-      rule: Dates are day numbers, so $D$2-B2 counts the days past due.
+      rule: Dates are day numbers, so the report date minus the due date counts the days past due.
     misses:
       value: INV-1041 is 60 days past due.
       syntax: Check the brackets, commas and quotes.

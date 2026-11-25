@@ -25,7 +25,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: By default XLOOKUP searches from the top and stops at the first match.
-      rule: XLOOKUP(E1,A2:A6,B2:B6) returns the price on the first row with that SKU.
+      rule: XLOOKUP takes what to find, the column to search and the column to return. With no more parts it stops at the first match from the top.
     misses:
       value: The first price logged for TX-101 is 19.99.
       syntax: Check the brackets, commas and quotes.

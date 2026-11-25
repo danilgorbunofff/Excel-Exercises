@@ -51,7 +51,7 @@ screens:
       nudge: Round both totals the same way before comparing, so tiny decimal noise does not matter.
       rule: The comparison is TRUE only when the stored lines add up to the true order value.
     misses:
-      value: The lines reconcile, so E2 should show true.
+      value: The lines reconcile, so E2 should show TRUE.
       syntax: Check the brackets, commas and quotes.
       required-function: This task asks for ROUND, SUMPRODUCT and SUBTOTAL.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.

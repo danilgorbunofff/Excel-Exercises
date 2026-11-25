@@ -22,7 +22,7 @@ screens:
       - IF
     hints:
       nudge: IF picks the rate; then multiply the sales by it.
-      rule: IF(B2>=8000,6%,4%) chooses the rate, and B2 times that rate is the commission.
+      rule: IF can return the rate itself. Multiply the sales by whatever rate IF chooses.
     misses:
       value: "Mo's commission is 570: 6% of 9,500."
       syntax: Check the brackets, commas and quotes.

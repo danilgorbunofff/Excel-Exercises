@@ -23,9 +23,9 @@ screens:
       - ISERROR
     hints:
       nudge: ISERROR is TRUE for any error a formula produces.
-      rule: ISERROR(B2/C2) is TRUE when the units are 0.
+      rule: ISERROR is TRUE for any error a calculation gives, such as `#DIV/0!` when the units are 0.
     misses:
-      value: Dividing by 0 fails, so D2 should show true.
+      value: Dividing by 0 fails, so D2 should show TRUE.
       syntax: Check the brackets, commas and quotes.
       required-function: This task asks for ISERROR.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.

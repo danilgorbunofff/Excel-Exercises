@@ -21,7 +21,7 @@ screens:
       - IFERROR
     hints:
       nudge: IFERROR takes the formula, then what to show if it fails.
-      rule: "IFERROR(B2/C2,0) shows 0 instead of `#DIV/0!` when there are no units."
+      rule: "IFERROR returns the calculation's result, or the fallback you give when the calculation fails, such as `#DIV/0!` from dividing by 0."
     misses:
       value: With 0 units, D2 should show 0.
       syntax: Check the brackets, commas and quotes.

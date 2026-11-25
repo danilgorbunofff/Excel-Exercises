@@ -1,16 +1,9 @@
 # Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
 screens:
   - correct:
-      - =RANK(XLOOKUP($E$1,$A$2:$A$16,$B$2:$B$16),$B$2:$B$16)
-      - =RANK(XLOOKUP(E$1,A2:A16,B2:B16),B2:B16)
-      - =rank(xlookup(e1, a2:a16, b2:b16), b2:b16)
-      - =RANK(VLOOKUP(E1,A2:B16,2,FALSE),B2:B16)
-      - =LET(data,A2:A16,RANK(XLOOKUP(E1,data,B2:B16),B2:B16))
-    wrong:
-      - formula: =RANK(XLOOKUP(E1,A2:A16,B2:B16),B2:B15)
-        rule: fragile
-        why: range B2:B16 one row short at the end
-      - formula: =RANK(XLOOKUP(E1,A2:A16,B2:B16),B3:B16)
-        rule: fragile
-        why: range B2:B16 skips its first row
+      - =RANK($B$2:$B$16,$B$2:$B$16)
+      - =RANK(B$2:B$16,B2:B16)
+      - =rank(b2:b16, b2:b16)
+      - =LET(data,B2:B16,RANK(data,data))
+    wrong: []
     equivalent: []

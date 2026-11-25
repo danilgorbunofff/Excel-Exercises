@@ -27,7 +27,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: XLOOKUP only treats * as a wildcard when the match mode is 2.
-      rule: XLOOKUP(A8&"*",A2:A6,C2:C6,,2) finds the first name that starts with the text.
+      rule: Join the text in A8 and * with &, and give 2 as the fifth part so XLOOKUP treats * as a wildcard.
     misses:
       value: The first Baltic supplier has a lead time of 12 days.
       syntax: Check the brackets, commas and quotes.

@@ -22,9 +22,9 @@ screens:
       - SEARCH
     hints:
       nudge: SEARCH gives a number when found and an error when not; ISNUMBER turns that into TRUE or FALSE.
-      rule: ISNUMBER(SEARCH("urgent",A2)) is TRUE whatever the case of the word.
+      rule: "Put SEARCH inside ISNUMBER: TRUE when the word is found in any case, FALSE when SEARCH gives an error."
     misses:
-      value: The note mentions urgent, so B2 should show true.
+      value: The note mentions urgent, so B2 should show TRUE.
       syntax: Check the brackets, commas and quotes.
       required-function: This task asks for ISNUMBER and SEARCH.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.

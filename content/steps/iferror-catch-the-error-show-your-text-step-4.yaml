@@ -21,7 +21,7 @@ screens:
       - IFERROR
     hints:
       nudge: The growth formula fails when last year is 0; IFERROR shows new instead.
-      rule: IFERROR((C2-B2)/B2,"new") shows new for a product with no sales last year.
+      rule: Wrap the growth formula in IFERROR, with the word new in quotes as the fallback.
     misses:
       value: With no sales last year, D2 should show new.
       syntax: Check the brackets, commas and quotes.

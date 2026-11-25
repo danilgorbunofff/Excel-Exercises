@@ -22,7 +22,7 @@ screens:
       - EOMONTH
     hints:
       nudge: EOMONTH(C2,0) is the month's last day; DAY of it is the month's length.
-      rule: DAY(EOMONTH(C2,0)) is 28 to 31 depending on the month.
+      rule: EOMONTH with 0 gives the last day of the date's own month, and DAY of that is the month's length.
     misses:
       value: The start month has 31 days.
       syntax: Check the brackets, commas and quotes.

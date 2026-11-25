@@ -24,7 +24,7 @@ screens:
       - LARGE
     hints:
       nudge: LARGE with 2 gives the second-highest.
-      rule: LARGE(B2:B5,2) skips the top customer.
+      rule: LARGE with 2 skips the top customer and gives the next one.
     misses:
       value: The second-highest revenue is 120000.
       syntax: Check the brackets, commas and quotes.

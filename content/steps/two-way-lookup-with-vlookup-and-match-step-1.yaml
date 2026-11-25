@@ -26,7 +26,7 @@ screens:
       - VLOOKUP
     hints:
       nudge: Product is column 1, Q1 column 2, Q2 column 3.
-      rule: VLOOKUP(B6,A2:D5,3,FALSE) returns the Q2 units on the product's row.
+      rule: "VLOOKUP counts columns from the left of the table: Product is 1, so Q2 is 3. FALSE asks for an exact match."
     misses:
       value: Sprocket sold 75 units in Q2.
       syntax: Check the brackets, commas and quotes.

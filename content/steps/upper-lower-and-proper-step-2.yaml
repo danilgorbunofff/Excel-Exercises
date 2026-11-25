@@ -21,7 +21,7 @@ screens:
       - UPPER
     hints:
       nudge: UPPER changes every letter to a capital.
-      rule: UPPER(C2) gives YO1 7HU.
+      rule: UPPER changes every letter to a capital; digits and spaces stay as they are.
     misses:
       value: The postcode reads YO1 7HU.
       syntax: Check the brackets, commas and quotes.

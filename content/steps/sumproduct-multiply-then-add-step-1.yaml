@@ -27,7 +27,7 @@ screens:
       - SUMPRODUCT
     hints:
       nudge: SUMPRODUCT multiplies each pair of cells, then adds the results.
-      rule: SUMPRODUCT(B2:B6,C2:C6) is price times quantity on every row, added up.
+      rule: SUMPRODUCT takes two ranges of the same size, multiplies them row by row and adds the results.
     misses:
       value: The stock is worth 245.70.
       syntax: Check the brackets, commas and quotes.

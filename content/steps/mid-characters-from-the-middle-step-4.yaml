@@ -22,7 +22,7 @@ screens:
       - FIND
     hints:
       nudge: FIND gives the colon's place; the status starts 2 after it.
-      rule: MID(A2,FIND(":",A2)+2,LEN(A2)) works whatever the label before the colon.
+      rule: FIND gives the colon's position, so the status starts 2 after it. Asking MID for as many characters as the whole note is always enough to reach the end.
     misses:
       value: The status is Shipped.
       syntax: Check the brackets, commas and quotes.

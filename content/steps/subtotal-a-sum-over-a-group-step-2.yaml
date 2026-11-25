@@ -35,7 +35,7 @@ screens:
       - SUBTOTAL
     hints:
       nudge: 2 counts numbers, like COUNT.
-      rule: SUBTOTAL(2,C2:C16) counts the quantities that are numbers.
+      rule: SUBTOTAL with 2 counts the cells that hold numbers, like COUNT, so text such as tbc is skipped.
     misses:
       value: 15 quantities are counted.
       syntax: Check the brackets, commas and quotes.

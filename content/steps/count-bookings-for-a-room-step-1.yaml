@@ -30,7 +30,7 @@ screens:
       - COUNTIF
     hints:
       nudge: Count in the column that holds the days.
-      rule: COUNTIF(A2:A11,"Mon") counts the Monday rows.
+      rule: COUNTIF counts the cells in the day column that say Mon, written in quotes.
     misses:
       value: 2 bookings are on Monday.
       syntax: Check the brackets, commas and quotes.

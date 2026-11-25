@@ -24,7 +24,7 @@ screens:
       - HLOOKUP
     hints:
       nudge: HLOOKUP searches the top row and counts rows down.
-      rule: HLOOKUP(B4,B1:E3,2,FALSE) returns row 2 of the column whose top cell matches.
+      rule: HLOOKUP searches the top row of the table and returns the row number you give it from the matching column.
     misses:
       value: March sold 200 units.
       syntax: Check the brackets, commas and quotes.

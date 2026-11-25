@@ -26,7 +26,7 @@ screens:
       - MATCH
     hints:
       nudge: MATCH finds the ID's row; INDEX returns the name on it.
-      rule: INDEX(B2:B6,MATCH(D3,A2:A6,0)) returns the name for the ID.
+      rule: MATCH with 0 finds the ID's position in the ID column, and INDEX returns the name at that position.
     misses:
       value: E-104 is Dee.
       syntax: Check the brackets, commas and quotes.

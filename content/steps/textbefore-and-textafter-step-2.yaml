@@ -21,7 +21,7 @@ screens:
       - TEXTAFTER
     hints:
       nudge: TEXTAFTER returns what comes after the delimiter.
-      rule: TEXTAFTER(A2,"@") returns the domain.
+      rule: TEXTAFTER takes the text and a delimiter, and returns everything after it.
     misses:
       value: The domain is engines.co.uk.
       syntax: Check the brackets, commas and quotes.

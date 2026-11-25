@@ -28,7 +28,7 @@ screens:
       - SUMIF
     hints:
       nudge: The third part of SUMIF is the column to add.
-      rule: SUMIF(B2:B7,"Pens",C2:C7) tests column B and adds column C on the matching rows.
+      rule: "SUMIF tests one column and adds another: the range to test, the criteria, then the column to add."
     misses:
       value: Pens add up to 77 units.
       syntax: Check the brackets, commas and quotes.

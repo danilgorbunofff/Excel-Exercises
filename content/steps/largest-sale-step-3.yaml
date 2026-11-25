@@ -32,7 +32,7 @@ screens:
       - MAX
     hints:
       nudge: MAX takes more than one range, separated by commas.
-      rule: MAX(B2:B8,D2:D8) looks at both regions at once and gives the single largest sale.
+      rule: MAX takes several ranges separated by commas and gives the single largest number across all of them.
     misses:
       value: The largest sale in either region is 610. Include both columns.
       syntax: Check the brackets, commas and quotes.

@@ -1,60 +1,62 @@
 id: share-handed-in-step-5
 slug: share-handed-in-step-5
 level: 3
-title: Pass rate among those who handed in
+title: Share of expected essays handed in
 updated: 2026-11-25
 checkedInExcel: 2026-11-25
 parent: share-handed-in
 step: 5
 screens:
-  - prompt: In E2, what share of the students who handed in an essay passed, with a mark of 10 or more? Give a fraction such as 0.5.
+  - prompt: In E2, what share of the expected essays were handed in? A mark means handed in, absent means missing, and a blank means the student was excused. Give a fraction such as 0.5.
     rows:
-      - [Student, Mark, null, null, null]
-      - [Ana, 14, null, Pass rate, null]
-      - [Ben, null, null, null, null]
-      - [Cara, 9, null, null, null]
+      - [Student, Mark, null, null, Share handed in]
+      - [Ana, 14, null, null, null]
+      - [Ben, absent, null, null, null]
+      - [Cara, null, null, null, null]
       - [Dan, 12, null, null, null]
-      - [Eve, null, null, null, null]
-      - [Finn, 18, null, null, null]
-      - [Gus, 7, null, null, null]
-      - [Hana, 15, null, null, null]
+      - [Eve, 9, null, null, null]
+      - [Finn, absent, null, null, null]
+      - [Gus, 18, null, null, null]
+      - [Hana, null, null, null, null]
       - [Ivo, 10, null, null, null]
-      - [Jana, null, null, null, null]
-      - [Kim, 11, null, null, null]
-      - [Leo, 8, null, null, null]
-      - [Mia, 16, null, null, null]
-      - [Nils, 13, null, null, null]
-      - [Ola, null, null, null, null]
+      - [Jana, 15, null, null, null]
+      - [Kai, absent, null, null, null]
+      - [Lea, 11, null, null, null]
+      - [Max, null, null, null, null]
+      - [Nia, 16, null, null, null]
+      - [Ola, 13, null, null, null]
     answerCell: E2
-    expected: 0.727272727273
+    expected: 0.75
     variants:
-      - set: { B4: 10 }
-        expected: 0.818181818182
-      - set: { B3: 6 }
-        expected: 0.666666666667
-      - set: { B16: 12 }
-        expected: 0.75
-      - set: { B3: absent, B6: 12 }
-        expected: 0.75
-    answer: =COUNTIF(B2:B16,">=10")/COUNT(B2:B16)
+      - set: { B3: 8 }
+        expected: 0.833333333333
+      - set: { B4: absent }
+        expected: 0.692307692308
+      - set: { B16: null }
+        expected: 0.727272727273
+    answer: =COUNT(B2:B16)/COUNTA(B2:B16)
     requiredFunctions: []
     hints:
-      nudge: Count the passes, then divide by the essays that have a mark.
-      rule: COUNTIF(B2:B16,">=10") counts the passes, and COUNT(B2:B16) counts the essays handed in, so the blanks stay out.
+      nudge: Only the marks and the word absent belong to students who were expected to hand in.
+      rule: COUNT counts only the marks; COUNTA counts the marks and the word absent, but not the excused blanks. Divide one by the other.
     misses:
-      value: "The pass rate is 0.73: marks of 10 or more, divided by the essays handed in."
+      value: The share handed in is 0.75. Excused students do not count.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =COUNTIF(B2:B16,">=10")/COUNT(B2:B16)
-      - =COUNTIFS(B2:B16,">=10")/COUNT(B2:B16)
+      - =COUNT(B2:B16)/COUNTA(B2:B16)
+      - =COUNT(B2:B16)/(COUNT(B2:B16)+COUNTIF(B2:B16,"absent"))
+      - =1-COUNTIF(B2:B16,"absent")/COUNTA(B2:B16)
+      - =COUNT(B2:B16)/(ROWS(B2:B16)-COUNTBLANK(B2:B16))
     reject:
-      - formula: =COUNTIF(B2:B16,">=10")/COUNTA(A2:A16)
+      - formula: =COUNT(B2:B16)/ROWS(B2:B16)
         rule: value
-      - formula: =COUNTIF(B2:B16,">10")/COUNT(B2:B16)
+      - formula: =COUNTA(B2:B16)/ROWS(B2:B16)
         rule: value
-      - formula: =0.727272727273
+      - formula: =COUNTA(B2:B16)/COUNT(B2:B16)
+        rule: value
+      - formula: =0.75
         rule: reference
-      - formula: =COUNTIF(B2:B16,">=10")/COUNT(B2:B16
+      - formula: =COUNT(B2:B16)/COUNTA(B2:B16
         rule: syntax

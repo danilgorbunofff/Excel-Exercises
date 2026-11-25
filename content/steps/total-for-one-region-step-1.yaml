@@ -28,7 +28,7 @@ screens:
       - SUMIF
     hints:
       nudge: SUMIF takes the range to test, the word to match, then the range to add.
-      rule: SUMIF(A2:A7,"Food",B2:B7) adds the costs on the Food rows.
+      rule: SUMIF adds the cells of its last range on the rows where its first range matches the criteria.
     misses:
       value: Food costs add up to 104.
       syntax: Check the brackets, commas and quotes.

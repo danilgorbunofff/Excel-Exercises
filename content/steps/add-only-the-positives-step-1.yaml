@@ -28,7 +28,7 @@ screens:
       - SUMIF
     hints:
       nudge: "Test the amounts themselves: only those above 0."
-      rule: SUMIF(B2:B7,">0") adds the cells it tests that are above 0.
+      rule: Without a third range, SUMIF adds the same cells it tests.
     misses:
       value: The money paid in adds up to 670.
       syntax: Check the brackets, commas and quotes.

@@ -7,7 +7,7 @@ checkedInExcel: 2026-11-25
 parent: mround-and-floor-round-to-a-multiple
 step: 2
 screens:
-  - prompt: Screws come in packs of the size in C2. In D2, work out how many screws to order so the need in B2 is covered with whole packs. Use CEILING.
+  - prompt: "Screws come in packs of the size in C2. In D2, work out how many screws to order so the need in B2 is covered with whole packs: the packs rounded up, times the pack size. Use ROUNDUP."
     rows:
       - [Job, Need, Pack, Order]
       - [Deck, 230, 50, null]
@@ -16,26 +16,30 @@ screens:
     variants:
       - set: { C2: 40 }
         expected: 240
-    answer: =CEILING(B2,C2)
+    answer: =ROUNDUP(B2/C2,0)*C2
     requiredFunctions:
-      - CEILING
+      - ROUNDUP
     hints:
-      nudge: CEILING rounds up to the next multiple, so the need is always covered.
-      rule: CEILING(B2,C2) rounds 230 up to the next multiple of the pack size.
+      nudge: Work out how many packs cover the need, rounded up, then turn packs back into screws.
+      rule: ROUNDUP with 0 places turns a part pack into a whole one. Multiply the packs by the pack size to get screws.
     misses:
       value: Ordering 250 screws covers the need in whole packs.
       syntax: Check the brackets, commas and quotes.
-      required-function: This task asks for CEILING.
+      required-function: This task asks for ROUNDUP.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =CEILING(B2,C2)
-      - =CEILING(B2,C2)+0
+      - =ROUNDUP(B2/C2,0)*C2
+      - =C2*ROUNDUP(B2/C2,0)
+      - =(ROUNDUP(B2/C2,0))*C2
+      - =ROUNDUP(B2/C2,0)*C$2
     reject:
-      - formula: =FLOOR(B2,C2)
+      - formula: =ROUNDUP(B2/C2,0)
+        rule: value
+      - formula: =ROUNDUP(B2/C2,1)*C2
+        rule: value
+      - formula: =CEILING(B2,C2)
         rule: required-function
-      - formula: =CEILING(B2,50)
-        rule: fragile
       - formula: =250
         rule: required-function
-      - formula: =CEILING(B2,C2
+      - formula: =ROUNDUP(B2/C2,0)*C2,
         rule: syntax

@@ -30,7 +30,7 @@ screens:
       - SUM
     hints:
       nudge: Three ranges, one for each shelf's items.
-      rule: SUM(B2:B4,B6:B8,B10:B12) adds the nine items and skips the three subtotal rows.
+      rule: Give SUM one range per shelf, separated by commas, so the subtotal rows are skipped.
     misses:
       value: The nine items add up to 905. Counting the subtotal rows doubles the total.
       syntax: Check the brackets, commas and quotes.

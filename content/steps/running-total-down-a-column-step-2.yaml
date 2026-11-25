@@ -22,7 +22,7 @@ screens:
       - SUM
     hints:
       nudge: Start the range at January and end it at April.
-      rule: SUM($B2:E2) adds from January to the current month. The $ keeps the start on column B when the formula fills right.
+      rule: Put a $ before the column letter of the first cell only. The start stays on January and the end moves as the formula fills right.
     misses:
       value: The savings up to April add up to 275. The range runs from B2 to E2.
       syntax: Check the brackets, commas and quotes.

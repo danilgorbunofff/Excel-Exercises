@@ -31,7 +31,7 @@ screens:
       - SUMIFS
     hints:
       nudge: Point each condition at its cell.
-      rule: SUMIFS(C2:C10,A2:A10,F1,B2:B10,F2) follows whatever is typed in F1 and F2.
+      rule: Point each condition at the cell that holds it, so the total follows whatever is typed in F1 and F2.
     misses:
       value: IT travel costs 3100.
       syntax: Check the brackets, commas and quotes.

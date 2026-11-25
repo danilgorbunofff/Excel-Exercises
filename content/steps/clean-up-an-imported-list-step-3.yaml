@@ -22,7 +22,7 @@ screens:
       - TRIM
     hints:
       nudge: Tidy the spaces first, or the first space is a stray one.
-      rule: TEXTAFTER(TRIM(A2)," ") returns everything after the single space between the names.
+      rule: TEXTAFTER with a space returns what follows the first space, so tidy the name with TRIM inside it first.
     misses:
       value: The last name is Hopper.
       syntax: Check the brackets, commas and quotes.

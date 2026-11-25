@@ -21,7 +21,7 @@ screens:
       - ROUND
     hints:
       nudge: 0 decimal places means a whole number.
-      rule: ROUND(B2,0) gives the nearest whole number; halves round away from zero.
+      rule: With 0 decimal places ROUND gives the nearest whole number; halves round away from zero.
     misses:
       value: 12.5 km rounds to 13.
       syntax: Check the brackets, commas and quotes.

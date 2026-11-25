@@ -20,7 +20,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Sales minus target.
-      rule: C2-B2 is positive above target and negative below it.
+      rule: Sales minus target is positive above target and negative below it.
     misses:
       value: D2 shows -1150.
       syntax: Check the brackets, commas and quotes.

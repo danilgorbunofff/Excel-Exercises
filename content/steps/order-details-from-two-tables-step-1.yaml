@@ -24,7 +24,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: Search the customer IDs, return the names.
-      rule: XLOOKUP(B2,$E$2:$E$5,$F$2:$F$5) returns the customer's name.
+      rule: XLOOKUP searches the customer IDs and returns the name from the same row. Dollar signs keep the customer table fixed when the formula is copied down.
     misses:
       value: The first order is for Brook.
       syntax: Check the brackets, commas and quotes.

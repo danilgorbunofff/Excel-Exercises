@@ -44,7 +44,7 @@ screens:
       - SORT
     hints:
       nudge: Sort first, then take the top five rows.
-      rule: TAKE(SORT(D2:D19,,-1),5) keeps the first five of the sorted list.
+      rule: Sort the amounts largest first, then TAKE keeps the first five rows of that list.
     misses:
       value: The list should show the five largest amounts, largest first.
       syntax: Check the brackets, commas and quotes.

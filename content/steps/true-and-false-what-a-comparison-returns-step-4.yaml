@@ -29,9 +29,9 @@ screens:
       - SUM
     hints:
       nudge: Total the costs, then compare the total with E1.
-      rule: SUM(B2:B6)<=E1 is TRUE when the spending is no more than the budget, including exactly equal.
+      rule: "A comparison can have a function on one side: total the costs and compare the total with E1. <= includes exactly equal."
     misses:
-      value: The costs add up to exactly the budget, so B8 should show true.
+      value: The costs add up to exactly the budget, so B8 should show TRUE.
       syntax: Check the brackets, commas and quotes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:

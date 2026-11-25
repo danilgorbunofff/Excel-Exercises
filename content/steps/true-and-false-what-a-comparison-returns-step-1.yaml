@@ -19,10 +19,10 @@ screens:
     answer: =B2>=500
     requiredFunctions: []
     hints:
-      nudge: A comparison such as B2>=500 gives TRUE or FALSE on its own.
+      nudge: A comparison such as A1>=10 gives TRUE or FALSE on its own, with no function.
       rule: ">= means at least, so exactly 500 counts."
     misses:
-      value: Ana sold exactly 500, so C2 should show true.
+      value: Ana sold exactly 500, so C2 should show TRUE.
       syntax: Check the brackets, commas and quotes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:

@@ -35,7 +35,7 @@ screens:
       - COUNTIFS
     hints:
       nudge: "Two pairs: the region column with North, the rep column with Ada."
-      rule: COUNTIFS(B2:B16,"North",C2:C16,"Ada") counts rows that pass both tests.
+      rule: "Give COUNTIFS one pair per test: a range, then its criteria. It counts the rows that pass both."
     misses:
       value: Ada has 2 orders from the North.
       syntax: Check the brackets, commas and quotes.

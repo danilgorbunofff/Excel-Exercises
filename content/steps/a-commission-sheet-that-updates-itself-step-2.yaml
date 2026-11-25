@@ -28,7 +28,7 @@ screens:
       - VLOOKUP
     hints:
       nudge: The tier table lists where each rate starts; TRUE finds the band the sales fall in.
-      rule: VLOOKUP(B2,$E$2:$F$4,2,TRUE) returns the rate of the highest tier the sales reach.
+      rule: With TRUE, VLOOKUP returns the rate of the highest tier the sales reach. Dollar signs keep the tier table fixed when the formula is copied down.
     misses:
       value: Ana's sales reach the 0.035 tier.
       syntax: Check the brackets, commas and quotes.

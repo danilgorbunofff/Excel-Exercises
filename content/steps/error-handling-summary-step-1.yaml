@@ -21,7 +21,7 @@ screens:
       - IFERROR
     hints:
       nudge: "Text times a number gives `#VALUE!`; IFERROR catches it."
-      rule: IFERROR(B2*C2,0) gives 0 while the price is still tbc.
+      rule: Wrap the multiplication in IFERROR with 0 as the fallback, so text such as tbc shows 0.
     misses:
       value: With the price still tbc, D2 should show 0.
       syntax: Check the brackets, commas and quotes.

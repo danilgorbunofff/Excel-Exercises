@@ -6,26 +6,26 @@ screens:
       - =if(sumproduct(--(abs(b2:b9)>d1))=0, "close", sumproduct(--(abs(b2:b9)>d1)))
       - =IFS(SUMPRODUCT(--(ABS(B2:B9)>D1))=0,"close",TRUE,SUMPRODUCT(--(ABS(B2:B9)>D1)))
       - =LET(data,B2:B9,IF(SUMPRODUCT(--(ABS(data)>D1))=0,"close",SUMPRODUCT(--(ABS(data)>D1))))
+      - =IF(COUNTIF($B$2:$B$9,">"&$D$1)+COUNTIF($B$2:$B$9,"<"&-$D$1)=0,"close",COUNTIF($B$2:$B$9,">"&$D$1)+COUNTIF($B$2:$B$9,"<"&-$D$1))
+      - =IF(COUNTIF(B$2:B$9,">"&D1)+COUNTIF(B2:B9,"<"&-D1)=0,"close",COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1))
+      - =if(countif(b2:b9, ">"&d1)+countif(b2:b9, "<"&-d1)=0, "close", countif(b2:b9, ">"&d1)+countif(b2:b9, "<"&-d1))
+      - =IFS(COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1)=0,"close",TRUE,COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1))
+      - =IF(COUNTIFS(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1)=0,"close",COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1))
+      - =IF(COUNTIF(B2:B9,">"&D1)+COUNTIFS(B2:B9,"<"&-D1)=0,"close",COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1))
+      - =IF(COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1)=0,"close",COUNTIFS(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1))
+      - =IF(COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1)=0,"close",COUNTIF(B2:B9,">"&D1)+COUNTIFS(B2:B9,"<"&-D1))
+      - =LET(data,B2:B9,IF(COUNTIF(data,">"&D1)+COUNTIF(data,"<"&-D1)=0,"close",COUNTIF(data,">"&D1)+COUNTIF(data,"<"&-D1)))
     wrong:
-      - formula: =IF(SUMPRODUCT(--(ABS(B2:B9)>=D1))=0,"close",SUMPRODUCT(--(ABS(B2:B9)>D1)))
-        rule: fragile
-        why: "> written as >="
-      - formula: =IF(SUMPRODUCT(--(B2:B9>D1))=0,"close",SUMPRODUCT(--(ABS(B2:B9)>D1)))
-        rule: fragile
-        why: without ABS
-      - formula: =IF(SUMPRODUCT(--(ABS(B2:B8)>D1))=0,"close",SUMPRODUCT(--(ABS(B2:B9)>D1)))
-        rule: fragile
-        why: range B2:B9 one row short at the end
-      - formula: =IF(SUMPRODUCT(--(ABS(B3:B9)>D1))=0,"close",SUMPRODUCT(--(ABS(B2:B9)>D1)))
+      - formula: =IF(COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1)=0,"close",COUNTIF(B2:B9,">"&D1)+COUNTIF(B3:B9,"<"&-D1))
         rule: fragile
         why: range B2:B9 skips its first row
-      - formula: =IF(SUMPRODUCT(--(ABS(B2:B9)>D1))=0,"close",SUMPRODUCT(--(ABS(B2:B9)>=D1)))
+      - formula: =IF(COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1)=0,"close",COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<="&-D1))
         rule: fragile
-        why: "> written as >="
-      - formula: =IF(SUMPRODUCT(--(ABS(B2:B9)>D1))=0,"close",SUMPRODUCT(--(ABS(B2:B8)>D1)))
-        rule: fragile
-        why: range B2:B9 one row short at the end
-      - formula: =IF(SUMPRODUCT(--(ABS(B2:B9)>D1))=0,"close",SUMPRODUCT(--(ABS(B3:B9)>D1)))
-        rule: fragile
-        why: range B2:B9 skips its first row
-    equivalent: []
+        why: criteria "<" written with <=
+    equivalent:
+      - formula: =IF(COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B8,"<"&-D1)=0,"close",COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1))
+        why: "range B2:B9 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IF(COUNTIF(B2:B9,">"&D1)+COUNTIF(B3:B9,"<"&-D1)=0,"close",COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1))
+        why: "range B2:B9 skips its first row: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IF(COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<="&-D1)=0,"close",COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1))
+        why: 'criteria "<" written with <=: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed).'

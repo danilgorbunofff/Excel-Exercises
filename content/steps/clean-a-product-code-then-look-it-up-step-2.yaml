@@ -22,7 +22,7 @@ screens:
       - SUBSTITUTE
     hints:
       nudge: TRIM keeps single spaces inside; SUBSTITUTE removes them all.
-      rule: UPPER(SUBSTITUTE(A2," ","")) gives PX-104.
+      rule: SUBSTITUTE with a space and empty quotes removes every space; UPPER then makes every letter a capital.
     misses:
       value: The clean code is PX-104.
       syntax: Check the brackets, commas and quotes.

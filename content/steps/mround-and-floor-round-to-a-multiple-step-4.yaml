@@ -21,7 +21,7 @@ screens:
       - MROUND
     hints:
       nudge: The multiple can be a decimal, such as 0.05.
-      rule: MROUND(B2,0.05) gives the nearest multiple of 5 cents.
+      rule: "The multiple can be a decimal: 0.05 gives the nearest 5 cents."
     misses:
       value: 2.47 rounds to 2.45 for cash.
       syntax: Check the brackets, commas and quotes.

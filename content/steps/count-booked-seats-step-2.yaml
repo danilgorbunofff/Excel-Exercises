@@ -23,7 +23,7 @@ screens:
       - COUNTA
     hints:
       nudge: COUNTA counts every cell that is not empty, text included.
-      rule: COUNTA(B2:G2) counts the names along the row and skips the empty cells.
+      rule: COUNTA counts every cell that is not empty, along a row as well as down a column.
     misses:
       value: 4 classes have a teacher. COUNTA counts the cells with a name.
       syntax: Check the brackets, commas and quotes.

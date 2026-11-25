@@ -27,7 +27,7 @@ screens:
       - MEDIAN
     hints:
       nudge: The median is the middle value once the list is in order.
-      rule: MEDIAN(B2:B8) finds the middle of the seven times; one slow order cannot drag it.
+      rule: MEDIAN finds the middle value of the list, so one slow order cannot drag it.
     misses:
       value: The median delivery time is 4 days.
       syntax: Check the brackets, commas and quotes.

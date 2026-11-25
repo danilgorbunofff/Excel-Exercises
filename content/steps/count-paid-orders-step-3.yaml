@@ -32,7 +32,7 @@ screens:
       - COUNT
     hints:
       nudge: One range can cover both rounds side by side.
-      rule: COUNT(B2:C9) counts every number in the block and skips the notes and gaps.
+      rule: COUNT counts every number in a block and skips notes and empty cells.
     misses:
       value: There are 10 scores in the block. The range has to cover both columns.
       syntax: Check the brackets, commas and quotes.

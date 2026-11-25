@@ -21,7 +21,7 @@ screens:
       - FIND
     hints:
       nudge: 'The space goes in quotes: " ".'
-      rule: FIND(" ",A2) gives the position of the first space.
+      rule: 'FIND gives the position of the first match. A space to look for goes in quotes: " ".'
     misses:
       value: The first space is character 5.
       syntax: Check the brackets, commas and quotes.

@@ -21,7 +21,7 @@ screens:
       - RIGHT
     hints:
       nudge: RIGHT takes the text and how many characters to keep from the end.
-      rule: RIGHT(A2,4) keeps the last four characters.
+      rule: RIGHT keeps a number of characters from the end of the text, spaces included.
     misses:
       value: The last four are 7731.
       syntax: Check the brackets, commas and quotes.

@@ -26,7 +26,7 @@ screens:
       - SUM
     hints:
       nudge: List every block inside one SUM.
-      rule: SUM(B2:B5,D2:D5,F2:F5) adds the three blocks. The empty columns between them add nothing.
+      rule: SUM takes as many ranges as you need, separated by commas. Empty columns between the blocks add nothing.
     misses:
       value: The three stores add up to 3720. Check that all three ranges are in the SUM.
       syntax: Check the brackets, commas and quotes.

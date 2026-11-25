@@ -7,7 +7,7 @@ checkedInExcel: 2026-11-25
 parent: countifs-several-conditions
 step: 5
 screens:
-  - prompt: In H2, how many open North orders are bigger, in units, than the average order?
+  - prompt: In H2, how many open North orders have more units than the average of all the orders on the sheet?
     rows:
       - [Order, Region, Rep, Status, Units, Amount, null, null]
       - [SO-01, North, Ada, Open, 5, 320, Above-average open North, null]

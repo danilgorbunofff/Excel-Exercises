@@ -21,7 +21,7 @@ screens:
       - PROPER
     hints:
       nudge: PROPER capitalises the first letter of each word.
-      rule: PROPER(A2) gives each word a capital, then small letters.
+      rule: PROPER gives each word a capital first letter and makes the rest small.
     misses:
       value: B2 shows Mary O'Neil.
       syntax: Check the brackets, commas and quotes.

@@ -34,7 +34,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: The median ignores the extreme listing and skips text and blanks.
-      rule: MEDIAN(B2:B16) takes the middle of the real prices; POA and blanks are left out.
+      rule: MEDIAN takes the middle of the real prices and skips text such as POA and blanks.
     misses:
       value: A typical asking price is 305000.
       syntax: Check the brackets, commas and quotes.

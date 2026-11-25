@@ -74,7 +74,7 @@ screens:
       - SORT
     hints:
       nudge: "The third part of SORT is the order: -1 means largest first."
-      rule: SORT(D2:D19,,-1) spills the amounts in descending order.
+      rule: SORT's third part is the order, and -1 means largest first. Leave the second part empty for a single column.
     misses:
       value: The list should run from the largest amount to the smallest.
       syntax: Check the brackets, commas and quotes.

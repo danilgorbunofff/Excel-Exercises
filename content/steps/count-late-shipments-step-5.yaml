@@ -38,7 +38,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: "Two tests: the carrier, and more than 3 days late."
-      rule: COUNTIFS(E2:E16,G1,D2:D16,">3") counts that carrier's badly late orders.
+      rule: Give COUNTIFS the carrier column with G1, and the days-late column with ">3", so both tests must pass.
     misses:
       value: Northway had 3 orders more than 3 days late.
       syntax: Check the brackets, commas and quotes.

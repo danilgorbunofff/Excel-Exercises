@@ -21,7 +21,7 @@ screens:
       - ROUNDUP
     hints:
       nudge: Divide first, then round up to 2 decimals.
-      rule: ROUNDUP(B2/C2,2) rounds the share up to the next cent, so six shares never fall short of the bill.
+      rule: Divide first. ROUNDUP with 2 places takes the share up to the next cent, so the shares never fall short of the bill.
     misses:
       value: Each person pays 31.25.
       syntax: Check the brackets, commas and quotes.

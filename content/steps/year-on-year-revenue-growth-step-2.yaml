@@ -27,7 +27,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: This year divided by last year; above 1 means growth.
-      rule: C2/B2 of 1.1 means 10% growth.
+      rule: "A ratio above 1 means growth: 1.1 is 10% up on last year."
     misses:
       value: This year is 1.1 times last year.
       syntax: Check the brackets, commas and quotes.

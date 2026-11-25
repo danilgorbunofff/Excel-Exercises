@@ -1,21 +1,15 @@
 # Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
 screens:
   - correct:
-      - =ABS(SUMIF($B$2:$B$16,"North",$F$2:$F$16)-SUMIF($B$2:$B$16,"South",$F$2:$F$16))
-      - =ABS(SUMIF(B$2:B$16,"North",F2:F16)-SUMIF(B2:B16,"South",F2:F16))
-      - =abs(sumif(b2:b16, "North", f2:f16)-sumif(b2:b16, "South", f2:f16))
-      - =ABS(SUMIFS(F2:F16,B2:B16,"North")-SUMIF(B2:B16,"South",F2:F16))
-      - =ABS(SUMPRODUCT((B2:B16="North")*F2:F16)-SUMIF(B2:B16,"South",F2:F16))
-      - =ABS(SUM(FILTER(F2:F16,(B2:B16="North"),0))-SUMIF(B2:B16,"South",F2:F16))
-      - =ABS(SUMIF(B2:B16,"North",F2:F16)-SUMIFS(F2:F16,B2:B16,"South"))
-      - =ABS(SUMIF(B2:B16,"North",F2:F16)-SUMPRODUCT((B2:B16="South")*F2:F16))
-      - =ABS(SUMIF(B2:B16,"North",F2:F16)-SUM(FILTER(F2:F16,(B2:B16="South"),0)))
-      - =LET(data,B2:B16,ABS(SUMIF(data,"North",F2:F16)-SUMIF(data,"South",F2:F16)))
-    wrong:
-      - formula: =ABS(SUMIF(B2:B15,"North",F2:F16)-SUMIF(B2:B16,"South",F2:F16))
-        rule: fragile
-        why: range B2:B16 one row short at the end
-      - formula: =ABS(SUMIF(B2:B16,"North",F2:F16)-SUMIF(B2:B15,"South",F2:F16))
-        rule: fragile
-        why: range B2:B16 one row short at the end
+      - =SUMIF($B$2:$B$16,"North",$F$2:$F$16)-SUMIF($B$2:$B$16,"South",$F$2:$F$16)
+      - =SUMIF(B$2:B$16,"North",F2:F16)-SUMIF(B2:B16,"South",F2:F16)
+      - =sumif(b2:b16, "North", f2:f16)-sumif(b2:b16, "South", f2:f16)
+      - =SUMIFS(F2:F16,B2:B16,"North")-SUMIF(B2:B16,"South",F2:F16)
+      - =SUMPRODUCT((B2:B16="North")*F2:F16)-SUMIF(B2:B16,"South",F2:F16)
+      - =SUM(FILTER(F2:F16,(B2:B16="North"),0))-SUMIF(B2:B16,"South",F2:F16)
+      - =SUMIF(B2:B16,"North",F2:F16)-SUMIFS(F2:F16,B2:B16,"South")
+      - =SUMIF(B2:B16,"North",F2:F16)-SUMPRODUCT((B2:B16="South")*F2:F16)
+      - =SUMIF(B2:B16,"North",F2:F16)-SUM(FILTER(F2:F16,(B2:B16="South"),0))
+      - =LET(data,B2:B16,SUMIF(data,"North",F2:F16)-SUMIF(data,"South",F2:F16))
+    wrong: []
     equivalent: []

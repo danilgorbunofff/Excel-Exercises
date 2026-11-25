@@ -36,7 +36,7 @@ screens:
       - ROUND
     hints:
       nudge: MAX finds the biggest customer wherever it sits.
-      rule: MAX(B2:B11)/SUM(B2:B11) is the top customer's slice.
+      rule: MAX finds the biggest revenue wherever it sits; divide it by the total and turn it into a percentage.
     misses:
       value: The biggest customer brings 23.9% of revenue.
       syntax: Check the brackets, commas and quotes.

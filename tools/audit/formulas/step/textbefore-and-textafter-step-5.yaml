@@ -4,5 +4,8 @@ screens:
       - =TRIM(TEXTBEFORE(TEXTAFTER($A$2,","),","))
       - =TRIM(TEXTBEFORE(TEXTAFTER(A$2,","),","))
       - =trim(textbefore(textafter(a2, ","), ","))
+      - =TEXTBEFORE(TEXTAFTER($A$2,", "),",")
+      - =TEXTBEFORE(TEXTAFTER(A$2,", "),",")
+      - =textbefore(textafter(a2, ", "), ",")
     wrong: []
     equivalent: []

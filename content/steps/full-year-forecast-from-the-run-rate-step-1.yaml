@@ -25,7 +25,7 @@ screens:
       - AVERAGE
     hints:
       nudge: AVERAGE of the closed months.
-      rule: AVERAGE(B2:B6) is the run rate per month.
+      rule: AVERAGE of the closed months is the run rate per month.
     misses:
       value: The average month is 42840.
       syntax: Check the brackets, commas and quotes.

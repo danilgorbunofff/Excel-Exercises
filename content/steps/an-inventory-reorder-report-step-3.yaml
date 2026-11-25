@@ -28,7 +28,7 @@ screens:
       - SUMPRODUCT
     hints:
       nudge: Compare each item's stock with its own point, then count the TRUEs.
-      rule: B2:B9<C2:C9 compares row by row; -- turns TRUE into 1 and SUMPRODUCT adds them.
+      rule: Compare each stock with its own reorder point row by row; -- turns each TRUE into 1, and SUMPRODUCT adds them.
     misses:
       value: 4 items are below their reorder point.
       syntax: Check the brackets, commas and quotes.

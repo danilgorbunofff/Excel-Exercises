@@ -31,7 +31,7 @@ screens:
       - ROUND
     hints:
       nudge: Calder's revenue over the total, times 100.
-      rule: B4/SUM(B2:B11) is Calder's slice of the total.
+      rule: Calder's revenue divided by the total, times 100, goes inside ROUND with 1 decimal place.
     misses:
       value: Calder brings 23.9% of revenue.
       syntax: Check the brackets, commas and quotes.

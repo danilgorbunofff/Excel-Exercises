@@ -22,7 +22,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Take the first discount off, then take the second off what is left.
-      rule: B2*(1-C2)*(1-D2) applies one discount after the other. Adding the two rates first takes off too much.
+      rule: Multiply by 1 minus each discount in turn, so the second applies to what is left. Adding the two rates first takes off too much.
     misses:
       value: The sofa costs 648 after both discounts, the second taken off what is left after the first.
       syntax: Check the brackets, commas and quotes.

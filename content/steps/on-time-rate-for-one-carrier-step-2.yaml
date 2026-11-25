@@ -32,7 +32,7 @@ screens:
       - COUNTIFS
     hints:
       nudge: "Two pairs: the carrier and the status."
-      rule: COUNTIFS(B2:B13,"Fastlane",C2:C13,"Late") counts rows that pass both.
+      rule: "Give COUNTIFS one pair per test: the carrier column with its name, and the status column with Late."
     misses:
       value: Fastlane had 2 late shipments.
       syntax: Check the brackets, commas and quotes.

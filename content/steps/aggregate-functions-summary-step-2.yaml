@@ -35,7 +35,7 @@ screens:
       - SUBTOTAL
     hints:
       nudge: 1 is the average.
-      rule: SUBTOTAL(1,D2:D16) averages the line values.
+      rule: "SUBTOTAL's first part picks the summary: 1 is the average of the range."
     misses:
       value: The average line is 51.03.
       syntax: Check the brackets, commas and quotes.

@@ -22,7 +22,7 @@ screens:
       - TRIM
     hints:
       nudge: TRIM the spaces, then UPPER the letters.
-      rule: UPPER(TRIM(A2)) gives PX-10042.
+      rule: "Put TRIM inside UPPER: the stray spaces go first, then every letter becomes a capital."
     misses:
       value: The tidy code is PX-10042.
       syntax: Check the brackets, commas and quotes.

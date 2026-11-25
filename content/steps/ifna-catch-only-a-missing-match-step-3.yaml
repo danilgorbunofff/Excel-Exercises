@@ -30,7 +30,7 @@ screens:
       - MATCH
     hints:
       nudge: Wrap the whole INDEX and MATCH in IFNA.
-      rule: IFNA(INDEX(B2:B6,MATCH(A8,A2:A6,0)),"not listed") shows the message only when the code is missing.
+      rule: Wrap the whole INDEX and MATCH in IFNA, with the message in quotes as the fallback.
     misses:
       value: E-5 costs 12.
       syntax: Check the brackets, commas and quotes.

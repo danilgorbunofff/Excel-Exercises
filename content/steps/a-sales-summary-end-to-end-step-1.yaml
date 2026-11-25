@@ -35,7 +35,7 @@ screens:
       - SUM
     hints:
       nudge: SUM the whole Amount column.
-      rule: SUM(C2:C16) adds every sale.
+      rule: SUM adds every number in a range. Give it the whole Amount column.
     misses:
       value: All sales add up to 4160.
       syntax: Check the brackets, commas and quotes.

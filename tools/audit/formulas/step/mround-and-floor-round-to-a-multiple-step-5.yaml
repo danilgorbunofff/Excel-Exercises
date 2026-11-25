@@ -5,5 +5,9 @@ screens:
       - =SUMPRODUCT(ROUND(B$2:B$16*4,0)/4)
       - =sumproduct(round(b2:b16*4, 0)/4)
       - =LET(data,B2:B16,SUMPRODUCT(ROUND(data*4,0)/4))
+      - =SUM(ROUND($B$2:$B$16*4,0)/4)
+      - =SUM(ROUND(B$2:B$16*4,0)/4)
+      - =sum(round(b2:b16*4, 0)/4)
+      - =LET(data,B2:B16,SUM(ROUND(data*4,0)/4))
     wrong: []
     equivalent: []

@@ -1,8 +1,16 @@
 # Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
 screens:
   - correct:
-      - =LOWER(TEXTAFTER($A$2,"@"))
-      - =LOWER(TEXTAFTER(A$2,"@"))
-      - =lower(textafter(a2, "@"))
+      - =MID($A$2,FIND("@",$A$2)+1,FIND(".",$A$2,FIND("@",$A$2))-FIND("@",$A$2)-1)
+      - =MID(A$2,FIND("@",A2)+1,FIND(".",A2,FIND("@",A2))-FIND("@",A2)-1)
+      - =mid(a2, find("@", a2)+1, find(".", a2, find("@", a2))-find("@", a2)-1)
     wrong: []
-    equivalent: []
+    equivalent:
+      - formula: =MID(A2,SEARCH("@",A2)+1,FIND(".",A2,FIND("@",A2))-FIND("@",A2)-1)
+        why: "SEARCH instead of FIND: A hyphen has no case, so SEARCH and FIND agree."
+      - formula: =MID(A2,FIND("@",A2)+1,SEARCH(".",A2,FIND("@",A2))-FIND("@",A2)-1)
+        why: "SEARCH instead of FIND: A hyphen has no case, so SEARCH and FIND agree."
+      - formula: =MID(A2,FIND("@",A2)+1,FIND(".",A2,SEARCH("@",A2))-FIND("@",A2)-1)
+        why: "SEARCH instead of FIND: A hyphen has no case, so SEARCH and FIND agree."
+      - formula: =MID(A2,FIND("@",A2)+1,FIND(".",A2,FIND("@",A2))-SEARCH("@",A2)-1)
+        why: "SEARCH instead of FIND: A hyphen has no case, so SEARCH and FIND agree."

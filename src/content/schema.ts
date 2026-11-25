@@ -226,6 +226,21 @@ export const stepSchema = mockSchema
   .refine((s) => s.id === `${s.parent}-step-${s.step}` && s.slug === s.id, {
     message: "id and slug must be <parent>-step-<step>",
     path: ["id"],
+  })
+  .superRefine((s, ctx) => {
+    // The answer shows at hint 3, which marks the solve as with help; hints 1
+    // and 2 must not give it away.
+    s.screens.forEach((screen, i) => {
+      const answer = screen.answer.slice(1).replaceAll("$", "");
+      for (const step of ["nudge", "rule"] as const) {
+        if (answer.length > 6 && screen.hints[step].replaceAll("$", "").includes(answer))
+          ctx.addIssue({
+            code: "custom",
+            path: ["screens", i, "hints", step],
+            message: "quotes the answer, which only hint 3 may show",
+          });
+      }
+    });
   });
 
 export const trackSchema = z.object({

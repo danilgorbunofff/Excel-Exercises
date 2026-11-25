@@ -31,7 +31,7 @@ screens:
       - MATCH
     hints:
       nudge: "MATCH gives a number when the code is found and #N/A when not; ISNUMBER turns that into TRUE or FALSE."
-      rule: IF(ISNUMBER(MATCH(B8,A2:A6,0)),"Yes","No") checks the list without any error showing.
+      rule: Put MATCH inside ISNUMBER, and use that as the test in IF. No error ever shows.
     misses:
       value: C-25 is not on the list, so B9 should show No.
       syntax: Check the brackets, commas and quotes.

@@ -21,7 +21,7 @@ screens:
       - IF
     hints:
       nudge: At least 15 includes 15 itself.
-      rule: IF(B2>=15,"OK","LOW") shows OK at 15 or more.
+      rule: IF shows the first value when the test is TRUE and the second when it is FALSE. Use >= for at least.
     misses:
       value: 12 units is below 15, so C2 should show LOW.
       syntax: Check the brackets, commas and quotes.

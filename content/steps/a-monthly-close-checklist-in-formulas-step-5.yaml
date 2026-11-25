@@ -35,17 +35,24 @@ screens:
         expected: 1
       - set: { B2: 20, B3: 0, B5: 0, B7: 0, B8: 0 }
         expected: 1
-    answer: =IF(SUMPRODUCT(--(ABS(B2:B9)>D1))=0,"close",SUMPRODUCT(--(ABS(B2:B9)>D1)))
+      - set: { B2: -6 }
+        expected: 3
+      - set: { B9: -6 }
+        expected: 3
+      - set: { B9: -5 }
+        expected: 2
+    answer: =IF(COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1)=0,"close",COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1))
     requiredFunctions: []
     hints:
       nudge: Count the checks outside the tolerance; 0 means the month can close.
-      rule: ABS(B2:B9)>D1 marks each check outside the tolerance; SUMPRODUCT counts them, and IF turns a count of 0 into close.
+      rule: COUNTIF can count the variances above D1 and, with a test built from minus D1, those below it. IF turns a total of 0 into close.
     misses:
       value: 2 checks are outside the tolerance.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
+      - =IF(COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1)=0,"close",COUNTIF(B2:B9,">"&D1)+COUNTIF(B2:B9,"<"&-D1))
       - =IF(SUMPRODUCT(--(ABS(B2:B9)>D1))=0,"close",SUMPRODUCT(--(ABS(B2:B9)>D1)))
       - =LET(n,SUMPRODUCT(--(ABS(B2:B9)>D1)),IF(n=0,"close",n))
     reject:

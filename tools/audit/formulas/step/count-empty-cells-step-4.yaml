@@ -1,17 +1,11 @@
 # Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
 screens:
   - correct:
-      - =COUNTBLANK($B$2:$B$11)/ROWS($B$2:$B$11)
-      - =COUNTBLANK(B$2:B$11)/ROWS(B2:B11)
-      - =countblank(b2:b11)/rows(b2:b11)
-      - =LET(data,B2:B11,COUNTBLANK(data)/ROWS(data))
-    wrong:
-      - formula: =COUNTBLANK(B2:B10)/ROWS(B2:B11)
-        rule: fragile
-        why: range B2:B11 one row short at the end
-      - formula: =COUNTBLANK(B3:B11)/ROWS(B2:B11)
-        rule: fragile
-        why: range B2:B11 skips its first row
+      - =COUNTBLANK($B$2:$B$11)/COUNTA($A$2:$A$11)
+      - =COUNTBLANK(B$2:B$11)/COUNTA(A2:A11)
+      - =countblank(b2:b11)/counta(a2:a11)
+      - =LET(data,B2:B11,COUNTBLANK(data)/COUNTA(A2:A11))
+    wrong: []
     equivalent:
-      - formula: =COUNTBLANK(B2:B11)/ROWS(C2:C11)
-        why: "range B2:B11 one column right: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =COUNTBLANK(B2:B11)/COUNTA(A2:A12)
+        why: "range A2:A11 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

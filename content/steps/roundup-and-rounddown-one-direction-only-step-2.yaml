@@ -21,7 +21,7 @@ screens:
       - ROUNDDOWN
     hints:
       nudge: ROUNDDOWN cuts off the part after the point.
-      rule: ROUNDDOWN(B2,0) turns 7.9 into 7.
+      rule: ROUNDDOWN with 0 places drops everything after the decimal point.
     misses:
       value: 7.9 hours are paid as 7.
       syntax: Check the brackets, commas and quotes.

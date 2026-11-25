@@ -26,7 +26,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: Search the SKU column, return the on-hand column.
-      rule: XLOOKUP(B6,B2:B5,C2:C5) returns the count on the SKU's row.
+      rule: XLOOKUP searches the SKU column and returns the count from the same row of the on-hand column.
     misses:
       value: CX-330 has 96 on hand.
       syntax: Check the brackets, commas and quotes.

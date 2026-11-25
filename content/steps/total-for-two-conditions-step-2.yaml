@@ -30,7 +30,7 @@ screens:
       - SUMIFS
     hints:
       nudge: "Point each condition at its cell: G1 for the region, G2 for the product."
-      rule: SUMIFS(C2:C9,A2:A9,G1,B2:B9,G2) totals whichever region and product are typed in.
+      rule: Point each condition at the cell that holds it, so the total follows whatever region and product are typed in.
     misses:
       value: The chosen region and product come to 32 units.
       syntax: Check the brackets, commas and quotes.

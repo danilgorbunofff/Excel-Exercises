@@ -21,7 +21,7 @@ screens:
       - IF
     hints:
       nudge: Spending exactly the budget is within it.
-      rule: IF(C2>B2,"over","within") flags only real overspends.
+      rule: IF with a strict > test flags only real overspends; spending exactly the budget shows within.
     misses:
       value: Travel spent more than its budget, so D2 should show over.
       syntax: Check the brackets, commas and quotes.

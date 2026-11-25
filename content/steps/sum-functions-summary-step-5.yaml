@@ -34,7 +34,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Keep every type except Transfer, refunds and fees included.
-      rule: SUMIF(B2:B16,"<>Transfer",C2:C16) adds every line whose type is not Transfer.
+      rule: SUMIF with "<>Transfer" adds every line whose type is anything but Transfer, refunds and fees included.
     misses:
       value: The net total without transfers is 1780.
       syntax: Check the brackets, commas and quotes.

@@ -35,7 +35,7 @@ screens:
       nudge: Variance over budget, then round.
       rule: Dividing by the budget shows the variance in proportion to the plan.
     misses:
-      value: Q2 is 0.031 away from budget.
+      value: Q2 is over budget by 0.031 of its budget.
       syntax: Check the brackets, commas and quotes.
       required-function: This task asks for SUMIFS and ROUND.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.

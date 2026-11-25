@@ -36,7 +36,7 @@ screens:
       - IF
     hints:
       nudge: The reorder point is use during the lead time plus a safety buffer.
-      rule: IF(B2<C2*D2+$F$1,"Reorder","OK") orders before the buffer runs out.
+      rule: The reorder point is daily use times lead time, plus the safety stock in F1. IF compares the stock on hand with it.
     misses:
       value: Pallet wrap's flag is OK.
       syntax: Check the brackets, commas and quotes.

@@ -35,7 +35,7 @@ screens:
       - COUNTIFS
     hints:
       nudge: "COUNTIFS works with one condition too: a range and its criteria."
-      rule: COUNTIFS(D2:D16,"Open") counts the rows whose status is Open.
+      rule: COUNTIFS counts the rows where every range matches its criteria, and one pair is enough.
     misses:
       value: 11 orders are open.
       syntax: Check the brackets, commas and quotes.

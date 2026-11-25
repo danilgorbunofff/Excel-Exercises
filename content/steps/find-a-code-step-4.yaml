@@ -28,7 +28,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: Search the name column, return the code column.
-      rule: XLOOKUP(H1,B2:B9,A2:A9) does a left lookup in one function.
+      rule: XLOOKUP searches one column and returns another, on either side, in one function.
     misses:
       value: The Cabinet's code is P-108.
       syntax: Check the brackets, commas and quotes.

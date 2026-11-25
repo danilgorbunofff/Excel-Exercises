@@ -27,7 +27,7 @@ screens:
       - IF
     hints:
       nudge: Point at F1 for the target and F2 for the rate, not at the numbers you see.
-      rule: IF(B4>$F$1,B4*$F$2,0) follows any change to the target or the rate.
+      rule: Point the test and the rate at F1 and F2 so the bonus follows any change to them. Dollar signs keep them fixed if the formula is copied down.
     misses:
       value: "Cy's bonus is 760: the rate in F2 times the sales, as they beat the target."
       syntax: Check the brackets, commas and quotes.

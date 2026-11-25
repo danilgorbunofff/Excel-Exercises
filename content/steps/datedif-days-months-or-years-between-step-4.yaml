@@ -21,7 +21,7 @@ screens:
       - DATEDIF
     hints:
       nudge: '"YM" ignores the full years and counts only the remaining months.'
-      rule: DATEDIF(B2,C2,"YM") gives months from 0 to 11.
+      rule: With "YM", DATEDIF ignores the full years and counts only the months left over, from 0 to 11.
     misses:
       value: After the full years there are 2 more months.
       syntax: Check the brackets, commas and quotes.

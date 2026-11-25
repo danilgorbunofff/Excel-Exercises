@@ -27,7 +27,7 @@ screens:
       - MODE
     hints:
       nudge: MODE gives the value that appears most often.
-      rule: MODE(B2:B8) finds the size that occurs the most times.
+      rule: MODE looks through the range and returns the value that occurs the most times.
     misses:
       value: The most common size is 42.
       syntax: Check the brackets, commas and quotes.

@@ -7,7 +7,7 @@ checkedInExcel: 2026-11-25
 parent: count-empty-cells
 step: 4
 screens:
-  - prompt: "In B13, work out the share of tasks with no owner, as a fraction such as 0.5: the empty owners divided by the number of tasks. Use COUNTBLANK and ROWS."
+  - prompt: "In B13, work out the share of tasks with no owner, as a fraction such as 0.5: the empty owners divided by the number of tasks. Use COUNTBLANK and COUNTA."
     rows:
       - [Task, Owner]
       - [Order stock, Kim]
@@ -31,27 +31,30 @@ screens:
         expected: 0.5
       - set: { B2: null }
         expected: 0.5
-    answer: =COUNTBLANK(B2:B11)/ROWS(B2:B11)
+    answer: =COUNTBLANK(B2:B11)/COUNTA(A2:A11)
     requiredFunctions:
       - COUNTBLANK
-      - ROWS
+      - COUNTA
     hints:
-      nudge: Count the empty owners, then divide by how many rows there are.
-      rule: ROWS(B2:B11) gives the number of tasks, so COUNTBLANK(B2:B11)/ROWS(B2:B11) is the share with no owner.
+      nudge: Count the empty owners, then divide by how many tasks there are.
+      rule: COUNTA on the task names counts every task. Divide the empty owners by that.
     misses:
       value: The share with no owner is 0.4. Divide the empty owners by the 10 tasks.
       syntax: Check the brackets, commas and quotes.
-      required-function: This task asks for COUNTBLANK and ROWS.
+      required-function: This task asks for COUNTBLANK and COUNTA.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =COUNTBLANK(B2:B11)/ROWS(B2:B11)
-      - =COUNTBLANK(B2:B11)/ROWS(A2:A11)
+      - =COUNTBLANK(B2:B11)/COUNTA(A2:A11)
+      - =COUNTBLANK(B2:B11)/(COUNTA(A2:A11))
+      - =COUNTBLANK(B2:B11)/(COUNTA(B2:B11)+COUNTBLANK(B2:B11))
     reject:
-      - formula: =COUNTBLANK(B2:B11)
+      - formula: =COUNTBLANK(B2:B11)/COUNTA(B2:B11)
+        rule: value
+      - formula: =COUNTA(B2:B11)/COUNTA(A2:A11)
         rule: required-function
-      - formula: =COUNTBLANK(B2:B11)/10
-        rule: required-function
+      - formula: =COUNTBLANK(B2:B10)/COUNTA(A2:A10)
+        rule: value
       - formula: =0.4
         rule: required-function
-      - formula: =COUNTBLANK(B2:B11)/ROWS(B2:B11
+      - formula: =COUNTBLANK(B2:B11)/COUNTA(A2:A11
         rule: syntax

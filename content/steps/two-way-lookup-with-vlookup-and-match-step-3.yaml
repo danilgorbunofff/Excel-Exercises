@@ -27,7 +27,7 @@ screens:
       - VLOOKUP
     hints:
       nudge: The column number can come from a cell instead of being typed.
-      rule: VLOOKUP(B6,A2:D5,B7,FALSE) follows whatever column number is in B7.
+      rule: The column number can come from a cell, so VLOOKUP follows whatever is in B7.
     misses:
       value: Gizmo's units in column 4 are 130.
       syntax: Check the brackets, commas and quotes.

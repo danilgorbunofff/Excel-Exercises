@@ -35,7 +35,7 @@ screens:
       - SUMIF
     hints:
       nudge: '"<>West" means anything but West.'
-      rule: SUMIF(B2:B16,"<>West",F2:F16) adds every row whose region is not West, including the one with no region.
+      rule: SUMIF with "<>West" adds every row whose region is not West, including a row with no region.
     misses:
       value: Everything outside the West adds up to 3250.
       syntax: Check the brackets, commas and quotes.

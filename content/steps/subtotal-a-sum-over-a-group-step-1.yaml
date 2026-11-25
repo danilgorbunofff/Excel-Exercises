@@ -35,7 +35,7 @@ screens:
       - SUBTOTAL
     hints:
       nudge: "The first part of SUBTOTAL picks the summary: 1 is average."
-      rule: SUBTOTAL(1,B2:B16) averages the range and would skip any rows filtered out.
+      rule: SUBTOTAL's first part picks the summary, and 1 is average. It would skip any rows hidden by a filter.
     misses:
       value: The average price is 3.63.
       syntax: Check the brackets, commas and quotes.

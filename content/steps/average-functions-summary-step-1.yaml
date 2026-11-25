@@ -25,7 +25,7 @@ screens:
       - AVERAGE
     hints:
       nudge: AVERAGE adds the values and divides by how many there are.
-      rule: AVERAGE(B2:B6) gives the mean of the five times.
+      rule: AVERAGE gives the mean of the numbers in a range.
     misses:
       value: The average is 4 days.
       syntax: Check the brackets, commas and quotes.

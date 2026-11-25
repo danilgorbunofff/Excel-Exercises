@@ -21,7 +21,7 @@ screens:
       - TEXTJOIN
     hints:
       nudge: FALSE keeps the empty cells, so two commas mark a blank.
-      rule: TEXTJOIN(",",FALSE,A2:E2) keeps every slot, which a CSV file needs.
+      rule: FALSE as the second part keeps the empty cells, so each one leaves an empty slot between two commas.
     misses:
       value: The CSV line is C-7,Lee,,York,.
       syntax: Check the brackets, commas and quotes.

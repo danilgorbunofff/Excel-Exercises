@@ -30,7 +30,7 @@ screens:
       - COUNTIF
     hints:
       nudge: <> means not equal to.
-      rule: COUNTIF(B2:B11,"<>Oak") counts every room that is not Oak.
+      rule: '"<>Oak" means not equal to Oak, so COUNTIF counts every other room.'
     misses:
       value: 7 bookings are not in Oak.
       syntax: Check the brackets, commas and quotes.

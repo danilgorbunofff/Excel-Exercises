@@ -30,7 +30,7 @@ screens:
       - SUM
     hints:
       nudge: "Two ranges: the main block and the extra row."
-      rule: SUM(B2:D5,B8:D8) adds the block and the late row together.
+      rule: "SUM can mix a block and a single row: list each range, separated by commas."
     misses:
       value: All the expenses add up to 1420. Include the late row 8 as well.
       syntax: Check the brackets, commas and quotes.

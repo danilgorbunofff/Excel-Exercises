@@ -25,7 +25,7 @@ screens:
       - COUNTIF
     hints:
       nudge: 'Join the sign and the cell: "<"&D2.'
-      rule: COUNTIF(B2:B6,"<"&D2) counts due dates earlier than the report date.
+      rule: Build the test by joining "<" and D2 with &, so COUNTIF counts due dates earlier than the report date.
     misses:
       value: 4 invoices are past due.
       syntax: Check the brackets, commas and quotes.

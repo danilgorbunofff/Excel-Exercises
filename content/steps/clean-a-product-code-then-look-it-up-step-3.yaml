@@ -24,7 +24,7 @@ screens:
       - TRIM
     hints:
       nudge: Clean the code inside the lookup.
-      rule: XLOOKUP(TRIM(A2),...) finds the code even with stray spaces.
+      rule: Put TRIM inside XLOOKUP as the value to find, so the lookup uses the clean code.
     misses:
       value: PX-210 costs 8.75.
       syntax: Check the brackets, commas and quotes.

@@ -26,7 +26,7 @@ screens:
       - VLOOKUP
     hints:
       nudge: The name is the 2nd column.
-      rule: VLOOKUP(B6,A2:C5,2,FALSE) returns the product on the SKU's row.
+      rule: "VLOOKUP with FALSE finds the SKU in the first column and returns the column number you give it: the name is column 2."
     misses:
       value: EX-500 is the Extrusion.
       syntax: Check the brackets, commas and quotes.

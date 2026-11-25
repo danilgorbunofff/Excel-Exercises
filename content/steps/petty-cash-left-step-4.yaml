@@ -38,7 +38,7 @@ screens:
       - SUM
     hints:
       nudge: Work out what is left first, then compare it with 50.
-      rule: IF(B2-SUM(B3:B8)<50,"Top up","OK") flags the tin when the cash runs low.
+      rule: "Work out the cash left inside IF's test: the float minus the SUM of the expenses, compared with 50."
     misses:
       value: The tin shows OK.
       syntax: Check the brackets, commas and quotes.

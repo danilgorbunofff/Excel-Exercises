@@ -24,7 +24,7 @@ screens:
       - VLOOKUP
     hints:
       nudge: Region is the 3rd column of E2:G5.
-      rule: VLOOKUP(B3,$E$2:$G$5,3,FALSE) returns the region.
+      rule: VLOOKUP with FALSE finds the customer ID in the first column of E2:G5; the region is its 3rd column.
     misses:
       value: The second order's customer is in East.
       syntax: Check the brackets, commas and quotes.

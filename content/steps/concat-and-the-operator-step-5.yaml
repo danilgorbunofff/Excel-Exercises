@@ -7,37 +7,37 @@ checkedInExcel: 2026-11-25
 parent: concat-and-the-operator
 step: 5
 screens:
-  - prompt: In C2, what is this person's work email? It is the first letter of the first name, then the last name, all in lower case, then @acme.com.
+  - prompt: In D2, what is this person's work email? It is the first letter of the first name, then the last name, all in lower case, then @acme.com.
     rows:
-      - [First, Last, Email]
-      - [Grace, Hopper, null]
-    answerCell: C2
+      - [Staff ID, First, Last, Email]
+      - [S-104, Grace, Hopper, null]
+    answerCell: D2
     expected: ghopper@acme.com
     variants:
-      - set: { A2: Alan, B2: Turing }
+      - set: { B2: Alan, C2: Turing }
         expected: aturing@acme.com
-      - set: { A2: katherine, B2: JOHNSON }
+      - set: { B2: katherine, C2: JOHNSON }
         expected: kjohnson@acme.com
-    answer: =LOWER(LEFT(A2,1)&B2)&"@acme.com"
+    answer: =LOWER(LEFT(B2,1)&C2)&"@acme.com"
     requiredFunctions: []
     hints:
       nudge: Take one letter of the first name, add the last name, lower-case it, then add the domain.
-      rule: LEFT(A2,1)&B2 gives GHopper; LOWER turns it into ghopper; &"@acme.com" adds the domain.
+      rule: Join the first letter of the first name to the last name, make that lower case with LOWER, then join the domain.
     misses:
       value: The email is ghopper@acme.com.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =LOWER(LEFT(A2,1)&B2)&"@acme.com"
-      - =LOWER(LEFT(A2,1)&B2&"@acme.com")
-      - =CONCAT(LOWER(LEFT(A2,1)),LOWER(B2),"@acme.com")
+      - =LOWER(LEFT(B2,1)&C2)&"@acme.com"
+      - =LOWER(LEFT(B2,1)&C2&"@acme.com")
+      - =CONCAT(LOWER(LEFT(B2,1)),LOWER(C2),"@acme.com")
     reject:
-      - formula: =LEFT(A2,1)&B2&"@acme.com"
+      - formula: =LEFT(B2,1)&C2&"@acme.com"
         rule: value
-      - formula: =LOWER(A2&B2)&"@acme.com"
+      - formula: =LOWER(B2&C2)&"@acme.com"
         rule: value
       - formula: ="ghopper@acme.com"
         rule: reference
-      - formula: =LOWER(LEFT(A2,1)&B2)&"@acme.com",
+      - formula: =LOWER(LEFT(B2,1)&C2)&"@acme.com",
         rule: syntax

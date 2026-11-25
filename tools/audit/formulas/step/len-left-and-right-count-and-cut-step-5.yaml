@@ -5,11 +5,9 @@ screens:
       - =SUMPRODUCT(--(LEN(A$2:A$16)<>8))
       - =sumproduct(--(len(a2:a16)<>8))
       - =LET(data,A2:A16,SUMPRODUCT(--(LEN(data)<>8)))
-    wrong:
-      - formula: =SUMPRODUCT(--(LEN(A2:A15)<>8))
-        rule: fragile
-        why: range A2:A16 one row short at the end
-      - formula: =SUMPRODUCT(--(LEN(A3:A16)<>8))
-        rule: fragile
-        why: range A2:A16 skips its first row
+      - =SUM(--(LEN($A$2:$A$16)<>8))
+      - =SUM(--(LEN(A$2:A$16)<>8))
+      - =sum(--(len(a2:a16)<>8))
+      - =LET(data,A2:A16,SUM(--(LEN(data)<>8)))
+    wrong: []
     equivalent: []

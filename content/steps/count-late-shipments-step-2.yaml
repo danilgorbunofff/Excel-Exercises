@@ -35,7 +35,7 @@ screens:
       - COUNTIF
     hints:
       nudge: On time includes 0 days late.
-      rule: COUNTIF(D2:D16,"<=0") counts on-time and early orders.
+      rule: On time includes 0 days late, so the test is <= 0, written in quotes.
     misses:
       value: 7 orders shipped on time.
       syntax: Check the brackets, commas and quotes.

@@ -22,7 +22,7 @@ screens:
       - IF
     hints:
       nudge: The test is whether B2 is below 20.
-      rule: 'IF(test, value if true, value if false): IF(B2<20,"Reorder","OK").'
+      rule: "IF takes a test, the value to show when it is true, then the value to show when it is false. Text goes in quotes."
     misses:
       value: With 12 in stock, C2 should show Reorder. Check the direction of the test.
       syntax: Check the brackets, commas and quotes.

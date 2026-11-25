@@ -22,7 +22,7 @@ screens:
       - ISBLANK
     hints:
       nudge: ISBLANK goes inside IF as its test.
-      rule: IF(ISBLANK(C2),"Missing","OK") checks the email cell only.
+      rule: Use ISBLANK as the test inside IF. It is TRUE when the cell is empty.
     misses:
       value: Ben has no email, so D2 should show Missing.
       syntax: Check the brackets, commas and quotes.

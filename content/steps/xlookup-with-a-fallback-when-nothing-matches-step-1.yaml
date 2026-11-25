@@ -25,7 +25,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: Search the SKU column, return the price column.
-      rule: XLOOKUP(B5,A2:A4,B2:B4) finds the SKU and returns its price.
+      rule: XLOOKUP searches the SKU column and returns the value from the same row of the price column.
     misses:
       value: TX-102 costs 14.
       syntax: Check the brackets, commas and quotes.

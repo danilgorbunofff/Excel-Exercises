@@ -74,7 +74,7 @@ screens:
       - SORTBY
     hints:
       nudge: SORTBY sorts one column by the values in another.
-      rule: SORTBY(C2:C19,D2:D19,-1) orders the reps by their amounts, largest first.
+      rule: SORTBY sorts one range by the values in another; -1 puts the largest first.
     misses:
       value: The reps should be listed from the largest order to the smallest.
       syntax: Check the brackets, commas and quotes.

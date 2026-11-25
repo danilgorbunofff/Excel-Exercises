@@ -21,7 +21,7 @@ screens:
       - TRIM
     hints:
       nudge: TRIM removes the spaces at both ends and turns doubles into singles.
-      rule: TRIM(A2) leaves one space between words and none at the ends.
+      rule: TRIM leaves exactly one space between words and none at the ends, whatever the import added.
     misses:
       value: The tidy name is Ada Lovelace.
       syntax: Check the brackets, commas and quotes.

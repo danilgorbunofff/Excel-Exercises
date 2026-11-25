@@ -27,7 +27,7 @@ screens:
       - AVERAGE
     hints:
       nudge: AVERAGE takes more than one range, separated by commas.
-      rule: AVERAGE(B2:B6,D2:D6) averages all ten scores at once.
+      rule: AVERAGE takes several ranges separated by commas and averages every number in them together.
     misses:
       value: All ten scores average 75. Include both B2:B6 and D2:D6.
       syntax: Check the brackets, commas and quotes.

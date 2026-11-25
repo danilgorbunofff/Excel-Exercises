@@ -26,7 +26,7 @@ screens:
       - SUM
     hints:
       nudge: SUM the Debit column.
-      rule: SUM(B2:B7) is the total of debits.
+      rule: SUM adds every number in the Debit column.
     misses:
       value: Debits total 74550.
       syntax: Check the brackets, commas and quotes.

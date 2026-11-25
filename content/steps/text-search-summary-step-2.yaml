@@ -38,7 +38,7 @@ screens:
       - MID
     hints:
       nudge: MID returns text; VALUE turns text that looks like a number into a number.
-      rule: VALUE(MID(A2,4,4)) gives 1042 as a number, not as text.
+      rule: MID returns text, even when it looks like a number. VALUE turns that text into a real number.
     misses:
       value: The number part is 1042.
       syntax: Check the brackets, commas and quotes.

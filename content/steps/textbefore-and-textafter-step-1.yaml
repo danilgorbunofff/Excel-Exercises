@@ -21,7 +21,7 @@ screens:
       - TEXTBEFORE
     hints:
       nudge: TEXTBEFORE takes the text and the delimiter.
-      rule: TEXTBEFORE(A2," ") returns everything before the first space.
+      rule: TEXTBEFORE takes the text and a delimiter, and returns everything before the first one.
     misses:
       value: The first name is Grace.
       syntax: Check the brackets, commas and quotes.

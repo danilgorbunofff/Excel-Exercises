@@ -26,9 +26,9 @@ screens:
       - COUNTIFS
     hints:
       nudge: Test the days column twice, once for each end of the band.
-      rule: COUNTIFS(B2:B7,">=31",B2:B7,"<=60") counts the band with both ends.
+      rule: COUNTIFS can test the days column twice, once with each end of the band, both ends included.
     misses:
-      value: 1 customers are 31 to 60 days overdue.
+      value: 1 customer is 31 to 60 days overdue.
       syntax: Check the brackets, commas and quotes.
       required-function: This task asks for COUNTIFS.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.

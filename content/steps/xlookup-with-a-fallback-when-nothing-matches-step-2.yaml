@@ -26,7 +26,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: A fallback of 0 keeps the multiplication working when the SKU is missing.
-      rule: "XLOOKUP(B5,A2:A4,B2:B4,0) gives 0 instead of #N/A for an unknown SKU."
+      rule: "The fourth part of XLOOKUP is what to return when nothing matches. A fallback of 0 keeps the multiplication working."
     misses:
       value: An unknown SKU gives a line cost of 0.
       syntax: Check the brackets, commas and quotes.

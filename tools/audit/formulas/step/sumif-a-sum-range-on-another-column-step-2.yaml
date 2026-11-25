@@ -8,5 +8,3 @@ screens:
     equivalent:
       - formula: =SUMIF(B2:B10,">10",C2:C9)
         why: "range B2:B9 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
-      - formula: =SUMIF(B2:B9,">10",C2:C10)
-        why: "range C2:C9 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

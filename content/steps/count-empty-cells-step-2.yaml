@@ -21,7 +21,7 @@ screens:
       - COUNTBLANK
     hints:
       nudge: COUNTBLANK counts the empty cells in a range.
-      rule: COUNTBLANK(B2:H2) counts the days with nothing in them.
+      rule: COUNTBLANK counts the cells with nothing in them, along a row as well as down a column.
     misses:
       value: The room is free on 4 days. Count the empty cells from B2 to H2.
       syntax: Check the brackets, commas and quotes.

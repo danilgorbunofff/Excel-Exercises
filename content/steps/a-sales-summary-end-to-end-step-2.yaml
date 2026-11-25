@@ -35,7 +35,7 @@ screens:
       - SUMIFS
     hints:
       nudge: The range to add comes first in SUMIFS.
-      rule: SUMIFS(C2:C16,A2:A16,F1) totals whichever region is in F1.
+      rule: Point the criteria at F1 so the total follows whichever region is typed there. The range to add comes first.
     misses:
       value: The West sold 945.
       syntax: Check the brackets, commas and quotes.

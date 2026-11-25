@@ -30,7 +30,7 @@ screens:
       - MATCH
     hints:
       nudge: Wrap the whole lookup in IFERROR.
-      rule: IFERROR(INDEX(B2:B6,MATCH(A8,A2:A6,0)),"no match") shows the price, or the message on any failure.
+      rule: Wrap the whole INDEX and MATCH in IFERROR, with the message in quotes as the fallback.
     misses:
       value: C-3 costs 30.
       syntax: Check the brackets, commas and quotes.

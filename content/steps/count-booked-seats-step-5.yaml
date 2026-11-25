@@ -25,7 +25,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: A free seat is an empty cell in the block.
-      rule: COUNTBLANK(B2:F5) counts the empty seats in the whole room, rows and columns together.
+      rule: COUNTBLANK counts the empty cells in a whole block, rows and columns together.
     misses:
       value: 9 seats are free. Count the empty cells in B2 to F5.
       syntax: Check the brackets, commas and quotes.

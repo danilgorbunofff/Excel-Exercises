@@ -7,7 +7,7 @@ checkedInExcel: 2026-11-25
 parent: let-name-the-steps-of-a-formula
 step: 3
 screens:
-  - prompt: "In F2, show the average North order to the nearest whole number: name it avg with LET and AVERAGEIF, then ROUND it."
+  - prompt: "In F2, show the average North order to the nearest whole number: name it avg with LET, as the SUMIF total over the COUNTIF count, then ROUND it."
     rows:
       - [Order, Region, Rep, Amount, null, null, null, null, null]
       - [1001, North, Ana, 820, null, null, null, null, null]
@@ -31,30 +31,37 @@ screens:
     answerCell: F2
     expected: 757
     variants:
-      - { set: { D11: 700 }, expected: 795 }
-      - { set: { B19: North }, expected: 703 }
-    answer: =LET(avg,AVERAGEIF(B2:B19,"North",D2:D19),ROUND(avg,0))
+      - set: { D11: 700 }
+        expected: 795
+      - set: { B19: North }
+        expected: 703
+    answer: =LET(avg,SUMIF(B2:B19,"North",D2:D19)/COUNTIF(B2:B19,"North"),ROUND(avg,0))
     requiredFunctions:
       - LET
-      - AVERAGEIF
+      - SUMIF
+      - COUNTIF
       - ROUND
     hints:
-      nudge: AVERAGEIF ignores capitals, so the north rows count too.
-      rule: Naming the average first keeps the ROUND easy to read.
+      nudge: SUMIF and COUNTIF both ignore capitals, so the north rows count too.
+      rule: The average is the North total divided by the number of North orders. Naming it first keeps the ROUND easy to read.
     misses:
       value: The average North order, rounded, is 757.
       syntax: Check the brackets, commas and quotes.
-      required-function: This task asks for LET, AVERAGEIF and ROUND.
+      required-function: This task asks for LET, SUMIF, COUNTIF and ROUND.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =LET(avg,AVERAGEIF(B2:B19,"North",D2:D19),ROUND(avg,0))
-      - =LET(a,AVERAGEIF(B2:B19,"North",D2:D19),ROUND(a,0))
+      - =LET(avg,SUMIF(B2:B19,"North",D2:D19)/COUNTIF(B2:B19,"North"),ROUND(avg,0))
+      - =LET(total,SUMIF(B2:B19,"North",D2:D19),n,COUNTIF(B2:B19,"North"),ROUND(total/n,0))
+      - =LET(a,SUMIF(B2:B19,"North",D2:D19)/COUNTIF(B2:B19,"North"),ROUND(a,0))
+      - =LET(avg,SUMIF(B2:B19,"north",D2:D19)/COUNTIF(B2:B19,"north"),ROUND(avg,0))
     reject:
-      - formula: =LET(avg,AVERAGEIF(B2:B19,"North",D2:D19),ROUND(avg,1))
+      - formula: =LET(avg,SUMIF(B2:B19,"North",D2:D19)/COUNTIF(B2:B19,"North"),ROUND(avg,-1))
         rule: value
-      - formula: =ROUND(AVERAGEIF(B2:B19,"North",D2:D19),0)
+      - formula: =LET(avg,SUMIF(B2:B19,"North",D2:D19)/COUNT(D2:D19),ROUND(avg,0))
         rule: required-function
+      - formula: =LET(avg,SUMIF(B2:B19,"South",D2:D19)/COUNTIF(B2:B19,"South"),ROUND(avg,0))
+        rule: value
       - formula: =757
         rule: required-function
-      - formula: =LET(avg,AVERAGEIF(B2:B19,"North",D2:D19),ROUND(avg,0)
+      - formula: =LET(avg,SUMIF(B2:B19,"North",D2:D19)/COUNTIF(B2:B19,"North"),ROUND(avg,0)
         rule: syntax

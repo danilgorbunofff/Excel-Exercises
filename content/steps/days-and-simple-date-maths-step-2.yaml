@@ -20,7 +20,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Adding a number of days to a date gives a later date.
-      rule: B2+C2 moves the invoice date on by the terms.
+      rule: Adding a number to a date moves it on by that many days.
     misses:
       value: The invoice is due on serial 45382.
       syntax: Check the brackets, commas and quotes.

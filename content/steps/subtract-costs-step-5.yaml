@@ -1,46 +1,49 @@
 id: subtract-costs-step-5
 slug: subtract-costs-step-5
 level: 3
-title: How much more the better month made
+title: How profit changed from May to June
 updated: 2026-11-25
 checkedInExcel: 2026-11-25
 parent: subtract-costs
 step: 5
 screens:
-  - prompt: In B5, how much more profit did the better of the two months make than the other? Give a positive number.
+  - prompt: In B5, by how much did the profit change from May to June? A fall shows as a negative number.
     rows:
       - [Month, Revenue, Costs]
       - [May, 10400, 7900]
       - [June, 9800, 6750]
       - [null, null, null]
-      - [Gap, null, null]
+      - [Change, null, null]
     answerCell: B5
     expected: 550
     variants:
-      - set: { C2: 6000 }
-        expected: 1350
-      - set: { B3: 9000 }
-        expected: 250
-    answer: =ABS((B2-C2)-(B3-C3))
+      - set: { C3: 8000 }
+        expected: -700
+      - set: { B2: 12000 }
+        expected: -1050
+    answer: =(B3-C3)-(B2-C2)
     requiredFunctions: []
     hints:
-      nudge: Work out each month's profit, take one from the other, then drop the sign.
-      rule: ABS turns a negative gap into a positive one, so the answer is right whichever month did better.
+      nudge: Work out each month's profit, then take May's from June's.
+      rule: Profit is revenue minus costs. Put each month's profit in brackets, then subtract May from June so a fall comes out negative.
     misses:
-      value: The gap between the two profits is 550. It has to be positive.
+      value: The profit changed by 550 from May to June.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =ABS((B2-C2)-(B3-C3))
-      - =MAX(B2-C2,B3-C3)-MIN(B2-C2,B3-C3)
-      - =ABS(B3-C3-B2+C2)
+      - =(B3-C3)-(B2-C2)
+      - =B3-C3-(B2-C2)
+      - =B3-C3-B2+C2
+      - =(B3-B2)-(C3-C2)
     reject:
       - formula: =(B2-C2)-(B3-C3)
         rule: value
-      - formula: =(B3-C3)-(B2-C2)
-        rule: fragile
+      - formula: =B3-C3-B2-C2
+        rule: value
+      - formula: =B3-B2
+        rule: value
       - formula: =550
         rule: reference
-      - formula: =ABS((B2-C2)-(B3-C3)
+      - formula: =(B3-C3)-(B2-C2
         rule: syntax

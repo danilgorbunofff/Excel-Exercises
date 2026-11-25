@@ -21,7 +21,7 @@ screens:
       - LOWER
     hints:
       nudge: LOWER changes every letter to lower case.
-      rule: LOWER(A2) leaves numbers and symbols as they are.
+      rule: LOWER changes every letter to lower case and leaves numbers and symbols as they are.
     misses:
       value: The tidy email is ada.lovelace@engines.co.uk.
       syntax: Check the brackets, commas and quotes.

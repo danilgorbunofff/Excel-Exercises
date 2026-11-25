@@ -49,7 +49,7 @@ screens:
       - FILTER
     hints:
       nudge: FILTER takes what to return, then a test for each row.
-      rule: FILTER(C2:C19,B2:B19="South") spills the reps of the South rows.
+      rule: FILTER takes what to return, then a test with one TRUE or FALSE per row, and spills the rows that pass.
     misses:
       value: The list should hold the rep of each South order, top to bottom.
       syntax: Check the brackets, commas and quotes.

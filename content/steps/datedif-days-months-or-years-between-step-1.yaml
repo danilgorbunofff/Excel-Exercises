@@ -21,7 +21,7 @@ screens:
       - DATEDIF
     hints:
       nudge: 'The third part of DATEDIF is the unit: "D" for days.'
-      rule: DATEDIF(B2,C2,"D") counts the days from the start to the end.
+      rule: DATEDIF takes the start date, the end date, then the unit in quotes. "D" counts days.
     misses:
       value: The audit ran for 63 days.
       syntax: Check the brackets, commas and quotes.

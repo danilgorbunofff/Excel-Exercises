@@ -20,7 +20,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Work out the profit first, in brackets, then divide.
-      rule: Excel divides before it subtracts, so the brackets in (B2-C2)/B2 make the subtraction happen first.
+      rule: Excel divides before it subtracts. Put the subtraction in brackets so it happens first.
     misses:
       value: "The margin is 0.25: the profit, in brackets, divided by the revenue in B2."
       syntax: Check the brackets, commas and quotes.

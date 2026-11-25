@@ -27,7 +27,7 @@ screens:
       - LARGE
     hints:
       nudge: "LARGE takes the range and which place you want: 1 is the highest."
-      rule: LARGE(B2:B8,3) gives the third-highest score without sorting.
+      rule: LARGE takes the range and the place you want, where 1 is the highest. It needs no sorting.
     misses:
       value: The third-highest score is 84.
       syntax: Check the brackets, commas and quotes.

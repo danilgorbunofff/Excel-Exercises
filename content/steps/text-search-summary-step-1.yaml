@@ -35,7 +35,7 @@ screens:
       - LEFT
     hints:
       nudge: LEFT keeps characters from the start.
-      rule: LEFT(A2,2) keeps the two letters before the dash.
+      rule: LEFT keeps a number of characters from the start of the text.
     misses:
       value: The prefix is AN.
       syntax: Check the brackets, commas and quotes.

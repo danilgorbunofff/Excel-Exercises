@@ -20,7 +20,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: A fraction of a price is the price times the fraction.
-      rule: B2*C2 gives the part of the price the discount removes.
+      rule: The amount off is the price times the discount fraction.
     misses:
       value: The discount takes 19 off. Multiply the price by the discount.
       syntax: Check the brackets, commas and quotes.

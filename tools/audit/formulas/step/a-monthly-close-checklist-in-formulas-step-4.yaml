@@ -1,8 +1,17 @@
 # Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
 screens:
   - correct:
-      - =IF(ABS($B$2)<=$F$1,"ready","check")
-      - =IF(ABS(B$2)<=$F$1,"ready","check")
-      - =if(abs(b2)<=$f$1, "ready", "check")
-    wrong: []
+      - =IF(AND($B$2>=-$F$1,$B$2<=$F$1),"ready","check")
+      - =IF(AND(B$2>=-$F$1,B2<=$F$1),"ready","check")
+      - =if(and(b2>=-$f$1, b2<=$f$1), "ready", "check")
+    wrong:
+      - formula: =IF(AND(B2>-$F$1,B2<=$F$1),"ready","check")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IF(AND(B2>=-$F$1,B3<=$F$1),"ready","check")
+        rule: fragile
+        why: B2 read from the next row
+      - formula: =IF(AND(B2>=-$F$1,B2<=$E$1),"ready","check")
+        rule: fragile
+        why: $F$1 read from the column to the left
     equivalent: []

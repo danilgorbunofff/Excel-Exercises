@@ -26,7 +26,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: The fourth part of XLOOKUP is the fallback text.
-      rule: 'XLOOKUP(A2,$F$2:$F$7,$G$2:$G$7,"unknown code") never shows #N/A.'
+      rule: "XLOOKUP's fourth part is the fallback text, so a missing code never shows `#N/A`. Dollar signs keep the chart fixed when the formula is copied down."
     misses:
       value: Code 1000 is Cash.
       syntax: Check the brackets, commas and quotes.

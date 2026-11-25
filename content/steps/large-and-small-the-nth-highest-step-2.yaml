@@ -26,7 +26,7 @@ screens:
       - SMALL
     hints:
       nudge: "SMALL counts from the bottom: 1 is the lowest."
-      rule: SMALL(B2:B7,2) gives the second-lowest price.
+      rule: "SMALL takes the range and the place, counting from the lowest: 1 is the lowest."
     misses:
       value: The second-lowest price is 29.50.
       syntax: Check the brackets, commas and quotes.

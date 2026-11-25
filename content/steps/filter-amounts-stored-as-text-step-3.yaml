@@ -46,7 +46,7 @@ screens:
       - VALUE
     hints:
       nudge: Convert the amounts inside the test.
-      rule: VALUE(D2:D19)<500 compares every amount as a number, text ones included.
+      rule: Convert the amounts inside FILTER's test with VALUE, so text amounts compare as numbers.
     misses:
       value: The list should show every order under 500, including those with a text amount.
       syntax: Check the brackets, commas and quotes.

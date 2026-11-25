@@ -62,7 +62,7 @@ A level-3 screen has no `requiredFunctions`: the prompt asks the business questi
 
 At levels 1 and 2, a required function is named in the prompt or the exercise title, so the miss "This exercise asks for X" is true. Daily tasks require none: any formula Excel finds right passes.
 
-`npm run content:validate` enforces the checkable part: a required function is named in the prompt or title, a level-3 screen requires no function, and every level-3 exercise has `variants` or a spilled answer on at least one screen.
+`npm run content:validate` enforces the checkable part: a required function is named in the prompt or title, a level-3 screen requires no function, and every level-3 exercise has `variants` or a spilled answer on at least one screen. For ladder steps it also checks that hints 1 and 2 do not quote the answer.
 
 ## What the checks enforce
 

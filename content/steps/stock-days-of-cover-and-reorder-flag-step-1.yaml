@@ -34,7 +34,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Stock divided by how much is used each day.
-      rule: B2/C2 is how many days the stock lasts.
+      rule: Stock on hand divided by daily use is how many days the stock lasts.
     misses:
       value: Pallet wrap lasts 11.5 days.
       syntax: Check the brackets, commas and quotes.

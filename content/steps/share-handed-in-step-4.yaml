@@ -36,7 +36,7 @@ screens:
       - COUNTA
     hints:
       nudge: Count the numbers, then divide by every answer given, words included.
-      rule: COUNTA counts every answer given, so COUNT(C2:C13)/COUNTA(C2:C13) is the share that are numbers. Empty cells count in neither.
+      rule: Divide the count of numbers by the count of every answer given. Empty cells count in neither.
     misses:
       value: The share is 0.70. Divide by the answers given, not by everyone on the list.
       syntax: Check the brackets, commas and quotes.

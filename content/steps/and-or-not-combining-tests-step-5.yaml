@@ -28,7 +28,7 @@ screens:
       nudge: First who could approve, with OR and AND; then rule out anyone on leave.
       rule: OR(B2="Manager",AND(B2="Senior",C2>=5)) covers the roles; AND with D2<>"Leave" removes anyone away.
     misses:
-      value: "Kai's answer is false: Kai is on leave."
+      value: "Kai's answer is FALSE: Kai is on leave."
       syntax: Check the brackets, commas and quotes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:

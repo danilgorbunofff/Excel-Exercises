@@ -23,7 +23,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Join the three cells with plus signs.
-      rule: A plus sign adds the cell on each side, so B2+B3+B4 adds all three.
+      rule: A plus sign adds the values on each side of it, and you can chain as many as you need.
     misses:
       value: The three costs add up to 42.75. Include B2, B3 and B4.
       syntax: Check the brackets, commas and quotes.

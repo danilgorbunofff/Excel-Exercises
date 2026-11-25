@@ -25,7 +25,7 @@ screens:
       - SUM
     hints:
       nudge: SUM the Heads column.
-      rule: SUM(C2:C6) gives every head in the plan.
+      rule: SUM adds every number in the Heads column.
     misses:
       value: The plan has 20 heads.
       syntax: Check the brackets, commas and quotes.

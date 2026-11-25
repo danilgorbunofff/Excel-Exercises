@@ -20,7 +20,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Deliveries add to the stock and sales take it away.
-      rule: B2+C2-D2 adds what came in and takes away what went out.
+      rule: Stock left is the opening stock, plus what came in, minus what went out.
     misses:
       value: The stock left is 75. Add the delivery and take away the sales.
       syntax: Check the brackets, commas and quotes.

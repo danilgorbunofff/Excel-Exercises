@@ -35,7 +35,7 @@ screens:
       - SUMIFS
     hints:
       nudge: The amount column is both the range to add and a range to test.
-      rule: SUMIFS(F2:F16,B2:B16,"South",F2:F16,">=150") keeps South amounts of 150 or more.
+      rule: The amount column can be the range to add and also a range to test, with ">=150" as its condition.
     misses:
       value: South amounts of 150 or more add up to 610.
       syntax: Check the brackets, commas and quotes.

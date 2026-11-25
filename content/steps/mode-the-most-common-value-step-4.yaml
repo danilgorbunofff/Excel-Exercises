@@ -31,7 +31,7 @@ screens:
       - MODE
     hints:
       nudge: MODE gives the value; COUNTIF counts how often it appears.
-      rule: COUNTIF(B2:B11,MODE(B2:B11)) counts the rows equal to the most common size.
+      rule: Give COUNTIF the most common value, from MODE, as the thing to count.
     misses:
       value: The most common size appears 4 times.
       syntax: Check the brackets, commas and quotes.

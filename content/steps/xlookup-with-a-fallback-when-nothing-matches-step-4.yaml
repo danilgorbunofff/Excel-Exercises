@@ -27,7 +27,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: The fallback can be a cell, not only typed text.
-      rule: XLOOKUP(B5,A2:A4,B2:B4,E1) uses whatever default is in E1 when nothing matches.
+      rule: The fallback, XLOOKUP's fourth part, can be a cell, so the default follows whatever is in E1.
     misses:
       value: An unknown SKU gets the default price, 12.
       syntax: Check the brackets, commas and quotes.

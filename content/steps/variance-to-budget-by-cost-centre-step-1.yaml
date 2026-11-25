@@ -26,7 +26,7 @@ screens:
       - SUMIF
     hints:
       nudge: Test the centre column, add the spend column.
-      rule: SUMIF(A2:A7,"Sales",B2:B7) adds every Sales spend line.
+      rule: SUMIF tests the centre column and adds the spend column on the matching rows.
     misses:
       value: Sales spent 31500.
       syntax: Check the brackets, commas and quotes.

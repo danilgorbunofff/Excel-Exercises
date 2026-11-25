@@ -21,7 +21,7 @@ screens:
       - TEXTJOIN
     hints:
       nudge: TRUE as the second part skips the empty days.
-      rule: TEXTJOIN(" / ",TRUE,B2:F2) lists only the days that have a shift.
+      rule: With TRUE as the second part, TEXTJOIN leaves out the empty days and puts the separator only between real shifts.
     misses:
       value: Ada's shifts read Early / Late / Early.
       syntax: Check the brackets, commas and quotes.

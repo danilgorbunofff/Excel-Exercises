@@ -24,7 +24,7 @@ screens:
       - SUM
     hints:
       nudge: SUM the revenue column.
-      rule: SUM(B2:B5) gives the total revenue.
+      rule: SUM adds every number in the revenue column.
     misses:
       value: Total revenue is 479000.
       syntax: Check the brackets, commas and quotes.

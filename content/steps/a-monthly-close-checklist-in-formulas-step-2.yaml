@@ -28,7 +28,7 @@ screens:
       - COUNTIF
     hints:
       nudge: COUNTIF with 0 as the criteria counts the zeros.
-      rule: COUNTIF(B2:B9,0) counts the checks with no variance.
+      rule: COUNTIF with 0 as the criteria counts the cells that hold exactly 0.
     misses:
       value: 5 checks are clean.
       syntax: Check the brackets, commas and quotes.

@@ -20,7 +20,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Join the three cells with the * sign.
-      rule: The * sign multiplies, so B2*C2*D2 multiplies all three.
+      rule: The * sign multiplies, and you can chain it across as many cells as you need.
     misses:
       value: The volume is 84000. Multiply all three sizes.
       syntax: Check the brackets, commas and quotes.

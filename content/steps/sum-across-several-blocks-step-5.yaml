@@ -29,7 +29,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Q1 is column B and Q3 is column D, with Q2 between them.
-      rule: SUM(B2:B9,D2:D9) adds the two quarter columns and skips Q2. The pending note is ignored until a number replaces it.
+      rule: List the two quarter columns as separate ranges so Q2 is left out. SUM ignores the pending note until a number replaces it.
     misses:
       value: Q1 and Q3 add up to 5795. Leave out Q2 in column C.
       syntax: Check the brackets, commas and quotes.

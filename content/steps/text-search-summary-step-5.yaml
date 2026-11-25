@@ -36,17 +36,18 @@ screens:
         expected: 830
       - set: { A3: BO-3001 }
         expected: 910
-    answer: =SUMPRODUCT((VALUE(MID(A2:A16,4,4))>3000)*C2:C16)
+    answer: =SUM((VALUE(MID(A2:A16,4,4))>3000)*C2:C16)
     requiredFunctions: []
     hints:
       nudge: Pull out each number part, turn it into a number, then test it.
-      rule: VALUE(MID(A2:A16,4,4)) gives every number part as a number; the test times the amounts keeps the rows above 3000.
+      rule: VALUE(MID(...)) works on the whole column at once. Test each number against 3000, multiply by the amounts, and SUM adds the rows that pass.
     misses:
       value: Codes above 3000 total 830.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
+      - =SUM((VALUE(MID(A2:A16,4,4))>3000)*C2:C16)
       - =SUMPRODUCT((VALUE(MID(A2:A16,4,4))>3000)*C2:C16)
       - =SUMPRODUCT((--TEXTAFTER(A2:A16,"-")>3000)*C2:C16)
       - =SUM(FILTER(C2:C16,VALUE(MID(A2:A16,4,4))>3000))
@@ -55,7 +56,9 @@ screens:
         rule: value
       - formula: =SUMPRODUCT((VALUE(MID(A2:A16,4,1))>3)*C2:C16)
         rule: value
+      - formula: =SUM((VALUE(MID(A2:A16,4,4))>=3000)*C2:C16)
+        rule: fragile
       - formula: =830
         rule: reference
-      - formula: =SUMPRODUCT((VALUE(MID(A2:A16,4,4))>3000)*C2:C16
+      - formula: =SUM((VALUE(MID(A2:A16,4,4))>3000)*C2:C16
         rule: syntax

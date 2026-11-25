@@ -23,7 +23,7 @@ screens:
       - FIND
     hints:
       nudge: How many characters come after the dash? The length minus its position.
-      rule: RIGHT(A2,LEN(A2)-FIND("-",A2)) keeps everything after the first dash.
+      rule: The characters after the dash number the length minus the dash's position; RIGHT keeps that many from the end.
     misses:
       value: "After the first dash: 2024-0917."
       syntax: Check the brackets, commas and quotes.

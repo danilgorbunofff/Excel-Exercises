@@ -25,7 +25,7 @@ screens:
       - SUM
     hints:
       nudge: A total must never include its own cell.
-      rule: SUM(B2:B5) stops above the total row, so there is no circular reference.
+      rule: The range must stop at the last item, above the total row, so the formula does not refer to its own cell.
     misses:
       value: The total is 150.7.
       syntax: Check the brackets, commas and quotes.

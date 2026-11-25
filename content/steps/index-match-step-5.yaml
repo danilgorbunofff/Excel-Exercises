@@ -25,17 +25,18 @@ screens:
         expected: Hal
       - set: { D7: 70000 }
         expected: Fay
-    answer: =INDEX(B2:B9,MATCH(MAXIFS(D2:D9,C2:C9,G1),D2:D9,0))
+    answer: =INDEX(B2:B9,MATCH(MAX(IF(C2:C9=G1,D2:D9)),D2:D9,0))
     requiredFunctions: []
     hints:
       nudge: First the top salary within the team, then whose salary that is.
-      rule: MAXIFS(D2:D9,C2:C9,G1) gives the team's top salary; INDEX/MATCH returns the name on that row.
+      rule: IF keeps the salaries of the team in G1, and MAX picks the top one. MATCH then finds that salary's row, and INDEX returns the name.
     misses:
       value: The top earner in Sales is Dee.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
+      - =INDEX(B2:B9,MATCH(MAX(IF(C2:C9=G1,D2:D9)),D2:D9,0))
       - =INDEX(B2:B9,MATCH(MAXIFS(D2:D9,C2:C9,G1),D2:D9,0))
       - =XLOOKUP(MAXIFS(D2:D9,C2:C9,G1),D2:D9,B2:B9)
       - =INDEX(SORTBY(FILTER(B2:B9,C2:C9=G1),FILTER(D2:D9,C2:C9=G1),-1),1)

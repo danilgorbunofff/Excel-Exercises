@@ -23,7 +23,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Start from the balance above, add what came in, take away what went out.
-      rule: D3+B4-C4 carries the balance forward one line.
+      rule: Each balance is the one above it, plus the money in, minus the money out.
     misses:
       value: The balance after line 2 is 245. Start from D3, add B4 and take away C4.
       syntax: Check the brackets, commas and quotes.

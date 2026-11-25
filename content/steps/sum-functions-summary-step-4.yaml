@@ -36,7 +36,7 @@ screens:
       - SUM
     hints:
       nudge: Her total goes on top, the grand total below.
-      rule: SUMIF(C2:C16,"Ada",F2:F16)/SUM(F2:F16) is Ada's part of the whole.
+      rule: Divide Ada's total, from SUMIF, by the grand total, from SUM.
     misses:
       value: Ada's share is 0.44.
       syntax: Check the brackets, commas and quotes.

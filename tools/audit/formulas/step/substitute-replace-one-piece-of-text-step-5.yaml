@@ -5,5 +5,9 @@ screens:
       - =IF(TRIM(A$2)="",0,LEN(A2)-LEN(SUBSTITUTE(A2,",",""))+1)
       - =if(trim(a2)="", 0, len(a2)-len(substitute(a2, ",", ""))+1)
       - =IFS(TRIM(A2)="",0,TRUE,LEN(A2)-LEN(SUBSTITUTE(A2,",",""))+1)
+      - =IF($A$2="",0,LEN($A$2)-LEN(SUBSTITUTE($A$2,",",""))+1)
+      - =IF(A$2="",0,LEN(A2)-LEN(SUBSTITUTE(A2,",",""))+1)
+      - =if(a2="", 0, len(a2)-len(substitute(a2, ",", ""))+1)
+      - =IFS(A2="",0,TRUE,LEN(A2)-LEN(SUBSTITUTE(A2,",",""))+1)
     wrong: []
     equivalent: []

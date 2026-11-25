@@ -34,7 +34,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Shipped minus promised; positive means late.
-      rule: C4-B4 counts the days between the two dates.
+      rule: Shipped minus promised gives the days between; a positive result means late.
     misses:
       value: O-03 shipped 6 days late.
       syntax: Check the brackets, commas and quotes.

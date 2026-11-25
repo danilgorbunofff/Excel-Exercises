@@ -27,7 +27,7 @@ screens:
       - MATCH
     hints:
       nudge: 0 asks MATCH for an exact match on the band's name.
-      rule: INDEX(B2:B4,MATCH(B6,A2:A4,0)) returns the rate beside the band.
+      rule: MATCH with 0 finds the band's row by its name, and INDEX returns the rate beside it.
     misses:
       value: Silver pays 0.04.
       syntax: Check the brackets, commas and quotes.

@@ -21,7 +21,7 @@ screens:
       - SUBSTITUTE
     hints:
       nudge: SUBSTITUTE matches capitals exactly.
-      rule: SUBSTITUTE(A2,"Ltd","Limited") swaps the word wherever it appears.
+      rule: SUBSTITUTE swaps every match of the old text for the new text, with capitals matched exactly.
     misses:
       value: The full name is Acme Tools Limited.
       syntax: Check the brackets, commas and quotes.

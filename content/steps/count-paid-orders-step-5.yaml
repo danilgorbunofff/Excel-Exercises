@@ -38,7 +38,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Every order without an amount is unpaid, whatever the cell shows.
-      rule: "Count all the orders, then take away the ones with a number: COUNTA(A2:A16)-COUNT(B2:B16)."
+      rule: "Count all the orders by their codes, then take away the ones that have a number in the Amount column."
     misses:
       value: "5 orders are unpaid: the pending ones and the blank ones together."
       syntax: Check the brackets, commas and quotes.

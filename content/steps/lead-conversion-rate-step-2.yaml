@@ -21,7 +21,7 @@ screens:
       - ROUND
     hints:
       nudge: Times 100 turns the fraction into a percentage; round after that.
-      rule: ROUND(C2/B2*100,0) gives the percentage with no decimals.
+      rule: Times 100 turns the fraction into a percentage; ROUND with 0 places then gives a whole number.
     misses:
       value: The webinar converted 9% of leads.
       syntax: Check the brackets, commas and quotes.

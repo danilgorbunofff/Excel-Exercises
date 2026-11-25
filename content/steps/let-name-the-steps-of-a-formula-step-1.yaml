@@ -40,9 +40,9 @@ screens:
       - LET
     hints:
       nudge: LET takes a name, its value, more pairs, then the final calculation.
-      rule: LET(t,SUM(...),n,COUNT(...),t/n) names each step so the last line reads plainly.
+      rule: Each name in LET holds one step, here the total and the count, so the last part divides one by the other.
     misses:
-      value: The average order is 784.444444444.
+      value: The average order is about 784.44.
       syntax: Check the brackets, commas and quotes.
       required-function: This task asks for LET.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.

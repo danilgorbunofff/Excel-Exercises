@@ -30,7 +30,7 @@ screens:
       - SUMIF
     hints:
       nudge: The test is on the units, but the total is of the amounts.
-      rule: SUMIF(B2:B9,">10",C2:C9) adds the amounts where the units are over 10.
+      rule: The test can be a comparison in quotes on one column, while the third part adds another column.
     misses:
       value: Orders of more than 10 units come to 1165.
       syntax: Check the brackets, commas and quotes.

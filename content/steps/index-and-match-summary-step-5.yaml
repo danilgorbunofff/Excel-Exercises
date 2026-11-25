@@ -25,17 +25,20 @@ screens:
         expected: 40
       - set: { B6: 100 }
         expected: 100
-    answer: =IFERROR(INDEX(A2:A4,MATCH(B6,A2:A4,1)+1)-B6,0)
+      - set: { B6: 200 }
+        expected: 0
+    answer: =IF(B6>=A4,0,INDEX(A2:A4,MATCH(B6,A2:A4,1)+1)-B6)
     requiredFunctions: []
     hints:
       nudge: The next band starts one row below the band the units are in.
-      rule: MATCH(...,1)+1 points at the next band's start; minus B6 gives the units still needed; IFERROR gives 0 past the top band.
+      rule: MATCH with 1 finds the band the units are in, and adding 1 points at the next band's start. IF should give 0 when the units already reach the top band.
     misses:
       value: The rep needs 55 more units.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
+      - =IF(B6>=A4,0,INDEX(A2:A4,MATCH(B6,A2:A4,1)+1)-B6)
       - =IFERROR(INDEX(A2:A4,MATCH(B6,A2:A4,1)+1)-B6,0)
       - =IFERROR(INDEX($A$2:$A$4,MATCH(B6,$A$2:$A$4,1)+1)-B6,0)
     reject:

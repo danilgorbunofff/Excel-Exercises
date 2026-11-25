@@ -28,7 +28,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: The extension is to the right of the team, so VLOOKUP cannot reach back.
-      rule: XLOOKUP(G1,D2:D8,C2:C8) searches the extension column and returns the team from the column to its left.
+      rule: XLOOKUP can search the extension column and return the team from a column to its left, which VLOOKUP cannot do.
     misses:
       value: Extension 402 is in IT.
       syntax: Check the brackets, commas and quotes.

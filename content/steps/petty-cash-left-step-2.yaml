@@ -29,7 +29,7 @@ screens:
       - SUM
     hints:
       nudge: The top-up adds to the cash, like the float.
-      rule: B2+B3-SUM(B4:B9) adds both amounts in and takes away every expense.
+      rule: Add the float and the top-up, then take away the SUM of every expense.
     misses:
       value: 158.86 is left in the tin.
       syntax: Check the brackets, commas and quotes.

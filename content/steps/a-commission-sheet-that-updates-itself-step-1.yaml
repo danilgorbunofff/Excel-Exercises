@@ -21,7 +21,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Point at the rate in F1 rather than typing it.
-      rule: B2*$F$1 follows the rate, and the $ keeps it fixed if copied down.
+      rule: Multiply the sales by the rate cell. A $ before the column and the row keeps F1 fixed if the formula is copied down.
     misses:
       value: Ana's commission is 1260.
       syntax: Check the brackets, commas and quotes.

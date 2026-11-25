@@ -31,7 +31,7 @@ screens:
       - SUMIFS
     hints:
       nudge: The units column can be both the range to add and a range to test.
-      rule: SUMIFS(C2:C10,B2:B10,"Pens",C2:C10,">=20") adds pen orders of 20 or more.
+      rule: The units column can be the range to add and also a range to test, with ">=20" as its condition.
     misses:
       value: Pen orders of 20 or more add up to 95 units.
       syntax: Check the brackets, commas and quotes.

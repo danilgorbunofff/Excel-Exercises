@@ -26,7 +26,7 @@ screens:
       - SUM
     hints:
       nudge: Total each side, then subtract.
-      rule: SUM(B2:B7)-SUM(C2:C7) shows any imbalance.
+      rule: Total each side with SUM, then take the credits from the debits. Any result but 0 is an imbalance.
     misses:
       value: The difference is 0.
       syntax: Check the brackets, commas and quotes.

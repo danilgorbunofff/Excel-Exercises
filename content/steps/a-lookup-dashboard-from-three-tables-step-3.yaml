@@ -25,7 +25,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: The targets live in their own table on the right.
-      rule: XLOOKUP(D1,F2:F5,G2:G5) reads the target for that region.
+      rule: "XLOOKUP can search a different table: the region column of the targets table, returning its target column."
     misses:
       value: The West's target is 55000.
       syntax: Check the brackets, commas and quotes.

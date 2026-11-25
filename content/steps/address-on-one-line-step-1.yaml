@@ -20,7 +20,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Put " " between the two cells.
-      rule: C2&" "&D2 joins the two with a space.
+      rule: "& joins text. Put a space in quotes between the two cells."
     misses:
       value: E2 shows Hebden HX7 8AB.
       syntax: Check the brackets, commas and quotes.

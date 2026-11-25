@@ -18,7 +18,7 @@ screens:
       - SEARCH
     hints:
       nudge: SEARCH ignores case; FIND does not.
-      rule: SEARCH("x",A2) finds X or x, whichever comes first.
+      rule: SEARCH works like FIND but ignores case, so it finds X or x, whichever comes first.
     misses:
       value: The first x is character 3.
       syntax: Check the brackets, commas and quotes.

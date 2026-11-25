@@ -38,7 +38,7 @@ screens:
       - VALUE
     hints:
       nudge: VALUE reads text that looks like a number as a number.
-      rule: VALUE(D4) gives 1300 as a number you can add.
+      rule: VALUE reads text that looks like a number and gives a real number you can add.
     misses:
       value: As a number, D4 is 1300.
       syntax: Check the brackets, commas and quotes.

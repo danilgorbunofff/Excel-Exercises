@@ -22,7 +22,7 @@ screens:
       - FIND
     hints:
       nudge: The first name stops one character before the space.
-      rule: LEFT(A2,FIND(" ",A2)-1) keeps everything before the space, for a name of any length.
+      rule: FIND gives the space's position, so the first name is that position minus 1 characters from the left.
     misses:
       value: The first name is Katherine.
       syntax: Check the brackets, commas and quotes.

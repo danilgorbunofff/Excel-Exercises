@@ -1,41 +1,47 @@
 id: date-build-a-date-from-parts-step-2
 slug: date-build-a-date-from-parts-step-2
 level: 1
-title: Year of a date
+title: The 15th of a month
 updated: 2026-11-25
 checkedInExcel: 2026-11-25
 parent: date-build-a-date-from-parts
 step: 2
 screens:
-  - prompt: In C2, take the year from the date in B2. Use YEAR.
+  - prompt: In D2, build the date of the 15th day of the month in C2 of the year in B2. Use DATE.
     rows:
-      - [Invoice, Date, Year]
-      - [INV-2001, 45352, null]
-    answerCell: C2
-    expected: 2024
+      - [Payment, Year, Month, Due]
+      - [Rent, 2025, 3, null]
+    answerCell: D2
+    expected: 45731
     variants:
-      - set: { B2: 45700 }
-        expected: 2025
-    answer: =YEAR(B2)
+      - set: { C2: 11 }
+        expected: 45976
+      - set: { B2: 2026 }
+        expected: 46096
+    answer: =DATE(B2,C2,15)
     requiredFunctions:
-      - YEAR
+      - DATE
     hints:
-      nudge: YEAR reads the year out of a real date.
-      rule: YEAR(B2) gives 2024 for any date in 2024.
+      nudge: DATE takes the year, then the month, then the day.
+      rule: Give DATE the year cell, the month cell and 15 for the day. It returns a real date, stored as a serial number.
     misses:
-      value: The invoice is from 2024.
+      value: The 15th of that month is serial 45731.
       syntax: Check the brackets, commas and quotes.
-      required-function: This task asks for YEAR.
+      required-function: This task asks for DATE.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =YEAR(B2)
-      - =year(b2)
-      - "=YEAR(B2)+0"
-      - "=YEAR(B2*1)"
+      - =DATE(B2,C2,15)
+      - =DATE(B2,C2,1)+14
+      - =DATE(B2,C2,0)+15
+      - =DATE(B2,C2,1)+15-1
     reject:
-      - formula: =MONTH(B2)
+      - formula: =DATE(C2,B2,15)
+        rule: value
+      - formula: =DATE(B2,C2,1)
+        rule: value
+      - formula: =DATE(B2,15,C2)
+        rule: value
+      - formula: =45731
         rule: required-function
-      - formula: =2024
-        rule: required-function
-      - formula: =YEAR(B2
+      - formula: =DATE(B2,C2,15
         rule: syntax

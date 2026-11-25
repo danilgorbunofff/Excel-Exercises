@@ -26,7 +26,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: Return the Office column this time.
-      rule: XLOOKUP(E2,A2:A7,B2:B7) returns the office from the matching row.
+      rule: XLOOKUP searches the names and returns the value from the same row of the office column.
     misses:
       value: Dara works in Hull.
       syntax: Check the brackets, commas and quotes.

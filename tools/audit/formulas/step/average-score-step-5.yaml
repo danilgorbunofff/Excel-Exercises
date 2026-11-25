@@ -1,11 +1,11 @@
 # Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
 screens:
   - correct:
-      - =AVERAGEIF($B$2:$B$16,">0")
-      - =AVERAGEIF(B$2:B$16,">0")
-      - =averageif(b2:b16, ">0")
-      - =AVERAGEIFS(B2:B16,B2:B16,">0")
-      - =AVERAGE(FILTER(B2:B16,(B2:B16>0)))
-      - =LET(data,B2:B16,AVERAGEIF(data,">0"))
+      - =SUM($C$2:$C$16)/SUM($B$2:$B$16)
+      - =SUM(C$2:C$16)/SUM(B2:B16)
+      - =sum(c2:c16)/sum(b2:b16)
+      - =SUMPRODUCT(C2:C16)/SUM(B2:B16)
+      - =SUM(C2:C16)/SUMPRODUCT(B2:B16)
+      - =LET(data,C2:C16,SUM(data)/SUM(B2:B16))
     wrong: []
     equivalent: []

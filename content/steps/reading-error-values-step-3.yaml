@@ -23,7 +23,7 @@ screens:
       - VALUE
     hints:
       nudge: VALUE fails on words; ISERROR turns the failure into TRUE.
-      rule: IF(ISERROR(VALUE(A2)),"text","number") tests whether the text can be read as a number.
+      rule: "Put VALUE inside ISERROR as the test for IF: it is TRUE when the text cannot be read as a number."
     misses:
       value: twelve cannot be read as a number, so B2 should show text.
       syntax: Check the brackets, commas and quotes.

@@ -26,7 +26,7 @@ screens:
       - SUM
     hints:
       nudge: The range has to reach the last day.
-      rule: SUM(B2:B6) runs from Monday to Friday.
+      rule: The range must run from the first day to the last, Monday to Friday.
     misses:
       value: Monday to Friday adds up to 216. The range has to end at B6.
       syntax: Check the brackets, commas and quotes.

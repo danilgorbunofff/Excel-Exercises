@@ -21,7 +21,7 @@ screens:
       - IFERROR
     hints:
       nudge: Dividing by a zero last year fails; IFERROR shows new instead.
-      rule: IFERROR((C2-B2)/B2,"new") handles products launched this year.
+      rule: Wrap the growth formula in IFERROR, with the word new in quotes as the fallback for a zero last year.
     misses:
       value: With no sales last year, D2 should show new.
       syntax: Check the brackets, commas and quotes.

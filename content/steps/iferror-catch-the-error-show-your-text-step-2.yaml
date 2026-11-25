@@ -22,7 +22,7 @@ screens:
       - VALUE
     hints:
       nudge: VALUE fails on words; IFERROR catches that.
-      rule: IFERROR(VALUE(A2),0) gives the number, or 0 for text such as n/a.
+      rule: VALUE turns number text into a number and fails on words. Wrap it in IFERROR with 0 as the fallback.
     misses:
       value: For n/a, B2 should show 0.
       syntax: Check the brackets, commas and quotes.

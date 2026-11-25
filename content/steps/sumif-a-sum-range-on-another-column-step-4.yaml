@@ -28,7 +28,7 @@ screens:
       - SUMIF
     hints:
       nudge: Test column B against G1, add column D.
-      rule: SUMIF(B2:B9,G1,D2:D9) totals the hours of whoever is typed in G1.
+      rule: Test the person column against the cell that holds the name, and add the hours column.
     misses:
       value: The person in G1 worked 14 hours.
       syntax: Check the brackets, commas and quotes.

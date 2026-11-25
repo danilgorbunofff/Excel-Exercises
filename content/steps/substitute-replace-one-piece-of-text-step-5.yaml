@@ -20,11 +20,11 @@ screens:
         expected: 0
       - set: { A2: "a,b,c,d,e,f" }
         expected: 6
-    answer: =IF(TRIM(A2)="",0,LEN(A2)-LEN(SUBSTITUTE(A2,",",""))+1)
+    answer: =IF(A2="",0,LEN(A2)-LEN(SUBSTITUTE(A2,",",""))+1)
     requiredFunctions: []
     hints:
       nudge: Each comma separates two items, so items are commas plus 1, except for an empty list.
-      rule: LEN minus LEN without commas counts the commas; +1 gives the items; the IF gives 0 for an empty cell.
+      rule: LEN minus LEN without the commas counts the commas, and one more gives the items. Test for an empty cell first with IF.
     misses:
       value: The list has 4 items.
       syntax: Check the brackets, commas and quotes.

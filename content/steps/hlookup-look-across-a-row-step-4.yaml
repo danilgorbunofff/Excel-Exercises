@@ -24,7 +24,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: XLOOKUP works across rows just as down columns.
-      rule: XLOOKUP(B4,B1:E1,B3:E3) searches the month row and returns from the price row.
+      rule: "XLOOKUP works across rows: search the month row and return from the price row."
     misses:
       value: March's price is 5.25.
       syntax: Check the brackets, commas and quotes.

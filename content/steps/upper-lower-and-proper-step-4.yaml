@@ -1,42 +1,48 @@
 id: upper-lower-and-proper-step-4
 slug: upper-lower-and-proper-step-4
 level: 2
-title: Tidy a messy name
+title: Name in passport style
 updated: 2026-11-25
 checkedInExcel: 2026-11-25
 parent: upper-lower-and-proper
 step: 4
 screens:
-  - prompt: "In B2, tidy the name in A2: remove the extra spaces, then give each word a capital first letter. Use TRIM and PROPER."
+  - prompt: "In C2, write the name passport style: the first name in A2 with a capital first letter, a space, then the surname in B2 all in capitals. Use PROPER and UPPER."
     rows:
-      - [Name, Tidy]
-      - ["  mary   JACKSON ", null]
-    answerCell: B2
-    expected: Mary Jackson
+      - [First, Surname, Passport style]
+      - [mARY, jackson, null]
+    answerCell: C2
+    expected: Mary JACKSON
     variants:
-      - set: { A2: alan    turing }
-        expected: Alan Turing
-    answer: =PROPER(TRIM(A2))
+      - set: { A2: ALAN, B2: Turing }
+        expected: Alan TURING
+      - set: { B2: o'neil }
+        expected: Mary O'NEIL
+    answer: =PROPER(A2)&" "&UPPER(B2)
     requiredFunctions:
       - PROPER
-      - TRIM
+      - UPPER
     hints:
-      nudge: TRIM removes the spaces at the ends and doubles in the middle; PROPER fixes the capitals.
-      rule: PROPER(TRIM(A2)) gives Mary Jackson.
+      nudge: Fix each part on its own, then join them with a space between.
+      rule: PROPER gives a word a capital first letter, and UPPER makes every letter a capital. Join the two with & and a space in quotes.
     misses:
-      value: The tidy name is Mary Jackson.
+      value: C2 should read Mary JACKSON.
       syntax: Check the brackets, commas and quotes.
-      required-function: This task asks for PROPER and TRIM.
+      required-function: This task asks for PROPER and UPPER.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =PROPER(TRIM(A2))
-      - =TRIM(PROPER(A2))
+      - =PROPER(A2)&" "&UPPER(B2)
+      - =CONCAT(PROPER(A2)," ",UPPER(B2))
+      - =TEXTJOIN(" ",TRUE,PROPER(A2),UPPER(B2))
+      - =PROPER(A2)&" "&UPPER(PROPER(B2))
     reject:
-      - formula: =PROPER(A2)
+      - formula: =UPPER(A2)&" "&UPPER(B2)
         rule: required-function
-      - formula: =TRIM(A2)
+      - formula: =PROPER(A2)&UPPER(B2)
+        rule: value
+      - formula: =PROPER(A2&" "&B2)
         rule: required-function
-      - formula: ="Mary Jackson"
+      - formula: ="Mary JACKSON"
         rule: required-function
-      - formula: =PROPER(TRIM(A2)
+      - formula: =PROPER(A2)&" "&UPPER(B2
         rule: syntax

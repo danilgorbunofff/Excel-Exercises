@@ -21,7 +21,7 @@ screens:
       - ROUND
     hints:
       nudge: Profit over revenue, times 100, then round.
-      rule: ROUND((B2-C2)/B2*100,1) gives the margin as a percentage to 1 decimal.
+      rule: Work out the margin as a percentage inside ROUND, with 1 as the number of decimal places.
     misses:
       value: The margin is 35.4%.
       syntax: Check the brackets, commas and quotes.

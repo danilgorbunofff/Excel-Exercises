@@ -7,7 +7,7 @@ checkedInExcel: 2026-11-25
 parent: xlookup-with-a-fallback-when-nothing-matches
 step: 5
 screens:
-  - prompt: In E5, what does the order in D2 to E4 cost? Column D holds SKUs and column E quantities. A SKU not in the price list counts as 0.
+  - prompt: In E6, what does the order in D2 to E4 cost? Column D holds SKUs and column E quantities. A SKU not in the price list counts as 0.
     rows:
       - [SKU, Price, null, SKU, Qty]
       - [TX-101, 19.99, null, TX-102, 4]

@@ -21,9 +21,5 @@ screens:
     equivalent:
       - formula: =SUMIF(A2:A11,"North",B2:B10)+SUMIF(A2:A10,"East",B2:B10)
         why: "range A2:A10 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
-      - formula: =SUMIF(A2:A10,"North",B2:B11)+SUMIF(A2:A10,"East",B2:B10)
-        why: "range B2:B10 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
       - formula: =SUMIF(A2:A10,"North",B2:B10)+SUMIF(A2:A11,"East",B2:B10)
         why: "range A2:A10 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
-      - formula: =SUMIF(A2:A10,"North",B2:B10)+SUMIF(A2:A10,"East",B2:B11)
-        why: "range B2:B10 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

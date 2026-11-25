@@ -24,7 +24,7 @@ screens:
       - MAX
     hints:
       nudge: Work out the shortfall, never below 0, then cases rounded up.
-      rule: MAX(0,C2-B2) stops a negative order; dividing by the case size and ROUNDUP gives whole cases.
+      rule: MAX with 0 stops a negative order. Divide the shortfall by the case size, then ROUNDUP to whole cases.
     misses:
       value: Order 7 cases.
       syntax: Check the brackets, commas and quotes.

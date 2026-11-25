@@ -38,7 +38,7 @@ screens:
       - SUMPRODUCT
     hints:
       nudge: SUM skips text; -- turns each amount into a number first.
-      rule: SUMPRODUCT(--D2:D19) converts the text amounts and adds them all.
+      rule: -- turns each text amount into a number before SUMPRODUCT adds them. SUM alone skips the text.
     misses:
       value: All the amounts add up to 14120.
       syntax: Check the brackets, commas and quotes.

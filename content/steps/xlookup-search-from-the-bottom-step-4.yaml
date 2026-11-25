@@ -28,7 +28,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: The fourth part is the fallback; the sixth is the search direction.
-      rule: XLOOKUP(E1,A2:A7,B2:B7,"none",0,-1) searches from the bottom and shows none when nothing matches.
+      rule: The fourth part of XLOOKUP is the fallback shown when nothing matches; -1 as the sixth part searches from the bottom.
     misses:
       value: For a SKU not in the log, E2 should show none.
       syntax: Check the brackets, commas and quotes.

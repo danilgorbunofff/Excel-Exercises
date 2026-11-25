@@ -35,7 +35,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Keep only the names whose team matches D1, then join them.
-      rule: IF(B2:B16=D1,A2:A16,"") gives the name or nothing on each row; TEXTJOIN skips the empty ones.
+      rule: IF can test the whole team column against D1 and return the name or empty text on each row. TEXTJOIN with TRUE skips the empty ones.
     misses:
       value: The Sales team is Ada, Cleo, Eve, Hana, Kai, Nia.
       syntax: Check the brackets, commas and quotes.

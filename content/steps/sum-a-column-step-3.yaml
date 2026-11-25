@@ -30,7 +30,7 @@ screens:
       - SUM
     hints:
       nudge: One range can cover two columns side by side.
-      rule: SUM(B2:C9) adds the whole block, from the top-left cell to the bottom-right cell.
+      rule: "A range can be a block: write the top-left cell, a colon, then the bottom-right cell."
     misses:
       value: Both columns together add up to 6090. The range has to cover B and C.
       syntax: Check the brackets, commas and quotes.

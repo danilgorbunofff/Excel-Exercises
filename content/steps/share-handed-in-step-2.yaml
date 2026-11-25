@@ -30,7 +30,7 @@ screens:
       - COUNTBLANK
     hints:
       nudge: A missing essay is an empty mark.
-      rule: COUNTBLANK(B2:B9) counts the students with no mark.
+      rule: COUNTBLANK counts the empty cells, which are the students with no mark.
     misses:
       value: 3 essays are missing. Count the empty cells from B2 to B9.
       syntax: Check the brackets, commas and quotes.

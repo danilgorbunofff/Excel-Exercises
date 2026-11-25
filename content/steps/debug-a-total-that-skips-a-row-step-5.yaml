@@ -29,11 +29,11 @@ screens:
         expected: 3765
       - set: { B6: 400 }
         expected: 3745
-    answer: =SUMPRODUCT(--B2:B11)
+    answer: =SUM(--B2:B11)
     requiredFunctions: []
     hints:
       nudge: Turn every amount into a number before adding.
-      rule: SUMPRODUCT(--B2:B11) turns text that looks like a number into a number, then adds them all. SUM alone skips the text.
+      rule: Two minus signs in front of a range turn numbers stored as text into numbers. SUM on its own skips the text.
     misses:
       value: All ten invoices add up to 3735. SUM on its own leaves out the amounts stored as text.
       syntax: Check the brackets, commas and quotes.

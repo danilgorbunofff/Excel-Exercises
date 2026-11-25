@@ -44,7 +44,7 @@ screens:
       - FILTER
     hints:
       nudge: "The test can compare numbers: D2:D19>=1000."
-      rule: FILTER(A2:A19,D2:D19>=1000) keeps the orders of 1,000 or more.
+      rule: The test can compare numbers. >= keeps orders of exactly 1,000 too.
     misses:
       value: The list should hold every order number worth 1,000 or more.
       syntax: Check the brackets, commas and quotes.

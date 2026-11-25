@@ -21,7 +21,7 @@ screens:
       - MROUND
     hints:
       nudge: MROUND takes the number and the multiple to round to.
-      rule: MROUND(B2,10) gives the nearest multiple of 10.
+      rule: MROUND gives the nearest multiple of the number you give it.
     misses:
       value: 74 to the nearest 10 is 70.
       syntax: Check the brackets, commas and quotes.

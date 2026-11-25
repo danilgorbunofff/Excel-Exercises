@@ -12,5 +12,3 @@ screens:
     equivalent:
       - formula: =SUMIF(A2:A8,"Food",B2:B7)
         why: "range A2:A7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
-      - formula: =SUMIF(A2:A7,"Food",B2:B8)
-        why: "range B2:B7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

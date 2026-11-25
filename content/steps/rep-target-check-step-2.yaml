@@ -21,7 +21,7 @@ screens:
       - ROUND
     hints:
       nudge: Sales over target, times 100.
-      rule: ROUND(C2/B2*100,1) shows how much of the target was reached.
+      rule: Sales over target, times 100, goes inside ROUND with 1 decimal place.
     misses:
       value: Nia reached 97.8% of target.
       syntax: Check the brackets, commas and quotes.

@@ -56,7 +56,7 @@ screens:
       - UNIQUE
     hints:
       nudge: UNIQUE first, then SORT the result.
-      rule: SORT(UNIQUE(C2:C19)) gives each rep once, alphabetically.
+      rule: "Put UNIQUE inside SORT: UNIQUE removes the repeats, then SORT puts the result A to Z."
     misses:
       value: The list should show each rep once, from A to Z.
       syntax: Check the brackets, commas and quotes.

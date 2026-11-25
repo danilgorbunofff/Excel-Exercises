@@ -23,7 +23,7 @@ screens:
       - DAYS
     hints:
       nudge: DAYS takes the end date first, then the start date.
-      rule: DAYS(G1,C2) counts the days from the due date to the date in G1.
+      rule: DAYS counts the days between two dates. Here the end is the date in G1 and the start is the due date.
     misses:
       value: The invoice is 30 days overdue.
       syntax: Check the brackets, commas and quotes.

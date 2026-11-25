@@ -27,7 +27,7 @@ screens:
       - MATCH
     hints:
       nudge: MATCH takes what to find, where, and 0 for an exact match.
-      rule: MATCH(B7,A2:A5,0) gives the row number of the name inside the list, not on the sheet.
+      rule: MATCH gives the position of the value inside the list, counting its first cell as 1, not the row on the sheet. 0 asks for an exact match.
     misses:
       value: Dev is at position 4 in the list.
       syntax: Check the brackets, commas and quotes.

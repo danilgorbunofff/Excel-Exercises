@@ -28,7 +28,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Pull out the whole row with INDEX, then add it.
-      rule: INDEX(B2:E5,B7,0) returns the row; SUM adds its four quarters.
+      rule: INDEX with 0 as the column returns the whole row, and SUM can add that row like any range.
     misses:
       value: That region sold 475 across the year.
       syntax: Check the brackets, commas and quotes.

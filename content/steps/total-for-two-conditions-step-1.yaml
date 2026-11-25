@@ -28,7 +28,7 @@ screens:
       - SUMIFS
     hints:
       nudge: In SUMIFS the range to add comes first, then the range to test and its condition.
-      rule: SUMIFS(C2:C7,A2:A7,"North") adds the units on the North rows.
+      rule: SUMIFS adds the cells of its first range on the rows where every test that follows passes. One test is enough.
     misses:
       value: The North sold 90 units.
       syntax: Check the brackets, commas and quotes.

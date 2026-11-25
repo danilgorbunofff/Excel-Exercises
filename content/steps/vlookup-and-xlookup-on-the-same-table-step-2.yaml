@@ -26,7 +26,7 @@ screens:
       - XLOOKUP
     hints:
       nudge: "XLOOKUP needs no column number: just the column to return."
-      rule: XLOOKUP(B6,A2:A5,B2:B5) returns the product from column B.
+      rule: "XLOOKUP needs no column number: give it the SKU column to search and the product column to return."
     misses:
       value: DX-410 is the Dowel.
       syntax: Check the brackets, commas and quotes.

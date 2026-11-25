@@ -1,13 +1,13 @@
 id: aggregate-functions-summary-step-5
 slug: aggregate-functions-summary-step-5
 level: 3
-title: How far the Line column is off
+title: Lines that do not match
 updated: 2026-11-25
 checkedInExcel: 2026-11-25
 parent: aggregate-functions-summary
 step: 5
 screens:
-  - prompt: In E2, by how much in total are the stored line values off from price times quantity? Count every difference as positive.
+  - prompt: In E2, how many lines have a stored Line value that differs from price times quantity?
     rows:
       - [Item, Price, Qty, Line, Total difference]
       - [Pens, 1.2, 40, 48, null]
@@ -26,31 +26,35 @@ screens:
       - [Binders, 3.9, 14, 54.6, null]
       - [Notes, 2.6, 22, 57.2, null]
     answerCell: E2
-    expected: 7
+    expected: 2
     variants:
       - set: { D3: 50.5 }
-        expected: 9
+        expected: 3
       - set: { D12: 19.8 }
-        expected: 4
-    answer: =SUMPRODUCT(ABS(D2:D16-B2:B16*C2:C16))
+        expected: 1
+    answer: =SUMPRODUCT(--(ROUND(D2:D16-B2:B16*C2:C16,2)<>0))
     requiredFunctions: []
     hints:
-      nudge: Work out each line's difference, drop its sign, then add.
-      rule: ABS(D2:D16-B2:B16*C2:C16) gives each line's error as a positive number, so a line over and a line under cannot cancel out.
+      nudge: Work out every line's difference at once and count the ones that are not 0.
+      rule: Rounding each difference to the cent stops tiny decimal noise from counting as a mismatch. Then count the differences that are not 0.
     misses:
-      value: The lines are off by 7 in total.
+      value: 2 lines do not match price times quantity.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =SUMPRODUCT(ABS(D2:D16-B2:B16*C2:C16))
-      - =SUM(ABS(D2:D16-B2:B16*C2:C16))
+      - =SUMPRODUCT(--(ROUND(D2:D16-B2:B16*C2:C16,2)<>0))
+      - =SUM(--(ROUND(D2:D16-B2:B16*C2:C16,2)<>0))
+      - =SUMPRODUCT(--(ROUND(D2:D16,2)<>ROUND(B2:B16*C2:C16,2)))
+      - =SUMPRODUCT((ROUND(D2:D16-B2:B16*C2:C16,2)<>0)*1)
     reject:
-      - formula: =SUM(D2:D16)-SUMPRODUCT(B2:B16,C2:C16)
+      - formula: =SUMPRODUCT(--(D2:D16>B2:B16*C2:C16))
         rule: value
       - formula: =SUMPRODUCT(D2:D16-B2:B16*C2:C16)
         rule: value
-      - formula: =7
+      - formula: =COUNTIF(D2:D16,"<>0")
+        rule: value
+      - formula: =2
         rule: reference
-      - formula: =SUMPRODUCT(ABS(D2:D16-B2:B16*C2:C16)
+      - formula: =SUMPRODUCT(--(ROUND(D2:D16-B2:B16*C2:C16,2)<>0)
         rule: syntax

@@ -1,43 +1,48 @@
 id: left-find-prefix-step-5
 slug: left-find-prefix-step-5
 level: 3
-title: Email domain in lower case
+title: Company name in an email address
 updated: 2026-11-25
 checkedInExcel: 2026-11-25
 parent: left-find-prefix
 step: 5
 screens:
-  - prompt: In B2, what is the domain of the email address in A2, the part after the @, in lower case?
+  - prompt: "In B2, what is the company name in the email address in A2: the part between the @ and the next dot?"
     rows:
-      - [Email, Domain]
-      - [Ada.Lovelace@Analytical-Engines.CO.UK, null]
+      - [Email, Company]
+      - [ada.lovelace@engines.co.uk, null]
     answerCell: B2
-    expected: analytical-engines.co.uk
+    expected: engines
     variants:
-      - set: { A2: grace@NAVY.mil }
-        expected: navy.mil
-      - set: { A2: Alan.T@bletchley.org }
-        expected: bletchley.org
-    answer: =LOWER(TEXTAFTER(A2,"@"))
+      - set: { A2: grace@navy.mil }
+        expected: navy
+      - set: { A2: alan.m.turing@bletchley.org }
+        expected: bletchley
+      - set: { A2: k.j@nasa.gov }
+        expected: nasa
+    answer: =MID(A2,FIND("@",A2)+1,FIND(".",A2,FIND("@",A2))-FIND("@",A2)-1)
     requiredFunctions: []
     hints:
-      nudge: Take what follows the @, then change it to lower case.
-      rule: TEXTAFTER(A2,"@") gives the domain; LOWER makes it lower case so the same domain always matches.
+      nudge: The user name can hold dots too, so look for the first dot after the @.
+      rule: FIND takes a third part, the position to start from. Start the search for the dot at the @, then take the characters between them with MID.
     misses:
-      value: The domain is analytical-engines.co.uk.
+      value: The company name is engines.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =LOWER(TEXTAFTER(A2,"@"))
-      - =LOWER(MID(A2,FIND("@",A2)+1,LEN(A2)))
-      - =LOWER(RIGHT(A2,LEN(A2)-FIND("@",A2)))
+      - =MID(A2,FIND("@",A2)+1,FIND(".",A2,FIND("@",A2))-FIND("@",A2)-1)
+      - =LEFT(MID(A2,FIND("@",A2)+1,LEN(A2)),FIND(".",MID(A2,FIND("@",A2)+1,LEN(A2)))-1)
+      - =TEXTBEFORE(TEXTAFTER(A2,"@"),".")
+      - =MID(A2,SEARCH("@",A2)+1,SEARCH(".",A2,SEARCH("@",A2))-SEARCH("@",A2)-1)
     reject:
-      - formula: =TEXTAFTER(A2,"@")
+      - formula: =MID(A2,FIND("@",A2)+1,FIND(".",A2)-FIND("@",A2)-1)
         rule: value
-      - formula: =LOWER(TEXTBEFORE(A2,"@"))
+      - formula: =MID(A2,FIND("@",A2),FIND(".",A2,FIND("@",A2))-FIND("@",A2))
         rule: value
-      - formula: ="analytical-engines.co.uk"
+      - formula: =LEFT(A2,FIND("@",A2)-1)
+        rule: value
+      - formula: ="engines"
         rule: reference
-      - formula: =LOWER(TEXTAFTER(A2,"@")
+      - formula: =MID(A2,FIND("@",A2)+1,FIND(".",A2,FIND("@",A2))-FIND("@",A2)-1
         rule: syntax

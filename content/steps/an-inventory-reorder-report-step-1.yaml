@@ -20,7 +20,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: The reorder point minus what is on hand.
-      rule: C2-B2 is the shortfall; it would be negative if the stock were above the point.
+      rule: The gap is the reorder point minus what is on hand. It would be negative if the stock were above the point.
     misses:
       value: The bolts are 80 short of the reorder point.
       syntax: Check the brackets, commas and quotes.

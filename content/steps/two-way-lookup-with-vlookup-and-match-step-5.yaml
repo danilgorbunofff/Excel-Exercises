@@ -1,13 +1,13 @@
 id: two-way-lookup-with-vlookup-and-match-step-5
 slug: two-way-lookup-with-vlookup-and-match-step-5
 level: 3
-title: Two-way lookup that says when it fails
+title: More than in the first quarter
 updated: 2026-11-25
 checkedInExcel: 2026-11-25
 parent: two-way-lookup-with-vlookup-and-match
 step: 5
 screens:
-  - prompt: In C8, return the units for the product in A8 and the quarter in B8. If either is not in the table, show Not found.
+  - prompt: In C8, how many more units did the product in A8 sell in the quarter in B8 than in Q1? A fall is negative.
     rows:
       - [Product, Q1, Q2, Q3, Q4]
       - [Gizmo, 120, 140, 130, 155]
@@ -18,33 +18,37 @@ screens:
       - [null, null, null, null, null]
       - [Widget, Q4, null, null, null]
     answerCell: C8
-    expected: 135
+    expected: 45
     variants:
-      - set: { A8: Hinge }
-        expected: Not found
-      - set: { B8: Q5 }
-        expected: Not found
-      - set: { A8: Bracket, B8: Q2 }
-        expected: 55
-    answer: =IFERROR(VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,0),FALSE),"Not found")
+      - set: { A8: Bracket }
+        expected: 20
+      - set: { B8: Q2 }
+        expected: 20
+      - set: { E3: 150 }
+        expected: 60
+    answer: =VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,0),FALSE)-VLOOKUP(A8,A1:E6,2,FALSE)
     requiredFunctions: []
     hints:
-      nudge: MATCH gives the column for VLOOKUP; IFERROR catches a product or quarter that is missing.
-      rule: VLOOKUP with MATCH as its column does the two-way lookup; IFERROR(..., "Not found") replaces any error.
+      nudge: Look up the product's units in the chosen quarter and in Q1, then subtract.
+      rule: MATCH on the header row gives the quarter's column number for VLOOKUP. Q1 is always column 2 of the table.
     misses:
-      value: Widget's Q4 units are 135.
+      value: The product in A8 sold 45 more units than in Q1.
       syntax: Check the brackets, commas and quotes.
       reference: Point at the cells, so the result follows the data when it changes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =IFERROR(VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,0),FALSE),"Not found")
-      - =IFERROR(INDEX(B2:E6,MATCH(A8,A2:A6,0),MATCH(B8,B1:E1,0)),"Not found")
+      - =VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,0),FALSE)-VLOOKUP(A8,A1:E6,2,FALSE)
+      - =INDEX(B2:E6,MATCH(A8,A2:A6,0),MATCH(B8,B1:E1,0))-INDEX(B2:B6,MATCH(A8,A2:A6,0))
+      - =XLOOKUP(B8,B1:E1,XLOOKUP(A8,A2:A6,B2:E6))-XLOOKUP(A8,A2:A6,B2:B6)
+      - =-VLOOKUP(A8,A1:E6,2,FALSE)+VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,0),FALSE)
     reject:
       - formula: =VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,0),FALSE)
-        rule: fragile
-      - formula: =IFERROR(VLOOKUP(A8,A1:E6,MATCH(B8,B1:E1,0),FALSE),"Not found")
         rule: value
-      - formula: =135
+      - formula: =VLOOKUP(A8,A1:E6,MATCH(B8,B1:E1,0),FALSE)-VLOOKUP(A8,A1:E6,2,FALSE)
+        rule: value
+      - formula: =VLOOKUP(A8,A1:E6,2,FALSE)-VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,0),FALSE)
+        rule: value
+      - formula: =45
         rule: reference
-      - formula: =IFERROR(VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,0),FALSE),"Not found"
+      - formula: =VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,0),FALSE)-VLOOKUP(A8,A1:E6,2,FALSE
         rule: syntax

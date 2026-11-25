@@ -35,7 +35,7 @@ screens:
       - RANK
     hints:
       nudge: The list must be the whole column of sales.
-      rule: RANK(B9,$B$2:$B$16) places Hu against every rep; the $ signs keep the list fixed if copied down.
+      rule: Give RANK the whole column of sales as its list. The $ signs keep the list fixed if the formula is copied down.
     misses:
       value: Hu is in place 4.
       syntax: Check the brackets, commas and quotes.

@@ -1,13 +1,13 @@
 id: top-orders-for-one-region-step-1
 slug: top-orders-for-one-region-step-1
 level: 1
-title: Largest East order
+title: Every East amount
 updated: 2026-11-25
 checkedInExcel: 2026-11-25
 parent: top-orders-for-one-region
 step: 1
 screens:
-  - prompt: In F2, find the largest East order. Use MAXIFS.
+  - prompt: In F2, list the amount of every East order, in the order they appear. Use FILTER.
     rows:
       - [Order, Region, Rep, Amount, null, null, null, null, null]
       - [1001, North, Ana, 820, null, null, null, null, null]
@@ -29,30 +29,40 @@ screens:
       - [1017, north, Kim, 1050, null, null, null, null, null]
       - [1018, East, Gus, 380, null, null, null, null, null]
     answerCell: F2
-    expected: 1300
+    expected:
+      - [1300]
+      - [220]
+      - [540]
+      - [380]
     variants:
       - set: { D9: 1500 }
-        expected: 1500
-    answer: =MAXIFS(D2:D19,B2:B19,"East")
+        expected:
+          - - 1300
+          - - 1500
+          - - 540
+          - - 380
+    answer: =FILTER(D2:D19,B2:B19="East")
     requiredFunctions:
-      - MAXIFS
+      - FILTER
     hints:
-      nudge: MAXIFS takes the range to search, then the region test.
-      rule: MAXIFS(D2:D19,B2:B19,"East") gives the biggest amount among the East rows.
+      nudge: FILTER takes what to return, then a test on each row.
+      rule: Return the Amount column, and test the Region column for East. The amounts spill down in order.
     misses:
-      value: The largest East order is 1300.
+      value: The list should hold the amount of each East order, top to bottom.
       syntax: Check the brackets, commas and quotes.
-      required-function: This task asks for MAXIFS.
+      required-function: This task asks for FILTER.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =MAXIFS(D2:D19,B2:B19,"East")
-      - =MAXIFS($D$2:$D$19,$B$2:$B$19,"East")
+      - =FILTER(D2:D19,B2:B19="East")
+      - =FILTER(D2:D19,B2:B19="east")
+      - =FILTER(D2:D19,"East"=B2:B19)
+      - =FILTER(D2:D19,(B2:B19="East")*1)
     reject:
-      - formula: =MAX(D2:D19)
-        rule: required-function
-      - formula: =MAXIFS(D2:D19,B2:B19,"West")
+      - formula: =FILTER(C2:C19,B2:B19="East")
         rule: value
-      - formula: =1300
+      - formula: =FILTER(D2:D19,B2:B19="North")
+        rule: value
+      - formula: =SORT(D2:D19)
         rule: required-function
-      - formula: =MAXIFS(D2:D19,B2:B19,"East"
+      - formula: =FILTER(D2:D19,B2:B19="East"
         rule: syntax

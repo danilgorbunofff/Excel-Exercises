@@ -25,9 +25,9 @@ screens:
       - AND
     hints:
       nudge: "The large card order is one test made of two parts: put those in AND, then OR it with membership."
-      rule: OR(B2="Yes",AND(C2>100,D2="Card")) is TRUE for a member, or for a card order over 100.
+      rule: Put the two card-order tests in AND, then give that AND to OR together with the membership test.
     misses:
-      value: This card order is over 100, so E2 should show true.
+      value: This card order is over 100, so E2 should show TRUE.
       syntax: Check the brackets, commas and quotes.
       required-function: This task asks for OR and AND.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.

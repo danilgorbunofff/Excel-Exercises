@@ -27,7 +27,7 @@ screens:
     requiredFunctions: []
     hints:
       nudge: Markup is profit over cost; margin is profit over revenue.
-      rule: (B2-C2)/C2 shows how much was added on top of the cost.
+      rule: Markup divides the profit by the cost; margin divides it by revenue. Brackets make the subtraction happen first.
     misses:
       value: The markup is 0.538.
       syntax: Check the brackets, commas and quotes.

@@ -1,8 +1,8 @@
 # Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
 screens:
   - correct:
-      - =ABS(($B$2-$C$2)-($B$3-$C$3))
-      - =ABS((B$2-C2)-(B3-C3))
-      - =abs((b2-c2)-(b3-c3))
+      - =($B$3-$C$3)-($B$2-$C$2)
+      - =(B$3-C3)-(B2-C2)
+      - =(b3-c3)-(b2-c2)
     wrong: []
     equivalent: []

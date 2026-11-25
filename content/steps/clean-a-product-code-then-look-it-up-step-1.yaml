@@ -21,7 +21,7 @@ screens:
       - TRIM
     hints:
       nudge: TRIM removes the spaces at both ends.
-      rule: TRIM(A2) leaves PX-104.
+      rule: TRIM removes the spaces at both ends of the text.
     misses:
       value: The clean code is PX-104.
       syntax: Check the brackets, commas and quotes.

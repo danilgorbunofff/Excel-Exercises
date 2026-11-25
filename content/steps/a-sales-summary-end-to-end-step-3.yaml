@@ -35,7 +35,7 @@ screens:
       - COUNTIFS
     hints:
       nudge: "Two pairs: the region column with F1, the rep column with F2."
-      rule: COUNTIFS(A2:A16,F1,B2:B16,F2) counts rows that match both cells.
+      rule: Give COUNTIFS one pair per test, each pointing at the cell that holds what to match.
     misses:
       value: Ada made 2 North sales.
       syntax: Check the brackets, commas and quotes.

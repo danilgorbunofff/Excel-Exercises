@@ -21,7 +21,7 @@ screens:
       - SUBSTITUTE
     hints:
       nudge: Replacing a space with nothing removes it.
-      rule: SUBSTITUTE(A2," ","") removes every space.
+      rule: SUBSTITUTE takes the text, the piece to replace, and the new text. Empty quotes as the new text remove the piece.
     misses:
       value: "Without spaces: GB29NWBK60161331."
       syntax: Check the brackets, commas and quotes.

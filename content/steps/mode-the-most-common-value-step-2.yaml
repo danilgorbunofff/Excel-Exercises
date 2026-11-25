@@ -21,7 +21,7 @@ screens:
       - MODE
     hints:
       nudge: MODE works along a row too.
-      rule: MODE(B2:H2) gives the rating that appears most often in the week.
+      rule: MODE works along a row too, and gives the rating that appears most often.
     misses:
       value: The most common rating is 4.
       syntax: Check the brackets, commas and quotes.

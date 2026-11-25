@@ -21,7 +21,7 @@ screens:
       - DAY
     hints:
       nudge: DAY reads the day number out of a date.
-      rule: DAY(C2) gives 1 to 31.
+      rule: DAY reads the day number, 1 to 31, out of a date.
     misses:
       value: The contract starts on day 15.
       syntax: Check the brackets, commas and quotes.

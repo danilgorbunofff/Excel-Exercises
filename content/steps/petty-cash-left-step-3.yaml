@@ -29,7 +29,7 @@ screens:
       - SUMIF
     hints:
       nudge: Card payments did not come out of the tin.
-      rule: SUMIF(C3:C9,"Cash",B3:B9) adds only the cash expenses.
+      rule: SUMIF tests the Paid with column for Cash and adds only those expenses; take that from the float.
     misses:
       value: 156.36 is left in the tin.
       syntax: Check the brackets, commas and quotes.

@@ -21,7 +21,7 @@ screens:
       - CONCAT
     hints:
       nudge: CONCAT takes each piece in order, separated by commas.
-      rule: CONCAT(A2,", ",B2) puts a comma and a space between the two cells.
+      rule: CONCAT joins its pieces in order. The comma and the space go in quotes as one piece.
     misses:
       value: The place reads Lyon, France.
       syntax: Check the brackets, commas and quotes.

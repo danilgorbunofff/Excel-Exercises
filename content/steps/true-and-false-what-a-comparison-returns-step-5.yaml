@@ -28,7 +28,7 @@ screens:
       nudge: Compare each month with the month above it, all at once.
       rule: B3:B7>B2:B6 compares each month with the one before; AND is TRUE only if every comparison is.
     misses:
-      value: The answer is true. Every month must beat the month before it.
+      value: The answer is TRUE. Every month must beat the month before it.
       syntax: Check the brackets, commas and quotes.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:

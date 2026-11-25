@@ -7,7 +7,7 @@ checkedInExcel: 2026-11-25
 parent: add-only-the-positives
 step: 4
 screens:
-  - prompt: In B10, work out the average of the months that went up, leaving out the drops. Use AVERAGEIF.
+  - prompt: "In B10, work out the average of the months that went up, leaving out the drops and the flat month. Divide the total of the gains by how many there are. Use SUMIF and COUNTIF."
     rows:
       - [Month, Change]
       - [Jan, 12]
@@ -24,26 +24,31 @@ screens:
     variants:
       - set: { B3: 6 }
         expected: 12.4
-    answer: =AVERAGEIF(B2:B8,">0")
+    answer: =SUMIF(B2:B8,">0")/COUNTIF(B2:B8,">0")
     requiredFunctions:
-      - AVERAGEIF
+      - SUMIF
+      - COUNTIF
     hints:
-      nudge: AVERAGEIF works like SUMIF but averages.
-      rule: AVERAGEIF(B2:B8,">0") averages only the months above 0, so a flat month does not pull it down.
+      nudge: Total the gains with SUMIF, then divide by how many gains COUNTIF finds.
+      rule: Give SUMIF and COUNTIF the same test, ">0", so a flat month of 0 counts in neither.
     misses:
       value: The average gain is 14. A month of 0 is not a gain.
       syntax: Check the brackets, commas and quotes.
-      required-function: This task asks for AVERAGEIF.
+      required-function: This task asks for SUMIF and COUNTIF.
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
-      - =AVERAGEIF(B2:B8,">0")
-      - =AVERAGEIF(B2:B8,">0",B2:B8)
+      - =SUMIF(B2:B8,">0")/COUNTIF(B2:B8,">0")
+      - =SUMIF(B2:B8,">0",B2:B8)/COUNTIF(B2:B8,">0")
+      - =SUMIF(B2:B8,">"&0)/COUNTIF(B2:B8,">"&0)
+      - =1/(COUNTIF(B2:B8,">0")/SUMIF(B2:B8,">0"))
     reject:
-      - formula: =AVERAGEIF(B2:B8,">=0")
+      - formula: =SUMIF(B2:B8,">0")/COUNTIF(B2:B8,">=0")
+        rule: value
+      - formula: =SUMIF(B2:B8,">=0")/COUNTIF(B2:B8,">=0")
         rule: value
       - formula: =AVERAGE(B2:B8)
         rule: required-function
       - formula: =14
         rule: required-function
-      - formula: =AVERAGEIF(B2:B8,">0"
+      - formula: =SUMIF(B2:B8,">0")/COUNTIF(B2:B8,">0"
         rule: syntax

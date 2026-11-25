@@ -24,7 +24,7 @@ screens:
       - OR
     hints:
       nudge: OR goes inside IF as its test; free means 0.
-      rule: IF(OR(B2>50,C2="Yes"),0,4.99) charges nothing when either reason applies.
+      rule: Use OR as the test inside IF. IF then returns 0 when either reason applies and the charge when neither does.
     misses:
       value: "Ola pays 4.99: her order is under 50 and she is not a member."
       syntax: Check the brackets, commas and quotes.

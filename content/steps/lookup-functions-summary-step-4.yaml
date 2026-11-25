@@ -27,7 +27,7 @@ screens:
       - MATCH
     hints:
       nudge: MATCH finds the row in the SKU column; INDEX reads the name on it.
-      rule: INDEX(A2:A5,MATCH(B6,B2:B5,0)) works in any Excel version, left or right.
+      rule: MATCH with 0 finds the SKU's row, and INDEX reads the name column at that row. It works left or right, in any Excel version.
     misses:
       value: BX-210 is the Bracket.
       syntax: Check the brackets, commas and quotes.

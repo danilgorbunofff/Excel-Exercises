@@ -31,7 +31,7 @@ screens:
       - COUNTA
     hints:
       nudge: Numbers and words both count as an answer.
-      rule: COUNTA(B2:B11) counts every cell with anything in it. COUNT would count only the numbers.
+      rule: COUNTA counts every cell with anything in it, words and numbers. COUNT counts only the numbers.
     misses:
       value: 8 people answered. Count every answer from B2 to B11, words and numbers.
       syntax: Check the brackets, commas and quotes.

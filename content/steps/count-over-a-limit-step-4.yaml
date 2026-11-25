@@ -32,7 +32,7 @@ screens:
       - COUNTIFS
     hints:
       nudge: "COUNTIFS can test the same range twice: once for the lower limit, once for the upper."
-      rule: COUNTIFS(B2:B11,">=100",B2:B11,"<=200") counts amounts that pass both tests.
+      rule: COUNTIFS counts the rows that pass every test, so give it the amounts twice, once with each limit.
     misses:
       value: 5 invoices are from 100 to 200, counting both ends.
       syntax: Check the brackets, commas and quotes.

@@ -12,9 +12,21 @@ export function sitemapRoutes(): string[] {
 }
 
 /**
+ * Ladder step pages are kept out of the sitemap, so a sample is listed here:
+ * a free beginner, intermediate and advanced step with a spilled answer, and a
+ * locked PRO step.
+ */
+export const STEP_ROUTES = [
+  "/exercises/sum-a-column/2/",
+  "/exercises/pass-or-fail/3/",
+  "/exercises/filter-the-rows-that-match/5/",
+  "/exercises/upper-lower-and-proper/2/",
+];
+
+/**
  * Every page to visit: the sitemap, the account pages (the private ones are
- * kept out of the sitemap, but still served) and the 404 page.
+ * kept out of the sitemap, but still served), sample ladder steps and the 404 page.
  */
 export const allRoutes = (): string[] => [
-  ...new Set([...sitemapRoutes(), ...ACCOUNT_PATHS, NOT_FOUND_PATH]),
+  ...new Set([...sitemapRoutes(), ...ACCOUNT_PATHS, ...STEP_ROUTES, NOT_FOUND_PATH]),
 ];

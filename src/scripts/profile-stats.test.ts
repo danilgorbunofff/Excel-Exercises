@@ -37,6 +37,23 @@ describe("profileStats", () => {
     expect(s.tracks.get("t2")).toEqual({ solved: 0, total: 2 });
   });
 
+  it("counts an exercise once however many of its ladder steps are solved", () => {
+    const s = profileStats(
+      items,
+      {
+        "a-step-2": { state: "solved", date: "2026-11-10", last: "2026-11-10" },
+        "a-step-5": { state: "solved", date: "2026-11-12", last: "2026-11-12" },
+        a: { state: "solved", date: "2026-11-11", last: "2026-11-11" },
+        "c-step-4": { state: "solved", date: "2026-11-20", last: "2026-11-20" },
+      },
+      [],
+      "2026-11-22",
+    );
+    expect(s.solved).toBe(2);
+    expect(s.levels.get(1)).toEqual({ solved: 1, total: 2 });
+    expect(s.tracks.get("t2")).toEqual({ solved: 1, total: 2 });
+  });
+
   it("has no next exercise once all are solved", () => {
     const all = Object.fromEntries(
       items.map((i) => [

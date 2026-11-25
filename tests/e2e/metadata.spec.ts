@@ -5,7 +5,11 @@ import { PRIVATE_PATHS } from "../../src/lib/routes.ts";
 import { NOT_FOUND_PATH, sitemapRoutes } from "./routes.ts";
 
 async function metadata(browser: Browser, url: string, javaScriptEnabled: boolean) {
-  const context = await browser.newContext({ javaScriptEnabled });
+  // Seeding localStorage needs script, so Firefox never finishes a script-free context with it.
+  const context = await browser.newContext({
+    javaScriptEnabled,
+    ...(javaScriptEnabled ? {} : { storageState: { cookies: [], origins: [] } }),
+  });
   const page = await context.newPage();
   await page.goto(url, { waitUntil: "networkidle" });
   const result = {

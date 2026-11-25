@@ -5,7 +5,7 @@ import { readFileSync } from "node:fs";
 import AxeBuilder from "@axe-core/playwright";
 import { expect, type Page, test } from "@playwright/test";
 import { parse } from "yaml";
-import { sitemapRoutes } from "./routes.ts";
+import { STEP_ROUTES, sitemapRoutes } from "./routes.ts";
 
 const SUM = "/exercises/sum-a-column/";
 const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"];
@@ -163,7 +163,12 @@ test("the skip link reaches the formula with one Tab and Enter", async ({ page, 
 });
 
 test("without JavaScript the task, sheet and hints are all there", async ({ browser, baseURL }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false, baseURL: baseURL ?? "" });
+  // An empty storage state: seeding localStorage needs script, which Firefox then waits for forever.
+  const context = await browser.newContext({
+    javaScriptEnabled: false,
+    baseURL: baseURL ?? "",
+    storageState: { cookies: [], origins: [] },
+  });
   const page = await context.newPage();
   await page.goto(SUM);
   await expect(page.locator(".prompt").first()).toContainText("In B6, add up the sales");
@@ -190,7 +195,12 @@ test("on a phone, the task, input, grid and verdict fit on one screen", async ({
 
 test("at 320 px nothing scrolls sideways", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 640 });
-  for (const route of ["/exercises/free-delivery/", "/exercises/find-an-extension/", SUM]) {
+  for (const route of [
+    "/exercises/free-delivery/",
+    "/exercises/find-an-extension/",
+    SUM,
+    ...STEP_ROUTES,
+  ]) {
     await page.goto(route);
     const overflow = await page.evaluate(
       () => document.documentElement.scrollWidth - window.innerWidth,

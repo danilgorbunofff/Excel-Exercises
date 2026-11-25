@@ -83,6 +83,6 @@ notes:
   syntax: UPPER(text) · =LOWER(text) · =PROPER(text)
   example: '`=PROPER("mARY ann")` gives Mary Ann, and `=LOWER("OK")` gives ok.'
   commonErrors:
-    - Dividing the converted text by a number, as in `=UPPER(A2)/2`, returns #VALUE!.
+    - Dividing the converted text by a number returns #VALUE!, because the result is text.
     - "UPPER was typed with an extra letter, and Excel returns `#NAME?`."
     - PROPER on a code starts a new word after each hyphen, so the label comes out Ab-2291-Xk.

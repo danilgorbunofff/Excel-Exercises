@@ -46,4 +46,4 @@ notes:
   commonErrors:
     - The joined text is used in arithmetic, such as a division, so Excel returns `#VALUE!`.
     - CONCAT is typed as CONCATE, and Excel returns `#NAME?`.
-    - "`=CONCAT(A2,B2)` passes no separator, so the two names run together as AdaLovelace."
+    - Joining the two names with no separator runs them together as AdaLovelace.

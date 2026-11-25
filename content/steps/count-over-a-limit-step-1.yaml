@@ -1,0 +1,47 @@
+id: count-over-a-limit-step-1
+slug: count-over-a-limit-step-1
+level: 1
+title: Count the passing scores
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-over-a-limit
+step: 1
+screens:
+  - prompt: In B10, count the scores of 50 or more. Use COUNTIF.
+    rows:
+      - [Student, Score]
+      - [Ana, 64]
+      - [Ben, 48]
+      - [Cy, 50]
+      - [Di, 71]
+      - [Ed, 39]
+      - [Flo, 55]
+      - [Gil, 82]
+      - [Hu, 47]
+      - [50 or more, null]
+    answerCell: B10
+    expected: 5
+    variants:
+      - { set: { B3: 50 }, expected: 6 }
+      - { set: { B9: 64 }, expected: 6 }
+    answer: =COUNTIF(B2:B9,">=50")
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: A comparison goes in quotes as the criteria, such as ">=50".
+      rule: '">=50" counts scores of 50 and above, so a score of exactly 50 counts.'
+    misses:
+      value: 5 scores are 50 or more. Cy's 50 counts.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(B2:B9,">=50")
+      - =COUNTIF(B2:B9,">49")
+    reject:
+      - formula: =COUNTIF(B2:B9,">50")
+        rule: value
+      - formula: =5
+        rule: required-function
+      - formula: =COUNTIF(B2:B9,">=50"
+        rule: syntax

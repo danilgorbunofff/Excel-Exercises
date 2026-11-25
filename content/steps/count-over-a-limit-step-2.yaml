@@ -1,0 +1,48 @@
+id: count-over-a-limit-step-2
+slug: count-over-a-limit-step-2
+level: 2
+title: Count below a limit in a cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-over-a-limit
+step: 2
+screens:
+  - prompt: In E2, count the stock lines below the minimum in E1. Use COUNTIF.
+    rows:
+      - [Item, Stock, null, Minimum, 20]
+      - [Pens, 40, null, Below, null]
+      - [Pads, 12, null, null, null]
+      - [Clips, 120, null, null, null]
+      - [Tape, 18, null, null, null]
+      - [Glue, 20, null, null, null]
+      - [Files, 35, null, null, null]
+      - [Ink, 6, null, null, null]
+      - [Rulers, 25, null, null, null]
+    answerCell: E2
+    expected: 3
+    variants:
+      - { set: { E1: 30 }, expected: 5 }
+      - { set: { B2: 12 }, expected: 4 }
+    answer: =COUNTIF(B2:B9,"<"&E1)
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: 'Join the sign and the cell with &: "<"&E1.'
+      rule: COUNTIF(B2:B9,"<"&E1) builds the test from the cell, so it follows any change to the minimum.
+    misses:
+      value: 3 lines are below the minimum. Exactly 20 is not below it.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(B2:B9,"<"&E1)
+      - =COUNTIF($B$2:$B$9,"<"&$E$1)
+    reject:
+      - formula: =COUNTIF(B2:B9,"<20")
+        rule: fragile
+      - formula: =COUNTIF(B2:B9,"<=20")
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =COUNTIF(B2:B9,"<"&E1
+        rule: syntax

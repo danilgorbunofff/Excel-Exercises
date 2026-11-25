@@ -1,0 +1,51 @@
+id: logical-functions-summary-step-2
+slug: logical-functions-summary-step-2
+level: 2
+title: Alert when any item runs low
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: logical-functions-summary
+step: 2
+screens:
+  - prompt: In B9, show ALERT when any item has fewer than 10 units, and OK otherwise. Use IF and MIN.
+    rows:
+      - [Item, Units]
+      - [Bolt, 18]
+      - [Nut, 22]
+      - [Washer, 8]
+      - [Screw, 30]
+      - [Clip, 24]
+      - [Pin, 31]
+      - [null, null]
+      - [Stock check, null]
+    answerCell: B9
+    expected: ALERT
+    variants:
+      - { set: { B4: 12 }, expected: OK }
+      - { set: { B7: 5, B4: 12 }, expected: ALERT }
+      - { set: { B4: 10 }, expected: OK }
+      - { set: { B2: 9, B4: 18 }, expected: ALERT }
+    answer: =IF(MIN(B2:B7)<10,"ALERT","OK")
+    requiredFunctions:
+      - IF
+      - MIN
+    hints:
+      nudge: If the smallest stock is under 10, at least one item is low.
+      rule: MIN(B2:B7) is the lowest stock; IF(MIN(B2:B7)<10,"ALERT","OK") raises the alert.
+    misses:
+      value: The washers are down to 8, so B9 should show ALERT.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF and MIN.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(MIN(B2:B7)<10,"ALERT","OK")
+      - =IF(MIN(B2:B7)>=10,"OK","ALERT")
+    reject:
+      - formula: =IF(B4<10,"ALERT","OK")
+        rule: required-function
+      - formula: =IF(MIN(B2:B6)<10,"ALERT","OK")
+        rule: fragile
+      - formula: ="ALERT"
+        rule: required-function
+      - formula: =IF(MIN(B2:B7)<10,"ALERT","OK"
+        rule: syntax

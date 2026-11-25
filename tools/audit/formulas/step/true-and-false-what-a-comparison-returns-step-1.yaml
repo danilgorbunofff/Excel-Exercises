@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =$B$2>=500
+      - =B$2>=500
+      - =b2>=500
+    wrong:
+      - formula: =B2>=499
+        rule: fragile
+        why: 500 written as 499
+    equivalent: []

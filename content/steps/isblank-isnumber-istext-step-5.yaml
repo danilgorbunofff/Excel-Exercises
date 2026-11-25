@@ -1,0 +1,57 @@
+id: isblank-isnumber-istext-step-5
+slug: isblank-isnumber-istext-step-5
+level: 3
+title: Rows with a code but no amount
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: isblank-isnumber-istext
+step: 5
+screens:
+  - prompt: In E2, how many rows have a code in column A but no real number in column B?
+    rows:
+      - [Code, Amount, null, null, null]
+      - [C-01, 120, null, "Code, no amount", null]
+      - [C-02, n/a, null, null, null]
+      - [C-03, 85, null, null, null]
+      - [C-04, null, null, null, null]
+      - [null, null, null, null, null]
+      - [C-06, 140, null, null, null]
+      - [C-07, pending, null, null, null]
+      - [C-08, 64, null, null, null]
+      - [null, note, null, null, null]
+      - [C-10, 210, null, null, null]
+      - [C-11, null, null, null, null]
+      - [C-12, 95, null, null, null]
+      - [C-13, 33, null, null, null]
+      - [C-14, tbc, null, null, null]
+      - [C-15, 77, null, null, null]
+    answerCell: E2
+    expected: 5
+    variants:
+      - set: { B3: 50 }
+        expected: 4
+      - set: { A6: C-05 }
+        expected: 6
+    answer: =SUMPRODUCT((A2:A16<>"")*NOT(ISNUMBER(B2:B16)))
+    requiredFunctions: []
+    hints:
+      nudge: "Each row passes two tests: a code is there, and the amount is not a number."
+      rule: A2:A16<>"" and NOT(ISNUMBER(B2:B16)) give TRUE or FALSE per row; multiplying them keeps rows where both are TRUE, and SUMPRODUCT counts them.
+    misses:
+      value: 5 rows have a code but no amount. Rows without a code do not count.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT((A2:A16<>"")*NOT(ISNUMBER(B2:B16)))
+      - =SUMPRODUCT(--(A2:A16<>""),--NOT(ISNUMBER(B2:B16)))
+      - =COUNTA(A2:A16)-COUNTIFS(A2:A16,"<>",B2:B16,">-1E+300")
+    reject:
+      - formula: =COUNTA(B2:B16)-COUNT(B2:B16)
+        rule: value
+      - formula: =ROWS(B2:B16)-COUNT(B2:B16)
+        rule: value
+      - formula: =5
+        rule: reference
+      - formula: =SUMPRODUCT((A2:A16<>"")*NOT(ISNUMBER(B2:B16))
+        rule: syntax

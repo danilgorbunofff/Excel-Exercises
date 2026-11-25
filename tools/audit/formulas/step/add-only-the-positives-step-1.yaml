@@ -1,0 +1,16 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF($B$2:$B$7,">0")
+      - =SUMIF(B$2:B$7,">0")
+      - =sumif(b2:b7, ">0")
+      - =LET(data,B2:B7,SUMIF(data,">0"))
+    wrong:
+      - formula: =SUMIF(B2:B6,">0")
+        rule: fragile
+        why: range B2:B7 one row short at the end
+    equivalent:
+      - formula: =SUMIF(B2:B8,">0")
+        why: "range B2:B7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =SUMIF(B2:B7,">=0")
+        why: 'criteria ">0" written with >=: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed).'

@@ -1,0 +1,39 @@
+id: logical-functions-summary-step-1
+slug: logical-functions-summary-step-1
+level: 1
+title: OK or LOW
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: logical-functions-summary
+step: 1
+screens:
+  - prompt: In C2, show OK when the units in B2 are at least 15, and LOW otherwise. Use IF.
+    rows:
+      - [Item, Units, Check]
+      - [Bolt, 12, null]
+    answerCell: C2
+    expected: LOW
+    variants:
+      - { set: { B2: 15 }, expected: OK }
+      - { set: { B2: 14 }, expected: LOW }
+    answer: =IF(B2>=15,"OK","LOW")
+    requiredFunctions:
+      - IF
+    hints:
+      nudge: At least 15 includes 15 itself.
+      rule: IF(B2>=15,"OK","LOW") shows OK at 15 or more.
+    misses:
+      value: 12 units is below 15, so C2 should show LOW.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(B2>=15,"OK","LOW")
+      - =IF(B2<15,"LOW","OK")
+    reject:
+      - formula: =IF(B2>15,"OK","LOW")
+        rule: fragile
+      - formula: ="LOW"
+        rule: required-function
+      - formula: =IF(B2>=15,"OK","LOW"
+        rule: syntax

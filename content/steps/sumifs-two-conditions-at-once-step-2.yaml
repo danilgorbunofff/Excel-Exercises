@@ -1,0 +1,55 @@
+id: sumifs-two-conditions-at-once-step-2
+slug: sumifs-two-conditions-at-once-step-2
+level: 2
+title: Large orders from one region
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sumifs-two-conditions-at-once
+step: 2
+screens:
+  - prompt: In H2, add up the South amounts of 150 or more. Use SUMIFS.
+    rows:
+      - [Order, Region, Rep, Status, Units, Amount, null, null]
+      - [SO-01, North, Ada, Open, 5, 320, "South, 150 or more", null]
+      - [SO-02, South, Ben, Open, 3, 145, null, null]
+      - [SO-03, North, Cleo, Closed, 4, 210, null, null]
+      - [SO-04, East, Ada, Open, 2, 95, null, null]
+      - [SO-05, North, Ada, Open, 6, 410, null, null]
+      - [SO-06, South, Dev, Closed, 1, 60, null, null]
+      - [SO-07, North, Ben, Open, 8, 520, null, null]
+      - [SO-08, West, Cleo, Open, 7, 380, null, null]
+      - [SO-09, East, Dev, Closed, 3, 150, null, null]
+      - [SO-10, North, Cleo, Open, 2, 120, null, null]
+      - [SO-11, South, Ada, Open, 9, 610, null, null]
+      - [SO-12, null, Ben, Open, 4, 230, null, null]
+      - [SO-13, West, Ada, Closed, 5, 275, null, null]
+      - [SO-14, North, Dev, Open, 6, 335, null, null]
+      - [SO-15, East, Ben, Open, 1, 45, null, null]
+    answerCell: H2
+    expected: 610
+    variants:
+      - set: { F3: 150 }
+        expected: 760
+    answer: =SUMIFS(F2:F16,B2:B16,"South",F2:F16,">=150")
+    requiredFunctions:
+      - SUMIFS
+    hints:
+      nudge: The amount column is both the range to add and a range to test.
+      rule: SUMIFS(F2:F16,B2:B16,"South",F2:F16,">=150") keeps South amounts of 150 or more.
+    misses:
+      value: South amounts of 150 or more add up to 610.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIFS(F2:F16,B2:B16,"South",F2:F16,">=150")
+      - =SUMIFS(F2:F16,F2:F16,">=150",B2:B16,"South")
+    reject:
+      - formula: =SUMIFS(F2:F16,B2:B16,"South")
+        rule: value
+      - formula: =SUMIFS(F2:F16,B2:B16,"South",F2:F16,">150")
+        rule: fragile
+      - formula: =610
+        rule: required-function
+      - formula: =SUMIFS(F2:F16,B2:B16,"South",F2:F16,">=150"
+        rule: syntax

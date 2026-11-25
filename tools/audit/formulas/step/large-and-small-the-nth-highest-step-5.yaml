@@ -1,0 +1,27 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LARGE($B$2:$B$16,1)+LARGE($B$2:$B$16,2)+LARGE($B$2:$B$16,3)
+      - =LARGE(B$2:B$16,1)+LARGE(B2:B16,2)+LARGE(B2:B16,3)
+      - =large(b2:b16, 1)+large(b2:b16, 2)+large(b2:b16, 3)
+      - =LET(data,B2:B16,LARGE(data,1)+LARGE(data,2)+LARGE(data,3))
+    wrong:
+      - formula: =LARGE(B2:B15,1)+LARGE(B2:B16,2)+LARGE(B2:B16,3)
+        rule: fragile
+        why: range B2:B16 one row short at the end
+      - formula: =LARGE(B3:B16,1)+LARGE(B2:B16,2)+LARGE(B2:B16,3)
+        rule: fragile
+        why: range B2:B16 skips its first row
+      - formula: =LARGE(B2:B16,1)+LARGE(B2:B15,2)+LARGE(B2:B16,3)
+        rule: fragile
+        why: range B2:B16 one row short at the end
+      - formula: =LARGE(B2:B16,1)+LARGE(B3:B16,2)+LARGE(B2:B16,3)
+        rule: fragile
+        why: range B2:B16 skips its first row
+      - formula: =LARGE(B2:B16,1)+LARGE(B2:B16,2)+LARGE(B2:B15,3)
+        rule: fragile
+        why: range B2:B16 one row short at the end
+      - formula: =LARGE(B2:B16,1)+LARGE(B2:B16,2)+LARGE(B3:B16,3)
+        rule: fragile
+        why: range B2:B16 skips its first row
+    equivalent: []

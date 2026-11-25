@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MAX(0,-MIN($B$2:$B$16))
+      - =MAX(0,-MIN(B$2:B$16))
+      - =max(0, -min(b2:b16))
+      - =LET(data,B2:B16,MAX(0,-MIN(data)))
+    wrong:
+      - formula: =MAX(0,-MIN(B2:B15))
+        rule: fragile
+        why: range B2:B16 one row short at the end
+      - formula: =MAX(0,-MIN(B3:B16))
+        rule: fragile
+        why: range B2:B16 skips its first row
+    equivalent: []

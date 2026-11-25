@@ -1,0 +1,49 @@
+id: average-functions-summary-step-2
+slug: average-functions-summary-step-2
+level: 2
+title: Average of the top three
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: average-functions-summary
+step: 2
+screens:
+  - prompt: In C2, work out the average of the three highest scores. Use AVERAGE and LARGE.
+    rows:
+      - [Player, Score, Top-three average]
+      - [Ana, 72, null]
+      - [Ben, 88, null]
+      - [Cy, 65, null]
+      - [Di, 91, null]
+      - [Ed, 79, null]
+      - [Flo, 84, null]
+      - [Gil, 70, null]
+    answerCell: C2
+    expected: 87.6666666667
+    variants:
+      - { set: { B6: 95 }, expected: 91.3333333333 }
+      - { set: { B2: 99, B8: 96 }, expected: 95.33333333333333 }
+      - { set: { B8: 96 }, expected: 91.66666666666667 }
+    answer: =AVERAGE(LARGE(B2:B8,1),LARGE(B2:B8,2),LARGE(B2:B8,3))
+    requiredFunctions:
+      - AVERAGE
+      - LARGE
+    hints:
+      nudge: Pick the three highest with LARGE, then average them.
+      rule: AVERAGE of the 1st, 2nd and 3rd LARGE values averages the top three.
+    misses:
+      value: The top three average 87.67.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for AVERAGE and LARGE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AVERAGE(LARGE(B2:B8,1),LARGE(B2:B8,2),LARGE(B2:B8,3))
+      - =AVERAGE(LARGE(B2:B8,{1,2,3}))
+    reject:
+      - formula: =AVERAGE(B2:B8)
+        rule: required-function
+      - formula: =AVERAGE(LARGE(B2:B8,1),LARGE(B2:B8,2))
+        rule: value
+      - formula: =87.6666666667
+        rule: required-function
+      - formula: =AVERAGE(LARGE(B2:B8,1),LARGE(B2:B8,2),LARGE(B2:B8,3)
+        rule: syntax

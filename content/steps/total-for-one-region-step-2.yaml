@@ -1,0 +1,48 @@
+id: total-for-one-region-step-2
+slug: total-for-one-region-step-2
+level: 2
+title: Total for the region in a cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: total-for-one-region
+step: 2
+screens:
+  - prompt: In F2, add up the sales for the region typed in F1. Use SUMIF.
+    rows:
+      - [Region, Sales, null, null, Region, South]
+      - [North, 420, null, null, Total, null]
+      - [South, 310, null, null, null, null]
+      - [North, 275, null, null, null, null]
+      - [East, 190, null, null, null, null]
+      - [South, 230, null, null, null, null]
+      - [West, 160, null, null, null, null]
+      - [South, 145, null, null, null, null]
+      - [North, 205, null, null, null, null]
+    answerCell: F2
+    expected: 685
+    variants:
+      - set: { F1: North }
+        expected: 900
+    answer: =SUMIF(A2:A9,F1,B2:B9)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: Point the criteria at F1 instead of typing the region.
+      rule: SUMIF(A2:A9,F1,B2:B9) totals whichever region is typed in F1.
+    misses:
+      value: The region in F1 sold 685.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(A2:A9,F1,B2:B9)
+      - =SUMIF($A$2:$A$9,$F$1,$B$2:$B$9)
+    reject:
+      - formula: =SUMIF(A2:A9,"South",B2:B9)
+        rule: fragile
+      - formula: =SUMIF(A2:A9,F1,B3:B10)
+        rule: value
+      - formula: =685
+        rule: required-function
+      - formula: =SUMIF(A2:A9,F1,B2:B9
+        rule: syntax

@@ -1,0 +1,39 @@
+id: isblank-isnumber-istext-step-2
+slug: isblank-isnumber-istext-step-2
+level: 1
+title: Is it text
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: isblank-isnumber-istext
+step: 2
+screens:
+  - prompt: In C2, answer TRUE when the amount in B2 is text, such as a note. Use ISTEXT.
+    rows:
+      - [Order, Amount, Text?]
+      - [A-102, pending, null]
+    answerCell: C2
+    expected: true
+    variants:
+      - set: { B2: 120 }
+        expected: false
+    answer: =ISTEXT(B2)
+    requiredFunctions:
+      - ISTEXT
+    hints:
+      nudge: ISTEXT is TRUE when the cell holds words.
+      rule: ISTEXT(B2) is TRUE for text and FALSE for numbers and empty cells.
+    misses:
+      value: B2 holds the word pending, so C2 should show true.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for ISTEXT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ISTEXT(B2)
+      - =istext(b2)
+      - =IF(ISTEXT(B2),TRUE,FALSE)
+      - =ISTEXT(B2)=TRUE
+    reject:
+      - formula: =ISNUMBER(B2)
+        rule: required-function
+      - formula: =ISTEXT(B2
+        rule: syntax

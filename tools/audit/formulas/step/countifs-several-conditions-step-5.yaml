@@ -1,0 +1,21 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIFS($B$2:$B$16,"North",$D$2:$D$16,"Open",$E$2:$E$16,">"&AVERAGE($E$2:$E$16))
+      - =COUNTIFS(B$2:B$16,"North",D2:D16,"Open",E2:E16,">"&AVERAGE(E2:E16))
+      - =countifs(b2:b16, "North", d2:d16, "Open", e2:e16, ">"&average(e2:e16))
+      - =LET(data,B2:B16,COUNTIFS(data,"North",D2:D16,"Open",E2:E16,">"&AVERAGE(E2:E16)))
+    wrong:
+      - formula: =COUNTIFS(B2:B16,"North",D2:D16,"Open",E2:E16,">="&AVERAGE(E2:E16))
+        rule: fragile
+        why: criteria ">" written with >=
+      - formula: =COUNTIFS(B2:B16,"North",D2:D16,"Open",E2:E16,">"&MEDIAN(E2:E16))
+        rule: fragile
+        why: MEDIAN instead of AVERAGE
+      - formula: =COUNTIFS(B2:B16,"North",D2:D16,"Open",E2:E16,">"&AVERAGE(E2:E15))
+        rule: fragile
+        why: range E2:E16 one row short at the end
+      - formula: =COUNTIFS(B2:B16,"North",D2:D16,"Open",E2:E16,">"&AVERAGE(E3:E16))
+        rule: fragile
+        why: range E2:E16 skips its first row
+    equivalent: []

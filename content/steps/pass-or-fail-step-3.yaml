@@ -1,0 +1,44 @@
+id: pass-or-fail-step-3
+slug: pass-or-fail-step-3
+level: 2
+title: Pass mark kept in its own cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: pass-or-fail
+step: 3
+screens:
+  - prompt: The pass mark is in F1. In C3, show Pass if Ben's score in B3 is at least the pass mark, and Fail if not. Use IF.
+    rows:
+      - [Student, Score, Result, null, Pass mark, 55]
+      - [Ana, 61, null, null, null, null]
+      - [Ben, 55, null, null, null, null]
+      - [Cy, 48, null, null, null, null]
+    answerCell: C3
+    expected: Pass
+    variants:
+      - set: { F1: 60 }
+        expected: Fail
+    answer: =IF(B3>=$F$1,"Pass","Fail")
+    requiredFunctions:
+      - IF
+    hints:
+      nudge: Compare B3 with F1, and remember that exactly the pass mark is a pass.
+      rule: '>= means at least, so IF(B3>=$F$1,"Pass","Fail") passes a score equal to the mark.'
+    misses:
+      value: Ben scored exactly the pass mark, so C3 should show Pass. Use >= rather than >.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(B3>=$F$1,"Pass","Fail")
+      - =IF(B3>=F1,"Pass","Fail")
+      - =IF(B3<$F$1,"Fail","Pass")
+    reject:
+      - formula: =IF(B3>$F$1,"Pass","Fail")
+        rule: value
+      - formula: =IF(B3>=55,"Pass","Fail")
+        rule: fragile
+      - formula: ="Pass"
+        rule: required-function
+      - formula: =IF(B3>=$F$1,"Pass","Fail"
+        rule: syntax

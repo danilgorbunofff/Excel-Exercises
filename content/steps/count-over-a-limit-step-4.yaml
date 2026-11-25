@@ -1,0 +1,52 @@
+id: count-over-a-limit-step-4
+slug: count-over-a-limit-step-4
+level: 2
+title: Count between two limits
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-over-a-limit
+step: 4
+screens:
+  - prompt: In B13, count the invoices from 100 to 200, both ends included. Use COUNTIFS.
+    rows:
+      - [Invoice, Amount]
+      - [INV-1, 85]
+      - [INV-2, 240]
+      - [INV-3, 120]
+      - [INV-4, 100]
+      - [INV-5, 310]
+      - [INV-6, 200]
+      - [INV-7, 175]
+      - [INV-8, 99]
+      - [INV-9, 150]
+      - [INV-10, 205]
+      - [null, null]
+      - [100 to 200, null]
+    answerCell: B13
+    expected: 5
+    variants:
+      - set: { B3: 180 }
+        expected: 6
+    answer: =COUNTIFS(B2:B11,">=100",B2:B11,"<=200")
+    requiredFunctions:
+      - COUNTIFS
+    hints:
+      nudge: "COUNTIFS can test the same range twice: once for the lower limit, once for the upper."
+      rule: COUNTIFS(B2:B11,">=100",B2:B11,"<=200") counts amounts that pass both tests.
+    misses:
+      value: 5 invoices are from 100 to 200, counting both ends.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIFS(B2:B11,">=100",B2:B11,"<=200")
+      - =COUNTIFS(B2:B11,"<=200",B2:B11,">=100")
+    reject:
+      - formula: =COUNTIFS(B2:B11,">100",B2:B11,"<200")
+        rule: value
+      - formula: =COUNTIF(B2:B11,">=100")
+        rule: required-function
+      - formula: =5
+        rule: required-function
+      - formula: =COUNTIFS(B2:B11,">=100",B2:B11,"<=200"
+        rule: syntax

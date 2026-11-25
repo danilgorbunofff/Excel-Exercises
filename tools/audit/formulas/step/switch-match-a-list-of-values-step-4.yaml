@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =$B$2*SWITCH($C$2,"EU",5%,"US",8%,"UK",3%,10%)
+      - =B$2*SWITCH(C2,"EU",5%,"US",8%,"UK",3%,10%)
+      - =b2*switch(c2, "EU", 5%, "US", 8%, "UK", 3%, 10%)
+    wrong:
+      - formula: =B2*SWITCH(C2,"EU",6%,"US",8%,"UK",3%,10%)
+        rule: fragile
+        why: 5 written as 6
+      - formula: =B2*SWITCH(C2,"EU",4%,"US",8%,"UK",3%,10%)
+        rule: fragile
+        why: 5 written as 4
+    equivalent: []

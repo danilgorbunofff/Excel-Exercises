@@ -1,0 +1,55 @@
+id: countifs-several-conditions-step-4
+slug: countifs-several-conditions-step-4
+level: 2
+title: Count mid-sized open orders
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: countifs-several-conditions
+step: 4
+screens:
+  - prompt: In H2, count the open orders of 3 to 6 units, both ends included. Use COUNTIFS.
+    rows:
+      - [Order, Region, Rep, Status, Units, Amount, null, null]
+      - [SO-01, North, Ada, Open, 5, 320, "Open, 3 to 6 units", null]
+      - [SO-02, South, Ben, Open, 3, 145, null, null]
+      - [SO-03, North, Cleo, Closed, 4, 210, null, null]
+      - [SO-04, East, Ada, Open, 2, 95, null, null]
+      - [SO-05, North, Ada, Open, 6, 410, null, null]
+      - [SO-06, South, Dev, Closed, 1, 60, null, null]
+      - [SO-07, North, Ben, Open, 8, 520, null, null]
+      - [SO-08, West, Cleo, Open, 7, 380, null, null]
+      - [SO-09, East, Dev, Closed, 3, 150, null, null]
+      - [SO-10, North, Cleo, Open, 2, 120, null, null]
+      - [SO-11, South, Ada, Open, 9, 610, null, null]
+      - [SO-12, null, Ben, Open, 4, 230, null, null]
+      - [SO-13, West, Ada, Closed, 5, 275, null, null]
+      - [SO-14, North, Dev, Open, 6, 335, null, null]
+      - [SO-15, East, Ben, Open, 1, 45, null, null]
+    answerCell: H2
+    expected: 5
+    variants:
+      - set: { E3: 7 }
+        expected: 4
+    answer: =COUNTIFS(D2:D16,"Open",E2:E16,">=3",E2:E16,"<=6")
+    requiredFunctions:
+      - COUNTIFS
+    hints:
+      nudge: "Three tests: the status, the lower limit and the upper limit."
+      rule: The units column can be tested twice, once for each limit.
+    misses:
+      value: 5 open orders have 3 to 6 units.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIFS(D2:D16,"Open",E2:E16,">=3",E2:E16,"<=6")
+      - =COUNTIFS(E2:E16,">=3",E2:E16,"<=6",D2:D16,"Open")
+    reject:
+      - formula: =COUNTIFS(D2:D16,"Open",E2:E16,">3",E2:E16,"<6")
+        rule: value
+      - formula: =COUNTIFS(E2:E16,">=3",E2:E16,"<=6")
+        rule: value
+      - formula: =5
+        rule: required-function
+      - formula: =COUNTIFS(D2:D16,"Open",E2:E16,">=3",E2:E16,"<=6"
+        rule: syntax

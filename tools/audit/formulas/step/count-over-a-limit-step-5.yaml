@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF($B$2:$B$16,">"&$E$1)/COUNT($B$2:$B$16)
+      - =COUNTIF(B$2:B$16,">"&E1)/COUNT(B2:B16)
+      - =countif(b2:b16, ">"&e1)/count(b2:b16)
+      - =LET(data,B2:B16,COUNTIF(data,">"&E1)/COUNT(data))
+    wrong:
+      - formula: =COUNTIF(B2:B15,">"&E1)/COUNT(B2:B16)
+        rule: fragile
+        why: range B2:B16 one row short at the end
+    equivalent: []

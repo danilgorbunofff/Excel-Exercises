@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF($B$2:$B$16,"<>Transfer",$C$2:$C$16)
+      - =SUMIF(B$2:B$16,"<>Transfer",C2:C16)
+      - =sumif(b2:b16, "<>Transfer", c2:c16)
+      - =SUMIFS(C2:C16,B2:B16,"<>Transfer")
+      - =SUMPRODUCT((B2:B16<>"Transfer")*C2:C16)
+      - =SUM(FILTER(C2:C16,(B2:B16<>"Transfer"),0))
+      - =LET(data,B2:B16,SUMIF(data,"<>Transfer",C2:C16))
+    wrong: []
+    equivalent: []

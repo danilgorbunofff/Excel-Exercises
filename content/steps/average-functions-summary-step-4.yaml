@@ -1,0 +1,54 @@
+id: average-functions-summary-step-4
+slug: average-functions-summary-step-4
+level: 2
+title: Average without the highest and lowest
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: average-functions-summary
+step: 4
+screens:
+  - prompt: "Judges drop the highest and lowest mark. In B11, work out the average of the rest: the total minus the highest and lowest, divided by the count minus 2. Use SUM, MAX, MIN and COUNT."
+    rows:
+      - [Judge, Mark]
+      - ["1", 8.5]
+      - ["2", 9]
+      - ["3", 7]
+      - ["4", 8]
+      - ["5", 9.5]
+      - ["6", 8.5]
+      - ["7", 8]
+      - ["8", 6.5]
+      - [null, null]
+      - [Trimmed average, null]
+    answerCell: B11
+    expected: 8.16666666667
+    variants:
+      - { set: { B5: 9.8 }, expected: 8.41666666667 }
+      - { set: { B2: 6.5, B9: 10 }, expected: 8.333333333333334 }
+      - { set: { B2: 12 }, expected: 8.333333333333334 }
+    answer: =(SUM(B2:B9)-MAX(B2:B9)-MIN(B2:B9))/(COUNT(B2:B9)-2)
+    requiredFunctions:
+      - SUM
+      - MAX
+      - MIN
+      - COUNT
+    hints:
+      nudge: Take the two extremes off the total, and divide by two fewer marks.
+      rule: SUM minus MAX and MIN leaves the middle marks; COUNT minus 2 is how many there are.
+    misses:
+      value: The trimmed average is 8.17.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM, MAX, MIN and COUNT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =(SUM(B2:B9)-MAX(B2:B9)-MIN(B2:B9))/(COUNT(B2:B9)-2)
+      - =(SUM(B2:B9)-MIN(B2:B9)-MAX(B2:B9))/(COUNT(B2:B9)-2)
+    reject:
+      - formula: =(SUM(B2:B9)-MAX(B2:B9)-MIN(B2:B9))/COUNT(B2:B9)
+        rule: value
+      - formula: =AVERAGE(B2:B9)
+        rule: required-function
+      - formula: =8.16666666667
+        rule: required-function
+      - formula: =(SUM(B2:B9)-MAX(B2:B9)-MIN(B2:B9))/(COUNT(B2:B9)-2
+        rule: syntax

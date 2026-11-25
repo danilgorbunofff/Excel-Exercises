@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF($B$2:$B$9,">=50")
+      - =COUNTIF(B$2:B$9,">=50")
+      - =countif(b2:b9, ">=50")
+      - =LET(data,B2:B9,COUNTIF(data,">=50"))
+    wrong:
+      - formula: =COUNTIF(B2:B8,">=50")
+        rule: fragile
+        why: range B2:B9 one row short at the end
+    equivalent: []

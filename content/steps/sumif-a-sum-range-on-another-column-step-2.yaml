@@ -1,0 +1,50 @@
+id: sumif-a-sum-range-on-another-column-step-2
+slug: sumif-a-sum-range-on-another-column-step-2
+level: 2
+title: Total amount of the big orders
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sumif-a-sum-range-on-another-column
+step: 2
+screens:
+  - prompt: "In C11, add up the amounts of the orders with more than 10 units: test the units in column B, add the amounts in column C. Use SUMIF."
+    rows:
+      - [Order, Units, Amount]
+      - ["1", 12, 240]
+      - ["2", 5, 95]
+      - ["3", 20, 410]
+      - ["4", 10, 190]
+      - ["5", 8, 150]
+      - ["6", 15, 300]
+      - ["7", 3, 60]
+      - ["8", 11, 215]
+      - [null, null, null]
+      - [Over 10 units, null, null]
+    answerCell: C11
+    expected: 1165
+    variants:
+      - set: { B3: 14 }
+        expected: 1260
+    answer: =SUMIF(B2:B9,">10",C2:C9)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: The test is on the units, but the total is of the amounts.
+      rule: SUMIF(B2:B9,">10",C2:C9) adds the amounts where the units are over 10.
+    misses:
+      value: Orders of more than 10 units come to 1165.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(B2:B9,">10",C2:C9)
+      - =SUMIF($B$2:$B$9,">10",$C$2:$C$9)
+    reject:
+      - formula: =SUMIF(B2:B9,">10")
+        rule: value
+      - formula: =SUMIF(B2:B9,">=10",C2:C9)
+        rule: value
+      - formula: =1165
+        rule: required-function
+      - formula: =SUMIF(B2:B9,">10",C2:C9
+        rule: syntax

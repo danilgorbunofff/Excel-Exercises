@@ -1,0 +1,41 @@
+id: switch-match-a-list-of-values-step-1
+slug: switch-match-a-list-of-values-step-1
+level: 1
+title: Turn Y and N into words
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: switch-match-a-list-of-values
+step: 1
+screens:
+  - prompt: In C2, turn Y into Yes and N into No; anything else is Unknown. Use SWITCH.
+    rows:
+      - [Question, Code, Answer]
+      - [Agree?, N, null]
+    answerCell: C2
+    expected: No
+    variants:
+      - set: { B2: Y }
+        expected: Yes
+      - set: { B2: "?" }
+        expected: Unknown
+    answer: =SWITCH(B2,"Y","Yes","N","No","Unknown")
+    requiredFunctions:
+      - SWITCH
+    hints:
+      nudge: SWITCH takes the cell, then pairs of value and result, then a fallback.
+      rule: SWITCH(B2,"Y","Yes","N","No","Unknown") matches B2 against each value in turn.
+    misses:
+      value: The code is N, so C2 should show No.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SWITCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SWITCH(B2,"Y","Yes","N","No","Unknown")
+      - =SWITCH(B2,"N","No","Y","Yes","Unknown")
+    reject:
+      - formula: =IF(B2="Y","Yes","No")
+        rule: required-function
+      - formula: ="No"
+        rule: required-function
+      - formula: =SWITCH(B2,"Y","Yes","N","No","Unknown"
+        rule: syntax

@@ -1,0 +1,56 @@
+id: total-for-one-region-step-5
+slug: total-for-one-region-step-5
+level: 3
+title: How far apart North and South are
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: total-for-one-region
+step: 5
+screens:
+  - prompt: In H2, by how much does the bigger of the North and South totals beat the other? Give a positive number.
+    rows:
+      - [Order, Region, Rep, Status, Units, Amount, null, null]
+      - [SO-01, North, Ada, Open, 5, 320, North vs South, null]
+      - [SO-02, South, Ben, Open, 3, 145, null, null]
+      - [SO-03, North, Cleo, Closed, 4, 210, null, null]
+      - [SO-04, East, Ada, Open, 2, 95, null, null]
+      - [SO-05, North, Ada, Open, 6, 410, null, null]
+      - [SO-06, South, Dev, Closed, 1, 60, null, null]
+      - [SO-07, North, Ben, Open, 8, 520, null, null]
+      - [SO-08, West, Cleo, Open, 7, 380, null, null]
+      - [SO-09, East, Dev, Closed, 3, 150, null, null]
+      - [SO-10, North, Cleo, Open, 2, 120, null, null]
+      - [SO-11, South, Ada, Open, 9, 610, null, null]
+      - [SO-12, null, Ben, Open, 4, 230, null, null]
+      - [SO-13, West, Ada, Closed, 5, 275, null, null]
+      - [SO-14, North, Dev, Open, 6, 335, null, null]
+      - [SO-15, East, Ben, Open, 1, 45, null, null]
+    answerCell: H2
+    expected: 1100
+    variants:
+      - { set: { F12: 2000 }, expected: 290 }
+      - { set: { B9: South }, expected: 720 }
+      - { set: { B16: North }, expected: 1145 }
+      - { set: { B16: South }, expected: 1055 }
+    answer: =ABS(SUMIF(B2:B16,"North",F2:F16)-SUMIF(B2:B16,"South",F2:F16))
+    requiredFunctions: []
+    hints:
+      nudge: Total each region, take one from the other, then drop the sign.
+      rule: ABS of the difference gives the gap whichever region is ahead.
+    misses:
+      value: The gap between North and South is 1100.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ABS(SUMIF(B2:B16,"North",F2:F16)-SUMIF(B2:B16,"South",F2:F16))
+      - =ABS(SUMIFS(F2:F16,B2:B16,"North")-SUMIFS(F2:F16,B2:B16,"South"))
+    reject:
+      - formula: =SUMIF(B2:B16,"North",F2:F16)-SUMIF(B2:B16,"South",F2:F16)
+        rule: fragile
+      - formula: =SUMIF(B2:B16,"North",F2:F16)
+        rule: value
+      - formula: =1100
+        rule: reference
+      - formula: =ABS(SUMIF(B2:B16,"North",F2:F16)-SUMIF(B2:B16,"South",F2:F16)
+        rule: syntax

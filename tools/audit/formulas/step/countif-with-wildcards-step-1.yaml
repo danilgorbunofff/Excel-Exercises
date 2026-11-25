@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF($A$2:$A$8,"UK-*")
+      - =COUNTIF(A$2:A$8,"UK-*")
+      - =countif(a2:a8, "UK-*")
+      - =LET(data,A2:A8,COUNTIF(data,"UK-*"))
+    wrong: []
+    equivalent:
+      - formula: =COUNTIF(A2:A9,"UK-*")
+        why: "range A2:A8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

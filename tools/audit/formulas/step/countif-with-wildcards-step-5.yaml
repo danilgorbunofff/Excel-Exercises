@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIFS($A$2:$A$16,"*Pro*",$A$2:$A$16,"<>*Refurb*")
+      - =COUNTIFS(A$2:A$16,"*Pro*",A2:A16,"<>*Refurb*")
+      - =countifs(a2:a16, "*Pro*", a2:a16, "<>*Refurb*")
+      - =LET(data,A2:A16,COUNTIFS(data,"*Pro*",data,"<>*Refurb*"))
+    wrong: []
+    equivalent: []

@@ -1,0 +1,27 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AVERAGE(LARGE($B$2:$B$8,1),LARGE($B$2:$B$8,2),LARGE($B$2:$B$8,3))
+      - =AVERAGE(LARGE(B$2:B$8,1),LARGE(B2:B8,2),LARGE(B2:B8,3))
+      - =average(large(b2:b8, 1), large(b2:b8, 2), large(b2:b8, 3))
+      - =LET(data,B2:B8,AVERAGE(LARGE(data,1),LARGE(data,2),LARGE(data,3)))
+    wrong:
+      - formula: =AVERAGE(LARGE(B2:B7,1),LARGE(B2:B8,2),LARGE(B2:B8,3))
+        rule: fragile
+        why: range B2:B8 one row short at the end
+      - formula: =AVERAGE(LARGE(B3:B8,1),LARGE(B2:B8,2),LARGE(B2:B8,3))
+        rule: fragile
+        why: range B2:B8 skips its first row
+      - formula: =AVERAGE(LARGE(B2:B8,1),LARGE(B2:B7,2),LARGE(B2:B8,3))
+        rule: fragile
+        why: range B2:B8 one row short at the end
+      - formula: =AVERAGE(LARGE(B2:B8,1),LARGE(B3:B8,2),LARGE(B2:B8,3))
+        rule: fragile
+        why: range B2:B8 skips its first row
+      - formula: =AVERAGE(LARGE(B2:B8,1),LARGE(B2:B8,2),LARGE(B2:B7,3))
+        rule: fragile
+        why: range B2:B8 one row short at the end
+      - formula: =AVERAGE(LARGE(B2:B8,1),LARGE(B2:B8,2),LARGE(B3:B8,3))
+        rule: fragile
+        why: range B2:B8 skips its first row
+    equivalent: []

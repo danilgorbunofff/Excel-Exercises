@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIFS($B$2:$B$11,">=100",$B$2:$B$11,"<=200")
+      - =COUNTIFS(B$2:B$11,">=100",B2:B11,"<=200")
+      - =countifs(b2:b11, ">=100", b2:b11, "<=200")
+      - =LET(data,B2:B11,COUNTIFS(data,">=100",data,"<=200"))
+    wrong: []
+    equivalent: []

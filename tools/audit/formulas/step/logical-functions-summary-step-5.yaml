@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(($B$2:$B$7<$C$2:$C$7)*($D$2:$D$7<>"Yes"),"REORDER","OK")
+      - =IF((B$2:B$7<C2:C7)*(D2:D7<>"Yes"),"REORDER","OK")
+      - =if((b2:b7<c2:c7)*(d2:d7<>"Yes"), "REORDER", "OK")
+      - =IFS((B2:B7<C2:C7)*(D2:D7<>"Yes"),"REORDER",TRUE,"OK")
+      - =LET(data,B2:B7,IF((data<C2:C7)*(D2:D7<>"Yes"),"REORDER","OK"))
+    wrong:
+      - formula: =IF((B2:B7<=C2:C7)*(D2:D7<>"Yes"),"REORDER","OK")
+        rule: fragile
+        why: < written as <=
+    equivalent: []

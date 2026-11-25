@@ -1,0 +1,21 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MODE(FILTER($B$2:$B$16,$C$2:$C$16="Done"))
+      - =MODE(FILTER(B$2:B$16,C2:C16="Done"))
+      - =mode(filter(b2:b16, c2:c16="Done"))
+      - =LET(data,B2:B16,MODE(FILTER(data,C2:C16="Done")))
+    wrong:
+      - formula: =B2
+        rule: fragile
+        why: points at B2, which holds the result
+      - formula: =B6
+        rule: fragile
+        why: points at B6, which holds the result
+      - formula: =B9
+        rule: fragile
+        why: points at B9, which holds the result
+      - formula: =B14
+        rule: fragile
+        why: points at B14, which holds the result
+    equivalent: []

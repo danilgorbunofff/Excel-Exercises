@@ -1,0 +1,57 @@
+id: add-only-the-positives-step-5
+slug: add-only-the-positives-step-5
+level: 3
+title: The biggest single loss
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: add-only-the-positives
+step: 5
+screens:
+  - prompt: In D2, what was the biggest single weekly loss, as a positive number? If no week lost money, show 0.
+    rows:
+      - [Week, Variance, null, Biggest loss]
+      - [W-01, -4, null, null]
+      - [W-02, 6, null, null]
+      - [W-03, -9, null, null]
+      - [W-04, -2, null, null]
+      - [W-05, 3, null, null]
+      - [W-06, 11, null, null]
+      - [W-07, -7, null, null]
+      - [W-08, 5, null, null]
+      - [W-09, 7, null, null]
+      - [W-10, -1, null, null]
+      - [W-11, 8, null, null]
+      - [W-12, -6, null, null]
+      - [W-13, 2, null, null]
+      - [W-14, 4, null, null]
+      - [W-15, -3, null, null]
+    answerCell: D2
+    expected: 9
+    variants:
+      - { set: { B4: -12 }, expected: 12 }
+      - { set: { B2: 1, B4: 1, B5: 1, B8: 1, B11: 1, B13: 1, B16: 1 }, expected: 0 }
+      - { set: { B2: -11 }, expected: 11 }
+      - { set: { B16: -10 }, expected: 10 }
+    answer: =MAX(0,-MIN(B2:B16))
+    requiredFunctions: []
+    hints:
+      nudge: The biggest loss is the most negative week; flip its sign.
+      rule: -MIN(B2:B16) is the size of the worst week; MAX(0, ...) shows 0 when no week was negative.
+    misses:
+      value: The biggest loss was 9.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MAX(0,-MIN(B2:B16))
+      - =-MIN(0,MIN(B2:B16))
+      - =IF(MIN(B2:B16)<0,-MIN(B2:B16),0)
+    reject:
+      - formula: =-MIN(B2:B16)
+        rule: fragile
+      - formula: =MAX(B2:B16)
+        rule: value
+      - formula: =9
+        rule: reference
+      - formula: =MAX(0,-MIN(B2:B16)
+        rule: syntax

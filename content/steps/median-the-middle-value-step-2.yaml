@@ -1,0 +1,41 @@
+id: median-the-middle-value-step-2
+slug: median-the-middle-value-step-2
+level: 1
+title: Median along a row
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: median-the-middle-value
+step: 2
+screens:
+  - prompt: In H2, find the median of the six monthly bills in B2 to G2. Use MEDIAN.
+    rows:
+      - [Month, Jan, Feb, Mar, Apr, May, Jun, Median]
+      - [Bill, 62, 58, 71, 140, 60, 66, null]
+    answerCell: H2
+    expected: 64
+    variants:
+      - set: { D2: 55 }
+        expected: 61
+    answer: =MEDIAN(B2:G2)
+    requiredFunctions:
+      - MEDIAN
+    hints:
+      nudge: With an even count, the median is halfway between the two middle values.
+      rule: MEDIAN(B2:G2) sorts the six bills in its head and averages the middle two.
+    misses:
+      value: The median bill is 64.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for MEDIAN.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MEDIAN(B2:G2)
+      - =median(b2:g2)
+    reject:
+      - formula: =AVERAGE(B2:G2)
+        rule: required-function
+      - formula: =MEDIAN(B2:F2)
+        rule: value
+      - formula: =64
+        rule: required-function
+      - formula: =MEDIAN(B2:G2
+        rule: syntax

@@ -1,0 +1,52 @@
+id: total-for-one-region-step-4
+slug: total-for-one-region-step-4
+level: 2
+title: Total for two regions
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: total-for-one-region
+step: 4
+screens:
+  - prompt: In B12, add up the sales of the North and the East together. Use SUMIF twice.
+    rows:
+      - [Region, Sales]
+      - [North, 420]
+      - [South, 310]
+      - [East, 275]
+      - [North, 190]
+      - [West, 160]
+      - [East, 230]
+      - [South, 145]
+      - [North, 205]
+      - [West, 180]
+      - [null, null]
+      - [North and East, null]
+    answerCell: B12
+    expected: 1320
+    variants:
+      - { set: { B4: 300 }, expected: 1345 }
+      - { set: { A10: North }, expected: 1500 }
+      - { set: { A10: East }, expected: 1500 }
+    answer: =SUMIF(A2:A10,"North",B2:B10)+SUMIF(A2:A10,"East",B2:B10)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: One SUMIF per region, then add them.
+      rule: A row cannot be North and East at once, so add two SUMIFs.
+    misses:
+      value: North and East together sold 1320.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(A2:A10,"North",B2:B10)+SUMIF(A2:A10,"East",B2:B10)
+      - =SUM(SUMIF(A2:A10,{"North","East"},B2:B10))
+    reject:
+      - formula: =SUMIF(A2:A10,"North",B2:B10)
+        rule: value
+      - formula: =SUMIFS(B2:B10,A2:A10,"North",A2:A10,"East")
+        rule: required-function
+      - formula: =1320
+        rule: required-function
+      - formula: =SUMIF(A2:A10,"North",B2:B10)+SUMIF(A2:A10,"East",B2:B10
+        rule: syntax

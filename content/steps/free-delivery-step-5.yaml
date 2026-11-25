@@ -1,0 +1,39 @@
+id: free-delivery-step-5
+slug: free-delivery-step-5
+level: 3
+title: Free returns, except on sale items
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: free-delivery
+step: 5
+screens:
+  - prompt: In E2, does this order get free returns? They apply when the order is over 100 or the customer is a member, but never to sale items. Show TRUE or FALSE.
+    rows:
+      - [Order, Value, Member, Type, Free returns]
+      - [O-5, 140, No, Sale, null]
+    answerCell: E2
+    expected: false
+    variants:
+      - { set: { D2: Full price }, expected: true }
+      - { set: { B2: 80, C2: Yes, D2: Full price }, expected: true }
+      - { set: { B2: 101, D2: No }, expected: true }
+      - { set: { B2: 100, D2: No }, expected: false }
+    answer: =AND(OR(B2>100,C2="Yes"),D2<>"Sale")
+    requiredFunctions: []
+    hints:
+      nudge: First the OR test for qualifying, then AND it with not being a sale item.
+      rule: OR(B2>100,C2="Yes") decides who qualifies; AND with D2<>"Sale" removes sale items.
+    misses:
+      value: "This order's answer is false: it is a sale item."
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AND(OR(B2>100,C2="Yes"),D2<>"Sale")
+      - =IF(D2="Sale",FALSE,OR(B2>100,C2="Yes"))
+    reject:
+      - formula: =OR(B2>100,C2="Yes")
+        rule: value
+      - formula: =AND(B2>100,D2<>"Sale")
+        rule: fragile
+      - formula: =AND(OR(B2>100,C2="Yes"),D2<>"Sale"
+        rule: syntax

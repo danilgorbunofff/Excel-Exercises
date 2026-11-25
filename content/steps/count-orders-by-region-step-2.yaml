@@ -1,0 +1,41 @@
+id: count-orders-by-region-step-2
+slug: count-orders-by-region-step-2
+level: 1
+title: Count one word along a row
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-orders-by-region
+step: 2
+screens:
+  - prompt: In I2, count the days the shop was Closed, from B2 to H2. Use COUNTIF.
+    rows:
+      - [Day, Mon, Tue, Wed, Thu, Fri, Sat, Sun, Closed days]
+      - [Status, Open, Open, Closed, Open, Open, Closed, Closed, null]
+    answerCell: I2
+    expected: 3
+    variants:
+      - set: { C2: Closed }
+        expected: 4
+    answer: =COUNTIF(B2:H2,"Closed")
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: COUNTIF takes the range, then the word to count, in quotes.
+      rule: COUNTIF(B2:H2,"Closed") counts the cells along the row that say Closed.
+    misses:
+      value: The shop was closed on 3 days.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(B2:H2,"Closed")
+      - =COUNTIF(B2:H2,"closed")
+    reject:
+      - formula: =COUNTIF(B2:H2,"Open")
+        rule: value
+      - formula: =COUNTA(B2:H2)
+        rule: required-function
+      - formula: =3
+        rule: required-function
+      - formula: =COUNTIF(B2:H2,"Closed"
+        rule: syntax

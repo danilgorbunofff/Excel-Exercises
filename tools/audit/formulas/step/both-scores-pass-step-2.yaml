@@ -1,0 +1,32 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AND($B$2>=60,$C$2>=60,$D$2>=60)
+      - =AND(B$2>=60,C2>=60,D2>=60)
+      - =and(b2>=60, c2>=60, d2>=60)
+    wrong:
+      - formula: =AND(B2>60,C2>=60,D2>=60)
+        rule: fragile
+        why: ">= written as >"
+      - formula: =AND(B2>=61,C2>=60,D2>=60)
+        rule: fragile
+        why: 60 written as 61
+      - formula: =AND(B2>=60,C2>60,D2>=60)
+        rule: fragile
+        why: ">= written as >"
+      - formula: =AND(B2>=60,C2>=61,D2>=60)
+        rule: fragile
+        why: 60 written as 61
+      - formula: =AND(B2>=60,C2>=59,D2>=60)
+        rule: fragile
+        why: 60 written as 59
+      - formula: =AND(B2>=60,C2>=60,D2>60)
+        rule: fragile
+        why: ">= written as >"
+      - formula: =AND(B2>=60,C2>=60,D2>=61)
+        rule: fragile
+        why: 60 written as 61
+      - formula: =AND(B2>=60,C2>=60,D2>=59)
+        rule: fragile
+        why: 60 written as 59
+    equivalent: []

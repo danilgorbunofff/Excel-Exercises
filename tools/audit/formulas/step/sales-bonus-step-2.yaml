@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =$B$2*IF($B$2>=8000,6%,4%)
+      - =B$2*IF(B2>=8000,6%,4%)
+      - =b2*if(b2>=8000, 6%, 4%)
+    wrong:
+      - formula: =B2*IF(B2>=7999,6%,4%)
+        rule: fragile
+        why: 8000 written as 7999
+    equivalent: []

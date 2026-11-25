@@ -1,0 +1,37 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(AND(AVERAGE($B$2:$D$2)>=50,MIN($B$2:$D$2)>=40),"Pass","Fail")
+      - =IF(AND(AVERAGE(B$2:D$2)>=50,MIN(B2:D2)>=40),"Pass","Fail")
+      - =if(and(average(b2:d2)>=50, min(b2:d2)>=40), "Pass", "Fail")
+      - =IFS(AND(AVERAGE(B2:D2)>=50,MIN(B2:D2)>=40),"Pass",TRUE,"Fail")
+      - =LET(data,B2:D2,IF(AND(AVERAGE(data)>=50,MIN(data)>=40),"Pass","Fail"))
+    wrong:
+      - formula: =IF(AND(AVERAGE(B2:D2)>50,MIN(B2:D2)>=40),"Pass","Fail")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IF(AND(MEDIAN(B2:D2)>=50,MIN(B2:D2)>=40),"Pass","Fail")
+        rule: fragile
+        why: MEDIAN instead of AVERAGE
+      - formula: =IF(AND(AVERAGE(A2:C2)>=50,MIN(B2:D2)>=40),"Pass","Fail")
+        rule: fragile
+        why: range B2:D2 one column left
+      - formula: =IF(AND(AVERAGE(B2:D2)>=51,MIN(B2:D2)>=40),"Pass","Fail")
+        rule: fragile
+        why: 50 written as 51
+      - formula: =IF(AND(AVERAGE(B2:D2)>=49,MIN(B2:D2)>=40),"Pass","Fail")
+        rule: fragile
+        why: 50 written as 49
+      - formula: =IF(AND(AVERAGE(B2:D2)>=50,MIN(B2:D2)>40),"Pass","Fail")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IF(AND(AVERAGE(B2:D2)>=50,MIN(A2:C2)>=40),"Pass","Fail")
+        rule: fragile
+        why: range B2:D2 one column left
+      - formula: =IF(AND(AVERAGE(B2:D2)>=50,MIN(B2:D2)>=41),"Pass","Fail")
+        rule: fragile
+        why: 40 written as 41
+      - formula: =IF(AND(AVERAGE(B2:D2)>=50,MIN(B2:D2)>=39),"Pass","Fail")
+        rule: fragile
+        why: 40 written as 39
+    equivalent: []

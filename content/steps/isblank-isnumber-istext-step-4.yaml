@@ -1,0 +1,42 @@
+id: isblank-isnumber-istext-step-4
+slug: isblank-isnumber-istext-step-4
+level: 2
+title: Flag a missing email
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: isblank-isnumber-istext
+step: 4
+screens:
+  - prompt: In D2, show Missing when the email in C2 is empty, and OK when it is not. Use IF and ISBLANK.
+    rows:
+      - [Name, Phone, Email, Check]
+      - [Ben, 0711 223, null, null]
+    answerCell: D2
+    expected: Missing
+    variants:
+      - set: { C2: ben@mail.com }
+        expected: OK
+    answer: =IF(ISBLANK(C2),"Missing","OK")
+    requiredFunctions:
+      - IF
+      - ISBLANK
+    hints:
+      nudge: ISBLANK goes inside IF as its test.
+      rule: IF(ISBLANK(C2),"Missing","OK") checks the email cell only.
+    misses:
+      value: Ben has no email, so D2 should show Missing.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF and ISBLANK.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(ISBLANK(C2),"Missing","OK")
+      - =IF(NOT(ISBLANK(C2)),"OK","Missing")
+    reject:
+      - formula: =IF(C2="","Missing","OK")
+        rule: required-function
+      - formula: =IF(ISBLANK(B2),"Missing","OK")
+        rule: value
+      - formula: ="Missing"
+        rule: required-function
+      - formula: =IF(ISBLANK(C2),"Missing","OK"
+        rule: syntax

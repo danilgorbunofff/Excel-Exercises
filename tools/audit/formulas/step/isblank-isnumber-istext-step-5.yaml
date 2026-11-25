@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(($A$2:$A$16<>"")*NOT(ISNUMBER($B$2:$B$16)))
+      - =SUMPRODUCT((A$2:A$16<>"")*NOT(ISNUMBER(B2:B16)))
+      - =sumproduct((a2:a16<>"")*not(isnumber(b2:b16)))
+      - =LET(data,A2:A16,SUMPRODUCT((data<>"")*NOT(ISNUMBER(B2:B16))))
+    wrong: []
+    equivalent: []

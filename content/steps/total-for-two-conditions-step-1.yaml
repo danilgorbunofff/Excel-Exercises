@@ -1,0 +1,48 @@
+id: total-for-two-conditions-step-1
+slug: total-for-two-conditions-step-1
+level: 1
+title: SUMIFS with one condition
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: total-for-two-conditions
+step: 1
+screens:
+  - prompt: In C9, add up the units sold in the North. Use SUMIFS.
+    rows:
+      - [Region, Product, Units]
+      - [North, Pens, 40]
+      - [North, Paper, 25]
+      - [South, Pens, 30]
+      - [North, Pens, 15]
+      - [South, Paper, 20]
+      - [North, Paper, 10]
+      - [null, null, null]
+      - [North units, null, null]
+    answerCell: C9
+    expected: 90
+    variants:
+      - set: { C3: 35 }
+        expected: 100
+    answer: =SUMIFS(C2:C7,A2:A7,"North")
+    requiredFunctions:
+      - SUMIFS
+    hints:
+      nudge: In SUMIFS the range to add comes first, then the range to test and its condition.
+      rule: SUMIFS(C2:C7,A2:A7,"North") adds the units on the North rows.
+    misses:
+      value: The North sold 90 units.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIFS(C2:C7,A2:A7,"North")
+      - =SUMIFS(C2:C7,A2:A7,"north")
+    reject:
+      - formula: =SUMIF(A2:A7,"North",C2:C7)
+        rule: required-function
+      - formula: =SUMIFS(C2:C7,A2:A7,"South")
+        rule: value
+      - formula: =90
+        rule: required-function
+      - formula: =SUMIFS(C2:C7,A2:A7,"North"
+        rule: syntax

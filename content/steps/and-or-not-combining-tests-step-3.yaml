@@ -1,0 +1,43 @@
+id: and-or-not-combining-tests-step-3
+slug: and-or-not-combining-tests-step-3
+level: 2
+title: Member, or a large card order
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: and-or-not-combining-tests
+step: 3
+screens:
+  - prompt: A discount applies to members, or to orders over 100 paid by card. In E2, answer TRUE or FALSE for this order. Use OR and AND.
+    rows:
+      - [Order, Member, Value, Paid by, Discount]
+      - [O-9, No, 120, Card, null]
+    answerCell: E2
+    expected: true
+    variants:
+      - { set: { D2: Cash }, expected: false }
+      - { set: { C2: 90 }, expected: false }
+      - { set: { C2: 100 }, expected: false }
+      - { set: { B2: Yes, C2: 100 }, expected: true }
+      - { set: { C2: 101 }, expected: true }
+    answer: =OR(B2="Yes",AND(C2>100,D2="Card"))
+    requiredFunctions:
+      - OR
+      - AND
+    hints:
+      nudge: "The large card order is one test made of two parts: put those in AND, then OR it with membership."
+      rule: OR(B2="Yes",AND(C2>100,D2="Card")) is TRUE for a member, or for a card order over 100.
+    misses:
+      value: This card order is over 100, so E2 should show true.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for OR and AND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =OR(B2="Yes",AND(C2>100,D2="Card"))
+      - =OR(AND(C2>100,D2="Card"),B2="Yes")
+    reject:
+      - formula: =OR(B2="Yes",C2>100)
+        rule: required-function
+      - formula: =AND(B2="Yes",C2>100,D2="Card")
+        rule: required-function
+      - formula: =OR(B2="Yes",AND(C2>100,D2="Card")
+        rule: syntax

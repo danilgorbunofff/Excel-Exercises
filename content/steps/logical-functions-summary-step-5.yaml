@@ -1,0 +1,49 @@
+id: logical-functions-summary-step-5
+slug: logical-functions-summary-step-5
+level: 3
+title: Reorder flags for every item
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: logical-functions-summary
+step: 5
+screens:
+  - prompt: In E2, for every item at once, show REORDER when its stock is below its reorder level and it is not discontinued, and OK otherwise.
+    rows:
+      - [Item, Stock, Reorder at, Discontinued, Action]
+      - [Bolt, 12, 20, No, null]
+      - [Nut, 40, 25, No, null]
+      - [Washer, 8, 15, Yes, null]
+      - [Screw, 18, 30, No, null]
+      - [Clip, 26, 20, No, null]
+      - [Pin, 5, 10, No, null]
+    answerCell: E2
+    expected:
+      - [REORDER]
+      - [OK]
+      - [OK]
+      - [REORDER]
+      - [OK]
+      - [REORDER]
+    variants:
+      - { set: { D4: No }, expected: [[REORDER], [OK], [REORDER], [REORDER], [OK], [REORDER]] }
+      - { set: { B6: 15 }, expected: [[REORDER], [OK], [OK], [REORDER], [REORDER], [REORDER]] }
+      - { set: { B7: 10 }, expected: [[REORDER], [OK], [OK], [REORDER], [OK], [OK]] }
+    answer: =IF((B2:B7<C2:C7)*(D2:D7<>"Yes"),"REORDER","OK")
+    requiredFunctions: []
+    hints:
+      nudge: Compare whole columns at once; multiplying two tests works like AND row by row.
+      rule: (B2:B7<C2:C7)*(D2:D7<>"Yes") is 1 only where both tests pass, so IF spills REORDER or OK for each item.
+    misses:
+      value: "Each item needs its own answer: REORDER only when stock is below the level and it is still sold."
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF((B2:B7<C2:C7)*(D2:D7<>"Yes"),"REORDER","OK")
+      - =IF((B2:B7<C2:C7)*(D2:D7="No"),"REORDER","OK")
+    reject:
+      - formula: =IF(B2:B7<C2:C7,"REORDER","OK")
+        rule: value
+      - formula: =IF(B2<C2,"REORDER","OK")
+        rule: value
+      - formula: =IF((B2:B7<C2:C7)*(D2:D7<>"Yes"),"REORDER","OK"
+        rule: syntax

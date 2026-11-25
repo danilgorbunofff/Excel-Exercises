@@ -1,0 +1,48 @@
+id: sumif-a-sum-range-on-another-column-step-1
+slug: sumif-a-sum-range-on-another-column-step-1
+level: 1
+title: Test one column, add another
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sumif-a-sum-range-on-another-column
+step: 1
+screens:
+  - prompt: "In C9, add up the units of Pens: test the product in column B and add the units in column C. Use SUMIF."
+    rows:
+      - [Date, Product, Units]
+      - [Mon, Pens, 40]
+      - [Mon, Pads, 25]
+      - [Tue, Pens, 15]
+      - [Wed, Clips, 60]
+      - [Thu, Pens, 22]
+      - [Fri, Pads, 18]
+      - [null, null, null]
+      - [Pen units, null, null]
+    answerCell: C9
+    expected: 77
+    variants:
+      - { set: { C4: 30 }, expected: 92 }
+      - { set: { B7: Pens }, expected: 95 }
+    answer: =SUMIF(B2:B7,"Pens",C2:C7)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: The third part of SUMIF is the column to add.
+      rule: SUMIF(B2:B7,"Pens",C2:C7) tests column B and adds column C on the matching rows.
+    misses:
+      value: Pens add up to 77 units.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(B2:B7,"Pens",C2:C7)
+      - =SUMIF(B2:B7,"pens",C2:C7)
+    reject:
+      - formula: =SUMIF(B2:B7,"Pens")
+        rule: value
+      - formula: =SUMIF(A2:A7,"Pens",C2:C7)
+        rule: value
+      - formula: =77
+        rule: required-function
+      - formula: =SUMIF(B2:B7,"Pens",C2:C7
+        rule: syntax

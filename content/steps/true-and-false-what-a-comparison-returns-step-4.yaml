@@ -1,0 +1,47 @@
+id: true-and-false-what-a-comparison-returns-step-4
+slug: true-and-false-what-a-comparison-returns-step-4
+level: 2
+title: Spending within budget
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: true-and-false-what-a-comparison-returns
+step: 4
+screens:
+  - prompt: In B8, answer TRUE when the total spent in B2 to B6 is within the budget in E1, that is no more than it. Use SUM.
+    rows:
+      - [Cost, Amount, null, Budget, 1200]
+      - [Rent, 650, null, null, null]
+      - [Power, 140, null, null, null]
+      - [Phone, 60, null, null, null]
+      - [Supplies, 230, null, null, null]
+      - [Travel, 120, null, null, null]
+      - [null, null, null, null, null]
+      - [Within budget?, null, null, null, null]
+    answerCell: B8
+    expected: true
+    variants:
+      - set: { B3: 160 }
+        expected: false
+      - set: { E1: 1000 }
+        expected: false
+    answer: =SUM(B2:B6)<=E1
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: Total the costs, then compare the total with E1.
+      rule: SUM(B2:B6)<=E1 is TRUE when the spending is no more than the budget, including exactly equal.
+    misses:
+      value: The costs add up to exactly the budget, so B8 should show true.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:B6)<=E1
+      - =E1>=SUM(B2:B6)
+      - =SUM(B2:B6)<=$E$1
+    reject:
+      - formula: =SUM(B2:B6)<E1
+        rule: value
+      - formula: =SUM(B2:B6)<=1200
+        rule: fragile
+      - formula: =SUM(B2:B6)<=E1,
+        rule: syntax

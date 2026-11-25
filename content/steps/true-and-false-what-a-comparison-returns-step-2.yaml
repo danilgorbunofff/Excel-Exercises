@@ -1,0 +1,36 @@
+id: true-and-false-what-a-comparison-returns-step-2
+slug: true-and-false-what-a-comparison-returns-step-2
+level: 1
+title: Is the invoice paid
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: true-and-false-what-a-comparison-returns
+step: 2
+screens:
+  - prompt: In C2, answer TRUE when the status in B2 is Paid, with a comparison only.
+    rows:
+      - [Invoice, Status, Paid?]
+      - [INV-3, Paid, null]
+    answerCell: C2
+    expected: true
+    variants:
+      - set: { B2: Due }
+        expected: false
+    answer: =B2="Paid"
+    requiredFunctions: []
+    hints:
+      nudge: Compare the cell with the word, written in quotes.
+      rule: B2="Paid" is TRUE when the cell holds exactly the word Paid.
+    misses:
+      value: The status is Paid, so C2 should show true.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2="Paid"
+      - ="Paid"=B2
+      - =EXACT(B2,"Paid")
+    reject:
+      - formula: =B2="Due"
+        rule: value
+      - formula: =B2="Paid",
+        rule: syntax

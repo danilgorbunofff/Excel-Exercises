@@ -1,0 +1,43 @@
+id: both-scores-pass-step-2
+slug: both-scores-pass-step-2
+level: 2
+title: Three scores must all pass
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: both-scores-pass
+step: 2
+screens:
+  - prompt: A candidate passes when all three scores are at least 60. In E2, show TRUE if Lee passed and FALSE if not. Use AND.
+    rows:
+      - [Candidate, Written, Practical, Interview, Passed]
+      - [Lee, 72, 64, 61, null]
+    answerCell: E2
+    expected: true
+    variants:
+      - { set: { D2: 55 }, expected: false }
+      - { set: { B2: 59 }, expected: false }
+      - { set: { C2: 50 }, expected: false }
+      - { set: { C2: 59 }, expected: false }
+      - { set: { D2: 59 }, expected: false }
+      - { set: { B2: 60, C2: 60 }, expected: true }
+      - { set: { D2: 60 }, expected: true }
+    answer: =AND(B2>=60,C2>=60,D2>=60)
+    requiredFunctions:
+      - AND
+    hints:
+      nudge: AND takes as many tests as you need, separated by commas.
+      rule: AND(B2>=60,C2>=60,D2>=60) is TRUE only when all three scores reach 60.
+    misses:
+      value: Lee's result is true. Test all three scores.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AND(B2>=60,C2>=60,D2>=60)
+      - =AND(MIN(B2:D2)>=60)
+    reject:
+      - formula: =AND(B2>=60,C2>=60)
+        rule: fragile
+      - formula: =AND(B2>=60,D2>=60)
+        rule: fragile
+      - formula: =AND(B2>=60,C2>=60,D2>=60
+        rule: syntax

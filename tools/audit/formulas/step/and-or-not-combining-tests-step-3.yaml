@@ -1,0 +1,29 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =OR($B$2="Yes",AND($C$2>100,$D$2="Card"))
+      - =OR(B$2="Yes",AND(C2>100,D2="Card"))
+      - =or(b2="Yes", and(c2>100, d2="Card"))
+    wrong:
+      - formula: =OR(B3="Yes",AND(C2>100,D2="Card"))
+        rule: fragile
+        why: B2 read from the next row
+      - formula: =OR(B1="Yes",AND(C2>100,D2="Card"))
+        rule: fragile
+        why: B2 read from the row above
+      - formula: =OR(C2="Yes",AND(C2>100,D2="Card"))
+        rule: fragile
+        why: B2 read from the next column
+      - formula: =OR(A2="Yes",AND(C2>100,D2="Card"))
+        rule: fragile
+        why: B2 read from the column to the left
+      - formula: =OR(B2="Yes",AND(C2>=100,D2="Card"))
+        rule: fragile
+        why: "> written as >="
+      - formula: =OR(B2="Yes",AND(C2>101,D2="Card"))
+        rule: fragile
+        why: 100 written as 101
+      - formula: =OR(B2="Yes",AND(C2>99,D2="Card"))
+        rule: fragile
+        why: 100 written as 99
+    equivalent: []

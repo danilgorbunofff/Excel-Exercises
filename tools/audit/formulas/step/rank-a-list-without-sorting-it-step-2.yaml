@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =RANK($B$3,$B$2:$B$7,1)
+      - =RANK(B$3,B2:B7,1)
+      - =rank(b3, b2:b7, 1)
+      - =LET(data,B2:B7,RANK(B3,data,1))
+    wrong:
+      - formula: =RANK(B3,B2:B6,1)
+        rule: fragile
+        why: range B2:B7 one row short at the end
+      - formula: =RANK(B3,B3:B7,1)
+        rule: fragile
+        why: range B2:B7 skips its first row
+    equivalent:
+      - formula: =RANK(B3,B2:B7,2)
+        why: "1 written as 2: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

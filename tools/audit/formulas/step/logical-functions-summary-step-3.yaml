@@ -1,0 +1,25 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(COUNT($C$2:$C$7)=0,"none",ROUND(AVERAGE($C$2:$C$7),2))
+      - =IF(COUNT(C$2:C$7)=0,"none",ROUND(AVERAGE(C2:C7),2))
+      - =if(count(c2:c7)=0, "none", round(average(c2:c7), 2))
+      - =LET(data,C2:C7,IF(COUNT(data)=0,"none",ROUND(AVERAGE(data),2)))
+    wrong:
+      - formula: =IF(COUNT(C2:C6)=0,"none",ROUND(AVERAGE(C2:C7),2))
+        rule: fragile
+        why: range C2:C7 one row short at the end
+      - formula: =IF(COUNT(C3:C7)=0,"none",ROUND(AVERAGE(C2:C7),2))
+        rule: fragile
+        why: range C2:C7 skips its first row
+      - formula: =IF(COUNT(B2:B7)=0,"none",ROUND(AVERAGE(C2:C7),2))
+        rule: fragile
+        why: range C2:C7 one column left
+      - formula: =IF(COUNT(C2:C7)=1,"none",ROUND(AVERAGE(C2:C7),2))
+        rule: fragile
+        why: 0 written as 1
+    equivalent:
+      - formula: =IF(COUNT(C2:C8)=0,"none",ROUND(AVERAGE(C2:C7),2))
+        why: "range C2:C7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IF(COUNT(C2:C7)=0,"none",ROUND(AVERAGE(C2:C8),2))
+        why: "range C2:C7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

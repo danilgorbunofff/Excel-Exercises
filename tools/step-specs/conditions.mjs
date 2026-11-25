@@ -3,7 +3,13 @@
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 1 at step 1, level 2 at step 3.
 const fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(2));
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 const orders = [
   ["Order", "Region", "Rep", "Status", "Units", "Amount"],
@@ -23,8 +29,8 @@ const orders = [
   ["SO-14", "North", "Dev", "Open", 6, 335],
   ["SO-15", "East", "Ben", "Open", 1, 45],
 ];
-// The order table with a label and an empty answer cell in H2.
-const withAnswer = (label) => orders.map((r, i) => [...r, null, i === 1 ? label : null, null]);
+// The order table with a label in G2 and an empty answer cell in H2.
+const withAnswer = (label) => orders.map((r, i) => [...r, i === 1 ? label : null, null]);
 
 export default [
   // count-orders-by-region (level 1, step 1)
@@ -93,7 +99,10 @@ export default [
     cell: "B12",
     answer: '=COUNTIF(B2:B10,"North")+COUNTIF(B2:B10,"East")',
     required: ["COUNTIF"],
-    accept: ['=SUM(COUNTIF(B2:B10,{"North","East"}))', '=COUNTIF(B2:B10,"East")+COUNTIF(B2:B10,"North")'],
+    accept: [
+      '=SUM(COUNTIF(B2:B10,{"North","East"}))',
+      '=COUNTIF(B2:B10,"East")+COUNTIF(B2:B10,"North")',
+    ],
     variants: [{ B3: "East" }],
     reject: [
       ['=COUNTIF(B2:B10,"North")', "value"],
@@ -114,11 +123,13 @@ export default [
     variants: [{ B13: "East" }, { B4: "South" }],
     reject: [
       ['=COUNTIF(B2:B16,"<>North")', "value"],
-      ["=ROWS(B2:B16)-COUNTIF(B2:B16,\"North\")", "value"],
+      ['=ROWS(B2:B16)-COUNTIF(B2:B16,"North")', "value"],
     ],
-    nudge: '"<>North" also counts the empty region, so add a second test that the region is not empty.',
+    nudge:
+      '"<>North" also counts the empty region, so add a second test that the region is not empty.',
     rule: 'COUNTIFS(B2:B16,"<>North",B2:B16,"<>") counts regions that are filled in and not North.',
-    value: (e) => `${e} orders came from outside the North. The order with no region does not count.`,
+    value: (e) =>
+      `${e} orders came from outside the North. The order with no region does not count.`,
   }),
 
   // count-over-a-limit (level 2, step 3)
@@ -548,7 +559,8 @@ export default [
     value: (e) => `${e} codes start with UK-.`,
   }),
   step("countif-with-wildcards", 2, 2, "Codes of an exact length", {
-    prompt: "In B11, count the codes that are A- followed by exactly two characters. Use COUNTIF with the ? wildcard.",
+    prompt:
+      "In B11, count the codes that are A- followed by exactly two characters. Use COUNTIF with the ? wildcard.",
     rows: [
       ["Code", "Qty"],
       ["A-12", 12],
@@ -576,7 +588,8 @@ export default [
     value: (e) => `${e} codes are A- plus two characters.`,
   }),
   step("countif-with-wildcards", 4, 2, "Names that contain a word from a cell", {
-    prompt: "In E2, count the product names that contain the word typed in E1, anywhere in the name. Use COUNTIF.",
+    prompt:
+      "In E2, count the product names that contain the word typed in E1, anywhere in the name. Use COUNTIF.",
     rows: [
       ["Product", null, null, "Word", "Pro"],
       ["Laptop Pro 14", null, null, "Count", null],
@@ -603,7 +616,8 @@ export default [
     value: (e) => `${e} names contain the word in E1.`,
   }),
   step("countif-with-wildcards", 5, 3, "Pro products that are not refurbished", {
-    prompt: "In C2, how many products have Pro in the name but are not refurbished, that is do not contain Refurb?",
+    prompt:
+      "In C2, how many products have Pro in the name but are not refurbished, that is do not contain Refurb?",
     rows: [
       ["Product", null, null],
       ["Laptop Pro 14", null, null],
@@ -631,14 +645,16 @@ export default [
       ['=COUNTIF(A2:A16,"*Pro*")', "value"],
       ['=COUNTIF(A2:A16,"*Pro")', "value"],
     ],
-    nudge: 'Two tests on the same column: contains Pro, and "<>*Refurb*" for not containing Refurb.',
+    nudge:
+      'Two tests on the same column: contains Pro, and "<>*Refurb*" for not containing Refurb.',
     rule: '"<>*Refurb*" with wildcards means does not contain Refurb, so COUNTIFS keeps the Pro names that pass both.',
     value: (e) => `${e} products are Pro and not refurbished.`,
   }),
 
   // sumif-a-sum-range-on-another-column (level 2, step 3)
   step("sumif-a-sum-range-on-another-column", 1, 1, "Test one column, add another", {
-    prompt: "In C9, add up the units of Pens: test the product in column B and add the units in column C. Use SUMIF.",
+    prompt:
+      "In C9, add up the units of Pens: test the product in column B and add the units in column C. Use SUMIF.",
     rows: [
       ["Date", "Product", "Units"],
       ["Mon", "Pens", 40],
@@ -664,7 +680,8 @@ export default [
     value: (e) => `Pens add up to ${e} units.`,
   }),
   step("sumif-a-sum-range-on-another-column", 2, 2, "Total amount of the big orders", {
-    prompt: "In C11, add up the amounts of the orders with more than 10 units: test the units in column B, add the amounts in column C. Use SUMIF.",
+    prompt:
+      "In C11, add up the amounts of the orders with more than 10 units: test the units in column B, add the amounts in column C. Use SUMIF.",
     rows: [
       ["Order", "Units", "Amount"],
       ["1", 12, 240],
@@ -692,7 +709,8 @@ export default [
     value: (e) => `Orders of more than 10 units come to ${e}.`,
   }),
   step("sumif-a-sum-range-on-another-column", 4, 2, "Hours for the rep named in a cell", {
-    prompt: "In G2, add up the hours in column D for the person typed in G1, who appears in column B. Use SUMIF.",
+    prompt:
+      "In G2, add up the hours in column D for the person typed in G1, who appears in column B. Use SUMIF.",
     rows: [
       ["Date", "Person", "Task", "Hours", null, "Person", "Ben"],
       ["Mon", "Ana", "Calls", 3, null, "Hours", null],
@@ -749,12 +767,14 @@ export default [
     ],
     nudge: "Each row compares its own stock with its own reorder level, which SUMIF cannot do.",
     rule: "B2:B16<C2:C16 gives TRUE or FALSE per row; times the values, SUMPRODUCT adds only the rows to reorder.",
-    value: (e) => `The stock value to reorder is ${fmt(e)}. Stock equal to the level does not need reordering.`,
+    value: (e) =>
+      `The stock value to reorder is ${fmt(e)}. Stock equal to the level does not need reordering.`,
   }),
 
   // add-only-the-positives (level 2, step 3)
   step("add-only-the-positives", 1, 1, "Total the money paid in", {
-    prompt: "Money in is positive and money out negative. In B9, add up the money paid in. Use SUMIF.",
+    prompt:
+      "Money in is positive and money out negative. In B9, add up the money paid in. Use SUMIF.",
     rows: [
       ["Line", "Amount"],
       ["1", 250],
@@ -806,7 +826,8 @@ export default [
     value: (e) => `Sales of at least the amount in E1 add up to ${e}.`,
   }),
   step("add-only-the-positives", 4, 2, "Average of the gains only", {
-    prompt: "In B10, work out the average of the months that went up, leaving out the drops. Use AVERAGEIF.",
+    prompt:
+      "In B10, work out the average of the months that went up, leaving out the drops. Use AVERAGEIF.",
     rows: [
       ["Month", "Change"],
       ["Jan", 12],
@@ -833,7 +854,8 @@ export default [
     value: (e) => `The average gain is ${e}. A month of 0 is not a gain.`,
   }),
   step("add-only-the-positives", 5, 3, "The biggest single loss", {
-    prompt: "In D2, what was the biggest single weekly loss, as a positive number? If no week lost money, show 0.",
+    prompt:
+      "In D2, what was the biggest single weekly loss, as a positive number? If no week lost money, show 0.",
     rows: [
       ["Week", "Variance", null, null],
       ["W-01", -4, null, "Biggest loss"],
@@ -851,7 +873,9 @@ export default [
       ["W-13", 2, null, null],
       ["W-14", 4, null, null],
       ["W-15", -3, null, null],
-    ].map((r, i) => (i === 1 ? ["W-01", -4, null, null] : i === 0 ? ["Week", "Variance", null, "Biggest loss"] : r)),
+    ].map((r, i) =>
+      i === 1 ? ["W-01", -4, null, null] : i === 0 ? ["Week", "Variance", null, "Biggest loss"] : r,
+    ),
     cell: "D2",
     answer: "=MAX(0,-MIN(B2:B16))",
     required: [],
@@ -990,7 +1014,8 @@ export default [
     value: (e) => `Everything outside the West adds up to ${e}.`,
   }),
   step("sum-functions-summary", 4, 2, "One rep's share of the total", {
-    prompt: "In H2, work out Ada's share of all the amounts, as a fraction: her total divided by the grand total. Use SUMIF and SUM.",
+    prompt:
+      "In H2, work out Ada's share of all the amounts, as a fraction: her total divided by the grand total. Use SUMIF and SUM.",
     rows: withAnswer("Ada's share"),
     cell: "H2",
     answer: '=SUMIF(C2:C16,"Ada",F2:F16)/SUM(F2:F16)',
@@ -1025,7 +1050,14 @@ export default [
       ["13", "Sale", 240, null, null],
       ["14", "Transfer", -250, null, null],
       ["15", "Sale", 130, null, null],
-    ].map((r, i) => (i === 0 ? ["Line", "Type", "Amount", null, null] : i === 1 ? ["1", "Sale", 420, null, null] : r))
+    ]
+      .map((r, i) =>
+        i === 0
+          ? ["Line", "Type", "Amount", null, null]
+          : i === 1
+            ? ["1", "Sale", 420, null, null]
+            : r,
+      )
       .map((r, i) => (i === 0 ? [...r.slice(0, 4), "Net total"] : r)),
     cell: "E2",
     answer: '=SUMIF(B2:B16,"<>Transfer",C2:C16)',

@@ -1,0 +1,41 @@
+id: round-markup-step-1
+slug: round-markup-step-1
+level: 1
+title: Round a price to the cent
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: round-markup
+step: 1
+screens:
+  - prompt: In C2, round the unit price in B2 to 2 decimal places. Use ROUND.
+    rows:
+      - [Item, Unit price, Rounded]
+      - [Bolt, 12.3456, null]
+    answerCell: C2
+    expected: 12.35
+    variants:
+      - set: { B2: 7.004 }
+        expected: 7
+    answer: =ROUND(B2,2)
+    requiredFunctions:
+      - ROUND
+    hints:
+      nudge: The second part of ROUND is how many decimal places to keep.
+      rule: ROUND(B2,2) keeps two decimals, rounding the third one up from 5.
+    misses:
+      value: The price rounds to 12.35.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(B2,2)
+      - =round(b2,2)
+    reject:
+      - formula: =ROUND(B2,0)
+        rule: value
+      - formula: =ROUNDDOWN(B2,2)
+        rule: required-function
+      - formula: =12.35
+        rule: required-function
+      - formula: =ROUND(B2,2
+        rule: syntax

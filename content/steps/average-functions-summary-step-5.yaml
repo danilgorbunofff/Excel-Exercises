@@ -1,0 +1,55 @@
+id: average-functions-summary-step-5
+slug: average-functions-summary-step-5
+level: 3
+title: Average of the above-median sales
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: average-functions-summary
+step: 5
+screens:
+  - prompt: In E2, what is the average of the sales that are above the median sale?
+    rows:
+      - [Rep, Sales, null, null, Above-median average]
+      - [Ana, 4200, null, null, null]
+      - [Ben, 3150, null, null, null]
+      - [Cy, 5800, null, null, null]
+      - [Di, 2900, null, null, null]
+      - [Ed, 4750, null, null, null]
+      - [Flo, 6100, null, null, null]
+      - [Gil, 3600, null, null, null]
+      - [Hu, 5200, null, null, null]
+      - [Ida, 2750, null, null, null]
+      - [Jo, 4400, null, null, null]
+      - [Kai, 3900, null, null, null]
+      - [Lee, 5500, null, null, null]
+      - [Mo, 3300, null, null, null]
+      - [Nia, 4950, null, null, null]
+      - [Ola, 3050, null, null, null]
+    answerCell: E2
+    expected: 5242.85714286
+    variants:
+      - { set: { B5: 9000 }, expected: 5900 }
+      - { set: { B10: 4300 }, expected: 5242.85714286 }
+      - { set: { B2: 5800, B16: 5800 }, expected: 5592.857142857143 }
+    answer: =AVERAGEIF(B2:B16,">"&MEDIAN(B2:B16))
+    requiredFunctions: []
+    hints:
+      nudge: 'Build the test from the median: ">"&MEDIAN(...).'
+      rule: AVERAGEIF(B2:B16,">"&MEDIAN(B2:B16)) averages only the sales above the middle one.
+    misses:
+      value: The above-median sales average 5242.86.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AVERAGEIF(B2:B16,">"&MEDIAN(B2:B16))
+      - =AVERAGE(FILTER(B2:B16,B2:B16>MEDIAN(B2:B16)))
+    reject:
+      - formula: =AVERAGEIF(B2:B16,">="&MEDIAN(B2:B16))
+        rule: value
+      - formula: =AVERAGEIF(B2:B16,">4200")
+        rule: fragile
+      - formula: =5242.85714286
+        rule: reference
+      - formula: =AVERAGEIF(B2:B16,">"&MEDIAN(B2:B16)
+        rule: syntax

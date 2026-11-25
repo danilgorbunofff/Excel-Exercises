@@ -1,0 +1,43 @@
+id: rank-a-list-without-sorting-it-step-2
+slug: rank-a-list-without-sorting-it-step-2
+level: 2
+title: Rank a cost, lowest first
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: rank-a-list-without-sorting-it
+step: 2
+screens:
+  - prompt: In C3, show the place of quote Q-2, with the cheapest as place 1. Use RANK.
+    rows:
+      - [Quote, Cost, Place]
+      - [Q-1, 4200, null]
+      - [Q-2, 3850, null]
+      - [Q-3, 5100, null]
+      - [Q-4, 3600, null]
+      - [Q-5, 4750, null]
+      - [Q-6, 3990, null]
+    answerCell: C3
+    expected: 2
+    answer: =RANK(B3,B2:B7,1)
+    requiredFunctions:
+      - RANK
+    hints:
+      nudge: A third part of 1 ranks from the lowest.
+      rule: RANK(B3,B2:B7,1) counts the cheapest as place 1.
+    misses:
+      value: Q-2 is in place 2, cheapest first.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for RANK.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =RANK(B3,B2:B7,1)
+      - =RANK(B3,$B$2:$B$7,1)
+    reject:
+      - formula: =RANK(B3,B2:B7)
+        rule: value
+      - formula: =2
+        rule: required-function
+      - formula: =RANK(B3,B2:B7,1
+        rule: syntax
+    variants:
+      - { set: { B3: 5100 }, expected: 5 }

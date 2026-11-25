@@ -1,0 +1,26 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =(SUM($B$2:$B$9)-MAX($B$2:$B$9)-MIN($B$2:$B$9))/(COUNT($B$2:$B$9)-2)
+      - =(SUM(B$2:B$9)-MAX(B2:B9)-MIN(B2:B9))/(COUNT(B2:B9)-2)
+      - =(sum(b2:b9)-max(b2:b9)-min(b2:b9))/(count(b2:b9)-2)
+      - =LET(data,B2:B9,(SUM(data)-MAX(data)-MIN(data))/(COUNT(data)-2))
+    wrong:
+      - formula: =(SUM(B2:B9)-MAX(B2:B8)-MIN(B2:B9))/(COUNT(B2:B9)-2)
+        rule: fragile
+        why: range B2:B9 one row short at the end
+      - formula: =(SUM(B2:B9)-MAX(B3:B9)-MIN(B2:B9))/(COUNT(B2:B9)-2)
+        rule: fragile
+        why: range B2:B9 skips its first row
+      - formula: =(SUM(B2:B9)-MAX(B2:B9)-MIN(B3:B9))/(COUNT(B2:B9)-2)
+        rule: fragile
+        why: range B2:B9 skips its first row
+    equivalent:
+      - formula: =(SUM(B2:B10)-MAX(B2:B9)-MIN(B2:B9))/(COUNT(B2:B9)-2)
+        why: "range B2:B9 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =(SUM(B2:B9)-MAX(B2:B10)-MIN(B2:B9))/(COUNT(B2:B9)-2)
+        why: "range B2:B9 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =(SUM(B2:B9)-MAX(B2:B9)-MIN(B2:B10))/(COUNT(B2:B9)-2)
+        why: "range B2:B9 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =(SUM(B2:B9)-MAX(B2:B9)-MIN(B2:B9))/(COUNT(B2:B10)-2)
+        why: "range B2:B9 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

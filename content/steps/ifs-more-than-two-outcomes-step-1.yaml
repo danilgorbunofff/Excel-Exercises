@@ -1,0 +1,40 @@
+id: ifs-more-than-two-outcomes-step-1
+slug: ifs-more-than-two-outcomes-step-1
+level: 1
+title: Small or large
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: ifs-more-than-two-outcomes
+step: 1
+screens:
+  - prompt: In C2, show Small when the weight in B2 is under 10, and Large otherwise. Use IFS with TRUE as the last test.
+    rows:
+      - [Item, Weight, Size]
+      - [Box, 7, null]
+    answerCell: C2
+    expected: Small
+    variants:
+      - { set: { B2: 12 }, expected: Large }
+      - { set: { B2: 10 }, expected: Large }
+      - { set: { B2: 9 }, expected: Small }
+    answer: =IFS(B2<10,"Small",TRUE,"Large")
+    requiredFunctions:
+      - IFS
+    hints:
+      nudge: "IFS takes pairs: a test, then what to show when it is TRUE."
+      rule: TRUE as the last test catches everything else, so IFS(B2<10,"Small",TRUE,"Large") always gives an answer.
+    misses:
+      value: The box weighs 7, so C2 should show Small.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IFS(B2<10,"Small",TRUE,"Large")
+      - =IFS(B2>=10,"Large",TRUE,"Small")
+    reject:
+      - formula: =IF(B2<10,"Small","Large")
+        rule: required-function
+      - formula: ="Small"
+        rule: required-function
+      - formula: =IFS(B2<10,"Small",TRUE,"Large"
+        rule: syntax

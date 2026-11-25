@@ -1,0 +1,50 @@
+id: countif-with-wildcards-step-2
+slug: countif-with-wildcards-step-2
+level: 2
+title: Codes of an exact length
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: countif-with-wildcards
+step: 2
+screens:
+  - prompt: In B11, count the codes that are A- followed by exactly two characters. Use COUNTIF with the ? wildcard.
+    rows:
+      - [Code, Qty]
+      - [A-12, 12]
+      - [A-123, 8]
+      - [B-45, 5]
+      - [A-7, 20]
+      - [A-XY, 3]
+      - [A-09, 9]
+      - [AB-12, 4]
+      - [A-555, 7]
+      - [null, null]
+      - [A- plus two, null]
+    answerCell: B11
+    expected: 3
+    variants:
+      - { set: { A3: A-12 }, expected: 4 }
+      - { set: { A9: A-12 }, expected: 4 }
+    answer: =COUNTIF(A2:A9,"A-??")
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: "? stands for exactly one character, so two of them mean two characters."
+      rule: '"A-??" matches A- followed by exactly two characters, no more and no fewer.'
+    misses:
+      value: 3 codes are A- plus two characters.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(A2:A9,"A-??")
+      - =COUNTIF(A2:A9,"a-??")
+    reject:
+      - formula: =COUNTIF(A2:A9,"A-*")
+        rule: value
+      - formula: =COUNTIF(A2:A9,"A-?")
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =COUNTIF(A2:A9,"A-??"
+        rule: syntax

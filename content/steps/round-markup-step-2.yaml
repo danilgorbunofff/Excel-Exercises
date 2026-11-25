@@ -1,0 +1,41 @@
+id: round-markup-step-2
+slug: round-markup-step-2
+level: 1
+title: Round to a whole number
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: round-markup
+step: 2
+screens:
+  - prompt: In C2, round the distance in B2 to the nearest whole kilometre. Use ROUND.
+    rows:
+      - [Trip, Km, Whole km]
+      - [Depot to site, 12.5, null]
+    answerCell: C2
+    expected: 13
+    variants:
+      - set: { B2: 12.4 }
+        expected: 12
+    answer: =ROUND(B2,0)
+    requiredFunctions:
+      - ROUND
+    hints:
+      nudge: 0 decimal places means a whole number.
+      rule: ROUND(B2,0) gives the nearest whole number; halves round away from zero.
+    misses:
+      value: 12.5 km rounds to 13.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(B2,0)
+      - =ROUND(B2,)
+    reject:
+      - formula: =ROUND(B2,1)
+        rule: value
+      - formula: =INT(B2)
+        rule: required-function
+      - formula: =13
+        rule: required-function
+      - formula: =ROUND(B2,0
+        rule: syntax

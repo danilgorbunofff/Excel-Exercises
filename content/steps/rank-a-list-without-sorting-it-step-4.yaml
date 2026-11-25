@@ -1,0 +1,56 @@
+id: rank-a-list-without-sorting-it-step-4
+slug: rank-a-list-without-sorting-it-step-4
+level: 2
+title: Rank with a list that stays fixed
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: rank-a-list-without-sorting-it
+step: 4
+screens:
+  - prompt: In C9, show Hu's place in sales, highest first, with the list written as $B$2:$B$16 so the formula could be copied down. Use RANK.
+    rows:
+      - [Rep, Sales, Place]
+      - [Ana, 4200, null]
+      - [Ben, 3150, null]
+      - [Cy, 5800, null]
+      - [Di, 2900, null]
+      - [Ed, 4750, null]
+      - [Flo, 6100, null]
+      - [Gil, 3600, null]
+      - [Hu, 5200, null]
+      - [Ida, 2750, null]
+      - [Jo, 4400, null]
+      - [Kai, 3900, null]
+      - [Lee, 5500, null]
+      - [Mo, 3300, null]
+      - [Nia, 4950, null]
+      - [Ola, 3050, null]
+    answerCell: C9
+    expected: 4
+    variants:
+      - { set: { B9: 6000 }, expected: 2 }
+      - { set: { B9: 2900 }, expected: 13 }
+    answer: =RANK(B9,$B$2:$B$16)
+    requiredFunctions:
+      - RANK
+    hints:
+      nudge: The list must be the whole column of sales.
+      rule: RANK(B9,$B$2:$B$16) places Hu against every rep; the $ signs keep the list fixed if copied down.
+    misses:
+      value: Hu is in place 4.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for RANK.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =RANK(B9,$B$2:$B$16)
+      - =RANK(B9,B2:B16)
+      - =RANK(B9,$B$2:$B$16,0)
+    reject:
+      - formula: =RANK(B9,B9:B16)
+        rule: value
+      - formula: =RANK(B9,$B$2:$B$16,1)
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =RANK(B9,$B$2:$B$16
+        rule: syntax

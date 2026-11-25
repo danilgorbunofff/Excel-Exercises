@@ -1,0 +1,39 @@
+id: both-scores-pass-step-1
+slug: both-scores-pass-step-1
+level: 1
+title: Both checks done
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: both-scores-pass
+step: 1
+screens:
+  - prompt: In D2, show TRUE when the box is both checked and packed, that is when B2 and C2 both say Yes. Use AND.
+    rows:
+      - [Item, Checked, Packed, Ready]
+      - [Box 1, Yes, Yes, null]
+    answerCell: D2
+    expected: true
+    variants:
+      - { set: { C2: No }, expected: false }
+      - { set: { B2: No }, expected: false }
+    answer: =AND(B2="Yes",C2="Yes")
+    requiredFunctions:
+      - AND
+    hints:
+      nudge: AND is TRUE only when every test is TRUE.
+      rule: AND(B2="Yes",C2="Yes") checks both cells. Text in a test goes in quotes.
+    misses:
+      value: Both cells say Yes, so D2 should show true.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for AND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AND(B2="Yes",C2="Yes")
+      - =AND(C2="Yes",B2="Yes")
+    reject:
+      - formula: =OR(B2="Yes",C2="Yes")
+        rule: required-function
+      - formula: =B2="Yes"
+        rule: required-function
+      - formula: =AND(B2="Yes",C2="Yes"
+        rule: syntax

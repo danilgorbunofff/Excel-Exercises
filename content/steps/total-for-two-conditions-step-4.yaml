@@ -1,0 +1,51 @@
+id: total-for-two-conditions-step-4
+slug: total-for-two-conditions-step-4
+level: 2
+title: Large orders of one product
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: total-for-two-conditions
+step: 4
+screens:
+  - prompt: In C12, add up the units of Pens on orders of 20 units or more. Use SUMIFS.
+    rows:
+      - [Order, Product, Units]
+      - ["1", Pens, 40]
+      - ["2", Paper, 25]
+      - ["3", Pens, 12]
+      - ["4", Pens, 20]
+      - ["5", Paper, 30]
+      - ["6", Pens, 8]
+      - ["7", Pens, 35]
+      - ["8", Paper, 18]
+      - ["9", Pens, 19]
+      - [null, null, null]
+      - [Large pen orders, null, null]
+    answerCell: C12
+    expected: 95
+    variants:
+      - set: { C10: 22 }
+        expected: 117
+    answer: =SUMIFS(C2:C10,B2:B10,"Pens",C2:C10,">=20")
+    requiredFunctions:
+      - SUMIFS
+    hints:
+      nudge: The units column can be both the range to add and a range to test.
+      rule: SUMIFS(C2:C10,B2:B10,"Pens",C2:C10,">=20") adds pen orders of 20 or more.
+    misses:
+      value: Pen orders of 20 or more add up to 95 units.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIFS(C2:C10,B2:B10,"Pens",C2:C10,">=20")
+      - =SUMIFS(C2:C10,C2:C10,">=20",B2:B10,"Pens")
+    reject:
+      - formula: =SUMIFS(C2:C10,B2:B10,"Pens",C2:C10,">20")
+        rule: value
+      - formula: =SUMIFS(C2:C10,B2:B10,"Pens")
+        rule: value
+      - formula: =95
+        rule: required-function
+      - formula: =SUMIFS(C2:C10,B2:B10,"Pens",C2:C10,">=20"
+        rule: syntax

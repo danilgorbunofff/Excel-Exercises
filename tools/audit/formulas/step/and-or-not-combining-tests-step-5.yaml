@@ -1,0 +1,29 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AND(OR($B$2="Manager",AND($B$2="Senior",$C$2>=5)),$D$2<>"Leave")
+      - =AND(OR(B$2="Manager",AND(B2="Senior",C2>=5)),D2<>"Leave")
+      - =and(or(b2="Manager", and(b2="Senior", c2>=5)), d2<>"Leave")
+    wrong:
+      - formula: =AND(OR(B2="Manager",OR(B2="Senior",C2>=5)),D2<>"Leave")
+        rule: fragile
+        why: OR instead of AND
+      - formula: =AND(OR(B2="Manager",AND(B2="Senior",C2>5)),D2<>"Leave")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =AND(OR(B2="Manager",AND(B2="Senior",C1>=5)),D2<>"Leave")
+        rule: fragile
+        why: C2 read from the row above
+      - formula: =AND(OR(B2="Manager",AND(B2="Senior",D2>=5)),D2<>"Leave")
+        rule: fragile
+        why: C2 read from the next column
+      - formula: =AND(OR(B2="Manager",AND(B2="Senior",B2>=5)),D2<>"Leave")
+        rule: fragile
+        why: C2 read from the column to the left
+      - formula: =AND(OR(B2="Manager",AND(B2="Senior",C2>=6)),D2<>"Leave")
+        rule: fragile
+        why: 5 written as 6
+      - formula: =AND(OR(B2="Manager",AND(B2="Senior",C2>=4)),D2<>"Leave")
+        rule: fragile
+        why: 5 written as 4
+    equivalent: []

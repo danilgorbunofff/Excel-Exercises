@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIFS($F$2:$F$16,$F$2:$F$16,">=100",$F$2:$F$16,"<=300")
+      - =SUMIFS(F$2:F$16,F2:F16,">=100",F2:F16,"<=300")
+      - =sumifs(f2:f16, f2:f16, ">=100", f2:f16, "<=300")
+      - =LET(data,F2:F16,SUMIFS(data,data,">=100",data,"<=300"))
+    wrong: []
+    equivalent: []

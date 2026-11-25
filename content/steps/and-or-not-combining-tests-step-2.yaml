@@ -1,0 +1,41 @@
+id: and-or-not-combining-tests-step-2
+slug: and-or-not-combining-tests-step-2
+level: 2
+title: In stock and not discontinued
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: and-or-not-combining-tests
+step: 2
+screens:
+  - prompt: In D2, answer TRUE when the lamp is in stock, B2 over 0, and not discontinued, C2 not Yes. Use AND and NOT.
+    rows:
+      - [Item, Stock, Discontinued, Sell]
+      - [Lamp, 14, No, null]
+    answerCell: D2
+    expected: true
+    variants:
+      - { set: { C2: Yes }, expected: false }
+      - { set: { B2: 0 }, expected: false }
+      - { set: { B2: 1 }, expected: true }
+    answer: =AND(B2>0,NOT(C2="Yes"))
+    requiredFunctions:
+      - AND
+      - NOT
+    hints:
+      nudge: NOT goes inside AND as one of its tests.
+      rule: AND(B2>0,NOT(C2="Yes")) needs stock and a product that is still sold.
+    misses:
+      value: The lamp is in stock and still sold, so D2 should show true.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for AND and NOT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AND(B2>0,NOT(C2="Yes"))
+      - =AND(NOT(C2="Yes"),B2>0)
+    reject:
+      - formula: =AND(B2>0,C2="Yes")
+        rule: required-function
+      - formula: =B2>0
+        rule: required-function
+      - formula: =AND(B2>0,NOT(C2="Yes")
+        rule: syntax

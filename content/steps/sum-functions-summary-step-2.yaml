@@ -1,0 +1,55 @@
+id: sum-functions-summary-step-2
+slug: sum-functions-summary-step-2
+level: 2
+title: Total everything except one region
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sum-functions-summary
+step: 2
+screens:
+  - prompt: In H2, total every amount that is not from the West. Use SUMIF with "<>".
+    rows:
+      - [Order, Region, Rep, Status, Units, Amount, null, null]
+      - [SO-01, North, Ada, Open, 5, 320, Not West, null]
+      - [SO-02, South, Ben, Open, 3, 145, null, null]
+      - [SO-03, North, Cleo, Closed, 4, 210, null, null]
+      - [SO-04, East, Ada, Open, 2, 95, null, null]
+      - [SO-05, North, Ada, Open, 6, 410, null, null]
+      - [SO-06, South, Dev, Closed, 1, 60, null, null]
+      - [SO-07, North, Ben, Open, 8, 520, null, null]
+      - [SO-08, West, Cleo, Open, 7, 380, null, null]
+      - [SO-09, East, Dev, Closed, 3, 150, null, null]
+      - [SO-10, North, Cleo, Open, 2, 120, null, null]
+      - [SO-11, South, Ada, Open, 9, 610, null, null]
+      - [SO-12, null, Ben, Open, 4, 230, null, null]
+      - [SO-13, West, Ada, Closed, 5, 275, null, null]
+      - [SO-14, North, Dev, Open, 6, 335, null, null]
+      - [SO-15, East, Ben, Open, 1, 45, null, null]
+    answerCell: H2
+    expected: 3250
+    variants:
+      - set: { B3: West }
+        expected: 3105
+    answer: =SUMIF(B2:B16,"<>West",F2:F16)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: '"<>West" means anything but West.'
+      rule: SUMIF(B2:B16,"<>West",F2:F16) adds every row whose region is not West, including the one with no region.
+    misses:
+      value: Everything outside the West adds up to 3250.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(B2:B16,"<>West",F2:F16)
+      - =SUM(F2:F16)-SUMIF(B2:B16,"West",F2:F16)
+    reject:
+      - formula: =SUMIF(B2:B16,"West",F2:F16)
+        rule: value
+      - formula: =SUMIF(B2:B16,"<>West")
+        rule: value
+      - formula: =3250
+        rule: required-function
+      - formula: =SUMIF(B2:B16,"<>West",F2:F16
+        rule: syntax

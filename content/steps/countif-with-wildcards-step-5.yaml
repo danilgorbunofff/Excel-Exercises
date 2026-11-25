@@ -1,0 +1,56 @@
+id: countif-with-wildcards-step-5
+slug: countif-with-wildcards-step-5
+level: 3
+title: Pro products that are not refurbished
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: countif-with-wildcards
+step: 5
+screens:
+  - prompt: In C2, how many products have Pro in the name but are not refurbished, that is do not contain Refurb?
+    rows:
+      - [Product, null, "Pro, not refurbished"]
+      - [Laptop Pro 14, null, null]
+      - [Laptop Pro 14 Refurb, null, null]
+      - [Phone Pro, null, null]
+      - [Phone Pro Refurb, null, null]
+      - [Pro Stand, null, null]
+      - [Tablet Mini, null, null]
+      - [Earbuds Pro 2, null, null]
+      - [Charger, null, null]
+      - [Keyboard Pro, null, null]
+      - [Refurb Mouse, null, null]
+      - [Monitor Pro 27, null, null]
+      - [Pro Pen Refurb, null, null]
+      - [Webcam, null, null]
+      - [Dock Pro, null, null]
+      - [Cable, null, null]
+    answerCell: C2
+    expected: 7
+    variants:
+      - set: { A7: Tablet Pro }
+        expected: 8
+      - set: { A12: Monitor Pro 27 Refurb }
+        expected: 6
+    answer: =COUNTIFS(A2:A16,"*Pro*",A2:A16,"<>*Refurb*")
+    requiredFunctions: []
+    hints:
+      nudge: 'Two tests on the same column: contains Pro, and "<>*Refurb*" for not containing Refurb.'
+      rule: '"<>*Refurb*" with wildcards means does not contain Refurb, so COUNTIFS keeps the Pro names that pass both.'
+    misses:
+      value: 7 products are Pro and not refurbished.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIFS(A2:A16,"*Pro*",A2:A16,"<>*Refurb*")
+      - =COUNTIF(A2:A16,"*Pro*")-COUNTIFS(A2:A16,"*Pro*",A2:A16,"*Refurb*")
+    reject:
+      - formula: =COUNTIF(A2:A16,"*Pro*")
+        rule: value
+      - formula: =COUNTIF(A2:A16,"*Pro")
+        rule: value
+      - formula: =7
+        rule: reference
+      - formula: =COUNTIFS(A2:A16,"*Pro*",A2:A16,"<>*Refurb*"
+        rule: syntax

@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(OR($B$2>50,$C$2="Yes"),0,4.99)
+      - =IF(OR(B$2>50,C2="Yes"),0,4.99)
+      - =if(or(b2>50, c2="Yes"), 0, 4.99)
+    wrong:
+      - formula: =IF(OR(B2>=50,C2="Yes"),0,4.99)
+        rule: fragile
+        why: "> written as >="
+      - formula: =IF(OR(B2>51,C2="Yes"),0,4.99)
+        rule: fragile
+        why: 50 written as 51
+      - formula: =IF(OR(B2>49,C2="Yes"),0,4.99)
+        rule: fragile
+        why: 50 written as 49
+    equivalent: []

@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AND($B$3:$B$7>$B$2:$B$6)
+      - =AND(B$3:B$7>B2:B6)
+      - =and(b3:b7>b2:b6)
+      - =LET(data,B3:B7,AND(data>B2:B6))
+    wrong:
+      - formula: =AND(B3:B7>=B2:B6)
+        rule: fragile
+        why: "> written as >="
+    equivalent: []

@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF($B$2>=15,"OK","LOW")
+      - =IF(B$2>=15,"OK","LOW")
+      - =if(b2>=15, "OK", "LOW")
+    wrong:
+      - formula: =IF(B2>=14,"OK","LOW")
+        rule: fragile
+        why: 15 written as 14
+    equivalent: []

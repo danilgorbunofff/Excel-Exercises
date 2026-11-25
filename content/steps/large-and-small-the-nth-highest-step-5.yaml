@@ -1,0 +1,63 @@
+id: large-and-small-the-nth-highest-step-5
+slug: large-and-small-the-nth-highest-step-5
+level: 3
+title: Total of the top three sales
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: large-and-small-the-nth-highest
+step: 5
+screens:
+  - prompt: In E2, what do the three biggest sales add up to?
+    rows:
+      - [Rep, Sales, null, null, Top three]
+      - [Ana, 4200, null, null, null]
+      - [Ben, 3150, null, null, null]
+      - [Cy, 5800, null, null, null]
+      - [Di, 2900, null, null, null]
+      - [Ed, 4750, null, null, null]
+      - [Flo, 6100, null, null, null]
+      - [Gil, 3600, null, null, null]
+      - [Hu, 5200, null, null, null]
+      - [Ida, 2750, null, null, null]
+      - [Jo, 4400, null, null, null]
+      - [Kai, 3900, null, null, null]
+      - [Lee, 5500, null, null, null]
+      - [Mo, 3300, null, null, null]
+      - [Nia, 4950, null, null, null]
+      - [Ola, 3050, null, null, null]
+    answerCell: E2
+    expected: 17400
+    variants:
+      - set: { B5: 7000 }
+        expected: 18900
+      - set: { B13: 6500 }
+        expected: 18400
+      - set: { B2: 8400 }
+        expected: 20300
+      - set: { B16: 6100 }
+        expected: 18000
+      - set: { B16: 9000 }
+        expected: 20900
+    answer: =LARGE(B2:B16,1)+LARGE(B2:B16,2)+LARGE(B2:B16,3)
+    requiredFunctions: []
+    hints:
+      nudge: The 1st, 2nd and 3rd largest, added together.
+      rule: LARGE picks each of the top three without sorting the list.
+    misses:
+      value: The top three sales add up to 17400.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =LARGE(B2:B16,1)+LARGE(B2:B16,2)+LARGE(B2:B16,3)
+      - =SUM(LARGE(B2:B16,{1,2,3}))
+      - =SUM(TAKE(SORT(B2:B16,,-1),3))
+    reject:
+      - formula: =LARGE(B2:B16,3)
+        rule: value
+      - formula: =6100+5800+5500
+        rule: reference
+      - formula: =17400
+        rule: reference
+      - formula: =LARGE(B2:B16,1)+LARGE(B2:B16,2)+LARGE(B2:B16,3
+        rule: syntax

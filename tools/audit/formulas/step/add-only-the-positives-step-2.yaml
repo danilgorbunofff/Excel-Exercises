@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF($B$2:$B$9,">="&$E$1)
+      - =SUMIF(B$2:B$9,">="&E1)
+      - =sumif(b2:b9, ">="&e1)
+      - =LET(data,B2:B9,SUMIF(data,">="&E1))
+    wrong:
+      - formula: =SUMIF(B2:B8,">="&E1)
+        rule: fragile
+        why: range B2:B9 one row short at the end
+      - formula: =SUMIF(B3:B9,">="&E1)
+        rule: fragile
+        why: range B2:B9 skips its first row
+    equivalent: []

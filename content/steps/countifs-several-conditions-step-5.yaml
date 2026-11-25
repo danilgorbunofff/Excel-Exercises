@@ -1,0 +1,62 @@
+id: countifs-several-conditions-step-5
+slug: countifs-several-conditions-step-5
+level: 3
+title: Open North orders above average size
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: countifs-several-conditions
+step: 5
+screens:
+  - prompt: In H2, how many open North orders are bigger, in units, than the average order?
+    rows:
+      - [Order, Region, Rep, Status, Units, Amount, null, null]
+      - [SO-01, North, Ada, Open, 5, 320, Above-average open North, null]
+      - [SO-02, South, Ben, Open, 3, 145, null, null]
+      - [SO-03, North, Cleo, Closed, 4, 210, null, null]
+      - [SO-04, East, Ada, Open, 2, 95, null, null]
+      - [SO-05, North, Ada, Open, 6, 410, null, null]
+      - [SO-06, South, Dev, Closed, 1, 60, null, null]
+      - [SO-07, North, Ben, Open, 8, 520, null, null]
+      - [SO-08, West, Cleo, Open, 7, 380, null, null]
+      - [SO-09, East, Dev, Closed, 3, 150, null, null]
+      - [SO-10, North, Cleo, Open, 2, 120, null, null]
+      - [SO-11, South, Ada, Open, 9, 610, null, null]
+      - [SO-12, null, Ben, Open, 4, 230, null, null]
+      - [SO-13, West, Ada, Closed, 5, 275, null, null]
+      - [SO-14, North, Dev, Open, 6, 335, null, null]
+      - [SO-15, East, Ben, Open, 1, 45, null, null]
+    answerCell: H2
+    expected: 4
+    variants:
+      - set: { E11: 20 }
+        expected: 4
+      - set: { D8: Closed }
+        expected: 3
+      - set: { E11: 8 }
+        expected: 5
+      - set: { E12: 18 }
+        expected: 3
+      - set: { E2: 30 }
+        expected: 2
+    answer: =COUNTIFS(B2:B16,"North",D2:D16,"Open",E2:E16,">"&AVERAGE(E2:E16))
+    requiredFunctions: []
+    hints:
+      nudge: The size test compares with the average, so build it with ">"&AVERAGE(...).
+      rule: '">"&AVERAGE(E2:E16) turns the average into a test, so the count follows any change in the orders.'
+    misses:
+      value: 4 open North orders are above the average size.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIFS(B2:B16,"North",D2:D16,"Open",E2:E16,">"&AVERAGE(E2:E16))
+      - =SUMPRODUCT((B2:B16="North")*(D2:D16="Open")*(E2:E16>AVERAGE(E2:E16)))
+    reject:
+      - formula: =COUNTIFS(B2:B16,"North",D2:D16,"Open",E2:E16,">4.4")
+        rule: fragile
+      - formula: =COUNTIFS(B2:B16,"North",D2:D16,"Open")
+        rule: value
+      - formula: =4
+        rule: reference
+      - formula: =COUNTIFS(B2:B16,"North",D2:D16,"Open",E2:E16,">"&AVERAGE(E2:E16)
+        rule: syntax

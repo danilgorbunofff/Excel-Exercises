@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(ROUND($B$2:$B$16*4,0)/4)
+      - =SUMPRODUCT(ROUND(B$2:B$16*4,0)/4)
+      - =sumproduct(round(b2:b16*4, 0)/4)
+      - =LET(data,B2:B16,SUMPRODUCT(ROUND(data*4,0)/4))
+    wrong: []
+    equivalent: []

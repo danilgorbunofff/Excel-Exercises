@@ -1,0 +1,41 @@
+id: mround-and-floor-round-to-a-multiple-step-2
+slug: mround-and-floor-round-to-a-multiple-step-2
+level: 2
+title: Order enough whole packs
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: mround-and-floor-round-to-a-multiple
+step: 2
+screens:
+  - prompt: Screws come in packs of the size in C2. In D2, work out how many screws to order so the need in B2 is covered with whole packs. Use CEILING.
+    rows:
+      - [Job, Need, Pack, Order]
+      - [Deck, 230, 50, null]
+    answerCell: D2
+    expected: 250
+    variants:
+      - set: { C2: 40 }
+        expected: 240
+    answer: =CEILING(B2,C2)
+    requiredFunctions:
+      - CEILING
+    hints:
+      nudge: CEILING rounds up to the next multiple, so the need is always covered.
+      rule: CEILING(B2,C2) rounds 230 up to the next multiple of the pack size.
+    misses:
+      value: Ordering 250 screws covers the need in whole packs.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for CEILING.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =CEILING(B2,C2)
+      - =CEILING(B2,C2)+0
+    reject:
+      - formula: =FLOOR(B2,C2)
+        rule: required-function
+      - formula: =CEILING(B2,50)
+        rule: fragile
+      - formula: =250
+        rule: required-function
+      - formula: =CEILING(B2,C2
+        rule: syntax

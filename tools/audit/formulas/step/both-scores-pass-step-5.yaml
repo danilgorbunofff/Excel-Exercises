@@ -1,0 +1,21 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AND($B$2<=30,MAX($C$2:$E$2)<=100)
+      - =AND(B$2<=30,MAX(C2:E2)<=100)
+      - =and(b2<=30, max(c2:e2)<=100)
+      - =LET(data,C2:E2,AND(B2<=30,MAX(data)<=100))
+    wrong:
+      - formula: =AND(B2<30,MAX(C2:E2)<=100)
+        rule: fragile
+        why: <= written as <
+      - formula: =AND(B2<=29,MAX(C2:E2)<=100)
+        rule: fragile
+        why: 30 written as 29
+      - formula: =AND(B2<=30,MAX(C2:E2)<100)
+        rule: fragile
+        why: <= written as <
+      - formula: =AND(B2<=30,MAX(C2:E2)<=99)
+        rule: fragile
+        why: 100 written as 99
+    equivalent: []

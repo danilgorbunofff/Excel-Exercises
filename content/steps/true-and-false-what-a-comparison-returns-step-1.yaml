@@ -1,0 +1,36 @@
+id: true-and-false-what-a-comparison-returns-step-1
+slug: true-and-false-what-a-comparison-returns-step-1
+level: 1
+title: Did the rep hit the target
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: true-and-false-what-a-comparison-returns
+step: 1
+screens:
+  - prompt: In C2, answer TRUE when the sales in B2 are at least the target of 500, with a comparison only.
+    rows:
+      - [Rep, Sales, Hit target]
+      - [Ana, 500, null]
+    answerCell: C2
+    expected: true
+    variants:
+      - { set: { B2: 480 }, expected: false }
+      - { set: { B2: 499 }, expected: false }
+    answer: =B2>=500
+    requiredFunctions: []
+    hints:
+      nudge: A comparison such as B2>=500 gives TRUE or FALSE on its own.
+      rule: ">= means at least, so exactly 500 counts."
+    misses:
+      value: Ana sold exactly 500, so C2 should show true.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2>=500
+      - =500<=B2
+      - =NOT(B2<500)
+    reject:
+      - formula: =B2>500
+        rule: value
+      - formula: =B2>=500,
+        rule: syntax

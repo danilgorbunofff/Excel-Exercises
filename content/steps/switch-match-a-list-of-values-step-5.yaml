@@ -1,0 +1,45 @@
+id: switch-match-a-list-of-values-step-5
+slug: switch-match-a-list-of-values-step-5
+level: 3
+title: Next step for an overdue invoice
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: switch-match-a-list-of-values
+step: 5
+screens:
+  - prompt: "In C2, what should happen to this invoice? Over 90 days overdue: Escalate. Over 30: Remind. Over 0: Wait. Otherwise: None."
+    rows:
+      - [Invoice, Days overdue, Action]
+      - [INV-22, 45, null]
+    answerCell: C2
+    expected: Remind
+    variants:
+      - { set: { B2: 120 }, expected: Escalate }
+      - { set: { B2: 30 }, expected: Wait }
+      - { set: { B2: 0 }, expected: None }
+      - { set: { B2: 91 }, expected: Escalate }
+      - { set: { B2: 1 }, expected: Wait }
+      - { set: { B2: 90 }, expected: Remind }
+      - { set: { B2: 31 }, expected: Remind }
+    answer: =SWITCH(TRUE,B2>90,"Escalate",B2>30,"Remind",B2>0,"Wait","None")
+    requiredFunctions: []
+    hints:
+      nudge: Check the longest delay first and work down.
+      rule: SWITCH(TRUE, test, result, ...) returns the result of the first test that is TRUE, with "None" as the fallback.
+    misses:
+      value: 45 days overdue means Remind.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SWITCH(TRUE,B2>90,"Escalate",B2>30,"Remind",B2>0,"Wait","None")
+      - =IFS(B2>90,"Escalate",B2>30,"Remind",B2>0,"Wait",TRUE,"None")
+    reject:
+      - formula: =IF(B2>30,"Remind","Wait")
+        rule: fragile
+      - formula: =SWITCH(TRUE,B2>0,"Wait",B2>30,"Remind",B2>90,"Escalate","None")
+        rule: value
+      - formula: ="Remind"
+        rule: reference
+      - formula: =SWITCH(TRUE,B2>90,"Escalate",B2>30,"Remind",B2>0,"Wait","None"
+        rule: syntax

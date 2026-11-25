@@ -1,0 +1,51 @@
+id: median-the-middle-value-step-4
+slug: median-the-middle-value-step-4
+level: 2
+title: How far one big value pulls the average
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: median-the-middle-value
+step: 4
+screens:
+  - prompt: "In E2, work out how much higher the average sale is than the median sale: the average minus the median. Use AVERAGE and MEDIAN."
+    rows:
+      - [Sale, Amount, null, null, Average minus median]
+      - ["1", 120, null, null, null]
+      - ["2", 95, null, null, null]
+      - ["3", 140, null, null, null]
+      - ["4", 110, null, null, null]
+      - ["5", 980, null, null, null]
+      - ["6", 105, null, null, null]
+      - ["7", 130, null, null, null]
+      - ["8", 115, null, null, null]
+      - ["9", 100, null, null, null]
+      - ["10", 125, null, null, null]
+    answerCell: E2
+    expected: 84.5
+    variants:
+      - set: { B6: 135 }
+        expected: 0
+    answer: =AVERAGE(B2:B11)-MEDIAN(B2:B11)
+    requiredFunctions:
+      - AVERAGE
+      - MEDIAN
+    hints:
+      nudge: Work out each one over the same range, then subtract.
+      rule: One very large sale lifts the average but hardly moves the median, so the gap shows its pull.
+    misses:
+      value: The average is 84.5 above the median.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for AVERAGE and MEDIAN.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AVERAGE(B2:B11)-MEDIAN(B2:B11)
+      - =-(MEDIAN(B2:B11)-AVERAGE(B2:B11))
+    reject:
+      - formula: =MEDIAN(B2:B11)-AVERAGE(B2:B11)
+        rule: value
+      - formula: =AVERAGE(B2:B11)
+        rule: required-function
+      - formula: =84.5
+        rule: required-function
+      - formula: =AVERAGE(B2:B11)-MEDIAN(B2:B11
+        rule: syntax

@@ -1,0 +1,43 @@
+id: sales-bonus-step-2
+slug: sales-bonus-step-2
+level: 2
+title: Commission rate that depends on sales
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sales-bonus
+step: 2
+screens:
+  - prompt: Reps with sales of 8,000 or more earn 6% commission; the rest earn 4%. In C2, work out Mo's commission. Use IF.
+    rows:
+      - [Rep, Sales, Commission]
+      - [Mo, 9500, null]
+    answerCell: C2
+    expected: 570
+    variants:
+      - { set: { B2: 7000 }, expected: 280 }
+      - { set: { B2: 8000 }, expected: 480 }
+      - { set: { B2: 7999 }, expected: 319.96 }
+    answer: =B2*IF(B2>=8000,6%,4%)
+    requiredFunctions:
+      - IF
+    hints:
+      nudge: IF picks the rate; then multiply the sales by it.
+      rule: IF(B2>=8000,6%,4%) chooses the rate, and B2 times that rate is the commission.
+    misses:
+      value: "Mo's commission is 570: 6% of 9,500."
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2*IF(B2>=8000,6%,4%)
+      - =IF(B2>=8000,B2*6%,B2*4%)
+      - =IF(B2>=8000,B2*0.06,B2*0.04)
+    reject:
+      - formula: =IF(B2>=8000,6%,4%)
+        rule: value
+      - formula: =IF(B2>8000,B2*6%,B2*4%)
+        rule: fragile
+      - formula: =570
+        rule: required-function
+      - formula: =B2*IF(B2>=8000,6%,4%
+        rule: syntax

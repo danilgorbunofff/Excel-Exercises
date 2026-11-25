@@ -1,0 +1,49 @@
+id: countif-with-wildcards-step-4
+slug: countif-with-wildcards-step-4
+level: 2
+title: Names that contain a word from a cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: countif-with-wildcards
+step: 4
+screens:
+  - prompt: In E2, count the product names that contain the word typed in E1, anywhere in the name. Use COUNTIF.
+    rows:
+      - [Product, null, null, Word, Pro]
+      - [Laptop Pro 14, null, null, Count, null]
+      - [Laptop Air, null, null, null, null]
+      - [Phone Pro, null, null, null, null]
+      - [Pro Stand, null, null, null, null]
+      - [Tablet Mini, null, null, null, null]
+      - [Earbuds Pro 2, null, null, null, null]
+      - [Charger, null, null, null, null]
+      - [Mouse, null, null, null, null]
+      - [Keyboard Pro, null, null, null, null]
+    answerCell: E2
+    expected: 5
+    variants:
+      - set: { E1: Laptop }
+        expected: 2
+    answer: =COUNTIF(A2:A10,"*"&E1&"*")
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: 'Put * on both sides of the cell: "*"&E1&"*".'
+      rule: '"*"&E1&"*" finds the word anywhere in the name, and follows whatever is typed in E1.'
+    misses:
+      value: 5 names contain the word in E1.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(A2:A10,"*"&E1&"*")
+      - =COUNTIF($A$2:$A$10,"*"&$E$1&"*")
+    reject:
+      - formula: =COUNTIF(A2:A10,"*Pro*")
+        rule: fragile
+      - formula: =COUNTIF(A2:A10,E1)
+        rule: value
+      - formula: =5
+        rule: required-function
+      - formula: =COUNTIF(A2:A10,"*"&E1&"*"
+        rule: syntax

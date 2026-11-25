@@ -1,0 +1,39 @@
+id: and-or-not-combining-tests-step-1
+slug: and-or-not-combining-tests-step-1
+level: 1
+title: Not discontinued
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: and-or-not-combining-tests
+step: 1
+screens:
+  - prompt: In C2, answer TRUE when the lamp is not discontinued, that is when B2 does not say Yes. Use NOT.
+    rows:
+      - [Item, Discontinued, Can sell]
+      - [Lamp, No, null]
+    answerCell: C2
+    expected: true
+    variants:
+      - set: { B2: Yes }
+        expected: false
+    answer: =NOT(B2="Yes")
+    requiredFunctions:
+      - NOT
+    hints:
+      nudge: NOT turns TRUE into FALSE and FALSE into TRUE.
+      rule: NOT(B2="Yes") is TRUE when B2 is anything but Yes.
+    misses:
+      value: The lamp is not discontinued, so C2 should show true.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for NOT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =NOT(B2="Yes")
+      - =NOT(B2="yes")
+    reject:
+      - formula: =B2="Yes"
+        rule: required-function
+      - formula: =B2<>"Yes"
+        rule: required-function
+      - formula: =NOT(B2="Yes"
+        rule: syntax

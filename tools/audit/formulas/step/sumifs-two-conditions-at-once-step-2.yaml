@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIFS($F$2:$F$16,$B$2:$B$16,"South",$F$2:$F$16,">=150")
+      - =SUMIFS(F$2:F$16,B2:B16,"South",F2:F16,">=150")
+      - =sumifs(f2:f16, b2:b16, "South", f2:f16, ">=150")
+      - =LET(data,F2:F16,SUMIFS(data,B2:B16,"South",data,">=150"))
+    wrong: []
+    equivalent: []

@@ -1,0 +1,47 @@
+id: free-delivery-step-2
+slug: free-delivery-step-2
+level: 2
+title: Flag an account for review
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: free-delivery
+step: 2
+screens:
+  - prompt: Flag the account when the balance in B2 is below 0 or the invoice is more than 30 days overdue. In D2, show TRUE or FALSE. Use OR.
+    rows:
+      - [Account, Balance, Days overdue, Flag]
+      - [A-12, 150, 45, null]
+    answerCell: D2
+    expected: true
+    variants:
+      - set: { C2: 10 }
+        expected: false
+      - set: { C2: 30 }
+        expected: false
+      - set: { B2: 0, C2: 0 }
+        expected: false
+      - set: { C2: 31 }
+        expected: true
+      - set: { B2: -20, C2: 10 }
+        expected: true
+    answer: =OR(B2<0,C2>30)
+    requiredFunctions:
+      - OR
+    hints:
+      nudge: Either reason is enough to flag the account.
+      rule: OR(B2<0,C2>30) is TRUE when the balance is negative, the invoice is over 30 days late, or both.
+    misses:
+      value: The account is 45 days overdue, so D2 should show true.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for OR.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =OR(B2<0,C2>30)
+      - =OR(C2>30,B2<0)
+    reject:
+      - formula: =AND(B2<0,C2>30)
+        rule: required-function
+      - formula: =OR(B2<0,C2>=30)
+        rule: fragile
+      - formula: =OR(B2<0,C2>30
+        rule: syntax

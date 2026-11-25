@@ -1,0 +1,22 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AVERAGEIF($B$2:$B$16,">"&MEDIAN($B$2:$B$16))
+      - =AVERAGEIF(B$2:B$16,">"&MEDIAN(B2:B16))
+      - =averageif(b2:b16, ">"&median(b2:b16))
+      - =AVERAGEIFS(B2:B16,B2:B16,">"&MEDIAN(B2:B16))
+      - =LET(data,B2:B16,AVERAGEIF(data,">"&MEDIAN(data)))
+    wrong:
+      - formula: =AVERAGEIF(B2:B15,">"&MEDIAN(B2:B16))
+        rule: fragile
+        why: range B2:B16 one row short at the end
+      - formula: =AVERAGEIF(B3:B16,">"&MEDIAN(B2:B16))
+        rule: fragile
+        why: range B2:B16 skips its first row
+      - formula: =AVERAGEIF(B2:B16,">"&AVERAGE(B2:B16))
+        rule: fragile
+        why: AVERAGE instead of MEDIAN
+      - formula: =AVERAGEIF(B2:B16,">"&MEDIAN(B2:B15))
+        rule: fragile
+        why: range B2:B16 one row short at the end
+    equivalent: []

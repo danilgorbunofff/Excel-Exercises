@@ -1,0 +1,23 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SWITCH(TRUE,$B$2>90,"Escalate",$B$2>30,"Remind",$B$2>0,"Wait","None")
+      - =SWITCH(TRUE,B$2>90,"Escalate",B2>30,"Remind",B2>0,"Wait","None")
+      - =switch(true, b2>90, "Escalate", b2>30, "Remind", b2>0, "Wait", "None")
+    wrong:
+      - formula: =SWITCH(TRUE,B2>=90,"Escalate",B2>30,"Remind",B2>0,"Wait","None")
+        rule: fragile
+        why: "> written as >="
+      - formula: =SWITCH(TRUE,B2>91,"Escalate",B2>30,"Remind",B2>0,"Wait","None")
+        rule: fragile
+        why: 90 written as 91
+      - formula: =SWITCH(TRUE,B2>89,"Escalate",B2>30,"Remind",B2>0,"Wait","None")
+        rule: fragile
+        why: 90 written as 89
+      - formula: =SWITCH(TRUE,B2>90,"Escalate",B2>31,"Remind",B2>0,"Wait","None")
+        rule: fragile
+        why: 30 written as 31
+      - formula: =SWITCH(TRUE,B2>90,"Escalate",B2>30,"Remind",B2>1,"Wait","None")
+        rule: fragile
+        why: 0 written as 1
+    equivalent: []

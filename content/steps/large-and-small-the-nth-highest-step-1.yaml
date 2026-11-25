@@ -1,0 +1,47 @@
+id: large-and-small-the-nth-highest-step-1
+slug: large-and-small-the-nth-highest-step-1
+level: 1
+title: The third-highest score
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: large-and-small-the-nth-highest
+step: 1
+screens:
+  - prompt: In C2, find the third-highest score. Use LARGE.
+    rows:
+      - [Player, Score, Third highest]
+      - [Ana, 72, null]
+      - [Ben, 88, null]
+      - [Cy, 65, null]
+      - [Di, 91, null]
+      - [Ed, 79, null]
+      - [Flo, 84, null]
+      - [Gil, 70, null]
+    answerCell: C2
+    expected: 84
+    variants:
+      - { set: { B6: 86 }, expected: 86 }
+      - { set: { B2: 91, B8: 91 }, expected: 91 }
+    answer: =LARGE(B2:B8,3)
+    requiredFunctions:
+      - LARGE
+    hints:
+      nudge: "LARGE takes the range and which place you want: 1 is the highest."
+      rule: LARGE(B2:B8,3) gives the third-highest score without sorting.
+    misses:
+      value: The third-highest score is 84.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for LARGE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =LARGE(B2:B8,3)
+      - =LARGE($B$2:$B$8,3)
+    reject:
+      - formula: =LARGE(B2:B8,2)
+        rule: value
+      - formula: =SMALL(B2:B8,3)
+        rule: required-function
+      - formula: =84
+        rule: required-function
+      - formula: =LARGE(B2:B8,3
+        rule: syntax

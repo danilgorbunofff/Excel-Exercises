@@ -1,0 +1,45 @@
+id: sum-functions-summary-step-1
+slug: sum-functions-summary-step-1
+level: 1
+title: Total the expenses
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sum-functions-summary
+step: 1
+screens:
+  - prompt: In B8, total all the expenses. Use SUM.
+    rows:
+      - [Expense, Amount]
+      - [Rent, 650]
+      - [Power, 140]
+      - [Phone, 60]
+      - [Supplies, 230]
+      - [Travel, 120]
+      - [null, null]
+      - [Total, null]
+    answerCell: B8
+    expected: 1200
+    variants:
+      - set: { B4: 200 }
+        expected: 1340
+    answer: =SUM(B2:B6)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: SUM adds the whole column of amounts.
+      rule: SUM(B2:B6) adds the five expenses.
+    misses:
+      value: The expenses add up to 1200.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:B6)
+      - =SUM($B$2:$B$6)
+    reject:
+      - formula: =SUM(B2:B5)
+        rule: value
+      - formula: =1200
+        rule: required-function
+      - formula: =SUM(B2:B6
+        rule: syntax

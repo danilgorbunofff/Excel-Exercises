@@ -1,0 +1,20 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =OR($B$2="Yes",$C$2="Yes")
+      - =OR(B$2="Yes",C2="Yes")
+      - =or(b2="Yes", c2="Yes")
+    wrong:
+      - formula: =OR(B3="Yes",C2="Yes")
+        rule: fragile
+        why: B2 read from the next row
+      - formula: =OR(B1="Yes",C2="Yes")
+        rule: fragile
+        why: B2 read from the row above
+      - formula: =OR(C2="Yes",C2="Yes")
+        rule: fragile
+        why: B2 read from the next column
+      - formula: =OR(A2="Yes",C2="Yes")
+        rule: fragile
+        why: B2 read from the column to the left
+    equivalent: []

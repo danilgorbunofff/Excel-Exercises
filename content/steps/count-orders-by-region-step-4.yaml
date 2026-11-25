@@ -1,0 +1,53 @@
+id: count-orders-by-region-step-4
+slug: count-orders-by-region-step-4
+level: 2
+title: Count two regions together
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-orders-by-region
+step: 4
+screens:
+  - prompt: In B12, count the orders from the North and the East together. Use COUNTIF twice.
+    rows:
+      - [Order, Region]
+      - ["1001", North]
+      - ["1002", South]
+      - ["1003", East]
+      - ["1004", North]
+      - ["1005", West]
+      - ["1006", East]
+      - ["1007", South]
+      - ["1008", North]
+      - ["1009", West]
+      - [null, null]
+      - [North and East, null]
+    answerCell: B12
+    expected: 5
+    variants:
+      - { set: { B3: East }, expected: 6 }
+      - { set: { B2: East, B10: North }, expected: 6 }
+      - { set: { B10: East }, expected: 6 }
+    answer: =COUNTIF(B2:B10,"North")+COUNTIF(B2:B10,"East")
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: One COUNTIF for each region, then add them.
+      rule: A cell cannot be North and East at once, so add two counts rather than giving one COUNTIF both words.
+    misses:
+      value: North and East together have 5 orders.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(B2:B10,"North")+COUNTIF(B2:B10,"East")
+      - =SUM(COUNTIF(B2:B10,{"North","East"}))
+      - =COUNTIF(B2:B10,"East")+COUNTIF(B2:B10,"North")
+    reject:
+      - formula: =COUNTIF(B2:B10,"North")
+        rule: value
+      - formula: =COUNTIFS(B2:B10,"North",B2:B10,"East")
+        rule: required-function
+      - formula: =5
+        rule: required-function
+      - formula: =COUNTIF(B2:B10,"North")+COUNTIF(B2:B10,"East"
+        rule: syntax

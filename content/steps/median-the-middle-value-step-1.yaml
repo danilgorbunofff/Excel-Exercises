@@ -1,0 +1,47 @@
+id: median-the-middle-value-step-1
+slug: median-the-middle-value-step-1
+level: 1
+title: The middle of seven values
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: median-the-middle-value
+step: 1
+screens:
+  - prompt: In C2, find the median delivery time. Use MEDIAN.
+    rows:
+      - [Order, Days, Median]
+      - ["1", 3, null]
+      - ["2", 5, null]
+      - ["3", 2, null]
+      - ["4", 9, null]
+      - ["5", 4, null]
+      - ["6", 3, null]
+      - ["7", 6, null]
+    answerCell: C2
+    expected: 4
+    variants:
+      - set: { B3: 1 }
+        expected: 3
+    answer: =MEDIAN(B2:B8)
+    requiredFunctions:
+      - MEDIAN
+    hints:
+      nudge: The median is the middle value once the list is in order.
+      rule: MEDIAN(B2:B8) finds the middle of the seven times; one slow order cannot drag it.
+    misses:
+      value: The median delivery time is 4 days.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for MEDIAN.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MEDIAN(B2:B8)
+      - =MEDIAN($B$2:$B$8)
+    reject:
+      - formula: =AVERAGE(B2:B8)
+        rule: required-function
+      - formula: =MEDIAN(B2:B7)
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =MEDIAN(B2:B8
+        rule: syntax

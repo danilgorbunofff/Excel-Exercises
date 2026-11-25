@@ -1,0 +1,43 @@
+id: sales-bonus-step-5
+slug: sales-bonus-step-5
+level: 3
+title: Bonus only on sales above target
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sales-bonus
+step: 5
+screens:
+  - prompt: In C2, what is Mo's bonus? Reps earn 3% on the part of their sales above the 10,000 target, and nothing when they miss it.
+    rows:
+      - [Rep, Sales, Bonus]
+      - [Mo, 13400, null]
+    answerCell: C2
+    expected: 102
+    variants:
+      - set: { B2: 9000 }
+        expected: 0
+      - set: { B2: 20000 }
+        expected: 300
+    answer: =MAX(0,B2-10000)*3%
+    requiredFunctions: []
+    hints:
+      nudge: Only the sales above 10,000 earn the bonus, and a miss earns 0, not a negative number.
+      rule: B2-10000 is the part above target; MAX(0, ...) stops a miss from going negative. Then take 3%.
+    misses:
+      value: "Mo's bonus is 102: 3% of the 3,400 above target, not of all his sales."
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MAX(0,B2-10000)*3%
+      - =IF(B2>10000,(B2-10000)*3%,0)
+      - =MAX(0,(B2-10000)*0.03)
+    reject:
+      - formula: =IF(B2>10000,B2*3%,0)
+        rule: value
+      - formula: =(B2-10000)*3%
+        rule: fragile
+      - formula: =102
+        rule: reference
+      - formula: =MAX(0,B2-10000)*3%,
+        rule: syntax

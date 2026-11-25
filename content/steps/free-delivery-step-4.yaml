@@ -1,0 +1,44 @@
+id: free-delivery-step-4
+slug: free-delivery-step-4
+level: 2
+title: Delivery charge with free delivery
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: free-delivery
+step: 4
+screens:
+  - prompt: Delivery costs 4.99 but is free when the order in B2 is over 50 or the customer is a member. In D2, work out Ola's delivery charge. Use IF and OR.
+    rows:
+      - [Customer, Order, Member, Delivery]
+      - [Ola, 38, No, null]
+    answerCell: D2
+    expected: 4.99
+    variants:
+      - { set: { C2: Yes }, expected: 0 }
+      - { set: { B2: 60 }, expected: 0 }
+      - { set: { B2: 51 }, expected: 0 }
+      - { set: { B2: 50 }, expected: 4.99 }
+    answer: =IF(OR(B2>50,C2="Yes"),0,4.99)
+    requiredFunctions:
+      - IF
+      - OR
+    hints:
+      nudge: OR goes inside IF as its test; free means 0.
+      rule: IF(OR(B2>50,C2="Yes"),0,4.99) charges nothing when either reason applies.
+    misses:
+      value: "Ola pays 4.99: her order is under 50 and she is not a member."
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF and OR.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(OR(B2>50,C2="Yes"),0,4.99)
+      - =IF(OR(C2="Yes",B2>50),0,4.99)
+    reject:
+      - formula: =IF(B2>50,0,4.99)
+        rule: required-function
+      - formula: =IF(AND(B2>50,C2="Yes"),0,4.99)
+        rule: required-function
+      - formula: =4.99
+        rule: required-function
+      - formula: =IF(OR(B2>50,C2="Yes"),0,4.99
+        rule: syntax

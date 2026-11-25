@@ -1,0 +1,50 @@
+id: total-for-two-conditions-step-2
+slug: total-for-two-conditions-step-2
+level: 2
+title: Two conditions typed in cells
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: total-for-two-conditions
+step: 2
+screens:
+  - prompt: In G3, add up the units for the region in G1 and the product in G2. Use SUMIFS.
+    rows:
+      - [Region, Product, Units, null, null, Region, South]
+      - [North, Pens, 40, null, null, Product, Paper]
+      - [North, Paper, 25, null, null, Units, null]
+      - [South, Pens, 30, null, null, null, null]
+      - [South, Paper, 20, null, null, null, null]
+      - [North, Pens, 15, null, null, null, null]
+      - [South, Paper, 12, null, null, null, null]
+      - [North, Paper, 10, null, null, null, null]
+      - [South, Pens, 18, null, null, null, null]
+    answerCell: G3
+    expected: 32
+    variants:
+      - set: { G2: Pens }
+        expected: 48
+      - set: { G1: North }
+        expected: 35
+    answer: =SUMIFS(C2:C9,A2:A9,G1,B2:B9,G2)
+    requiredFunctions:
+      - SUMIFS
+    hints:
+      nudge: "Point each condition at its cell: G1 for the region, G2 for the product."
+      rule: SUMIFS(C2:C9,A2:A9,G1,B2:B9,G2) totals whichever region and product are typed in.
+    misses:
+      value: The chosen region and product come to 32 units.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIFS(C2:C9,A2:A9,G1,B2:B9,G2)
+      - =SUMIFS(C2:C9,B2:B9,G2,A2:A9,G1)
+    reject:
+      - formula: =SUMIFS(C2:C9,A2:A9,"South",B2:B9,"Paper")
+        rule: fragile
+      - formula: =SUMIFS(C2:C9,A2:A9,G1)
+        rule: value
+      - formula: =32
+        rule: required-function
+      - formula: =SUMIFS(C2:C9,A2:A9,G1,B2:B9,G2
+        rule: syntax

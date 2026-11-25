@@ -1,0 +1,48 @@
+id: total-for-one-region-step-1
+slug: total-for-one-region-step-1
+level: 1
+title: Total one kind of cost
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: total-for-one-region
+step: 1
+screens:
+  - prompt: In B9, add up the Food costs only. Use SUMIF.
+    rows:
+      - [Kind, Cost]
+      - [Food, 42]
+      - [Travel, 18]
+      - [Food, 35]
+      - [Rent, 600]
+      - [Food, 27]
+      - [Travel, 22]
+      - [null, null]
+      - [Food total, null]
+    answerCell: B9
+    expected: 104
+    variants:
+      - { set: { B4: 40 }, expected: 109 }
+      - { set: { A7: Food }, expected: 126 }
+    answer: =SUMIF(A2:A7,"Food",B2:B7)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: SUMIF takes the range to test, the word to match, then the range to add.
+      rule: SUMIF(A2:A7,"Food",B2:B7) adds the costs on the Food rows.
+    misses:
+      value: Food costs add up to 104.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(A2:A7,"Food",B2:B7)
+      - =SUMIF(A2:A7,"food",B2:B7)
+    reject:
+      - formula: =SUM(B2:B7)
+        rule: required-function
+      - formula: =SUMIF(A2:A7,"Travel",B2:B7)
+        rule: value
+      - formula: =104
+        rule: required-function
+      - formula: =SUMIF(A2:A7,"Food",B2:B7
+        rule: syntax

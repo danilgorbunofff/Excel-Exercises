@@ -1,0 +1,45 @@
+id: switch-match-a-list-of-values-step-4
+slug: switch-match-a-list-of-values-step-4
+level: 2
+title: Shipping rate by region
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: switch-match-a-list-of-values
+step: 4
+screens:
+  - prompt: "Shipping is a share of the order: EU 5%, US 8%, UK 3%, anywhere else 10%. In D2, work out the shipping for the order in B2 to the region in C2. Use SWITCH."
+    rows:
+      - [Order, Value, Region, Shipping]
+      - [O-11, 200, US, null]
+    answerCell: D2
+    expected: 16
+    variants:
+      - set: { C2: UK }
+        expected: 6
+      - set: { C2: JP }
+        expected: 20
+      - set: { C2: EU }
+        expected: 10
+    answer: =B2*SWITCH(C2,"EU",5%,"US",8%,"UK",3%,10%)
+    requiredFunctions:
+      - SWITCH
+    hints:
+      nudge: SWITCH picks the rate; multiply the order by it.
+      rule: The last value in SWITCH, 10%, is the fallback for any other region.
+    misses:
+      value: Shipping to the US on 200 is 16.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SWITCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2*SWITCH(C2,"EU",5%,"US",8%,"UK",3%,10%)
+      - =SWITCH(C2,"EU",B2*5%,"US",B2*8%,"UK",B2*3%,B2*10%)
+    reject:
+      - formula: =SWITCH(C2,"EU",5%,"US",8%,"UK",3%,10%)
+        rule: value
+      - formula: =B2*8%
+        rule: required-function
+      - formula: =16
+        rule: required-function
+      - formula: =B2*SWITCH(C2,"EU",5%,"US",8%,"UK",3%,10%
+        rule: syntax

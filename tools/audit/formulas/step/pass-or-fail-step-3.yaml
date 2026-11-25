@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF($B$3>=$F$1,"Pass","Fail")
+      - =IF(B$3>=$F$1,"Pass","Fail")
+      - =if(b3>=$f$1, "Pass", "Fail")
+    wrong: []
+    equivalent: []

@@ -1,0 +1,54 @@
+id: sum-functions-summary-step-5
+slug: sum-functions-summary-step-5
+level: 3
+title: Net total without internal transfers
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sum-functions-summary
+step: 5
+screens:
+  - prompt: In E2, what is the net total of the ledger, leaving out internal transfers? Refunds are negative and do count.
+    rows:
+      - [Line, Type, Amount, null, Net total]
+      - ["1", Sale, 420, null, null]
+      - ["2", Transfer, 1000, null, null]
+      - ["3", Sale, 275, null, null]
+      - ["4", Refund, -60, null, null]
+      - ["5", Sale, 310, null, null]
+      - ["6", Transfer, -1000, null, null]
+      - ["7", Fee, -25, null, null]
+      - ["8", Sale, 190, null, null]
+      - ["9", Transfer, 500, null, null]
+      - ["10", Refund, -45, null, null]
+      - ["11", Sale, 360, null, null]
+      - ["12", Fee, -15, null, null]
+      - ["13", Sale, 240, null, null]
+      - ["14", Transfer, -250, null, null]
+      - ["15", Sale, 130, null, null]
+    answerCell: E2
+    expected: 1780
+    variants:
+      - set: { B3: Sale }
+        expected: 2780
+    answer: =SUMIF(B2:B16,"<>Transfer",C2:C16)
+    requiredFunctions: []
+    hints:
+      nudge: Keep every type except Transfer, refunds and fees included.
+      rule: SUMIF(B2:B16,"<>Transfer",C2:C16) adds every line whose type is not Transfer.
+    misses:
+      value: The net total without transfers is 1780.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(B2:B16,"<>Transfer",C2:C16)
+      - =SUM(C2:C16)-SUMIF(B2:B16,"Transfer",C2:C16)
+    reject:
+      - formula: =SUM(C2:C16)
+        rule: value
+      - formula: =SUMIF(C2:C16,">0")
+        rule: value
+      - formula: =1780
+        rule: reference
+      - formula: =SUMIF(B2:B16,"<>Transfer",C2:C16
+        rule: syntax

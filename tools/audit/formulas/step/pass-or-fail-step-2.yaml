@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF($B$2<20,"Reorder","OK")
+      - =IF(B$2<20,"Reorder","OK")
+      - =if(b2<20, "Reorder", "OK")
+    wrong:
+      - formula: =IF(B2<=20,"Reorder","OK")
+        rule: fragile
+        why: < written as <=
+      - formula: =IF(B2<21,"Reorder","OK")
+        rule: fragile
+        why: 20 written as 21
+      - formula: =IF(B2<19,"Reorder","OK")
+        rule: fragile
+        why: 20 written as 19
+    equivalent: []

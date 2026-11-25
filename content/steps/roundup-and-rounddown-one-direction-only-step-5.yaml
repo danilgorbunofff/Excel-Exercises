@@ -1,0 +1,47 @@
+id: roundup-and-rounddown-one-direction-only-step-5
+slug: roundup-and-rounddown-one-direction-only-step-5
+level: 3
+title: Buses needed for a trip
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: roundup-and-rounddown-one-direction-only
+step: 5
+screens:
+  - prompt: In E2, how many buses are needed? B2 holds the number of travellers, B3 the seats on a bus and B4 the seats on each bus kept for staff.
+    rows:
+      - [Trip, null, null, null, Buses]
+      - [Travellers, 240, null, null, null]
+      - [Seats per bus, 52, null, null, null]
+      - [Staff seats per bus, 5, null, null, null]
+    answerCell: E2
+    expected: 6
+    variants:
+      - set: { B2: 300 }
+        expected: 7
+      - set: { B4: 2 }
+        expected: 5
+      - set: { B2: 235 }
+        expected: 5
+    answer: =ROUNDUP(B2/(B3-B4),0)
+    requiredFunctions: []
+    hints:
+      nudge: Only the seats left after the staff seats carry travellers, and a part-full bus still goes.
+      rule: B3-B4 is the travellers each bus can take; ROUNDUP of B2 divided by that gives whole buses.
+    misses:
+      value: The trip needs 6 buses.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUNDUP(B2/(B3-B4),0)
+      - =CEILING(B2/(B3-B4),1)
+      - =-INT(-B2/(B3-B4))
+    reject:
+      - formula: =ROUNDUP(B2/B3,0)
+        rule: value
+      - formula: =ROUND(B2/(B3-B4),0)
+        rule: value
+      - formula: =6
+        rule: reference
+      - formula: =ROUNDUP(B2/(B3-B4),0
+        rule: syntax

@@ -1,0 +1,44 @@
+id: true-and-false-what-a-comparison-returns-step-5
+slug: true-and-false-what-a-comparison-returns-step-5
+level: 3
+title: Did sales grow every month
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: true-and-false-what-a-comparison-returns
+step: 5
+screens:
+  - prompt: In D2, did sales grow every month from January to June, each month above the one before? Show TRUE or FALSE.
+    rows:
+      - [Month, Sales, null, Grew every month, null]
+      - [Jan, 410, null, null, null]
+      - [Feb, 425, null, null, null]
+      - [Mar, 440, null, null, null]
+      - [Apr, 462, null, null, null]
+      - [May, 470, null, null, null]
+      - [Jun, 495, null, null, null]
+    answerCell: D2
+    expected: true
+    variants:
+      - { set: { B5: 420 }, expected: false }
+      - { set: { B3: 400 }, expected: false }
+      - { set: { B3: 410 }, expected: false }
+    answer: =AND(B3:B7>B2:B6)
+    requiredFunctions: []
+    hints:
+      nudge: Compare each month with the month above it, all at once.
+      rule: B3:B7>B2:B6 compares each month with the one before; AND is TRUE only if every comparison is.
+    misses:
+      value: The answer is true. Every month must beat the month before it.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AND(B3:B7>B2:B6)
+      - =SUMPRODUCT(--(B3:B7<=B2:B6))=0
+      - =AND(B3>B2,B4>B3,B5>B4,B6>B5,B7>B6)
+    reject:
+      - formula: =B7>B2
+        rule: fragile
+      - formula: =AND(B3>B2,B7>B6)
+        rule: fragile
+      - formula: =AND(B3:B7>B2:B6
+        rule: syntax

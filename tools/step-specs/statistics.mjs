@@ -3,7 +3,13 @@
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 2 at step 3.
 const fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(2));
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 const sales = [
   ["Rep", "Sales", null, null, null],
@@ -78,7 +84,13 @@ export default [
   }),
   step("large-and-small-the-nth-highest", 4, 2, "The nth-best sale from a cell", {
     prompt: "In E2, find the sale at the place typed in E1, counting from the highest. Use LARGE.",
-    rows: salesWith(null).map((r, i) => (i === 0 ? ["Rep", "Sales", null, "Place", 4] : i === 1 ? ["Ana", 4200, null, "Sale", null] : r)),
+    rows: salesWith(null).map((r, i) =>
+      i === 0
+        ? ["Rep", "Sales", null, "Place", 4]
+        : i === 1
+          ? ["Ana", 4200, null, "Sale", null]
+          : r,
+    ),
     cell: "E2",
     answer: "=LARGE(B2:B16,E1)",
     required: ["LARGE"],
@@ -155,7 +167,8 @@ export default [
     value: (e) => `The median bill is ${e}.`,
   }),
   step("median-the-middle-value", 4, 2, "How far one big value pulls the average", {
-    prompt: "In E2, work out how much higher the average sale is than the median sale: the average minus the median. Use AVERAGE and MEDIAN.",
+    prompt:
+      "In E2, work out how much higher the average sale is than the median sale: the average minus the median. Use AVERAGE and MEDIAN.",
     rows: [
       ["Sale", "Amount", null, null, null],
       ["1", 120, null, null, "Average minus median"],
@@ -168,7 +181,13 @@ export default [
       ["8", 115, null, null, null],
       ["9", 100, null, null, null],
       ["10", 125, null, null, null],
-    ].map((r, i) => (i === 0 ? ["Sale", "Amount", null, null, "Average minus median"] : i === 1 ? ["1", 120, null, null, null] : r)),
+    ].map((r, i) =>
+      i === 0
+        ? ["Sale", "Amount", null, null, "Average minus median"]
+        : i === 1
+          ? ["1", 120, null, null, null]
+          : r,
+    ),
     cell: "E2",
     answer: "=AVERAGE(B2:B11)-MEDIAN(B2:B11)",
     required: ["AVERAGE", "MEDIAN"],
@@ -289,7 +308,8 @@ export default [
     value: (e) => `The most common size appears ${e} times.`,
   }),
   step("mode-the-most-common-value", 5, 3, "Most common quantity on completed orders", {
-    prompt: "In F2, what order quantity comes up most often among the orders marked Done? Ignore the others.",
+    prompt:
+      "In F2, what order quantity comes up most often among the orders marked Done? Ignore the others.",
     rows: [
       ["Order", "Qty", "Status", null, null, null],
       ["O-01", 4, "Done", null, null, null],
@@ -388,11 +408,20 @@ export default [
   }),
   step("rank-a-list-without-sorting-it", 5, 3, "Place of the rep named in a cell", {
     prompt: "In E2, what place in sales, highest first, does the rep named in E1 hold?",
-    rows: salesWith(null).map((r, i) => (i === 0 ? ["Rep", "Sales", null, "Rep", "Hu"] : i === 1 ? ["Ana", 4200, null, "Place", null] : r)),
+    rows: salesWith(null).map((r, i) =>
+      i === 0
+        ? ["Rep", "Sales", null, "Rep", "Hu"]
+        : i === 1
+          ? ["Ana", 4200, null, "Place", null]
+          : r,
+    ),
     cell: "E2",
     answer: "=RANK(XLOOKUP(E1,A2:A16,B2:B16),B2:B16)",
     required: [],
-    accept: ["=RANK(INDEX(B2:B16,MATCH(E1,A2:A16,0)),B2:B16)", "=COUNTIF(B2:B16,\">\"&VLOOKUP(E1,A2:B16,2,FALSE))+1"],
+    accept: [
+      "=RANK(INDEX(B2:B16,MATCH(E1,A2:A16,0)),B2:B16)",
+      '=COUNTIF(B2:B16,">"&VLOOKUP(E1,A2:B16,2,FALSE))+1',
+    ],
     variants: [{ E1: "Ed" }, { B9: 6500 }],
     reject: [
       ["=RANK(B9,B2:B16)", "fragile"],

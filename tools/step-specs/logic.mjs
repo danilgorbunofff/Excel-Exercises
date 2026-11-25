@@ -94,7 +94,8 @@ export default [
 
   // sales-bonus (level 2, step 3)
   step("sales-bonus", 1, 1, "A flat bonus over a target", {
-    prompt: "In C2, give a bonus of 100 when the sales in B2 are over 5,000, and 0 otherwise. Use IF.",
+    prompt:
+      "In C2, give a bonus of 100 when the sales in B2 are over 5,000, and 0 otherwise. Use IF.",
     rows: [
       ["Rep", "Sales", "Bonus"],
       ["Ana", 6200, null],
@@ -175,7 +176,7 @@ export default [
   // both-scores-pass (level 2, step 3)
   step("both-scores-pass", 1, 1, "Both checks done", {
     prompt:
-      'In D2, show TRUE when the box is both checked and packed, that is when B2 and C2 both say Yes. Use AND.',
+      "In D2, show TRUE when the box is both checked and packed, that is when B2 and C2 both say Yes. Use AND.",
     rows: [
       ["Item", "Checked", "Packed", "Ready"],
       ["Box 1", "Yes", "Yes", null],
@@ -256,7 +257,8 @@ export default [
 
   // free-delivery (level 2, step 3)
   step("free-delivery", 1, 1, "Works at the weekend", {
-    prompt: "In D2, show TRUE when Ana works on Saturday or on Sunday, that is when either B2 or C2 says Yes. Use OR.",
+    prompt:
+      "In D2, show TRUE when Ana works on Saturday or on Sunday, that is when either B2 or C2 says Yes. Use OR.",
     rows: [
       ["Name", "Saturday", "Sunday", "Weekend"],
       ["Ana", "No", "Yes", null],
@@ -334,7 +336,8 @@ export default [
 
   // true-and-false-what-a-comparison-returns (level 2, step 3)
   step("true-and-false-what-a-comparison-returns", 1, 1, "Did the rep hit the target", {
-    prompt: "In C2, answer TRUE when the sales in B2 are at least the target of 500, with a comparison only.",
+    prompt:
+      "In C2, answer TRUE when the sales in B2 are at least the target of 500, with a comparison only.",
     rows: [
       ["Rep", "Sales", "Hit target"],
       ["Ana", 500, null],
@@ -392,7 +395,8 @@ export default [
     value: (e) => `The costs add up to exactly the budget, so B8 should show ${e}.`,
   }),
   step("true-and-false-what-a-comparison-returns", 5, 3, "Did sales grow every month", {
-    prompt: "In D2, did sales grow every month from January to June, each month above the one before? Show TRUE or FALSE.",
+    prompt:
+      "In D2, did sales grow every month from January to June, each month above the one before? Show TRUE or FALSE.",
     rows: [
       ["Month", "Sales", null, "Grew every month", null],
       ["Jan", 410, null, null, null],
@@ -418,7 +422,8 @@ export default [
 
   // and-or-not-combining-tests (level 3, step 4)
   step("and-or-not-combining-tests", 1, 1, "Not discontinued", {
-    prompt: "In C2, answer TRUE when the lamp is not discontinued, that is when B2 does not say Yes. Use NOT.",
+    prompt:
+      "In C2, answer TRUE when the lamp is not discontinued, that is when B2 does not say Yes. Use NOT.",
     rows: [
       ["Item", "Discontinued", "Can sell"],
       ["Lamp", "No", null],
@@ -472,7 +477,8 @@ export default [
       ['=OR(B2="Yes",C2>100)', "required-function"],
       ['=AND(B2="Yes",C2>100,D2="Card")', "required-function"],
     ],
-    nudge: "The large card order is one test made of two parts: put those in AND, then OR it with membership.",
+    nudge:
+      "The large card order is one test made of two parts: put those in AND, then OR it with membership.",
     rule: 'OR(B2="Yes",AND(C2>100,D2="Card")) is TRUE for a member, or for a card order over 100.',
     value: (e) => `This card order is over 100, so E2 should show ${e}.`,
   }),
@@ -499,7 +505,8 @@ export default [
 
   // ifs-more-than-two-outcomes (level 2, step 3)
   step("ifs-more-than-two-outcomes", 1, 1, "Small or large", {
-    prompt: "In C2, show Small when the weight in B2 is under 10, and Large otherwise. Use IFS with TRUE as the last test.",
+    prompt:
+      "In C2, show Small when the weight in B2 is under 10, and Large otherwise. Use IFS with TRUE as the last test.",
     rows: [
       ["Item", "Weight", "Size"],
       ["Box", 7, null],
@@ -684,7 +691,8 @@ export default [
     value: (e) => `B2 holds the word pending, so C2 should show ${e}.`,
   }),
   step("isblank-isnumber-istext", 4, 2, "Flag a missing email", {
-    prompt: "In D2, show Missing when the email in C2 is empty, and OK when it is not. Use IF and ISBLANK.",
+    prompt:
+      "In D2, show Missing when the email in C2 is empty, and OK when it is not. Use IF and ISBLANK.",
     rows: [
       ["Name", "Phone", "Email", "Check"],
       ["Ben", "0711 223", null, null],
@@ -725,7 +733,10 @@ export default [
     cell: "E2",
     answer: '=SUMPRODUCT((A2:A16<>"")*NOT(ISNUMBER(B2:B16)))',
     required: [],
-    accept: ['=SUMPRODUCT(--(A2:A16<>""),--NOT(ISNUMBER(B2:B16)))', '=COUNTA(A2:A16)-COUNTIFS(A2:A16,"<>",B2:B16,">-1E+300")'],
+    accept: [
+      '=SUMPRODUCT(--(A2:A16<>""),--NOT(ISNUMBER(B2:B16)))',
+      '=COUNTA(A2:A16)-COUNTIFS(A2:A16,"<>",B2:B16,">-1E+300")',
+    ],
     variants: [{ B3: 50 }, { A6: "C-05" }],
     reject: [
       ["=COUNTA(B2:B16)-COUNT(B2:B16)", "value"],
@@ -804,7 +815,7 @@ export default [
       ['=IF(COUNT(C2:C7)=0,"none",AVERAGE(C2:C7))', "required-function"],
     ],
     nudge: "Test for any prices first, then round the average.",
-    rule: 'COUNT(C2:C7)=0 catches a list with no prices; otherwise ROUND(AVERAGE(C2:C7),2) gives the average to 2 decimals.',
+    rule: "COUNT(C2:C7)=0 catches a list with no prices; otherwise ROUND(AVERAGE(C2:C7),2) gives the average to 2 decimals.",
     value: (e) => `The average of the four prices, to 2 decimals, is ${e}.`,
   }),
   step("logical-functions-summary", 5, 3, "Reorder flags for every item", {
@@ -830,6 +841,7 @@ export default [
     ],
     nudge: "Compare whole columns at once; multiplying two tests works like AND row by row.",
     rule: '(B2:B7<C2:C7)*(D2:D7<>"Yes") is 1 only where both tests pass, so IF spills REORDER or OK for each item.',
-    value: () => "Each item needs its own answer: REORDER only when stock is below the level and it is still sold.",
+    value: () =>
+      "Each item needs its own answer: REORDER only when stock is below the level and it is still sold.",
   }),
 ];

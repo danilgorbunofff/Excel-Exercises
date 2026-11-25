@@ -1,0 +1,55 @@
+id: large-and-small-the-nth-highest-step-4
+slug: large-and-small-the-nth-highest-step-4
+level: 2
+title: The nth-best sale from a cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: large-and-small-the-nth-highest
+step: 4
+screens:
+  - prompt: In E2, find the sale at the place typed in E1, counting from the highest. Use LARGE.
+    rows:
+      - [Rep, Sales, null, Place, 4]
+      - [Ana, 4200, null, Sale, null]
+      - [Ben, 3150, null, null, null]
+      - [Cy, 5800, null, null, null]
+      - [Di, 2900, null, null, null]
+      - [Ed, 4750, null, null, null]
+      - [Flo, 6100, null, null, null]
+      - [Gil, 3600, null, null, null]
+      - [Hu, 5200, null, null, null]
+      - [Ida, 2750, null, null, null]
+      - [Jo, 4400, null, null, null]
+      - [Kai, 3900, null, null, null]
+      - [Lee, 5500, null, null, null]
+      - [Mo, 3300, null, null, null]
+      - [Nia, 4950, null, null, null]
+      - [Ola, 3050, null, null, null]
+    answerCell: E2
+    expected: 5200
+    variants:
+      - { set: { E1: 2 }, expected: 5800 }
+      - { set: { B2: 5800, B16: 5800 }, expected: 5800 }
+    answer: =LARGE(B2:B16,E1)
+    requiredFunctions:
+      - LARGE
+    hints:
+      nudge: Point LARGE's second part at E1.
+      rule: LARGE(B2:B16,E1) gives whichever place is typed in E1.
+    misses:
+      value: The sale at that place is 5200.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for LARGE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =LARGE(B2:B16,E1)
+      - =LARGE($B$2:$B$16,$E$1)
+    reject:
+      - formula: =LARGE(B2:B16,4)
+        rule: fragile
+      - formula: =SMALL(B2:B16,E1)
+        rule: required-function
+      - formula: =5200
+        rule: required-function
+      - formula: =LARGE(B2:B16,E1
+        rule: syntax

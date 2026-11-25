@@ -1,0 +1,29 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF($A$2:$A$10,"North",$B$2:$B$10)+SUMIF($A$2:$A$10,"East",$B$2:$B$10)
+      - =SUMIF(A$2:A$10,"North",B2:B10)+SUMIF(A2:A10,"East",B2:B10)
+      - =sumif(a2:a10, "North", b2:b10)+sumif(a2:a10, "East", b2:b10)
+      - =SUMIFS(B2:B10,A2:A10,"North")+SUMIF(A2:A10,"East",B2:B10)
+      - =SUMPRODUCT((A2:A10="North")*B2:B10)+SUMIF(A2:A10,"East",B2:B10)
+      - =SUM(FILTER(B2:B10,(A2:A10="North"),0))+SUMIF(A2:A10,"East",B2:B10)
+      - =SUMIF(A2:A10,"North",B2:B10)+SUMIFS(B2:B10,A2:A10,"East")
+      - =SUMIF(A2:A10,"North",B2:B10)+SUMPRODUCT((A2:A10="East")*B2:B10)
+      - =SUMIF(A2:A10,"North",B2:B10)+SUM(FILTER(B2:B10,(A2:A10="East"),0))
+      - =LET(data,A2:A10,SUMIF(data,"North",B2:B10)+SUMIF(data,"East",B2:B10))
+    wrong:
+      - formula: =SUMIF(A2:A9,"North",B2:B10)+SUMIF(A2:A10,"East",B2:B10)
+        rule: fragile
+        why: range A2:A10 one row short at the end
+      - formula: =SUMIF(A2:A10,"North",B2:B10)+SUMIF(A2:A9,"East",B2:B10)
+        rule: fragile
+        why: range A2:A10 one row short at the end
+    equivalent:
+      - formula: =SUMIF(A2:A11,"North",B2:B10)+SUMIF(A2:A10,"East",B2:B10)
+        why: "range A2:A10 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =SUMIF(A2:A10,"North",B2:B11)+SUMIF(A2:A10,"East",B2:B10)
+        why: "range B2:B10 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =SUMIF(A2:A10,"North",B2:B10)+SUMIF(A2:A11,"East",B2:B10)
+        why: "range A2:A10 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =SUMIF(A2:A10,"North",B2:B10)+SUMIF(A2:A10,"East",B2:B11)
+        why: "range B2:B10 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

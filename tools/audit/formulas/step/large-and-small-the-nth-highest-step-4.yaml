@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LARGE(B$2:B$16,E1)
+      - =large(b2:b16, e1)
+      - =LET(data,B2:B16,LARGE(data,E1))
+    wrong:
+      - formula: =LARGE(B2:B15,E1)
+        rule: fragile
+        why: range B2:B16 one row short at the end
+      - formula: =LARGE(B3:B16,E1)
+        rule: fragile
+        why: range B2:B16 skips its first row
+    equivalent: []

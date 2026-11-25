@@ -1,0 +1,43 @@
+id: ifs-more-than-two-outcomes-step-5
+slug: ifs-more-than-two-outcomes-step-5
+level: 3
+title: Order cost with volume prices
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: ifs-more-than-two-outcomes
+step: 5
+screens:
+  - prompt: In C2, what does an order of B2 units cost? Each unit is 5.00 for 1 to 9 units, 4.50 for 10 to 49 and 4.00 for 50 or more.
+    rows:
+      - [Order, Units, Cost]
+      - [O-3, 24, null]
+    answerCell: C2
+    expected: 108
+    variants:
+      - { set: { B2: 50 }, expected: 200 }
+      - { set: { B2: 9 }, expected: 45 }
+      - { set: { B2: 10 }, expected: 45 }
+      - { set: { B2: 49 }, expected: 220.5 }
+    answer: =B2*IFS(B2>=50,4,B2>=10,4.5,TRUE,5)
+    requiredFunctions: []
+    hints:
+      nudge: Pick the unit price from the number of units, then multiply.
+      rule: IFS picks the unit price, highest volume first; multiplying by B2 gives the cost.
+    misses:
+      value: "24 units cost 108: each at 4.50."
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2*IFS(B2>=50,4,B2>=10,4.5,TRUE,5)
+      - =B2*IF(B2>=50,4,IF(B2>=10,4.5,5))
+      - =IFS(B2>=50,B2*4,B2>=10,B2*4.5,TRUE,B2*5)
+    reject:
+      - formula: =B2*4.5
+        rule: fragile
+      - formula: =B2*IFS(B2>50,4,B2>10,4.5,TRUE,5)
+        rule: fragile
+      - formula: =108
+        rule: reference
+      - formula: =B2*IFS(B2>=50,4,B2>=10,4.5,TRUE,5
+        rule: syntax

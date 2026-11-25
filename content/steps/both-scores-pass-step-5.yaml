@@ -1,0 +1,39 @@
+id: both-scores-pass-step-5
+slug: both-scores-pass-step-5
+level: 3
+title: Parcel within the size limits
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: both-scores-pass
+step: 5
+screens:
+  - prompt: In F2, can the parcel go by standard post? It must weigh 30 kg or less and no side may be longer than 100 cm. Show TRUE or FALSE.
+    rows:
+      - [Parcel, Weight, Length, Width, Height, Standard post]
+      - [P-1, 24, 95, 60, 90, null]
+    answerCell: F2
+    expected: true
+    variants:
+      - { set: { E2: 102 }, expected: false }
+      - { set: { B2: 31 }, expected: false }
+      - { set: { D2: 101 }, expected: false }
+      - { set: { B2: 30, C2: 100 }, expected: true }
+    answer: =AND(B2<=30,MAX(C2:E2)<=100)
+    requiredFunctions: []
+    hints:
+      nudge: The longest side is the one that matters for the size rule.
+      rule: MAX(C2:E2)<=100 checks every side at once; AND joins it with the weight test.
+    misses:
+      value: The parcel's answer is true. Check the weight and every side.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AND(B2<=30,MAX(C2:E2)<=100)
+      - =AND(B2<=30,C2<=100,D2<=100,E2<=100)
+    reject:
+      - formula: =AND(B2<=30,C2<=100)
+        rule: fragile
+      - formula: =B2<=30
+        rule: fragile
+      - formula: =AND(B2<=30,MAX(C2:E2)<=100
+        rule: syntax

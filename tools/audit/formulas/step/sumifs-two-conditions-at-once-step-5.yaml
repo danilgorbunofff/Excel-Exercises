@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIFS($D$2:$D$16,$B$2:$B$16,"Widget",$C$2:$C$16,"Shipped",$D$2:$D$16,">0")
+      - =SUMIFS(D$2:D$16,B2:B16,"Widget",C2:C16,"Shipped",D2:D16,">0")
+      - =sumifs(d2:d16, b2:b16, "Widget", c2:c16, "Shipped", d2:d16, ">0")
+      - =SUM(FILTER(D2:D16,(B2:B16="Widget")*(C2:C16="Shipped")*(D2:D16>0),0))
+      - =LET(data,D2:D16,SUMIFS(data,B2:B16,"Widget",C2:C16,"Shipped",data,">0"))
+    wrong: []
+    equivalent:
+      - formula: =SUMIFS(D2:D16,B2:B16,"Widget",C2:C16,"Shipped",D2:D16,">=0")
+        why: 'criteria ">0" written with >=: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed).'

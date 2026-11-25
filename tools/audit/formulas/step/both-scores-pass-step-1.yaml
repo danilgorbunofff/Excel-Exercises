@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AND($B$2="Yes",$C$2="Yes")
+      - =AND(B$2="Yes",C2="Yes")
+      - =and(b2="Yes", c2="Yes")
+    wrong:
+      - formula: =AND(C2="Yes",C2="Yes")
+        rule: fragile
+        why: B2 read from the next column
+    equivalent: []

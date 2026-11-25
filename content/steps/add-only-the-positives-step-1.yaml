@@ -1,0 +1,48 @@
+id: add-only-the-positives-step-1
+slug: add-only-the-positives-step-1
+level: 1
+title: Total the money paid in
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: add-only-the-positives
+step: 1
+screens:
+  - prompt: Money in is positive and money out negative. In B9, add up the money paid in. Use SUMIF.
+    rows:
+      - [Line, Amount]
+      - ["1", 250]
+      - ["2", -80]
+      - ["3", 120]
+      - ["4", -45]
+      - ["5", 300]
+      - ["6", -20]
+      - [null, null]
+      - [Paid in, null]
+    answerCell: B9
+    expected: 670
+    variants:
+      - { set: { B3: 80 }, expected: 750 }
+      - { set: { B7: 250 }, expected: 920 }
+    answer: =SUMIF(B2:B7,">0")
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: "Test the amounts themselves: only those above 0."
+      rule: SUMIF(B2:B7,">0") adds the cells it tests that are above 0.
+    misses:
+      value: The money paid in adds up to 670.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(B2:B7,">0")
+      - =SUMIF(B2:B7,">0",B2:B7)
+    reject:
+      - formula: =SUM(B2:B7)
+        rule: required-function
+      - formula: =SUMIF(B2:B7,"<0")
+        rule: value
+      - formula: =670
+        rule: required-function
+      - formula: =SUMIF(B2:B7,">0"
+        rule: syntax

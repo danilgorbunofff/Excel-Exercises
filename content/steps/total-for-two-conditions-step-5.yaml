@@ -1,0 +1,56 @@
+id: total-for-two-conditions-step-5
+slug: total-for-two-conditions-step-5
+level: 3
+title: North pen units in the first quarter
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: total-for-two-conditions
+step: 5
+screens:
+  - prompt: In G2, how many units of Pens did the North sell in the first quarter, months 1 to 3?
+    rows:
+      - [Region, Product, Month, Units, null, null, null]
+      - [North, Pens, 1, 40, null, "North pens, Q1", null]
+      - [North, Paper, 1, 25, null, null, null]
+      - [South, Pens, 2, 30, null, null, null]
+      - [North, Pens, 2, 15, null, null, null]
+      - [North, Pens, 4, 22, null, null, null]
+      - [South, Paper, 3, 20, null, null, null]
+      - [North, Pens, 3, 18, null, null, null]
+      - [North, Paper, 3, 10, null, null, null]
+      - [North, Pens, 5, 26, null, null, null]
+      - [South, Pens, 1, 14, null, null, null]
+      - [North, Pens, 3, 9, null, null, null]
+      - [East, Pens, 2, 31, null, null, null]
+      - [North, Pens, 6, 12, null, null, null]
+      - [North, Paper, 2, 16, null, null, null]
+      - [South, Pens, 3, 11, null, null, null]
+    answerCell: G2
+    expected: 82
+    variants:
+      - set: { C6: 3 }
+        expected: 104
+      - set: { D8: 30 }
+        expected: 94
+    answer: =SUMIFS(D2:D16,A2:A16,"North",B2:B16,"Pens",C2:C16,"<=3")
+    requiredFunctions: []
+    hints:
+      nudge: "Three tests: the region, the product and a month of 3 or less."
+      rule: 'SUMIFS takes as many test pairs as needed: C2:C16,"<=3" keeps months 1 to 3.'
+    misses:
+      value: North sold 82 units of Pens in months 1 to 3.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIFS(D2:D16,A2:A16,"North",B2:B16,"Pens",C2:C16,"<=3")
+      - =SUMPRODUCT((A2:A16="North")*(B2:B16="Pens")*(C2:C16<=3)*D2:D16)
+    reject:
+      - formula: =SUMIFS(D2:D16,A2:A16,"North",B2:B16,"Pens")
+        rule: value
+      - formula: =SUMIFS(D2:D16,A2:A16,"North",B2:B16,"Pens",C2:C16,"<3")
+        rule: value
+      - formula: =82
+        rule: reference
+      - formula: =SUMIFS(D2:D16,A2:A16,"North",B2:B16,"Pens",C2:C16,"<=3"
+        rule: syntax

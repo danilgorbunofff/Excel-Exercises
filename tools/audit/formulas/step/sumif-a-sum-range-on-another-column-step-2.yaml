@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF(B$2:B$9,">10",C2:C9)
+      - =sumif(b2:b9, ">10", c2:c9)
+      - =LET(data,B2:B9,SUMIF(data,">10",C2:C9))
+    wrong: []
+    equivalent:
+      - formula: =SUMIF(B2:B10,">10",C2:C9)
+        why: "range B2:B9 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =SUMIF(B2:B9,">10",C2:C10)
+        why: "range C2:C9 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

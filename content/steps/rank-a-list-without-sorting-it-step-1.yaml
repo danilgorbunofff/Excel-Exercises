@@ -1,0 +1,48 @@
+id: rank-a-list-without-sorting-it-step-1
+slug: rank-a-list-without-sorting-it-step-1
+level: 1
+title: Rank a score, highest first
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: rank-a-list-without-sorting-it
+step: 1
+screens:
+  - prompt: In C4, show Cy's place, with the highest score as place 1. Use RANK.
+    rows:
+      - [Player, Score, Place]
+      - [Ana, 72, null]
+      - [Ben, 88, null]
+      - [Cy, 79, null]
+      - [Di, 91, null]
+      - [Ed, 65, null]
+      - [Flo, 84, null]
+      - [Gil, 70, null]
+    answerCell: C4
+    expected: 4
+    variants:
+      - { set: { B4: 90 }, expected: 2 }
+      - { set: { B4: 65 }, expected: 6 }
+    answer: =RANK(B4,B2:B8)
+    requiredFunctions:
+      - RANK
+    hints:
+      nudge: RANK takes the value to place, then the whole list.
+      rule: RANK(B4,B2:B8) gives Cy's place, highest first.
+    misses:
+      value: Cy is in place 4.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for RANK.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =RANK(B4,B2:B8)
+      - =RANK(B4,$B$2:$B$8)
+      - =RANK(B4,B2:B8,0)
+    reject:
+      - formula: =RANK(B4,B2:B8,1)
+        rule: fragile
+      - formula: =RANK(B2,B2:B8)
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =RANK(B4,B2:B8
+        rule: syntax

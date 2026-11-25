@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUM($B$2:$B$6)<=$E$1
+      - =SUM(B$2:B$6)<=E1
+      - =sum(b2:b6)<=e1
+      - =LET(data,B2:B6,SUM(data)<=E1)
+    wrong: []
+    equivalent:
+      - formula: =SUM(B2:B7)<=E1
+        why: "range B2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

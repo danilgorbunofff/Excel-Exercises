@@ -1,0 +1,48 @@
+id: sumif-a-sum-range-on-another-column-step-4
+slug: sumif-a-sum-range-on-another-column-step-4
+level: 2
+title: Hours for the rep named in a cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sumif-a-sum-range-on-another-column
+step: 4
+screens:
+  - prompt: In G2, add up the hours in column D for the person typed in G1, who appears in column B. Use SUMIF.
+    rows:
+      - [Date, Person, Task, Hours, null, Person, Ben]
+      - [Mon, Ana, Calls, 3, null, Hours, null]
+      - [Mon, Ben, Visits, 5, null, null, null]
+      - [Tue, Ana, Admin, 2, null, null, null]
+      - [Tue, Ben, Calls, 4, null, null, null]
+      - [Wed, Cy, Visits, 6, null, null, null]
+      - [Wed, Ben, Admin, 1.5, null, null, null]
+      - [Thu, Ana, Visits, 4, null, null, null]
+      - [Fri, Ben, Calls, 3.5, null, null, null]
+    answerCell: G2
+    expected: 14
+    variants:
+      - set: { G1: Ana }
+        expected: 9
+    answer: =SUMIF(B2:B9,G1,D2:D9)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: Test column B against G1, add column D.
+      rule: SUMIF(B2:B9,G1,D2:D9) totals the hours of whoever is typed in G1.
+    misses:
+      value: The person in G1 worked 14 hours.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(B2:B9,G1,D2:D9)
+      - =SUMIF($B$2:$B$9,$G$1,$D$2:$D$9)
+    reject:
+      - formula: =SUMIF(B2:B9,"Ben",D2:D9)
+        rule: fragile
+      - formula: =SUMIF(B2:B9,G1,C2:C9)
+        rule: value
+      - formula: =14
+        rule: required-function
+      - formula: =SUMIF(B2:B9,G1,D2:D9
+        rule: syntax

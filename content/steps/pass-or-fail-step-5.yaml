@@ -1,0 +1,44 @@
+id: pass-or-fail-step-5
+slug: pass-or-fail-step-5
+level: 3
+title: Pass overall on three tests
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: pass-or-fail
+step: 5
+screens:
+  - prompt: In E2, does Ana pass overall? A pass needs an average of 50 or more across the three tests and no single test below 40. Show Pass or Fail.
+    rows:
+      - [Student, Test 1, Test 2, Test 3, Result]
+      - [Ana, 72, 48, 65, null]
+    answerCell: E2
+    expected: Pass
+    variants:
+      - { set: { C2: 38 }, expected: Fail }
+      - { set: { B2: 45, C2: 42, D2: 50 }, expected: Fail }
+      - { set: { D2: 39 }, expected: Fail }
+      - { set: { B2: 50, D2: 50 }, expected: Fail }
+      - { set: { B2: 40 }, expected: Pass }
+      - { set: { B2: 51, D2: 51 }, expected: Pass }
+    answer: =IF(AND(AVERAGE(B2:D2)>=50,MIN(B2:D2)>=40),"Pass","Fail")
+    requiredFunctions: []
+    hints:
+      nudge: "Two tests must both hold: the average and the lowest score."
+      rule: AND(AVERAGE(B2:D2)>=50,MIN(B2:D2)>=40) is TRUE only when both rules hold; IF turns it into "Pass" or "Fail".
+    misses:
+      value: Ana's result is Pass. Check both the average and the lowest test.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(AND(AVERAGE(B2:D2)>=50,MIN(B2:D2)>=40),"Pass","Fail")
+      - =IF(OR(AVERAGE(B2:D2)<50,MIN(B2:D2)<40),"Fail","Pass")
+    reject:
+      - formula: =IF(AVERAGE(B2:D2)>=50,"Pass","Fail")
+        rule: fragile
+      - formula: =IF(MIN(B2:D2)>=40,"Pass","Fail")
+        rule: fragile
+      - formula: ="Pass"
+        rule: reference
+      - formula: =IF(AND(AVERAGE(B2:D2)>=50,MIN(B2:D2)>=40),"Pass","Fail"
+        rule: syntax

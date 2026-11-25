@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF(B$2:B$9,"<"&E1)
+      - =countif(b2:b9, "<"&e1)
+      - =LET(data,B2:B9,COUNTIF(data,"<"&E1))
+    wrong:
+      - formula: =COUNTIF(B3:B9,"<"&E1)
+        rule: fragile
+        why: range B2:B9 skips its first row
+    equivalent: []

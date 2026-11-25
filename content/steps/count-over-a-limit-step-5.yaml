@@ -1,0 +1,55 @@
+id: count-over-a-limit-step-5
+slug: count-over-a-limit-step-5
+level: 3
+title: Share of invoices over the approval limit
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-over-a-limit
+step: 5
+screens:
+  - prompt: In E2, what share of the invoices are over the approval limit in E1? Give a fraction such as 0.5. Some invoices are still to be priced and show tbc.
+    rows:
+      - [Invoice, Amount, null, Limit, 500]
+      - [INV-01, 420, null, Share over, null]
+      - [INV-02, 610, null, null, null]
+      - [INV-03, tbc, null, null, null]
+      - [INV-04, 150, null, null, null]
+      - [INV-05, 980, null, null, null]
+      - [INV-06, 500, null, null, null]
+      - [INV-07, 275, null, null, null]
+      - [INV-08, 1200, null, null, null]
+      - [INV-09, tbc, null, null, null]
+      - [INV-10, 340, null, null, null]
+      - [INV-11, 515, null, null, null]
+      - [INV-12, 90, null, null, null]
+      - [INV-13, 760, null, null, null]
+      - [INV-14, 430, null, null, null]
+      - [INV-15, 205, null, null, null]
+    answerCell: E2
+    expected: 0.384615384615
+    variants:
+      - { set: { E1: 400 }, expected: 0.615384615385 }
+      - { set: { B4: 700 }, expected: 0.428571428571 }
+      - { set: { B16: 610 }, expected: 0.46153846153846156 }
+    answer: =COUNTIF(B2:B16,">"&E1)/COUNT(B2:B16)
+    requiredFunctions: []
+    hints:
+      nudge: Count those over the limit, then divide by the invoices that have an amount.
+      rule: COUNTIF(B2:B16,">"&E1) counts invoices over the limit; COUNT(B2:B16) counts the priced ones, leaving out tbc.
+    misses:
+      value: The share over the limit is 0.38. Divide by the priced invoices only.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(B2:B16,">"&E1)/COUNT(B2:B16)
+      - =COUNTIFS(B2:B16,">"&E1)/COUNT(B2:B16)
+    reject:
+      - formula: =COUNTIF(B2:B16,">"&E1)/ROWS(B2:B16)
+        rule: value
+      - formula: =COUNTIF(B2:B16,">500")/COUNT(B2:B16)
+        rule: fragile
+      - formula: =0.384615384615
+        rule: reference
+      - formula: =COUNTIF(B2:B16,">"&E1)/COUNT(B2:B16
+        rule: syntax

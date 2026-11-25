@@ -1,0 +1,41 @@
+id: roundup-and-rounddown-one-direction-only-step-1
+slug: roundup-and-rounddown-one-direction-only-step-1
+level: 1
+title: Always round up
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: roundup-and-rounddown-one-direction-only
+step: 1
+screens:
+  - prompt: A taxi company charges for every started kilometre. In C2, round the distance in B2 up to a whole number. Use ROUNDUP.
+    rows:
+      - [Trip, Km, Charged km]
+      - [T-1, 4.01, null]
+    answerCell: C2
+    expected: 5
+    variants:
+      - set: { B2: 6.6 }
+        expected: 7
+    answer: =ROUNDUP(B2,0)
+    requiredFunctions:
+      - ROUNDUP
+    hints:
+      nudge: ROUNDUP never rounds down, however small the part left over.
+      rule: ROUNDUP(B2,0) turns 4.01 into 5.
+    misses:
+      value: 4.01 km is charged as 5.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for ROUNDUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUNDUP(B2,0)
+      - =roundup(b2,0)
+    reject:
+      - formula: =ROUND(B2,0)
+        rule: required-function
+      - formula: =ROUNDUP(B2,1)
+        rule: value
+      - formula: =5
+        rule: required-function
+      - formula: =ROUNDUP(B2,0
+        rule: syntax

@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIFS($D$2:$D$16,"Open")
+      - =COUNTIFS(D$2:D$16,"Open")
+      - =countifs(d2:d16, "Open")
+      - =LET(data,D2:D16,COUNTIFS(data,"Open"))
+    wrong: []
+    equivalent: []

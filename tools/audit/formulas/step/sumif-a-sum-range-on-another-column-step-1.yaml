@@ -1,0 +1,16 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF($B$2:$B$7,"Pens",$C$2:$C$7)
+      - =SUMIF(B$2:B$7,"Pens",C2:C7)
+      - =sumif(b2:b7, "Pens", c2:c7)
+      - =LET(data,B2:B7,SUMIF(data,"Pens",C2:C7))
+    wrong:
+      - formula: =SUMIF(B2:B6,"Pens",C2:C7)
+        rule: fragile
+        why: range B2:B7 one row short at the end
+    equivalent:
+      - formula: =SUMIF(B2:B8,"Pens",C2:C7)
+        why: "range B2:B7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =SUMIF(B2:B7,"Pens",C2:C8)
+        why: "range C2:C7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

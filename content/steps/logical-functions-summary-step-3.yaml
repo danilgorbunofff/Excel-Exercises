@@ -1,0 +1,57 @@
+id: logical-functions-summary-step-3
+slug: logical-functions-summary-step-3
+level: 2
+title: Average price, or none
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: logical-functions-summary
+step: 3
+screens:
+  - prompt: In D9, show the average of the prices in C2 to C7, rounded to 2 decimals, or the word none when no price has been entered. Use IF, COUNT, ROUND and AVERAGE.
+    rows:
+      - [Item, Units, Price, Answer]
+      - [Bolt, 18, 4.55, null]
+      - [Nut, 22, null, null]
+      - [Washer, 25, 4.2, null]
+      - [Screw, 30, 5.15, null]
+      - [Clip, 24, null, null]
+      - [Pin, 31, 4.85, null]
+      - [null, null, null, null]
+      - [Average price, null, null, null]
+    answerCell: D9
+    expected: 4.69
+    variants:
+      - set: { C3: 3.9 }
+        expected: 4.53
+      - set: { C2: null, C4: null, C5: null, C7: null }
+        expected: none
+      - set: { C2: null, C4: null, C5: null }
+        expected: 4.85
+      - set: { C4: null, C5: null, C7: null }
+        expected: 4.55
+    answer: =IF(COUNT(C2:C7)=0,"none",ROUND(AVERAGE(C2:C7),2))
+    requiredFunctions:
+      - IF
+      - COUNT
+      - ROUND
+      - AVERAGE
+    hints:
+      nudge: Test for any prices first, then round the average.
+      rule: COUNT(C2:C7)=0 catches a list with no prices; otherwise ROUND(AVERAGE(C2:C7),2) gives the average to 2 decimals.
+    misses:
+      value: The average of the four prices, to 2 decimals, is 4.69.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF, COUNT, ROUND and AVERAGE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(COUNT(C2:C7)=0,"none",ROUND(AVERAGE(C2:C7),2))
+      - =IF(COUNT(C2:C7)>0,ROUND(AVERAGE(C2:C7),2),"none")
+    reject:
+      - formula: =IF(COUNT(C2:C7)=0,"none",ROUND(AVERAGE(C2:C7),1))
+        rule: value
+      - formula: =IF(COUNT(C2:C7)=0,"none",AVERAGE(C2:C7))
+        rule: required-function
+      - formula: =4.69
+        rule: required-function
+      - formula: =IF(COUNT(C2:C7)=0,"none",ROUND(AVERAGE(C2:C7),2)
+        rule: syntax

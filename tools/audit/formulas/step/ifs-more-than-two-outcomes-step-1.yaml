@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFS($B$2<10,"Small",TRUE,"Large")
+      - =IFS(B$2<10,"Small",TRUE,"Large")
+      - =ifs(b2<10, "Small", true, "Large")
+    wrong:
+      - formula: =IFS(B2<=10,"Small",TRUE,"Large")
+        rule: fragile
+        why: < written as <=
+      - formula: =IFS(B2<11,"Small",TRUE,"Large")
+        rule: fragile
+        why: 10 written as 11
+      - formula: =IFS(B2<9,"Small",TRUE,"Large")
+        rule: fragile
+        why: 10 written as 9
+    equivalent: []

@@ -1,0 +1,49 @@
+id: countif-with-wildcards-step-1
+slug: countif-with-wildcards-step-1
+level: 1
+title: Codes that start with UK
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: countif-with-wildcards
+step: 1
+screens:
+  - prompt: In B10, count the codes that start with UK-. Use COUNTIF with a wildcard.
+    rows:
+      - [Code, Qty]
+      - [UK-101, 12]
+      - [FR-220, 8]
+      - [UK-305, 5]
+      - [DE-118, 20]
+      - [UK-412, 3]
+      - [US-UK1, 9]
+      - [UK-007, 4]
+      - [null, null]
+      - [UK codes, null]
+    answerCell: B10
+    expected: 4
+    variants:
+      - set: { A3: UK-220 }
+        expected: 5
+    answer: =COUNTIF(A2:A8,"UK-*")
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: "* stands for any number of characters."
+      rule: '"UK-*" matches anything that starts with UK-, so US-UK1 does not count.'
+    misses:
+      value: 4 codes start with UK-.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(A2:A8,"UK-*")
+      - =COUNTIF(A2:A8,"uk-*")
+    reject:
+      - formula: =COUNTIF(A2:A8,"*UK*")
+        rule: value
+      - formula: =COUNTIF(A2:A8,"UK-")
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =COUNTIF(A2:A8,"UK-*"
+        rule: syntax

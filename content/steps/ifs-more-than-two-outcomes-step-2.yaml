@@ -1,0 +1,44 @@
+id: ifs-more-than-two-outcomes-step-2
+slug: ifs-more-than-two-outcomes-step-2
+level: 2
+title: Gold, Silver or Bronze
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: ifs-more-than-two-outcomes
+step: 2
+screens:
+  - prompt: "In C2, band the customer: spending of 1,000 or more is Gold, 500 or more Silver, anything lower Bronze. Use IFS."
+    rows:
+      - [Customer, Spent, Band]
+      - [Ola, 750, null]
+    answerCell: C2
+    expected: Silver
+    variants:
+      - { set: { B2: 1000 }, expected: Gold }
+      - { set: { B2: 300 }, expected: Bronze }
+      - { set: { B2: 499 }, expected: Bronze }
+      - { set: { B2: 500 }, expected: Silver }
+      - { set: { B2: 999 }, expected: Silver }
+    answer: =IFS(B2>=1000,"Gold",B2>=500,"Silver",TRUE,"Bronze")
+    requiredFunctions:
+      - IFS
+    hints:
+      nudge: Test the highest band first, so a big spender does not stop at Silver.
+      rule: IFS stops at the first TRUE test, so the tests go from the highest band down.
+    misses:
+      value: Ola spent 750, so C2 should show Silver.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IFS(B2>=1000,"Gold",B2>=500,"Silver",TRUE,"Bronze")
+      - =IFS(B2<500,"Bronze",B2<1000,"Silver",TRUE,"Gold")
+    reject:
+      - formula: =IFS(B2>=500,"Silver",B2>=1000,"Gold",TRUE,"Bronze")
+        rule: fragile
+      - formula: =IFS(B2>1000,"Gold",B2>500,"Silver",TRUE,"Bronze")
+        rule: fragile
+      - formula: ="Silver"
+        rule: required-function
+      - formula: =IFS(B2>=1000,"Gold",B2>=500,"Silver",TRUE,"Bronze"
+        rule: syntax

@@ -1,0 +1,55 @@
+id: sumifs-two-conditions-at-once-step-1
+slug: sumifs-two-conditions-at-once-step-1
+level: 1
+title: One rep's total
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sumifs-two-conditions-at-once
+step: 1
+screens:
+  - prompt: In H2, add up Ada's amounts. Use SUMIFS.
+    rows:
+      - [Order, Region, Rep, Status, Units, Amount, null, null]
+      - [SO-01, North, Ada, Open, 5, 320, Ada's total, null]
+      - [SO-02, South, Ben, Open, 3, 145, null, null]
+      - [SO-03, North, Cleo, Closed, 4, 210, null, null]
+      - [SO-04, East, Ada, Open, 2, 95, null, null]
+      - [SO-05, North, Ada, Open, 6, 410, null, null]
+      - [SO-06, South, Dev, Closed, 1, 60, null, null]
+      - [SO-07, North, Ben, Open, 8, 520, null, null]
+      - [SO-08, West, Cleo, Open, 7, 380, null, null]
+      - [SO-09, East, Dev, Closed, 3, 150, null, null]
+      - [SO-10, North, Cleo, Open, 2, 120, null, null]
+      - [SO-11, South, Ada, Open, 9, 610, null, null]
+      - [SO-12, null, Ben, Open, 4, 230, null, null]
+      - [SO-13, West, Ada, Closed, 5, 275, null, null]
+      - [SO-14, North, Dev, Open, 6, 335, null, null]
+      - [SO-15, East, Ben, Open, 1, 45, null, null]
+    answerCell: H2
+    expected: 1710
+    variants:
+      - set: { F2: 400 }
+        expected: 1790
+    answer: =SUMIFS(F2:F16,C2:C16,"Ada")
+    requiredFunctions:
+      - SUMIFS
+    hints:
+      nudge: The amounts to add come first in SUMIFS.
+      rule: SUMIFS(F2:F16,C2:C16,"Ada") adds the amounts on Ada's rows.
+    misses:
+      value: Ada's amounts add up to 1710.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIFS(F2:F16,C2:C16,"Ada")
+      - =SUMIFS(F2:F16,C2:C16,"ada")
+    reject:
+      - formula: =SUMIF(C2:C16,"Ada",F2:F16)
+        rule: required-function
+      - formula: =SUMIFS(E2:E16,C2:C16,"Ada")
+        rule: value
+      - formula: =1710
+        rule: required-function
+      - formula: =SUMIFS(F2:F16,C2:C16,"Ada"
+        rule: syntax

@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUNDUP($B$2/($B$3-$B$4),0)
+      - =ROUNDUP(B$2/(B3-B4),0)
+      - =roundup(b2/(b3-b4), 0)
+    wrong: []
+    equivalent: []

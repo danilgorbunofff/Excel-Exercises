@@ -1,0 +1,40 @@
+id: sales-bonus-step-1
+slug: sales-bonus-step-1
+level: 1
+title: A flat bonus over a target
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sales-bonus
+step: 1
+screens:
+  - prompt: In C2, give a bonus of 100 when the sales in B2 are over 5,000, and 0 otherwise. Use IF.
+    rows:
+      - [Rep, Sales, Bonus]
+      - [Ana, 6200, null]
+    answerCell: C2
+    expected: 100
+    variants:
+      - { set: { B2: 4000 }, expected: 0 }
+      - { set: { B2: 5000 }, expected: 0 }
+      - { set: { B2: 5001 }, expected: 100 }
+    answer: =IF(B2>5000,100,0)
+    requiredFunctions:
+      - IF
+    hints:
+      nudge: Test whether B2 is over 5000.
+      rule: IF(B2>5000,100,0) gives 100 above the target and 0 at or below it.
+    misses:
+      value: Ana's bonus is 100. Her sales are over 5,000.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(B2>5000,100,0)
+      - =IF(B2<=5000,0,100)
+    reject:
+      - formula: =IF(B2<5000,100,0)
+        rule: value
+      - formula: =100
+        rule: required-function
+      - formula: =IF(B2>5000,100,0
+        rule: syntax

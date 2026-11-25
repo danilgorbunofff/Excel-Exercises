@@ -1,0 +1,47 @@
+id: mode-the-most-common-value-step-1
+slug: mode-the-most-common-value-step-1
+level: 1
+title: The most common shoe size
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: mode-the-most-common-value
+step: 1
+screens:
+  - prompt: In C2, find the shoe size ordered most often. Use MODE.
+    rows:
+      - [Order, Size, Most common]
+      - ["1", 42, null]
+      - ["2", 40, null]
+      - ["3", 42, null]
+      - ["4", 44, null]
+      - ["5", 41, null]
+      - ["6", 42, null]
+      - ["7", 40, null]
+    answerCell: C2
+    expected: 42
+    variants:
+      - set: { B7: 40, B8: 40 }
+        expected: 40
+    answer: =MODE(B2:B8)
+    requiredFunctions:
+      - MODE
+    hints:
+      nudge: MODE gives the value that appears most often.
+      rule: MODE(B2:B8) finds the size that occurs the most times.
+    misses:
+      value: The most common size is 42.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for MODE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MODE(B2:B8)
+      - =MODE($B$2:$B$8)
+    reject:
+      - formula: =MEDIAN(B2:B8)
+        rule: required-function
+      - formula: =MODE(B2:B6)
+        rule: fragile
+      - formula: =42
+        rule: required-function
+      - formula: =MODE(B2:B8
+        rule: syntax

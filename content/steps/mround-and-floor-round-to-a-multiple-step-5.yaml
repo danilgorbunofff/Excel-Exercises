@@ -1,0 +1,54 @@
+id: mround-and-floor-round-to-a-multiple-step-5
+slug: mround-and-floor-round-to-a-multiple-step-5
+level: 3
+title: Total hours in quarter hours
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: mround-and-floor-round-to-a-multiple
+step: 5
+screens:
+  - prompt: In E2, what are the total paid hours? Each shift is first rounded to the nearest quarter of an hour.
+    rows:
+      - [Shift, Hours, null, null, Paid hours]
+      - [S-01, 7.9, null, null, null]
+      - [S-02, 8.1, null, null, null]
+      - [S-03, 6.55, null, null, null]
+      - [S-04, 4.3, null, null, null]
+      - [S-05, 7.62, null, null, null]
+      - [S-06, 8.88, null, null, null]
+      - [S-07, 5.2, null, null, null]
+      - [S-08, 3.7, null, null, null]
+      - [S-09, 7.4, null, null, null]
+      - [S-10, 6.05, null, null, null]
+      - [S-11, 8.35, null, null, null]
+      - [S-12, 4.95, null, null, null]
+      - [S-13, 7.15, null, null, null]
+      - [S-14, 2.6, null, null, null]
+      - [S-15, 6.8, null, null, null]
+    answerCell: E2
+    expected: 95.5
+    variants:
+      - set: { B16: 6.9 }
+        expected: 95.75
+    answer: =SUMPRODUCT(ROUND(B2:B16*4,0)/4)
+    requiredFunctions: []
+    hints:
+      nudge: "Four quarters make an hour: times 4, round, then divide by 4."
+      rule: ROUND(B2:B16*4,0)/4 rounds each shift to a quarter hour; SUMPRODUCT adds them.
+    misses:
+      value: The paid hours add up to 95.5.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(ROUND(B2:B16*4,0)/4)
+      - =SUM(ROUND(B2:B16*4,0)/4)
+    reject:
+      - formula: =SUM(B2:B16)
+        rule: value
+      - formula: =SUMPRODUCT(ROUNDUP(B2:B16*4,0)/4)
+        rule: value
+      - formula: =95.5
+        rule: reference
+      - formula: =SUMPRODUCT(ROUND(B2:B16*4,0)/4
+        rule: syntax

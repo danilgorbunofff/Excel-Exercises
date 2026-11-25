@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIFS($D$2:$D$16,"Open",$E$2:$E$16,">=3",$E$2:$E$16,"<=6")
+      - =COUNTIFS(D$2:D$16,"Open",E2:E16,">=3",E2:E16,"<=6")
+      - =countifs(d2:d16, "Open", e2:e16, ">=3", e2:e16, "<=6")
+      - =LET(data,D2:D16,COUNTIFS(data,"Open",E2:E16,">=3",E2:E16,"<=6"))
+    wrong: []
+    equivalent: []

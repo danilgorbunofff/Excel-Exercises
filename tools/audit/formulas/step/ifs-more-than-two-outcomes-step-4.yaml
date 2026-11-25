@@ -1,0 +1,23 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFS($B$2<=1,3.5,$B$2<=5,6,$B$2<=20,12,TRUE,25)
+      - =IFS(B$2<=1,3.5,B2<=5,6,B2<=20,12,TRUE,25)
+      - =ifs(b2<=1, 3.5, b2<=5, 6, b2<=20, 12, true, 25)
+    wrong:
+      - formula: =IFS(B2<1,3.5,B2<=5,6,B2<=20,12,TRUE,25)
+        rule: fragile
+        why: <= written as <
+      - formula: =IFS(B2<=2,3.5,B2<=5,6,B2<=20,12,TRUE,25)
+        rule: fragile
+        why: 1 written as 2
+      - formula: =IFS(B2<=1,3.5,B2<5,6,B2<=20,12,TRUE,25)
+        rule: fragile
+        why: <= written as <
+      - formula: =IFS(B2<=1,3.5,B2<=6,6,B2<=20,12,TRUE,25)
+        rule: fragile
+        why: 5 written as 6
+      - formula: =IFS(B2<=1,3.5,B2<=5,6,B2<=21,12,TRUE,25)
+        rule: fragile
+        why: 20 written as 21
+    equivalent: []

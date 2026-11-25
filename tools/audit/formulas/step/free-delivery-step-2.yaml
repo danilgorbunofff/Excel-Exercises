@@ -1,0 +1,29 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =OR($B$2<0,$C$2>30)
+      - =OR(B$2<0,C2>30)
+      - =or(b2<0, c2>30)
+    wrong:
+      - formula: =OR(B2<=0,C2>30)
+        rule: fragile
+        why: < written as <=
+      - formula: =OR(B3<0,C2>30)
+        rule: fragile
+        why: B2 read from the next row
+      - formula: =OR(B1<0,C2>30)
+        rule: fragile
+        why: B2 read from the row above
+      - formula: =OR(C2<0,C2>30)
+        rule: fragile
+        why: B2 read from the next column
+      - formula: =OR(A2<0,C2>30)
+        rule: fragile
+        why: B2 read from the column to the left
+      - formula: =OR(B2<1,C2>30)
+        rule: fragile
+        why: 0 written as 1
+      - formula: =OR(B2<0,C2>31)
+        rule: fragile
+        why: 30 written as 31
+    equivalent: []

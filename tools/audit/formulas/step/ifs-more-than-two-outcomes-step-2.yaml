@@ -1,0 +1,20 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFS($B$2>=1000,"Gold",$B$2>=500,"Silver",TRUE,"Bronze")
+      - =IFS(B$2>=1000,"Gold",B2>=500,"Silver",TRUE,"Bronze")
+      - =ifs(b2>=1000, "Gold", b2>=500, "Silver", true, "Bronze")
+    wrong:
+      - formula: =IFS(B2>=999,"Gold",B2>=500,"Silver",TRUE,"Bronze")
+        rule: fragile
+        why: 1000 written as 999
+      - formula: =IFS(B2>=1000,"Gold",B2>500,"Silver",TRUE,"Bronze")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IFS(B2>=1000,"Gold",B2>=501,"Silver",TRUE,"Bronze")
+        rule: fragile
+        why: 500 written as 501
+      - formula: =IFS(B2>=1000,"Gold",B2>=499,"Silver",TRUE,"Bronze")
+        rule: fragile
+        why: 500 written as 499
+    equivalent: []

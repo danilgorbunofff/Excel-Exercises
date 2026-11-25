@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF(B$2:B$10,F1)
+      - =countif(b2:b10, f1)
+      - =LET(data,B2:B10,COUNTIF(data,F1))
+    wrong: []
+    equivalent: []

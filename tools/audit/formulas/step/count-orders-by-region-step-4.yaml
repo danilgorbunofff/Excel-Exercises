@@ -1,0 +1,26 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF($B$2:$B$10,"North")+COUNTIF($B$2:$B$10,"East")
+      - =COUNTIF(B$2:B$10,"North")+COUNTIF(B2:B10,"East")
+      - =countif(b2:b10, "North")+countif(b2:b10, "East")
+      - =COUNTIFS(B2:B10,"North")+COUNTIF(B2:B10,"East")
+      - =SUMPRODUCT(--(B2:B10="North"))+COUNTIF(B2:B10,"East")
+      - =COUNTIF(B2:B10,"North")+COUNTIFS(B2:B10,"East")
+      - =COUNTIF(B2:B10,"North")+SUMPRODUCT(--(B2:B10="East"))
+      - =LET(data,B2:B10,COUNTIF(data,"North")+COUNTIF(data,"East"))
+    wrong:
+      - formula: =COUNTIF(B2:B9,"North")+COUNTIF(B2:B10,"East")
+        rule: fragile
+        why: range B2:B10 one row short at the end
+      - formula: =COUNTIF(B2:B10,"North")+COUNTIF(B2:B9,"East")
+        rule: fragile
+        why: range B2:B10 one row short at the end
+      - formula: =COUNTIF(B2:B10,"North")+COUNTIF(B3:B10,"East")
+        rule: fragile
+        why: range B2:B10 skips its first row
+    equivalent:
+      - formula: =COUNTIF(B2:B11,"North")+COUNTIF(B2:B10,"East")
+        why: "range B2:B10 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =COUNTIF(B2:B10,"North")+COUNTIF(B2:B11,"East")
+        why: "range B2:B10 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

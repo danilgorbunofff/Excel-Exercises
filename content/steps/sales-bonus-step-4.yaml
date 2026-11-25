@@ -1,0 +1,49 @@
+id: sales-bonus-step-4
+slug: sales-bonus-step-4
+level: 2
+title: Bonus with the target and rate in cells
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sales-bonus
+step: 4
+screens:
+  - prompt: "The target is in F1 and the bonus rate in F2. In C4, work out Cy's bonus: the rate times the sales when the sales in B4 are over the target, and 0 otherwise. Use IF."
+    rows:
+      - [Rep, Sales, Bonus, null, Target, 10000]
+      - [Ana, 12500, null, null, Rate, 0.05]
+      - [Ben, 9800, null, null, null, null]
+      - [Cy, 15200, null, null, null, null]
+    answerCell: C4
+    expected: 760
+    variants:
+      - set: { F2: 0.06 }
+        expected: 912
+      - set: { F1: 16000 }
+        expected: 0
+      - set: { F1: 15200 }
+        expected: 0
+    answer: =IF(B4>$F$1,B4*$F$2,0)
+    requiredFunctions:
+      - IF
+    hints:
+      nudge: Point at F1 for the target and F2 for the rate, not at the numbers you see.
+      rule: IF(B4>$F$1,B4*$F$2,0) follows any change to the target or the rate.
+    misses:
+      value: "Cy's bonus is 760: the rate in F2 times the sales, as they beat the target."
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      required-function: This task asks for IF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(B4>$F$1,B4*$F$2,0)
+      - =IF(B4>F1,B4*F2,0)
+      - =IF(B4<=$F$1,0,B4*$F$2)
+    reject:
+      - formula: =IF(B4>10000,B4*0.05,0)
+        rule: reference
+      - formula: =B4*$F$2
+        rule: required-function
+      - formula: =760
+        rule: required-function
+      - formula: =IF(B4>$F$1,B4*$F$2,0
+        rule: syntax

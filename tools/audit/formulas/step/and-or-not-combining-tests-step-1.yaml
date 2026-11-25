@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =NOT($B$2="Yes")
+      - =NOT(B$2="Yes")
+      - =not(b2="Yes")
+    wrong: []
+    equivalent: []

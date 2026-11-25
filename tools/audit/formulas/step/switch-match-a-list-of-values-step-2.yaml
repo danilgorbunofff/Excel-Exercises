@@ -1,0 +1,26 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SWITCH($B$2,1,"Mon",2,"Tue",3,"Wed",4,"Thu",5,"Fri",6,"Sat",7,"Sun")
+      - =SWITCH(B$2,1,"Mon",2,"Tue",3,"Wed",4,"Thu",5,"Fri",6,"Sat",7,"Sun")
+      - =switch(b2, 1, "Mon", 2, "Tue", 3, "Wed", 4, "Thu", 5, "Fri", 6, "Sat", 7, "Sun")
+    wrong:
+      - formula: =SWITCH(B2,1,"Mon",1,"Tue",3,"Wed",4,"Thu",5,"Fri",6,"Sat",7,"Sun")
+        rule: fragile
+        why: 2 written as 1
+      - formula: =SWITCH(B2,1,"Mon",2,"Tue",3,"Wed",5,"Thu",5,"Fri",6,"Sat",7,"Sun")
+        rule: fragile
+        why: 4 written as 5
+      - formula: =SWITCH(B2,1,"Mon",2,"Tue",3,"Wed",3,"Thu",5,"Fri",6,"Sat",7,"Sun")
+        rule: fragile
+        why: 4 written as 3
+      - formula: =SWITCH(B2,1,"Mon",2,"Tue",3,"Wed",4,"Thu",6,"Fri",6,"Sat",7,"Sun")
+        rule: fragile
+        why: 5 written as 6
+      - formula: =SWITCH(B2,1,"Mon",2,"Tue",3,"Wed",4,"Thu",4,"Fri",6,"Sat",7,"Sun")
+        rule: fragile
+        why: 5 written as 4
+      - formula: =SWITCH(B2,1,"Mon",2,"Tue",3,"Wed",4,"Thu",5,"Fri",5,"Sat",7,"Sun")
+        rule: fragile
+        why: 6 written as 5
+    equivalent: []

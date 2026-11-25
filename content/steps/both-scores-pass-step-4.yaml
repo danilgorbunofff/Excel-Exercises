@@ -1,0 +1,44 @@
+id: both-scores-pass-step-4
+slug: both-scores-pass-step-4
+level: 2
+title: Hire only when both pass
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: both-scores-pass
+step: 4
+screens:
+  - prompt: In D2, show Hire when both of Lee's scores are at least 60, and Reject otherwise. Use IF and AND.
+    rows:
+      - [Candidate, Written, Practical, Decision]
+      - [Lee, 72, 58, null]
+    answerCell: D2
+    expected: Reject
+    variants:
+      - { set: { C2: 60 }, expected: Hire }
+      - { set: { B2: 60, C2: 60 }, expected: Hire }
+      - { set: { B2: 59, C2: 60 }, expected: Reject }
+      - { set: { C2: 59 }, expected: Reject }
+    answer: =IF(AND(B2>=60,C2>=60),"Hire","Reject")
+    requiredFunctions:
+      - IF
+      - AND
+    hints:
+      nudge: Put the AND test inside IF as its first part.
+      rule: IF(AND(B2>=60,C2>=60),"Hire","Reject") hires only when both tests pass.
+    misses:
+      value: Lee's practical is under 60, so D2 should show Reject.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF and AND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(AND(B2>=60,C2>=60),"Hire","Reject")
+      - =IF(AND(C2>=60,B2>=60),"Hire","Reject")
+    reject:
+      - formula: =IF(OR(B2>=60,C2>=60),"Hire","Reject")
+        rule: required-function
+      - formula: =IF(AND(B2>=60,C2>60),"Hire","Reject")
+        rule: fragile
+      - formula: ="Reject"
+        rule: required-function
+      - formula: =IF(AND(B2>=60,C2>=60),"Hire","Reject"
+        rule: syntax

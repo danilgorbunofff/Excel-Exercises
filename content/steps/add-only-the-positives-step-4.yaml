@@ -1,0 +1,49 @@
+id: add-only-the-positives-step-4
+slug: add-only-the-positives-step-4
+level: 2
+title: Average of the gains only
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: add-only-the-positives
+step: 4
+screens:
+  - prompt: In B10, work out the average of the months that went up, leaving out the drops. Use AVERAGEIF.
+    rows:
+      - [Month, Change]
+      - [Jan, 12]
+      - [Feb, -8]
+      - [Mar, 15]
+      - [Apr, -3]
+      - [May, 20]
+      - [Jun, 0]
+      - [Jul, 9]
+      - [null, null]
+      - [Average gain, null]
+    answerCell: B10
+    expected: 14
+    variants:
+      - set: { B3: 6 }
+        expected: 12.4
+    answer: =AVERAGEIF(B2:B8,">0")
+    requiredFunctions:
+      - AVERAGEIF
+    hints:
+      nudge: AVERAGEIF works like SUMIF but averages.
+      rule: AVERAGEIF(B2:B8,">0") averages only the months above 0, so a flat month does not pull it down.
+    misses:
+      value: The average gain is 14. A month of 0 is not a gain.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for AVERAGEIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AVERAGEIF(B2:B8,">0")
+      - =AVERAGEIF(B2:B8,">0",B2:B8)
+    reject:
+      - formula: =AVERAGEIF(B2:B8,">=0")
+        rule: value
+      - formula: =AVERAGE(B2:B8)
+        rule: required-function
+      - formula: =14
+        rule: required-function
+      - formula: =AVERAGEIF(B2:B8,">0"
+        rule: syntax

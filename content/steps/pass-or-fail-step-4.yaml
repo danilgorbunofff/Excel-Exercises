@@ -1,0 +1,43 @@
+id: pass-or-fail-step-4
+slug: pass-or-fail-step-4
+level: 2
+title: Charge a late fee only when late
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: pass-or-fail
+step: 4
+screens:
+  - prompt: In D2, charge a late fee of 2% of the amount when the invoice is paid late, that is when the days late in C2 are over 0. Otherwise the fee is 0. Use IF.
+    rows:
+      - [Invoice, Amount, Days late, Fee]
+      - [INV-7, 1200, 5, null]
+    answerCell: D2
+    expected: 24
+    variants:
+      - { set: { C2: 0 }, expected: 0 }
+      - { set: { B2: 900 }, expected: 18 }
+      - { set: { C2: 1, B2: 2 }, expected: 0.04 }
+    answer: =IF(C2>0,B2*2%,0)
+    requiredFunctions:
+      - IF
+    hints:
+      nudge: "When late, the fee is a sum: the amount times 2%."
+      rule: "IF can return a calculation: IF(C2>0,B2*2%,0) gives 2% of the amount when late and 0 when not."
+    misses:
+      value: "The fee is 24: 2% of the amount, because the invoice is late."
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(C2>0,B2*2%,0)
+      - =IF(C2>0,B2*0.02,0)
+      - =IF(C2<=0,0,B2*2%)
+    reject:
+      - formula: =IF(C2>0,2%,0)
+        rule: value
+      - formula: =IF(C2>0,24,0)
+        rule: fragile
+      - formula: =24
+        rule: required-function
+      - formula: =IF(C2>0,B2*2%,0
+        rule: syntax

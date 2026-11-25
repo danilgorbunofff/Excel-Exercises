@@ -1,0 +1,41 @@
+id: mround-and-floor-round-to-a-multiple-step-1
+slug: mround-and-floor-round-to-a-multiple-step-1
+level: 1
+title: Round to the nearest 10
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: mround-and-floor-round-to-a-multiple
+step: 1
+screens:
+  - prompt: In C2, round the head count in B2 to the nearest 10. Use MROUND.
+    rows:
+      - [Event, Head count, Nearest 10]
+      - [Launch, 74, null]
+    answerCell: C2
+    expected: 70
+    variants:
+      - set: { B2: 75 }
+        expected: 80
+    answer: =MROUND(B2,10)
+    requiredFunctions:
+      - MROUND
+    hints:
+      nudge: MROUND takes the number and the multiple to round to.
+      rule: MROUND(B2,10) gives the nearest multiple of 10.
+    misses:
+      value: 74 to the nearest 10 is 70.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for MROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MROUND(B2,10)
+      - =mround(b2,10)
+    reject:
+      - formula: =ROUND(B2,-1)
+        rule: required-function
+      - formula: =MROUND(B2,5)
+        rule: value
+      - formula: =70
+        rule: required-function
+      - formula: =MROUND(B2,10
+        rule: syntax

@@ -1,0 +1,45 @@
+id: average-functions-summary-step-1
+slug: average-functions-summary-step-1
+level: 1
+title: Average delivery time
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: average-functions-summary
+step: 1
+screens:
+  - prompt: In C2, work out the average delivery time. Use AVERAGE.
+    rows:
+      - [Order, Days, Average]
+      - ["1", 3, null]
+      - ["2", 5, null]
+      - ["3", 2, null]
+      - ["4", 6, null]
+      - ["5", 4, null]
+    answerCell: C2
+    expected: 4
+    variants:
+      - set: { B3: 10 }
+        expected: 5
+    answer: =AVERAGE(B2:B6)
+    requiredFunctions:
+      - AVERAGE
+    hints:
+      nudge: AVERAGE adds the values and divides by how many there are.
+      rule: AVERAGE(B2:B6) gives the mean of the five times.
+    misses:
+      value: The average is 4 days.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for AVERAGE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AVERAGE(B2:B6)
+      - =AVERAGE($B$2:$B$6)
+    reject:
+      - formula: =MEDIAN(B2:B6)
+        rule: required-function
+      - formula: =AVERAGE(B2:B5)
+        rule: fragile
+      - formula: =4
+        rule: required-function
+      - formula: =AVERAGE(B2:B6
+        rule: syntax

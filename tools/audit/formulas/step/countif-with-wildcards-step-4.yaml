@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF(A$2:A$10,"*"&E1&"*")
+      - =countif(a2:a10, "*"&e1&"*")
+      - =LET(data,A2:A10,COUNTIF(data,"*"&E1&"*"))
+    wrong: []
+    equivalent: []

@@ -1,0 +1,41 @@
+id: roundup-and-rounddown-one-direction-only-step-2
+slug: roundup-and-rounddown-one-direction-only-step-2
+level: 1
+title: Always round down
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: roundup-and-rounddown-one-direction-only
+step: 2
+screens:
+  - prompt: Only full hours are paid. In C2, round the hours in B2 down to a whole number. Use ROUNDDOWN.
+    rows:
+      - [Shift, Hours, Paid hours]
+      - [S-1, 7.9, null]
+    answerCell: C2
+    expected: 7
+    variants:
+      - set: { B2: 6.2 }
+        expected: 6
+    answer: =ROUNDDOWN(B2,0)
+    requiredFunctions:
+      - ROUNDDOWN
+    hints:
+      nudge: ROUNDDOWN cuts off the part after the point.
+      rule: ROUNDDOWN(B2,0) turns 7.9 into 7.
+    misses:
+      value: 7.9 hours are paid as 7.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for ROUNDDOWN.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUNDDOWN(B2,0)
+      - =rounddown(b2,0)
+    reject:
+      - formula: =ROUND(B2,0)
+        rule: required-function
+      - formula: =ROUNDDOWN(B2,1)
+        rule: value
+      - formula: =7
+        rule: required-function
+      - formula: =ROUNDDOWN(B2,0
+        rule: syntax

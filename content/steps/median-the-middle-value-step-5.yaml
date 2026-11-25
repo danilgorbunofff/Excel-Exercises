@@ -1,0 +1,54 @@
+id: median-the-middle-value-step-5
+slug: median-the-middle-value-step-5
+level: 3
+title: A typical asking price
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: median-the-middle-value
+step: 5
+screens:
+  - prompt: In E2, what is a typical asking price, one that a single very expensive listing cannot drag? Some listings say POA and some are blank.
+    rows:
+      - [Listing, Price, null, null, Typical price]
+      - [L-01, 285000, null, null, null]
+      - [L-02, 310000, null, null, null]
+      - [L-03, POA, null, null, null]
+      - [L-04, 265000, null, null, null]
+      - [L-05, 2950000, null, null, null]
+      - [L-06, 298000, null, null, null]
+      - [L-07, null, null, null, null]
+      - [L-08, 342000, null, null, null]
+      - [L-09, 275000, null, null, null]
+      - [L-10, POA, null, null, null]
+      - [L-11, 305000, null, null, null]
+      - [L-12, 289000, null, null, null]
+      - [L-13, 330000, null, null, null]
+      - [L-14, null, null, null, null]
+      - [L-15, 315000, null, null, null]
+    answerCell: E2
+    expected: 305000
+    variants:
+      - set: { B4: 250000 }
+        expected: 301500
+    answer: =MEDIAN(B2:B16)
+    requiredFunctions: []
+    hints:
+      nudge: The median ignores the extreme listing and skips text and blanks.
+      rule: MEDIAN(B2:B16) takes the middle of the real prices; POA and blanks are left out.
+    misses:
+      value: A typical asking price is 305000.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MEDIAN(B2:B16)
+      - =MEDIAN(FILTER(B2:B16,ISNUMBER(B2:B16)))
+    reject:
+      - formula: =AVERAGE(B2:B16)
+        rule: value
+      - formula: =MEDIAN(B2:B11)
+        rule: value
+      - formula: =305000
+        rule: reference
+      - formula: =MEDIAN(B2:B16
+        rule: syntax

@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SMALL(B$2:B$7,2)
+      - =small(b2:b7, 2)
+      - =LET(data,B2:B7,SMALL(data,2))
+    wrong:
+      - formula: =SMALL(B2:B6,2)
+        rule: fragile
+        why: range B2:B7 one row short at the end
+      - formula: =SMALL(B3:B7,2)
+        rule: fragile
+        why: range B2:B7 skips its first row
+    equivalent: []

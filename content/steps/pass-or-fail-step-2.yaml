@@ -1,0 +1,40 @@
+id: pass-or-fail-step-2
+slug: pass-or-fail-step-2
+level: 1
+title: Flag stock to reorder
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: pass-or-fail
+step: 2
+screens:
+  - prompt: In C2, show Reorder when the stock in B2 is below 20, and OK when it is not. Use IF.
+    rows:
+      - [Item, Stock, Action]
+      - [Pens, 12, null]
+    answerCell: C2
+    expected: Reorder
+    variants:
+      - { set: { B2: 25 }, expected: OK }
+      - { set: { B2: 20 }, expected: OK }
+      - { set: { B2: 19 }, expected: Reorder }
+    answer: =IF(B2<20,"Reorder","OK")
+    requiredFunctions:
+      - IF
+    hints:
+      nudge: The test is whether B2 is below 20.
+      rule: 'IF(test, value if true, value if false): IF(B2<20,"Reorder","OK").'
+    misses:
+      value: With 12 in stock, C2 should show Reorder. Check the direction of the test.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(B2<20,"Reorder","OK")
+      - =IF(B2>=20,"OK","Reorder")
+    reject:
+      - formula: =IF(B2>20,"Reorder","OK")
+        rule: value
+      - formula: ="Reorder"
+        rule: required-function
+      - formula: =IF(B2<20,"Reorder","OK"
+        rule: syntax

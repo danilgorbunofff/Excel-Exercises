@@ -1,0 +1,48 @@
+id: add-only-the-positives-step-2
+slug: add-only-the-positives-step-2
+level: 2
+title: Total sales from a threshold in a cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: add-only-the-positives
+step: 2
+screens:
+  - prompt: In E2, add up the sales of at least the amount in E1. Use SUMIF.
+    rows:
+      - [Sale, Amount, null, At least, 200]
+      - ["1", 150, null, Total, null]
+      - ["2", 320, null, null, null]
+      - ["3", 200, null, null, null]
+      - ["4", 95, null, null, null]
+      - ["5", 410, null, null, null]
+      - ["6", 199, null, null, null]
+      - ["7", 260, null, null, null]
+      - ["8", 75, null, null, null]
+    answerCell: E2
+    expected: 1190
+    variants:
+      - { set: { E1: 250 }, expected: 990 }
+      - { set: { B2: 320, B9: 320 }, expected: 1830 }
+    answer: =SUMIF(B2:B9,">="&E1)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: 'Build the test from the cell: ">="&E1.'
+      rule: SUMIF(B2:B9,">="&E1) adds the sales at or above the amount in E1.
+    misses:
+      value: Sales of at least the amount in E1 add up to 1190.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(B2:B9,">="&E1)
+      - =SUMIF(B2:B9,">="&E1,B2:B9)
+    reject:
+      - formula: =SUMIF(B2:B9,">=200")
+        rule: fragile
+      - formula: =SUMIF(B2:B9,">"&E1)
+        rule: value
+      - formula: =1190
+        rule: required-function
+      - formula: =SUMIF(B2:B9,">="&E1
+        rule: syntax

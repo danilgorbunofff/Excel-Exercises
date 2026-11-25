@@ -1,0 +1,43 @@
+id: and-or-not-combining-tests-step-5
+slug: and-or-not-combining-tests-step-5
+level: 3
+title: Who can approve a payment
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: and-or-not-combining-tests
+step: 5
+screens:
+  - prompt: In E2, can this person approve payments? Managers can, and so can seniors with at least 5 years, but nobody on leave. Show TRUE or FALSE.
+    rows:
+      - [Name, Role, Years, Status, Can approve]
+      - [Kai, Manager, 2, Leave, null]
+    answerCell: E2
+    expected: false
+    variants:
+      - set: { D2: Active }
+        expected: true
+      - set: { B2: Senior, C2: 6, D2: Active }
+        expected: true
+      - set: { B2: Senior, C2: 4, D2: Active }
+        expected: false
+      - set: { B2: Senior, C2: 5, D2: Active }
+        expected: true
+    answer: =AND(OR(B2="Manager",AND(B2="Senior",C2>=5)),D2<>"Leave")
+    requiredFunctions: []
+    hints:
+      nudge: First who could approve, with OR and AND; then rule out anyone on leave.
+      rule: OR(B2="Manager",AND(B2="Senior",C2>=5)) covers the roles; AND with D2<>"Leave" removes anyone away.
+    misses:
+      value: "Kai's answer is false: Kai is on leave."
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AND(OR(B2="Manager",AND(B2="Senior",C2>=5)),D2<>"Leave")
+      - =IF(D2="Leave",FALSE,OR(B2="Manager",AND(B2="Senior",C2>=5)))
+    reject:
+      - formula: =OR(B2="Manager",AND(B2="Senior",C2>=5))
+        rule: value
+      - formula: =AND(B2="Manager",D2<>"Leave")
+        rule: fragile
+      - formula: =AND(OR(B2="Manager",AND(B2="Senior",C2>=5)),D2<>"Leave"
+        rule: syntax

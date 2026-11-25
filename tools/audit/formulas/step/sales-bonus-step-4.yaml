@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF($B$4>$F$1,$B$4*$F$2,0)
+      - =IF(B$4>$F$1,B4*$F$2,0)
+      - =if(b4>$f$1, b4*$f$2, 0)
+    wrong:
+      - formula: =IF(B4>=$F$1,B4*$F$2,0)
+        rule: fragile
+        why: "> written as >="
+    equivalent: []

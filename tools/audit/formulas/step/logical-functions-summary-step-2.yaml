@@ -1,0 +1,23 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(MIN($B$2:$B$7)<10,"ALERT","OK")
+      - =IF(MIN(B$2:B$7)<10,"ALERT","OK")
+      - =if(min(b2:b7)<10, "ALERT", "OK")
+      - =LET(data,B2:B7,IF(MIN(data)<10,"ALERT","OK"))
+    wrong:
+      - formula: =IF(MIN(B2:B7)<=10,"ALERT","OK")
+        rule: fragile
+        why: < written as <=
+      - formula: =IF(MIN(B3:B7)<10,"ALERT","OK")
+        rule: fragile
+        why: range B2:B7 skips its first row
+      - formula: =IF(MIN(B2:B7)<11,"ALERT","OK")
+        rule: fragile
+        why: 10 written as 11
+      - formula: =IF(MIN(B2:B7)<9,"ALERT","OK")
+        rule: fragile
+        why: 10 written as 9
+    equivalent:
+      - formula: =IF(MIN(B2:B8)<10,"ALERT","OK")
+        why: "range B2:B7 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

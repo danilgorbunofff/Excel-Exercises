@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF($C$2:$C$16,"Ada",$F$2:$F$16)/SUM($F$2:$F$16)
+      - =SUMIF(C$2:C$16,"Ada",F2:F16)/SUM(F2:F16)
+      - =sumif(c2:c16, "Ada", f2:f16)/sum(f2:f16)
+      - =LET(data,C2:C16,SUMIF(data,"Ada",F2:F16)/SUM(F2:F16))
+    wrong:
+      - formula: =SUMIF(C2:C15,"Ada",F2:F16)/SUM(F2:F16)
+        rule: fragile
+        why: range C2:C16 one row short at the end
+    equivalent: []

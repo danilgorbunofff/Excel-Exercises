@@ -1,0 +1,43 @@
+id: round-markup-step-4
+slug: round-markup-step-4
+level: 2
+title: Round a budget to the nearest hundred
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: round-markup
+step: 4
+screens:
+  - prompt: In C2, round the budget in B2 to the nearest hundred. Use ROUND with a negative number of places.
+    rows:
+      - [Team, Budget, To the hundred]
+      - [Sales, 48362, null]
+    answerCell: C2
+    expected: 48400
+    variants:
+      - set: { B2: 48349 }
+        expected: 48300
+    answer: =ROUND(B2,-2)
+    requiredFunctions:
+      - ROUND
+    hints:
+      nudge: -1 rounds to tens, -2 to hundreds.
+      rule: "A negative number of places rounds to the left of the decimal point: ROUND(B2,-2) gives the nearest hundred."
+    misses:
+      value: The budget to the nearest hundred is 48400.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(B2,-2)
+      - =ROUND($B$2,-2)
+      - "=ROUND(B2/100,0)*100"
+      - "=ROUND(B2,-2)+0"
+    reject:
+      - formula: =ROUND(B2,2)
+        rule: value
+      - formula: =ROUND(B2,-3)
+        rule: value
+      - formula: =48400
+        rule: required-function
+      - formula: =ROUND(B2,-2
+        rule: syntax

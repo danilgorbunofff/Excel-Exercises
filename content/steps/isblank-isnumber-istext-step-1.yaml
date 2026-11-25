@@ -1,0 +1,39 @@
+id: isblank-isnumber-istext-step-1
+slug: isblank-isnumber-istext-step-1
+level: 1
+title: Is it a number
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: isblank-isnumber-istext
+step: 1
+screens:
+  - prompt: In C2, answer TRUE when the reading in B2 is a number. Use ISNUMBER.
+    rows:
+      - [Meter, Reading, A number?]
+      - [M-1, 42, null]
+    answerCell: C2
+    expected: true
+    variants:
+      - set: { B2: n/a }
+        expected: false
+    answer: =ISNUMBER(B2)
+    requiredFunctions:
+      - ISNUMBER
+    hints:
+      nudge: ISNUMBER looks at what kind of value the cell holds.
+      rule: ISNUMBER(B2) is TRUE for a number and FALSE for text or an empty cell.
+    misses:
+      value: B2 holds 42, so C2 should show true.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for ISNUMBER.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ISNUMBER(B2)
+      - =isnumber(b2)
+      - =IF(ISNUMBER(B2),TRUE,FALSE)
+      - =ISNUMBER(B2)=TRUE
+    reject:
+      - formula: =ISTEXT(B2)
+        rule: required-function
+      - formula: =ISNUMBER(B2
+        rule: syntax

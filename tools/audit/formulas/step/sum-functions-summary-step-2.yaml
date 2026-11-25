@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF($B$2:$B$16,"<>West",$F$2:$F$16)
+      - =SUMIF(B$2:B$16,"<>West",F2:F16)
+      - =sumif(b2:b16, "<>West", f2:f16)
+      - =LET(data,B2:B16,SUMIF(data,"<>West",F2:F16))
+    wrong: []
+    equivalent: []

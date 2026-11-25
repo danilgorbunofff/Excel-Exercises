@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =RANK($B$4,$B$2:$B$8)
+      - =RANK(B$4,B2:B8)
+      - =rank(b4, b2:b8)
+      - =LET(data,B2:B8,RANK(B4,data))
+    wrong:
+      - formula: =RANK(B4,B2:B7)
+        rule: fragile
+        why: range B2:B8 one row short at the end
+      - formula: =RANK(B4,B3:B8)
+        rule: fragile
+        why: range B2:B8 skips its first row
+    equivalent: []

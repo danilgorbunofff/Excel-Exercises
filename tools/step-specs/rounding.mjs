@@ -3,7 +3,13 @@
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 2 at step 3.
 const fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(2));
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 export default [
   // round-markup (level 2, step 3)
@@ -46,7 +52,8 @@ export default [
     value: (e) => `12.5 km rounds to ${e}.`,
   }),
   step("round-markup", 4, 2, "Round a budget to the nearest hundred", {
-    prompt: "In C2, round the budget in B2 to the nearest hundred. Use ROUND with a negative number of places.",
+    prompt:
+      "In C2, round the budget in B2 to the nearest hundred. Use ROUND with a negative number of places.",
     rows: [
       ["Team", "Budget", "To the hundred"],
       ["Sales", 48362, null],
@@ -84,7 +91,13 @@ export default [
       ["Shims", 0.055, 87, null, null],
       ["Tags", 0.025, 301, null, null],
       ["Ties", 0.045, 147, null, null],
-    ].map((r, i) => (i === 0 ? ["Item", "Price", "Qty", null, "Invoice total"] : i === 1 ? ["Bolts", 0.125, 37, null, null] : r)),
+    ].map((r, i) =>
+      i === 0
+        ? ["Item", "Price", "Qty", null, "Invoice total"]
+        : i === 1
+          ? ["Bolts", 0.125, 37, null, null]
+          : r,
+    ),
     cell: "E2",
     answer: "=SUMPRODUCT(ROUND(B2:B16*C2:C16,2))",
     required: [],
@@ -101,7 +114,8 @@ export default [
 
   // roundup-and-rounddown-one-direction-only (level 2, step 3)
   step("roundup-and-rounddown-one-direction-only", 1, 1, "Always round up", {
-    prompt: "A taxi company charges for every started kilometre. In C2, round the distance in B2 up to a whole number. Use ROUNDUP.",
+    prompt:
+      "A taxi company charges for every started kilometre. In C2, round the distance in B2 up to a whole number. Use ROUNDUP.",
     rows: [
       ["Trip", "Km", "Charged km"],
       ["T-1", 4.01, null],
@@ -120,7 +134,8 @@ export default [
     value: (e) => `4.01 km is charged as ${e}.`,
   }),
   step("roundup-and-rounddown-one-direction-only", 2, 1, "Always round down", {
-    prompt: "Only full hours are paid. In C2, round the hours in B2 down to a whole number. Use ROUNDDOWN.",
+    prompt:
+      "Only full hours are paid. In C2, round the hours in B2 down to a whole number. Use ROUNDDOWN.",
     rows: [
       ["Shift", "Hours", "Paid hours"],
       ["S-1", 7.9, null],
@@ -176,7 +191,8 @@ export default [
       ["=ROUNDUP(B2/B3,0)", "value"],
       ["=ROUND(B2/(B3-B4),0)", "value"],
     ],
-    nudge: "Only the seats left after the staff seats carry travellers, and a part-full bus still goes.",
+    nudge:
+      "Only the seats left after the staff seats carry travellers, and a part-full bus still goes.",
     rule: "B3-B4 is the travellers each bus can take; ROUNDUP of B2 divided by that gives whole buses.",
     value: (e) => `The trip needs ${e} buses.`,
   }),
@@ -222,7 +238,8 @@ export default [
     value: (e) => `Ordering ${e} screws covers the need in whole packs.`,
   }),
   step("mround-and-floor-round-to-a-multiple", 4, 2, "Round a price to 5 cents", {
-    prompt: "Cash prices end in 0 or 5 cents. In C2, round the price in B2 to the nearest 0.05. Use MROUND.",
+    prompt:
+      "Cash prices end in 0 or 5 cents. In C2, round the price in B2 to the nearest 0.05. Use MROUND.",
     rows: [
       ["Item", "Price", "Cash price"],
       ["Coffee", 2.47, null],
@@ -241,7 +258,8 @@ export default [
     value: (e) => `2.47 rounds to ${fmt(e)} for cash.`,
   }),
   step("mround-and-floor-round-to-a-multiple", 5, 3, "Total hours in quarter hours", {
-    prompt: "In E2, what are the total paid hours? Each shift is first rounded to the nearest quarter of an hour.",
+    prompt:
+      "In E2, what are the total paid hours? Each shift is first rounded to the nearest quarter of an hour.",
     rows: [
       ["Shift", "Hours", null, null, null],
       ["S-01", 7.9, null, null, null],

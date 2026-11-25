@@ -1,0 +1,37 @@
+id: free-delivery-step-1
+slug: free-delivery-step-1
+level: 1
+title: Works at the weekend
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: free-delivery
+step: 1
+screens:
+  - prompt: In D2, show TRUE when Ana works on Saturday or on Sunday, that is when either B2 or C2 says Yes. Use OR.
+    rows:
+      - [Name, Saturday, Sunday, Weekend]
+      - [Ana, No, Yes, null]
+    answerCell: D2
+    expected: true
+    variants:
+      - { set: { C2: No }, expected: false }
+      - { set: { B2: Yes, C2: No }, expected: true }
+    answer: =OR(B2="Yes",C2="Yes")
+    requiredFunctions:
+      - OR
+    hints:
+      nudge: OR is TRUE when at least one test is TRUE.
+      rule: OR(B2="Yes",C2="Yes") is TRUE if either day says Yes.
+    misses:
+      value: Ana works on Sunday, so D2 should show true.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for OR.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =OR(B2="Yes",C2="Yes")
+      - =OR(C2="Yes",B2="Yes")
+    reject:
+      - formula: =AND(B2="Yes",C2="Yes")
+        rule: required-function
+      - formula: =OR(B2="Yes",C2="Yes"
+        rule: syntax

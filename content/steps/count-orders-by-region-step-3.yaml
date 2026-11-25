@@ -1,0 +1,49 @@
+id: count-orders-by-region-step-3
+slug: count-orders-by-region-step-3
+level: 2
+title: Count the region named in a cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-orders-by-region
+step: 3
+screens:
+  - prompt: In F2, count the orders from the region typed in E1. Use COUNTIF.
+    rows:
+      - [Order, Region, null, null, Region, South]
+      - ["1001", North, null, null, Orders, null]
+      - ["1002", South, null, null, null, null]
+      - ["1003", North, null, null, null, null]
+      - ["1004", East, null, null, null, null]
+      - ["1005", South, null, null, null, null]
+      - ["1006", West, null, null, null, null]
+      - ["1007", South, null, null, null, null]
+      - ["1008", North, null, null, null, null]
+      - ["1009", South, null, null, null, null]
+    answerCell: F2
+    expected: 4
+    variants:
+      - set: { F1: North }
+        expected: 3
+    answer: =COUNTIF(B2:B10,F1)
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: Point the criteria at the cell that holds the region.
+      rule: COUNTIF(B2:B10,F1) counts whatever region is typed in F1, so changing F1 changes the count.
+    misses:
+      value: There are 4 orders from the region in F1.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(B2:B10,F1)
+      - =COUNTIF($B$2:$B$10,$F$1)
+    reject:
+      - formula: =COUNTIF(B2:B10,"South")
+        rule: fragile
+      - formula: =COUNTIF(B2:B10,E1)
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =COUNTIF(B2:B10,F1
+        rule: syntax

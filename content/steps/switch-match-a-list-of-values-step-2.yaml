@@ -1,0 +1,43 @@
+id: switch-match-a-list-of-values-step-2
+slug: switch-match-a-list-of-values-step-2
+level: 2
+title: Day number to day name
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: switch-match-a-list-of-values
+step: 2
+screens:
+  - prompt: "In C2, turn the day number in B2 into its short name: 1 Mon, 2 Tue, 3 Wed, 4 Thu, 5 Fri, 6 Sat, 7 Sun. Use SWITCH."
+    rows:
+      - [Shift, Day, Name]
+      - [S-1, 3, null]
+    answerCell: C2
+    expected: Wed
+    variants:
+      - { set: { B2: 7 }, expected: Sun }
+      - { set: { B2: 1 }, expected: Mon }
+      - { set: { B2: 5 }, expected: Fri }
+      - { set: { B2: 2 }, expected: Tue }
+      - { set: { B2: 4 }, expected: Thu }
+      - { set: { B2: 6 }, expected: Sat }
+    answer: =SWITCH(B2,1,"Mon",2,"Tue",3,"Wed",4,"Thu",5,"Fri",6,"Sat",7,"Sun")
+    requiredFunctions:
+      - SWITCH
+    hints:
+      nudge: List every day number with its name.
+      rule: Numbers in SWITCH need no quotes; the names do.
+    misses:
+      value: Day 3 is Wed.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SWITCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SWITCH(B2,1,"Mon",2,"Tue",3,"Wed",4,"Thu",5,"Fri",6,"Sat",7,"Sun")
+      - =SWITCH(B2,1,"Mon",2,"Tue",3,"Wed",4,"Thu",5,"Fri",6,"Sat",7,"Sun","?")
+    reject:
+      - formula: =SWITCH(B2,1,"Mon",2,"Tue")
+        rule: value
+      - formula: ="Wed"
+        rule: required-function
+      - formula: =SWITCH(B2,1,"Mon",2,"Tue",3,"Wed",4,"Thu",5,"Fri",6,"Sat",7,"Sun"
+        rule: syntax

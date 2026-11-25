@@ -1,0 +1,53 @@
+id: subtotal-a-sum-over-a-group-step-2
+slug: subtotal-a-sum-over-a-group-step-2
+level: 1
+title: Count with SUBTOTAL
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: subtotal-a-sum-over-a-group
+step: 2
+screens:
+  - prompt: In E2, count the numbers in the Qty column C2:C16 with SUBTOTAL, function number 2.
+    rows:
+      - [Item, Price, Qty, Line, Lines counted]
+      - [Pens, 1.2, 40, 48, null]
+      - [Pads, 3.5, 15, 52.5, null]
+      - [Clips, 0.05, 500, 25, null]
+      - [Tape, 2.1, 12, 25.2, null]
+      - [Files, 4.75, 20, 95, null]
+      - [Ink, 18.9, 6, 113.4, null]
+      - [Glue, 1.85, 30, 55.5, null]
+      - [Rulers, 0.9, 25, 22.5, null]
+      - [Folders, 0.6, 100, 60, null]
+      - [Labels, 5.4, 8, 43.2, null]
+      - [Staples, 1.1, 18, 19.8, null]
+      - [Markers, 7.25, 10, 72.5, null]
+      - [Erasers, 0.35, 60, 21, null]
+      - [Binders, 3.9, 14, 54.6, null]
+      - [Notes, 2.6, 22, 57.2, null]
+    answerCell: E2
+    expected: 15
+    variants:
+      - set: { C5: tbc }
+        expected: 14
+    answer: =SUBTOTAL(2,C2:C16)
+    requiredFunctions:
+      - SUBTOTAL
+    hints:
+      nudge: 2 counts numbers, like COUNT.
+      rule: SUBTOTAL(2,C2:C16) counts the quantities that are numbers.
+    misses:
+      value: 15 quantities are counted.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUBTOTAL.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUBTOTAL(2,C2:C16)
+      - =SUBTOTAL(102,C2:C16)
+    reject:
+      - formula: =SUBTOTAL(3,A1:A16)
+        rule: value
+      - formula: =15
+        rule: required-function
+      - formula: =SUBTOTAL(2,C2:C16
+        rule: syntax

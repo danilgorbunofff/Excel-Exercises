@@ -1,0 +1,49 @@
+id: ifna-catch-only-a-missing-match-step-2
+slug: ifna-catch-only-a-missing-match-step-2
+level: 2
+title: Line cost with a missing price as 0
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: ifna-catch-only-a-missing-match
+step: 2
+screens:
+  - prompt: "In B10, work out the line cost: the price of the code in B8, or 0 when the code is not listed, times the quantity in B9. Use IFNA and VLOOKUP."
+    rows:
+      - [Code, Price]
+      - [A-1, 10]
+      - [B-2, 20]
+      - [C-3, 30]
+      - [D-4, 45]
+      - [E-5, 12]
+      - [null, null]
+      - [Code, G-7]
+      - [Quantity, 4]
+      - [Line cost, null]
+    answerCell: B10
+    expected: 0
+    variants:
+      - { set: { B8: D-4 }, expected: 180 }
+      - { set: { B8: A-1 }, expected: 40 }
+      - { set: { B8: E-5 }, expected: 48 }
+    answer: =IFNA(VLOOKUP(B8,A2:B6,2,FALSE),0)*B9
+    requiredFunctions:
+      - IFNA
+      - VLOOKUP
+    hints:
+      nudge: Catch the missing code before multiplying, so the 0 is what gets multiplied.
+      rule: IFNA(VLOOKUP(...),0) gives 0 for an unknown code; times B9 the line costs nothing.
+    misses:
+      value: An unknown code gives a line cost of 0.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IFNA and VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IFNA(VLOOKUP(B8,A2:B6,2,FALSE),0)*B9
+      - =B9*IFNA(VLOOKUP(B8,A2:B6,2,FALSE),0)
+    reject:
+      - formula: =VLOOKUP(B8,A2:B6,2,FALSE)*B9
+        rule: required-function
+      - formula: =0
+        rule: required-function
+      - formula: =IFNA(VLOOKUP(B8,A2:B6,2,FALSE),0)*B9,
+        rule: syntax

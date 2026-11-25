@@ -1,0 +1,49 @@
+id: vlookup-with-a-wildcard-step-5
+slug: vlookup-with-a-wildcard-step-5
+level: 3
+title: Country of a supplier by its last word
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: vlookup-with-a-wildcard
+step: 5
+screens:
+  - prompt: In F2, which country is the first supplier whose name ends with the word in F1 based in? Show none if no name ends with it.
+    rows:
+      - [Supplier, Country, Lead time (days), null, Ends with, Air]
+      - [Baltic Freight, Latvia, 12, null, Country, null]
+      - [Airborne Rail, France, 11, null, null, null]
+      - [Northwind Air, Ireland, 7, null, null, null]
+      - [Northwind Rail, Ireland, 19, null, null, null]
+      - [Southgate Haulage, Spain, 9, null, null, null]
+      - [Alpine Air, Austria, 6, null, null, null]
+      - [Baltic Couriers, Latvia, 4, null, null, null]
+      - [Danube Freight, Hungary, 14, null, null, null]
+    answerCell: F2
+    expected: Ireland
+    variants:
+      - set: { F1: Freight }
+        expected: Latvia
+      - set: { F1: Sea }
+        expected: none
+    answer: =XLOOKUP("*"&F1,A2:A9,B2:B9,"none",2)
+    requiredFunctions: []
+    hints:
+      nudge: '"*"&F1 means anything, then the word at the end.'
+      rule: 'The wildcard goes only in front: "*"&F1. The fourth part, "none", shows when nothing matches.'
+    misses:
+      value: The first supplier ending in Air is based in Ireland.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP("*"&F1,A2:A9,B2:B9,"none",2)
+      - =IFERROR(VLOOKUP("*"&F1,A2:B9,2,FALSE),"none")
+    reject:
+      - formula: =XLOOKUP("*"&F1&"*",A2:A9,B2:B9,"none",2)
+        rule: value
+      - formula: =XLOOKUP(F1&"*",A2:A9,B2:B9,"none",2)
+        rule: value
+      - formula: ="Ireland"
+        rule: reference
+      - formula: =XLOOKUP("*"&F1,A2:A9,B2:B9,"none",2
+        rule: syntax

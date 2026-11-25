@@ -1,0 +1,16 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(COUNTIF($E$2:$E$5,$A$5)>0,"Found","Missing")
+      - =if(countif($e$2:$e$5, a5)>0, "Found", "Missing")
+      - =LET(data,$E$2:$E$5,IF(COUNTIF(data,A5)>0,"Found","Missing"))
+    wrong:
+      - formula: =IF(COUNTIF($E$2:$E$4,A5)>0,"Found","Missing")
+        rule: fragile
+        why: range $E$2:$E$5 one row short at the end
+      - formula: =IF(COUNTIF($E$3:$E$5,A5)>0,"Found","Missing")
+        rule: fragile
+        why: range $E$2:$E$5 skips its first row
+    equivalent:
+      - formula: =IF(COUNTIF($E$2:$E$6,A5)>0,"Found","Missing")
+        why: "range $E$2:$E$5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

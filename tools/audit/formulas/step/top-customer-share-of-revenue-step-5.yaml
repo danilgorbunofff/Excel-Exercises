@@ -1,0 +1,19 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =1-(LARGE($B$2:$B$9,1)+LARGE($B$2:$B$9,2))/SUM($B$2:$B$9)
+      - =1-(LARGE(B$2:B$9,1)+LARGE(B2:B9,2))/SUM(B2:B9)
+      - =1-(large(b2:b9, 1)+large(b2:b9, 2))/sum(b2:b9)
+      - =1-(LARGE(B2:B9,1)+LARGE(B2:B9,2))/SUMPRODUCT(B2:B9)
+      - =LET(data,B2:B9,1-(LARGE(data,1)+LARGE(data,2))/SUM(data))
+    wrong:
+      - formula: =1-(LARGE(B2:B8,1)+LARGE(B2:B9,2))/SUM(B2:B9)
+        rule: fragile
+        why: range B2:B9 one row short at the end
+      - formula: =1-(LARGE(B3:B9,1)+LARGE(B2:B9,2))/SUM(B2:B9)
+        rule: fragile
+        why: range B2:B9 skips its first row
+      - formula: =1-(LARGE(B2:B9,1)+LARGE(B2:B8,2))/SUM(B2:B9)
+        rule: fragile
+        why: range B2:B9 one row short at the end
+    equivalent: []

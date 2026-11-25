@@ -1,0 +1,39 @@
+id: month-end-accrual-for-part-of-a-month-step-3
+slug: month-end-accrual-for-part-of-a-month-step-3
+level: 2
+title: Days from start to month end
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: month-end-accrual-for-part-of-a-month
+step: 3
+screens:
+  - prompt: In D2, count the days from the start date to the month end, both days included. Use EOMONTH.
+    rows:
+      - [Contract, Monthly fee, Start date, Days]
+      - [Cleaning, 3100, 45366, null]
+    answerCell: D2
+    expected: 17
+    variants:
+      - set: { C2: 45352 }
+        expected: 31
+    answer: =EOMONTH(C2,0)-C2+1
+    requiredFunctions:
+      - EOMONTH
+    hints:
+      nudge: Both ends count, so add 1 to the difference.
+      rule: EOMONTH(C2,0)-C2+1 counts the start day and the last day.
+    misses:
+      value: The contract runs 17 days this month.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for EOMONTH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =EOMONTH(C2,0)-C2+1
+      - =1+EOMONTH(C2,0)-C2
+    reject:
+      - formula: =EOMONTH(C2,0)-C2
+        rule: value
+      - formula: =17
+        rule: required-function
+      - formula: =EOMONTH(C2,0)-C2+1,
+        rule: syntax

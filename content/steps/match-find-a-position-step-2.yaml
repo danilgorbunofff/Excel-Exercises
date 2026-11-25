@@ -1,0 +1,41 @@
+id: match-find-a-position-step-2
+slug: match-find-a-position-step-2
+level: 1
+title: Position of a month across a row
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: match-find-a-position
+step: 2
+screens:
+  - prompt: In B4, find the position of the month in B3 within B1:G1. Use MATCH with 0.
+    rows:
+      - [Month, Jan, Feb, Mar, Apr, May, Jun]
+      - [Units, 120, 180, 200, 165, 190, 150]
+      - [Which month?, May, null, null, null, null, null]
+      - [Position, null, null, null, null, null, null]
+    answerCell: B4
+    expected: 5
+    variants:
+      - set: { B3: Feb }
+        expected: 2
+    answer: =MATCH(B3,B1:G1,0)
+    requiredFunctions:
+      - MATCH
+    hints:
+      nudge: MATCH works along a row the same way.
+      rule: MATCH(B3,B1:G1,0) counts from Jan as 1.
+    misses:
+      value: May is at position 5.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for MATCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MATCH(B3,B1:G1,0)
+      - =MATCH($B$3,$B$1:$G$1,0)
+    reject:
+      - formula: =MATCH(B3,A1:G1,0)
+        rule: value
+      - formula: =5
+        rule: required-function
+      - formula: =MATCH(B3,B1:G1,0
+        rule: syntax

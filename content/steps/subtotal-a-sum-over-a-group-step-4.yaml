@@ -1,0 +1,55 @@
+id: subtotal-a-sum-over-a-group-step-4
+slug: subtotal-a-sum-over-a-group-step-4
+level: 2
+title: Total two separate blocks
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: subtotal-a-sum-over-a-group
+step: 4
+screens:
+  - prompt: In E2, total the line values of the first five rows, D2:D6, and the last five, D12:D16, with one SUBTOTAL.
+    rows:
+      - [Item, Price, Qty, Line, Two blocks]
+      - [Pens, 1.2, 40, 48, null]
+      - [Pads, 3.5, 15, 52.5, null]
+      - [Clips, 0.05, 500, 25, null]
+      - [Tape, 2.1, 12, 25.2, null]
+      - [Files, 4.75, 20, 95, null]
+      - [Ink, 18.9, 6, 113.4, null]
+      - [Glue, 1.85, 30, 55.5, null]
+      - [Rulers, 0.9, 25, 22.5, null]
+      - [Folders, 0.6, 100, 60, null]
+      - [Labels, 5.4, 8, 43.2, null]
+      - [Staples, 1.1, 18, 19.8, null]
+      - [Markers, 7.25, 10, 72.5, null]
+      - [Erasers, 0.35, 60, 21, null]
+      - [Binders, 3.9, 14, 54.6, null]
+      - [Notes, 2.6, 22, 57.2, null]
+    answerCell: E2
+    expected: 470.8
+    variants:
+      - set: { D3: 60 }
+        expected: 478.3
+    answer: =SUBTOTAL(9,D2:D6,D12:D16)
+    requiredFunctions:
+      - SUBTOTAL
+    hints:
+      nudge: SUBTOTAL takes several ranges after the function number.
+      rule: SUBTOTAL(9,D2:D6,D12:D16) adds both blocks in one function.
+    misses:
+      value: The two blocks add up to 470.80.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUBTOTAL.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUBTOTAL(9,D2:D6,D12:D16)
+      - =SUBTOTAL(9,D2:D6)+SUBTOTAL(9,D12:D16)
+    reject:
+      - formula: =SUBTOTAL(9,D2:D16)
+        rule: value
+      - formula: =SUM(D2:D6,D12:D16)
+        rule: required-function
+      - formula: =470.8
+        rule: required-function
+      - formula: =SUBTOTAL(9,D2:D6,D12:D16
+        rule: syntax

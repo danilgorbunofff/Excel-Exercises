@@ -1,0 +1,43 @@
+id: left-find-prefix-step-3
+slug: left-find-prefix-step-3
+level: 2
+title: Everything after the first dash
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: left-find-prefix
+step: 3
+screens:
+  - prompt: "In B2, take everything after the first dash in A2: the length minus the dash's position, from the right. Use RIGHT, LEN and FIND."
+    rows:
+      - [Reference, After the dash]
+      - [ORD-2024-0917, null]
+    answerCell: B2
+    expected: 2024-0917
+    variants:
+      - set: { A2: INVOICE-2023-1180 }
+        expected: 2023-1180
+    answer: =RIGHT(A2,LEN(A2)-FIND("-",A2))
+    requiredFunctions:
+      - RIGHT
+      - LEN
+      - FIND
+    hints:
+      nudge: How many characters come after the dash? The length minus its position.
+      rule: RIGHT(A2,LEN(A2)-FIND("-",A2)) keeps everything after the first dash.
+    misses:
+      value: "After the first dash: 2024-0917."
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for RIGHT, LEN and FIND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =RIGHT(A2,LEN(A2)-FIND("-",A2))
+      - =RIGHT(A2,LEN(A2)-FIND("-",A2,1))
+    reject:
+      - formula: =RIGHT(A2,LEN(A2)-FIND("-",A2)+1)
+        rule: value
+      - formula: =RIGHT(A2,9)
+        rule: required-function
+      - formula: ="2024-0917"
+        rule: required-function
+      - formula: =RIGHT(A2,LEN(A2)-FIND("-",A2)
+        rule: syntax

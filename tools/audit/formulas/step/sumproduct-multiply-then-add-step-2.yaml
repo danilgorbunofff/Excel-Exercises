@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(($A$2:$A$8="Pens")*$B$2:$B$8*$C$2:$C$8)
+      - =SUMPRODUCT((A$2:A$8="Pens")*B2:B8*C2:C8)
+      - =sumproduct((a2:a8="Pens")*b2:b8*c2:c8)
+      - =LET(data,A2:A8,SUMPRODUCT((data="Pens")*B2:B8*C2:C8))
+    wrong: []
+    equivalent: []

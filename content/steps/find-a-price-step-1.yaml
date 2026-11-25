@@ -1,0 +1,48 @@
+id: find-a-price-step-1
+slug: find-a-price-step-1
+level: 1
+title: Find a product name
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: find-a-price
+step: 1
+screens:
+  - prompt: In H2, find the name of the product whose code is in H1. Use XLOOKUP.
+    rows:
+      - [Code, Product, Category, Price, Stock, null, Code, P-103]
+      - [P-101, Desk lamp, Lighting, 24, 14, null, Product, null]
+      - [P-102, Chair, Seating, 89, 6, null, null, null]
+      - [P-103, Shelf, Storage, 45, 9, null, null, null]
+      - [P-104, Rug, Decor, 120, 3, null, null, null]
+      - [P-105, Mirror, Decor, 60, 11, null, null, null]
+      - [P-106, Stool, Seating, 35, 22, null, null, null]
+      - [P-107, Floor lamp, Lighting, 75, 5, null, null, null]
+      - [P-108, Cabinet, Storage, 210, 2, null, null, null]
+    answerCell: H2
+    expected: Shelf
+    variants:
+      - set: { H1: P-106 }
+        expected: Stool
+    answer: =XLOOKUP(H1,A2:A9,B2:B9)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: XLOOKUP takes what to find, where to find it, and what to return.
+      rule: XLOOKUP(H1,A2:A9,B2:B9) finds the code in column A and returns the name from column B.
+    misses:
+      value: Code P-103 is the Shelf.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(H1,A2:A9,B2:B9)
+      - =XLOOKUP($H$1,$A$2:$A$9,$B$2:$B$9)
+    reject:
+      - formula: =XLOOKUP(H1,A2:A9,D2:D9)
+        rule: value
+      - formula: =XLOOKUP("P-103",A2:A9,B2:B9)
+        rule: fragile
+      - formula: ="Shelf"
+        rule: required-function
+      - formula: =XLOOKUP(H1,A2:A9,B2:B9
+        rule: syntax

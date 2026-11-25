@@ -1,0 +1,48 @@
+id: find-an-extension-step-5
+slug: find-an-extension-step-5
+level: 3
+title: Team of an extension
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: find-an-extension
+step: 5
+screens:
+  - prompt: In G2, which team does the person on the extension typed in G1 belong to?
+    rows:
+      - [ID, Name, Team, Extension, null, Extension, 402]
+      - [1041, Ana, Sales, 214, null, Team, null]
+      - [1042, Ben, Finance, 305, null, null, null]
+      - [1043, Cleo, Sales, 218, null, null, null]
+      - [1044, Dev, IT, 402, null, null, null]
+      - [1045, Eve, Finance, 311, null, null, null]
+      - [1046, Finn, IT, 405, null, null, null]
+      - [1047, Gus, Sales, 220, null, null, null]
+    answerCell: G2
+    expected: IT
+    variants:
+      - set: { G1: 311 }
+        expected: Finance
+      - set: { G1: 220 }
+        expected: Sales
+    answer: =XLOOKUP(G1,D2:D8,C2:C8)
+    requiredFunctions: []
+    hints:
+      nudge: The extension is to the right of the team, so VLOOKUP cannot reach back.
+      rule: XLOOKUP(G1,D2:D8,C2:C8) searches the extension column and returns the team from the column to its left.
+    misses:
+      value: Extension 402 is in IT.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(G1,D2:D8,C2:C8)
+      - =INDEX(C2:C8,MATCH(G1,D2:D8,0))
+    reject:
+      - formula: =VLOOKUP(G1,A2:D8,3,FALSE)
+        rule: value
+      - formula: ="IT"
+        rule: reference
+      - formula: ="IT"
+        rule: reference
+      - formula: =XLOOKUP(G1,D2:D8,C2:C8
+        rule: syntax

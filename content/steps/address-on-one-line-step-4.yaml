@@ -1,0 +1,40 @@
+id: address-on-one-line-step-4
+slug: address-on-one-line-step-4
+level: 2
+title: One line with the postcode in capitals
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: address-on-one-line
+step: 4
+screens:
+  - prompt: In E2, join the address parts in A2:D2 with a comma and a space, skipping empty parts, and show the postcode in capitals. Use TEXTJOIN and UPPER.
+    rows:
+      - [Line 1, Line 2, Town, Postcode, Address]
+      - [12 Mill Lane, null, Hebden, hx7 8ab, null]
+    answerCell: E2
+    expected: 12 Mill Lane, Hebden, HX7 8AB
+    variants:
+      - set: { B2: Old Town }
+        expected: 12 Mill Lane, Old Town, Hebden, HX7 8AB
+    answer: =TEXTJOIN(", ",TRUE,A2:C2,UPPER(D2))
+    requiredFunctions:
+      - TEXTJOIN
+      - UPPER
+    hints:
+      nudge: Give TEXTJOIN the first three parts, then UPPER of the postcode.
+      rule: TEXTJOIN takes several ranges and values, so UPPER(D2) can be one of them.
+    misses:
+      value: E2 shows 12 Mill Lane, Hebden, HX7 8AB.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for TEXTJOIN and UPPER.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =TEXTJOIN(", ",TRUE,A2:C2,UPPER(D2))
+      - =TEXTJOIN(", ",TRUE,A2,B2,C2,UPPER(D2))
+    reject:
+      - formula: =TEXTJOIN(", ",TRUE,A2:D2)
+        rule: required-function
+      - formula: ="12 Mill Lane, Hebden, HX7 8AB"
+        rule: required-function
+      - formula: =TEXTJOIN(", ",TRUE,A2:C2,UPPER(D2)
+        rule: syntax

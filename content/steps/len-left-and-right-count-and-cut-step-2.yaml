@@ -1,0 +1,41 @@
+id: len-left-and-right-count-and-cut-step-2
+slug: len-left-and-right-count-and-cut-step-2
+level: 1
+title: Last four digits of a card
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: len-left-and-right-count-and-cut
+step: 2
+screens:
+  - prompt: In B2, take the last 4 characters of the card number in A2. Use RIGHT.
+    rows:
+      - [Card, Last four]
+      - [4929 1180 2245 7731, null]
+    answerCell: B2
+    expected: "7731"
+    variants:
+      - set: { A2: 5100 2233 9087 0042 }
+        expected: "0042"
+    answer: =RIGHT(A2,4)
+    requiredFunctions:
+      - RIGHT
+    hints:
+      nudge: RIGHT takes the text and how many characters to keep from the end.
+      rule: RIGHT(A2,4) keeps the last four characters.
+    misses:
+      value: The last four are 7731.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for RIGHT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =RIGHT(A2,4)
+      - =right(a2,4)
+    reject:
+      - formula: =LEFT(A2,4)
+        rule: required-function
+      - formula: =RIGHT(A2,5)
+        rule: value
+      - formula: ="7731"
+        rule: required-function
+      - formula: =RIGHT(A2,4
+        rule: syntax

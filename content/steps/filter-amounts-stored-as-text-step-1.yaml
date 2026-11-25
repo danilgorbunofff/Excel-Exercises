@@ -1,0 +1,58 @@
+id: filter-amounts-stored-as-text-step-1
+slug: filter-amounts-stored-as-text-step-1
+level: 1
+title: Turn one text amount into a number
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: filter-amounts-stored-as-text
+step: 1
+screens:
+  - prompt: The amount in D4 came in as text. In F2, turn it into a real number. Use VALUE.
+    rows:
+      - [Order, Region, Rep, Amount, null, null, null, null, null]
+      - [1001, North, Ana, 820, null, null, null, null, null]
+      - [1002, South, Bo, 450, null, null, null, null, null]
+      - [1003, East, Cy, "1300", null, null, null, null, null]
+      - [1004, north, Di, 610, null, null, null, null, null]
+      - [1005, South, Ed, 1250, null, null, null, null, null]
+      - [1006, West, Fay, 300, null, null, null, null, null]
+      - [1007, North, Ana, 1500, null, null, null, null, null]
+      - [1008, East, Gus, 220, null, null, null, null, null]
+      - [1009, South, Bo, "980", null, null, null, null, null]
+      - [1010, North, Hal, 470, null, null, null, null, null]
+      - [1011, West, Ivy, "1100", null, null, null, null, null]
+      - [1012, South, Jo, 760, null, null, null, null, null]
+      - [1013, East, Cy, 540, null, null, null, null, null]
+      - [1014, North, Di, 90, null, null, null, null, null]
+      - [1015, South, Ed, "1600", null, null, null, null, null]
+      - [1016, West, Fay, 700, null, null, null, null, null]
+      - [1017, north, Kim, 1050, null, null, null, null, null]
+      - [1018, East, Gus, 380, null, null, null, null, null]
+    answerCell: F2
+    expected: 1300
+    variants:
+      - set: { D4: "1450" }
+        expected: 1450
+    answer: =VALUE(D4)
+    requiredFunctions:
+      - VALUE
+    hints:
+      nudge: VALUE reads text that looks like a number as a number.
+      rule: VALUE(D4) gives 1300 as a number you can add.
+    misses:
+      value: As a number, D4 is 1300.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for VALUE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =VALUE(D4)
+      - =VALUE($D$4)
+      - "=VALUE(TRIM(D4))"
+      - "=VALUE(D4)*1"
+    reject:
+      - formula: =D4
+        rule: required-function
+      - formula: =1300
+        rule: required-function
+      - formula: =VALUE(D4
+        rule: syntax

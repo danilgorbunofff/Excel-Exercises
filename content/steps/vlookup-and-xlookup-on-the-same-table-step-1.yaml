@@ -1,0 +1,44 @@
+id: vlookup-and-xlookup-on-the-same-table-step-1
+slug: vlookup-and-xlookup-on-the-same-table-step-1
+level: 1
+title: Product name with VLOOKUP
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: vlookup-and-xlookup-on-the-same-table
+step: 1
+screens:
+  - prompt: In B7, return the product name for the SKU in B6. Use VLOOKUP.
+    rows:
+      - [SKU, Product, Unit price]
+      - [BX-210, Bracket, 2.4]
+      - [CX-330, Clamp, 3.8]
+      - [DX-410, Dowel, 1.15]
+      - [EX-500, Extrusion, 9.6]
+      - [Which SKU?, EX-500, null]
+      - [Product, null, null]
+    answerCell: B7
+    expected: Extrusion
+    variants:
+      - { set: { B6: BX-210 }, expected: Bracket }
+      - { set: { A2: EX-500 }, expected: Bracket }
+    answer: =VLOOKUP(B6,A2:C5,2,FALSE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: The name is the 2nd column.
+      rule: VLOOKUP(B6,A2:C5,2,FALSE) returns the product on the SKU's row.
+    misses:
+      value: EX-500 is the Extrusion.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =VLOOKUP(B6,A2:C5,2,FALSE)
+      - =VLOOKUP(B6,A2:B5,2,FALSE)
+    reject:
+      - formula: =VLOOKUP(B6,A2:C5,3,FALSE)
+        rule: value
+      - formula: ="Extrusion"
+        rule: required-function
+      - formula: =VLOOKUP(B6,A2:C5,2,FALSE
+        rule: syntax

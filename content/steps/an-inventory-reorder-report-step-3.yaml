@@ -1,0 +1,48 @@
+id: an-inventory-reorder-report-step-3
+slug: an-inventory-reorder-report-step-3
+level: 2
+title: Count the items below their point
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: an-inventory-reorder-report
+step: 3
+screens:
+  - prompt: In F2, count the items whose stock in B2:B9 is below their own reorder point in C2:C9. Use SUMPRODUCT with --.
+    rows:
+      - [Item, On hand, Reorder at, null, null, Below point]
+      - [Bolts, 120, 200, null, null, null]
+      - [Nuts, 340, 250, null, null, null]
+      - [Washers, 80, 150, null, null, null]
+      - [Screws, 500, 400, null, null, null]
+      - [Rivets, 60, 60, null, null, null]
+      - [Pins, 45, 100, null, null, null]
+      - [Clips, 210, 180, null, null, null]
+      - [Hooks, 15, 40, null, null, null]
+    answerCell: F2
+    expected: 4
+    variants:
+      - set: { B3: 200 }
+        expected: 5
+    answer: =SUMPRODUCT(--(B2:B9<C2:C9))
+    requiredFunctions:
+      - SUMPRODUCT
+    hints:
+      nudge: Compare each item's stock with its own point, then count the TRUEs.
+      rule: B2:B9<C2:C9 compares row by row; -- turns TRUE into 1 and SUMPRODUCT adds them.
+    misses:
+      value: 4 items are below their reorder point.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMPRODUCT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(--(B2:B9<C2:C9))
+      - =SUMPRODUCT((B2:B9<C2:C9)*1)
+    reject:
+      - formula: =SUMPRODUCT(--(B2:B9<=C2:C9))
+        rule: value
+      - formula: =COUNTIF(B2:B9,"<200")
+        rule: required-function
+      - formula: =4
+        rule: required-function
+      - formula: =SUMPRODUCT(--(B2:B9<C2:C9)
+        rule: syntax

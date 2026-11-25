@@ -1,0 +1,39 @@
+id: substitute-replace-one-piece-of-text-step-2
+slug: substitute-replace-one-piece-of-text-step-2
+level: 1
+title: Replace a word
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: substitute-replace-one-piece-of-text
+step: 2
+screens:
+  - prompt: In B2, replace Ltd with Limited in the company name in A2. Use SUBSTITUTE.
+    rows:
+      - [Company, Full name]
+      - [Acme Tools Ltd, null]
+    answerCell: B2
+    expected: Acme Tools Limited
+    variants:
+      - set: { A2: Northwind Ltd }
+        expected: Northwind Limited
+    answer: =SUBSTITUTE(A2,"Ltd","Limited")
+    requiredFunctions:
+      - SUBSTITUTE
+    hints:
+      nudge: SUBSTITUTE matches capitals exactly.
+      rule: SUBSTITUTE(A2,"Ltd","Limited") swaps the word wherever it appears.
+    misses:
+      value: The full name is Acme Tools Limited.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUBSTITUTE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUBSTITUTE(A2,"Ltd","Limited")
+      - =SUBSTITUTE(A2,"Ltd","Limited",1)
+    reject:
+      - formula: =SUBSTITUTE(A2,"ltd","Limited")
+        rule: value
+      - formula: ="Acme Tools Limited"
+        rule: required-function
+      - formula: =SUBSTITUTE(A2,"Ltd","Limited"
+        rule: syntax

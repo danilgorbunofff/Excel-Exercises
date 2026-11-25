@@ -1,0 +1,48 @@
+id: delivery-band-step-4
+slug: delivery-band-step-4
+level: 2
+title: Tax from a rate band
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: delivery-band
+step: 4
+screens:
+  - prompt: "In B8, work out the tax: the income in B7 times the rate for its band. Use VLOOKUP with TRUE."
+    rows:
+      - [From income, Rate]
+      - [0, 0.1]
+      - [20000, 0.2]
+      - [50000, 0.3]
+      - [100000, 0.4]
+      - [null, null]
+      - [Income, 36000]
+      - [Tax, null]
+    answerCell: B8
+    expected: 7200
+    variants:
+      - { set: { B7: 50000 }, expected: 15000 }
+      - { set: { B7: 12000 }, expected: 1200 }
+      - { set: { B7: 72000, A5: 0 }, expected: 28800 }
+    answer: =B7*VLOOKUP(B7,A2:B5,2,TRUE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: Look up the rate, then multiply the income by it.
+      rule: The approximate VLOOKUP picks the band's rate; multiplying by B7 gives the tax.
+    misses:
+      value: The tax on 36,000 is 7200.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B7*VLOOKUP(B7,A2:B5,2,TRUE)
+      - =VLOOKUP(B7,A2:B5,2,TRUE)*B7
+    reject:
+      - formula: =VLOOKUP(B7,A2:B5,2,TRUE)
+        rule: value
+      - formula: =B7*0.2
+        rule: required-function
+      - formula: =7200
+        rule: required-function
+      - formula: =B7*VLOOKUP(B7,A2:B5,2,TRUE
+        rule: syntax

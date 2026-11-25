@@ -1,0 +1,46 @@
+id: best-return-on-ad-spend-step-2
+slug: best-return-on-ad-spend-step-2
+level: 2
+title: Return for the campaign in a cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: best-return-on-ad-spend
+step: 2
+screens:
+  - prompt: In F2, show the return on spend of the campaign typed in E2, rounded to 2 decimals. Use XLOOKUP and ROUND.
+    rows:
+      - [Campaign, Spend, Revenue, null, Campaign, Return]
+      - [Search, 4200, 16800, null, Radio, null]
+      - [Social, 3100, 9920, null, null, null]
+      - [Email, 900, 5850, null, null, null]
+      - [Video, 5600, 14560, null, null, null]
+      - [Print, 1500, 3150, null, null, null]
+      - [Radio, 2800, 7840, null, null, null]
+      - [Display, 2000, 6600, null, null, null]
+    answerCell: F2
+    expected: 2.8
+    variants:
+      - { set: { E2: Social }, expected: 3.2 }
+      - { set: { C7: 9920 }, expected: 3.54 }
+    answer: =ROUND(XLOOKUP(E2,A2:A8,C2:C8)/XLOOKUP(E2,A2:A8,B2:B8),2)
+    requiredFunctions:
+      - XLOOKUP
+      - ROUND
+    hints:
+      nudge: Look up the revenue and the spend, then divide.
+      rule: Two lookups give the campaign's revenue and spend for the division.
+    misses:
+      value: Radio returned 2.8 per unit spent.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP and ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(XLOOKUP(E2,A2:A8,C2:C8)/XLOOKUP(E2,A2:A8,B2:B8),2)
+      - =ROUND(XLOOKUP(E2,A2:A8,C2:C8/B2:B8),2)
+    reject:
+      - formula: =ROUND(XLOOKUP(E2,A2:A8,B2:B8)/XLOOKUP(E2,A2:A8,C2:C8),2)
+        rule: value
+      - formula: =2.8
+        rule: required-function
+      - formula: =ROUND(XLOOKUP(E2,A2:A8,C2:C8)/XLOOKUP(E2,A2:A8,B2:B8),2
+        rule: syntax

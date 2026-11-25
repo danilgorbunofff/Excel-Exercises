@@ -1,0 +1,39 @@
+id: error-handling-summary-step-1
+slug: error-handling-summary-step-1
+level: 1
+title: Zero when the inputs are not numbers
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: error-handling-summary
+step: 1
+screens:
+  - prompt: In D2, multiply the price in B2 by the quantity in C2, and show 0 when the result is an error. Use IFERROR.
+    rows:
+      - [Item, Price, Qty, Line]
+      - [Pens, tbc, 12, null]
+    answerCell: D2
+    expected: 0
+    variants:
+      - set: { B2: 1.5 }
+        expected: 18
+    answer: =IFERROR(B2*C2,0)
+    requiredFunctions:
+      - IFERROR
+    hints:
+      nudge: "Text times a number gives `#VALUE!`; IFERROR catches it."
+      rule: IFERROR(B2*C2,0) gives 0 while the price is still tbc.
+    misses:
+      value: With the price still tbc, D2 should show 0.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IFERROR.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IFERROR(B2*C2,0)
+      - =IFERROR(C2*B2,0)
+    reject:
+      - formula: =B2*C2
+        rule: required-function
+      - formula: =0
+        rule: required-function
+      - formula: =IFERROR(B2*C2,0
+        rule: syntax

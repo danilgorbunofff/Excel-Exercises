@@ -1,0 +1,45 @@
+id: headcount-cost-plan-step-5
+slug: headcount-cost-plan-step-5
+level: 3
+title: Plan cost after extra junior hires
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: headcount-cost-plan
+step: 5
+screens:
+  - prompt: In F2, what does the plan cost after hiring the number of extra juniors in G1, each at the junior cost of the Sales team?
+    rows:
+      - [Team, Grade, Heads, Cost per head, null, Plan cost, 3]
+      - [Sales, Junior, 6, 38000, null, null, null]
+      - [Sales, Senior, 3, 62000, null, null, null]
+      - [IT, Junior, 4, 45000, null, null, null]
+      - [IT, Senior, 2, 78000, null, null, null]
+      - [Ops, Junior, 5, 34000, null, null, null]
+    answerCell: F2
+    expected: 1034000
+    variants:
+      - { set: { G1: 5 }, expected: 1110000 }
+      - { set: { D2: 40000 }, expected: 1052000 }
+      - { set: { D2: null }, expected: 692000 }
+    answer: =SUMPRODUCT(C2:C6,D2:D6)+G1*SUMIFS(D2:D6,A2:A6,"Sales",B2:B6,"Junior")
+    requiredFunctions: []
+    hints:
+      nudge: The current plan, plus the new heads times the Sales junior cost.
+      rule: SUMIFS on team and grade finds the Sales junior cost wherever its row sits.
+    misses:
+      value: The plan will cost 1034000.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(C2:C6,D2:D6)+G1*SUMIFS(D2:D6,A2:A6,"Sales",B2:B6,"Junior")
+      - =SUMPRODUCT(C2:C6,D2:D6)+G1*XLOOKUP(1,(A2:A6="Sales")*(B2:B6="Junior"),D2:D6)
+    reject:
+      - formula: =SUMPRODUCT(C2:C6,D2:D6)+G1
+        rule: value
+      - formula: =SUMPRODUCT(C2:C6,D2:D6)+G1*D4
+        rule: value
+      - formula: =1034000
+        rule: reference
+      - formula: =SUMPRODUCT(C2:C6,D2:D6)+G1*SUMIFS(D2:D6,A2:A6,"Sales",B2:B6,"Junior"
+        rule: syntax

@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIFS(C$2:C$13,B2:B13,F1)-SUMIFS(D2:D13,B2:B13,F1)
+      - =sumifs(c2:c13, b2:b13, f1)-sumifs(d2:d13, b2:b13, f1)
+      - =SUMPRODUCT((B2:B13=F1)*C2:C13)-SUMIFS(D2:D13,B2:B13,F1)
+      - =SUM(FILTER(C2:C13,(B2:B13=F1),0))-SUMIFS(D2:D13,B2:B13,F1)
+      - =SUMIF(B2:B13,F1,C2:C13)-SUMIFS(D2:D13,B2:B13,F1)
+      - =SUMIFS(C2:C13,B2:B13,F1)-SUMPRODUCT((B2:B13=F1)*D2:D13)
+      - =SUMIFS(C2:C13,B2:B13,F1)-SUM(FILTER(D2:D13,(B2:B13=F1),0))
+      - =SUMIFS(C2:C13,B2:B13,F1)-SUMIF(B2:B13,F1,D2:D13)
+      - =LET(data,C2:C13,SUMIFS(data,B2:B13,F1)-SUMIFS(D2:D13,B2:B13,F1))
+    wrong: []
+    equivalent: []

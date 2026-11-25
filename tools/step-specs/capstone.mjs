@@ -2,8 +2,13 @@
 // YAML files are the source of truth once written: variants added later by
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 3 at step 4.
-const fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(2));
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 const sales = [
   ["Region", "Rep", "Amount", null, null, null],
@@ -83,14 +88,20 @@ export default [
   }),
   step("a-sales-summary-end-to-end", 5, 3, "The best-selling region", {
     prompt: "In F2, which of the regions listed in E2:E5 has the highest total sales?",
-    rows: salesWith({ 0: ["Region", "Best region"], 1: ["North", null], 2: ["South", null], 3: ["East", null], 4: ["West", null] }),
+    rows: salesWith({
+      0: ["Region", "Best region"],
+      1: ["North", null],
+      2: ["South", null],
+      3: ["East", null],
+      4: ["West", null],
+    }),
     cell: "F2",
     answer: "=XLOOKUP(MAX(SUMIFS(C2:C16,A2:A16,E2:E5)),SUMIFS(C2:C16,A2:A16,E2:E5),E2:E5)",
     required: [],
     accept: ["=INDEX(E2:E5,MATCH(MAX(SUMIFS(C2:C16,A2:A16,E2:E5)),SUMIFS(C2:C16,A2:A16,E2:E5),0))"],
     variants: [{ C13: 900 }, { C8: 700 }],
     reject: [
-      ['=XLOOKUP(MAX(C2:C16),C2:C16,A2:A16)', "value"],
+      ["=XLOOKUP(MAX(C2:C16),C2:C16,A2:A16)", "value"],
       ['="North"', "reference"],
     ],
     nudge: "Work out every region's total at once, then find the largest and its region.",
@@ -126,7 +137,8 @@ export default [
     value: (e) => `Eve works in ${e}.`,
   }),
   step("a-lookup-dashboard-from-three-tables", 3, 2, "Target of a region", {
-    prompt: "In D2, read the target of the region named in D1 from the targets table F2:G5. Use XLOOKUP.",
+    prompt:
+      "In D2, read the target of the region named in D1 from the targets table F2:G5. Use XLOOKUP.",
     rows: reps.map((r, i) => (i === 0 ? [...r.slice(0, 3), "West", ...r.slice(4)] : r)),
     cell: "D2",
     answer: "=XLOOKUP(D1,F2:F5,G2:G5)",
@@ -145,7 +157,9 @@ export default [
     cell: "D2",
     answer: "=ROUND(XLOOKUP(D1,A2:A6,C2:C6)/XLOOKUP(XLOOKUP(D1,A2:A6,B2:B6),F2:F5,G2:G5)*100,1)",
     required: [],
-    accept: ["=ROUND(INDEX(C2:C6,MATCH(D1,A2:A6,0))/INDEX(G2:G5,MATCH(INDEX(B2:B6,MATCH(D1,A2:A6,0)),F2:F5,0))*100,1)"],
+    accept: [
+      "=ROUND(INDEX(C2:C6,MATCH(D1,A2:A6,0))/INDEX(G2:G5,MATCH(INDEX(B2:B6,MATCH(D1,A2:A6,0)),F2:F5,0))*100,1)",
+    ],
     variants: [{ D1: "Ben" }, { G2: 65000 }],
     reject: [
       ["=ROUND(XLOOKUP(D1,A2:A6,C2:C6)/G2*100,1)", "fragile"],
@@ -174,7 +188,8 @@ export default [
     value: (e) => `The tidy name is ${e}.`,
   }),
   step("clean-up-an-imported-list", 2, 2, "Tidy code in capitals", {
-    prompt: "In B2, tidy the imported product code in A2: no stray spaces and all capitals. Use UPPER and TRIM.",
+    prompt:
+      "In B2, tidy the imported product code in A2: no stray spaces and all capitals. Use UPPER and TRIM.",
     rows: [
       ["Imported", "Answer"],
       ["  px-10042 ", null],
@@ -193,7 +208,8 @@ export default [
     value: (e) => `The tidy code is ${e}.`,
   }),
   step("clean-up-an-imported-list", 3, 2, "Last name from a messy name", {
-    prompt: "In B2, take the last name from the imported name in A2, after tidying the spaces. Use TEXTAFTER and TRIM.",
+    prompt:
+      "In B2, take the last name from the imported name in A2, after tidying the spaces. Use TEXTAFTER and TRIM.",
     rows: [
       ["Imported", "Answer"],
       ["  Grace    Hopper ", null],
@@ -248,7 +264,8 @@ export default [
 
   // budget-versus-actual-with-a-variance-flag (level 3, step 4)
   step("budget-versus-actual-with-a-variance-flag", 1, 1, "Variance in money", {
-    prompt: "In D2, work out the variance of the first line: the actual in C2 minus the budget in B2.",
+    prompt:
+      "In D2, work out the variance of the first line: the actual in C2 minus the budget in B2.",
     rows: [
       ["Line", "Budget", "Actual", "Variance"],
       ["Travel", 12000, 13450, null],
@@ -264,7 +281,8 @@ export default [
     value: (e) => `The variance is ${e}.`,
   }),
   step("budget-versus-actual-with-a-variance-flag", 2, 2, "Over or within budget", {
-    prompt: 'In D2, show over when the actual in C2 is more than the budget in B2, and within otherwise. Use IF.',
+    prompt:
+      "In D2, show over when the actual in C2 is more than the budget in B2, and within otherwise. Use IF.",
     rows: [
       ["Line", "Budget", "Actual", "Flag"],
       ["Travel", 12000, 13450, null],
@@ -280,7 +298,8 @@ export default [
     value: (e) => `Travel spent more than its budget, so D2 should show ${e}.`,
   }),
   step("budget-versus-actual-with-a-variance-flag", 3, 2, "Size of the variance", {
-    prompt: "In D2, show the size of the variance as a positive number, whether over or under. Use ABS.",
+    prompt:
+      "In D2, show the size of the variance as a positive number, whether over or under. Use ABS.",
     rows: [
       ["Line", "Budget", "Actual", "Size"],
       ["Training", 8000, 6950, null],
@@ -325,14 +344,16 @@ export default [
       ["=SUMPRODUCT(--((C2:C16-B2:B16)/B2:B16>F1))", "value"],
       ["=SUMPRODUCT(--(ABS(C2:C16-B2:B16)>F1))", "value"],
     ],
-    nudge: "Each line's variance, without its sign, as a share of its own budget, compared with F1.",
+    nudge:
+      "Each line's variance, without its sign, as a share of its own budget, compared with F1.",
     rule: "ABS(C2:C16-B2:B16)/B2:B16 is each line's variance as a share; >F1 marks those to review and SUMPRODUCT counts them.",
     value: (e) => `${e} lines need review.`,
   }),
 
   // formula-audit-fix-five-broken-sheets (level 3, step 4)
   step("formula-audit-fix-five-broken-sheets", 1, 1, "Fix a total that counts itself", {
-    prompt: "The old total in B6 added B2 to B6, its own cell. In B6, total B2 to B5 instead. Use SUM.",
+    prompt:
+      "The old total in B6 added B2 to B6, its own cell. In B6, total B2 to B5 instead. Use SUM.",
     rows: [
       ["Item", "Amount"],
       ["Pens", 48],
@@ -352,7 +373,8 @@ export default [
     value: (e) => `The total is ${e}.`,
   }),
   step("formula-audit-fix-five-broken-sheets", 2, 2, "Fix a ratio that divides by zero", {
-    prompt: "In D3, repair the orders-per-visit ratio so a rep with no visits shows none instead of an error. Use IFERROR.",
+    prompt:
+      "In D3, repair the orders-per-visit ratio so a rep with no visits shows none instead of an error. Use IFERROR.",
     rows: [
       ["Rep", "Visits", "Orders", "Ratio"],
       ["Ada", 12, 9, null],
@@ -372,7 +394,8 @@ export default [
     value: (e) => `With no visits, D3 should show ${e}.`,
   }),
   step("formula-audit-fix-five-broken-sheets", 3, 2, "Fix a lookup that returns the wrong column", {
-    prompt: "The lookup in F2 returned the visits. In F2, return the orders, the 3rd column, for the name in E2. Use VLOOKUP.",
+    prompt:
+      "The lookup in F2 returned the visits. In F2, return the orders, the 3rd column, for the name in E2. Use VLOOKUP.",
     rows: [
       ["Rep", "Visits", "Orders", null, "Name", "Orders found"],
       ["Ada", 12, 9, null, "Cleo", null],
@@ -390,26 +413,32 @@ export default [
     rule: "The column number counts from the table's first column.",
     value: (e) => `Cleo took ${e} orders.`,
   }),
-  step("formula-audit-fix-five-broken-sheets", 5, 3, "Fix a margin that divides by the wrong thing", {
-    prompt:
-      "The margin in D2 divided by cost. In D2, show the margin as (revenue - cost) / revenue, and leave it blank when there is no revenue.",
-    rows: [
-      ["Product", "Revenue", "Cost", "Margin"],
-      ["Gizmo", 4800, 3120, null],
-    ],
-    cell: "D2",
-    answer: '=IF(B2=0,"",(B2-C2)/B2)',
-    required: [],
-    accept: ['=IFERROR((B2-C2)/B2,"")'],
-    variants: [{ B2: 0 }, { C2: 4000 }],
-    reject: [
-      ["=(B2-C2)/C2", "value"],
-      ["=(B2-C2)/B2", "fragile"],
-    ],
-    nudge: "Margin is profit over revenue; guard the division for a product with no revenue.",
-    rule: 'IF(B2=0,"",(B2-C2)/B2) divides by revenue and stays blank when there is none.',
-    value: (e) => `The margin is ${e}.`,
-  }),
+  step(
+    "formula-audit-fix-five-broken-sheets",
+    5,
+    3,
+    "Fix a margin that divides by the wrong thing",
+    {
+      prompt:
+        "The margin in D2 divided by cost. In D2, show the margin as (revenue - cost) / revenue, and leave it blank when there is no revenue.",
+      rows: [
+        ["Product", "Revenue", "Cost", "Margin"],
+        ["Gizmo", 4800, 3120, null],
+      ],
+      cell: "D2",
+      answer: '=IF(B2=0,"",(B2-C2)/B2)',
+      required: [],
+      accept: ['=IFERROR((B2-C2)/B2,"")'],
+      variants: [{ B2: 0 }, { C2: 4000 }],
+      reject: [
+        ["=(B2-C2)/C2", "value"],
+        ["=(B2-C2)/B2", "fragile"],
+      ],
+      nudge: "Margin is profit over revenue; guard the division for a product with no revenue.",
+      rule: 'IF(B2=0,"",(B2-C2)/B2) divides by revenue and stays blank when there is none.',
+      value: (e) => `The margin is ${e}.`,
+    },
+  ),
 
   // capstone-margin (level 3, step 4)
   step("capstone-margin", 1, 1, "North revenue", {
@@ -434,7 +463,8 @@ export default [
     value: (e) => `North revenue is ${e}.`,
   }),
   step("capstone-margin", 2, 2, "Margin of one line as a percentage", {
-    prompt: "In D2, work out the first line's gross margin as a percentage, such as 35.4, rounded to 1 decimal place. Use ROUND.",
+    prompt:
+      "In D2, work out the first line's gross margin as a percentage, such as 35.4, rounded to 1 decimal place. Use ROUND.",
     rows: [
       ["Region", "Revenue", "Cost", "Margin %"],
       ["North", 4800, 3100, null],
@@ -454,7 +484,7 @@ export default [
   }),
   step("capstone-margin", 3, 2, "Margin of a region with no sales", {
     prompt:
-      'In B7, work out the East gross margin as (revenue - cost) / revenue from SUMIF totals, and show none when the East has no sales. Use IFERROR and SUMIF.',
+      "In B7, work out the East gross margin as (revenue - cost) / revenue from SUMIF totals, and show none when the East has no sales. Use IFERROR and SUMIF.",
     rows: [
       ["Region", "Revenue", "Cost"],
       ["North", 4800, 3100],
@@ -465,11 +495,17 @@ export default [
       ["East margin", null, null],
     ],
     cell: "B7",
-    answer: '=IFERROR((SUMIF(A2:A5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5),"none")',
+    answer:
+      '=IFERROR((SUMIF(A2:A5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5),"none")',
     required: ["IFERROR", "SUMIF"],
     accept: ['=IFERROR(1-SUMIF(A2:A5,"East",C2:C5)/SUMIF(A2:A5,"East",B2:B5),"none")'],
     variants: [{ A5: "East" }],
-    reject: [['=(SUMIF(A2:A5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5)', "required-function"]],
+    reject: [
+      [
+        '=(SUMIF(A2:A5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5)',
+        "required-function",
+      ],
+    ],
     nudge: "A region with no revenue divides by zero; IFERROR shows none instead.",
     rule: "IFERROR wraps the whole margin, so any region without sales reads none.",
     value: (e) => `The East has no sales, so B7 should show ${e}.`,
@@ -487,15 +523,23 @@ export default [
       ["West", 3100, 2050, null, null],
     ],
     cell: "E2",
-    answer: '=IFERROR(ROUND((SUMIF(A2:A7,E1,B2:B7)-SUMIF(A2:A7,E1,C2:C7))/SUMIF(A2:A7,E1,B2:B7)*100,1),"")',
+    answer:
+      '=IFERROR(ROUND((SUMIF(A2:A7,E1,B2:B7)-SUMIF(A2:A7,E1,C2:C7))/SUMIF(A2:A7,E1,B2:B7)*100,1),"")',
     required: [],
     accept: ['=IFERROR(ROUND((1-SUMIF(A2:A7,E1,C2:C7)/SUMIF(A2:A7,E1,B2:B7))*100,1),"")'],
     variants: [{ E1: "South" }, { E1: "East" }],
     reject: [
-      ['=IFERROR(ROUND((SUMIF(A2:A7,"West",B2:B7)-SUMIF(A2:A7,"West",C2:C7))/SUMIF(A2:A7,"West",B2:B7)*100,1),"")', "fragile"],
-      ["=ROUND((SUMIF(A2:A7,E1,B2:B7)-SUMIF(A2:A7,E1,C2:C7))/SUMIF(A2:A7,E1,B2:B7)*100,1)", "fragile"],
+      [
+        '=IFERROR(ROUND((SUMIF(A2:A7,"West",B2:B7)-SUMIF(A2:A7,"West",C2:C7))/SUMIF(A2:A7,"West",B2:B7)*100,1),"")',
+        "fragile",
+      ],
+      [
+        "=ROUND((SUMIF(A2:A7,E1,B2:B7)-SUMIF(A2:A7,E1,C2:C7))/SUMIF(A2:A7,E1,B2:B7)*100,1)",
+        "fragile",
+      ],
     ],
-    nudge: "Total the region's revenue and cost with SUMIF on E1, work out the margin, round it, and guard against no sales.",
+    nudge:
+      "Total the region's revenue and cost with SUMIF on E1, work out the margin, round it, and guard against no sales.",
     rule: "Every SUMIF reads the region from E1, so the margin follows it; IFERROR leaves a blank for a region with no sales.",
     value: (e) => `The West margin is ${e}%.`,
   }),

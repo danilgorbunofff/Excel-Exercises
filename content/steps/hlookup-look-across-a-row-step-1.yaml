@@ -1,0 +1,45 @@
+id: hlookup-look-across-a-row-step-1
+slug: hlookup-look-across-a-row-step-1
+level: 1
+title: Units for a month
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: hlookup-look-across-a-row
+step: 1
+screens:
+  - prompt: In B5, look up the month in B4 across the top row and return its units from row 2. Use HLOOKUP.
+    rows:
+      - [Month, Jan, Feb, Mar, Apr]
+      - [Units, 120, 180, 200, 165]
+      - [Price, 4.5, 5, 5.25, 5.1]
+      - [Lookup, Mar, null, null, null]
+      - [Units, null, null, null, null]
+    answerCell: B5
+    expected: 200
+    variants:
+      - set: { B4: Jan }
+        expected: 120
+    answer: =HLOOKUP(B4,B1:E3,2,FALSE)
+    requiredFunctions:
+      - HLOOKUP
+    hints:
+      nudge: HLOOKUP searches the top row and counts rows down.
+      rule: HLOOKUP(B4,B1:E3,2,FALSE) returns row 2 of the column whose top cell matches.
+    misses:
+      value: March sold 200 units.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for HLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =HLOOKUP(B4,B1:E3,2,FALSE)
+      - =HLOOKUP(B4,A1:E3,2,FALSE)
+      - =HLOOKUP(B4,B1:E2,2,0)
+    reject:
+      - formula: =HLOOKUP(B4,B1:E3,3,FALSE)
+        rule: value
+      - formula: =XLOOKUP(B4,B1:E1,B2:E2)
+        rule: required-function
+      - formula: =200
+        rule: required-function
+      - formula: =HLOOKUP(B4,B1:E3,2,FALSE
+        rule: syntax

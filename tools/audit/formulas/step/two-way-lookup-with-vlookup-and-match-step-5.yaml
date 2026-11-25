@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFERROR(VLOOKUP($A$8,$A$1:$E$6,MATCH($B$8,$A$1:$E$1,0),FALSE),"Not found")
+      - =IFERROR(VLOOKUP(A$8,A1:E6,MATCH(B8,A1:E1,0),FALSE),"Not found")
+      - =iferror(vlookup(a8, a1:e6, match(b8, a1:e1, 0), false), "Not found")
+      - =IFNA(VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,0),FALSE),"Not found")
+      - =LET(data,A1:E6,IFERROR(VLOOKUP(A8,data,MATCH(B8,A1:E1,0),FALSE),"Not found"))
+    wrong: []
+    equivalent:
+      - formula: =IFERROR(VLOOKUP(A8,A2:E6,MATCH(B8,A1:E1,0),FALSE),"Not found")
+        why: "range A1:E6 skips its first row: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IFERROR(VLOOKUP(A8,A1:E7,MATCH(B8,A1:E1,0),FALSE),"Not found")
+        why: "range A1:E6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

@@ -3,7 +3,13 @@
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 2 at step 3. Dates are Excel serial numbers
 // (45352 is 1 March 2024), so the sheet and Excel agree whatever the locale.
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 export default [
   // date-build-a-date-from-parts (level 2, step 3)
@@ -60,7 +66,8 @@ export default [
     value: (e) => `The last day of February 2024 is serial ${e}.`,
   }),
   step("date-build-a-date-from-parts", 5, 3, "Due at the end of next month", {
-    prompt: "In C2, when is the invoice due? Payment falls on the last day of the month after the invoice month.",
+    prompt:
+      "In C2, when is the invoice due? Payment falls on the last day of the month after the invoice month.",
     rows: [
       ["Invoice", "Date", "Due"],
       ["INV-2001", 45366, null],
@@ -81,7 +88,8 @@ export default [
 
   // days-and-simple-date-maths (level 2, step 3)
   step("days-and-simple-date-maths", 1, 1, "Days between two dates", {
-    prompt: "Both dates are serials. In D2, work out the days from the order date in B2 to the delivery date in C2 by subtracting.",
+    prompt:
+      "Both dates are serials. In D2, work out the days from the order date in B2 to the delivery date in C2 by subtracting.",
     rows: [
       ["Order", "Ordered", "Delivered", "Days"],
       ["SO-1", 45352, 45359, null],
@@ -100,7 +108,8 @@ export default [
     value: (e) => `Delivery took ${e} days.`,
   }),
   step("days-and-simple-date-maths", 2, 1, "Due date from payment terms", {
-    prompt: "In D2, work out the due date: the invoice date in B2 plus the payment terms in days in C2.",
+    prompt:
+      "In D2, work out the due date: the invoice date in B2 plus the payment terms in days in C2.",
     rows: [
       ["Invoice", "Date", "Terms", "Due"],
       ["INV-7", 45352, 30, null],
@@ -171,7 +180,8 @@ export default [
 
   // datedif-days-months-or-years-between (level 2, step 3)
   step("datedif-days-months-or-years-between", 1, 1, "Days between with DATEDIF", {
-    prompt: 'In D2, find the days from the start date in B2 to the end date in C2. Use DATEDIF with "D".',
+    prompt:
+      'In D2, find the days from the start date in B2 to the end date in C2. Use DATEDIF with "D".',
     rows: [
       ["Project", "Start", "End", "Days"],
       ["Audit", 45352, 45415, null],
@@ -187,7 +197,8 @@ export default [
     value: (e) => `The audit ran for ${e} days.`,
   }),
   step("datedif-days-months-or-years-between", 2, 1, "Calendar years apart", {
-    prompt: "In D2, work out how many calendar years apart the two dates are: the year of C2 minus the year of B2. Use YEAR.",
+    prompt:
+      "In D2, work out how many calendar years apart the two dates are: the year of C2 minus the year of B2. Use YEAR.",
     rows: [
       ["Employee", "Started", "Review date", "Years apart"],
       ["Ada Lovelace", 44562, 45352, null],
@@ -203,7 +214,8 @@ export default [
     value: (e) => `The dates are ${e} calendar years apart.`,
   }),
   step("datedif-days-months-or-years-between", 4, 2, "Months beyond the full years", {
-    prompt: 'In D2, find the months left over after the complete years between B2 and C2. Use DATEDIF with "YM".',
+    prompt:
+      'In D2, find the months left over after the complete years between B2 and C2. Use DATEDIF with "YM".',
     rows: [
       ["Employee", "Started", "Review date", "Extra months"],
       ["Grace Hopper", 44197, 45366, null],
@@ -222,7 +234,8 @@ export default [
     value: (e) => `After the full years there are ${e} more months.`,
   }),
   step("datedif-days-months-or-years-between", 5, 3, "Length of service in words", {
-    prompt: "In D2, how long has the employee served by the review date, written like 3 years 2 months?",
+    prompt:
+      "In D2, how long has the employee served by the review date, written like 3 years 2 months?",
     rows: [
       ["Employee", "Started", "Review date", "Service"],
       ["Grace Hopper", 44197, 45366, null],
@@ -237,7 +250,7 @@ export default [
       ['="3 years 2 months"', "reference"],
     ],
     nudge: '"Y" gives the full years and "YM" the months left over; join them with the words.',
-    rule: 'Two DATEDIFs joined with & give a readable length, and both follow the dates.',
+    rule: "Two DATEDIFs joined with & give a readable length, and both follow the dates.",
     value: (e) => `The service reads ${e}.`,
   }),
 ];

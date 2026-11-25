@@ -1,0 +1,42 @@
+id: top-customer-share-of-revenue-step-1
+slug: top-customer-share-of-revenue-step-1
+level: 1
+title: Total revenue
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: top-customer-share-of-revenue
+step: 1
+screens:
+  - prompt: In D2, total the revenue. Use SUM.
+    rows:
+      - [Customer, Revenue, null, Total]
+      - [Arden, 120000, null, null]
+      - [Brook, 85000, null, null]
+      - [Cole, 210000, null, null]
+      - [Dunn, 64000, null, null]
+    answerCell: D2
+    expected: 479000
+    variants:
+      - set: { B3: 90000 }
+        expected: 484000
+    answer: =SUM(B2:B5)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: SUM the revenue column.
+      rule: SUM(B2:B5) gives the total revenue.
+    misses:
+      value: Total revenue is 479000.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:B5)
+      - =SUM($B$2:$B$5)
+    reject:
+      - formula: =SUM(B2:B4)
+        rule: value
+      - formula: =479000
+        rule: required-function
+      - formula: =SUM(B2:B5
+        rule: syntax

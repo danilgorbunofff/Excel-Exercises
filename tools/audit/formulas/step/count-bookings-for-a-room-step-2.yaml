@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF(B$2:B$11,"<>Oak")
+      - =countif(b2:b11, "<>Oak")
+      - =LET(data,B2:B11,COUNTIF(data,"<>Oak"))
+    wrong:
+      - formula: =COUNTIF(B3:B11,"<>Oak")
+        rule: fragile
+        why: range B2:B11 skips its first row
+    equivalent: []

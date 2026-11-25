@@ -1,0 +1,39 @@
+id: mid-characters-from-the-middle-step-2
+slug: mid-characters-from-the-middle-step-2
+level: 1
+title: Product part of a code
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: mid-characters-from-the-middle
+step: 2
+screens:
+  - prompt: In B2, take the 3-letter product part of the code in A2, which starts at character 4. Use MID.
+    rows:
+      - [Code, Product]
+      - [UK-PEN-0042, null]
+    answerCell: B2
+    expected: PEN
+    variants:
+      - set: { A2: FR-INK-1180 }
+        expected: INK
+    answer: =MID(A2,4,3)
+    requiredFunctions:
+      - MID
+    hints:
+      nudge: "Count the characters: U, K and the dash come first."
+      rule: MID(A2,4,3) returns characters 4 to 6.
+    misses:
+      value: The product part is PEN.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for MID.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MID(A2,4,3)
+      - =mid(a2,4,3)
+    reject:
+      - formula: =MID(A2,3,3)
+        rule: value
+      - formula: ="PEN"
+        rule: required-function
+      - formula: =MID(A2,4,3
+        rule: syntax

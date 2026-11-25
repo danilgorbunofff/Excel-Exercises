@@ -1,0 +1,45 @@
+id: days-overdue-on-open-invoices-step-2
+slug: days-overdue-on-open-invoices-step-2
+level: 2
+title: Count the invoices past due
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: days-overdue-on-open-invoices
+step: 2
+screens:
+  - prompt: In E2, count the invoices whose due date is before the report date in D2. Use COUNTIF with "<"&D2.
+    rows:
+      - [Invoice, Due date, Amount, Report date, null]
+      - [INV-1041, 45340, 1200, 45400, null]
+      - [INV-1042, 45380, 850, null, null]
+      - [INV-1043, 45410, 2300, null, null]
+      - [INV-1044, 45355, 640, null, null]
+      - [INV-1045, 45395, 1750, null, null]
+    answerCell: E2
+    expected: 4
+    variants:
+      - { set: { D2: 45390 }, expected: 3 }
+      - { set: { B2: 45370, D2: 45370 }, expected: 1 }
+    answer: =COUNTIF(B2:B6,"<"&D2)
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: 'Join the sign and the cell: "<"&D2.'
+      rule: COUNTIF(B2:B6,"<"&D2) counts due dates earlier than the report date.
+    misses:
+      value: 4 invoices are past due.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(B2:B6,"<"&D2)
+      - =COUNTIF($B$2:$B$6,"<"&$D$2)
+    reject:
+      - formula: =COUNTIF(B2:B6,">"&D2)
+        rule: value
+      - formula: =COUNTIF(B2:B6,"<45400")
+        rule: fragile
+      - formula: =4
+        rule: required-function
+      - formula: =COUNTIF(B2:B6,"<"&D2
+        rule: syntax

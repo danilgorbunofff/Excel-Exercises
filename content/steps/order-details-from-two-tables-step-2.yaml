@@ -1,0 +1,42 @@
+id: order-details-from-two-tables-step-2
+slug: order-details-from-two-tables-step-2
+level: 2
+title: Region with VLOOKUP
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: order-details-from-two-tables
+step: 2
+screens:
+  - prompt: In C3, show the region of the customer on the second order. Use VLOOKUP on E2:G5 with an exact match.
+    rows:
+      - [Order, Customer ID, Region, null, Customer ID, Customer, Region]
+      - [O-1, C-02, null, null, C-01, Arden, North]
+      - [O-2, C-04, null, null, C-02, Brook, South]
+      - [O-3, C-01, null, null, C-03, Cole, North]
+      - [null, null, null, null, C-04, Dunn, East]
+    answerCell: C3
+    expected: East
+    variants:
+      - { set: { B3: C-01 }, expected: North }
+      - { set: { E2: C-04 }, expected: North }
+    answer: =VLOOKUP(B3,$E$2:$G$5,3,FALSE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: Region is the 3rd column of E2:G5.
+      rule: VLOOKUP(B3,$E$2:$G$5,3,FALSE) returns the region.
+    misses:
+      value: The second order's customer is in East.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =VLOOKUP(B3,$E$2:$G$5,3,FALSE)
+      - =VLOOKUP(B3,E2:G5,3,FALSE)
+    reject:
+      - formula: =VLOOKUP(B3,$E$2:$G$5,2,FALSE)
+        rule: value
+      - formula: ="East"
+        rule: required-function
+      - formula: =VLOOKUP(B3,$E$2:$G$5,3,FALSE
+        rule: syntax

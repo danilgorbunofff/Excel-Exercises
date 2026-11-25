@@ -1,0 +1,50 @@
+id: on-time-rate-for-one-carrier-step-2
+slug: on-time-rate-for-one-carrier-step-2
+level: 2
+title: Late shipments for one carrier
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: on-time-rate-for-one-carrier
+step: 2
+screens:
+  - prompt: In E2, count Fastlane's late shipments. Use COUNTIFS.
+    rows:
+      - [Shipment, Carrier, Status, null, Fastlane late, null]
+      - [S-01, Northway, On time, null, null, null]
+      - [S-02, Fastlane, Late, null, null, null]
+      - [S-03, Northway, On time, null, null, null]
+      - [S-04, Swiftco, On time, null, null, null]
+      - [S-05, Northway, Late, null, null, null]
+      - [S-06, Fastlane, On time, null, null, null]
+      - [S-07, Swiftco, Late, null, null, null]
+      - [S-08, Fastlane, On time, null, null, null]
+      - [S-09, Northway, On time, null, null, null]
+      - [S-10, Swiftco, On time, null, null, null]
+      - [S-11, Fastlane, Late, null, null, null]
+      - [S-12, Northway, On time, null, null, null]
+    answerCell: E2
+    expected: 2
+    variants:
+      - set: { C7: Late }
+        expected: 3
+    answer: =COUNTIFS(B2:B13,"Fastlane",C2:C13,"Late")
+    requiredFunctions:
+      - COUNTIFS
+    hints:
+      nudge: "Two pairs: the carrier and the status."
+      rule: COUNTIFS(B2:B13,"Fastlane",C2:C13,"Late") counts rows that pass both.
+    misses:
+      value: Fastlane had 2 late shipments.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIFS(B2:B13,"Fastlane",C2:C13,"Late")
+      - =COUNTIFS(C2:C13,"Late",B2:B13,"Fastlane")
+    reject:
+      - formula: =COUNTIFS(C2:C13,"Late")
+        rule: value
+      - formula: =2
+        rule: required-function
+      - formula: =COUNTIFS(B2:B13,"Fastlane",C2:C13,"Late"
+        rule: syntax

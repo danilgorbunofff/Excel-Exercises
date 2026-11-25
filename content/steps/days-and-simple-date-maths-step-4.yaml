@@ -1,0 +1,43 @@
+id: days-and-simple-date-maths-step-4
+slug: days-and-simple-date-maths-step-4
+level: 2
+title: Days overdue as of a date
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: days-and-simple-date-maths
+step: 4
+screens:
+  - prompt: "In D2, work out how many days the invoice is overdue: the days from its due date in C2 to the date in G1. Use DAYS."
+    rows:
+      - [Invoice, Issued, Due, Days overdue, null, As of, 45400]
+      - [INV-9, 45340, 45370, null, null, null, null]
+    answerCell: D2
+    expected: 30
+    variants:
+      - set: { G1: 45420 }
+        expected: 50
+      - set: { C2: 45380 }
+        expected: 20
+    answer: =DAYS(G1,C2)
+    requiredFunctions:
+      - DAYS
+    hints:
+      nudge: DAYS takes the end date first, then the start date.
+      rule: DAYS(G1,C2) counts the days from the due date to the date in G1.
+    misses:
+      value: The invoice is 30 days overdue.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for DAYS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =DAYS(G1,C2)
+      - =DAYS($G$1,C2)
+    reject:
+      - formula: =DAYS(C2,G1)
+        rule: value
+      - formula: =DAYS(G1,B2)
+        rule: value
+      - formula: =30
+        rule: required-function
+      - formula: =DAYS(G1,C2
+        rule: syntax

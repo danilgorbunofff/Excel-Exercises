@@ -1,0 +1,39 @@
+id: datedif-days-months-or-years-between-step-2
+slug: datedif-days-months-or-years-between-step-2
+level: 1
+title: Calendar years apart
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: datedif-days-months-or-years-between
+step: 2
+screens:
+  - prompt: "In D2, work out how many calendar years apart the two dates are: the year of C2 minus the year of B2. Use YEAR."
+    rows:
+      - [Employee, Started, Review date, Years apart]
+      - [Ada Lovelace, 44562, 45352, null]
+    answerCell: D2
+    expected: 2
+    variants:
+      - set: { B2: 44197 }
+        expected: 3
+    answer: =YEAR(C2)-YEAR(B2)
+    requiredFunctions:
+      - YEAR
+    hints:
+      nudge: Take each year out of its date, then subtract.
+      rule: YEAR(C2)-YEAR(B2) counts calendar years, not complete years served.
+    misses:
+      value: The dates are 2 calendar years apart.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for YEAR.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =YEAR(C2)-YEAR(B2)
+      - =-YEAR(B2)+YEAR(C2)
+    reject:
+      - formula: =YEAR(B2)-YEAR(C2)
+        rule: value
+      - formula: =2
+        rule: required-function
+      - formula: =YEAR(C2)-YEAR(B2
+        rule: syntax

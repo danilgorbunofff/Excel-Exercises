@@ -1,0 +1,46 @@
+id: clean-a-product-code-then-look-it-up-step-5
+slug: clean-a-product-code-then-look-it-up-step-5
+level: 3
+title: Price of a messy code, or unknown
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: clean-a-product-code-then-look-it-up
+step: 5
+screens:
+  - prompt: In B2, what is the list price of the imported code in A2? The code may have spaces anywhere and lower-case letters. Show unknown when it is not on the list.
+    rows:
+      - [Imported code, Price, null, Code, List price]
+      - [" px - 210 ", null, null, PX-104, 12.5]
+      - [null, null, null, PX-210, 8.75]
+      - [null, null, null, PX-330, 22]
+      - [null, null, null, PX-415, 31.4]
+      - [null, null, null, PX-520, 6.2]
+    answerCell: B2
+    expected: 8.75
+    variants:
+      - set: { A2: PX 415 }
+        expected: unknown
+      - set: { A2: px-999 }
+        expected: unknown
+    answer: =XLOOKUP(UPPER(SUBSTITUTE(A2," ","")),D2:D6,E2:E6,"unknown")
+    requiredFunctions: []
+    hints:
+      nudge: Remove every space and fix the case, then look it up with a fallback.
+      rule: SUBSTITUTE removes all spaces; UPPER fixes the case; XLOOKUP's fourth part shows unknown for a code not listed.
+    misses:
+      value: The price is 8.75.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(UPPER(SUBSTITUTE(A2," ","")),D2:D6,E2:E6,"unknown")
+      - =IFNA(VLOOKUP(SUBSTITUTE(A2," ",""),D2:E6,2,FALSE),"unknown")
+    reject:
+      - formula: =XLOOKUP(UPPER(TRIM(A2)),D2:D6,E2:E6,"unknown")
+        rule: value
+      - formula: =XLOOKUP(UPPER(SUBSTITUTE(A2," ","")),D2:D6,E2:E6)
+        rule: fragile
+      - formula: =8.75
+        rule: reference
+      - formula: =XLOOKUP(UPPER(SUBSTITUTE(A2," ","")),D2:D6,E2:E6,"unknown"
+        rule: syntax

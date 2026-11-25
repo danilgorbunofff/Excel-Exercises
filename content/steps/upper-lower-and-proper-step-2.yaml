@@ -1,0 +1,41 @@
+id: upper-lower-and-proper-step-2
+slug: upper-lower-and-proper-step-2
+level: 1
+title: Postcode in capitals
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: upper-lower-and-proper
+step: 2
+screens:
+  - prompt: In C2, put the postcode in B2 into capitals. Use UPPER.
+    rows:
+      - [Office, Postcode, Tidy]
+      - [York, yo1 7hu, null]
+    answerCell: C2
+    expected: YO1 7HU
+    variants:
+      - set: { B2: ne1 4xf }
+        expected: NE1 4XF
+    answer: =UPPER(B2)
+    requiredFunctions:
+      - UPPER
+    hints:
+      nudge: UPPER changes every letter to a capital.
+      rule: UPPER(B2) gives YO1 7HU.
+    misses:
+      value: The postcode reads YO1 7HU.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for UPPER.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =UPPER(B2)
+      - =upper(b2)
+      - '=UPPER(B2)&""'
+      - "=UPPER(UPPER(B2))"
+    reject:
+      - formula: =PROPER(B2)
+        rule: required-function
+      - formula: ="YO1 7HU"
+        rule: required-function
+      - formula: =UPPER(B2
+        rule: syntax

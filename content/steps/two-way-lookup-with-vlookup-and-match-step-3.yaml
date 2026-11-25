@@ -1,0 +1,47 @@
+id: two-way-lookup-with-vlookup-and-match-step-3
+slug: two-way-lookup-with-vlookup-and-match-step-3
+level: 2
+title: VLOOKUP with the column in a cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: two-way-lookup-with-vlookup-and-match
+step: 3
+screens:
+  - prompt: In B8, return the units for the product in B6 from the column number in B7. Use VLOOKUP with B7 as the column.
+    rows:
+      - [Product, Q1, Q2, Q3]
+      - [Gizmo, 120, 140, 130]
+      - [Widget, 90, 110, 125]
+      - [Sprocket, 60, 75, 80]
+      - [Flange, 150, 165, 170]
+      - [Product, Gizmo, null, null]
+      - [Column, 4, null, null]
+      - [Units, null, null, null]
+    answerCell: B8
+    expected: 130
+    variants:
+      - { set: { B7: 2 }, expected: 120 }
+      - { set: { B6: Flange }, expected: 170 }
+    answer: =VLOOKUP(B6,A2:D5,B7,FALSE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: The column number can come from a cell instead of being typed.
+      rule: VLOOKUP(B6,A2:D5,B7,FALSE) follows whatever column number is in B7.
+    misses:
+      value: Gizmo's units in column 4 are 130.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =VLOOKUP(B6,A2:D5,B7,FALSE)
+      - =VLOOKUP(B6,A1:D5,B7,FALSE)
+    reject:
+      - formula: =VLOOKUP(B6,A2:D5,4,FALSE)
+        rule: fragile
+      - formula: =VLOOKUP(B6,A2:D5,B7-1,FALSE)
+        rule: value
+      - formula: =130
+        rule: required-function
+      - formula: =VLOOKUP(B6,A2:D5,B7,FALSE
+        rule: syntax

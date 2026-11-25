@@ -1,0 +1,10 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUM(B$2:B$5)
+      - =sum(b2:b5)
+      - =LET(data,B2:B5,SUM(data))
+    wrong: []
+    equivalent:
+      - formula: =SUM(B2:B6)
+        why: "range B2:B5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

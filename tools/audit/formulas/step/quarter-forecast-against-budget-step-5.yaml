@@ -1,0 +1,19 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP(MAX(SUMIFS($C$2:$C$13,$B$2:$B$13,$F$2:$F$5)-SUMIFS($D$2:$D$13,$B$2:$B$13,$F$2:$F$5)),SUMIFS($C$2:$C$13,$B$2:$B$13,$F$2:$F$5)-SUMIFS($D$2:$D$13,$B$2:$B$13,$F$2:$F$5),$F$2:$F$5)
+      - =XLOOKUP(MAX(SUMIFS(C$2:C$13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5)),SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5),F2:F5)
+      - =xlookup(max(sumifs(c2:c13, b2:b13, f2:f5)-sumifs(d2:d13, b2:b13, f2:f5)), sumifs(c2:c13, b2:b13, f2:f5)-sumifs(d2:d13, b2:b13, f2:f5), f2:f5)
+      - =XLOOKUP(MAX(SUMIF(B2:B13,F2:F5,C2:C13)-SUMIFS(D2:D13,B2:B13,F2:F5)),SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5),F2:F5)
+      - =XLOOKUP(MAX(SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIF(B2:B13,F2:F5,D2:D13)),SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5),F2:F5)
+      - =XLOOKUP(MAX(SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5)),SUMIF(B2:B13,F2:F5,C2:C13)-SUMIFS(D2:D13,B2:B13,F2:F5),F2:F5)
+      - =XLOOKUP(MAX(SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5)),SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIF(B2:B13,F2:F5,D2:D13),F2:F5)
+      - =LET(data,C2:C13,XLOOKUP(MAX(SUMIFS(data,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5)),SUMIFS(data,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5),F2:F5))
+    wrong:
+      - formula: =XLOOKUP(MAX(SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5)),SUMIFS(C2:C13,B2:B13,F2:F4)-SUMIFS(D2:D13,B2:B13,F2:F5),F2:F5)
+        rule: fragile
+        why: range F2:F5 one row short at the end
+      - formula: =XLOOKUP(MAX(SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5)),SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F4),F2:F5)
+        rule: fragile
+        why: range F2:F5 one row short at the end
+    equivalent: []

@@ -1,0 +1,45 @@
+id: bank-reconciliation-match-step-2
+slug: bank-reconciliation-match-step-2
+level: 2
+title: Found or missing by reference
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: bank-reconciliation-match
+step: 2
+screens:
+  - prompt: In C5, show Found when the bank has the reference in A5, and Missing when it does not. Use IF and COUNTIF.
+    rows:
+      - [Ledger ref, Ledger amount, Status, null, Bank ref, Bank amount]
+      - [R-101, 1200, null, null, R-101, 1200]
+      - [R-102, 850, null, null, R-103, 430]
+      - [R-103, 430, null, null, R-105, 990]
+      - [R-104, 610, null, null, R-102, 805]
+      - [R-105, 990, null, null, null, null]
+    answerCell: C5
+    expected: Missing
+    variants:
+      - { set: { A5: R-103 }, expected: Found }
+      - { set: { E2: R-104 }, expected: Found }
+      - { set: { E5: R-104 }, expected: Found }
+    answer: =IF(COUNTIF($E$2:$E$5,A5)>0,"Found","Missing")
+    requiredFunctions:
+      - IF
+      - COUNTIF
+    hints:
+      nudge: A count above 0 means the reference is on the statement.
+      rule: IF(COUNTIF(...)>0,"Found","Missing") turns the count into a status.
+    misses:
+      value: R-104 is not on the statement, so C5 should show Missing.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF and COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(COUNTIF($E$2:$E$5,A5)>0,"Found","Missing")
+      - =IF(COUNTIF($E$2:$E$5,A5)=0,"Missing","Found")
+    reject:
+      - formula: =IF(COUNTIF($E$2:$E$5,A5)>1,"Found","Missing")
+        rule: fragile
+      - formula: ="Missing"
+        rule: required-function
+      - formula: =IF(COUNTIF($E$2:$E$5,A5)>0,"Found","Missing"
+        rule: syntax

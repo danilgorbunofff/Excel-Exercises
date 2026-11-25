@@ -1,0 +1,26 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($D$2:$D$4,MATCH(MAX(SUMIFS($B$2:$B$7,$A$2:$A$7,$D$2:$D$4)-$E$2:$E$4),SUMIFS($B$2:$B$7,$A$2:$A$7,$D$2:$D$4)-$E$2:$E$4,0))
+      - =INDEX(D$2:D$4,MATCH(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4),SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4,0))
+      - =index(d2:d4, match(max(sumifs(b2:b7, a2:a7, d2:d4)-e2:e4), sumifs(b2:b7, a2:a7, d2:d4)-e2:e4, 0))
+      - =INDEX(D2:D4,MATCH(MAX(SUMIF(A2:A7,D2:D4,B2:B7)-E2:E4),SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4,0))
+      - =INDEX(D2:D4,MATCH(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4),SUMIF(A2:A7,D2:D4,B2:B7)-E2:E4,0))
+      - =LET(data,D2:D4,INDEX(data,MATCH(MAX(SUMIFS(B2:B7,A2:A7,data)-E2:E4),SUMIFS(B2:B7,A2:A7,data)-E2:E4,0)))
+    wrong:
+      - formula: =INDEX(D2:D3,MATCH(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4),SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4,0))
+        rule: fragile
+        why: range D2:D4 one row short at the end
+      - formula: =INDEX(D2:D4,MATCH(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4),SUMIFS(B2:B7,A2:A7,D2:D3)-E2:E4,0))
+        rule: fragile
+        why: range D2:D4 one row short at the end
+      - formula: =INDEX(D2:D4,MATCH(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4),SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E3,0))
+        rule: fragile
+        why: range E2:E4 one row short at the end
+    equivalent:
+      - formula: =INDEX(D2:D5,MATCH(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4),SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4,0))
+        why: "range D2:D4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(D2:D4,MATCH(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4),SUMIFS(B2:B7,A2:A7,D2:D5)-E2:E4,0))
+        why: "range D2:D4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(D2:D4,MATCH(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4),SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E5,0))
+        why: "range E2:E4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

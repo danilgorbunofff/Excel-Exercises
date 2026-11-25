@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =FILTER(C$2:C$19,B2:B19=I1,"none")
+      - =filter(c2:c19, b2:b19=i1, "none")
+      - =LET(data,C2:C19,FILTER(data,B2:B19=I1,"none"))
+    wrong: []
+    equivalent: []

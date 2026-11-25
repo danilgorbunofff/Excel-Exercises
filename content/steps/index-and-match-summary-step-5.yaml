@@ -1,0 +1,49 @@
+id: index-and-match-summary-step-5
+slug: index-and-match-summary-step-5
+level: 3
+title: Units still needed for the next band
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: index-and-match-summary
+step: 5
+screens:
+  - prompt: In B7, how many more units does the rep need to reach the next band? Show 0 when already in the top band.
+    rows:
+      - [Units from, Rate]
+      - [0, 0.02]
+      - [100, 0.04]
+      - [200, 0.06]
+      - [null, null]
+      - [Units sold, 145]
+      - [Units to next band, null]
+    answerCell: B7
+    expected: 55
+    variants:
+      - set: { B6: 230 }
+        expected: 0
+      - set: { B6: 60 }
+        expected: 40
+      - set: { B6: 100 }
+        expected: 100
+    answer: =IFERROR(INDEX(A2:A4,MATCH(B6,A2:A4,1)+1)-B6,0)
+    requiredFunctions: []
+    hints:
+      nudge: The next band starts one row below the band the units are in.
+      rule: MATCH(...,1)+1 points at the next band's start; minus B6 gives the units still needed; IFERROR gives 0 past the top band.
+    misses:
+      value: The rep needs 55 more units.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IFERROR(INDEX(A2:A4,MATCH(B6,A2:A4,1)+1)-B6,0)
+      - =IFERROR(INDEX($A$2:$A$4,MATCH(B6,$A$2:$A$4,1)+1)-B6,0)
+    reject:
+      - formula: =INDEX(A2:A4,MATCH(B6,A2:A4,1)+1)-B6
+        rule: fragile
+      - formula: =200-B6
+        rule: reference
+      - formula: =55
+        rule: reference
+      - formula: =IFERROR(INDEX(A2:A4,MATCH(B6,A2:A4,1)+1)-B6,0
+        rule: syntax

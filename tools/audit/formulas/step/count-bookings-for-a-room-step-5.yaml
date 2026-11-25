@@ -1,0 +1,20 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($E$2:$E$4,MATCH(MAX(COUNTIF($B$2:$B$11,$E$2:$E$4)),COUNTIF($B$2:$B$11,$E$2:$E$4),0))
+      - =INDEX(E$2:E$4,MATCH(MAX(COUNTIF(B2:B11,E2:E4)),COUNTIF(B2:B11,E2:E4),0))
+      - =index(e2:e4, match(max(countif(b2:b11, e2:e4)), countif(b2:b11, e2:e4), 0))
+      - =INDEX(E2:E4,MATCH(MAX(COUNTIFS(B2:B11,E2:E4)),COUNTIF(B2:B11,E2:E4),0))
+      - =INDEX(E2:E4,MATCH(MAX(COUNTIF(B2:B11,E2:E4)),COUNTIFS(B2:B11,E2:E4),0))
+      - =LET(data,E2:E4,INDEX(data,MATCH(MAX(COUNTIF(B2:B11,data)),COUNTIF(B2:B11,data),0)))
+    wrong:
+      - formula: =B3
+        rule: fragile
+        why: points at B3, which holds the result
+    equivalent:
+      - formula: =INDEX(E2:E5,MATCH(MAX(COUNTIF(B2:B11,E2:E4)),COUNTIF(B2:B11,E2:E4),0))
+        why: "range E2:E4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(E2:E4,MATCH(MAX(COUNTIF(B2:B11,E2:E5)),COUNTIF(B2:B11,E2:E4),0))
+        why: "range E2:E4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(E2:E4,MATCH(MAX(COUNTIF(B2:B11,E2:E4)),COUNTIF(B2:B11,E2:E5),0))
+        why: "range E2:E4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

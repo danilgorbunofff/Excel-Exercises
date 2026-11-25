@@ -1,0 +1,44 @@
+id: an-inventory-reorder-report-step-2
+slug: an-inventory-reorder-report-step-2
+level: 2
+title: Cases to order
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: an-inventory-reorder-report
+step: 2
+screens:
+  - prompt: In D2, work out how many full cases of the size in F1 to order to bring the bolts up to their reorder point, never fewer than 0. Use ROUNDUP and MAX.
+    rows:
+      - [Item, On hand, Reorder at, Cases, Case size, 12]
+      - [Bolts, 120, 200, null, null, null]
+    answerCell: D2
+    expected: 7
+    variants:
+      - set: { B2: 230 }
+        expected: 0
+      - set: { F1: 25 }
+        expected: 4
+    answer: =ROUNDUP(MAX(0,C2-B2)/F1,0)
+    requiredFunctions:
+      - ROUNDUP
+      - MAX
+    hints:
+      nudge: Work out the shortfall, never below 0, then cases rounded up.
+      rule: MAX(0,C2-B2) stops a negative order; dividing by the case size and ROUNDUP gives whole cases.
+    misses:
+      value: Order 7 cases.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for ROUNDUP and MAX.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUNDUP(MAX(0,C2-B2)/F1,0)
+      - =ROUNDUP(MAX(C2-B2,0)/$F$1,0)
+    reject:
+      - formula: =ROUNDUP((C2-B2)/F1,0)
+        rule: required-function
+      - formula: =ROUNDDOWN(MAX(0,C2-B2)/F1,0)
+        rule: required-function
+      - formula: =7
+        rule: required-function
+      - formula: =ROUNDUP(MAX(0,C2-B2)/F1,0
+        rule: syntax

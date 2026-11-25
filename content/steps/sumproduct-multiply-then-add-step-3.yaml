@@ -1,0 +1,48 @@
+id: sumproduct-multiply-then-add-step-3
+slug: sumproduct-multiply-then-add-step-3
+level: 2
+title: Weighted average price
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sumproduct-multiply-then-add
+step: 3
+screens:
+  - prompt: "In C8, work out the average price paid per unit: SUMPRODUCT of prices and quantities, divided by the total quantity. Use SUMPRODUCT and SUM."
+    rows:
+      - [Item, Price, Qty]
+      - [Pens, 1.2, 40]
+      - [Pads, 3.5, 15]
+      - [Clips, 0.05, 500]
+      - [Tape, 2.1, 12]
+      - [Files, 4.75, 20]
+      - [null, null, null]
+      - [Average per unit, null, null]
+    answerCell: C8
+    expected: 0.418568994889
+    variants:
+      - set: { C4: 100 }
+        expected: 1.20695187166
+    answer: =SUMPRODUCT(B2:B6,C2:C6)/SUM(C2:C6)
+    requiredFunctions:
+      - SUMPRODUCT
+      - SUM
+    hints:
+      nudge: Total spend divided by total units weights each price by how much was bought.
+      rule: SUMPRODUCT gives the total spend; dividing by SUM(C2:C6) gives the average per unit.
+    misses:
+      value: The average price per unit is 0.42.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMPRODUCT and SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(B2:B6,C2:C6)/SUM(C2:C6)
+      - =SUMPRODUCT(B2:B6*C2:C6)/SUM(C2:C6)
+    reject:
+      - formula: =AVERAGE(B2:B6)
+        rule: required-function
+      - formula: =SUMPRODUCT(B2:B6,C2:C6)/COUNT(C2:C6)
+        rule: required-function
+      - formula: =0.418568994889
+        rule: required-function
+      - formula: =SUMPRODUCT(B2:B6,C2:C6)/SUM(C2:C6
+        rule: syntax

@@ -1,0 +1,42 @@
+id: formula-audit-fix-five-broken-sheets-step-5
+slug: formula-audit-fix-five-broken-sheets-step-5
+level: 3
+title: Fix a margin that divides by the wrong thing
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: formula-audit-fix-five-broken-sheets
+step: 5
+screens:
+  - prompt: The margin in D2 divided by cost. In D2, show the margin as (revenue - cost) / revenue, and leave it blank when there is no revenue.
+    rows:
+      - [Product, Revenue, Cost, Margin]
+      - [Gizmo, 4800, 3120, null]
+    answerCell: D2
+    expected: 0.35
+    variants:
+      - set: { B2: 0 }
+        expected: ""
+      - set: { C2: 4000 }
+        expected: 0.166666666667
+    answer: =IF(B2=0,"",(B2-C2)/B2)
+    requiredFunctions: []
+    hints:
+      nudge: Margin is profit over revenue; guard the division for a product with no revenue.
+      rule: IF(B2=0,"",(B2-C2)/B2) divides by revenue and stays blank when there is none.
+    misses:
+      value: The margin is 0.35.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(B2=0,"",(B2-C2)/B2)
+      - =IFERROR((B2-C2)/B2,"")
+    reject:
+      - formula: =(B2-C2)/C2
+        rule: value
+      - formula: =(B2-C2)/B2
+        rule: fragile
+      - formula: =0.35
+        rule: reference
+      - formula: =IF(B2=0,"",(B2-C2)/B2
+        rule: syntax

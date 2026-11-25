@@ -1,0 +1,43 @@
+id: a-lookup-dashboard-from-three-tables-step-1
+slug: a-lookup-dashboard-from-three-tables-step-1
+level: 1
+title: Sales of a rep
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-lookup-dashboard-from-three-tables
+step: 1
+screens:
+  - prompt: In D2, read the sales of the rep named in D1. Use XLOOKUP.
+    rows:
+      - [Rep, Region, Sales, Dev, null, Region, Target]
+      - [Ada, North, 61500, null, null, North, 60000]
+      - [Ben, South, 47000, null, null, South, 50000]
+      - [Cleo, North, 58200, null, null, East, 45000]
+      - [Dev, East, 52300, null, null, West, 55000]
+      - [Eve, West, 49800, null, null, null, null]
+    answerCell: D2
+    expected: 52300
+    variants:
+      - set: { D1: Ada }
+        expected: 61500
+    answer: =XLOOKUP(D1,A2:A6,C2:C6)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: Search the reps, return their sales.
+      rule: XLOOKUP(D1,A2:A6,C2:C6) returns the sales of the rep in D1.
+    misses:
+      value: Dev's sales are 52300.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(D1,A2:A6,C2:C6)
+      - =XLOOKUP($D$1,$A$2:$A$6,$C$2:$C$6)
+    reject:
+      - formula: =XLOOKUP(D1,A2:A6,B2:B6)
+        rule: value
+      - formula: =52300
+        rule: required-function
+      - formula: =XLOOKUP(D1,A2:A6,C2:C6
+        rule: syntax

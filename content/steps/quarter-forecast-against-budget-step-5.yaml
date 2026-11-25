@@ -1,0 +1,51 @@
+id: quarter-forecast-against-budget-step-5
+slug: quarter-forecast-against-budget-step-5
+level: 3
+title: Quarter with the biggest overspend
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: quarter-forecast-against-budget
+step: 5
+screens:
+  - prompt: In G2, which quarter, from the list in F2:F5, has the biggest forecast overspend against budget?
+    rows:
+      - [Month, Quarter, Forecast, Budget, null, Quarter, Biggest over]
+      - [1, Q1, 41000, 40000, null, Q1, null]
+      - [2, Q1, 39500, 40000, null, Q2, null]
+      - [3, Q1, 43000, 42000, null, Q3, null]
+      - [4, Q2, 44500, 42000, null, Q4, null]
+      - [5, Q2, 43000, 44000, null, null, null]
+      - [6, Q2, 46500, 44000, null, null, null]
+      - [7, Q3, 45500, 45000, null, null, null]
+      - [8, Q3, 42000, 43000, null, null, null]
+      - [9, Q3, 47500, 46000, null, null, null]
+      - [10, Q4, 48000, 47000, null, null, null]
+      - [11, Q4, 50500, 48000, null, null, null]
+      - [12, Q4, 51000, 52000, null, null, null]
+    answerCell: G2
+    expected: Q2
+    variants:
+      - { set: { C9: 50000 }, expected: Q3 }
+      - { set: { C5: 41000 }, expected: Q4 }
+    answer: =XLOOKUP(MAX(SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5)),SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5),F2:F5)
+    requiredFunctions: []
+    hints:
+      nudge: Work out every quarter's overspend at once, then find the largest.
+      rule: Two SUMIFS with F2:F5 as criteria give each quarter's forecast and budget; their difference shows the overspend.
+    misses:
+      value: The biggest overspend is in Q2.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(MAX(SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5)),SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5),F2:F5)
+      - =INDEX(F2:F5,MATCH(MAX(SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5)),SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5),0))
+    reject:
+      - formula: =XLOOKUP(MAX(SUMIFS(C2:C13,B2:B13,F2:F5)),SUMIFS(C2:C13,B2:B13,F2:F5),F2:F5)
+        rule: value
+      - formula: ="Q2"
+        rule: reference
+      - formula: ="Q2"
+        rule: reference
+      - formula: =XLOOKUP(MAX(SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5)),SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5),F2:F5
+        rule: syntax

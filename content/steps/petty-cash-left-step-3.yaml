@@ -1,0 +1,49 @@
+id: petty-cash-left-step-3
+slug: petty-cash-left-step-3
+level: 2
+title: Cash left when some items went on the card
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: petty-cash-left
+step: 3
+screens:
+  - prompt: 'In B10, work out the petty cash left: the float in B2 minus only the expenses paid from petty cash, marked "Cash" in column C. Use SUMIF.'
+    rows:
+      - [Item, Amount, Paid with]
+      - [Float, 200, null]
+      - [Stamps, 18.4, Cash]
+      - [Milk, 6.75, Cash]
+      - [Taxi, 22.5, Card]
+      - [Batteries, 9.99, Cash]
+      - [Flowers, 25, Card]
+      - [Parking, 8.5, Cash]
+      - [Printer ink, 31.2, Card]
+      - [Left, null, null]
+    answerCell: B10
+    expected: 156.36
+    variants:
+      - { set: { C5: Cash }, expected: 133.86 }
+      - { set: { C9: Cash }, expected: 125.16 }
+    answer: =B2-SUMIF(C3:C9,"Cash",B3:B9)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: Card payments did not come out of the tin.
+      rule: SUMIF(C3:C9,"Cash",B3:B9) adds only the cash expenses.
+    misses:
+      value: 156.36 is left in the tin.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2-SUMIF(C3:C9,"Cash",B3:B9)
+      - =B2-SUMIF($C$3:$C$9,"Cash",$B$3:$B$9)
+    reject:
+      - formula: =B2-SUMIF(C3:C9,"Card",B3:B9)
+        rule: value
+      - formula: =B2-SUM(B3:B9)
+        rule: required-function
+      - formula: =156.36
+        rule: required-function
+      - formula: =B2-SUMIF(C3:C9,"Cash",B3:B9
+        rule: syntax

@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP(UPPER(SUBSTITUTE($A$2," ","")),$D$2:$D$6,$E$2:$E$6,"unknown")
+      - =XLOOKUP(UPPER(SUBSTITUTE(A$2," ","")),D2:D6,E2:E6,"unknown")
+      - =xlookup(upper(substitute(a2, " ", "")), d2:d6, e2:e6, "unknown")
+      - =IFERROR(INDEX(E2:E6,MATCH(UPPER(SUBSTITUTE(A2," ","")),D2:D6,0)),"unknown")
+      - =IFERROR(VLOOKUP(UPPER(SUBSTITUTE(A2," ","")),D2:E6,2,FALSE),"unknown")
+      - =LET(data,D2:D6,XLOOKUP(UPPER(SUBSTITUTE(A2," ","")),data,E2:E6,"unknown"))
+    wrong: []
+    equivalent:
+      - formula: =XLOOKUP(SUBSTITUTE(A2," ",""),D2:D6,E2:E6,"unknown")
+        why: "without UPPER: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

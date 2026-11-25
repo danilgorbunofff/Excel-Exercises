@@ -1,0 +1,44 @@
+id: extension-for-a-colleague-step-1
+slug: extension-for-a-colleague-step-1
+level: 1
+title: Extension with VLOOKUP
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: extension-for-a-colleague
+step: 1
+screens:
+  - prompt: In F2, show the phone extension of the colleague named in E2. Use VLOOKUP.
+    rows:
+      - [Name, Office, Ext, null, null, null]
+      - [Asha, Leeds, 3104, null, Cleo, null]
+      - [Bryn, York, 3211, null, null, null]
+      - [Cleo, Leeds, 3187, null, null, null]
+      - [Dara, Hull, 3320, null, null, null]
+      - [Femi, York, 3245, null, null, null]
+      - [Gwen, Hull, 3352, null, null, null]
+    answerCell: F2
+    expected: 3187
+    variants:
+      - { set: { E2: Gwen }, expected: 3352 }
+      - { set: { A2: Cleo }, expected: 3104 }
+    answer: =VLOOKUP(E2,A2:C7,3,FALSE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: The extension is the third column of the table.
+      rule: VLOOKUP(E2,A2:C7,3,FALSE) returns column 3 of the matching row.
+    misses:
+      value: Cleo's extension is 3187.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =VLOOKUP(E2,A2:C7,3,FALSE)
+      - =VLOOKUP(E2,$A$2:$C$7,3,0)
+    reject:
+      - formula: =VLOOKUP(E2,A2:C7,2,FALSE)
+        rule: value
+      - formula: =3187
+        rule: required-function
+      - formula: =VLOOKUP(E2,A2:C7,3,FALSE
+        rule: syntax

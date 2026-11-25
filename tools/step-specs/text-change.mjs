@@ -2,7 +2,13 @@
 // YAML files are the source of truth once written: variants added later by
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 2 at step 3.
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 const staff = [
   ["Name", "Team", null, null],
@@ -26,7 +32,8 @@ const staff = [
 export default [
   // concat-and-the-operator (level 2, step 3)
   step("concat-and-the-operator", 1, 1, "Join two names with &", {
-    prompt: "In C2, join the first name in A2 and the last name in B2 with a space between, using the & operator.",
+    prompt:
+      "In C2, join the first name in A2 and the last name in B2 with a space between, using the & operator.",
     rows: [
       ["First", "Last", "Full name"],
       ["Grace", "Hopper", null],
@@ -45,7 +52,8 @@ export default [
     value: (e) => `The full name is ${e}.`,
   }),
   step("concat-and-the-operator", 2, 1, "City and country", {
-    prompt: 'In C2, join the city in A2 and the country in B2 with a comma and a space between. Use CONCAT.',
+    prompt:
+      "In C2, join the city in A2 and the country in B2 with a comma and a space between. Use CONCAT.",
     rows: [
       ["City", "Country", "Place"],
       ["Lyon", "France", null],
@@ -65,7 +73,7 @@ export default [
   }),
   step("concat-and-the-operator", 4, 2, "Sentence with a number formatted", {
     prompt:
-      'In C2, build the line Order 1042 total: 87.50, using the order in A2 and the total in B2 shown with 2 decimals. Use TEXT for the number.',
+      "In C2, build the line Order 1042 total: 87.50, using the order in A2 and the total in B2 shown with 2 decimals. Use TEXT for the number.",
     rows: [
       ["Order", "Total", "Line"],
       [1042, 87.5, null],
@@ -93,20 +101,28 @@ export default [
     cell: "C2",
     answer: '=LOWER(LEFT(A2,1)&B2)&"@acme.com"',
     required: [],
-    accept: ['=LOWER(LEFT(A2,1)&B2&"@acme.com")', '=CONCAT(LOWER(LEFT(A2,1)),LOWER(B2),"@acme.com")'],
-    variants: [{ A2: "Alan", B2: "Turing" }, { A2: "katherine", B2: "JOHNSON" }],
+    accept: [
+      '=LOWER(LEFT(A2,1)&B2&"@acme.com")',
+      '=CONCAT(LOWER(LEFT(A2,1)),LOWER(B2),"@acme.com")',
+    ],
+    variants: [
+      { A2: "Alan", B2: "Turing" },
+      { A2: "katherine", B2: "JOHNSON" },
+    ],
     reject: [
       ['=LEFT(A2,1)&B2&"@acme.com"', "value"],
       ['=LOWER(A2&B2)&"@acme.com"', "value"],
     ],
-    nudge: "Take one letter of the first name, add the last name, lower-case it, then add the domain.",
+    nudge:
+      "Take one letter of the first name, add the last name, lower-case it, then add the domain.",
     rule: 'LEFT(A2,1)&B2 gives GHopper; LOWER turns it into ghopper; &"@acme.com" adds the domain.',
     value: (e) => `The email is ${e}.`,
   }),
 
   // textjoin-join-a-range-and-skip-blanks (level 2, step 3)
   step("textjoin-join-a-range-and-skip-blanks", 1, 1, "Join a list with commas", {
-    prompt: 'In B7, join the four cities in A2:A5 into one line, separated by a comma and a space. Use TEXTJOIN.',
+    prompt:
+      "In B7, join the four cities in A2:A5 into one line, separated by a comma and a space. Use TEXTJOIN.",
     rows: [
       ["City", null],
       ["Leeds", null],
@@ -130,7 +146,8 @@ export default [
     value: (e) => `The line reads ${e}.`,
   }),
   step("textjoin-join-a-range-and-skip-blanks", 2, 1, "Join a row with slashes", {
-    prompt: 'In G2, join the shifts in B2:F2 with " / " between them, skipping the empty days. Use TEXTJOIN.',
+    prompt:
+      'In G2, join the shifts in B2:F2 with " / " between them, skipping the empty days. Use TEXTJOIN.',
     rows: [
       ["Name", "Mon", "Tue", "Wed", "Thu", "Fri", "Shifts"],
       ["Ada", "Early", null, "Late", "Early", null, null],
@@ -163,8 +180,11 @@ export default [
     value: (e) => `The CSV line is ${e}.`,
   }),
   step("textjoin-join-a-range-and-skip-blanks", 5, 3, "Everyone in one team, on one line", {
-    prompt: "In D2, list the names of everyone in the team typed in D1, separated by a comma and a space.",
-    rows: staff.map((r, i) => (i === 0 ? ["Name", "Team", null, "Sales"] : i === 1 ? ["Ada", "Sales", null, null] : r)),
+    prompt:
+      "In D2, list the names of everyone in the team typed in D1, separated by a comma and a space.",
+    rows: staff.map((r, i) =>
+      i === 0 ? ["Name", "Team", null, "Sales"] : i === 1 ? ["Ada", "Sales", null, null] : r,
+    ),
     cell: "D2",
     answer: '=TEXTJOIN(", ",TRUE,IF(B2:B16=D1,A2:A16,""))',
     required: [],
@@ -228,7 +248,8 @@ export default [
       ["=PROPER(A2)", "required-function"],
       ["=TRIM(A2)", "required-function"],
     ],
-    nudge: "TRIM removes the spaces at the ends and doubles in the middle; PROPER fixes the capitals.",
+    nudge:
+      "TRIM removes the spaces at the ends and doubles in the middle; PROPER fixes the capitals.",
     rule: "PROPER(TRIM(A2)) gives Mary Jackson.",
     value: (e) => `The tidy name is ${e}.`,
   }),
@@ -268,7 +289,8 @@ export default [
 
   // substitute-replace-one-piece-of-text (level 2, step 3)
   step("substitute-replace-one-piece-of-text", 1, 1, "Remove the spaces", {
-    prompt: 'In B2, remove every space from the account number in A2. Use SUBSTITUTE with "" as the new text.',
+    prompt:
+      'In B2, remove every space from the account number in A2. Use SUBSTITUTE with "" as the new text.',
     rows: [
       ["Account", "No spaces"],
       ["GB29 NWBK 6016 1331", null],
@@ -300,7 +322,8 @@ export default [
     value: (e) => `The full name is ${e}.`,
   }),
   step("substitute-replace-one-piece-of-text", 4, 2, "Remove two kinds of character", {
-    prompt: "In B2, remove both brackets from the phone number in A2. Use SUBSTITUTE inside SUBSTITUTE.",
+    prompt:
+      "In B2, remove both brackets from the phone number in A2. Use SUBSTITUTE inside SUBSTITUTE.",
     rows: [
       ["Phone", "No brackets"],
       ["(020) 7946 0018", null],
@@ -316,7 +339,8 @@ export default [
     value: (e) => `Without brackets: ${e}.`,
   }),
   step("substitute-replace-one-piece-of-text", 5, 3, "Items in a comma-separated list", {
-    prompt: "In B2, how many items are in the comma-separated list in A2? An empty list has 0 items.",
+    prompt:
+      "In B2, how many items are in the comma-separated list in A2? An empty list has 0 items.",
     rows: [
       ["List", "Items"],
       ["pens,pads,clips,tape", null],

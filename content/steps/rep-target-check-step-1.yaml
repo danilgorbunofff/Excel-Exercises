@@ -1,0 +1,38 @@
+id: rep-target-check-step-1
+slug: rep-target-check-step-1
+level: 1
+title: Sales against target
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: rep-target-check
+step: 1
+screens:
+  - prompt: In D2, work out how far the rep's sales in C2 are above the target in B2. A shortfall shows as a negative number.
+    rows:
+      - [Rep, Target, Sales, Difference]
+      - [Nia, 52000, 50850, null]
+    answerCell: D2
+    expected: -1150
+    variants:
+      - set: { C2: 53400 }
+        expected: 1400
+    answer: =C2-B2
+    requiredFunctions: []
+    hints:
+      nudge: Sales minus target.
+      rule: C2-B2 is positive above target and negative below it.
+    misses:
+      value: D2 shows -1150.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =C2-B2
+      - =-B2+C2
+    reject:
+      - formula: =B2-C2
+        rule: value
+      - formula: =-1150
+        rule: reference
+      - formula: =C2-B2,
+        rule: syntax

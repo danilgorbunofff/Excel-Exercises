@@ -1,0 +1,39 @@
+id: iferror-catch-the-error-show-your-text-step-1
+slug: iferror-catch-the-error-show-your-text-step-1
+level: 1
+title: Zero instead of a divide error
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: iferror-catch-the-error-show-your-text
+step: 1
+screens:
+  - prompt: In D2, divide the cost in B2 by the units in C2, and show 0 when the division fails. Use IFERROR.
+    rows:
+      - [Item, Cost, Units, Per unit]
+      - [Pens, 24, 0, null]
+    answerCell: D2
+    expected: 0
+    variants:
+      - set: { C2: 8 }
+        expected: 3
+    answer: =IFERROR(B2/C2,0)
+    requiredFunctions:
+      - IFERROR
+    hints:
+      nudge: IFERROR takes the formula, then what to show if it fails.
+      rule: "IFERROR(B2/C2,0) shows 0 instead of `#DIV/0!` when there are no units."
+    misses:
+      value: With 0 units, D2 should show 0.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IFERROR.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IFERROR(B2/C2,0)
+      - =IFERROR(B2/C2,)
+    reject:
+      - formula: =B2/C2
+        rule: required-function
+      - formula: =0
+        rule: required-function
+      - formula: =IFERROR(B2/C2,0
+        rule: syntax

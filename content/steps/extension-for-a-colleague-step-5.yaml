@@ -1,0 +1,43 @@
+id: extension-for-a-colleague-step-5
+slug: extension-for-a-colleague-step-5
+level: 3
+title: Who answers an extension
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: extension-for-a-colleague
+step: 5
+screens:
+  - prompt: In F2, show who answers the extension in E2 and their office, like Cleo (Leeds).
+    rows:
+      - [Name, Office, Ext, null, null, null]
+      - [Asha, Leeds, 3104, null, 3187, null]
+      - [Bryn, York, 3211, null, null, null]
+      - [Cleo, Leeds, 3187, null, null, null]
+      - [Dara, Hull, 3320, null, null, null]
+      - [Femi, York, 3245, null, null, null]
+      - [Gwen, Hull, 3352, null, null, null]
+    answerCell: F2
+    expected: Cleo (Leeds)
+    variants:
+      - set: { E2: 3320 }
+        expected: Dara (Hull)
+    answer: =XLOOKUP(E2,C2:C7,A2:A7)&" ("&XLOOKUP(E2,C2:C7,B2:B7)&")"
+    requiredFunctions: []
+    hints:
+      nudge: Look up the extension column this time, then join name and office.
+      rule: Two lookups on the Ext column, joined with &, give name and office.
+    misses:
+      value: F2 shows Cleo (Leeds).
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(E2,C2:C7,A2:A7)&" ("&XLOOKUP(E2,C2:C7,B2:B7)&")"
+      - =INDEX(A2:A7,MATCH(E2,C2:C7,0))&" ("&INDEX(B2:B7,MATCH(E2,C2:C7,0))&")"
+    reject:
+      - formula: =XLOOKUP(E2,C2:C7,A2:A7)
+        rule: value
+      - formula: ="Cleo (Leeds)"
+        rule: reference
+      - formula: =XLOOKUP(E2,C2:C7,A2:A7)&" ("&XLOOKUP(E2,C2:C7,B2:B7)&")",
+        rule: syntax

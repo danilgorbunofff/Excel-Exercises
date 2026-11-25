@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFERROR(INDEX($A$2:$A$4,MATCH($B$6,$A$2:$A$4,1)+1)-$B$6,0)
+      - =IFERROR(INDEX(A$2:A$4,MATCH(B6,A2:A4,1)+1)-B6,0)
+      - =iferror(index(a2:a4, match(b6, a2:a4, 1)+1)-b6, 0)
+      - =LET(data,A2:A4,IFERROR(INDEX(data,MATCH(B6,data,1)+1)-B6,0))
+    wrong: []
+    equivalent:
+      - formula: =IFERROR(INDEX(A2:A4,MATCH(B6,A2:A5,1)+1)-B6,0)
+        why: "range A2:A4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IFERROR(INDEX(A2:A4,MATCH(B6,A2:A4,2)+1)-B6,0)
+        why: "1 written as 2: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

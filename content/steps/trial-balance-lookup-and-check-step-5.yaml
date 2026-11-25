@@ -1,0 +1,47 @@
+id: trial-balance-lookup-and-check-step-5
+slug: trial-balance-lookup-and-check-step-5
+level: 3
+title: Account with the largest net debit
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: trial-balance-lookup-and-check
+step: 5
+screens:
+  - prompt: In D2, which account, by its name from the chart, has the largest net debit, debit minus credit?
+    rows:
+      - [Code, Debit, Credit, Largest net debit, null, Chart code, Chart name]
+      - [1000, 25400, 0, null, null, 1000, Cash]
+      - [1200, 18300, 0, null, null, 1200, Receivables]
+      - [2000, 0, 12750, null, null, 2000, Payables]
+      - [3000, 0, 20000, null, null, 3000, Equity]
+      - [4000, 0, 41800, null, null, 4000, Sales]
+      - [5000, 30850, 0, null, null, 5000, Costs]
+    answerCell: D2
+    expected: Costs
+    variants:
+      - set: { B2: 35000 }
+        expected: Cash
+      - set: { C7: 20000 }
+        expected: Cash
+    answer: =XLOOKUP(INDEX(A2:A7,MATCH(MAX(B2:B7-C2:C7),B2:B7-C2:C7,0)),F2:F7,G2:G7)
+    requiredFunctions: []
+    hints:
+      nudge: Find the code with the largest debit minus credit, then look its name up in the chart.
+      rule: B2:B7-C2:C7 gives each net debit; MATCH on its MAX finds the code; XLOOKUP turns it into a name.
+    misses:
+      value: The largest net debit is on Costs.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(INDEX(A2:A7,MATCH(MAX(B2:B7-C2:C7),B2:B7-C2:C7,0)),F2:F7,G2:G7)
+      - =XLOOKUP(XLOOKUP(MAX(B2:B7-C2:C7),B2:B7-C2:C7,A2:A7),F2:F7,G2:G7)
+    reject:
+      - formula: =XLOOKUP(INDEX(A2:A7,MATCH(MAX(B2:B7),B2:B7,0)),F2:F7,G2:G7)
+        rule: fragile
+      - formula: =INDEX(A2:A7,MATCH(MAX(B2:B7-C2:C7),B2:B7-C2:C7,0))
+        rule: value
+      - formula: ="Costs"
+        rule: reference
+      - formula: =XLOOKUP(INDEX(A2:A7,MATCH(MAX(B2:B7-C2:C7),B2:B7-C2:C7,0)),F2:F7,G2:G7
+        rule: syntax

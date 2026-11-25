@@ -1,0 +1,50 @@
+id: index-match-step-5
+slug: index-match-step-5
+level: 3
+title: Who earns the most in a team
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: index-match
+step: 5
+screens:
+  - prompt: In G2, who is the highest earner in the team typed in G1?
+    rows:
+      - [ID, Name, Team, Salary, null, Team, Sales]
+      - [E-101, Ana, Sales, 61500, null, Top earner, null]
+      - [E-102, Bo, Finance, 57000, null, null, null]
+      - [E-103, Cy, IT, 88000, null, null, null]
+      - [E-104, Dee, Sales, 64000, null, null, null]
+      - [E-105, Eli, Finance, 49500, null, null, null]
+      - [E-106, Fay, Sales, 58500, null, null, null]
+      - [E-107, Gus, IT, 72000, null, null, null]
+      - [E-108, Hal, Finance, 66000, null, null, null]
+    answerCell: G2
+    expected: Dee
+    variants:
+      - set: { G1: Finance }
+        expected: Hal
+      - set: { D7: 70000 }
+        expected: Fay
+    answer: =INDEX(B2:B9,MATCH(MAXIFS(D2:D9,C2:C9,G1),D2:D9,0))
+    requiredFunctions: []
+    hints:
+      nudge: First the top salary within the team, then whose salary that is.
+      rule: MAXIFS(D2:D9,C2:C9,G1) gives the team's top salary; INDEX/MATCH returns the name on that row.
+    misses:
+      value: The top earner in Sales is Dee.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(B2:B9,MATCH(MAXIFS(D2:D9,C2:C9,G1),D2:D9,0))
+      - =XLOOKUP(MAXIFS(D2:D9,C2:C9,G1),D2:D9,B2:B9)
+      - =INDEX(SORTBY(FILTER(B2:B9,C2:C9=G1),FILTER(D2:D9,C2:C9=G1),-1),1)
+    reject:
+      - formula: =INDEX(B2:B9,MATCH(MAX(D2:D9),D2:D9,0))
+        rule: value
+      - formula: ="Dee"
+        rule: reference
+      - formula: ="Dee"
+        rule: reference
+      - formula: =INDEX(B2:B9,MATCH(MAXIFS(D2:D9,C2:C9,G1),D2:D9,0)
+        rule: syntax

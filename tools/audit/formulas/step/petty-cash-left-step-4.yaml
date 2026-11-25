@@ -1,0 +1,20 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF($B$2-SUM($B$3:$B$8)<50,"Top up","OK")
+      - =IF(B$2-SUM(B3:B8)<50,"Top up","OK")
+      - =if(b2-sum(b3:b8)<50, "Top up", "OK")
+      - =LET(data,B3:B8,IF(B2-SUM(data)<50,"Top up","OK"))
+    wrong:
+      - formula: =IF(B2-SUM(B3:B8)<=50,"Top up","OK")
+        rule: fragile
+        why: < written as <=
+      - formula: =IF(B2-SUM(B3:B8)<51,"Top up","OK")
+        rule: fragile
+        why: 50 written as 51
+      - formula: =IF(B2-SUM(B3:B8)<49,"Top up","OK")
+        rule: fragile
+        why: 50 written as 49
+    equivalent:
+      - formula: =IF(B2-SUM(B3:B9)<50,"Top up","OK")
+        why: "range B3:B8 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

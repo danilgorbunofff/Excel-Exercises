@@ -1,0 +1,44 @@
+id: trial-balance-lookup-and-check-step-3
+slug: trial-balance-lookup-and-check-step-3
+level: 2
+title: Account name or unknown code
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: trial-balance-lookup-and-check
+step: 3
+screens:
+  - prompt: In D2, show the account name for the code in A2 from the chart in F:G, or unknown code when it is not in the chart. Use XLOOKUP.
+    rows:
+      - [Code, Debit, Credit, Name, null, Chart code, Chart name]
+      - [1000, 25400, 0, null, null, 1000, Cash]
+      - [1200, 18300, 0, null, null, 1200, Receivables]
+      - [2000, 0, 12750, null, null, 2000, Payables]
+      - [3000, 0, 20000, null, null, 3000, Equity]
+      - [4000, 0, 41800, null, null, 4000, Sales]
+      - [5000, 30850, 0, null, null, 5000, Costs]
+    answerCell: D2
+    expected: Cash
+    variants:
+      - set: { A2: 1500 }
+        expected: unknown code
+    answer: =XLOOKUP(A2,$F$2:$F$7,$G$2:$G$7,"unknown code")
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: The fourth part of XLOOKUP is the fallback text.
+      rule: 'XLOOKUP(A2,$F$2:$F$7,$G$2:$G$7,"unknown code") never shows #N/A.'
+    misses:
+      value: Code 1000 is Cash.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(A2,$F$2:$F$7,$G$2:$G$7,"unknown code")
+      - =XLOOKUP(A2,F2:F7,G2:G7,"unknown code")
+    reject:
+      - formula: =XLOOKUP(A2,$F$2:$F$7,$G$2:$G$7)
+        rule: fragile
+      - formula: ="Cash"
+        rule: required-function
+      - formula: =XLOOKUP(A2,$F$2:$F$7,$G$2:$G$7,"unknown code"
+        rule: syntax

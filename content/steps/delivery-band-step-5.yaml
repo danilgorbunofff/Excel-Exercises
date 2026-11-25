@@ -1,0 +1,52 @@
+id: delivery-band-step-5
+slug: delivery-band-step-5
+level: 3
+title: Delivery cost with a heavy surcharge
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: delivery-band
+step: 5
+screens:
+  - prompt: In E2, what does delivery cost for the parcel weight in E1? Use the band cost, plus the rate in E4 for every kilogram above the weight in E3.
+    rows:
+      - [From kg, Cost, null, Parcel kg, 13.5]
+      - [0, 4.5, null, Delivery, null]
+      - [2, 7, null, Surcharge above kg, 12]
+      - [5, 11, null, Per extra kg, 1.5]
+      - [10, 18, null, null, null]
+    answerCell: E2
+    expected: 20.25
+    variants:
+      - set: { E1: 7 }
+        expected: 11
+      - set: { E1: 12 }
+        expected: 18
+      - set: { E1: 22 }
+        expected: 33
+      - set: { E4: 2 }
+        expected: 21
+      - set: { E1: 1 }
+        expected: 4.5
+    answer: =VLOOKUP(E1,A2:B5,2,TRUE)+(E1>E3)*(E1-E3)*E4
+    requiredFunctions: []
+    hints:
+      nudge: "Two parts: the band cost, and a surcharge only on the weight above E3."
+      rule: (E1>E3) is 1 only for a heavy parcel, so (E1>E3)*(E1-E3)*E4 is the surcharge, and 0 otherwise.
+    misses:
+      value: Delivery for 13.5 kg costs 20.25.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =VLOOKUP(E1,A2:B5,2,TRUE)+(E1>E3)*(E1-E3)*E4
+      - =XLOOKUP(E1,A2:A5,B2:B5,,-1)+(E1>E3)*(E1-E3)*E4
+      - =VLOOKUP(E1,A2:B5,2,TRUE)+(E1-E3)*E4*(E1>E3)
+    reject:
+      - formula: =VLOOKUP(E1,A2:B5,2,TRUE)
+        rule: value
+      - formula: =VLOOKUP(E1,A2:B5,2,TRUE)+(E1-E3)*E4
+        rule: fragile
+      - formula: =20.25
+        rule: reference
+      - formula: =VLOOKUP(E1,A2:B5,2,TRUE)+(E1>E3)*(E1-E3)*E4,
+        rule: syntax

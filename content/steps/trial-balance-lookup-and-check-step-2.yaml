@@ -1,0 +1,44 @@
+id: trial-balance-lookup-and-check-step-2
+slug: trial-balance-lookup-and-check-step-2
+level: 2
+title: Difference between the sides
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: trial-balance-lookup-and-check
+step: 2
+screens:
+  - prompt: In D2, show total debits minus total credits; 0 means the trial balance balances. Use SUM.
+    rows:
+      - [Code, Debit, Credit, Difference, null, Chart code, Chart name]
+      - [1000, 25400, 0, null, null, 1000, Cash]
+      - [1200, 18300, 0, null, null, 1200, Receivables]
+      - [2000, 0, 12750, null, null, 2000, Payables]
+      - [3000, 0, 20000, null, null, 3000, Equity]
+      - [4000, 0, 41800, null, null, 4000, Sales]
+      - [5000, 30850, 0, null, null, 5000, Costs]
+    answerCell: D2
+    expected: 0
+    variants:
+      - { set: { C4: 12500 }, expected: 250 }
+      - { set: { C2: 12750, C7: 12750 }, expected: -25500 }
+    answer: =SUM(B2:B7)-SUM(C2:C7)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: Total each side, then subtract.
+      rule: SUM(B2:B7)-SUM(C2:C7) shows any imbalance.
+    misses:
+      value: The difference is 0.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:B7)-SUM(C2:C7)
+      - =-SUM(C2:C7)+SUM(B2:B7)
+    reject:
+      - formula: =SUM(C2:C7)-SUM(B2:B7)
+        rule: fragile
+      - formula: =0
+        rule: required-function
+      - formula: =SUM(B2:B7)-SUM(C2:C7
+        rule: syntax

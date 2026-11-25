@@ -1,0 +1,43 @@
+id: a-lookup-dashboard-from-three-tables-step-3
+slug: a-lookup-dashboard-from-three-tables-step-3
+level: 2
+title: Target of a region
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-lookup-dashboard-from-three-tables
+step: 3
+screens:
+  - prompt: In D2, read the target of the region named in D1 from the targets table F2:G5. Use XLOOKUP.
+    rows:
+      - [Rep, Region, Sales, West, null, Region, Target]
+      - [Ada, North, 61500, null, null, North, 60000]
+      - [Ben, South, 47000, null, null, South, 50000]
+      - [Cleo, North, 58200, null, null, East, 45000]
+      - [Dev, East, 52300, null, null, West, 55000]
+      - [Eve, West, 49800, null, null, null, null]
+    answerCell: D2
+    expected: 55000
+    variants:
+      - set: { D1: South }
+        expected: 50000
+    answer: =XLOOKUP(D1,F2:F5,G2:G5)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: The targets live in their own table on the right.
+      rule: XLOOKUP(D1,F2:F5,G2:G5) reads the target for that region.
+    misses:
+      value: The West's target is 55000.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(D1,F2:F5,G2:G5)
+      - =XLOOKUP($D$1,$F$2:$F$5,$G$2:$G$5)
+    reject:
+      - formula: =XLOOKUP(D1,B2:B6,C2:C6)
+        rule: value
+      - formula: =55000
+        rule: required-function
+      - formula: =XLOOKUP(D1,F2:F5,G2:G5
+        rule: syntax

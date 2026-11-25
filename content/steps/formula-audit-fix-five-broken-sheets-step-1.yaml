@@ -1,0 +1,43 @@
+id: formula-audit-fix-five-broken-sheets-step-1
+slug: formula-audit-fix-five-broken-sheets-step-1
+level: 1
+title: Fix a total that counts itself
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: formula-audit-fix-five-broken-sheets
+step: 1
+screens:
+  - prompt: The old total in B6 added B2 to B6, its own cell. In B6, total B2 to B5 instead. Use SUM.
+    rows:
+      - [Item, Amount]
+      - [Pens, 48]
+      - [Pads, 52.5]
+      - [Clips, 25]
+      - [Tape, 25.2]
+      - [Total, null]
+    answerCell: B6
+    expected: 150.7
+    variants:
+      - set: { B3: 60 }
+        expected: 158.2
+    answer: =SUM(B2:B5)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: A total must never include its own cell.
+      rule: SUM(B2:B5) stops above the total row, so there is no circular reference.
+    misses:
+      value: The total is 150.7.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:B5)
+      - =SUM($B$2:$B$5)
+    reject:
+      - formula: =SUM(B2:B4)
+        rule: value
+      - formula: =150.7
+        rule: required-function
+      - formula: =SUM(B2:B5
+        rule: syntax

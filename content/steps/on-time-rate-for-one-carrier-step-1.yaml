@@ -1,0 +1,50 @@
+id: on-time-rate-for-one-carrier-step-1
+slug: on-time-rate-for-one-carrier-step-1
+level: 1
+title: Count the on-time shipments
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: on-time-rate-for-one-carrier
+step: 1
+screens:
+  - prompt: In E2, count the shipments marked On time. Use COUNTIF.
+    rows:
+      - [Shipment, Carrier, Status, null, On time, null]
+      - [S-01, Northway, On time, null, null, null]
+      - [S-02, Fastlane, Late, null, null, null]
+      - [S-03, Northway, On time, null, null, null]
+      - [S-04, Swiftco, On time, null, null, null]
+      - [S-05, Northway, Late, null, null, null]
+      - [S-06, Fastlane, On time, null, null, null]
+      - [S-07, Swiftco, Late, null, null, null]
+      - [S-08, Fastlane, On time, null, null, null]
+      - [S-09, Northway, On time, null, null, null]
+      - [S-10, Swiftco, On time, null, null, null]
+      - [S-11, Fastlane, Late, null, null, null]
+      - [S-12, Northway, On time, null, null, null]
+    answerCell: E2
+    expected: 8
+    variants:
+      - set: { C3: On time }
+        expected: 9
+    answer: =COUNTIF(C2:C13,"On time")
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: Count the status column for On time.
+      rule: COUNTIF(C2:C13,"On time") counts every on-time shipment.
+    misses:
+      value: 8 shipments were on time.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(C2:C13,"On time")
+      - =COUNTIF($C$2:$C$13,"On time")
+    reject:
+      - formula: =COUNTIF(C2:C13,"Late")
+        rule: value
+      - formula: =8
+        rule: required-function
+      - formula: =COUNTIF(C2:C13,"On time"
+        rule: syntax

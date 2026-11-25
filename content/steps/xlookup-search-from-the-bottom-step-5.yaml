@@ -1,0 +1,49 @@
+id: xlookup-search-from-the-bottom-step-5
+slug: xlookup-search-from-the-bottom-step-5
+level: 3
+title: Price change since the first entry
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: xlookup-search-from-the-bottom
+step: 5
+screens:
+  - prompt: In E2, by how much has the price of the SKU in E1 changed between its first and its latest entry in the log?
+    rows:
+      - [SKU, Price, null, SKU, TX-101]
+      - [TX-101, 19.99, null, Change, null]
+      - [TX-102, 14, null, null, null]
+      - [TX-101, 21.5, null, null, null]
+      - [TX-103, 9.5, null, null, null]
+      - [TX-102, 16.25, null, null, null]
+      - [TX-101, 22.75, null, null, null]
+      - [TX-103, 10.25, null, null, null]
+      - [TX-102, 15.5, null, null, null]
+    answerCell: E2
+    expected: 2.76
+    variants:
+      - set: { E1: TX-102 }
+        expected: 1.5
+      - set: { B7: 25 }
+        expected: 5.01
+    answer: =XLOOKUP(E1,A2:A9,B2:B9,,0,-1)-XLOOKUP(E1,A2:A9,B2:B9)
+    requiredFunctions: []
+    hints:
+      nudge: One XLOOKUP from the bottom for the latest, one from the top for the first; subtract.
+      rule: The latest price minus the first price gives the change; a rise is positive.
+    misses:
+      value: TX-101's price changed by 2.76.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(E1,A2:A9,B2:B9,,0,-1)-XLOOKUP(E1,A2:A9,B2:B9)
+      - =XLOOKUP(E1,A2:A9,B2:B9,,0,-1)-INDEX(B2:B9,MATCH(E1,A2:A9,0))
+    reject:
+      - formula: =XLOOKUP(E1,A2:A9,B2:B9)-XLOOKUP(E1,A2:A9,B2:B9,,0,-1)
+        rule: value
+      - formula: =B7-B2
+        rule: fragile
+      - formula: =2.76
+        rule: reference
+      - formula: =XLOOKUP(E1,A2:A9,B2:B9,,0,-1)-XLOOKUP(E1,A2:A9,B2:B9
+        rule: syntax

@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MATCH(B$3,B1:G1,0)
+      - =match(b3, b1:g1, 0)
+      - =LET(data,B1:G1,MATCH(B3,data,0))
+    wrong: []
+    equivalent: []

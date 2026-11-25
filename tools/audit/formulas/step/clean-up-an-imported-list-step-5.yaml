@@ -1,0 +1,19 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROWS($A$2:$A$16)-ROWS(UNIQUE(LOWER(TRIM($A$2:$A$16))))
+      - =ROWS(A$2:A$16)-ROWS(UNIQUE(LOWER(TRIM(A2:A16))))
+      - =rows(a2:a16)-rows(unique(lower(trim(a2:a16))))
+      - =LET(data,A2:A16,ROWS(data)-ROWS(UNIQUE(LOWER(TRIM(data)))))
+    wrong:
+      - formula: =ROWS(A2:A16)-ROWS(UNIQUE(LOWER(TRIM(A2:A15))))
+        rule: fragile
+        why: range A2:A16 one row short at the end
+      - formula: =ROWS(A2:A16)-ROWS(UNIQUE(LOWER(TRIM(A3:A16))))
+        rule: fragile
+        why: range A2:A16 skips its first row
+    equivalent:
+      - formula: =ROWS(B2:B16)-ROWS(UNIQUE(LOWER(TRIM(A2:A16))))
+        why: "range A2:A16 one column right: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =ROWS(A2:A16)-ROWS(UNIQUE(TRIM(A2:A16)))
+        why: "without LOWER: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

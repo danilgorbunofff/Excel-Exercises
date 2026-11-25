@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MID($A$2,FIND("-",$A$2)+1,FIND("-",$A$2,FIND("-",$A$2)+1)-FIND("-",$A$2)-1)
+      - =MID(A$2,FIND("-",A2)+1,FIND("-",A2,FIND("-",A2)+1)-FIND("-",A2)-1)
+      - =mid(a2, find("-", a2)+1, find("-", a2, find("-", a2)+1)-find("-", a2)-1)
+    wrong: []
+    equivalent:
+      - formula: =MID(A2,SEARCH("-",A2)+1,FIND("-",A2,FIND("-",A2)+1)-FIND("-",A2)-1)
+        why: "SEARCH instead of FIND: A hyphen has no case, so SEARCH and FIND agree."
+      - formula: =MID(A2,FIND("-",A2)+1,SEARCH("-",A2,FIND("-",A2)+1)-FIND("-",A2)-1)
+        why: "SEARCH instead of FIND: A hyphen has no case, so SEARCH and FIND agree."
+      - formula: =MID(A2,FIND("-",A2)+1,FIND("-",A2,SEARCH("-",A2)+1)-FIND("-",A2)-1)
+        why: "SEARCH instead of FIND: A hyphen has no case, so SEARCH and FIND agree."
+      - formula: =MID(A2,FIND("-",A2)+1,FIND("-",A2,FIND("-",A2)+2)-FIND("-",A2)-1)
+        why: "1 written as 2: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =MID(A2,FIND("-",A2)+1,FIND("-",A2,FIND("-",A2)+1)-SEARCH("-",A2)-1)
+        why: "SEARCH instead of FIND: A hyphen has no case, so SEARCH and FIND agree."

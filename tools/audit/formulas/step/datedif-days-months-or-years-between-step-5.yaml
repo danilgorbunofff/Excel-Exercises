@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =DATEDIF($B$2,$C$2,"Y")&" years "&DATEDIF($B$2,$C$2,"YM")&" months"
+      - =DATEDIF(B$2,C2,"Y")&" years "&DATEDIF(B2,C2,"YM")&" months"
+      - =datedif(b2, c2, "Y")&" years "&datedif(b2, c2, "YM")&" months"
+    wrong:
+      - formula: =DATEDIF(B2,C2,"Y")&" years "&DATEDIF(B3,C2,"YM")&" months"
+        rule: fragile
+        why: B2 read from the next row
+    equivalent: []

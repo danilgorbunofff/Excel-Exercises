@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($B$1:$G$1,MATCH(TRUE,$B$2:$G$2>$B$4,0))
+      - =INDEX(B$1:G$1,MATCH(TRUE,B2:G2>B4,0))
+      - =index(b1:g1, match(true, b2:g2>b4, 0))
+      - =LET(data,B1:G1,INDEX(data,MATCH(TRUE,B2:G2>B4,0)))
+    wrong:
+      - formula: =INDEX(B1:G1,MATCH(TRUE,B2:G2>=B4,0))
+        rule: fragile
+        why: "> written as >="
+    equivalent: []

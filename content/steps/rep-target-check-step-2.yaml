@@ -1,0 +1,39 @@
+id: rep-target-check-step-2
+slug: rep-target-check-step-2
+level: 1
+title: Percentage of target reached
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: rep-target-check
+step: 2
+screens:
+  - prompt: In D2, show the rep's sales as a percentage of the target, rounded to one decimal place. Use ROUND.
+    rows:
+      - [Rep, Target, Sales, "% of target"]
+      - [Nia, 52000, 50850, null]
+    answerCell: D2
+    expected: 97.8
+    variants:
+      - set: { C2: 53400 }
+        expected: 102.7
+    answer: =ROUND(C2/B2*100,1)
+    requiredFunctions:
+      - ROUND
+    hints:
+      nudge: Sales over target, times 100.
+      rule: ROUND(C2/B2*100,1) shows how much of the target was reached.
+    misses:
+      value: Nia reached 97.8% of target.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(C2/B2*100,1)
+      - =ROUND(100*C2/B2,1)
+    reject:
+      - formula: =ROUND(B2/C2*100,1)
+        rule: value
+      - formula: =97.8
+        rule: required-function
+      - formula: =ROUND(C2/B2*100,1
+        rule: syntax

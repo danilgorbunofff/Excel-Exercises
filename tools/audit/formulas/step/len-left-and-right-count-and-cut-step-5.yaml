@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(--(LEN($A$2:$A$16)<>8))
+      - =SUMPRODUCT(--(LEN(A$2:A$16)<>8))
+      - =sumproduct(--(len(a2:a16)<>8))
+      - =LET(data,A2:A16,SUMPRODUCT(--(LEN(data)<>8)))
+    wrong:
+      - formula: =SUMPRODUCT(--(LEN(A2:A15)<>8))
+        rule: fragile
+        why: range A2:A16 one row short at the end
+      - formula: =SUMPRODUCT(--(LEN(A3:A16)<>8))
+        rule: fragile
+        why: range A2:A16 skips its first row
+    equivalent: []

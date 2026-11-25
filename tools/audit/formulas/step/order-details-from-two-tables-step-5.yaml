@@ -1,0 +1,10 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(SUMIFS($C$2:$C$16,$B$2:$B$16,$E$2:$E$6)*($G$2:$G$6="North"))
+      - =SUMPRODUCT(SUMIFS(C$2:C$16,B2:B16,E2:E6)*(G2:G6="North"))
+      - =sumproduct(sumifs(c2:c16, b2:b16, e2:e6)*(g2:g6="North"))
+      - =SUMPRODUCT(SUMIF(B2:B16,E2:E6,C2:C16)*(G2:G6="North"))
+      - =LET(data,C2:C16,SUMPRODUCT(SUMIFS(data,B2:B16,E2:E6)*(G2:G6="North")))
+    wrong: []
+    equivalent: []

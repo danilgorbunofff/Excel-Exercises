@@ -3,7 +3,13 @@
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 2 at step 3, level 3 at step 4. Dates are serials.
 const fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(2));
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 const invoices = [
   ["Invoice", "Due date", "Amount", "Report date", null],
@@ -35,7 +41,8 @@ const chart = [
 export default [
   // days-overdue-on-open-invoices (level 2, step 3)
   step("days-overdue-on-open-invoices", 1, 1, "Days from due date to report date", {
-    prompt: "In E2, work out the days from INV-1041's due date in B2 to the report date in D2: D2 minus B2.",
+    prompt:
+      "In E2, work out the days from INV-1041's due date in B2 to the report date in D2: D2 minus B2.",
     rows: invoices,
     cell: "E2",
     answer: "=$D$2-B2",
@@ -48,7 +55,8 @@ export default [
     value: (e) => `INV-1041 is ${e} days past due.`,
   }),
   step("days-overdue-on-open-invoices", 2, 2, "Count the invoices past due", {
-    prompt: 'In E2, count the invoices whose due date is before the report date in D2. Use COUNTIF with "<"&D2.',
+    prompt:
+      'In E2, count the invoices whose due date is before the report date in D2. Use COUNTIF with "<"&D2.',
     rows: invoices,
     cell: "E2",
     answer: '=COUNTIF(B2:B6,"<"&D2)',
@@ -59,12 +67,12 @@ export default [
       ['=COUNTIF(B2:B6,">"&D2)', "value"],
       ['=COUNTIF(B2:B6,"<45400")', "fragile"],
     ],
-    nudge: "Join the sign and the cell: \"<\"&D2.",
+    nudge: 'Join the sign and the cell: "<"&D2.',
     rule: 'COUNTIF(B2:B6,"<"&D2) counts due dates earlier than the report date.',
     value: (e) => `${e} invoices are past due.`,
   }),
   step("days-overdue-on-open-invoices", 4, 2, "Total amount past due", {
-    prompt: 'In E2, total the amounts of the invoices due before the report date in D2. Use SUMIF.',
+    prompt: "In E2, total the amounts of the invoices due before the report date in D2. Use SUMIF.",
     rows: invoices,
     cell: "E2",
     answer: '=SUMIF(B2:B6,"<"&D2,C2:C6)',
@@ -80,7 +88,8 @@ export default [
     value: (e) => `${e} is past due.`,
   }),
   step("days-overdue-on-open-invoices", 5, 3, "Average days overdue", {
-    prompt: "In F2, on average, how many days overdue are the invoices that are past due on the report date in D2?",
+    prompt:
+      "In F2, on average, how many days overdue are the invoices that are past due on the report date in D2?",
     rows: [
       ["Invoice", "Due date", "Amount", "Report date", null, null],
       ["INV-01", 45340, 1200, 45400, null, null],
@@ -116,7 +125,9 @@ export default [
   // ageing-buckets-for-receivables (level 2, step 3)
   step("ageing-buckets-for-receivables", 1, 1, "Balances over 30 days", {
     prompt: "In D2, total the balances more than 30 days overdue. Use SUMIF.",
-    rows: ageing.map((r, i) => (i === 0 ? ["Customer", "Days overdue", "Balance", "Over 30 days", ...r.slice(4)] : r)),
+    rows: ageing.map((r, i) =>
+      i === 0 ? ["Customer", "Days overdue", "Balance", "Over 30 days", ...r.slice(4)] : r,
+    ),
     cell: "D2",
     answer: '=SUMIF(B2:B7,">30",C2:C7)',
     required: ["SUMIF"],
@@ -129,7 +140,9 @@ export default [
   }),
   step("ageing-buckets-for-receivables", 2, 2, "Count the 31 to 60 day band", {
     prompt: "In D2, count the customers 31 to 60 days overdue, both ends included. Use COUNTIFS.",
-    rows: ageing.map((r, i) => (i === 0 ? ["Customer", "Days overdue", "Balance", "31 to 60", ...r.slice(4)] : r)),
+    rows: ageing.map((r, i) =>
+      i === 0 ? ["Customer", "Days overdue", "Balance", "31 to 60", ...r.slice(4)] : r,
+    ),
     cell: "D2",
     answer: '=COUNTIFS(B2:B7,">=31",B2:B7,"<=60")',
     required: ["COUNTIFS"],
@@ -141,8 +154,11 @@ export default [
     value: (e) => `${e} customers are 31 to 60 days overdue.`,
   }),
   step("ageing-buckets-for-receivables", 4, 2, "Band with an approximate VLOOKUP", {
-    prompt: "In D3, show which band Brook & Co falls in, from the band starts in F2:G5. Use VLOOKUP with TRUE.",
-    rows: ageing.map((r, i) => (i === 0 ? ["Customer", "Days overdue", "Balance", "Band", ...r.slice(4)] : r)),
+    prompt:
+      "In D3, show which band Brook & Co falls in, from the band starts in F2:G5. Use VLOOKUP with TRUE.",
+    rows: ageing.map((r, i) =>
+      i === 0 ? ["Customer", "Days overdue", "Balance", "Band", ...r.slice(4)] : r,
+    ),
     cell: "D3",
     answer: "=VLOOKUP(B3,$F$2:$G$5,2,TRUE)",
     required: ["VLOOKUP"],
@@ -154,8 +170,11 @@ export default [
     value: (e) => `Brook & Co is in the ${e} band.`,
   }),
   step("ageing-buckets-for-receivables", 5, 3, "Share of receivables over 60 days", {
-    prompt: "In D2, what share of all receivables is more than 60 days overdue? Round to 3 decimals.",
-    rows: ageing.map((r, i) => (i === 0 ? ["Customer", "Days overdue", "Balance", "Over 60 share", ...r.slice(4)] : r)),
+    prompt:
+      "In D2, what share of all receivables is more than 60 days overdue? Round to 3 decimals.",
+    rows: ageing.map((r, i) =>
+      i === 0 ? ["Customer", "Days overdue", "Balance", "Over 60 share", ...r.slice(4)] : r,
+    ),
     cell: "D2",
     answer: '=ROUND(SUMIF(B2:B7,">60",C2:C7)/SUM(C2:C7),3)',
     required: [],
@@ -192,7 +211,8 @@ export default [
     value: (e) => `R-101 appears ${e} time on the statement.`,
   }),
   step("bank-reconciliation-match", 2, 2, "Found or missing by reference", {
-    prompt: 'In C5, show Found when the bank has the reference in A5, and Missing when it does not. Use IF and COUNTIF.',
+    prompt:
+      "In C5, show Found when the bank has the reference in A5, and Missing when it does not. Use IF and COUNTIF.",
     rows: [
       ["Ledger ref", "Ledger amount", "Status", null, "Bank ref", "Bank amount"],
       ["R-101", 1200, null, null, "R-101", 1200],
@@ -212,7 +232,8 @@ export default [
     value: (e) => `R-104 is not on the statement, so C5 should show ${e}.`,
   }),
   step("bank-reconciliation-match", 3, 2, "Match on reference and amount", {
-    prompt: "In C3, count the bank lines with both the reference in A3 and the amount in B3. Use COUNTIFS.",
+    prompt:
+      "In C3, count the bank lines with both the reference in A3 and the amount in B3. Use COUNTIFS.",
     rows: [
       ["Ledger ref", "Ledger amount", "Count", null, "Bank ref", "Bank amount"],
       ["R-101", 1200, null, null, "R-101", 1200],
@@ -232,7 +253,8 @@ export default [
     value: (e) => `R-102 matches ${e} bank lines on both reference and amount.`,
   }),
   step("bank-reconciliation-match", 5, 3, "Ledger lines missing from the bank", {
-    prompt: "In H2, how many ledger lines have no bank line with the same reference and the same amount?",
+    prompt:
+      "In H2, how many ledger lines have no bank line with the same reference and the same amount?",
     rows: [
       ["Ledger ref", "Ledger amount", null, null, "Bank ref", "Bank amount", null, null],
       ["R-101", 1200, null, null, "R-101", 1200, null, null],
@@ -254,7 +276,8 @@ export default [
       ["=SUMPRODUCT(--(COUNTIF(E2:E8,A2:A10)=0))", "value"],
       ["=ROWS(A2:A10)-ROWS(E2:E8)", "value"],
     ],
-    nudge: "Check every ledger line at once against both bank columns, and count those with no match.",
+    nudge:
+      "Check every ledger line at once against both bank columns, and count those with no match.",
     rule: "COUNTIFS with A2:A10 and B2:B10 as criteria gives one match count per ledger line; =0 marks the unmatched ones.",
     value: (e) => `${e} ledger lines are unmatched.`,
   }),
@@ -277,7 +300,8 @@ export default [
     value: (e) => `The contract starts on day ${e}.`,
   }),
   step("month-end-accrual-for-part-of-a-month", 2, 2, "Days in the start month", {
-    prompt: "In D2, work out how many days the start date's month has: the day number of its last day. Use DAY and EOMONTH.",
+    prompt:
+      "In D2, work out how many days the start date's month has: the day number of its last day. Use DAY and EOMONTH.",
     rows: [
       ["Contract", "Monthly fee", "Start date", "Days in month"],
       ["Cleaning", 3100, 45366, null],
@@ -293,7 +317,8 @@ export default [
     value: (e) => `The start month has ${e} days.`,
   }),
   step("month-end-accrual-for-part-of-a-month", 3, 2, "Days from start to month end", {
-    prompt: "In D2, count the days from the start date to the month end, both days included. Use EOMONTH.",
+    prompt:
+      "In D2, count the days from the start date to the month end, both days included. Use EOMONTH.",
     rows: [
       ["Contract", "Monthly fee", "Start date", "Days"],
       ["Cleaning", 3100, 45366, null],
@@ -308,26 +333,32 @@ export default [
     rule: "EOMONTH(C2,0)-C2+1 counts the start day and the last day.",
     value: (e) => `The contract runs ${e} days this month.`,
   }),
-  step("month-end-accrual-for-part-of-a-month", 5, 3, "Accrual for a contract that ends mid-month", {
-    prompt:
-      "In D2, how much of the monthly fee should be accrued for a contract that ends on the date in C2? Count the days from the 1st of that month to the end date, both included, as a share of the days in the month.",
-    rows: [
-      ["Contract", "Monthly fee", "End date", "Accrual"],
-      ["Security", 4650, 45387, null],
-    ],
-    cell: "D2",
-    answer: "=B2*(C2-EOMONTH(C2,-1))/DAY(EOMONTH(C2,0))",
-    required: [],
-    accept: ["=B2*DAY(C2)/DAY(EOMONTH(C2,0))"],
-    variants: [{ C2: 45351 }, { B2: 3000 }],
-    reject: [
-      ["=B2*(C2-EOMONTH(C2,-1))/30", "fragile"],
-      ["=B2*(EOMONTH(C2,0)-C2+1)/DAY(EOMONTH(C2,0))", "value"],
-    ],
-    nudge: "The days used are the end date's day number; divide by the days in that month.",
-    rule: "C2-EOMONTH(C2,-1) counts from the 1st to the end date; DAY(EOMONTH(C2,0)) is the month's length.",
-    value: (e) => `The accrual is ${fmt(e)}.`,
-  }),
+  step(
+    "month-end-accrual-for-part-of-a-month",
+    5,
+    3,
+    "Accrual for a contract that ends mid-month",
+    {
+      prompt:
+        "In D2, how much of the monthly fee should be accrued for a contract that ends on the date in C2? Count the days from the 1st of that month to the end date, both included, as a share of the days in the month.",
+      rows: [
+        ["Contract", "Monthly fee", "End date", "Accrual"],
+        ["Security", 4650, 45387, null],
+      ],
+      cell: "D2",
+      answer: "=B2*(C2-EOMONTH(C2,-1))/DAY(EOMONTH(C2,0))",
+      required: [],
+      accept: ["=B2*DAY(C2)/DAY(EOMONTH(C2,0))"],
+      variants: [{ C2: 45351 }, { B2: 3000 }],
+      reject: [
+        ["=B2*(C2-EOMONTH(C2,-1))/30", "fragile"],
+        ["=B2*(EOMONTH(C2,0)-C2+1)/DAY(EOMONTH(C2,0))", "value"],
+      ],
+      nudge: "The days used are the end date's day number; divide by the days in that month.",
+      rule: "C2-EOMONTH(C2,-1) counts from the 1st to the end date; DAY(EOMONTH(C2,0)) is the month's length.",
+      value: (e) => `The accrual is ${fmt(e)}.`,
+    },
+  ),
 
   // trial-balance-lookup-and-check (level 3, step 4)
   step("trial-balance-lookup-and-check", 1, 1, "Total debits", {
@@ -344,8 +375,11 @@ export default [
     value: (e) => `Debits total ${e}.`,
   }),
   step("trial-balance-lookup-and-check", 2, 2, "Difference between the sides", {
-    prompt: "In D2, show total debits minus total credits; 0 means the trial balance balances. Use SUM.",
-    rows: chart.map((r, i) => (i === 0 ? ["Code", "Debit", "Credit", "Difference", ...r.slice(4)] : r)),
+    prompt:
+      "In D2, show total debits minus total credits; 0 means the trial balance balances. Use SUM.",
+    rows: chart.map((r, i) =>
+      i === 0 ? ["Code", "Debit", "Credit", "Difference", ...r.slice(4)] : r,
+    ),
     cell: "D2",
     answer: "=SUM(B2:B7)-SUM(C2:C7)",
     required: ["SUM"],
@@ -357,7 +391,8 @@ export default [
     value: (e) => `The difference is ${e}.`,
   }),
   step("trial-balance-lookup-and-check", 3, 2, "Account name or unknown code", {
-    prompt: "In D2, show the account name for the code in A2 from the chart in F:G, or unknown code when it is not in the chart. Use XLOOKUP.",
+    prompt:
+      "In D2, show the account name for the code in A2 from the chart in F:G, or unknown code when it is not in the chart. Use XLOOKUP.",
     rows: chart.map((r, i) => (i === 0 ? ["Code", "Debit", "Credit", "Name", ...r.slice(4)] : r)),
     cell: "D2",
     answer: '=XLOOKUP(A2,$F$2:$F$7,$G$2:$G$7,"unknown code")',
@@ -370,8 +405,11 @@ export default [
     value: (e) => `Code 1000 is ${e}.`,
   }),
   step("trial-balance-lookup-and-check", 5, 3, "Account with the largest net debit", {
-    prompt: "In D2, which account, by its name from the chart, has the largest net debit, debit minus credit?",
-    rows: chart.map((r, i) => (i === 0 ? ["Code", "Debit", "Credit", "Largest net debit", ...r.slice(4)] : r)),
+    prompt:
+      "In D2, which account, by its name from the chart, has the largest net debit, debit minus credit?",
+    rows: chart.map((r, i) =>
+      i === 0 ? ["Code", "Debit", "Credit", "Largest net debit", ...r.slice(4)] : r,
+    ),
     cell: "D2",
     answer: "=XLOOKUP(INDEX(A2:A7,MATCH(MAX(B2:B7-C2:C7),B2:B7-C2:C7,0)),F2:F7,G2:G7)",
     required: [],

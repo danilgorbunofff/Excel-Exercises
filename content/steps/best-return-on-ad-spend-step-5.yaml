@@ -1,0 +1,50 @@
+id: best-return-on-ad-spend-step-5
+slug: best-return-on-ad-spend-step-5
+level: 3
+title: Best return among big campaigns
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: best-return-on-ad-spend
+step: 5
+screens:
+  - prompt: In F2, name the campaign with the best return on spend among those that spent at least the amount in F1.
+    rows:
+      - [Campaign, Spend, Revenue, null, Minimum spend, 2000]
+      - [Search, 4200, 16800, null, Best campaign, null]
+      - [Social, 3100, 9920, null, null, null]
+      - [Email, 900, 5850, null, null, null]
+      - [Video, 5600, 14560, null, null, null]
+      - [Print, 1500, 3150, null, null, null]
+      - [Radio, 2800, 7840, null, null, null]
+      - [Display, 2000, 6600, null, null, null]
+    answerCell: F2
+    expected: Search
+    variants:
+      - set: { F1: 5000 }
+        expected: Video
+      - set: { C8: 9000 }
+        expected: Display
+      - set: { F1: 5000, C3: 8060 }
+        expected: Video
+    answer: =INDEX(A2:A8,MATCH(MAX((B2:B8>=F1)*C2:C8/B2:B8),(B2:B8>=F1)*C2:C8/B2:B8,0))
+    requiredFunctions: []
+    hints:
+      nudge: Leave out the small campaigns first, then find the best return.
+      rule: Multiplying by (B2:B8>=F1) zeroes the small campaigns before MAX looks.
+    misses:
+      value: Search has the best return among the big campaigns.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(A2:A8,MATCH(MAX((B2:B8>=F1)*C2:C8/B2:B8),(B2:B8>=F1)*C2:C8/B2:B8,0))
+      - "=XLOOKUP(MAX((B2:B8>=F1)*C2:C8/B2:B8),(B2:B8>=F1)*C2:C8/B2:B8,A2:A8)"
+    reject:
+      - formula: =INDEX(A2:A8,MATCH(MAX(C2:C8/B2:B8),C2:C8/B2:B8,0))
+        rule: value
+      - formula: ="Search"
+        rule: reference
+      - formula: ="Search"
+        rule: reference
+      - formula: =INDEX(A2:A8,MATCH(MAX((B2:B8>=F1)*C2:C8/B2:B8),(B2:B8>=F1)*C2:C8/B2:B8,0)
+        rule: syntax

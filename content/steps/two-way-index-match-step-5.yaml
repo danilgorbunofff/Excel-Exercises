@@ -1,0 +1,50 @@
+id: two-way-index-match-step-5
+slug: two-way-index-match-step-5
+level: 3
+title: Change between two quarters for a region
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: two-way-index-match
+step: 5
+screens:
+  - prompt: In B10, how much did the region in B7 gain from the quarter in B8 to the quarter in B9? A fall is negative.
+    rows:
+      - [Region, Q1, Q2, Q3, Q4]
+      - [North, 120, 140, 160, 150]
+      - [South, 90, 110, 130, 145]
+      - [East, 105, 95, 120, 135]
+      - [West, 75, 95, 115, 100]
+      - [null, null, null, null, null]
+      - [Region, East, null, null, null]
+      - [From, Q2, null, null, null]
+      - [To, Q4, null, null, null]
+      - [Change, null, null, null, null]
+    answerCell: B10
+    expected: 40
+    variants:
+      - set: { B7: West }
+        expected: 5
+      - set: { B8: Q3, B9: Q1 }
+        expected: -15
+    answer: =INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B9,B1:E1,0))-INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,0))
+    requiredFunctions: []
+    hints:
+      nudge: "Two two-way lookups on the same row: the To quarter minus the From quarter."
+      rule: Each INDEX with two MATCHes reads one cell; subtracting the From value from the To value gives the change.
+    misses:
+      value: East changed by 40 from Q2 to Q4.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B9,B1:E1,0))-INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,0))
+      - =XLOOKUP(B7,A2:A5,XLOOKUP(B9,B1:E1,B2:E5))-XLOOKUP(B7,A2:A5,XLOOKUP(B8,B1:E1,B2:E5))
+    reject:
+      - formula: =INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,0))-INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B9,B1:E1,0))
+        rule: value
+      - formula: =E4-C4
+        rule: fragile
+      - formula: =40
+        rule: reference
+      - formula: =INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B9,B1:E1,0))-INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,0)
+        rule: syntax

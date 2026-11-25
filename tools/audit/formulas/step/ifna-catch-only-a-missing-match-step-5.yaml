@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(--ISNA(MATCH($D$2:$D$9,$A$2:$A$6,0)))
+      - =SUMPRODUCT(--ISNA(MATCH(D$2:D$9,A2:A6,0)))
+      - =sumproduct(--isna(match(d2:d9, a2:a6, 0)))
+      - =LET(data,D2:D9,SUMPRODUCT(--ISNA(MATCH(data,A2:A6,0))))
+    wrong:
+      - formula: =SUMPRODUCT(--ISNA(MATCH(D2:D8,A2:A6,0)))
+        rule: fragile
+        why: range D2:D9 one row short at the end
+      - formula: =SUMPRODUCT(--ISNA(MATCH(D3:D9,A2:A6,0)))
+        rule: fragile
+        why: range D2:D9 skips its first row
+    equivalent:
+      - formula: =SUMPRODUCT(--ISNA(MATCH(D2:D9,A2:A7,0)))
+        why: "range A2:A6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

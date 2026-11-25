@@ -1,0 +1,40 @@
+id: an-inventory-reorder-report-step-1
+slug: an-inventory-reorder-report-step-1
+level: 1
+title: Gap to the reorder point
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: an-inventory-reorder-report
+step: 1
+screens:
+  - prompt: "In D2, work out how far the bolts' stock is below their reorder point: the reorder point in C2 minus the stock in B2."
+    rows:
+      - [Item, On hand, Reorder at, Gap]
+      - [Bolts, 120, 200, null]
+    answerCell: D2
+    expected: 80
+    variants:
+      - set: { B2: 150 }
+        expected: 50
+    answer: =C2-B2
+    requiredFunctions: []
+    hints:
+      nudge: The reorder point minus what is on hand.
+      rule: C2-B2 is the shortfall; it would be negative if the stock were above the point.
+    misses:
+      value: The bolts are 80 short of the reorder point.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =C2-B2
+      - =-B2+C2
+    reject:
+      - formula: =B2-C2
+        rule: value
+      - formula: =80
+        rule: reference
+      - formula: =80
+        rule: reference
+      - formula: =C2-B2,
+        rule: syntax

@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX(E$2:E$9,MATCH(H1,B2:B9,0))
+      - =index(e2:e9, match(h1, b2:b9, 0))
+      - =LET(data,E2:E9,INDEX(data,MATCH(H1,B2:B9,0)))
+    wrong:
+      - formula: =INDEX(E2:E8,MATCH(H1,B2:B9,0))
+        rule: fragile
+        why: range E2:E9 one row short at the end
+      - formula: =INDEX(E2:E9,MATCH(H1,B2:B8,0))
+        rule: fragile
+        why: range B2:B9 one row short at the end
+    equivalent: []

@@ -1,0 +1,44 @@
+id: ageing-buckets-for-receivables-step-1
+slug: ageing-buckets-for-receivables-step-1
+level: 1
+title: Balances over 30 days
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: ageing-buckets-for-receivables
+step: 1
+screens:
+  - prompt: In D2, total the balances more than 30 days overdue. Use SUMIF.
+    rows:
+      - [Customer, Days overdue, Balance, Over 30 days, null, From day, Band name]
+      - [Arden Ltd, 12, 4200, null, null, 0, Current]
+      - [Brook & Co, 45, 1850, null, null, 31, 31-60]
+      - [Cole plc, 75, 3100, null, null, 61, 61-90]
+      - [Dunn Ltd, 30, 960, null, null, 91, Over 90]
+      - [Eske Group, 120, 2400, null, null, null, null]
+      - [Frey Ltd, 61, 1500, null, null, null, null]
+    answerCell: D2
+    expected: 8850
+    variants:
+      - set: { B5: 31 }
+        expected: 9810
+    answer: =SUMIF(B2:B7,">30",C2:C7)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: Test the days column, add the balances.
+      rule: SUMIF(B2:B7,">30",C2:C7) leaves out exactly 30 days.
+    misses:
+      value: Balances over 30 days total 8850.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(B2:B7,">30",C2:C7)
+      - =SUMIF($B$2:$B$7,">30",$C$2:$C$7)
+    reject:
+      - formula: =SUMIF(B2:B7,">=30",C2:C7)
+        rule: value
+      - formula: =8850
+        rule: required-function
+      - formula: =SUMIF(B2:B7,">30",C2:C7
+        rule: syntax

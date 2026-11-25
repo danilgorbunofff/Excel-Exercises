@@ -1,0 +1,49 @@
+id: find-a-price-step-4
+slug: find-a-price-step-4
+level: 2
+title: Return a whole row of details
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: find-a-price
+step: 4
+screens:
+  - prompt: In H2, return the product, category and price for the code in H1 in one formula, so they fill H2 to J2. Use XLOOKUP.
+    rows:
+      - [Code, Product, Category, Price, Stock, null, Code, P-107, null, null]
+      - [P-101, Desk lamp, Lighting, 24, 14, null, null, null, null, null]
+      - [P-102, Chair, Seating, 89, 6, null, null, null, null, null]
+      - [P-103, Shelf, Storage, 45, 9, null, null, null, null, null]
+      - [P-104, Rug, Decor, 120, 3, null, null, null, null, null]
+      - [P-105, Mirror, Decor, 60, 11, null, null, null, null, null]
+      - [P-106, Stool, Seating, 35, 22, null, null, null, null, null]
+      - [P-107, Floor lamp, Lighting, 75, 5, null, null, null, null, null]
+      - [P-108, Cabinet, Storage, 210, 2, null, null, null, null, null]
+    answerCell: H2
+    expected:
+      - [Floor lamp, Lighting, 75]
+    variants:
+      - set: { H1: P-102 }
+        expected:
+          - - Chair
+            - Seating
+            - 89
+    answer: =XLOOKUP(H1,A2:A9,B2:D9)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: The return range can be several columns wide.
+      rule: When the return range is B2:D9, XLOOKUP spills the three cells of the matching row.
+    misses:
+      value: H2 to J2 should show the product, category and price of the code in H1.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(H1,A2:A9,B2:D9)
+      - =XLOOKUP($H$1,$A$2:$A$9,$B$2:$D$9)
+    reject:
+      - formula: =XLOOKUP(H1,A2:A9,B2:B9)
+        rule: value
+      - formula: =XLOOKUP(H1,A2:A9,B2:E9)
+        rule: value
+      - formula: =XLOOKUP(H1,A2:A9,B2:D9
+        rule: syntax

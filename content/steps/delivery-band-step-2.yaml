@@ -1,0 +1,49 @@
+id: delivery-band-step-2
+slug: delivery-band-step-2
+level: 2
+title: Band lookup with XLOOKUP
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: delivery-band
+step: 2
+screens:
+  - prompt: In B8, find the delivery cost for the weight in B7 from the bands. Use XLOOKUP with match mode -1, exact or next smaller.
+    rows:
+      - [From kg, Cost]
+      - [0, 4.5]
+      - [2, 7]
+      - [5, 11]
+      - [10, 18]
+      - [null, null]
+      - [Parcel kg, 9.2]
+      - [Cost, null]
+    answerCell: B8
+    expected: 11
+    variants:
+      - set: { B7: 10 }
+        expected: 18
+      - set: { B7: 1.5 }
+        expected: 4.5
+    answer: =XLOOKUP(B7,A2:A5,B2:B5,,-1)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: Leave the fourth part empty and give -1 as the fifth.
+      rule: Match mode -1 returns the band whose start is the weight or the next smaller one.
+    misses:
+      value: A 9.2 kg parcel costs 11.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(B7,A2:A5,B2:B5,,-1)
+      - =XLOOKUP(B7,A2:A5,B2:B5,"",-1)
+    reject:
+      - formula: =XLOOKUP(B7,A2:A5,B2:B5,,1)
+        rule: value
+      - formula: =VLOOKUP(B7,A2:B5,2,TRUE)
+        rule: required-function
+      - formula: =11
+        rule: required-function
+      - formula: =XLOOKUP(B7,A2:A5,B2:B5,,-1
+        rule: syntax

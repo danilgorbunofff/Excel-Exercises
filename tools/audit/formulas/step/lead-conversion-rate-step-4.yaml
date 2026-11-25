@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(SUM($C$2:$C$6)/SUM($B$2:$B$6)*100,1)
+      - =ROUND(SUM(C$2:C$6)/SUM(B2:B6)*100,1)
+      - =round(sum(c2:c6)/sum(b2:b6)*100, 1)
+      - =ROUND(SUMPRODUCT(C2:C6)/SUM(B2:B6)*100,1)
+      - =ROUND(SUM(C2:C6)/SUMPRODUCT(B2:B6)*100,1)
+      - =LET(data,C2:C6,ROUND(SUM(data)/SUM(B2:B6)*100,1))
+    wrong: []
+    equivalent: []

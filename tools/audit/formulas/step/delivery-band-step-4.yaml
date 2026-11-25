@@ -1,0 +1,16 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =$B$7*VLOOKUP($B$7,$A$2:$B$5,2,TRUE)
+      - =B$7*VLOOKUP(B7,A2:B5,2,TRUE)
+      - =b7*vlookup(b7, a2:b5, 2, true)
+      - =LET(data,A2:B5,B7*VLOOKUP(B7,data,2,TRUE))
+    wrong:
+      - formula: =B7*VLOOKUP(B7,A2:B4,2,TRUE)
+        rule: fragile
+        why: range A2:B5 one row short at the end
+    equivalent:
+      - formula: =B7*VLOOKUP(B7,A2:B5,2)
+        why: "VLOOKUP without FALSE: The table is sorted and the answer already matches approximately, so Excel gives the same answer here."
+      - formula: =B7*VLOOKUP(B7,A2:B6,2,TRUE)
+        why: "range A2:B5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

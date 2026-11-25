@@ -1,0 +1,46 @@
+id: best-return-on-ad-spend-step-3
+slug: best-return-on-ad-spend-step-3
+level: 2
+title: Best return of all
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: best-return-on-ad-spend
+step: 3
+screens:
+  - prompt: In E2, show the highest return on spend of any campaign, rounded to 2 decimals. Use MAX and ROUND.
+    rows:
+      - [Campaign, Spend, Revenue, null, Best return, null]
+      - [Search, 4200, 16800, null, null, null]
+      - [Social, 3100, 9920, null, null, null]
+      - [Email, 900, 5850, null, null, null]
+      - [Video, 5600, 14560, null, null, null]
+      - [Print, 1500, 3150, null, null, null]
+      - [Radio, 2800, 7840, null, null, null]
+      - [Display, 2000, 6600, null, null, null]
+    answerCell: E2
+    expected: 6.5
+    variants:
+      - { set: { C4: 4500 }, expected: 5 }
+      - { set: { C4: 16800 }, expected: 18.67 }
+    answer: =ROUND(MAX(C2:C8/B2:B8),2)
+    requiredFunctions:
+      - MAX
+      - ROUND
+    hints:
+      nudge: Divide each campaign's revenue by its own spend, then take the largest.
+      rule: C2:C8/B2:B8 gives every campaign's return; MAX picks the best.
+    misses:
+      value: The best return is 6.5.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for MAX and ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(MAX(C2:C8/B2:B8),2)
+      - =MAX(ROUND(C2:C8/B2:B8,2))
+    reject:
+      - formula: =ROUND(MAX(C2:C8)/MAX(B2:B8),2)
+        rule: value
+      - formula: =6.5
+        rule: required-function
+      - formula: =ROUND(MAX(C2:C8/B2:B8),2
+        rule: syntax

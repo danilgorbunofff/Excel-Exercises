@@ -1,0 +1,38 @@
+id: tidy-a-pasted-name-step-5
+slug: tidy-a-pasted-name-step-5
+level: 3
+title: Surname first
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: tidy-a-pasted-name
+step: 5
+screens:
+  - prompt: A name was pasted as first name then surname, with extra spaces and odd capitals. In B2, show it as "Surname, First name", tidy.
+    rows:
+      - [Pasted, Sorted]
+      - ["  jane   SMITH ", null]
+    answerCell: B2
+    expected: Smith, Jane
+    variants:
+      - set: { A2: "ravi  PATEL  " }
+        expected: Patel, Ravi
+    answer: =PROPER(TEXTAFTER(TRIM(A2)," ")&", "&TEXTBEFORE(TRIM(A2)," "))
+    requiredFunctions: []
+    hints:
+      nudge: Tidy the spaces first, then split at the one space left.
+      rule: TRIM leaves one space, so TEXTBEFORE and TEXTAFTER split the name cleanly.
+    misses:
+      value: B2 shows Smith, Jane.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =PROPER(TEXTAFTER(TRIM(A2)," ")&", "&TEXTBEFORE(TRIM(A2)," "))
+      - =PROPER(MID(TRIM(A2),FIND(" ",TRIM(A2))+1,99)&", "&LEFT(TRIM(A2),FIND(" ",TRIM(A2))-1))
+    reject:
+      - formula: =PROPER(TEXTAFTER(A2," ")&", "&TEXTBEFORE(A2," "))
+        rule: value
+      - formula: ="Smith, Jane"
+        rule: reference
+      - formula: =PROPER(TEXTAFTER(TRIM(A2)," ")&", "&TEXTBEFORE(TRIM(A2)," ")
+        rule: syntax

@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP($H$1,$A$2:$A$5,$C$2:$C$5)*XLOOKUP($H$1,$E$2:$E$5,$F$2:$F$5)
+      - =XLOOKUP(H$1,A2:A5,C2:C5)*XLOOKUP(H1,E2:E5,F2:F5)
+      - =xlookup(h1, a2:a5, c2:c5)*xlookup(h1, e2:e5, f2:f5)
+      - =INDEX(C2:C5,MATCH(H1,A2:A5,0))*XLOOKUP(H1,E2:E5,F2:F5)
+      - =VLOOKUP(H1,A2:C5,3,FALSE)*XLOOKUP(H1,E2:E5,F2:F5)
+      - =XLOOKUP(H1,A2:A5,C2:C5)*INDEX(F2:F5,MATCH(H1,E2:E5,0))
+      - =XLOOKUP(H1,A2:A5,C2:C5)*VLOOKUP(H1,E2:F5,2,FALSE)
+      - =LET(data,A2:A5,XLOOKUP(H1,data,C2:C5)*XLOOKUP(H1,E2:E5,F2:F5))
+    wrong: []
+    equivalent: []

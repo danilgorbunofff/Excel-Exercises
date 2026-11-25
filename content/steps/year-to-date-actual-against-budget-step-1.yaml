@@ -1,0 +1,50 @@
+id: year-to-date-actual-against-budget-step-1
+slug: year-to-date-actual-against-budget-step-1
+level: 1
+title: Actual for the closed months
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: year-to-date-actual-against-budget
+step: 1
+screens:
+  - prompt: In E2, add up the actuals for the four closed months, B2 to B5. Use SUM.
+    rows:
+      - [Month, Actual, Budget, Months closed, null]
+      - [1, 41200, 40000, 4, null]
+      - [2, 39800, 40000, null, null]
+      - [3, 43500, 42000, null, null]
+      - [4, 44100, 42000, null, null]
+      - [5, null, 44000, null, null]
+      - [6, null, 44000, null, null]
+      - [7, null, 45000, null, null]
+      - [8, null, 43000, null, null]
+      - [9, null, 46000, null, null]
+      - [10, null, 47000, null, null]
+      - [11, null, 48000, null, null]
+      - [12, null, 52000, null, null]
+    answerCell: E2
+    expected: 168600
+    variants:
+      - set: { B3: 41000 }
+        expected: 169800
+    answer: =SUM(B2:B5)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: SUM the actual column for months 1 to 4.
+      rule: SUM(B2:B5) is the actual so far this year.
+    misses:
+      value: The actual to date is 168600.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:B5)
+      - =SUM($B$2:$B$5)
+    reject:
+      - formula: =SUM(C2:C5)
+        rule: value
+      - formula: =168600
+        rule: required-function
+      - formula: =SUM(B2:B5
+        rule: syntax

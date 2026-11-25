@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP(MAX(SUMIFS($C$2:$C$10,$A$2:$A$10,$E$2:$E$4,$B$2:$B$10,"Software")),SUMIFS($C$2:$C$10,$A$2:$A$10,$E$2:$E$4,$B$2:$B$10,"Software"),$E$2:$E$4)
+      - =XLOOKUP(MAX(SUMIFS(C$2:C$10,A2:A10,E2:E4,B2:B10,"Software")),SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software"),E2:E4)
+      - =xlookup(max(sumifs(c2:c10, a2:a10, e2:e4, b2:b10, "Software")), sumifs(c2:c10, a2:a10, e2:e4, b2:b10, "Software"), e2:e4)
+      - =LET(data,C2:C10,XLOOKUP(MAX(SUMIFS(data,A2:A10,E2:E4,B2:B10,"Software")),SUMIFS(data,A2:A10,E2:E4,B2:B10,"Software"),E2:E4))
+    wrong:
+      - formula: =XLOOKUP(MAX(AVERAGEIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software")),SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software"),E2:E4)
+        rule: fragile
+        why: AVERAGEIFS instead of SUMIFS
+      - formula: =XLOOKUP(MAX(SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software")),AVERAGEIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software"),E2:E4)
+        rule: fragile
+        why: AVERAGEIFS instead of SUMIFS
+    equivalent:
+      - formula: =XLOOKUP(MAX(SUMIFS(C2:C10,A2:A10,E2:E5,B2:B10,"Software")),SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software"),E2:E4)
+        why: "range E2:E4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

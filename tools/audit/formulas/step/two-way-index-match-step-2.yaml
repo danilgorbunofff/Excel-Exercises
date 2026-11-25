@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($B$2:$E$5,2,MATCH($B$7,$B$1:$E$1,0))
+      - =INDEX(B$2:E$5,2,MATCH(B7,B1:E1,0))
+      - =index(b2:e5, 2, match(b7, b1:e1, 0))
+      - =LET(data,B2:E5,INDEX(data,2,MATCH(B7,B1:E1,0)))
+    wrong: []
+    equivalent:
+      - formula: =INDEX(B2:E4,2,MATCH(B7,B1:E1,0))
+        why: "range B2:E5 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(B2:E6,2,MATCH(B7,B1:E1,0))
+        why: "range B2:E5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(B2:E5,2,MATCH(B7,B1:E1,1))
+        why: "0 written as 1: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

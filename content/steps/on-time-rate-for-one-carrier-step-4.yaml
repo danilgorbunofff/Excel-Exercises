@@ -1,0 +1,52 @@
+id: on-time-rate-for-one-carrier-step-4
+slug: on-time-rate-for-one-carrier-step-4
+level: 2
+title: On-time rate for the carrier in a cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: on-time-rate-for-one-carrier
+step: 4
+screens:
+  - prompt: In F2, show the on-time rate of the carrier typed in F1, as a fraction rounded to 2 decimals. Use COUNTIFS, COUNTIF and ROUND.
+    rows:
+      - [Shipment, Carrier, Status, null, null, Swiftco]
+      - [S-01, Northway, On time, null, null, null]
+      - [S-02, Fastlane, Late, null, null, null]
+      - [S-03, Northway, On time, null, null, null]
+      - [S-04, Swiftco, On time, null, null, null]
+      - [S-05, Northway, Late, null, null, null]
+      - [S-06, Fastlane, On time, null, null, null]
+      - [S-07, Swiftco, Late, null, null, null]
+      - [S-08, Fastlane, On time, null, null, null]
+      - [S-09, Northway, On time, null, null, null]
+      - [S-10, Swiftco, On time, null, null, null]
+      - [S-11, Fastlane, Late, null, null, null]
+      - [S-12, Northway, On time, null, null, null]
+    answerCell: F2
+    expected: 0.67
+    variants:
+      - set: { F1: Northway }
+        expected: 0.8
+    answer: =ROUND(COUNTIFS(B2:B13,F1,C2:C13,"On time")/COUNTIF(B2:B13,F1),2)
+    requiredFunctions:
+      - COUNTIFS
+      - COUNTIF
+      - ROUND
+    hints:
+      nudge: On-time shipments of that carrier over all its shipments.
+      rule: Dividing by the carrier's own count gives its rate, not its share of all shipments.
+    misses:
+      value: Swiftco's on-time rate is 0.67.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIFS, COUNTIF and ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(COUNTIFS(B2:B13,F1,C2:C13,"On time")/COUNTIF(B2:B13,F1),2)
+      - =ROUND(COUNTIFS($B$2:$B$13,$F$1,$C$2:$C$13,"On time")/COUNTIF($B$2:$B$13,$F$1),2)
+    reject:
+      - formula: =ROUND(COUNTIFS(B2:B13,F1,C2:C13,"On time")/COUNTA(B2:B13),2)
+        rule: required-function
+      - formula: =0.67
+        rule: required-function
+      - formula: =ROUND(COUNTIFS(B2:B13,F1,C2:C13,"On time")/COUNTIF(B2:B13,F1),2
+        rule: syntax

@@ -1,0 +1,45 @@
+id: year-on-year-revenue-growth-step-1
+slug: year-on-year-revenue-growth-step-1
+level: 1
+title: Change in revenue
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: year-on-year-revenue-growth
+step: 1
+screens:
+  - prompt: "In D2, work out how much kettle revenue changed: this year in C2 minus last year in B2."
+    rows:
+      - [Product, Last year, This year, null]
+      - [Kettle, 42000, 46200, null]
+      - [Toaster, 31000, 29450, null]
+      - [Blender, 18000, 22500, null]
+      - [Mixer, 25000, 27000, null]
+      - [Grill, 12000, 15600, null]
+      - [Fryer, 9000, 8100, null]
+      - [Juicer, 14000, 17500, null]
+      - [Scale, 6000, 6900, null]
+    answerCell: D2
+    expected: 4200
+    variants:
+      - set: { C2: 40000 }
+        expected: -2000
+    answer: =C2-B2
+    requiredFunctions: []
+    hints:
+      nudge: This year minus last year.
+      rule: C2-B2 is positive for growth and negative for a fall.
+    misses:
+      value: Kettle revenue changed by 4200.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =C2-B2
+      - =-B2+C2
+    reject:
+      - formula: =B2-C2
+        rule: value
+      - formula: =4200
+        rule: reference
+      - formula: =C2-B2,
+        rule: syntax

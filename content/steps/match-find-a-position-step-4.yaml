@@ -1,0 +1,51 @@
+id: match-find-a-position-step-4
+slug: match-find-a-position-step-4
+level: 2
+title: Is the code on the list
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: match-find-a-position
+step: 4
+screens:
+  - prompt: In B9, show Yes when the code in B8 appears in A2:A6, and No when it does not. Use ISNUMBER and MATCH inside IF.
+    rows:
+      - [Approved code, null]
+      - [A-17, null]
+      - [B-04, null]
+      - [C-22, null]
+      - [D-09, null]
+      - [E-31, null]
+      - [null, null]
+      - [Code, C-25]
+      - [Approved?, null]
+    answerCell: B9
+    expected: No
+    variants:
+      - { set: { B8: C-22 }, expected: Yes }
+      - { set: { B8: A-17 }, expected: Yes }
+      - { set: { B8: E-31 }, expected: Yes }
+    answer: =IF(ISNUMBER(MATCH(B8,A2:A6,0)),"Yes","No")
+    requiredFunctions:
+      - IF
+      - ISNUMBER
+      - MATCH
+    hints:
+      nudge: "MATCH gives a number when the code is found and #N/A when not; ISNUMBER turns that into TRUE or FALSE."
+      rule: IF(ISNUMBER(MATCH(B8,A2:A6,0)),"Yes","No") checks the list without any error showing.
+    misses:
+      value: C-25 is not on the list, so B9 should show No.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF, ISNUMBER and MATCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(ISNUMBER(MATCH(B8,A2:A6,0)),"Yes","No")
+      - =IF(ISNUMBER(MATCH($B$8,$A$2:$A$6,0)),"Yes","No")
+    reject:
+      - formula: =IF(MATCH(B8,A2:A6,0)>0,"Yes","No")
+        rule: required-function
+      - formula: =IF(ISNUMBER(MATCH(B8,A2:A6,1)),"Yes","No")
+        rule: value
+      - formula: ="No"
+        rule: required-function
+      - formula: =IF(ISNUMBER(MATCH(B8,A2:A6,0)),"Yes","No"
+        rule: syntax

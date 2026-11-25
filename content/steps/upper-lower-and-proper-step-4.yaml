@@ -1,0 +1,42 @@
+id: upper-lower-and-proper-step-4
+slug: upper-lower-and-proper-step-4
+level: 2
+title: Tidy a messy name
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: upper-lower-and-proper
+step: 4
+screens:
+  - prompt: "In B2, tidy the name in A2: remove the extra spaces, then give each word a capital first letter. Use TRIM and PROPER."
+    rows:
+      - [Name, Tidy]
+      - ["  mary   JACKSON ", null]
+    answerCell: B2
+    expected: Mary Jackson
+    variants:
+      - set: { A2: alan    turing }
+        expected: Alan Turing
+    answer: =PROPER(TRIM(A2))
+    requiredFunctions:
+      - PROPER
+      - TRIM
+    hints:
+      nudge: TRIM removes the spaces at the ends and doubles in the middle; PROPER fixes the capitals.
+      rule: PROPER(TRIM(A2)) gives Mary Jackson.
+    misses:
+      value: The tidy name is Mary Jackson.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for PROPER and TRIM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =PROPER(TRIM(A2))
+      - =TRIM(PROPER(A2))
+    reject:
+      - formula: =PROPER(A2)
+        rule: required-function
+      - formula: =TRIM(A2)
+        rule: required-function
+      - formula: ="Mary Jackson"
+        rule: required-function
+      - formula: =PROPER(TRIM(A2)
+        rule: syntax

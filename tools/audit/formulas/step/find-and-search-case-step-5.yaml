@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(--ISNUMBER(SEARCH("refund",$A$2:$A$16)))
+      - =SUMPRODUCT(--ISNUMBER(SEARCH("refund",A$2:A$16)))
+      - =sumproduct(--isnumber(search("refund", a2:a16)))
+      - =LET(data,A2:A16,SUMPRODUCT(--ISNUMBER(SEARCH("refund",data))))
+    wrong:
+      - formula: =SUMPRODUCT(--ISNUMBER(SEARCH("refund",A2:A15)))
+        rule: fragile
+        why: range A2:A16 one row short at the end
+    equivalent: []

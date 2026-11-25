@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF($B$2=0,"",($B$2-$C$2)/$B$2)
+      - =IF(B$2=0,"",(B2-C2)/B2)
+      - =if(b2=0, "", (b2-c2)/b2)
+      - =IFS(B2=0,"",TRUE,(B2-C2)/B2)
+    wrong: []
+    equivalent: []

@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIFS($B$2:$B$7,">=31",$B$2:$B$7,"<=60")
+      - =COUNTIFS(B$2:B$7,">=31",B2:B7,"<=60")
+      - =countifs(b2:b7, ">=31", b2:b7, "<=60")
+      - =LET(data,B2:B7,COUNTIFS(data,">=31",data,"<=60"))
+    wrong:
+      - formula: =COUNTIFS(B2:B7,">31",B2:B7,"<=60")
+        rule: fragile
+        why: criteria ">=31" written with >
+    equivalent: []

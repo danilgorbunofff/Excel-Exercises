@@ -1,0 +1,48 @@
+id: error-handling-summary-step-3
+slug: error-handling-summary-step-3
+level: 2
+title: Lookup that says when it fails
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: error-handling-summary
+step: 3
+screens:
+  - prompt: In B9, return the price of the code in A8 with INDEX and MATCH, and show no match when any part fails. Use IFERROR.
+    rows:
+      - [Code, Price]
+      - [A-1, 10]
+      - [B-2, 20]
+      - [C-3, 30]
+      - [D-4, 45]
+      - [E-5, 12]
+      - [null, null]
+      - [C-3, null]
+      - [Price, null]
+    answerCell: B9
+    expected: 30
+    variants:
+      - { set: { A8: K-11 }, expected: no match }
+      - { set: { A8: E-5 }, expected: 12 }
+    answer: =IFERROR(INDEX(B2:B6,MATCH(A8,A2:A6,0)),"no match")
+    requiredFunctions:
+      - IFERROR
+      - INDEX
+      - MATCH
+    hints:
+      nudge: Wrap the whole lookup in IFERROR.
+      rule: IFERROR(INDEX(B2:B6,MATCH(A8,A2:A6,0)),"no match") shows the price, or the message on any failure.
+    misses:
+      value: C-3 costs 30.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IFERROR, INDEX and MATCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IFERROR(INDEX(B2:B6,MATCH(A8,A2:A6,0)),"no match")
+      - =IFERROR(INDEX($B$2:$B$6,MATCH($A$8,$A$2:$A$6,0)),"no match")
+    reject:
+      - formula: =INDEX(B2:B6,MATCH(A8,A2:A6,0))
+        rule: required-function
+      - formula: =30
+        rule: required-function
+      - formula: =IFERROR(INDEX(B2:B6,MATCH(A8,A2:A6,0)),"no match"
+        rule: syntax

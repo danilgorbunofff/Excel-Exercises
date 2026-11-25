@@ -1,0 +1,48 @@
+id: find-a-code-step-4
+slug: find-a-code-step-4
+level: 2
+title: Find a code to the left with XLOOKUP
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: find-a-code
+step: 4
+screens:
+  - prompt: In H2, find the code of the product named in H1. Use XLOOKUP, which can return a column to the left.
+    rows:
+      - [Code, Product, Category, Price, Stock, null, Product, Cabinet]
+      - [P-101, Desk lamp, Lighting, 24, 14, null, Code, null]
+      - [P-102, Chair, Seating, 89, 6, null, null, null]
+      - [P-103, Shelf, Storage, 45, 9, null, null, null]
+      - [P-104, Rug, Decor, 120, 3, null, null, null]
+      - [P-105, Mirror, Decor, 60, 11, null, null, null]
+      - [P-106, Stool, Seating, 35, 22, null, null, null]
+      - [P-107, Floor lamp, Lighting, 75, 5, null, null, null]
+      - [P-108, Cabinet, Storage, 210, 2, null, null, null]
+    answerCell: H2
+    expected: P-108
+    variants:
+      - set: { H1: Shelf }
+        expected: P-103
+    answer: =XLOOKUP(H1,B2:B9,A2:A9)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: Search the name column, return the code column.
+      rule: XLOOKUP(H1,B2:B9,A2:A9) does a left lookup in one function.
+    misses:
+      value: The Cabinet's code is P-108.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(H1,B2:B9,A2:A9)
+      - =XLOOKUP($H$1,$B$2:$B$9,$A$2:$A$9)
+    reject:
+      - formula: =XLOOKUP(H1,A2:A9,B2:B9)
+        rule: value
+      - formula: =INDEX(A2:A9,MATCH(H1,B2:B9,0))
+        rule: required-function
+      - formula: ="P-108"
+        rule: required-function
+      - formula: =XLOOKUP(H1,B2:B9,A2:A9
+        rule: syntax

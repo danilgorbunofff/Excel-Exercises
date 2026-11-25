@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP(MAX(COUNTIFS($B$2:$B$13,$E$2:$E$4,$C$2:$C$13,"On time")/COUNTIF($B$2:$B$13,$E$2:$E$4)),COUNTIFS($B$2:$B$13,$E$2:$E$4,$C$2:$C$13,"On time")/COUNTIF($B$2:$B$13,$E$2:$E$4),$E$2:$E$4)
+      - =XLOOKUP(MAX(COUNTIFS(B$2:B$13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4)),COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4),E2:E4)
+      - =xlookup(max(countifs(b2:b13, e2:e4, c2:c13, "On time")/countif(b2:b13, e2:e4)), countifs(b2:b13, e2:e4, c2:c13, "On time")/countif(b2:b13, e2:e4), e2:e4)
+      - =XLOOKUP(MAX(COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIFS(B2:B13,E2:E4)),COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4),E2:E4)
+      - =XLOOKUP(MAX(COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4)),COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIFS(B2:B13,E2:E4),E2:E4)
+      - =LET(data,B2:B13,XLOOKUP(MAX(COUNTIFS(data,E2:E4,C2:C13,"On time")/COUNTIF(data,E2:E4)),COUNTIFS(data,E2:E4,C2:C13,"On time")/COUNTIF(data,E2:E4),E2:E4))
+    wrong: []
+    equivalent: []

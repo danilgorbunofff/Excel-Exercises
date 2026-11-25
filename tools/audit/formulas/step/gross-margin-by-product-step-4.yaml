@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =(SUM($B$2:$B$9)-SUM($C$2:$C$9))/SUM($B$2:$B$9)
+      - =(SUM(B$2:B$9)-SUM(C2:C9))/SUM(B2:B9)
+      - =(sum(b2:b9)-sum(c2:c9))/sum(b2:b9)
+      - =(SUMPRODUCT(B2:B9)-SUM(C2:C9))/SUM(B2:B9)
+      - =(SUM(B2:B9)-SUMPRODUCT(C2:C9))/SUM(B2:B9)
+      - =(SUM(B2:B9)-SUM(C2:C9))/SUMPRODUCT(B2:B9)
+      - =LET(data,B2:B9,(SUM(data)-SUM(C2:C9))/SUM(data))
+    wrong: []
+    equivalent: []

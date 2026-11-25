@@ -1,0 +1,60 @@
+id: let-name-the-steps-of-a-formula-step-3
+slug: let-name-the-steps-of-a-formula-step-3
+level: 2
+title: Rounded average for one region
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: let-name-the-steps-of-a-formula
+step: 3
+screens:
+  - prompt: "In F2, show the average North order to the nearest whole number: name it avg with LET and AVERAGEIF, then ROUND it."
+    rows:
+      - [Order, Region, Rep, Amount, null, null, null, null, null]
+      - [1001, North, Ana, 820, null, null, null, null, null]
+      - [1002, South, Bo, 450, null, null, null, null, null]
+      - [1003, East, Cy, 1300, null, null, null, null, null]
+      - [1004, north, Di, 610, null, null, null, null, null]
+      - [1005, South, Ed, 1250, null, null, null, null, null]
+      - [1006, West, Fay, 300, null, null, null, null, null]
+      - [1007, North, Ana, 1500, null, null, null, null, null]
+      - [1008, East, Gus, 220, null, null, null, null, null]
+      - [1009, South, Bo, 980, null, null, null, null, null]
+      - [1010, North, Hal, 470, null, null, null, null, null]
+      - [1011, West, Ivy, 1100, null, null, null, null, null]
+      - [1012, South, Jo, 760, null, null, null, null, null]
+      - [1013, East, Cy, 540, null, null, null, null, null]
+      - [1014, North, Di, 90, null, null, null, null, null]
+      - [1015, South, Ed, 1600, null, null, null, null, null]
+      - [1016, West, Fay, 700, null, null, null, null, null]
+      - [1017, north, Kim, 1050, null, null, null, null, null]
+      - [1018, East, Gus, 380, null, null, null, null, null]
+    answerCell: F2
+    expected: 757
+    variants:
+      - { set: { D11: 700 }, expected: 795 }
+      - { set: { B19: North }, expected: 703 }
+    answer: =LET(avg,AVERAGEIF(B2:B19,"North",D2:D19),ROUND(avg,0))
+    requiredFunctions:
+      - LET
+      - AVERAGEIF
+      - ROUND
+    hints:
+      nudge: AVERAGEIF ignores capitals, so the north rows count too.
+      rule: Naming the average first keeps the ROUND easy to read.
+    misses:
+      value: The average North order, rounded, is 757.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for LET, AVERAGEIF and ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =LET(avg,AVERAGEIF(B2:B19,"North",D2:D19),ROUND(avg,0))
+      - =LET(a,AVERAGEIF(B2:B19,"North",D2:D19),ROUND(a,0))
+    reject:
+      - formula: =LET(avg,AVERAGEIF(B2:B19,"North",D2:D19),ROUND(avg,1))
+        rule: value
+      - formula: =ROUND(AVERAGEIF(B2:B19,"North",D2:D19),0)
+        rule: required-function
+      - formula: =757
+        rule: required-function
+      - formula: =LET(avg,AVERAGEIF(B2:B19,"North",D2:D19),ROUND(avg,0)
+        rule: syntax

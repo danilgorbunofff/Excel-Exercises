@@ -1,0 +1,47 @@
+id: petty-cash-left-step-2
+slug: petty-cash-left-step-2
+level: 1
+title: Petty cash left after a top-up
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: petty-cash-left
+step: 2
+screens:
+  - prompt: "In B10, work out the petty cash left: the float in B2 plus the top-up in B3, minus all the expenses in B4:B9. Use SUM."
+    rows:
+      - [Item, Amount]
+      - [Float, 200]
+      - [Top-up, 50]
+      - [Stamps, 18.4]
+      - [Milk, 6.75]
+      - [Taxi, 22.5]
+      - [Batteries, 9.99]
+      - [Flowers, 25]
+      - [Parking, 8.5]
+      - [Left, null]
+    answerCell: B10
+    expected: 158.86
+    variants:
+      - set: { B3: 80 }
+        expected: 188.86
+    answer: =B2+B3-SUM(B4:B9)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: The top-up adds to the cash, like the float.
+      rule: B2+B3-SUM(B4:B9) adds both amounts in and takes away every expense.
+    misses:
+      value: 158.86 is left in the tin.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2+B3-SUM(B4:B9)
+      - =SUM(B2:B3)-SUM(B4:B9)
+    reject:
+      - formula: =B2-SUM(B4:B9)
+        rule: value
+      - formula: =158.86
+        rule: required-function
+      - formula: =B2+B3-SUM(B4:B9
+        rule: syntax

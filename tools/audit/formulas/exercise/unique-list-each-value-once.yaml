@@ -17,4 +17,7 @@ screens:
       - formula: =COUNTA(UNIQUE(C3:C19))
         rule: fragile
         why: range C2:C19 skips its first row
+      - formula: =COUNTA(UNIQUE(B2:B19))
+        rule: value
+        why: range C2:C19 one column left
     equivalent: []

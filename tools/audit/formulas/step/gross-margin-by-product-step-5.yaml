@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(--(($B$2:$B$9-$C$2:$C$9)/$B$2:$B$9<$F$1))
+      - =SUMPRODUCT(--((B$2:B$9-C2:C9)/B2:B9<F1))
+      - =sumproduct(--((b2:b9-c2:c9)/b2:b9<f1))
+      - =LET(data,B2:B9,SUMPRODUCT(--((data-C2:C9)/data<F1)))
+    wrong:
+      - formula: =SUMPRODUCT(--((B2:B9-C2:C9)/B2:B9<=F1))
+        rule: fragile
+        why: < written as <=
+    equivalent: []

@@ -1,0 +1,40 @@
+id: days-and-simple-date-maths-step-1
+slug: days-and-simple-date-maths-step-1
+level: 1
+title: Days between two dates
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: days-and-simple-date-maths
+step: 1
+screens:
+  - prompt: Both dates are serials. In D2, work out the days from the order date in B2 to the delivery date in C2 by subtracting.
+    rows:
+      - [Order, Ordered, Delivered, Days]
+      - [SO-1, 45352, 45359, null]
+    answerCell: D2
+    expected: 7
+    variants:
+      - set: { C2: 45370 }
+        expected: 18
+    answer: =C2-B2
+    requiredFunctions: []
+    hints:
+      nudge: A later date minus an earlier one is the days between them.
+      rule: Dates are numbers of days, so C2-B2 counts the days.
+    misses:
+      value: Delivery took 7 days.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =C2-B2
+      - =DAYS(C2,B2)
+    reject:
+      - formula: =B2-C2
+        rule: value
+      - formula: =7
+        rule: reference
+      - formula: =7
+        rule: reference
+      - formula: =C2-B2,
+        rule: syntax

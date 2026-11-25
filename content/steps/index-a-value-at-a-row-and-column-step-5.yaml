@@ -1,0 +1,49 @@
+id: index-a-value-at-a-row-and-column-step-5
+slug: index-a-value-at-a-row-and-column-step-5
+level: 3
+title: Total of one region's row
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: index-a-value-at-a-row-and-column
+step: 5
+screens:
+  - prompt: In B8, what did the region whose row number is in B7 sell across the whole year?
+    rows:
+      - [Region, Q1, Q2, Q3, Q4]
+      - [North, 120, 140, 160, 150]
+      - [South, 90, 110, 130, 145]
+      - [East, 105, 95, 120, 135]
+      - [West, 75, 95, 115, 100]
+      - [null, null, null, null, null]
+      - [Row, 2, null, null, null]
+      - [Year total, null, null, null, null]
+    answerCell: B8
+    expected: 475
+    variants:
+      - set: { B7: 4 }
+        expected: 385
+      - set: { C3: 200 }
+        expected: 565
+    answer: =SUM(INDEX(B2:E5,B7,0))
+    requiredFunctions: []
+    hints:
+      nudge: Pull out the whole row with INDEX, then add it.
+      rule: INDEX(B2:E5,B7,0) returns the row; SUM adds its four quarters.
+    misses:
+      value: That region sold 475 across the year.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(INDEX(B2:E5,B7,0))
+      - =SUM(INDEX(B2:E5,B7,))
+      - =SUM(CHOOSEROWS(B2:E5,B7))
+    reject:
+      - formula: =SUM(INDEX(B2:E5,0,B7))
+        rule: value
+      - formula: =SUM(B3:E3)
+        rule: fragile
+      - formula: =475
+        rule: reference
+      - formula: =SUM(INDEX(B2:E5,B7,0)
+        rule: syntax

@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF(A$2:A$5,"North",B2:B5)
+      - =sumif(a2:a5, "North", b2:b5)
+      - =LET(data,A2:A5,SUMIF(data,"North",B2:B5))
+    wrong:
+      - formula: =SUMIF(A2:A4,"North",B2:B5)
+        rule: fragile
+        why: range A2:A5 one row short at the end
+    equivalent:
+      - formula: =SUMIF(A2:A6,"North",B2:B5)
+        why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =SUMIF(A2:A5,"North",B2:B6)
+        why: "range B2:B5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

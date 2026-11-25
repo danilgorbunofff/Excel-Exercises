@@ -1,0 +1,41 @@
+id: concat-and-the-operator-step-1
+slug: concat-and-the-operator-step-1
+level: 1
+title: Join two names with &
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: concat-and-the-operator
+step: 1
+screens:
+  - prompt: In C2, join the first name in A2 and the last name in B2 with a space between, using the & operator.
+    rows:
+      - [First, Last, Full name]
+      - [Grace, Hopper, null]
+    answerCell: C2
+    expected: Grace Hopper
+    variants:
+      - set: { A2: Alan, B2: Turing }
+        expected: Alan Turing
+    answer: =A2&" "&B2
+    requiredFunctions: []
+    hints:
+      nudge: '& joins text; the space goes in quotes: " ".'
+      rule: A2&" "&B2 joins the first name, a space and the last name.
+    misses:
+      value: The full name is Grace Hopper.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =A2&" "&B2
+      - =CONCAT(A2," ",B2)
+      - =TEXTJOIN(" ",TRUE,A2:B2)
+    reject:
+      - formula: =A2&B2
+        rule: value
+      - formula: ="Grace Hopper"
+        rule: reference
+      - formula: ="Grace Hopper"
+        rule: reference
+      - formula: =A2&" "&B2,
+        rule: syntax

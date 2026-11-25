@@ -1,0 +1,50 @@
+id: find-an-extension-step-1
+slug: find-an-extension-step-1
+level: 1
+title: Find a name by ID
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: find-an-extension
+step: 1
+screens:
+  - prompt: In B9, find the name of the person whose ID is in B8. Use VLOOKUP with an exact match.
+    rows:
+      - [ID, Name, Team, Extension]
+      - [1041, Ana, Sales, 214]
+      - [1042, Ben, Finance, 305]
+      - [1043, Cleo, Sales, 218]
+      - [1044, Dev, IT, 402]
+      - [1045, Eve, Finance, 311]
+      - [null, null, null, null]
+      - [Find ID, 1044, null, null]
+      - [Name, null, null, null]
+    answerCell: B9
+    expected: Dev
+    variants:
+      - { set: { B8: 1042 }, expected: Ben }
+      - { set: { A2: 1044 }, expected: Ana }
+      - { set: { B8: 2, A6: 2 }, expected: Eve }
+    answer: =VLOOKUP(B8,A2:D6,2,FALSE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: The name is the 2nd column of the table.
+      rule: VLOOKUP(B8,A2:D6,2,FALSE) finds the ID in the first column and returns column 2.
+    misses:
+      value: ID 1044 belongs to Dev.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =VLOOKUP(B8,A2:D6,2,FALSE)
+      - =VLOOKUP(B8,A2:D6,2,0)
+      - =VLOOKUP(B8,A2:B6,2,FALSE)
+    reject:
+      - formula: =VLOOKUP(B8,A2:D6,3,FALSE)
+        rule: value
+      - formula: =XLOOKUP(B8,A2:A6,B2:B6)
+        rule: required-function
+      - formula: ="Dev"
+        rule: required-function
+      - formula: =VLOOKUP(B8,A2:D6,2,FALSE
+        rule: syntax

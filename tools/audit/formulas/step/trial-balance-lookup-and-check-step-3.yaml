@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP($A$2,$F$2:$F$7,$G$2:$G$7,"unknown code")
+      - =XLOOKUP(A$2,$F$2:$F$7,$G$2:$G$7,"unknown code")
+      - =xlookup(a2, $f$2:$f$7, $g$2:$g$7, "unknown code")
+      - =LET(data,$F$2:$F$7,XLOOKUP(A2,data,$G$2:$G$7,"unknown code"))
+    wrong: []
+    equivalent: []

@@ -1,0 +1,45 @@
+id: variance-to-budget-by-cost-centre-step-5
+slug: variance-to-budget-by-cost-centre-step-5
+level: 3
+title: Centre furthest over budget
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: variance-to-budget-by-cost-centre
+step: 5
+screens:
+  - prompt: In G2, which cost centre is furthest over its budget, spend minus budget?
+    rows:
+      - [Cost centre, Spend, null, Centre, Budget, null, Furthest over]
+      - [Sales, 14200, null, Sales, 30000, null, null]
+      - [IT, 9800, null, IT, 18000, null, null]
+      - [Sales, 17300, null, Ops, 22000, null, null]
+      - [Ops, 11900, null, null, null, null, null]
+      - [IT, 9100, null, null, null, null, null]
+      - [Ops, 8700, null, null, null, null, null]
+    answerCell: G2
+    expected: Sales
+    variants:
+      - { set: { B3: 14000 }, expected: IT }
+      - { set: { B5: 17300 }, expected: Ops }
+    answer: =INDEX(D2:D4,MATCH(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4),SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4,0))
+    requiredFunctions: []
+    hints:
+      nudge: Work out every centre's variance at once, then find the largest.
+      rule: SUMIFS with D2:D4 as criteria totals each centre; minus E2:E4 gives each variance; MAX and MATCH find the centre.
+    misses:
+      value: The centre furthest over budget is Sales.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(D2:D4,MATCH(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4),SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4,0))
+      - =XLOOKUP(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4),SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4,D2:D4)
+    reject:
+      - formula: =INDEX(D2:D4,MATCH(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)),SUMIFS(B2:B7,A2:A7,D2:D4),0))
+        rule: fragile
+      - formula: ="Ops"
+        rule: reference
+      - formula: ="Sales"
+        rule: reference
+      - formula: =INDEX(D2:D4,MATCH(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4),SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4,0)
+        rule: syntax

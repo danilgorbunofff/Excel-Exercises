@@ -1,0 +1,55 @@
+id: a-sales-summary-end-to-end-step-3
+slug: a-sales-summary-end-to-end-step-3
+level: 2
+title: Count one rep's sales in one region
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-sales-summary-end-to-end
+step: 3
+screens:
+  - prompt: In F3, count the sales by the rep in F2 in the region in F1. Use COUNTIFS.
+    rows:
+      - [Region, Rep, Amount, null, Region, North]
+      - [North, Ada, 320, null, Rep, Ada]
+      - [South, Ben, 250, null, Count, null]
+      - [North, Cleo, 180, null, null, null]
+      - [West, Dev, 300, null, null, null]
+      - [North, Ada, 400, null, null, null]
+      - [East, Eve, 275, null, null, null]
+      - [South, Finn, 360, null, null, null]
+      - [West, Gus, 140, null, null, null]
+      - [East, Eve, 410, null, null, null]
+      - [South, Ada, 195, null, null, null]
+      - [North, Hana, 230, null, null, null]
+      - [West, Dev, 505, null, null, null]
+      - [East, Ivo, 160, null, null, null]
+      - [South, Finn, 290, null, null, null]
+      - [North, Cleo, 145, null, null, null]
+    answerCell: F3
+    expected: 2
+    variants:
+      - set: { F2: Hana }
+        expected: 1
+    answer: =COUNTIFS(A2:A16,F1,B2:B16,F2)
+    requiredFunctions:
+      - COUNTIFS
+    hints:
+      nudge: "Two pairs: the region column with F1, the rep column with F2."
+      rule: COUNTIFS(A2:A16,F1,B2:B16,F2) counts rows that match both cells.
+    misses:
+      value: Ada made 2 North sales.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIFS(A2:A16,F1,B2:B16,F2)
+      - =COUNTIFS(B2:B16,F2,A2:A16,F1)
+    reject:
+      - formula: =COUNTIFS(B2:B16,F2)
+        rule: value
+      - formula: =COUNTIFS(A2:A16,"North",B2:B16,"Ada")
+        rule: fragile
+      - formula: =2
+        rule: required-function
+      - formula: =COUNTIFS(A2:A16,F1,B2:B16,F2
+        rule: syntax

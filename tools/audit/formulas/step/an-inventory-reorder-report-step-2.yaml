@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUNDUP(MAX(0,$C$2-$B$2)/$F$1,0)
+      - =ROUNDUP(MAX(0,C$2-B2)/F1,0)
+      - =roundup(max(0, c2-b2)/f1, 0)
+    wrong: []
+    equivalent: []

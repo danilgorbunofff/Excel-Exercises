@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP("Sales",A$2:A$5,B2:B5)/SUM(B2:B5)
+      - =xlookup("Sales", a2:a5, b2:b5)/sum(b2:b5)
+      - =LET(data,A2:A5,XLOOKUP("Sales",data,B2:B5)/SUM(B2:B5))
+    wrong: []
+    equivalent: []

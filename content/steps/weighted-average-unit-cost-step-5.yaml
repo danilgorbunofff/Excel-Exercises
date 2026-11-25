@@ -1,0 +1,46 @@
+id: weighted-average-unit-cost-step-5
+slug: weighted-average-unit-cost-step-5
+level: 3
+title: Value of the stock left
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: weighted-average-unit-cost
+step: 5
+screens:
+  - prompt: In F2, what is the stock left, the units in F1, worth at the weighted average unit cost of all batches? Round to 2 decimals.
+    rows:
+      - [Batch, Units, Unit cost, null, null, 780]
+      - [B-1, 400, 2.5, null, null, null]
+      - [B-2, 250, 2.8, null, null, null]
+      - [B-3, 600, 2.35, null, null, null]
+      - [B-4, 350, 2.65, null, null, null]
+      - [B-5, 500, 2.4, null, null, null]
+    answerCell: F2
+    expected: 1945.36
+    variants:
+      - set: { F1: 500 }
+        expected: 1247.02
+      - set: { C4: 2.1 }
+        expected: 1889.64
+    answer: =ROUND(F1*SUMPRODUCT(B2:B6,C2:C6)/SUM(B2:B6),2)
+    requiredFunctions: []
+    hints:
+      nudge: Work out the weighted cost of one unit, then times the units left.
+      rule: SUMPRODUCT/SUM gives the weighted unit cost; times F1 values the stock left.
+    misses:
+      value: The stock left is worth 1945.36.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(F1*SUMPRODUCT(B2:B6,C2:C6)/SUM(B2:B6),2)
+      - =ROUND(SUMPRODUCT(B2:B6,C2:C6)/SUM(B2:B6)*F1,2)
+    reject:
+      - formula: =ROUND(F1*AVERAGE(C2:C6),2)
+        rule: value
+      - formula: =ROUND(SUMPRODUCT(B2:B6,C2:C6)/SUM(B2:B6),2)
+        rule: value
+      - formula: =1945.36
+        rule: reference
+      - formula: =ROUND(F1*SUMPRODUCT(B2:B6,C2:C6)/SUM(B2:B6),2
+        rule: syntax

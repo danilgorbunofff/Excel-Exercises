@@ -1,0 +1,44 @@
+id: variance-to-budget-by-cost-centre-step-2
+slug: variance-to-budget-by-cost-centre-step-2
+level: 2
+title: Variance for one centre
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: variance-to-budget-by-cost-centre
+step: 2
+screens:
+  - prompt: In F3, show the IT spend minus the IT budget in E3. Use SUMIFS with the centre in D3.
+    rows:
+      - [Cost centre, Spend, null, Centre, Budget, Variance]
+      - [Sales, 14200, null, Sales, 30000, null]
+      - [IT, 9800, null, IT, 18000, null]
+      - [Sales, 17300, null, Ops, 22000, null]
+      - [Ops, 11900, null, null, null, null]
+      - [IT, 9100, null, null, null, null]
+      - [Ops, 8700, null, null, null, null]
+    answerCell: F3
+    expected: 900
+    variants:
+      - set: { B3: 10500 }
+        expected: 1600
+    answer: =SUMIFS(B2:B7,A2:A7,D3)-E3
+    requiredFunctions:
+      - SUMIFS
+    hints:
+      nudge: Total the IT spend, then take away its budget.
+      rule: A positive variance means overspent.
+    misses:
+      value: IT's variance is 900.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIFS(B2:B7,A2:A7,D3)-E3
+      - =-E3+SUMIFS(B2:B7,A2:A7,D3)
+    reject:
+      - formula: =E3-SUMIFS(B2:B7,A2:A7,D3)
+        rule: value
+      - formula: =900
+        rule: required-function
+      - formula: =SUMIFS(B2:B7,A2:A7,D3)-E3,
+        rule: syntax

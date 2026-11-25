@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP($H$1,$A$2:$A$9,$D$2:$D$9)*$H$2
+      - =XLOOKUP(H$1,A2:A9,D2:D9)*H2
+      - =xlookup(h1, a2:a9, d2:d9)*h2
+      - =LET(data,A2:A9,XLOOKUP(H1,data,D2:D9)*H2)
+    wrong: []
+    equivalent: []

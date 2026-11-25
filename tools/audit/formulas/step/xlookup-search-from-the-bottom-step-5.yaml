@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP($E$1,$A$2:$A$9,$B$2:$B$9,,0,-1)-XLOOKUP($E$1,$A$2:$A$9,$B$2:$B$9)
+      - =XLOOKUP(E$1,A2:A9,B2:B9,,0,-1)-XLOOKUP(E1,A2:A9,B2:B9)
+      - =xlookup(e1, a2:a9, b2:b9, , 0, -1)-xlookup(e1, a2:a9, b2:b9)
+      - =XLOOKUP(E1,A2:A9,B2:B9,,0,-1)-VLOOKUP(E1,A2:B9,2,FALSE)
+      - =LET(data,A2:A9,XLOOKUP(E1,data,B2:B9,,0,-1)-XLOOKUP(E1,data,B2:B9))
+    wrong: []
+    equivalent:
+      - formula: =XLOOKUP(E1,A2:A9,B2:B9,,1,-1)-XLOOKUP(E1,A2:A9,B2:B9)
+        why: "0 written as 1: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

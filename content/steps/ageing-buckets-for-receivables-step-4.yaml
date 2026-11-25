@@ -1,0 +1,46 @@
+id: ageing-buckets-for-receivables-step-4
+slug: ageing-buckets-for-receivables-step-4
+level: 2
+title: Band with an approximate VLOOKUP
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: ageing-buckets-for-receivables
+step: 4
+screens:
+  - prompt: In D3, show which band Brook & Co falls in, from the band starts in F2:G5. Use VLOOKUP with TRUE.
+    rows:
+      - [Customer, Days overdue, Balance, Band, null, From day, Band name]
+      - [Arden Ltd, 12, 4200, null, null, 0, Current]
+      - [Brook & Co, 45, 1850, null, null, 31, 31-60]
+      - [Cole plc, 75, 3100, null, null, 61, 61-90]
+      - [Dunn Ltd, 30, 960, null, null, 91, Over 90]
+      - [Eske Group, 120, 2400, null, null, null, null]
+      - [Frey Ltd, 61, 1500, null, null, null, null]
+    answerCell: D3
+    expected: 31-60
+    variants:
+      - set: { B3: 91 }
+        expected: Over 90
+      - set: { B3: 30 }
+        expected: Current
+    answer: =VLOOKUP(B3,$F$2:$G$5,2,TRUE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: TRUE finds the largest band start not above the days.
+      rule: VLOOKUP(B3,$F$2:$G$5,2,TRUE) returns the band the days fall in.
+    misses:
+      value: Brook & Co is in the 31-60 band.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =VLOOKUP(B3,$F$2:$G$5,2,TRUE)
+      - =VLOOKUP(B3,F2:G5,2,TRUE)
+    reject:
+      - formula: =VLOOKUP(B3,$F$2:$G$5,2,FALSE)
+        rule: value
+      - formula: ="31-60"
+        rule: required-function
+      - formula: =VLOOKUP(B3,$F$2:$G$5,2,TRUE
+        rule: syntax

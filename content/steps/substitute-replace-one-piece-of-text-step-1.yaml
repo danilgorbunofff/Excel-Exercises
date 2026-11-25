@@ -1,0 +1,43 @@
+id: substitute-replace-one-piece-of-text-step-1
+slug: substitute-replace-one-piece-of-text-step-1
+level: 1
+title: Remove the spaces
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: substitute-replace-one-piece-of-text
+step: 1
+screens:
+  - prompt: In B2, remove every space from the account number in A2. Use SUBSTITUTE with "" as the new text.
+    rows:
+      - [Account, No spaces]
+      - [GB29 NWBK 6016 1331, null]
+    answerCell: B2
+    expected: GB29NWBK60161331
+    variants:
+      - set: { A2: DE89 3704 0044 }
+        expected: DE8937040044
+    answer: =SUBSTITUTE(A2," ","")
+    requiredFunctions:
+      - SUBSTITUTE
+    hints:
+      nudge: Replacing a space with nothing removes it.
+      rule: SUBSTITUTE(A2," ","") removes every space.
+    misses:
+      value: "Without spaces: GB29NWBK60161331."
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUBSTITUTE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUBSTITUTE(A2," ","")
+      - =SUBSTITUTE($A$2," ","")
+      - '=SUBSTITUTE(TRIM(A2)," ","")'
+      - '=SUBSTITUTE(A2," ",)'
+      - '=SUBSTITUTE(TRIM(A2)," ","")'
+      - '=SUBSTITUTE(A2," ",)'
+    reject:
+      - formula: =TRIM(A2)
+        rule: required-function
+      - formula: ="GB29NWBK60161331"
+        rule: required-function
+      - formula: =SUBSTITUTE(A2," ",""
+        rule: syntax

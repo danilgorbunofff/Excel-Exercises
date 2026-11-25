@@ -1,0 +1,45 @@
+id: match-find-a-position-step-1
+slug: match-find-a-position-step-1
+level: 1
+title: Position of a name in a list
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: match-find-a-position
+step: 1
+screens:
+  - prompt: In B8, find the position of the name in B7 within A2:A5, counting the first row as 1. Use MATCH with 0 for an exact match.
+    rows:
+      - [Name, Team]
+      - [Ana, Sales]
+      - [Ben, Finance]
+      - [Cleo, Sales]
+      - [Dev, IT]
+      - [null, null]
+      - [Which name?, Dev]
+      - [Position, null]
+    answerCell: B8
+    expected: 4
+    variants:
+      - { set: { B7: Ben }, expected: 2 }
+      - { set: { A2: Dev }, expected: 1 }
+    answer: =MATCH(B7,A2:A5,0)
+    requiredFunctions:
+      - MATCH
+    hints:
+      nudge: MATCH takes what to find, where, and 0 for an exact match.
+      rule: MATCH(B7,A2:A5,0) gives the row number of the name inside the list, not on the sheet.
+    misses:
+      value: Dev is at position 4 in the list.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for MATCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MATCH(B7,A2:A5,0)
+      - =MATCH($B$7,$A$2:$A$5,0)
+    reject:
+      - formula: =MATCH(B7,A1:A5,0)
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =MATCH(B7,A2:A5,0
+        rule: syntax

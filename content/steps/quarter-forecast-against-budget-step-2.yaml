@@ -1,0 +1,50 @@
+id: quarter-forecast-against-budget-step-2
+slug: quarter-forecast-against-budget-step-2
+level: 2
+title: Variance for the quarter in a cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: quarter-forecast-against-budget
+step: 2
+screens:
+  - prompt: In F2, show the forecast minus the budget for the quarter typed in F1. Use SUMIFS.
+    rows:
+      - [Month, Quarter, Forecast, Budget, null, Q3]
+      - [1, Q1, 41000, 40000, null, null]
+      - [2, Q1, 39500, 40000, null, null]
+      - [3, Q1, 43000, 42000, null, null]
+      - [4, Q2, 44500, 42000, null, null]
+      - [5, Q2, 43000, 44000, null, null]
+      - [6, Q2, 46500, 44000, null, null]
+      - [7, Q3, 45500, 45000, null, null]
+      - [8, Q3, 42000, 43000, null, null]
+      - [9, Q3, 47500, 46000, null, null]
+      - [10, Q4, 48000, 47000, null, null]
+      - [11, Q4, 50500, 48000, null, null]
+      - [12, Q4, 51000, 52000, null, null]
+    answerCell: F2
+    expected: 1000
+    variants:
+      - set: { F1: Q4 }
+        expected: 2500
+    answer: =SUMIFS(C2:C13,B2:B13,F1)-SUMIFS(D2:D13,B2:B13,F1)
+    requiredFunctions:
+      - SUMIFS
+    hints:
+      nudge: Two SUMIFS on the same quarter, one per column.
+      rule: Forecast minus budget for the quarter in F1; positive means over.
+    misses:
+      value: Q3 is 1000 against budget.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIFS(C2:C13,B2:B13,F1)-SUMIFS(D2:D13,B2:B13,F1)
+      - =SUMIFS($C$2:$C$13,$B$2:$B$13,$F$1)-SUMIFS($D$2:$D$13,$B$2:$B$13,$F$1)
+    reject:
+      - formula: =SUMIFS(C2:C13,B2:B13,"Q3")-SUMIFS(D2:D13,B2:B13,"Q3")
+        rule: fragile
+      - formula: =1000
+        rule: required-function
+      - formula: =SUMIFS(C2:C13,B2:B13,F1)-SUMIFS(D2:D13,B2:B13,F1
+        rule: syntax

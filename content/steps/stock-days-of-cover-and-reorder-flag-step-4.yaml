@@ -1,0 +1,54 @@
+id: stock-days-of-cover-and-reorder-flag-step-4
+slug: stock-days-of-cover-and-reorder-flag-step-4
+level: 2
+title: Reorder with safety stock
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: stock-days-of-cover-and-reorder-flag
+step: 4
+screens:
+  - prompt: In E2, show Reorder when the stock on hand is below the use during the lead time plus the safety stock in F1, and OK otherwise. Use IF.
+    rows:
+      - [Item, On hand, Daily use, Lead time days, Flag, 10]
+      - [Pallet wrap, 46, 4, 7, null, null]
+      - [Label rolls, 30, 6, 6, null, null]
+      - [Tape, 120, 15, 5, null, null]
+      - [Boxes S, 400, 35, 10, null, null]
+      - [Boxes M, 260, 40, 8, null, null]
+      - [Boxes L, 90, 12, 9, null, null]
+      - [Void fill, 55, 9, 4, null, null]
+      - [Gloves, 80, 5, 12, null, null]
+      - [Seals, 150, 20, 6, null, null]
+      - [Ties, 70, 8, 7, null, null]
+      - [Tags, 300, 25, 14, null, null]
+      - [Ink, 12, 2, 5, null, null]
+      - [Pens, 60, 7, 3, null, null]
+      - [Pads, 40, 3, 10, null, null]
+      - [Clips, 500, 45, 9, null, null]
+    answerCell: E2
+    expected: OK
+    variants:
+      - { set: { F1: 20 }, expected: Reorder }
+      - { set: { B2: 30 }, expected: Reorder }
+      - { set: { D2: 9 }, expected: OK }
+    answer: =IF(B2<C2*D2+$F$1,"Reorder","OK")
+    requiredFunctions:
+      - IF
+    hints:
+      nudge: The reorder point is use during the lead time plus a safety buffer.
+      rule: IF(B2<C2*D2+$F$1,"Reorder","OK") orders before the buffer runs out.
+    misses:
+      value: Pallet wrap's flag is OK.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(B2<C2*D2+$F$1,"Reorder","OK")
+      - =IF(B2>=C2*D2+$F$1,"OK","Reorder")
+    reject:
+      - formula: =IF(B2<C2*D2,"Reorder","OK")
+        rule: fragile
+      - formula: ="OK"
+        rule: required-function
+      - formula: =IF(B2<C2*D2+$F$1,"Reorder","OK"
+        rule: syntax

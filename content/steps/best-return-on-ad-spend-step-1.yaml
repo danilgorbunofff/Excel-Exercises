@@ -1,0 +1,44 @@
+id: best-return-on-ad-spend-step-1
+slug: best-return-on-ad-spend-step-1
+level: 1
+title: Return for one campaign
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: best-return-on-ad-spend
+step: 1
+screens:
+  - prompt: "In E2, work out the revenue earned for each unit spent on Search: the revenue in C2 divided by the spend in B2."
+    rows:
+      - [Campaign, Spend, Revenue, null, Search return, null]
+      - [Search, 4200, 16800, null, null, null]
+      - [Social, 3100, 9920, null, null, null]
+      - [Email, 900, 5850, null, null, null]
+      - [Video, 5600, 14560, null, null, null]
+      - [Print, 1500, 3150, null, null, null]
+      - [Radio, 2800, 7840, null, null, null]
+      - [Display, 2000, 6600, null, null, null]
+    answerCell: E2
+    expected: 4
+    variants:
+      - set: { C2: 21000 }
+        expected: 5
+    answer: =C2/B2
+    requiredFunctions: []
+    hints:
+      nudge: Revenue over spend.
+      rule: C2/B2 is the revenue for each unit of spend.
+    misses:
+      value: Search returned 4 per unit spent.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =C2/B2
+      - =C2*(1/B2)
+    reject:
+      - formula: =B2/C2
+        rule: value
+      - formula: =4
+        rule: reference
+      - formula: =C2/B2,
+        rule: syntax

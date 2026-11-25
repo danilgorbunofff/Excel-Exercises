@@ -1,0 +1,49 @@
+id: a-commission-sheet-that-updates-itself-step-2
+slug: a-commission-sheet-that-updates-itself-step-2
+level: 2
+title: Tier rate for a seller
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-commission-sheet-that-updates-itself
+step: 2
+screens:
+  - prompt: In C2, find the tier rate Ana's sales in B2 reach, from the tier table E2:F4. Use VLOOKUP with TRUE.
+    rows:
+      - [Seller, Sales, Rate, null, Sales from, Rate]
+      - [Ana, 42000, null, null, 0, 0.02]
+      - [Ben, 18500, null, null, 20000, 0.035]
+      - [Cy, 61000, null, null, 50000, 0.05]
+      - [Di, 27500, null, null, null, null]
+      - [Ed, 50000, null, null, Target, 45000]
+      - [null, null, null, null, Bonus, 250]
+    answerCell: C2
+    expected: 0.035
+    variants:
+      - set: { B2: 15000 }
+        expected: 0.02
+      - set: { B2: 50000 }
+        expected: 0.05
+    answer: =VLOOKUP(B2,$E$2:$F$4,2,TRUE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: The tier table lists where each rate starts; TRUE finds the band the sales fall in.
+      rule: VLOOKUP(B2,$E$2:$F$4,2,TRUE) returns the rate of the highest tier the sales reach.
+    misses:
+      value: Ana's sales reach the 0.035 tier.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =VLOOKUP(B2,$E$2:$F$4,2,TRUE)
+      - =VLOOKUP(B2,E2:F4,2,TRUE)
+      - =VLOOKUP(B2,$E$2:$F$4,2)
+    reject:
+      - formula: =VLOOKUP(B2,$E$2:$F$4,2,FALSE)
+        rule: value
+      - formula: =VLOOKUP(B2,$E$2:$F$4,1,TRUE)
+        rule: value
+      - formula: =0.035
+        rule: required-function
+      - formula: =VLOOKUP(B2,$E$2:$F$4,2,TRUE
+        rule: syntax

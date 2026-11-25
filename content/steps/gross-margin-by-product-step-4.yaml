@@ -1,0 +1,46 @@
+id: gross-margin-by-product-step-4
+slug: gross-margin-by-product-step-4
+level: 2
+title: Margin across all products
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: gross-margin-by-product
+step: 4
+screens:
+  - prompt: "In F2, work out the overall gross margin of all products: total revenue minus total cost, over total revenue. Use SUM."
+    rows:
+      - [Product, Revenue, Cost of sales, null, null, null]
+      - [Desk lamp, 24000, 15600, null, null, null]
+      - [Chair, 56000, 41440, null, null, null]
+      - [Shelf, 18000, 11700, null, null, null]
+      - [Rug, 32000, 23360, null, null, null]
+      - [Mirror, 15000, 9300, null, null, null]
+      - [Stool, 9000, 6840, null, null, null]
+      - [Cabinet, 41000, 26650, null, null, null]
+      - [Desk, 38000, 27360, null, null, null]
+    answerCell: F2
+    expected: 0.30364806867
+    variants:
+      - set: { C3: 39000 }
+        expected: 0.314120171674
+    answer: =(SUM(B2:B9)-SUM(C2:C9))/SUM(B2:B9)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: Total everything first, then work out the margin once.
+      rule: The overall margin weights each product by its revenue, unlike an average of the product margins.
+    misses:
+      value: The overall margin is 0.304.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =(SUM(B2:B9)-SUM(C2:C9))/SUM(B2:B9)
+      - =1-SUM(C2:C9)/SUM(B2:B9)
+    reject:
+      - formula: =(SUM(B2:B9)-SUM(C2:C9))/SUM(C2:C9)
+        rule: value
+      - formula: =0.30364806867
+        rule: required-function
+      - formula: =(SUM(B2:B9)-SUM(C2:C9))/SUM(B2:B9
+        rule: syntax

@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LET(east,FILTER($D$2:$D$19,$B$2:$B$19="East"),SUM(east))
+      - =LET(east,FILTER(D$2:D$19,B2:B19="East"),SUM(east))
+      - =let(east, filter(d2:d19, b2:b19="East"), sum(east))
+      - =LET(data,D2:D19,LET(east,FILTER(data,B2:B19="East"),SUM(east)))
+    wrong: []
+    equivalent: []

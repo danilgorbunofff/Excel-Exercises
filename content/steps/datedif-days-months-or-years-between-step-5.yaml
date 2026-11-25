@@ -1,0 +1,41 @@
+id: datedif-days-months-or-years-between-step-5
+slug: datedif-days-months-or-years-between-step-5
+level: 3
+title: Length of service in words
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: datedif-days-months-or-years-between
+step: 5
+screens:
+  - prompt: In D2, how long has the employee served by the review date, written like 3 years 2 months?
+    rows:
+      - [Employee, Started, Review date, Service]
+      - [Grace Hopper, 44197, 45366, null]
+    answerCell: D2
+    expected: 3 years 2 months
+    variants:
+      - { set: { B2: 44562 }, expected: 2 years 2 months }
+      - { set: { C2: 45658 }, expected: 4 years 0 months }
+      - { set: { B2: 44227 }, expected: 3 years 1 months }
+    answer: =DATEDIF(B2,C2,"Y")&" years "&DATEDIF(B2,C2,"YM")&" months"
+    requiredFunctions: []
+    hints:
+      nudge: '"Y" gives the full years and "YM" the months left over; join them with the words.'
+      rule: Two DATEDIFs joined with & give a readable length, and both follow the dates.
+    misses:
+      value: The service reads 3 years 2 months.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =DATEDIF(B2,C2,"Y")&" years "&DATEDIF(B2,C2,"YM")&" months"
+      - =CONCAT(DATEDIF(B2,C2,"Y")," years ",DATEDIF(B2,C2,"YM")," months")
+    reject:
+      - formula: =DATEDIF(B2,C2,"Y")&" years "&DATEDIF(B2,C2,"M")&" months"
+        rule: value
+      - formula: ="3 years 2 months"
+        rule: reference
+      - formula: ="3 years 2 months"
+        rule: reference
+      - formula: =DATEDIF(B2,C2,"Y")&" years "&DATEDIF(B2,C2,"YM")&" months",
+        rule: syntax

@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($A$2:$A$8,MATCH(MAX(($B$2:$B$8>=$F$1)*$C$2:$C$8/$B$2:$B$8),($B$2:$B$8>=$F$1)*$C$2:$C$8/$B$2:$B$8,0))
+      - =INDEX(A$2:A$8,MATCH(MAX((B2:B8>=F1)*C2:C8/B2:B8),(B2:B8>=F1)*C2:C8/B2:B8,0))
+      - =index(a2:a8, match(max((b2:b8>=f1)*c2:c8/b2:b8), (b2:b8>=f1)*c2:c8/b2:b8, 0))
+      - =LET(data,A2:A8,INDEX(data,MATCH(MAX((B2:B8>=F1)*C2:C8/B2:B8),(B2:B8>=F1)*C2:C8/B2:B8,0)))
+    wrong:
+      - formula: =INDEX(A2:A8,MATCH(MAX((B2:B8>=F1)*C2:C8/B2:B8),(C2:C8>=F1)*C2:C8/B2:B8,0))
+        rule: fragile
+        why: range B2:B8 one column right
+      - formula: =INDEX(A2:A8,MATCH(MAX((B2:B8>=F1)*C2:C8/B2:B8),(A2:A8>=F1)*C2:C8/B2:B8,0))
+        rule: fragile
+        why: range B2:B8 one column left
+      - formula: =INDEX(A2:A8,MATCH(MAX((B2:B8>=F1)*C2:C8/B2:B8),(B2:B8>=G1)*C2:C8/B2:B8,0))
+        rule: fragile
+        why: F1 read from the next column
+    equivalent: []

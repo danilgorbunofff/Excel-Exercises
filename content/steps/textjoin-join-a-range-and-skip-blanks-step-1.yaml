@@ -1,0 +1,46 @@
+id: textjoin-join-a-range-and-skip-blanks-step-1
+slug: textjoin-join-a-range-and-skip-blanks-step-1
+level: 1
+title: Join a list with commas
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: textjoin-join-a-range-and-skip-blanks
+step: 1
+screens:
+  - prompt: In B7, join the four cities in A2:A5 into one line, separated by a comma and a space. Use TEXTJOIN.
+    rows:
+      - [City, null]
+      - [Leeds, null]
+      - [York, null]
+      - [Hull, null]
+      - [Bath, null]
+      - [null, null]
+      - [Cities, null]
+    answerCell: B7
+    expected: Leeds, York, Hull, Bath
+    variants:
+      - set: { A3: Durham }
+        expected: Leeds, Durham, Hull, Bath
+    answer: =TEXTJOIN(", ",TRUE,A2:A5)
+    requiredFunctions:
+      - TEXTJOIN
+    hints:
+      nudge: TEXTJOIN takes the separator, whether to skip blanks, then the range.
+      rule: TEXTJOIN(", ",TRUE,A2:A5) joins the range with a comma and a space between items.
+    misses:
+      value: The line reads Leeds, York, Hull, Bath.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for TEXTJOIN.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =TEXTJOIN(", ",TRUE,A2:A5)
+      - =TEXTJOIN(", ",FALSE,A2:A5)
+    reject:
+      - formula: =TEXTJOIN(",",TRUE,A2:A5)
+        rule: value
+      - formula: =A2&", "&A3&", "&A4&", "&A5
+        rule: required-function
+      - formula: ="Leeds, York, Hull, Bath"
+        rule: required-function
+      - formula: =TEXTJOIN(", ",TRUE,A2:A5
+        rule: syntax

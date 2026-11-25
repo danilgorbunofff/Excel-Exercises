@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =UNIQUE(FILTER($C$2:$C$19,$B$2:$B$19="North"))
+      - =UNIQUE(FILTER(C$2:C$19,B2:B19="North"))
+      - =unique(filter(c2:c19, b2:b19="North"))
+      - =LET(data,C2:C19,UNIQUE(FILTER(data,B2:B19="North")))
+    wrong: []
+    equivalent: []

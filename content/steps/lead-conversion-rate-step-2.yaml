@@ -1,0 +1,39 @@
+id: lead-conversion-rate-step-2
+slug: lead-conversion-rate-step-2
+level: 1
+title: Conversion as a whole percentage
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: lead-conversion-rate
+step: 2
+screens:
+  - prompt: In D2, show the share of leads that became sales as a percentage rounded to a whole number. Use ROUND.
+    rows:
+      - [Campaign, Leads, Sales, Conversion %]
+      - [Webinar, 620, 58, null]
+    answerCell: D2
+    expected: 9
+    variants:
+      - { set: { C2: 75 }, expected: 12 }
+      - { set: { B2: 100 }, expected: 58 }
+    answer: =ROUND(C2/B2*100,0)
+    requiredFunctions:
+      - ROUND
+    hints:
+      nudge: Times 100 turns the fraction into a percentage; round after that.
+      rule: ROUND(C2/B2*100,0) gives the percentage with no decimals.
+    misses:
+      value: The webinar converted 9% of leads.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(C2/B2*100,0)
+      - =ROUND(100*C2/B2,0)
+    reject:
+      - formula: =ROUND(C2/B2,0)
+        rule: value
+      - formula: =9
+        rule: required-function
+      - formula: =ROUND(C2/B2*100,0
+        rule: syntax

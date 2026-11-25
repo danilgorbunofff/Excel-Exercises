@@ -1,0 +1,41 @@
+id: weighted-average-unit-cost-step-2
+slug: weighted-average-unit-cost-step-2
+level: 1
+title: Total spent on the batches
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: weighted-average-unit-cost
+step: 2
+screens:
+  - prompt: "In D2, total the money spent: each batch's units times its unit cost, added up. Use SUMPRODUCT."
+    rows:
+      - [Batch, Units, Unit cost, Answer]
+      - [B-1, 400, 2.5, null]
+      - [B-2, 250, 2.8, null]
+      - [B-3, 600, 2.35, null]
+    answerCell: D2
+    expected: 3110
+    variants:
+      - set: { C3: 3 }
+        expected: 3160
+    answer: =SUMPRODUCT(B2:B4,C2:C4)
+    requiredFunctions:
+      - SUMPRODUCT
+    hints:
+      nudge: SUMPRODUCT multiplies each pair, then adds.
+      rule: SUMPRODUCT(B2:B4,C2:C4) is the total spend.
+    misses:
+      value: The batches cost 3110 in total.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMPRODUCT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(B2:B4,C2:C4)
+      - =SUMPRODUCT(B2:B4*C2:C4)
+    reject:
+      - formula: =SUM(B2:B4)*SUM(C2:C4)
+        rule: required-function
+      - formula: =3110
+        rule: required-function
+      - formula: =SUMPRODUCT(B2:B4,C2:C4
+        rule: syntax

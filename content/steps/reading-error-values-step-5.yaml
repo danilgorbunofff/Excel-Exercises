@@ -1,0 +1,55 @@
+id: reading-error-values-step-5
+slug: reading-error-values-step-5
+level: 3
+title: Readings that are not numbers
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: reading-error-values
+step: 5
+screens:
+  - prompt: The readings in B2:B16 were pasted in as text. In D2, how many of them cannot be turned into a number?
+    rows:
+      - [Meter, Reading, null, Not numbers]
+      - [M-01, "120", null, null]
+      - [M-02, n/a, null, null]
+      - [M-03, "85", null, null]
+      - [M-04, error, null, null]
+      - [M-05, "140", null, null]
+      - [M-06, "-", null, null]
+      - [M-07, "92", null, null]
+      - [M-08, "105", null, null]
+      - [M-09, off, null, null]
+      - [M-10, "77", null, null]
+      - [M-11, "131", null, null]
+      - [M-12, 12a, null, null]
+      - [M-13, "66", null, null]
+      - [M-14, "150", null, null]
+      - [M-15, n/a, null, null]
+    answerCell: D2
+    expected: 6
+    variants:
+      - { set: { B3: "88" }, expected: 5 }
+      - { set: { B4: eighty }, expected: 7 }
+      - { set: { B2: n/a }, expected: 7 }
+    answer: =SUMPRODUCT(--ISERROR(VALUE(B2:B16)))
+    requiredFunctions: []
+    hints:
+      nudge: Try VALUE on every reading at once and count the failures.
+      rule: "VALUE(B2:B16) gives a number or `#VALUE!` per reading; ISERROR marks the failures and SUMPRODUCT counts them."
+    misses:
+      value: 6 readings cannot be read as numbers.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(--ISERROR(VALUE(B2:B16)))
+      - =ROWS(B2:B16)-SUMPRODUCT(--ISNUMBER(VALUE(B2:B16)))
+    reject:
+      - formula: =COUNTA(B2:B16)-COUNT(B2:B16)
+        rule: value
+      - formula: =SUMPRODUCT(--ISTEXT(B2:B16))
+        rule: value
+      - formula: =6
+        rule: reference
+      - formula: =SUMPRODUCT(--ISERROR(VALUE(B2:B16))
+        rule: syntax

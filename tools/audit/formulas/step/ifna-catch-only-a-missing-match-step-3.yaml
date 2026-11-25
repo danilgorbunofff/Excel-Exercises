@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFNA(INDEX(B$2:B$6,MATCH(A8,A2:A6,0)),"not listed")
+      - =ifna(index(b2:b6, match(a8, a2:a6, 0)), "not listed")
+      - =LET(data,B2:B6,IFNA(INDEX(data,MATCH(A8,A2:A6,0)),"not listed"))
+    wrong: []
+    equivalent:
+      - formula: =IFNA(INDEX(B2:B7,MATCH(A8,A2:A6,0)),"not listed")
+        why: "range B2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IFNA(INDEX(B2:B6,MATCH(A8,A2:A7,0)),"not listed")
+        why: "range A2:A6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

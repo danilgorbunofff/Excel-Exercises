@@ -1,0 +1,39 @@
+id: textbefore-and-textafter-step-1
+slug: textbefore-and-textafter-step-1
+level: 1
+title: First name with TEXTBEFORE
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: textbefore-and-textafter
+step: 1
+screens:
+  - prompt: "In B2, take the first name from A2: the text before the first space. Use TEXTBEFORE."
+    rows:
+      - [Full name, First name]
+      - [Grace Hopper, null]
+    answerCell: B2
+    expected: Grace
+    variants:
+      - set: { A2: Katherine Johnson }
+        expected: Katherine
+    answer: =TEXTBEFORE(A2," ")
+    requiredFunctions:
+      - TEXTBEFORE
+    hints:
+      nudge: TEXTBEFORE takes the text and the delimiter.
+      rule: TEXTBEFORE(A2," ") returns everything before the first space.
+    misses:
+      value: The first name is Grace.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for TEXTBEFORE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =TEXTBEFORE(A2," ")
+      - =TEXTBEFORE(A2," ",1)
+    reject:
+      - formula: =TEXTAFTER(A2," ")
+        rule: required-function
+      - formula: ="Grace"
+        rule: required-function
+      - formula: =TEXTBEFORE(A2," "
+        rule: syntax

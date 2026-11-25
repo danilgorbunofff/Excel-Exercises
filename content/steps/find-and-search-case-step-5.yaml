@@ -1,0 +1,55 @@
+id: find-and-search-case-step-5
+slug: find-and-search-case-step-5
+level: 3
+title: Tickets that mention a refund
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: find-and-search-case
+step: 5
+screens:
+  - prompt: In C2, how many tickets in A2 to A16 mention the word refund, in any case?
+    rows:
+      - [Ticket, null, Mention refund]
+      - [Refund not received, null, null]
+      - [Delivery late, null, null]
+      - [Asked for a REFUND twice, null, null]
+      - [Wrong size, null, null]
+      - [refund please, null, null]
+      - [Damaged box, null, null]
+      - [Where is my order, null, null]
+      - [Partial Refund issued, null, null]
+      - [Change address, null, null]
+      - [Refunded already?, null, null]
+      - [Missing item, null, null]
+      - [Exchange for blue, null, null]
+      - [No refund yet, null, null]
+      - [Cancel order, null, null]
+      - [Invoice copy, null, null]
+    answerCell: C2
+    expected: 6
+    variants:
+      - { set: { A3: Refund for late delivery }, expected: 7 }
+      - { set: { A11: Paid back already? }, expected: 5 }
+      - { set: { A16: Refund not received }, expected: 7 }
+    answer: =SUMPRODUCT(--ISNUMBER(SEARCH("refund",A2:A16)))
+    requiredFunctions: []
+    hints:
+      nudge: Search every ticket at once, ignoring case.
+      rule: SEARCH ignores case, so ISNUMBER(SEARCH("refund",A2:A16)) is TRUE for every mention; SUMPRODUCT counts them.
+    misses:
+      value: 6 tickets mention refund in some form.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(--ISNUMBER(SEARCH("refund",A2:A16)))
+      - =COUNTIF(A2:A16,"*refund*")
+    reject:
+      - formula: =SUMPRODUCT(--ISNUMBER(FIND("refund",A2:A16)))
+        rule: value
+      - formula: =COUNTIF(A2:A16,"refund*")
+        rule: value
+      - formula: =6
+        rule: reference
+      - formula: =SUMPRODUCT(--ISNUMBER(SEARCH("refund",A2:A16))
+        rule: syntax

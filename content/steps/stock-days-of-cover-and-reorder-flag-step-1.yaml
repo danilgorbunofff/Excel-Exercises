@@ -1,0 +1,52 @@
+id: stock-days-of-cover-and-reorder-flag-step-1
+slug: stock-days-of-cover-and-reorder-flag-step-1
+level: 1
+title: Days of cover
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: stock-days-of-cover-and-reorder-flag
+step: 1
+screens:
+  - prompt: "In E2, work out the days of cover for pallet wrap: on hand in B2 divided by daily use in C2."
+    rows:
+      - [Item, On hand, Daily use, Lead time days, Days of cover, null]
+      - [Pallet wrap, 46, 4, 7, null, null]
+      - [Label rolls, 30, 6, 6, null, null]
+      - [Tape, 120, 15, 5, null, null]
+      - [Boxes S, 400, 35, 10, null, null]
+      - [Boxes M, 260, 40, 8, null, null]
+      - [Boxes L, 90, 12, 9, null, null]
+      - [Void fill, 55, 9, 4, null, null]
+      - [Gloves, 80, 5, 12, null, null]
+      - [Seals, 150, 20, 6, null, null]
+      - [Ties, 70, 8, 7, null, null]
+      - [Tags, 300, 25, 14, null, null]
+      - [Ink, 12, 2, 5, null, null]
+      - [Pens, 60, 7, 3, null, null]
+      - [Pads, 40, 3, 10, null, null]
+      - [Clips, 500, 45, 9, null, null]
+    answerCell: E2
+    expected: 11.5
+    variants:
+      - set: { C2: 5 }
+        expected: 9.2
+    answer: =B2/C2
+    requiredFunctions: []
+    hints:
+      nudge: Stock divided by how much is used each day.
+      rule: B2/C2 is how many days the stock lasts.
+    misses:
+      value: Pallet wrap lasts 11.5 days.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2/C2
+      - =B2*(1/C2)
+    reject:
+      - formula: =C2/B2
+        rule: value
+      - formula: =11.5
+        rule: reference
+      - formula: =B2/C2,
+        rule: syntax

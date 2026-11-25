@@ -1,0 +1,41 @@
+id: clean-up-an-imported-list-step-1
+slug: clean-up-an-imported-list-step-1
+level: 1
+title: Remove stray spaces
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: clean-up-an-imported-list
+step: 1
+screens:
+  - prompt: In B2, remove the stray spaces from the imported name in A2. Use TRIM.
+    rows:
+      - [Imported, Answer]
+      - ["   Ada   Lovelace  ", null]
+    answerCell: B2
+    expected: Ada Lovelace
+    variants:
+      - set: { A2: " Grace  Hopper" }
+        expected: Grace Hopper
+    answer: =TRIM(A2)
+    requiredFunctions:
+      - TRIM
+    hints:
+      nudge: TRIM removes the spaces at both ends and turns doubles into singles.
+      rule: TRIM(A2) leaves one space between words and none at the ends.
+    misses:
+      value: The tidy name is Ada Lovelace.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for TRIM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =TRIM(A2)
+      - =trim(a2)
+      - "=TRIM(TRIM(A2))"
+      - '=TRIM(A2)&""'
+    reject:
+      - formula: =SUBSTITUTE(A2," ","")
+        rule: required-function
+      - formula: ="Ada Lovelace"
+        rule: required-function
+      - formula: =TRIM(A2
+        rule: syntax

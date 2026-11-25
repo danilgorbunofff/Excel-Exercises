@@ -1,0 +1,46 @@
+id: a-monthly-close-checklist-in-formulas-step-2
+slug: a-monthly-close-checklist-in-formulas-step-2
+level: 1
+title: Count the clean checks
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-monthly-close-checklist-in-formulas
+step: 2
+screens:
+  - prompt: In D2, count the checks in B2:B9 whose variance is exactly 0. Use COUNTIF.
+    rows:
+      - [Check, Variance, null, Clean]
+      - [Bank, 0, null, null]
+      - [Cash, 12.5, null, null]
+      - [Payroll, 0, null, null]
+      - [VAT, -3, null, null]
+      - [Fixed assets, 0, null, null]
+      - [Accruals, 0, null, null]
+      - [Prepayments, 7, null, null]
+      - [Intercompany, 0, null, null]
+    answerCell: D2
+    expected: 5
+    variants:
+      - set: { B3: 0 }
+        expected: 6
+    answer: =COUNTIF(B2:B9,0)
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: COUNTIF with 0 as the criteria counts the zeros.
+      rule: COUNTIF(B2:B9,0) counts the checks with no variance.
+    misses:
+      value: 5 checks are clean.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(B2:B9,0)
+      - =COUNTIF(B2:B9,"=0")
+    reject:
+      - formula: =COUNTIF(B2:B9,"<>0")
+        rule: value
+      - formula: =5
+        rule: required-function
+      - formula: =COUNTIF(B2:B9,0
+        rule: syntax

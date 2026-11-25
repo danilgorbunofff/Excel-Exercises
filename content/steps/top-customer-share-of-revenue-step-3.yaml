@@ -1,0 +1,43 @@
+id: top-customer-share-of-revenue-step-3
+slug: top-customer-share-of-revenue-step-3
+level: 2
+title: Share of a named customer
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: top-customer-share-of-revenue
+step: 3
+screens:
+  - prompt: In E2, work out the share of total revenue from the customer named in E1. Use XLOOKUP and SUM.
+    rows:
+      - [Customer, Revenue, null, null, Brook]
+      - [Arden, 120000, null, null, null]
+      - [Brook, 85000, null, null, null]
+      - [Cole, 210000, null, null, null]
+      - [Dunn, 64000, null, null, null]
+    answerCell: E2
+    expected: 0.17745302714
+    variants:
+      - set: { E1: Cole }
+        expected: 0.438413361169
+    answer: =XLOOKUP(E1,A2:A5,B2:B5)/SUM(B2:B5)
+    requiredFunctions:
+      - XLOOKUP
+      - SUM
+    hints:
+      nudge: The customer's revenue over the total.
+      rule: Looking the customer up by name keeps the share right for whoever is in E1.
+    misses:
+      value: Brook's share is 0.177.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP and SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(E1,A2:A5,B2:B5)/SUM(B2:B5)
+      - =XLOOKUP($E$1,$A$2:$A$5,$B$2:$B$5)/SUM($B$2:$B$5)
+    reject:
+      - formula: =B3/SUM(B2:B5)
+        rule: required-function
+      - formula: =0.17745302714
+        rule: required-function
+      - formula: =XLOOKUP(E1,A2:A5,B2:B5)/SUM(B2:B5
+        rule: syntax

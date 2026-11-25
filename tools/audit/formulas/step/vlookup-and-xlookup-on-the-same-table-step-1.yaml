@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =VLOOKUP($B$6,$A$2:$C$5,2,FALSE)
+      - =VLOOKUP(B$6,A2:C5,2,FALSE)
+      - =vlookup(b6, a2:c5, 2, false)
+      - =LET(data,A2:C5,VLOOKUP(B6,data,2,FALSE))
+    wrong:
+      - formula: =VLOOKUP(B6,A2:C5,2)
+        rule: fragile
+        why: VLOOKUP without FALSE
+      - formula: =VLOOKUP(B6,A2:C5,2,TRUE)
+        rule: fragile
+        why: FALSE written as TRUE
+    equivalent:
+      - formula: =VLOOKUP(B6,A2:C6,2,FALSE)
+        why: "range A2:C5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

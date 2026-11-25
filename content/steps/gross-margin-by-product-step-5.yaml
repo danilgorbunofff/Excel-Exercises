@@ -1,0 +1,51 @@
+id: gross-margin-by-product-step-5
+slug: gross-margin-by-product-step-5
+level: 3
+title: Products below the margin target
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: gross-margin-by-product
+step: 5
+screens:
+  - prompt: In F2, how many products have a gross margin below the target in F1?
+    rows:
+      - [Product, Revenue, Cost of sales, null, null, 0.3]
+      - [Desk lamp, 24000, 15600, null, null, null]
+      - [Chair, 56000, 41440, null, null, null]
+      - [Shelf, 18000, 11700, null, null, null]
+      - [Rug, 32000, 23360, null, null, null]
+      - [Mirror, 15000, 9300, null, null, null]
+      - [Stool, 9000, 6840, null, null, null]
+      - [Cabinet, 41000, 26650, null, null, null]
+      - [Desk, 38000, 27360, null, null, null]
+    answerCell: F2
+    expected: 4
+    variants:
+      - set: { F1: 0.36 }
+        expected: 7
+      - set: { C5: 20000 }
+        expected: 3
+      - set: { C4: 12600 }
+        expected: 4
+    answer: =SUMPRODUCT(--((B2:B9-C2:C9)/B2:B9<F1))
+    requiredFunctions: []
+    hints:
+      nudge: Work out every margin at once and compare each with F1.
+      rule: (B2:B9-C2:C9)/B2:B9 gives each margin; <F1 marks those below target and SUMPRODUCT counts them.
+    misses:
+      value: 4 products are below the target.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(--((B2:B9-C2:C9)/B2:B9<F1))
+      - =SUMPRODUCT(--(1-C2:C9/B2:B9<F1))
+    reject:
+      - formula: =SUMPRODUCT(--((B2:B9-C2:C9)/C2:C9<F1))
+        rule: value
+      - formula: =SUMPRODUCT(--((B2:B9-C2:C9)/B2:B9<0.3))
+        rule: fragile
+      - formula: =4
+        rule: reference
+      - formula: =SUMPRODUCT(--((B2:B9-C2:C9)/B2:B9<F1)
+        rule: syntax

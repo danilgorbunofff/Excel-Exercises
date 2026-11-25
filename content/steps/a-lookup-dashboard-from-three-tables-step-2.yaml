@@ -1,0 +1,44 @@
+id: a-lookup-dashboard-from-three-tables-step-2
+slug: a-lookup-dashboard-from-three-tables-step-2
+level: 2
+title: Region of a rep
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-lookup-dashboard-from-three-tables
+step: 2
+screens:
+  - prompt: In D2, read the region of the rep named in D1. Use INDEX and MATCH.
+    rows:
+      - [Rep, Region, Sales, Eve, null, Region, Target]
+      - [Ada, North, 61500, null, null, North, 60000]
+      - [Ben, South, 47000, null, null, South, 50000]
+      - [Cleo, North, 58200, null, null, East, 45000]
+      - [Dev, East, 52300, null, null, West, 55000]
+      - [Eve, West, 49800, null, null, null, null]
+    answerCell: D2
+    expected: West
+    variants:
+      - { set: { D1: Ben }, expected: South }
+      - { set: { A2: Eve }, expected: North }
+    answer: =INDEX(B2:B6,MATCH(D1,A2:A6,0))
+    requiredFunctions:
+      - INDEX
+      - MATCH
+    hints:
+      nudge: MATCH finds the rep's row; INDEX reads the region on it.
+      rule: INDEX(B2:B6,MATCH(D1,A2:A6,0)) returns the rep's region.
+    misses:
+      value: Eve works in West.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for INDEX and MATCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(B2:B6,MATCH(D1,A2:A6,0))
+      - =INDEX($B$2:$B$6,MATCH($D$1,$A$2:$A$6,0))
+    reject:
+      - formula: =INDEX(C2:C6,MATCH(D1,A2:A6,0))
+        rule: value
+      - formula: ="West"
+        rule: required-function
+      - formula: =INDEX(B2:B6,MATCH(D1,A2:A6,0)
+        rule: syntax

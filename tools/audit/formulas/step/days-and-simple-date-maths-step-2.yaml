@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =$B$2+$C$2
+      - =B$2+C2
+      - =b2+c2
+    wrong: []
+    equivalent: []

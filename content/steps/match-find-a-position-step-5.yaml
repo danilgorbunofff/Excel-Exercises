@@ -1,0 +1,46 @@
+id: match-find-a-position-step-5
+slug: match-find-a-position-step-5
+level: 3
+title: Which month first beat the target
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: match-find-a-position
+step: 5
+screens:
+  - prompt: In B5, which month was the first to sell more than the target in B4? Give the month's name.
+    rows:
+      - [Month, Jan, Feb, Mar, Apr, May, Jun]
+      - [Units, 120, 145, 138, 172, 190, 168]
+      - [null, null, null, null, null, null, null]
+      - [Target, 150, null, null, null, null, null]
+      - [First month over, null, null, null, null, null, null]
+    answerCell: B5
+    expected: Apr
+    variants:
+      - { set: { B4: 140 }, expected: Feb }
+      - { set: { B4: 180 }, expected: May }
+      - { set: { C2: 160 }, expected: Feb }
+      - { set: { B4: 120 }, expected: Feb }
+    answer: =INDEX(B1:G1,MATCH(TRUE,B2:G2>B4,0))
+    requiredFunctions: []
+    hints:
+      nudge: Compare every month with the target, then find the first TRUE.
+      rule: B2:G2>B4 gives TRUE or FALSE for each month; MATCH(TRUE, ..., 0) finds the first TRUE and INDEX returns its name.
+    misses:
+      value: The first month over the target was Apr.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(B1:G1,MATCH(TRUE,B2:G2>B4,0))
+      - =XLOOKUP(TRUE,B2:G2>B4,B1:G1)
+      - =INDEX(B1:G1,MATCH(1,--(B2:G2>B4),0))
+    reject:
+      - formula: =INDEX(B1:G1,MATCH(B4,B2:G2,1))
+        rule: value
+      - formula: ="Apr"
+        rule: reference
+      - formula: ="Apr"
+        rule: reference
+      - formula: =INDEX(B1:G1,MATCH(TRUE,B2:G2>B4,0)
+        rule: syntax

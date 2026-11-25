@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIFS($E$2:$E$16,$G$1,$D$2:$D$16,">3")
+      - =COUNTIFS(E$2:E$16,G1,D2:D16,">3")
+      - =countifs(e2:e16, g1, d2:d16, ">3")
+      - =LET(data,E2:E16,COUNTIFS(data,G1,D2:D16,">3"))
+    wrong: []
+    equivalent: []

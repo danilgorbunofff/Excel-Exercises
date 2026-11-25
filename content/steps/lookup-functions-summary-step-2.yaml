@@ -1,0 +1,44 @@
+id: lookup-functions-summary-step-2
+slug: lookup-functions-summary-step-2
+level: 2
+title: Left lookup with a message
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: lookup-functions-summary
+step: 2
+screens:
+  - prompt: In B7, return the product name for the SKU in B6, or the words unknown SKU when it is not in the list. Use XLOOKUP.
+    rows:
+      - [Product, SKU, On hand]
+      - [Bracket, BX-210, 240]
+      - [Clamp, CX-330, 96]
+      - [Dowel, DX-410, 60]
+      - [Extrusion, EX-500, 18]
+      - [Which SKU?, FX-600, null]
+      - [Product, null, null]
+    answerCell: B7
+    expected: unknown SKU
+    variants:
+      - set: { B6: BX-210 }
+        expected: Bracket
+    answer: =XLOOKUP(B6,B2:B5,A2:A5,"unknown SKU")
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: The fourth part of XLOOKUP is what to show when nothing matches.
+      rule: XLOOKUP(B6,B2:B5,A2:A5,"unknown SKU") returns the name to the left, or the message.
+    misses:
+      value: For a SKU not in the list, B7 should show unknown SKU.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(B6,B2:B5,A2:A5,"unknown SKU")
+      - =IFNA(XLOOKUP(B6,B2:B5,A2:A5),"unknown SKU")
+    reject:
+      - formula: =XLOOKUP(B6,B2:B5,A2:A5)
+        rule: value
+      - formula: ="unknown SKU"
+        rule: required-function
+      - formula: =XLOOKUP(B6,B2:B5,A2:A5,"unknown SKU"
+        rule: syntax

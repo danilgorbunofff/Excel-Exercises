@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =VLOOKUP($B$6,$A$2:$D$5,3,FALSE)
+      - =VLOOKUP(B$6,A2:D5,3,FALSE)
+      - =vlookup(b6, a2:d5, 3, false)
+      - =LET(data,A2:D5,VLOOKUP(B6,data,3,FALSE))
+    wrong:
+      - formula: =VLOOKUP(B6,A3:D5,3,FALSE)
+        rule: fragile
+        why: range A2:D5 skips its first row
+    equivalent:
+      - formula: =VLOOKUP(B6,A2:D6,3,FALSE)
+        why: "range A2:D5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

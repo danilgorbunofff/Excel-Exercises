@@ -1,0 +1,43 @@
+id: headcount-cost-plan-step-3
+slug: headcount-cost-plan-step-3
+level: 2
+title: Cost of the senior roles
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: headcount-cost-plan
+step: 3
+screens:
+  - prompt: 'In F2, total the cost of the senior roles: (B2:B6="Senior") times heads times cost per head. Use SUMPRODUCT.'
+    rows:
+      - [Team, Grade, Heads, Cost per head, null, Senior cost, null]
+      - [Sales, Junior, 6, 38000, null, null, null]
+      - [Sales, Senior, 3, 62000, null, null, null]
+      - [IT, Junior, 4, 45000, null, null, null]
+      - [IT, Senior, 2, 78000, null, null, null]
+      - [Ops, Junior, 5, 34000, null, null, null]
+    answerCell: F2
+    expected: 342000
+    variants:
+      - set: { C5: 3 }
+        expected: 420000
+    answer: =SUMPRODUCT((B2:B6="Senior")*C2:C6*D2:D6)
+    requiredFunctions:
+      - SUMPRODUCT
+    hints:
+      nudge: The test keeps the senior rows; heads times cost gives each row's cost.
+      rule: (B2:B6="Senior") is 1 only on senior rows, so only they count.
+    misses:
+      value: Senior roles cost 342000.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMPRODUCT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT((B2:B6="Senior")*C2:C6*D2:D6)
+      - =SUMPRODUCT(--(B2:B6="Senior"),C2:C6,D2:D6)
+    reject:
+      - formula: =SUMPRODUCT(C2:C6,D2:D6)
+        rule: value
+      - formula: =342000
+        rule: required-function
+      - formula: =SUMPRODUCT((B2:B6="Senior")*C2:C6*D2:D6
+        rule: syntax

@@ -3,7 +3,13 @@
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 2 at step 3, level 3 at step 4.
 const fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(3));
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 const months = [
   ["Month", "Actual", "Budget", "Months closed", null],
@@ -96,7 +102,8 @@ export default [
     value: (e) => `The actual to date is ${e}.`,
   }),
   step("year-to-date-actual-against-budget", 4, 2, "Actual to date as a share of budget", {
-    prompt: 'In E2, show the year-to-date actual as a share of the year-to-date budget, for the months up to D2. Use SUMIFS.',
+    prompt:
+      "In E2, show the year-to-date actual as a share of the year-to-date budget, for the months up to D2. Use SUMIFS.",
     rows: months,
     cell: "E2",
     answer: '=SUMIFS(B2:B13,A2:A13,"<="&D2)/SUMIFS(C2:C13,A2:A13,"<="&D2)',
@@ -207,7 +214,9 @@ export default [
   }),
   step("department-cost-roll-up", 2, 2, "Department and cost type from cells", {
     prompt: "In F3, total the cost for the department in F1 and the cost type in F2. Use SUMIFS.",
-    rows: costs.map((r, i) => (i === 0 ? [...r.slice(0, 5), "IT"] : i === 1 ? [...r.slice(0, 5), "Travel"] : r)),
+    rows: costs.map((r, i) =>
+      i === 0 ? [...r.slice(0, 5), "IT"] : i === 1 ? [...r.slice(0, 5), "Travel"] : r,
+    ),
     cell: "F3",
     answer: "=SUMIFS(C2:C10,A2:A10,F1,B2:B10,F2)",
     required: ["SUMIFS"],
@@ -219,7 +228,8 @@ export default [
     value: (e) => `IT travel costs ${e}.`,
   }),
   step("department-cost-roll-up", 4, 2, "Salaries as a share of all costs", {
-    prompt: "In E2, show salaries as a share of all costs, rounded to two decimal places. Use SUMIF, SUM and ROUND.",
+    prompt:
+      "In E2, show salaries as a share of all costs, rounded to two decimal places. Use SUMIF, SUM and ROUND.",
     rows: costs.map((r, i) => (i === 0 ? [...r.slice(0, 4), "Salary share", null] : r)),
     cell: "E2",
     answer: '=ROUND(SUMIF(B2:B10,"Salaries",C2:C10)/SUM(C2:C10),2)',
@@ -233,14 +243,23 @@ export default [
   }),
   step("department-cost-roll-up", 5, 3, "Department that spends most on software", {
     prompt: "In F2, which of the departments listed in E2:E4 spends the most on software?",
-    rows: costs.map((r, i) => (i === 0 ? [...r.slice(0, 4), "Department", "Most on software"] : i <= 3 ? [...r.slice(0, 4), ["Marketing", "Sales", "IT"][i - 1], null] : r)),
+    rows: costs.map((r, i) =>
+      i === 0
+        ? [...r.slice(0, 4), "Department", "Most on software"]
+        : i <= 3
+          ? [...r.slice(0, 4), ["Marketing", "Sales", "IT"][i - 1], null]
+          : r,
+    ),
     cell: "F2",
-    answer: '=XLOOKUP(MAX(SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software")),SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software"),E2:E4)',
+    answer:
+      '=XLOOKUP(MAX(SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software")),SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software"),E2:E4)',
     required: [],
-    accept: ['=INDEX(E2:E4,MATCH(MAX(SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software")),SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software"),0))'],
+    accept: [
+      '=INDEX(E2:E4,MATCH(MAX(SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software")),SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software"),0))',
+    ],
     variants: [{ C3: 50000 }, { C5: 45000 }],
     reject: [
-      ['=XLOOKUP(MAX(SUMIFS(C2:C10,A2:A10,E2:E4)),SUMIFS(C2:C10,A2:A10,E2:E4),E2:E4)', "value"],
+      ["=XLOOKUP(MAX(SUMIFS(C2:C10,A2:A10,E2:E4)),SUMIFS(C2:C10,A2:A10,E2:E4),E2:E4)", "value"],
       ['="IT"', "reference"],
     ],
     nudge: "Total each department's software at once, then find the largest.",
@@ -276,7 +295,8 @@ export default [
     value: (e) => `IT has ${e} heads.`,
   }),
   step("headcount-cost-plan", 3, 2, "Cost of the senior roles", {
-    prompt: 'In F2, total the cost of the senior roles: (B2:B6="Senior") times heads times cost per head. Use SUMPRODUCT.',
+    prompt:
+      'In F2, total the cost of the senior roles: (B2:B6="Senior") times heads times cost per head. Use SUMPRODUCT.',
     rows: plan.map((r, i) => (i === 0 ? [...r.slice(0, 5), "Senior cost", null] : r)),
     cell: "F2",
     answer: '=SUMPRODUCT((B2:B6="Senior")*C2:C6*D2:D6)',
@@ -334,25 +354,44 @@ export default [
     value: (e) => `Q3 is ${e} against budget.`,
   }),
   step("quarter-forecast-against-budget", 4, 2, "Quarter variance as a share", {
-    prompt: "In F2, show the Q2 variance as a share of the Q2 budget, rounded to three decimals. Use SUMIFS and ROUND.",
+    prompt:
+      "In F2, show the Q2 variance as a share of the Q2 budget, rounded to three decimals. Use SUMIFS and ROUND.",
     rows: quarters.map((r, i) => (i === 0 ? [...r.slice(0, 5), "Q2 variance %"] : r)),
     cell: "F2",
-    answer: '=ROUND((SUMIFS(C2:C13,B2:B13,"Q2")-SUMIFS(D2:D13,B2:B13,"Q2"))/SUMIFS(D2:D13,B2:B13,"Q2"),3)',
+    answer:
+      '=ROUND((SUMIFS(C2:C13,B2:B13,"Q2")-SUMIFS(D2:D13,B2:B13,"Q2"))/SUMIFS(D2:D13,B2:B13,"Q2"),3)',
     required: ["SUMIFS", "ROUND"],
-    accept: ['=ROUND((SUMIFS($C$2:$C$13,$B$2:$B$13,"Q2")-SUMIFS($D$2:$D$13,$B$2:$B$13,"Q2"))/SUMIFS($D$2:$D$13,$B$2:$B$13,"Q2"),3)'],
+    accept: [
+      '=ROUND((SUMIFS($C$2:$C$13,$B$2:$B$13,"Q2")-SUMIFS($D$2:$D$13,$B$2:$B$13,"Q2"))/SUMIFS($D$2:$D$13,$B$2:$B$13,"Q2"),3)',
+    ],
     variants: [{ C6: 41000 }],
-    reject: [['=ROUND((SUMIFS(C2:C13,B2:B13,"Q2")-SUMIFS(D2:D13,B2:B13,"Q2"))/SUMIFS(C2:C13,B2:B13,"Q2"),3)', "value"]],
+    reject: [
+      [
+        '=ROUND((SUMIFS(C2:C13,B2:B13,"Q2")-SUMIFS(D2:D13,B2:B13,"Q2"))/SUMIFS(C2:C13,B2:B13,"Q2"),3)',
+        "value",
+      ],
+    ],
     nudge: "Variance over budget, then round.",
     rule: "Dividing by the budget shows the variance in proportion to the plan.",
     value: (e) => `Q2 is ${fmt(e)} away from budget.`,
   }),
   step("quarter-forecast-against-budget", 5, 3, "Quarter with the biggest overspend", {
-    prompt: "In G2, which quarter, from the list in F2:F5, has the biggest forecast overspend against budget?",
-    rows: quarters.map((r, i) => (i === 0 ? [...r.slice(0, 5), "Quarter", "Biggest over"] : i <= 4 ? [...r.slice(0, 5), ["Q1", "Q2", "Q3", "Q4"][i - 1], null] : [...r, null])),
+    prompt:
+      "In G2, which quarter, from the list in F2:F5, has the biggest forecast overspend against budget?",
+    rows: quarters.map((r, i) =>
+      i === 0
+        ? [...r.slice(0, 5), "Quarter", "Biggest over"]
+        : i <= 4
+          ? [...r.slice(0, 5), ["Q1", "Q2", "Q3", "Q4"][i - 1], null]
+          : [...r, null],
+    ),
     cell: "G2",
-    answer: "=XLOOKUP(MAX(SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5)),SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5),F2:F5)",
+    answer:
+      "=XLOOKUP(MAX(SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5)),SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5),F2:F5)",
     required: [],
-    accept: ["=INDEX(F2:F5,MATCH(MAX(SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5)),SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5),0))"],
+    accept: [
+      "=INDEX(F2:F5,MATCH(MAX(SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5)),SUMIFS(C2:C13,B2:B13,F2:F5)-SUMIFS(D2:D13,B2:B13,F2:F5),0))",
+    ],
     variants: [{ C9: 50000 }, { D6: 40000 }],
     reject: [
       ["=XLOOKUP(MAX(SUMIFS(C2:C13,B2:B13,F2:F5)),SUMIFS(C2:C13,B2:B13,F2:F5),F2:F5)", "value"],

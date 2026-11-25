@@ -1,0 +1,42 @@
+id: a-headcount-and-payroll-summary-step-1
+slug: a-headcount-and-payroll-summary-step-1
+level: 1
+title: Total heads
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-headcount-and-payroll-summary
+step: 1
+screens:
+  - prompt: In F2, total the heads across all the teams. Use SUM.
+    rows:
+      - [Team, Heads, Salary, null, null, Heads]
+      - [Sales, 12, 48000, null, null, null]
+      - [Finance, 5, 56000, null, null, null]
+      - [IT, 8, 61000, null, null, null]
+      - [Admin, 4, 34000, null, null, null]
+    answerCell: F2
+    expected: 29
+    variants:
+      - set: { B3: 7 }
+        expected: 31
+    answer: =SUM(B2:B5)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: SUM the Heads column.
+      rule: SUM(B2:B5) adds the heads of the four teams.
+    misses:
+      value: There are 29 heads.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:B5)
+      - =SUM($B$2:$B$5)
+    reject:
+      - formula: =SUM(B2:B4)
+        rule: value
+      - formula: =29
+        rule: required-function
+      - formula: =SUM(B2:B5
+        rule: syntax

@@ -3,7 +3,13 @@
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 2 at step 3.
 const fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(2));
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 const grid = [
   ["Region", "Q1", "Q2", "Q3", "Q4"],
@@ -16,7 +22,8 @@ const grid = [
 export default [
   // match-find-a-position (level 2, step 3)
   step("match-find-a-position", 1, 1, "Position of a name in a list", {
-    prompt: "In B8, find the position of the name in B7 within A2:A5, counting the first row as 1. Use MATCH with 0 for an exact match.",
+    prompt:
+      "In B8, find the position of the name in B7 within A2:A5, counting the first row as 1. Use MATCH with 0 for an exact match.",
     rows: [
       ["Name", "Team"],
       ["Ana", "Sales"],
@@ -57,7 +64,7 @@ export default [
   }),
   step("match-find-a-position", 4, 2, "Is the code on the list", {
     prompt:
-      'In B9, show Yes when the code in B8 appears in A2:A6, and No when it does not. Use ISNUMBER and MATCH inside IF.',
+      "In B9, show Yes when the code in B8 appears in A2:A6, and No when it does not. Use ISNUMBER and MATCH inside IF.",
     rows: [
       ["Approved code", null],
       ["A-17", null],
@@ -78,12 +85,14 @@ export default [
       ['=IF(MATCH(B8,A2:A6,0)>0,"Yes","No")', "required-function"],
       ['=IF(ISNUMBER(MATCH(B8,A2:A6,1)),"Yes","No")', "value"],
     ],
-    nudge: "MATCH gives a number when the code is found and #N/A when not; ISNUMBER turns that into TRUE or FALSE.",
+    nudge:
+      "MATCH gives a number when the code is found and #N/A when not; ISNUMBER turns that into TRUE or FALSE.",
     rule: 'IF(ISNUMBER(MATCH(B8,A2:A6,0)),"Yes","No") checks the list without any error showing.',
     value: (e) => `C-25 is not on the list, so B9 should show ${e}.`,
   }),
   step("match-find-a-position", 5, 3, "Which month first beat the target", {
-    prompt: "In B5, which month was the first to sell more than the target in B4? Give the month's name.",
+    prompt:
+      "In B5, which month was the first to sell more than the target in B4? Give the month's name.",
     rows: [
       ["Month", "Jan", "Feb", "Mar", "Apr", "May", "Jun"],
       ["Units", 120, 145, 138, 172, 190, 168],
@@ -94,7 +103,7 @@ export default [
     cell: "B5",
     answer: "=INDEX(B1:G1,MATCH(TRUE,B2:G2>B4,0))",
     required: [],
-    accept: ["=XLOOKUP(TRUE,B2:G2>B4,B1:G1)", '=INDEX(B1:G1,MATCH(1,--(B2:G2>B4),0))'],
+    accept: ["=XLOOKUP(TRUE,B2:G2>B4,B1:G1)", "=INDEX(B1:G1,MATCH(1,--(B2:G2>B4),0))"],
     variants: [{ B4: 140 }, { B4: 180 }, { C2: 160 }],
     reject: [
       ["=INDEX(B1:G1,MATCH(B4,B2:G2,1))", "value"],
@@ -132,8 +141,15 @@ export default [
     value: (e) => `The 4th name is ${e}.`,
   }),
   step("index-a-value-at-a-row-and-column", 2, 2, "Value at a row and column from cells", {
-    prompt: "In B9, return the units at the row in B7 and the quarter number in B8 of the grid B2:E5. Use INDEX.",
-    rows: [...grid, [null, null, null, null, null], ["Row", 2, null, null, null], ["Quarter", 4, null, null, null], ["Units", null, null, null, null]],
+    prompt:
+      "In B9, return the units at the row in B7 and the quarter number in B8 of the grid B2:E5. Use INDEX.",
+    rows: [
+      ...grid,
+      [null, null, null, null, null],
+      ["Row", 2, null, null, null],
+      ["Quarter", 4, null, null, null],
+      ["Units", null, null, null, null],
+    ],
     cell: "B9",
     answer: "=INDEX(B2:E5,B7,B8)",
     required: ["INDEX"],
@@ -150,7 +166,12 @@ export default [
   step("index-a-value-at-a-row-and-column", 4, 2, "A whole row from the grid", {
     prompt:
       "In B8, return all four quarters for the region at the row number in B7, filling B8 to E8. Use INDEX with 0 as the column.",
-    rows: [...grid, [null, null, null, null, null], ["Row", 3, null, null, null], ["Quarters", null, null, null, null]],
+    rows: [
+      ...grid,
+      [null, null, null, null, null],
+      ["Row", 3, null, null, null],
+      ["Quarters", null, null, null, null],
+    ],
     cell: "B8",
     answer: "=INDEX(B2:E5,B7,0)",
     required: ["INDEX"],
@@ -163,7 +184,12 @@ export default [
   }),
   step("index-a-value-at-a-row-and-column", 5, 3, "Total of one region's row", {
     prompt: "In B8, what did the region whose row number is in B7 sell across the whole year?",
-    rows: [...grid, [null, null, null, null, null], ["Row", 2, null, null, null], ["Year total", null, null, null, null]],
+    rows: [
+      ...grid,
+      [null, null, null, null, null],
+      ["Row", 2, null, null, null],
+      ["Year total", null, null, null, null],
+    ],
     cell: "B8",
     answer: "=SUM(INDEX(B2:E5,B7,0))",
     required: [],
@@ -200,7 +226,8 @@ export default [
     value: (e) => `E-104 is ${e}.`,
   }),
   step("index-match", 2, 2, "ID for a name, to the left", {
-    prompt: "In E3, return the ID of the person named in D3. The IDs are left of the names. Use INDEX and MATCH.",
+    prompt:
+      "In E3, return the ID of the person named in D3. The IDs are left of the names. Use INDEX and MATCH.",
     rows: [
       ["ID", "Name", "Salary", "Lookup", "Result"],
       ["E-101", "Ana", 61500, null, null],
@@ -262,7 +289,10 @@ export default [
     cell: "G2",
     answer: "=INDEX(B2:B9,MATCH(MAXIFS(D2:D9,C2:C9,G1),D2:D9,0))",
     required: [],
-    accept: ["=XLOOKUP(MAXIFS(D2:D9,C2:C9,G1),D2:D9,B2:B9)", '=INDEX(SORTBY(FILTER(B2:B9,C2:C9=G1),FILTER(D2:D9,C2:C9=G1),-1),1)'],
+    accept: [
+      "=XLOOKUP(MAXIFS(D2:D9,C2:C9,G1),D2:D9,B2:B9)",
+      "=INDEX(SORTBY(FILTER(B2:B9,C2:C9=G1),FILTER(D2:D9,C2:C9=G1),-1),1)",
+    ],
     variants: [{ G1: "Finance" }, { D7: 70000 }],
     reject: [
       ["=INDEX(B2:B9,MATCH(MAX(D2:D9),D2:D9,0))", "value"],
@@ -275,8 +305,14 @@ export default [
 
   // two-way-index-match (level 2, step 3)
   step("two-way-index-match", 1, 1, "Row by MATCH, fixed column", {
-    prompt: "In B8, return the Q2 units, the 2nd column of B2:E5, for the region in B7. Use INDEX and MATCH.",
-    rows: [...grid, [null, null, null, null, null], ["Region", "East", null, null, null], ["Q2 units", null, null, null, null]],
+    prompt:
+      "In B8, return the Q2 units, the 2nd column of B2:E5, for the region in B7. Use INDEX and MATCH.",
+    rows: [
+      ...grid,
+      [null, null, null, null, null],
+      ["Region", "East", null, null, null],
+      ["Q2 units", null, null, null, null],
+    ],
     cell: "B8",
     answer: "=INDEX(B2:E5,MATCH(B7,A2:A5,0),2)",
     required: ["INDEX", "MATCH"],
@@ -288,8 +324,14 @@ export default [
     value: (e) => `East sold ${e} in Q2.`,
   }),
   step("two-way-index-match", 2, 2, "Fixed row, column by MATCH", {
-    prompt: "In B8, return the South's units for the quarter in B7. Use INDEX and MATCH, with South fixed as row 2 of B2:E5.",
-    rows: [...grid, [null, null, null, null, null], ["Quarter", "Q4", null, null, null], ["South units", null, null, null, null]],
+    prompt:
+      "In B8, return the South's units for the quarter in B7. Use INDEX and MATCH, with South fixed as row 2 of B2:E5.",
+    rows: [
+      ...grid,
+      [null, null, null, null, null],
+      ["Quarter", "Q4", null, null, null],
+      ["South units", null, null, null, null],
+    ],
     cell: "B8",
     answer: "=INDEX(B2:E5,2,MATCH(B7,B1:E1,0))",
     required: ["INDEX", "MATCH"],
@@ -303,7 +345,13 @@ export default [
   step("two-way-index-match", 4, 2, "Two-way lookup with XLOOKUP", {
     prompt:
       "In B9, return the units for the region in B7 and the quarter in B8, with one XLOOKUP inside another: the inner one picks the quarter's column.",
-    rows: [...grid, [null, null, null, null, null], ["Region", "West", null, null, null], ["Quarter", "Q3", null, null, null], ["Units", null, null, null, null]],
+    rows: [
+      ...grid,
+      [null, null, null, null, null],
+      ["Region", "West", null, null, null],
+      ["Quarter", "Q3", null, null, null],
+      ["Units", null, null, null, null],
+    ],
     cell: "B9",
     answer: "=XLOOKUP(B7,A2:A5,XLOOKUP(B8,B1:E1,B2:E5))",
     required: ["XLOOKUP"],
@@ -313,20 +361,35 @@ export default [
       ["=XLOOKUP(B7,A2:A5,B2:B5)", "value"],
       ["=INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,0))", "required-function"],
     ],
-    nudge: "The inner XLOOKUP returns the whole quarter column; the outer one picks the region from it.",
+    nudge:
+      "The inner XLOOKUP returns the whole quarter column; the outer one picks the region from it.",
     rule: "XLOOKUP(B8,B1:E1,B2:E5) gives the column of that quarter; the outer XLOOKUP finds the region's value in it.",
     value: (e) => `West sold ${e} in Q3.`,
   }),
   step("two-way-index-match", 5, 3, "Change between two quarters for a region", {
-    prompt: "In B10, how much did the region in B7 gain from the quarter in B8 to the quarter in B9? A fall is negative.",
-    rows: [...grid, [null, null, null, null, null], ["Region", "East", null, null, null], ["From", "Q2", null, null, null], ["To", "Q4", null, null, null], ["Change", null, null, null, null]],
+    prompt:
+      "In B10, how much did the region in B7 gain from the quarter in B8 to the quarter in B9? A fall is negative.",
+    rows: [
+      ...grid,
+      [null, null, null, null, null],
+      ["Region", "East", null, null, null],
+      ["From", "Q2", null, null, null],
+      ["To", "Q4", null, null, null],
+      ["Change", null, null, null, null],
+    ],
     cell: "B10",
-    answer: "=INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B9,B1:E1,0))-INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,0))",
+    answer:
+      "=INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B9,B1:E1,0))-INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,0))",
     required: [],
-    accept: ["=XLOOKUP(B7,A2:A5,XLOOKUP(B9,B1:E1,B2:E5))-XLOOKUP(B7,A2:A5,XLOOKUP(B8,B1:E1,B2:E5))"],
+    accept: [
+      "=XLOOKUP(B7,A2:A5,XLOOKUP(B9,B1:E1,B2:E5))-XLOOKUP(B7,A2:A5,XLOOKUP(B8,B1:E1,B2:E5))",
+    ],
     variants: [{ B7: "West" }, { B8: "Q3", B9: "Q1" }],
     reject: [
-      ["=INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,0))-INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B9,B1:E1,0))", "value"],
+      [
+        "=INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,0))-INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B9,B1:E1,0))",
+        "value",
+      ],
       ["=E4-C4", "fragile"],
     ],
     nudge: "Two two-way lookups on the same row: the To quarter minus the From quarter.",
@@ -357,7 +420,8 @@ export default [
     value: (e) => `Silver pays ${e}.`,
   }),
   step("index-and-match-summary", 2, 2, "Band for a number of units", {
-    prompt: "In B7, return the band name for the units in B6, from the band starts in A2:A4. Use INDEX and MATCH with 1.",
+    prompt:
+      "In B7, return the band name for the units in B6, from the band starts in A2:A4. Use INDEX and MATCH with 1.",
     rows: [
       ["Units from", "Band"],
       [0, "Bronze"],
@@ -378,7 +442,8 @@ export default [
     value: (e) => `180 units is the ${e} band.`,
   }),
   step("index-and-match-summary", 4, 2, "Commission from a band", {
-    prompt: "In B7, work out the commission: the sales in B6 times the rate for their band. Use INDEX and MATCH with 1.",
+    prompt:
+      "In B7, work out the commission: the sales in B6 times the rate for their band. Use INDEX and MATCH with 1.",
     rows: [
       ["Sales from", "Rate"],
       [0, 0.02],
@@ -402,7 +467,8 @@ export default [
     value: (e) => `The commission on 7,400 is ${e}.`,
   }),
   step("index-and-match-summary", 5, 3, "Units still needed for the next band", {
-    prompt: "In B7, how many more units does the rep need to reach the next band? Show 0 when already in the top band.",
+    prompt:
+      "In B7, how many more units does the rep need to reach the next band? Show 0 when already in the top band.",
     rows: [
       ["Units from", "Rate"],
       [0, 0.02],

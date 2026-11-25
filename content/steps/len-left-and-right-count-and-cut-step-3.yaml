@@ -1,0 +1,42 @@
+id: len-left-and-right-count-and-cut-step-3
+slug: len-left-and-right-count-and-cut-step-3
+level: 2
+title: Drop a three-letter suffix
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: len-left-and-right-count-and-cut
+step: 3
+screens:
+  - prompt: "In B2, remove the 3-letter currency code from the end of the amount in A2: keep everything but the last 3 characters. Use LEFT and LEN."
+    rows:
+      - [Amount, Without currency]
+      - [1250.00EUR, null]
+    answerCell: B2
+    expected: "1250.00"
+    variants:
+      - set: { A2: 87.5GBP }
+        expected: "87.5"
+    answer: =LEFT(A2,LEN(A2)-3)
+    requiredFunctions:
+      - LEFT
+      - LEN
+    hints:
+      nudge: The length minus 3 is how many characters to keep from the left.
+      rule: LEFT(A2,LEN(A2)-3) works for any length, as long as the suffix is 3 letters.
+    misses:
+      value: Without the currency, A2 reads 1250.00.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for LEFT and LEN.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =LEFT(A2,LEN(A2)-3)
+      - =LEFT(A2,LEN(A2)-LEN(RIGHT(A2,3)))
+    reject:
+      - formula: =LEFT(A2,7)
+        rule: required-function
+      - formula: =LEFT(A2,LEN(A2)-2)
+        rule: value
+      - formula: ="1250.00"
+        rule: required-function
+      - formula: =LEFT(A2,LEN(A2)-3
+        rule: syntax

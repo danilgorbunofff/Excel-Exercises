@@ -1,0 +1,45 @@
+id: wildcards-in-text-criteria-step-1
+slug: wildcards-in-text-criteria-step-1
+level: 1
+title: Count Gmail addresses
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: wildcards-in-text-criteria
+step: 1
+screens:
+  - prompt: In C2, count the email addresses in A2:A8 that end with @gmail.com. Use COUNTIF with a wildcard.
+    rows:
+      - [Email, null, Gmail]
+      - [ana@gmail.com, null, null]
+      - [bo@outlook.com, null, null]
+      - [cy@gmail.com, null, null]
+      - [dee@gmail.co.uk, null, null]
+      - [eli@yahoo.com, null, null]
+      - [fay@gmail.com, null, null]
+      - [gus@work.org, null, null]
+    answerCell: C2
+    expected: 3
+    variants:
+      - { set: { A3: bo@gmail.com }, expected: 4 }
+      - { set: { A8: ana@gmail.com }, expected: 4 }
+    answer: =COUNTIF(A2:A8,"*@gmail.com")
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: "* in front stands for any name before the @."
+      rule: '"*@gmail.com" matches any address ending exactly that way, so gmail.co.uk does not count.'
+    misses:
+      value: 3 addresses end with @gmail.com.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(A2:A8,"*@gmail.com")
+      - =COUNTIF(A2:A8,"*@GMAIL.COM")
+    reject:
+      - formula: =COUNTIF(A2:A8,"*gmail*")
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =COUNTIF(A2:A8,"*@gmail.com"
+        rule: syntax

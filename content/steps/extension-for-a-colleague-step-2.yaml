@@ -1,0 +1,44 @@
+id: extension-for-a-colleague-step-2
+slug: extension-for-a-colleague-step-2
+level: 1
+title: Office for a colleague
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: extension-for-a-colleague
+step: 2
+screens:
+  - prompt: In F2, show which office the colleague named in E2 works in. Use XLOOKUP.
+    rows:
+      - [Name, Office, Ext, null, null, null]
+      - [Asha, Leeds, 3104, null, Dara, null]
+      - [Bryn, York, 3211, null, null, null]
+      - [Cleo, Leeds, 3187, null, null, null]
+      - [Dara, Hull, 3320, null, null, null]
+      - [Femi, York, 3245, null, null, null]
+      - [Gwen, Hull, 3352, null, null, null]
+    answerCell: F2
+    expected: Hull
+    variants:
+      - set: { E2: Asha }
+        expected: Leeds
+    answer: =XLOOKUP(E2,A2:A7,B2:B7)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: Return the Office column this time.
+      rule: XLOOKUP(E2,A2:A7,B2:B7) returns the office from the matching row.
+    misses:
+      value: Dara works in Hull.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(E2,A2:A7,B2:B7)
+      - =XLOOKUP(E2,$A$2:$A$7,$B$2:$B$7)
+    reject:
+      - formula: =XLOOKUP(E2,A2:A7,C2:C7)
+        rule: value
+      - formula: ="Hull"
+        rule: required-function
+      - formula: =XLOOKUP(E2,A2:A7,B2:B7
+        rule: syntax

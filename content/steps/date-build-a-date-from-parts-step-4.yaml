@@ -1,0 +1,43 @@
+id: date-build-a-date-from-parts-step-4
+slug: date-build-a-date-from-parts-step-4
+level: 2
+title: Last day of a month
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: date-build-a-date-from-parts
+step: 4
+screens:
+  - prompt: "In D2, build the last day of the month in C2 of the year in B2: day 0 of the following month. Use DATE."
+    rows:
+      - [Report, Year, Month, Month end]
+      - [Feb close, 2024, 2, null]
+    answerCell: D2
+    expected: 45351
+    variants:
+      - set: { C2: 12 }
+        expected: 45657
+      - set: { B2: 2023 }
+        expected: 44985
+    answer: =DATE(B2,C2+1,0)
+    requiredFunctions:
+      - DATE
+    hints:
+      nudge: Day 0 of next month is the last day of this month.
+      rule: DATE(B2,C2+1,0) handles months of any length and leap years.
+    misses:
+      value: The last day of February 2024 is serial 45351.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for DATE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =DATE(B2,C2+1,0)
+      - =DATE(B2,C2+1,1)-1
+    reject:
+      - formula: =DATE(B2,C2,30)
+        rule: value
+      - formula: =DATE(B2,C2,0)
+        rule: value
+      - formula: =45351
+        rule: required-function
+      - formula: =DATE(B2,C2+1,0
+        rule: syntax

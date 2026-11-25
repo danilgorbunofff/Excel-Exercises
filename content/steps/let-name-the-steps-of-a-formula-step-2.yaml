@@ -1,0 +1,59 @@
+id: let-name-the-steps-of-a-formula-step-2
+slug: let-name-the-steps-of-a-formula-step-2
+level: 2
+title: Name a filtered list
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: let-name-the-steps-of-a-formula
+step: 2
+screens:
+  - prompt: "In F2, total the East orders: name the East amounts east with LET and FILTER, then SUM them."
+    rows:
+      - [Order, Region, Rep, Amount, null, null, null, null, null]
+      - [1001, North, Ana, 820, null, null, null, null, null]
+      - [1002, South, Bo, 450, null, null, null, null, null]
+      - [1003, East, Cy, 1300, null, null, null, null, null]
+      - [1004, north, Di, 610, null, null, null, null, null]
+      - [1005, South, Ed, 1250, null, null, null, null, null]
+      - [1006, West, Fay, 300, null, null, null, null, null]
+      - [1007, North, Ana, 1500, null, null, null, null, null]
+      - [1008, East, Gus, 220, null, null, null, null, null]
+      - [1009, South, Bo, 980, null, null, null, null, null]
+      - [1010, North, Hal, 470, null, null, null, null, null]
+      - [1011, West, Ivy, 1100, null, null, null, null, null]
+      - [1012, South, Jo, 760, null, null, null, null, null]
+      - [1013, East, Cy, 540, null, null, null, null, null]
+      - [1014, North, Di, 90, null, null, null, null, null]
+      - [1015, South, Ed, 1600, null, null, null, null, null]
+      - [1016, West, Fay, 700, null, null, null, null, null]
+      - [1017, north, Kim, 1050, null, null, null, null, null]
+      - [1018, East, Gus, 380, null, null, null, null, null]
+    answerCell: F2
+    expected: 2440
+    variants:
+      - set: { D9: 500 }
+        expected: 2720
+    answer: =LET(east,FILTER(D2:D19,B2:B19="East"),SUM(east))
+    requiredFunctions:
+      - LET
+      - FILTER
+    hints:
+      nudge: The name holds the filtered amounts; the last part adds them.
+      rule: A LET name can hold a whole list as well as one number.
+    misses:
+      value: The East orders total 2440.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for LET and FILTER.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =LET(east,FILTER(D2:D19,B2:B19="East"),SUM(east))
+      - =LET(e,FILTER(D2:D19,B2:B19="East"),SUM(e))
+    reject:
+      - formula: =SUMIF(B2:B19,"East",D2:D19)
+        rule: required-function
+      - formula: =LET(east,FILTER(D2:D19,B2:B19="West"),SUM(east))
+        rule: value
+      - formula: =2440
+        rule: required-function
+      - formula: =LET(east,FILTER(D2:D19,B2:B19="East"),SUM(east)
+        rule: syntax

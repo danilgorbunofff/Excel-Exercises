@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =TEXTJOIN(", ",TRUE,$A$2:$A$5)
+      - =TEXTJOIN(", ",TRUE,A$2:A$5)
+      - =textjoin(", ", true, a2:a5)
+      - =LET(data,A2:A5,TEXTJOIN(", ",TRUE,data))
+    wrong: []
+    equivalent:
+      - formula: =TEXTJOIN(", ",TRUE,A2:A6)
+        why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

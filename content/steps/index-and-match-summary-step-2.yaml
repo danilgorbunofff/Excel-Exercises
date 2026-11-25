@@ -1,0 +1,47 @@
+id: index-and-match-summary-step-2
+slug: index-and-match-summary-step-2
+level: 2
+title: Band for a number of units
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: index-and-match-summary
+step: 2
+screens:
+  - prompt: In B7, return the band name for the units in B6, from the band starts in A2:A4. Use INDEX and MATCH with 1.
+    rows:
+      - [Units from, Band]
+      - [0, Bronze]
+      - [100, Silver]
+      - [200, Gold]
+      - [null, null]
+      - [Units sold, 180]
+      - [Band, null]
+    answerCell: B7
+    expected: Silver
+    variants:
+      - set: { B6: 200 }
+        expected: Gold
+      - set: { B6: 99 }
+        expected: Bronze
+    answer: =INDEX(B2:B4,MATCH(B6,A2:A4,1))
+    requiredFunctions:
+      - INDEX
+      - MATCH
+    hints:
+      nudge: 1 asks MATCH for the largest band start not above the units.
+      rule: MATCH(B6,A2:A4,1) needs the starts sorted low to high.
+    misses:
+      value: 180 units is the Silver band.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for INDEX and MATCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(B2:B4,MATCH(B6,A2:A4,1))
+      - =INDEX(B2:B4,MATCH(B6,A2:A4))
+    reject:
+      - formula: =INDEX(B2:B4,MATCH(B6,A2:A4,0))
+        rule: value
+      - formula: ="Silver"
+        rule: required-function
+      - formula: =INDEX(B2:B4,MATCH(B6,A2:A4,1)
+        rule: syntax

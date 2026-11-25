@@ -1,0 +1,56 @@
+id: petty-cash-left-step-4
+slug: petty-cash-left-step-4
+level: 2
+title: Flag when the tin needs a top-up
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: petty-cash-left
+step: 4
+screens:
+  - prompt: In B10, show Top up when the cash left (the float in B2 minus the expenses in B3:B8) is below 50, and OK otherwise. Use IF and SUM.
+    rows:
+      - [Item, Amount]
+      - [Float, 150]
+      - [Stamps, 18.4]
+      - [Milk, 6.75]
+      - [Taxi, 22.5]
+      - [Batteries, 9.99]
+      - [Flowers, 25]
+      - [Parking, 8.5]
+      - [null, null]
+      - [Status, null]
+    answerCell: B10
+    expected: OK
+    variants:
+      - set: { B2: 100 }
+        expected: Top up
+      - set: { B7: 40 }
+        expected: Top up
+      - set: { B7: 34 }
+        expected: Top up
+      - set: { B5: 30.83 }
+        expected: OK
+      - set: { B3: 20, B4: 10, B5: 30, B6: 10, B7: 25, B8: 5 }
+        expected: OK
+    answer: =IF(B2-SUM(B3:B8)<50,"Top up","OK")
+    requiredFunctions:
+      - IF
+      - SUM
+    hints:
+      nudge: Work out what is left first, then compare it with 50.
+      rule: IF(B2-SUM(B3:B8)<50,"Top up","OK") flags the tin when the cash runs low.
+    misses:
+      value: The tin shows OK.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF and SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(B2-SUM(B3:B8)<50,"Top up","OK")
+      - =IF(B2-SUM(B3:B8)>=50,"OK","Top up")
+    reject:
+      - formula: =IF(B2-SUM(B3:B8)>50,"Top up","OK")
+        rule: value
+      - formula: ="OK"
+        rule: required-function
+      - formula: =IF(B2-SUM(B3:B8)<50,"Top up","OK"
+        rule: syntax

@@ -1,0 +1,21 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP($D$2,$A$2:$A$5,$B$2:$B$5,0)*$E$2+XLOOKUP($D$3,$A$2:$A$5,$B$2:$B$5,0)*$E$3+XLOOKUP($D$4,$A$2:$A$5,$B$2:$B$5,0)*$E$4
+      - =XLOOKUP(D$2,A2:A5,B2:B5,0)*E2+XLOOKUP(D3,A2:A5,B2:B5,0)*E3+XLOOKUP(D4,A2:A5,B2:B5,0)*E4
+      - =xlookup(d2, a2:a5, b2:b5, 0)*e2+xlookup(d3, a2:a5, b2:b5, 0)*e3+xlookup(d4, a2:a5, b2:b5, 0)*e4
+      - =IFERROR(INDEX(B2:B5,MATCH(D2,A2:A5,0)),0)*E2+XLOOKUP(D3,A2:A5,B2:B5,0)*E3+XLOOKUP(D4,A2:A5,B2:B5,0)*E4
+      - =IFERROR(VLOOKUP(D2,A2:B5,2,FALSE),0)*E2+XLOOKUP(D3,A2:A5,B2:B5,0)*E3+XLOOKUP(D4,A2:A5,B2:B5,0)*E4
+      - =XLOOKUP(D2,A2:A5,B2:B5,0)*E2+IFERROR(INDEX(B2:B5,MATCH(D3,A2:A5,0)),0)*E3+XLOOKUP(D4,A2:A5,B2:B5,0)*E4
+      - =XLOOKUP(D2,A2:A5,B2:B5,0)*E2+IFERROR(VLOOKUP(D3,A2:B5,2,FALSE),0)*E3+XLOOKUP(D4,A2:A5,B2:B5,0)*E4
+      - =XLOOKUP(D2,A2:A5,B2:B5,0)*E2+XLOOKUP(D3,A2:A5,B2:B5,0)*E3+IFERROR(INDEX(B2:B5,MATCH(D4,A2:A5,0)),0)*E4
+      - =XLOOKUP(D2,A2:A5,B2:B5,0)*E2+XLOOKUP(D3,A2:A5,B2:B5,0)*E3+IFERROR(VLOOKUP(D4,A2:B5,2,FALSE),0)*E4
+      - =LET(data,A2:A5,XLOOKUP(D2,data,B2:B5,0)*E2+XLOOKUP(D3,data,B2:B5,0)*E3+XLOOKUP(D4,data,B2:B5,0)*E4)
+    wrong:
+      - formula: =XLOOKUP(D2,A2:A5,B2:B5,1)*E2+XLOOKUP(D3,A2:A5,B2:B5,0)*E3+XLOOKUP(D4,A2:A5,B2:B5,0)*E4
+        rule: fragile
+        why: 0 written as 1
+      - formula: =XLOOKUP(D2,A2:A5,B2:B5,0)*E2+XLOOKUP(D3,A2:A5,B2:B5,0)*E3+XLOOKUP(D4,A2:A5,B2:B5,1)*E4
+        rule: fragile
+        why: 0 written as 1
+    equivalent: []

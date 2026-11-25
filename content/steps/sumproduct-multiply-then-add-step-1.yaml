@@ -1,0 +1,47 @@
+id: sumproduct-multiply-then-add-step-1
+slug: sumproduct-multiply-then-add-step-1
+level: 1
+title: Value of the stock
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sumproduct-multiply-then-add
+step: 1
+screens:
+  - prompt: "In C8, total the value of the stock: each price in B2:B6 times its quantity in C2:C6, added up. Use SUMPRODUCT."
+    rows:
+      - [Item, Price, Qty]
+      - [Pens, 1.2, 40]
+      - [Pads, 3.5, 15]
+      - [Clips, 0.05, 500]
+      - [Tape, 2.1, 12]
+      - [Files, 4.75, 20]
+      - [null, null, null]
+      - [Stock value, null, null]
+    answerCell: C8
+    expected: 245.7
+    variants:
+      - set: { C3: 20 }
+        expected: 263.2
+    answer: =SUMPRODUCT(B2:B6,C2:C6)
+    requiredFunctions:
+      - SUMPRODUCT
+    hints:
+      nudge: SUMPRODUCT multiplies each pair of cells, then adds the results.
+      rule: SUMPRODUCT(B2:B6,C2:C6) is price times quantity on every row, added up.
+    misses:
+      value: The stock is worth 245.70.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMPRODUCT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(B2:B6,C2:C6)
+      - =SUMPRODUCT(B2:B6*C2:C6)
+    reject:
+      - formula: =SUM(B2:B6)*SUM(C2:C6)
+        rule: required-function
+      - formula: =SUMPRODUCT(B2:B5,C2:C5)
+        rule: value
+      - formula: =245.7
+        rule: required-function
+      - formula: =SUMPRODUCT(B2:B6,C2:C6
+        rule: syntax

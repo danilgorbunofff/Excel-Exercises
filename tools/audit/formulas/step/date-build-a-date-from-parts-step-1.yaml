@@ -1,0 +1,7 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =DATE(B$2,1,1)
+      - =date(b2, 1, 1)
+    wrong: []
+    equivalent: []

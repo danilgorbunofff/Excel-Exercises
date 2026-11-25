@@ -1,0 +1,47 @@
+id: full-year-forecast-from-the-run-rate-step-4
+slug: full-year-forecast-from-the-run-rate-step-4
+level: 2
+title: Forecast from the latest month
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: full-year-forecast-from-the-run-rate
+step: 4
+screens:
+  - prompt: In D2, forecast the full year as the actual to date plus the latest month, B6, for each month left. Use SUM.
+    rows:
+      - [Month, Actual, Months closed, null, null]
+      - [1, 41200, 5, null, null]
+      - [2, 39800, null, null, null]
+      - [3, 43500, null, null, null]
+      - [4, 44100, null, null, null]
+      - [5, 45600, null, null, null]
+    answerCell: D2
+    expected: 533400
+    variants:
+      - set: { B6: 47000 }
+        expected: 544600
+      - set: { C2: 6 }
+        expected: 487800
+    answer: =SUM(B2:B6)+B6*(12-C2)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: The months left are 12 minus the months closed in C2.
+      rule: SUM(B2:B6) is the year so far; B6*(12-C2) repeats the latest month for the rest.
+    misses:
+      value: The forecast is 533400.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:B6)+B6*(12-C2)
+      - =SUM(B2:B6)+(12-C2)*B6
+    reject:
+      - formula: =SUM(B2:B6)+B6*12
+        rule: value
+      - formula: =SUM(B2:B6)+B6*7
+        rule: fragile
+      - formula: =533400
+        rule: required-function
+      - formula: =SUM(B2:B6)+B6*(12-C2
+        rule: syntax

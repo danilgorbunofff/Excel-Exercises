@@ -1,0 +1,39 @@
+id: budget-versus-actual-with-a-variance-flag-step-3
+slug: budget-versus-actual-with-a-variance-flag-step-3
+level: 2
+title: Size of the variance
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: budget-versus-actual-with-a-variance-flag
+step: 3
+screens:
+  - prompt: In D2, show the size of the variance as a positive number, whether over or under. Use ABS.
+    rows:
+      - [Line, Budget, Actual, Size]
+      - [Training, 8000, 6950, null]
+    answerCell: D2
+    expected: 1050
+    variants:
+      - set: { C2: 9100 }
+        expected: 1100
+    answer: =ABS(C2-B2)
+    requiredFunctions:
+      - ABS
+    hints:
+      nudge: ABS drops the minus sign.
+      rule: ABS(C2-B2) gives the distance from budget in either direction.
+    misses:
+      value: Training is 1050 away from budget.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for ABS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ABS(C2-B2)
+      - =ABS(B2-C2)
+    reject:
+      - formula: =C2-B2
+        rule: required-function
+      - formula: =1050
+        rule: required-function
+      - formula: =ABS(C2-B2
+        rule: syntax

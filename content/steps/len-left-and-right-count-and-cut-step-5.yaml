@@ -1,0 +1,55 @@
+id: len-left-and-right-count-and-cut-step-5
+slug: len-left-and-right-count-and-cut-step-5
+level: 3
+title: Codes of the wrong length
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: len-left-and-right-count-and-cut
+step: 5
+screens:
+  - prompt: In C2, how many of the product codes in A2 to A16 are not exactly 8 characters long?
+    rows:
+      - [Code, null, Wrong length]
+      - [PX-10042, null, null]
+      - [PX-1043, null, null]
+      - [PX-10044, null, null]
+      - [PX-100451, null, null]
+      - [PX-10046, null, null]
+      - [PX-10047, null, null]
+      - [PX 10048, null, null]
+      - [PX-1049, null, null]
+      - [PX-10050, null, null]
+      - ["PX-10051 ", null, null]
+      - [PX-10052, null, null]
+      - [PX-10053, null, null]
+      - [PX-10054, null, null]
+      - [PX-1055, null, null]
+      - [PX-10056, null, null]
+    answerCell: C2
+    expected: 5
+    variants:
+      - { set: { A3: PX-10043 }, expected: 4 }
+      - { set: { A2: PX-1043, A16: PX-1043 }, expected: 7 }
+    answer: =SUMPRODUCT(--(LEN(A2:A16)<>8))
+    requiredFunctions: []
+    hints:
+      nudge: Work out every length at once and compare each with 8.
+      rule: LEN(A2:A16)<>8 is TRUE for each wrong code; -- turns TRUE into 1 and SUMPRODUCT counts them. A trailing space counts as a character.
+    misses:
+      value: 5 codes have the wrong length, including the one with a trailing space.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(--(LEN(A2:A16)<>8))
+      - =ROWS(A2:A16)-SUMPRODUCT(--(LEN(A2:A16)=8))
+      - =SUM(--(LEN(A2:A16)<>8))
+    reject:
+      - formula: =SUMPRODUCT(--(LEN(A2:A16)<8))
+        rule: value
+      - formula: =COUNTIF(A2:A16,"????????")
+        rule: value
+      - formula: =5
+        rule: reference
+      - formula: =SUMPRODUCT(--(LEN(A2:A16)<>8)
+        rule: syntax

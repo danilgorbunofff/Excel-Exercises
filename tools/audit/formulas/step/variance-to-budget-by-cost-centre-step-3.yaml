@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(SUMIFS($B$2:$B$7,$A$2:$A$7,$D$4)>$E$4,"Over","Under")
+      - =IF(SUMIFS(B$2:B$7,A2:A7,D4)>E4,"Over","Under")
+      - =if(sumifs(b2:b7, a2:a7, d4)>e4, "Over", "Under")
+      - =LET(data,B2:B7,IF(SUMIFS(data,A2:A7,D4)>E4,"Over","Under"))
+    wrong:
+      - formula: =IF(SUMIFS(B2:B7,A2:A7,D4)>=E4,"Over","Under")
+        rule: fragile
+        why: "> written as >="
+    equivalent: []

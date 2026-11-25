@@ -1,0 +1,53 @@
+id: a-sales-summary-end-to-end-step-1
+slug: a-sales-summary-end-to-end-step-1
+level: 1
+title: Total of every sale
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-sales-summary-end-to-end
+step: 1
+screens:
+  - prompt: In E2, total the Amount column. Use SUM.
+    rows:
+      - [Region, Rep, Amount, null, Total, null]
+      - [North, Ada, 320, null, null, null]
+      - [South, Ben, 250, null, null, null]
+      - [North, Cleo, 180, null, null, null]
+      - [West, Dev, 300, null, null, null]
+      - [North, Ada, 400, null, null, null]
+      - [East, Eve, 275, null, null, null]
+      - [South, Finn, 360, null, null, null]
+      - [West, Gus, 140, null, null, null]
+      - [East, Eve, 410, null, null, null]
+      - [South, Ada, 195, null, null, null]
+      - [North, Hana, 230, null, null, null]
+      - [West, Dev, 505, null, null, null]
+      - [East, Ivo, 160, null, null, null]
+      - [South, Finn, 290, null, null, null]
+      - [North, Cleo, 145, null, null, null]
+    answerCell: E2
+    expected: 4160
+    variants:
+      - set: { C3: 300 }
+        expected: 4210
+    answer: =SUM(C2:C16)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: SUM the whole Amount column.
+      rule: SUM(C2:C16) adds every sale.
+    misses:
+      value: All sales add up to 4160.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(C2:C16)
+      - =SUM($C$2:$C$16)
+    reject:
+      - formula: =SUM(C2:C15)
+        rule: value
+      - formula: =4160
+        rule: required-function
+      - formula: =SUM(C2:C16
+        rule: syntax

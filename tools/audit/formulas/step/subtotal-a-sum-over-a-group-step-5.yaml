@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUBTOTAL(4,$D$2:$D$16)/SUBTOTAL(9,$D$2:$D$16)
+      - =SUBTOTAL(4,D$2:D$16)/SUBTOTAL(9,D2:D16)
+      - =subtotal(4, d2:d16)/subtotal(9, d2:d16)
+      - =LET(data,D2:D16,SUBTOTAL(4,data)/SUBTOTAL(9,data))
+    wrong:
+      - formula: =SUBTOTAL(4,D2:D15)/SUBTOTAL(9,D2:D16)
+        rule: fragile
+        why: range D2:D16 one row short at the end
+      - formula: =SUBTOTAL(4,D3:D16)/SUBTOTAL(9,D2:D16)
+        rule: fragile
+        why: range D2:D16 skips its first row
+    equivalent: []

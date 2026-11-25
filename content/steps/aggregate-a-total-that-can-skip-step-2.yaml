@@ -1,0 +1,54 @@
+id: aggregate-a-total-that-can-skip-step-2
+slug: aggregate-a-total-that-can-skip-step-2
+level: 1
+title: Smallest with AGGREGATE
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: aggregate-a-total-that-can-skip
+step: 2
+screens:
+  - prompt: In E2, find the smallest quantity in C2:C16 with AGGREGATE, function 5 and option 6.
+    rows:
+      - [Item, Price, Qty, Line, Smallest quantity]
+      - [Pens, 1.2, 40, 48, null]
+      - [Pads, 3.5, 15, 52.5, null]
+      - [Clips, 0.05, 500, 25, null]
+      - [Tape, 2.1, 12, 25.2, null]
+      - [Files, 4.75, 20, 95, null]
+      - [Ink, 18.9, 6, 113.4, null]
+      - [Glue, 1.85, 30, 55.5, null]
+      - [Rulers, 0.9, 25, 22.5, null]
+      - [Folders, 0.6, 100, 60, null]
+      - [Labels, 5.4, 8, 43.2, null]
+      - [Staples, 1.1, 18, 19.8, null]
+      - [Markers, 7.25, 10, 72.5, null]
+      - [Erasers, 0.35, 60, 21, null]
+      - [Binders, 3.9, 14, 54.6, null]
+      - [Notes, 2.6, 22, 57.2, null]
+    answerCell: E2
+    expected: 6
+    variants:
+      - { set: { C7: 2 }, expected: 2 }
+      - { set: { C2: 5 }, expected: 5 }
+      - { set: { C16: 5 }, expected: 5 }
+    answer: =AGGREGATE(5,6,C2:C16)
+    requiredFunctions:
+      - AGGREGATE
+    hints:
+      nudge: Function 5 is the minimum.
+      rule: AGGREGATE(5,6,C2:C16) gives the smallest quantity.
+    misses:
+      value: The smallest quantity is 6.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for AGGREGATE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AGGREGATE(5,6,C2:C16)
+      - =AGGREGATE(5,7,C2:C16)
+    reject:
+      - formula: =AGGREGATE(4,6,C2:C16)
+        rule: value
+      - formula: =6
+        rule: required-function
+      - formula: =AGGREGATE(5,6,C2:C16
+        rule: syntax

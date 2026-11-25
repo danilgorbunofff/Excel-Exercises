@@ -1,0 +1,41 @@
+id: tidy-a-pasted-name-step-4
+slug: tidy-a-pasted-name-step-4
+level: 2
+title: Email address from a pasted name
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: tidy-a-pasted-name
+step: 4
+screens:
+  - prompt: "In B2, build the work email from the pasted name: small letters, an underscore between first name and surname, then @firm.com. Use TRIM, SUBSTITUTE and LOWER."
+    rows:
+      - [Pasted, Email]
+      - ["  Jane   Smith ", null]
+    answerCell: B2
+    expected: jane_smith@firm.com
+    variants:
+      - set: { A2: " Omar  Haddad" }
+        expected: omar_haddad@firm.com
+    answer: =LOWER(SUBSTITUTE(TRIM(A2)," ","_"))&"@firm.com"
+    requiredFunctions:
+      - TRIM
+      - SUBSTITUTE
+      - LOWER
+    hints:
+      nudge: Tidy the spaces first, or every extra space becomes an underscore.
+      rule: TRIM first leaves one space, which SUBSTITUTE turns into one underscore.
+    misses:
+      value: The email is jane_smith@firm.com.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for TRIM, SUBSTITUTE and LOWER.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =LOWER(SUBSTITUTE(TRIM(A2)," ","_"))&"@firm.com"
+      - =SUBSTITUTE(LOWER(TRIM(A2))," ","_")&"@firm.com"
+    reject:
+      - formula: =LOWER(SUBSTITUTE(A2," ","_"))&"@firm.com"
+        rule: required-function
+      - formula: ="jane_smith@firm.com"
+        rule: required-function
+      - formula: =LOWER(SUBSTITUTE(TRIM(A2)," ","_"))&"@firm.com",
+        rule: syntax

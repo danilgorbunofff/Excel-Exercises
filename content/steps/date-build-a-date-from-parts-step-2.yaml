@@ -1,0 +1,41 @@
+id: date-build-a-date-from-parts-step-2
+slug: date-build-a-date-from-parts-step-2
+level: 1
+title: Year of a date
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: date-build-a-date-from-parts
+step: 2
+screens:
+  - prompt: In C2, take the year from the date in B2. Use YEAR.
+    rows:
+      - [Invoice, Date, Year]
+      - [INV-2001, 45352, null]
+    answerCell: C2
+    expected: 2024
+    variants:
+      - set: { B2: 45700 }
+        expected: 2025
+    answer: =YEAR(B2)
+    requiredFunctions:
+      - YEAR
+    hints:
+      nudge: YEAR reads the year out of a real date.
+      rule: YEAR(B2) gives 2024 for any date in 2024.
+    misses:
+      value: The invoice is from 2024.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for YEAR.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =YEAR(B2)
+      - =year(b2)
+      - "=YEAR(B2)+0"
+      - "=YEAR(B2*1)"
+    reject:
+      - formula: =MONTH(B2)
+        rule: required-function
+      - formula: =2024
+        rule: required-function
+      - formula: =YEAR(B2
+        rule: syntax

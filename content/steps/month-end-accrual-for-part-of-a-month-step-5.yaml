@@ -1,0 +1,42 @@
+id: month-end-accrual-for-part-of-a-month-step-5
+slug: month-end-accrual-for-part-of-a-month-step-5
+level: 3
+title: Accrual for a contract that ends mid-month
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: month-end-accrual-for-part-of-a-month
+step: 5
+screens:
+  - prompt: In D2, how much of the monthly fee should be accrued for a contract that ends on the date in C2? Count the days from the 1st of that month to the end date, both included, as a share of the days in the month.
+    rows:
+      - [Contract, Monthly fee, End date, Accrual]
+      - [Security, 4650, 45387, null]
+    answerCell: D2
+    expected: 775
+    variants:
+      - set: { C2: 45351 }
+        expected: 4650
+      - set: { B2: 3000 }
+        expected: 500
+    answer: =B2*(C2-EOMONTH(C2,-1))/DAY(EOMONTH(C2,0))
+    requiredFunctions: []
+    hints:
+      nudge: The days used are the end date's day number; divide by the days in that month.
+      rule: C2-EOMONTH(C2,-1) counts from the 1st to the end date; DAY(EOMONTH(C2,0)) is the month's length.
+    misses:
+      value: The accrual is 775.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2*(C2-EOMONTH(C2,-1))/DAY(EOMONTH(C2,0))
+      - =B2*DAY(C2)/DAY(EOMONTH(C2,0))
+    reject:
+      - formula: =B2*(C2-EOMONTH(C2,-1))/30
+        rule: fragile
+      - formula: =B2*(EOMONTH(C2,0)-C2+1)/DAY(EOMONTH(C2,0))
+        rule: value
+      - formula: =775
+        rule: reference
+      - formula: =B2*(C2-EOMONTH(C2,-1))/DAY(EOMONTH(C2,0)
+        rule: syntax

@@ -51,5 +51,18 @@
     {
       "C2": null
     }
+  ],
+  "step/index-a-value-at-a-row-and-column-step-2#1": [
+    {
+      "B7": null
+    }
+  ],
+  "step/index-a-value-at-a-row-and-column-step-4#1": [
+    {
+      "B7": 0
+    },
+    {
+      "B7": null
+    }
   ]
 }

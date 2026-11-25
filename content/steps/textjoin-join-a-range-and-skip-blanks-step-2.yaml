@@ -1,0 +1,39 @@
+id: textjoin-join-a-range-and-skip-blanks-step-2
+slug: textjoin-join-a-range-and-skip-blanks-step-2
+level: 1
+title: Join a row with slashes
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: textjoin-join-a-range-and-skip-blanks
+step: 2
+screens:
+  - prompt: In G2, join the shifts in B2:F2 with " / " between them, skipping the empty days. Use TEXTJOIN.
+    rows:
+      - [Name, Mon, Tue, Wed, Thu, Fri, Shifts]
+      - [Ada, Early, null, Late, Early, null, null]
+    answerCell: G2
+    expected: Early / Late / Early
+    variants:
+      - set: { C2: Night }
+        expected: Early / Night / Late / Early
+    answer: =TEXTJOIN(" / ",TRUE,B2:F2)
+    requiredFunctions:
+      - TEXTJOIN
+    hints:
+      nudge: TRUE as the second part skips the empty days.
+      rule: TEXTJOIN(" / ",TRUE,B2:F2) lists only the days that have a shift.
+    misses:
+      value: Ada's shifts read Early / Late / Early.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for TEXTJOIN.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =TEXTJOIN(" / ",TRUE,B2:F2)
+      - =TEXTJOIN(" / ",1,B2:F2)
+    reject:
+      - formula: =TEXTJOIN(" / ",FALSE,B2:F2)
+        rule: value
+      - formula: ="Early / Late / Early"
+        rule: required-function
+      - formula: =TEXTJOIN(" / ",TRUE,B2:F2
+        rule: syntax

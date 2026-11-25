@@ -1,0 +1,46 @@
+id: lead-conversion-rate-step-4
+slug: lead-conversion-rate-step-4
+level: 2
+title: Conversion across all campaigns
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: lead-conversion-rate
+step: 4
+screens:
+  - prompt: In E2, show the conversion of all campaigns together, as a percentage rounded to one decimal place. Use SUM and ROUND.
+    rows:
+      - [Campaign, Leads, Sales, null, All campaigns %, null]
+      - [Spring email, 1840, 97, null, null, null]
+      - [Webinar, 620, 58, null, null, null]
+      - [Trade show, 310, 41, null, null, null]
+      - [Search ads, 2950, 112, null, null, null]
+      - [Referral, 240, 36, null, null, null]
+    answerCell: E2
+    expected: 5.8
+    variants:
+      - set: { C5: 150 }
+        expected: 6.4
+    answer: =ROUND(SUM(C2:C6)/SUM(B2:B6)*100,1)
+    requiredFunctions:
+      - SUM
+      - ROUND
+    hints:
+      nudge: Add up all sales and all leads first, then divide.
+      rule: Total sales over total leads weighs each campaign by its size.
+    misses:
+      value: All campaigns together converted 5.8% of leads.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM and ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(SUM(C2:C6)/SUM(B2:B6)*100,1)
+      - =ROUND(100*SUM(C2:C6)/SUM(B2:B6),1)
+    reject:
+      - formula: =ROUND(SUM(C2:C6)/SUM(B2:B6),1)
+        rule: value
+      - formula: =ROUND(AVERAGE(C2:C6/B2:B6)*100,1)
+        rule: required-function
+      - formula: =5.8
+        rule: required-function
+      - formula: =ROUND(SUM(C2:C6)/SUM(B2:B6)*100,1
+        rule: syntax

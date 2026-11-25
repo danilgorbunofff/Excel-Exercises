@@ -1,0 +1,42 @@
+id: formula-audit-fix-five-broken-sheets-step-3
+slug: formula-audit-fix-five-broken-sheets-step-3
+level: 2
+title: Fix a lookup that returns the wrong column
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: formula-audit-fix-five-broken-sheets
+step: 3
+screens:
+  - prompt: The lookup in F2 returned the visits. In F2, return the orders, the 3rd column, for the name in E2. Use VLOOKUP.
+    rows:
+      - [Rep, Visits, Orders, null, Name, Orders found]
+      - [Ada, 12, 9, null, Cleo, null]
+      - [Ben, 4, 2, null, null, null]
+      - [Cleo, 9, 7, null, null, null]
+      - [Dev, 15, 11, null, null, null]
+    answerCell: F2
+    expected: 7
+    variants:
+      - { set: { E2: Dev }, expected: 11 }
+      - { set: { A2: Cleo }, expected: 9 }
+    answer: =VLOOKUP(E2,A2:C5,3,FALSE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: Orders is the 3rd column of A2:C5.
+      rule: The column number counts from the table's first column.
+    misses:
+      value: Cleo took 7 orders.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =VLOOKUP(E2,A2:C5,3,FALSE)
+      - =VLOOKUP(E2,$A$2:$C$5,3,FALSE)
+    reject:
+      - formula: =VLOOKUP(E2,A2:C5,2,FALSE)
+        rule: value
+      - formula: =7
+        rule: required-function
+      - formula: =VLOOKUP(E2,A2:C5,3,FALSE
+        rule: syntax

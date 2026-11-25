@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(COUNTIF($D$2:$D$16,">0")/COUNT($D$2:$D$16)*100,1)
+      - =ROUND(COUNTIF(D$2:D$16,">0")/COUNT(D2:D16)*100,1)
+      - =round(countif(d2:d16, ">0")/count(d2:d16)*100, 1)
+      - =LET(data,D2:D16,ROUND(COUNTIF(data,">0")/COUNT(data)*100,1))
+    wrong:
+      - formula: =ROUND(COUNTIF(D2:D15,">0")/COUNT(D2:D16)*100,1)
+        rule: fragile
+        why: range D2:D16 one row short at the end
+      - formula: =ROUND(COUNTIF(D2:D16,">0")/COUNT(C2:C16)*100,1)
+        rule: fragile
+        why: range D2:D16 one column left
+    equivalent: []

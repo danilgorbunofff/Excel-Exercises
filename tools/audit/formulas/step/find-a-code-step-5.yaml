@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($A$2:$A$9,MATCH(MIN($E$2:$E$9),$E$2:$E$9,0))
+      - =INDEX(A$2:A$9,MATCH(MIN(E2:E9),E2:E9,0))
+      - =index(a2:a9, match(min(e2:e9), e2:e9, 0))
+      - =LET(data,A2:A9,INDEX(data,MATCH(MIN(E2:E9),E2:E9,0)))
+    wrong:
+      - formula: =INDEX(A2:A9,MATCH(MIN(E3:E9),E2:E9,0))
+        rule: fragile
+        why: range E2:E9 skips its first row
+    equivalent: []

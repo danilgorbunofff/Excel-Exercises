@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =FILTER(A$2:A$19,D2:D19>=1000)
+      - =filter(a2:a19, d2:d19>=1000)
+      - =LET(data,A2:A19,FILTER(data,D2:D19>=1000))
+    wrong:
+      - formula: =FILTER(A2:A19,D2:D19>=999)
+        rule: fragile
+        why: 1000 written as 999
+    equivalent: []

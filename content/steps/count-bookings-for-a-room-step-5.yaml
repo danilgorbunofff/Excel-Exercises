@@ -1,0 +1,50 @@
+id: count-bookings-for-a-room-step-5
+slug: count-bookings-for-a-room-step-5
+level: 3
+title: Busiest room
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-bookings-for-a-room
+step: 5
+screens:
+  - prompt: In F2, name the room in E2:E4 with the most bookings.
+    rows:
+      - [Date, Room, Booked by, null, Room, Busiest, null]
+      - [Mon, Oak, Ali, null, Oak, null, null]
+      - [Mon, Elm, Bea, null, Elm, null, null]
+      - [Tue, Oak, Cid, null, Ash, null, null]
+      - [Tue, Elm, Dee, null, null, null, null]
+      - [Wed, Ash, Eli, null, null, null, null]
+      - [Wed, Elm, Fay, null, null, null, null]
+      - [Thu, Oak, Gus, null, null, null, null]
+      - [Thu, Elm, Hal, null, null, null, null]
+      - [Fri, Ash, Ivy, null, null, null, null]
+      - [Fri, Elm, Jon, null, null, null, null]
+    answerCell: F2
+    expected: Elm
+    variants:
+      - { set: { B3: Oak, B5: Oak, B7: Oak }, expected: Oak }
+      - { set: { B2: Ash, B3: Ash, B4: Ash, B6: Ash }, expected: Ash }
+      - { set: { E3: Oak }, expected: Oak }
+    answer: =INDEX(E2:E4,MATCH(MAX(COUNTIF(B2:B11,E2:E4)),COUNTIF(B2:B11,E2:E4),0))
+    requiredFunctions: []
+    hints:
+      nudge: Count every room at once, then find which count is the largest.
+      rule: COUNTIF with E2:E4 as the criteria gives one count per room.
+    misses:
+      value: Elm is the busiest room.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(E2:E4,MATCH(MAX(COUNTIF(B2:B11,E2:E4)),COUNTIF(B2:B11,E2:E4),0))
+      - =XLOOKUP(MAX(COUNTIF(B2:B11,E2:E4)),COUNTIF(B2:B11,E2:E4),E2:E4)
+    reject:
+      - formula: =MAX(COUNTIF(B2:B11,E2:E4))
+        rule: value
+      - formula: ="Elm"
+        rule: reference
+      - formula: ="Elm"
+        rule: reference
+      - formula: =INDEX(E2:E4,MATCH(MAX(COUNTIF(B2:B11,E2:E4)),COUNTIF(B2:B11,E2:E4),0)
+        rule: syntax

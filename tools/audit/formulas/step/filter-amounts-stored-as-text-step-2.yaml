@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(--$D$2:$D$19)
+      - =SUMPRODUCT(--D$2:D$19)
+      - =sumproduct(--d2:d19)
+      - =LET(data,D2:D19,SUMPRODUCT(--data))
+    wrong: []
+    equivalent: []

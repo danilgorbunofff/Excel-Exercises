@@ -1,0 +1,50 @@
+id: rep-target-check-step-5
+slug: rep-target-check-step-5
+level: 3
+title: How many reps hit target
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: rep-target-check
+step: 5
+screens:
+  - prompt: In F2, count the reps whose sales reached their own target.
+    rows:
+      - [Rep, Target, Sales, null, null, Hit target]
+      - [Nia, 52000, 50850, null, null, null]
+      - [Owen, 48000, 49200, null, null, null]
+      - [Pia, 55000, 55000, null, null, null]
+      - [Quin, 40000, 38750, null, null, null]
+      - [Rosa, 60000, 64100, null, null, null]
+      - [Sam, 45000, 44990, null, null, null]
+      - [Tess, 50000, 51800, null, null, null]
+      - [Uri, 42000, 39900, null, null, null]
+    answerCell: F2
+    expected: 4
+    variants:
+      - set: { C2: 52000 }
+        expected: 5
+      - set: { C6: 59000 }
+        expected: 3
+    answer: =SUMPRODUCT(--(C2:C9>=B2:B9))
+    requiredFunctions: []
+    hints:
+      nudge: Compare each rep's sales with their own target, row by row.
+      rule: C2:C9>=B2:B9 tests each row; SUMPRODUCT counts the TRUE results.
+    misses:
+      value: 4 reps reached their target.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(--(C2:C9>=B2:B9))
+      - =SUM(--(C2:C9>=B2:B9))
+      - =SUMPRODUCT((C2:C9-B2:B9>=0)*1)
+    reject:
+      - formula: =SUMPRODUCT(--(C2:C9>B2:B9))
+        rule: value
+      - formula: =COUNTIF(C2:C9,">="&B2)
+        rule: value
+      - formula: =4
+        rule: reference
+      - formula: =SUMPRODUCT(--(C2:C9>=B2:B9)
+        rule: syntax

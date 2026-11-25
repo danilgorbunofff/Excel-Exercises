@@ -1,0 +1,50 @@
+id: two-way-index-match-step-4
+slug: two-way-index-match-step-4
+level: 2
+title: Two-way lookup with XLOOKUP
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: two-way-index-match
+step: 4
+screens:
+  - prompt: "In B9, return the units for the region in B7 and the quarter in B8, with one XLOOKUP inside another: the inner one picks the quarter's column."
+    rows:
+      - [Region, Q1, Q2, Q3, Q4]
+      - [North, 120, 140, 160, 150]
+      - [South, 90, 110, 130, 145]
+      - [East, 105, 95, 120, 135]
+      - [West, 75, 95, 115, 100]
+      - [null, null, null, null, null]
+      - [Region, West, null, null, null]
+      - [Quarter, Q3, null, null, null]
+      - [Units, null, null, null, null]
+    answerCell: B9
+    expected: 115
+    variants:
+      - set: { B7: North }
+        expected: 160
+      - set: { B8: Q1 }
+        expected: 75
+    answer: =XLOOKUP(B7,A2:A5,XLOOKUP(B8,B1:E1,B2:E5))
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: The inner XLOOKUP returns the whole quarter column; the outer one picks the region from it.
+      rule: XLOOKUP(B8,B1:E1,B2:E5) gives the column of that quarter; the outer XLOOKUP finds the region's value in it.
+    misses:
+      value: West sold 115 in Q3.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(B7,A2:A5,XLOOKUP(B8,B1:E1,B2:E5))
+      - =XLOOKUP(B8,B1:E1,XLOOKUP(B7,A2:A5,B2:E5))
+    reject:
+      - formula: =XLOOKUP(B7,A2:A5,B2:B5)
+        rule: value
+      - formula: =INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,0))
+        rule: required-function
+      - formula: =115
+        rule: required-function
+      - formula: =XLOOKUP(B7,A2:A5,XLOOKUP(B8,B1:E1,B2:E5)
+        rule: syntax

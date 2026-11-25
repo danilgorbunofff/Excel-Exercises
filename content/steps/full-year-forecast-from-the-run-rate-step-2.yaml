@@ -1,0 +1,43 @@
+id: full-year-forecast-from-the-run-rate-step-2
+slug: full-year-forecast-from-the-run-rate-step-2
+level: 2
+title: Annualised run rate
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: full-year-forecast-from-the-run-rate
+step: 2
+screens:
+  - prompt: "In D2, annualise the run rate: the average month so far times 12. Use AVERAGE."
+    rows:
+      - [Month, Actual, Months closed, null, null]
+      - [1, 41200, 5, null, null]
+      - [2, 39800, null, null, null]
+      - [3, 43500, null, null, null]
+      - [4, 44100, null, null, null]
+      - [5, 45600, null, null, null]
+    answerCell: D2
+    expected: 514080
+    variants:
+      - set: { B6: 48000 }
+        expected: 519840
+    answer: =AVERAGE(B2:B6)*12
+    requiredFunctions:
+      - AVERAGE
+    hints:
+      nudge: The average month, twelve times.
+      rule: AVERAGE(B2:B6)*12 assumes every month of the year looks like the average so far.
+    misses:
+      value: The annualised run rate is 514080.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for AVERAGE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AVERAGE(B2:B6)*12
+      - =12*AVERAGE(B2:B6)
+    reject:
+      - formula: =SUM(B2:B6)*12
+        rule: required-function
+      - formula: =514080
+        rule: required-function
+      - formula: =AVERAGE(B2:B6)*12,
+        rule: syntax

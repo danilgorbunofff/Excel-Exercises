@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFERROR($C$3/$B$3,"none")
+      - =IFERROR(C$3/B3,"none")
+      - =iferror(c3/b3, "none")
+    wrong: []
+    equivalent: []

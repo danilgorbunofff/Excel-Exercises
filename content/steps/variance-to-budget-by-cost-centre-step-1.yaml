@@ -1,0 +1,44 @@
+id: variance-to-budget-by-cost-centre-step-1
+slug: variance-to-budget-by-cost-centre-step-1
+level: 1
+title: Total spend of one centre
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: variance-to-budget-by-cost-centre
+step: 1
+screens:
+  - prompt: In F2, total the spend of the Sales cost centre. Use SUMIF.
+    rows:
+      - [Cost centre, Spend, null, Centre, Budget, Sales spend]
+      - [Sales, 14200, null, Sales, 30000, null]
+      - [IT, 9800, null, IT, 18000, null]
+      - [Sales, 17300, null, Ops, 22000, null]
+      - [Ops, 11900, null, null, null, null]
+      - [IT, 9100, null, null, null, null]
+      - [Ops, 8700, null, null, null, null]
+    answerCell: F2
+    expected: 31500
+    variants:
+      - { set: { B2: 15000 }, expected: 32300 }
+      - { set: { A7: Sales }, expected: 40200 }
+    answer: =SUMIF(A2:A7,"Sales",B2:B7)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: Test the centre column, add the spend column.
+      rule: SUMIF(A2:A7,"Sales",B2:B7) adds every Sales spend line.
+    misses:
+      value: Sales spent 31500.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(A2:A7,"Sales",B2:B7)
+      - =SUMIF(A2:A7,D2,B2:B7)
+    reject:
+      - formula: =SUM(B2:B7)
+        rule: required-function
+      - formula: =31500
+        rule: required-function
+      - formula: =SUMIF(A2:A7,"Sales",B2:B7
+        rule: syntax

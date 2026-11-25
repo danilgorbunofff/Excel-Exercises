@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(--($B$2:$B$9<$C$2:$C$9))
+      - =SUMPRODUCT(--(B$2:B$9<C2:C9))
+      - =sumproduct(--(b2:b9<c2:c9))
+      - =LET(data,B2:B9,SUMPRODUCT(--(data<C2:C9)))
+    wrong: []
+    equivalent: []

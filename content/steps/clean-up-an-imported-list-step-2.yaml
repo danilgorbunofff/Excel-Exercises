@@ -1,0 +1,42 @@
+id: clean-up-an-imported-list-step-2
+slug: clean-up-an-imported-list-step-2
+level: 2
+title: Tidy code in capitals
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: clean-up-an-imported-list
+step: 2
+screens:
+  - prompt: "In B2, tidy the imported product code in A2: no stray spaces and all capitals. Use UPPER and TRIM."
+    rows:
+      - [Imported, Answer]
+      - ["  px-10042 ", null]
+    answerCell: B2
+    expected: PX-10042
+    variants:
+      - set: { A2: "ab-7 " }
+        expected: AB-7
+    answer: =UPPER(TRIM(A2))
+    requiredFunctions:
+      - UPPER
+      - TRIM
+    hints:
+      nudge: TRIM the spaces, then UPPER the letters.
+      rule: UPPER(TRIM(A2)) gives PX-10042.
+    misses:
+      value: The tidy code is PX-10042.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for UPPER and TRIM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =UPPER(TRIM(A2))
+      - =TRIM(UPPER(A2))
+    reject:
+      - formula: =UPPER(A2)
+        rule: required-function
+      - formula: =PROPER(TRIM(A2))
+        rule: required-function
+      - formula: ="PX-10042"
+        rule: required-function
+      - formula: =UPPER(TRIM(A2)
+        rule: syntax

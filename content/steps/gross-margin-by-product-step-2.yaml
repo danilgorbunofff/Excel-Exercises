@@ -1,0 +1,47 @@
+id: gross-margin-by-product-step-2
+slug: gross-margin-by-product-step-2
+level: 2
+title: Markup on cost
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: gross-margin-by-product
+step: 2
+screens:
+  - prompt: "In D2, work out the markup on desk lamps: the gross profit divided by the cost of sales, not by revenue."
+    rows:
+      - [Product, Revenue, Cost of sales, null]
+      - [Desk lamp, 24000, 15600, null]
+      - [Chair, 56000, 41440, null]
+      - [Shelf, 18000, 11700, null]
+      - [Rug, 32000, 23360, null]
+      - [Mirror, 15000, 9300, null]
+      - [Stool, 9000, 6840, null]
+      - [Cabinet, 41000, 26650, null]
+      - [Desk, 38000, 27360, null]
+    answerCell: D2
+    expected: 0.538461538462
+    variants:
+      - set: { C2: 16000 }
+        expected: 0.5
+    answer: =(B2-C2)/C2
+    requiredFunctions: []
+    hints:
+      nudge: Markup is profit over cost; margin is profit over revenue.
+      rule: (B2-C2)/C2 shows how much was added on top of the cost.
+    misses:
+      value: The markup is 0.538.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =(B2-C2)/C2
+      - =B2/C2-1
+    reject:
+      - formula: =(B2-C2)/B2
+        rule: value
+      - formula: =B2-C2/C2
+        rule: value
+      - formula: =0.538461538462
+        rule: reference
+      - formula: =(B2-C2)/C2,
+        rule: syntax

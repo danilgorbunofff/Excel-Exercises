@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LET(avg,AVERAGEIF($B$2:$B$19,"North",$D$2:$D$19),ROUND(avg,0))
+      - =LET(avg,AVERAGEIF(B$2:B$19,"North",D2:D19),ROUND(avg,0))
+      - =let(avg, averageif(b2:b19, "North", d2:d19), round(avg, 0))
+      - =LET(data,B2:B19,LET(avg,AVERAGEIF(data,"North",D2:D19),ROUND(avg,0)))
+    wrong:
+      - formula: =LET(avg,AVERAGEIF(B2:B18,"North",D2:D19),ROUND(avg,0))
+        rule: fragile
+        why: range B2:B19 one row short at the end
+    equivalent: []

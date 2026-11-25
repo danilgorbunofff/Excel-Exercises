@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP(MAX(SUMIFS($C$2:$C$16,$A$2:$A$16,$E$2:$E$5)),SUMIFS($C$2:$C$16,$A$2:$A$16,$E$2:$E$5),$E$2:$E$5)
+      - =XLOOKUP(MAX(SUMIFS(C$2:C$16,A2:A16,E2:E5)),SUMIFS(C2:C16,A2:A16,E2:E5),E2:E5)
+      - =xlookup(max(sumifs(c2:c16, a2:a16, e2:e5)), sumifs(c2:c16, a2:a16, e2:e5), e2:e5)
+      - =XLOOKUP(MAX(SUMIF(A2:A16,E2:E5,C2:C16)),SUMIFS(C2:C16,A2:A16,E2:E5),E2:E5)
+      - =XLOOKUP(MAX(SUMIFS(C2:C16,A2:A16,E2:E5)),SUMIF(A2:A16,E2:E5,C2:C16),E2:E5)
+      - =LET(data,C2:C16,XLOOKUP(MAX(SUMIFS(data,A2:A16,E2:E5)),SUMIFS(data,A2:A16,E2:E5),E2:E5))
+    wrong: []
+    equivalent:
+      - formula: =XLOOKUP(MAX(SUMIFS(C2:C16,A2:A16,E2:E6)),SUMIFS(C2:C16,A2:A16,E2:E5),E2:E5)
+        why: "range E2:E5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

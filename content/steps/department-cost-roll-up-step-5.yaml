@@ -1,0 +1,49 @@
+id: department-cost-roll-up-step-5
+slug: department-cost-roll-up-step-5
+level: 3
+title: Department that spends most on software
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: department-cost-roll-up
+step: 5
+screens:
+  - prompt: In F2, which of the departments listed in E2:E4 spends the most on software?
+    rows:
+      - [Department, Cost type, Amount, null, Department, Most on software]
+      - [Marketing, Salaries, 84000, null, Marketing, null]
+      - [Marketing, Software, 12500, null, Sales, null]
+      - [Sales, Salaries, 126000, null, IT, null]
+      - [Sales, Software, 9800, null, null, null]
+      - [IT, Salaries, 98000, null, null, null]
+      - [IT, Software, 41000, null, null, null]
+      - [Marketing, Travel, 7400, null, null, null]
+      - [Sales, Travel, 18200, null, null, null]
+      - [IT, Travel, 3100, null, null, null]
+    answerCell: F2
+    expected: IT
+    variants:
+      - { set: { C3: 50000 }, expected: Marketing }
+      - { set: { C5: 45000 }, expected: Sales }
+      - { set: { A7: Marketing }, expected: Marketing }
+    answer: =XLOOKUP(MAX(SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software")),SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software"),E2:E4)
+    requiredFunctions: []
+    hints:
+      nudge: Total each department's software at once, then find the largest.
+      rule: SUMIFS with E2:E4 as a criteria list gives one software total per department; MAX and XLOOKUP name the biggest.
+    misses:
+      value: IT spends the most on software.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(MAX(SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software")),SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software"),E2:E4)
+      - =INDEX(E2:E4,MATCH(MAX(SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software")),SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software"),0))
+    reject:
+      - formula: =XLOOKUP(MAX(SUMIFS(C2:C10,A2:A10,E2:E4)),SUMIFS(C2:C10,A2:A10,E2:E4),E2:E4)
+        rule: value
+      - formula: ="IT"
+        rule: reference
+      - formula: ="IT"
+        rule: reference
+      - formula: =XLOOKUP(MAX(SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software")),SUMIFS(C2:C10,A2:A10,E2:E4,B2:B10,"Software"),E2:E4
+        rule: syntax

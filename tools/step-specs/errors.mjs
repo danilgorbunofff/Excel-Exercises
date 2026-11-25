@@ -3,7 +3,13 @@
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 2 at step 3, level 3 at step 4.
 const fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(2));
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 const prices = [
   ["Code", "Price"],
@@ -17,7 +23,8 @@ const prices = [
 export default [
   // iferror-catch-the-error-show-your-text (level 2, step 3)
   step("iferror-catch-the-error-show-your-text", 1, 1, "Zero instead of a divide error", {
-    prompt: "In D2, divide the cost in B2 by the units in C2, and show 0 when the division fails. Use IFERROR.",
+    prompt:
+      "In D2, divide the cost in B2 by the units in C2, and show 0 when the division fails. Use IFERROR.",
     rows: [
       ["Item", "Cost", "Units", "Per unit"],
       ["Pens", 24, 0, null],
@@ -33,7 +40,8 @@ export default [
     value: (e) => `With 0 units, D2 should show ${e}.`,
   }),
   step("iferror-catch-the-error-show-your-text", 2, 2, "Text that should be a number", {
-    prompt: "In B2, turn the reading in A2 into a number, and show 0 when it is not a number at all. Use IFERROR and VALUE.",
+    prompt:
+      "In B2, turn the reading in A2 into a number, and show 0 when it is not a number at all. Use IFERROR and VALUE.",
     rows: [
       ["Reading", "Number"],
       ["n/a", null],
@@ -68,44 +76,51 @@ export default [
     rule: 'IFERROR((C2-B2)/B2,"new") shows new for a product with no sales last year.',
     value: (e) => `With no sales last year, D2 should show ${e}.`,
   }),
-  step("iferror-catch-the-error-show-your-text", 5, 3, "Average price per unit, skipping bad rows", {
-    prompt:
-      "In E2, what is the average price per unit, cost divided by units, across the rows where that can be worked out? Rows with no units or 0 units are left out.",
-    rows: [
-      ["Item", "Cost", "Units", null, null],
-      ["Pens", 24, 8, null, null],
-      ["Pads", 30, 0, null, null],
-      ["Clips", 6, 40, null, null],
-      ["Tape", 18, 6, null, null],
-      ["Glue", 9, null, null, null],
-      ["Files", 35, 10, null, null],
-      ["Ink", 57, 3, null, null],
-      ["Rulers", 20, 25, null, null],
-      ["Labels", 15, 0, null, null],
-      ["Staples", 11, 4, null, null],
-      ["Markers", 29, 10, null, null],
-      ["Erasers", 4, null, null, null],
-      ["Binders", 42, 12, null, null],
-      ["Folders", 13, 20, null, null],
-      ["Notes", 22, 8, null, null],
-    ].map((r, i) => (i === 0 ? [...r.slice(0, 4), "Average per unit"] : r)),
-    cell: "E2",
-    answer: '=AVERAGE(IFERROR(B2:B16/C2:C16,""))',
-    required: [],
-    accept: ['=SUMPRODUCT(IFERROR(B2:B16/C2:C16,0))/COUNTIF(C2:C16,">0")'],
-    variants: [{ C3: 5 }, { B2: 40 }],
-    reject: [
-      ["=AVERAGE(IFERROR(B2:B16/C2:C16,0))", "value"],
-      ["=SUM(B2:B16)/SUM(C2:C16)", "value"],
-    ],
-    nudge: "Work out every row's price per unit, drop the ones that fail, then average.",
-    rule: 'IFERROR(B2:B16/C2:C16,"") turns each failed row into empty text, which AVERAGE skips. Using 0 instead would drag the average down.',
-    value: (e) => `The average price per unit is ${fmt(e)}.`,
-  }),
+  step(
+    "iferror-catch-the-error-show-your-text",
+    5,
+    3,
+    "Average price per unit, skipping bad rows",
+    {
+      prompt:
+        "In E2, what is the average price per unit, cost divided by units, across the rows where that can be worked out? Rows with no units or 0 units are left out.",
+      rows: [
+        ["Item", "Cost", "Units", null, null],
+        ["Pens", 24, 8, null, null],
+        ["Pads", 30, 0, null, null],
+        ["Clips", 6, 40, null, null],
+        ["Tape", 18, 6, null, null],
+        ["Glue", 9, null, null, null],
+        ["Files", 35, 10, null, null],
+        ["Ink", 57, 3, null, null],
+        ["Rulers", 20, 25, null, null],
+        ["Labels", 15, 0, null, null],
+        ["Staples", 11, 4, null, null],
+        ["Markers", 29, 10, null, null],
+        ["Erasers", 4, null, null, null],
+        ["Binders", 42, 12, null, null],
+        ["Folders", 13, 20, null, null],
+        ["Notes", 22, 8, null, null],
+      ].map((r, i) => (i === 0 ? [...r.slice(0, 4), "Average per unit"] : r)),
+      cell: "E2",
+      answer: '=AVERAGE(IFERROR(B2:B16/C2:C16,""))',
+      required: [],
+      accept: ['=SUMPRODUCT(IFERROR(B2:B16/C2:C16,0))/COUNTIF(C2:C16,">0")'],
+      variants: [{ C3: 5 }, { B2: 40 }],
+      reject: [
+        ["=AVERAGE(IFERROR(B2:B16/C2:C16,0))", "value"],
+        ["=SUM(B2:B16)/SUM(C2:C16)", "value"],
+      ],
+      nudge: "Work out every row's price per unit, drop the ones that fail, then average.",
+      rule: 'IFERROR(B2:B16/C2:C16,"") turns each failed row into empty text, which AVERAGE skips. Using 0 instead would drag the average down.',
+      value: (e) => `The average price per unit is ${fmt(e)}.`,
+    },
+  ),
 
   // ifna-catch-only-a-missing-match (level 3, step 4)
   step("ifna-catch-only-a-missing-match", 1, 1, "Position, or missing", {
-    prompt: "In B9, give the position of the code in A8 in A2:A6, or the word missing when it is not there. Use IFNA and MATCH.",
+    prompt:
+      "In B9, give the position of the code in A8 in A2:A6, or the word missing when it is not there. Use IFNA and MATCH.",
     rows: [...prices, [null, null], ["F-6", null], ["Position", null]],
     cell: "B9",
     answer: '=IFNA(MATCH(A8,A2:A6,0),"missing")',
@@ -146,7 +161,8 @@ export default [
     value: (e) => `E-5 costs ${e}.`,
   }),
   step("ifna-catch-only-a-missing-match", 5, 3, "How many ordered codes are missing", {
-    prompt: "In F2, how many of the ordered codes in D2:D9 are missing from the price list in A2:A6?",
+    prompt:
+      "In F2, how many of the ordered codes in D2:D9 are missing from the price list in A2:A6?",
     rows: [
       ["Code", "Price", null, "Ordered", null, null],
       ["A-1", 10, null, "B-2", null, null],
@@ -161,7 +177,10 @@ export default [
     cell: "F2",
     answer: "=SUMPRODUCT(--ISNA(MATCH(D2:D9,A2:A6,0)))",
     required: [],
-    accept: ["=SUMPRODUCT(--(COUNTIF(A2:A6,D2:D9)=0))", "=ROWS(D2:D9)-SUMPRODUCT(--ISNUMBER(MATCH(D2:D9,A2:A6,0)))"],
+    accept: [
+      "=SUMPRODUCT(--(COUNTIF(A2:A6,D2:D9)=0))",
+      "=ROWS(D2:D9)-SUMPRODUCT(--ISNUMBER(MATCH(D2:D9,A2:A6,0)))",
+    ],
     variants: [{ D3: "C-3" }, { A2: "X-1" }],
     reject: [
       ["=SUMPRODUCT(--ISNUMBER(MATCH(D2:D9,A2:A6,0)))", "value"],
@@ -174,7 +193,8 @@ export default [
 
   // reading-error-values (level 3, step 4)
   step("reading-error-values", 1, 1, "Does the division fail", {
-    prompt: "In D2, answer TRUE when dividing the cost in B2 by the units in C2 gives an error. Use ISERROR.",
+    prompt:
+      "In D2, answer TRUE when dividing the cost in B2 by the units in C2 gives an error. Use ISERROR.",
     rows: [
       ["Item", "Cost", "Units", "Fails?"],
       ["Pads", 30, 0, null],
@@ -203,7 +223,8 @@ export default [
     value: (e) => `F-6 is missing, so B9 should show ${e}.`,
   }),
   step("reading-error-values", 3, 2, "Number or text", {
-    prompt: 'In B2, show text when the reading in A2 cannot be turned into a number, and number when it can. Use IF, ISERROR and VALUE.',
+    prompt:
+      "In B2, show text when the reading in A2 cannot be turned into a number, and number when it can. Use IF, ISERROR and VALUE.",
     rows: [
       ["Reading", "Kind"],
       ["twelve", null],
@@ -219,7 +240,8 @@ export default [
     value: (e) => `twelve cannot be read as a number, so B2 should show ${e}.`,
   }),
   step("reading-error-values", 5, 3, "Readings that are not numbers", {
-    prompt: "The readings in B2:B16 were pasted in as text. In D2, how many of them cannot be turned into a number?",
+    prompt:
+      "The readings in B2:B16 were pasted in as text. In D2, how many of them cannot be turned into a number?",
     rows: [
       ["Meter", "Reading", null, null],
       ["M-01", "120", null, null],
@@ -254,7 +276,8 @@ export default [
 
   // error-handling-summary (level 3, step 4)
   step("error-handling-summary", 1, 1, "Zero when the inputs are not numbers", {
-    prompt: "In D2, multiply the price in B2 by the quantity in C2, and show 0 when the result is an error. Use IFERROR.",
+    prompt:
+      "In D2, multiply the price in B2 by the quantity in C2, and show 0 when the result is an error. Use IFERROR.",
     rows: [
       ["Item", "Price", "Qty", "Line"],
       ["Pens", "tbc", 12, null],
@@ -270,7 +293,8 @@ export default [
     value: (e) => `With the price still tbc, D2 should show ${e}.`,
   }),
   step("error-handling-summary", 2, 2, "Catch only the missing match", {
-    prompt: "In B9, price the code in A8, and show no match only when the code is missing. Use IFNA and VLOOKUP.",
+    prompt:
+      "In B9, price the code in A8, and show no match only when the code is missing. Use IFNA and VLOOKUP.",
     rows: [...prices, [null, null], ["H-8", null], ["Price", null]],
     cell: "B9",
     answer: '=IFNA(VLOOKUP(A8,A2:B6,2,FALSE),"no match")',
@@ -283,7 +307,8 @@ export default [
     value: (e) => `H-8 is not listed, so B9 should show ${e}.`,
   }),
   step("error-handling-summary", 3, 2, "Lookup that says when it fails", {
-    prompt: "In B9, return the price of the code in A8 with INDEX and MATCH, and show no match when any part fails. Use IFERROR.",
+    prompt:
+      "In B9, return the price of the code in A8 with INDEX and MATCH, and show no match when any part fails. Use IFERROR.",
     rows: [...prices, [null, null], ["C-3", null], ["Price", null]],
     cell: "B9",
     answer: '=IFERROR(INDEX(B2:B6,MATCH(A8,A2:A6,0)),"no match")',
@@ -322,7 +347,7 @@ export default [
     accept: ["=SUM(--ISERROR((B2:B16-C2:C16)/B2:B16))"],
     variants: [{ B3: 2 }, { B9: "n/a" }],
     reject: [
-      ['=COUNTIF(B2:B16,0)', "value"],
+      ["=COUNTIF(B2:B16,0)", "value"],
       ["=COUNTBLANK(B2:B16)+COUNTIF(B2:B16,0)", "value"],
     ],
     nudge: "Try the margin on every row at once and count the errors.",

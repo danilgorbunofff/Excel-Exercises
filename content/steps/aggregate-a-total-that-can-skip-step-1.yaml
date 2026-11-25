@@ -1,0 +1,59 @@
+id: aggregate-a-total-that-can-skip-step-1
+slug: aggregate-a-total-that-can-skip-step-1
+level: 1
+title: Largest with AGGREGATE
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: aggregate-a-total-that-can-skip
+step: 1
+screens:
+  - prompt: In E2, find the largest price in B2:B16 with AGGREGATE, function 4 and option 6 to ignore errors.
+    rows:
+      - [Item, Price, Qty, Line, Largest price]
+      - [Pens, 1.2, 40, 48, null]
+      - [Pads, 3.5, 15, 52.5, null]
+      - [Clips, 0.05, 500, 25, null]
+      - [Tape, 2.1, 12, 25.2, null]
+      - [Files, 4.75, 20, 95, null]
+      - [Ink, 18.9, 6, 113.4, null]
+      - [Glue, 1.85, 30, 55.5, null]
+      - [Rulers, 0.9, 25, 22.5, null]
+      - [Folders, 0.6, 100, 60, null]
+      - [Labels, 5.4, 8, 43.2, null]
+      - [Staples, 1.1, 18, 19.8, null]
+      - [Markers, 7.25, 10, 72.5, null]
+      - [Erasers, 0.35, 60, 21, null]
+      - [Binders, 3.9, 14, 54.6, null]
+      - [Notes, 2.6, 22, 57.2, null]
+    answerCell: E2
+    expected: 18.9
+    variants:
+      - set: { B5: 25 }
+        expected: 25
+      - set: { B2: 18.9, B7: 1.2 }
+        expected: 18.9
+      - set: { B16: 30 }
+        expected: 30
+    answer: =AGGREGATE(4,6,B2:B16)
+    requiredFunctions:
+      - AGGREGATE
+    hints:
+      nudge: AGGREGATE takes the function number, the option, then the range.
+      rule: AGGREGATE(4,6,B2:B16) gives the largest price and would skip any error cells.
+    misses:
+      value: The largest price is 18.90.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for AGGREGATE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AGGREGATE(4,6,B2:B16)
+      - =AGGREGATE(4,7,B2:B16)
+    reject:
+      - formula: =MAX(B2:B16)
+        rule: required-function
+      - formula: =AGGREGATE(5,6,B2:B16)
+        rule: value
+      - formula: =18.9
+        rule: required-function
+      - formula: =AGGREGATE(4,6,B2:B16
+        rule: syntax

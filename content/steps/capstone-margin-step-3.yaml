@@ -1,0 +1,47 @@
+id: capstone-margin-step-3
+slug: capstone-margin-step-3
+level: 2
+title: Margin of a region with no sales
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: capstone-margin
+step: 3
+screens:
+  - prompt: In B7, work out the East gross margin as (revenue - cost) / revenue from SUMIF totals, and show none when the East has no sales. Use IFERROR and SUMIF.
+    rows:
+      - [Region, Revenue, Cost]
+      - [North, 4800, 3100]
+      - [South, 3600, 2500]
+      - [North, 2200, 1500]
+      - [West, 1900, 1400]
+      - [null, null, null]
+      - [East margin, null, null]
+    answerCell: B7
+    expected: none
+    variants:
+      - set: { A5: East }
+        expected: 0.263157894737
+      - set: { A4: East, A5: East }
+        expected: 0.292682926829
+    answer: =IFERROR((SUMIF(A2:A5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5),"none")
+    requiredFunctions:
+      - IFERROR
+      - SUMIF
+    hints:
+      nudge: A region with no revenue divides by zero; IFERROR shows none instead.
+      rule: IFERROR wraps the whole margin, so any region without sales reads none.
+    misses:
+      value: The East has no sales, so B7 should show none.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IFERROR and SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IFERROR((SUMIF(A2:A5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5),"none")
+      - =IFERROR(1-SUMIF(A2:A5,"East",C2:C5)/SUMIF(A2:A5,"East",B2:B5),"none")
+    reject:
+      - formula: =(SUMIF(A2:A5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5)
+        rule: required-function
+      - formula: ="none"
+        rule: required-function
+      - formula: =IFERROR((SUMIF(A2:A5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5),"none"
+        rule: syntax

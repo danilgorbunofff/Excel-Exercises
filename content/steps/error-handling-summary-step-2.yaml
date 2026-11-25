@@ -1,0 +1,47 @@
+id: error-handling-summary-step-2
+slug: error-handling-summary-step-2
+level: 2
+title: Catch only the missing match
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: error-handling-summary
+step: 2
+screens:
+  - prompt: In B9, price the code in A8, and show no match only when the code is missing. Use IFNA and VLOOKUP.
+    rows:
+      - [Code, Price]
+      - [A-1, 10]
+      - [B-2, 20]
+      - [C-3, 30]
+      - [D-4, 45]
+      - [E-5, 12]
+      - [null, null]
+      - [H-8, null]
+      - [Price, null]
+    answerCell: B9
+    expected: no match
+    variants:
+      - { set: { A8: A-1 }, expected: 10 }
+      - { set: { A8: E-5 }, expected: 12 }
+    answer: =IFNA(VLOOKUP(A8,A2:B6,2,FALSE),"no match")
+    requiredFunctions:
+      - IFNA
+      - VLOOKUP
+    hints:
+      nudge: "IFNA catches #N/A and lets any other error show, so a broken formula is not hidden."
+      rule: IFNA(VLOOKUP(...),"no match") replaces only the missing-code error.
+    misses:
+      value: H-8 is not listed, so B9 should show no match.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IFNA and VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IFNA(VLOOKUP(A8,A2:B6,2,FALSE),"no match")
+      - =IFNA(VLOOKUP($A$8,$A$2:$B$6,2,FALSE),"no match")
+    reject:
+      - formula: =IFERROR(VLOOKUP(A8,A2:B6,2,FALSE),"no match")
+        rule: required-function
+      - formula: ="no match"
+        rule: required-function
+      - formula: =IFNA(VLOOKUP(A8,A2:B6,2,FALSE),"no match"
+        rule: syntax

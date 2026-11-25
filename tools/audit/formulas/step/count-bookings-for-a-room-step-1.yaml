@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF(A$2:A$11,"Mon")
+      - =countif(a2:a11, "Mon")
+      - =LET(data,A2:A11,COUNTIF(data,"Mon"))
+    wrong:
+      - formula: =COUNTIF(A2:A10,"Mon")
+        rule: fragile
+        why: range A2:A11 one row short at the end
+    equivalent: []

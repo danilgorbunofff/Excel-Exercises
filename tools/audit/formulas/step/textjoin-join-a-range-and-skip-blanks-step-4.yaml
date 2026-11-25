@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =TEXTJOIN(",",FALSE,$A$2:$E$2)
+      - =TEXTJOIN(",",FALSE,A$2:E$2)
+      - =textjoin(",", false, a2:e2)
+      - =LET(data,A2:E2,TEXTJOIN(",",FALSE,data))
+    wrong: []
+    equivalent: []

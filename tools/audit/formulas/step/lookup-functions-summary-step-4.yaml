@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX(A$2:A$5,MATCH(B6,B2:B5,0))
+      - =index(a2:a5, match(b6, b2:b5, 0))
+      - =LET(data,A2:A5,INDEX(data,MATCH(B6,B2:B5,0)))
+    wrong:
+      - formula: =INDEX(A2:A4,MATCH(B6,B2:B5,0))
+        rule: fragile
+        why: range A2:A5 one row short at the end
+      - formula: =INDEX(A2:A5,MATCH(B6,B2:B4,0))
+        rule: fragile
+        why: range B2:B5 one row short at the end
+    equivalent:
+      - formula: =INDEX(A2:A6,MATCH(B6,B2:B5,0))
+        why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(A2:A5,MATCH(B6,B2:B6,0))
+        why: "range B2:B5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

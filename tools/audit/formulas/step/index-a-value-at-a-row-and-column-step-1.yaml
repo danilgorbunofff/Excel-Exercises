@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX(A$2:A$6,4)
+      - =index(a2:a6, 4)
+      - =LET(data,A2:A6,INDEX(data,4))
+    wrong: []
+    equivalent:
+      - formula: =INDEX(A2:A5,4)
+        why: "range A2:A6 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(A2:A7,4)
+        why: "range A2:A6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

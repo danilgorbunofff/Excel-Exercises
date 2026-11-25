@@ -1,0 +1,41 @@
+id: datedif-days-months-or-years-between-step-4
+slug: datedif-days-months-or-years-between-step-4
+level: 2
+title: Months beyond the full years
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: datedif-days-months-or-years-between
+step: 4
+screens:
+  - prompt: In D2, find the months left over after the complete years between B2 and C2. Use DATEDIF with "YM".
+    rows:
+      - [Employee, Started, Review date, Extra months]
+      - [Grace Hopper, 44197, 45366, null]
+    answerCell: D2
+    expected: 2
+    variants:
+      - set: { B2: 44300 }
+        expected: 11
+    answer: =DATEDIF(B2,C2,"YM")
+    requiredFunctions:
+      - DATEDIF
+    hints:
+      nudge: '"YM" ignores the full years and counts only the remaining months.'
+      rule: DATEDIF(B2,C2,"YM") gives months from 0 to 11.
+    misses:
+      value: After the full years there are 2 more months.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for DATEDIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =DATEDIF(B2,C2,"YM")
+      - =DATEDIF(B2,C2,"ym")
+    reject:
+      - formula: =DATEDIF(B2,C2,"M")
+        rule: value
+      - formula: =DATEDIF(B2,C2,"Y")
+        rule: value
+      - formula: =2
+        rule: required-function
+      - formula: =DATEDIF(B2,C2,"YM"
+        rule: syntax

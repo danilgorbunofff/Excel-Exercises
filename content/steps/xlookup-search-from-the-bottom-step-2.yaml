@@ -1,0 +1,44 @@
+id: xlookup-search-from-the-bottom-step-2
+slug: xlookup-search-from-the-bottom-step-2
+level: 2
+title: The latest status of a ticket
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: xlookup-search-from-the-bottom
+step: 2
+screens:
+  - prompt: In E2, return the latest status logged for the ticket in E1, searching from the bottom. Use XLOOKUP.
+    rows:
+      - [Ticket, Status, null, Ticket, T-7]
+      - [T-7, Opened, null, Latest, null]
+      - [T-8, Opened, null, null, null]
+      - [T-7, In progress, null, null, null]
+      - [T-9, Opened, null, null, null]
+      - [T-8, Closed, null, null, null]
+      - [T-7, Waiting, null, null, null]
+    answerCell: E2
+    expected: Waiting
+    variants:
+      - set: { E1: T-8 }
+        expected: Closed
+    answer: =XLOOKUP(E1,A2:A7,B2:B7,,0,-1)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: The sixth part of XLOOKUP, -1, searches from the last row up.
+      rule: XLOOKUP(E1,A2:A7,B2:B7,,0,-1) returns the last status logged for the ticket.
+    misses:
+      value: T-7's latest status is Waiting.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(E1,A2:A7,B2:B7,,0,-1)
+      - =XLOOKUP(E1,A2:A7,B2:B7,"",0,-1)
+    reject:
+      - formula: =XLOOKUP(E1,A2:A7,B2:B7)
+        rule: value
+      - formula: ="Waiting"
+        rule: required-function
+      - formula: =XLOOKUP(E1,A2:A7,B2:B7,,0,-1
+        rule: syntax

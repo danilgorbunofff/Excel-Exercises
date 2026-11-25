@@ -1,0 +1,48 @@
+id: xlookup-search-from-the-bottom-step-4
+slug: xlookup-search-from-the-bottom-step-4
+level: 2
+title: Latest price, or none
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: xlookup-search-from-the-bottom
+step: 4
+screens:
+  - prompt: In E2, return the latest price logged for the SKU in E1, or the word none when the SKU is not in the log. Use XLOOKUP.
+    rows:
+      - [SKU, Price, null, SKU, TX-104]
+      - [TX-101, 19.99, null, Latest, null]
+      - [TX-102, 14, null, null, null]
+      - [TX-101, 21.5, null, null, null]
+      - [TX-103, 9.5, null, null, null]
+      - [TX-102, 16.25, null, null, null]
+      - [TX-103, 10.25, null, null, null]
+    answerCell: E2
+    expected: none
+    variants:
+      - set: { E1: TX-103 }
+        expected: 10.25
+      - set: { E1: TX-100 }
+        expected: none
+    answer: =XLOOKUP(E1,A2:A7,B2:B7,"none",0,-1)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: The fourth part is the fallback; the sixth is the search direction.
+      rule: XLOOKUP(E1,A2:A7,B2:B7,"none",0,-1) searches from the bottom and shows none when nothing matches.
+    misses:
+      value: For a SKU not in the log, E2 should show none.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(E1,A2:A7,B2:B7,"none",0,-1)
+      - =IFNA(XLOOKUP(E1,A2:A7,B2:B7,,0,-1),"none")
+    reject:
+      - formula: =XLOOKUP(E1,A2:A7,B2:B7,,0,-1)
+        rule: value
+      - formula: =XLOOKUP(E1,A2:A7,B2:B7,"none")
+        rule: fragile
+      - formula: ="none"
+        rule: required-function
+      - formula: =XLOOKUP(E1,A2:A7,B2:B7,"none",0,-1
+        rule: syntax

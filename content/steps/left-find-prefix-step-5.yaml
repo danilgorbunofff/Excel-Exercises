@@ -1,0 +1,43 @@
+id: left-find-prefix-step-5
+slug: left-find-prefix-step-5
+level: 3
+title: Email domain in lower case
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: left-find-prefix
+step: 5
+screens:
+  - prompt: In B2, what is the domain of the email address in A2, the part after the @, in lower case?
+    rows:
+      - [Email, Domain]
+      - [Ada.Lovelace@Analytical-Engines.CO.UK, null]
+    answerCell: B2
+    expected: analytical-engines.co.uk
+    variants:
+      - set: { A2: grace@NAVY.mil }
+        expected: navy.mil
+      - set: { A2: Alan.T@bletchley.org }
+        expected: bletchley.org
+    answer: =LOWER(TEXTAFTER(A2,"@"))
+    requiredFunctions: []
+    hints:
+      nudge: Take what follows the @, then change it to lower case.
+      rule: TEXTAFTER(A2,"@") gives the domain; LOWER makes it lower case so the same domain always matches.
+    misses:
+      value: The domain is analytical-engines.co.uk.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =LOWER(TEXTAFTER(A2,"@"))
+      - =LOWER(MID(A2,FIND("@",A2)+1,LEN(A2)))
+      - =LOWER(RIGHT(A2,LEN(A2)-FIND("@",A2)))
+    reject:
+      - formula: =TEXTAFTER(A2,"@")
+        rule: value
+      - formula: =LOWER(TEXTBEFORE(A2,"@"))
+        rule: value
+      - formula: ="analytical-engines.co.uk"
+        rule: reference
+      - formula: =LOWER(TEXTAFTER(A2,"@")
+        rule: syntax

@@ -1,0 +1,49 @@
+id: department-cost-roll-up-step-4
+slug: department-cost-roll-up-step-4
+level: 2
+title: Salaries as a share of all costs
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: department-cost-roll-up
+step: 4
+screens:
+  - prompt: In E2, show salaries as a share of all costs, rounded to two decimal places. Use SUMIF, SUM and ROUND.
+    rows:
+      - [Department, Cost type, Amount, null, Salary share, null]
+      - [Marketing, Salaries, 84000, null, null, null]
+      - [Marketing, Software, 12500, null, null, null]
+      - [Sales, Salaries, 126000, null, null, null]
+      - [Sales, Software, 9800, null, null, null]
+      - [IT, Salaries, 98000, null, null, null]
+      - [IT, Software, 41000, null, null, null]
+      - [Marketing, Travel, 7400, null, null, null]
+      - [Sales, Travel, 18200, null, null, null]
+      - [IT, Travel, 3100, null, null, null]
+    answerCell: E2
+    expected: 0.77
+    variants:
+      - { set: { C7: 80000 }, expected: 0.7 }
+      - { set: { B10: Salaries }, expected: 0.78 }
+    answer: =ROUND(SUMIF(B2:B10,"Salaries",C2:C10)/SUM(C2:C10),2)
+    requiredFunctions:
+      - SUMIF
+      - SUM
+      - ROUND
+    hints:
+      nudge: Salaries over the total, then round.
+      rule: SUMIF picks the salary lines; SUM is every cost; ROUND keeps two decimals.
+    misses:
+      value: Salaries are 0.77 of all costs.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF, SUM and ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(SUMIF(B2:B10,"Salaries",C2:C10)/SUM(C2:C10),2)
+      - =ROUND(SUMIF($B$2:$B$10,"Salaries",$C$2:$C$10)/SUM($C$2:$C$10),2)
+    reject:
+      - formula: =ROUND(SUMIF(B2:B10,"Salaries",C2:C10)/SUM(C2:C10),1)
+        rule: value
+      - formula: =0.77
+        rule: required-function
+      - formula: =ROUND(SUMIF(B2:B10,"Salaries",C2:C10)/SUM(C2:C10),2
+        rule: syntax

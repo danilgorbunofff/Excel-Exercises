@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP($G$2,$A$2:$A$9,$D$2:$D$9)*$H$2+XLOOKUP($G$3,$A$2:$A$9,$D$2:$D$9)*$H$3+XLOOKUP($G$4,$A$2:$A$9,$D$2:$D$9)*$H$4
+      - =XLOOKUP(G$2,A2:A9,D2:D9)*H2+XLOOKUP(G3,A2:A9,D2:D9)*H3+XLOOKUP(G4,A2:A9,D2:D9)*H4
+      - =xlookup(g2, a2:a9, d2:d9)*h2+xlookup(g3, a2:a9, d2:d9)*h3+xlookup(g4, a2:a9, d2:d9)*h4
+      - =INDEX(D2:D9,MATCH(G2,A2:A9,0))*H2+XLOOKUP(G3,A2:A9,D2:D9)*H3+XLOOKUP(G4,A2:A9,D2:D9)*H4
+      - =VLOOKUP(G2,A2:D9,4,FALSE)*H2+XLOOKUP(G3,A2:A9,D2:D9)*H3+XLOOKUP(G4,A2:A9,D2:D9)*H4
+      - =XLOOKUP(G2,A2:A9,D2:D9)*H2+INDEX(D2:D9,MATCH(G3,A2:A9,0))*H3+XLOOKUP(G4,A2:A9,D2:D9)*H4
+      - =XLOOKUP(G2,A2:A9,D2:D9)*H2+VLOOKUP(G3,A2:D9,4,FALSE)*H3+XLOOKUP(G4,A2:A9,D2:D9)*H4
+      - =XLOOKUP(G2,A2:A9,D2:D9)*H2+XLOOKUP(G3,A2:A9,D2:D9)*H3+INDEX(D2:D9,MATCH(G4,A2:A9,0))*H4
+      - =XLOOKUP(G2,A2:A9,D2:D9)*H2+XLOOKUP(G3,A2:A9,D2:D9)*H3+VLOOKUP(G4,A2:D9,4,FALSE)*H4
+      - =LET(data,A2:A9,XLOOKUP(G2,data,D2:D9)*H2+XLOOKUP(G3,data,D2:D9)*H3+XLOOKUP(G4,data,D2:D9)*H4)
+    wrong: []
+    equivalent: []

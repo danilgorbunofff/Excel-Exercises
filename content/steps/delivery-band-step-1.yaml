@@ -1,0 +1,49 @@
+id: delivery-band-step-1
+slug: delivery-band-step-1
+level: 1
+title: Grade from a score band
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: delivery-band
+step: 1
+screens:
+  - prompt: In B9, find the grade for the score in B8 from the bands. Use VLOOKUP with TRUE for an approximate match.
+    rows:
+      - [From score, Grade]
+      - [0, F]
+      - [50, D]
+      - [60, C]
+      - [70, B]
+      - [80, A]
+      - [null, null]
+      - [Score, 74]
+      - [Grade, null]
+    answerCell: B9
+    expected: B
+    variants:
+      - set: { B8: 80 }
+        expected: A
+      - set: { B8: 49 }
+        expected: F
+    answer: =VLOOKUP(B8,A2:B6,2,TRUE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: With TRUE, VLOOKUP finds the largest band start that is not above the score.
+      rule: VLOOKUP(B8,A2:B6,2,TRUE) needs the band starts sorted from low to high.
+    misses:
+      value: A score of 74 gets B.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =VLOOKUP(B8,A2:B6,2,TRUE)
+      - =VLOOKUP(B8,A2:B6,2)
+      - =VLOOKUP(B8,A2:B6,2,1)
+    reject:
+      - formula: =VLOOKUP(B8,A2:B6,2,FALSE)
+        rule: value
+      - formula: ="B"
+        rule: required-function
+      - formula: =VLOOKUP(B8,A2:B6,2,TRUE
+        rule: syntax

@@ -1,0 +1,41 @@
+id: concat-and-the-operator-step-4
+slug: concat-and-the-operator-step-4
+level: 2
+title: Sentence with a number formatted
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: concat-and-the-operator
+step: 4
+screens:
+  - prompt: "In C2, build the line Order 1042 item 007, using the order in A2 and the item number in B2 shown with 3 digits. Use TEXT for the number."
+    rows:
+      - [Order, Item, Line]
+      - [1042, 7, null]
+    answerCell: C2
+    expected: Order 1042 item 007
+    variants:
+      - set: { A2: 1043, B2: 25 }
+        expected: Order 1043 item 025
+    answer: '="Order "&A2&" item "&TEXT(B2,"000")'
+    requiredFunctions:
+      - TEXT
+    hints:
+      nudge: Joining a number drops its leading zeros; TEXT(B2,"000") keeps three digits.
+      rule: TEXT(B2,"000") turns 7 into the text 007 before it is joined.
+    misses:
+      value: The line should read Order 1042 item 007.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for TEXT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - '="Order "&A2&" item "&TEXT(B2,"000")'
+      - '=CONCAT("Order ",A2," item ",TEXT(B2,"000"))'
+    reject:
+      - formula: '="Order "&A2&" item "&B2'
+        rule: required-function
+      - formula: '="Order "&A2&" item "&TEXT(B2,"0")'
+        rule: value
+      - formula: '="Order 1042 item 007"'
+        rule: required-function
+      - formula: '="Order "&A2&" item "&TEXT(B2,"000"'
+        rule: syntax

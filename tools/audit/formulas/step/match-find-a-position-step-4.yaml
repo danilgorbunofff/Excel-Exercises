@@ -1,0 +1,16 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(ISNUMBER(MATCH(B$8,A2:A6,0)),"Yes","No")
+      - =if(isnumber(match(b8, a2:a6, 0)), "Yes", "No")
+      - =LET(data,A2:A6,IF(ISNUMBER(MATCH(B8,data,0)),"Yes","No"))
+    wrong:
+      - formula: =IF(ISNUMBER(MATCH(B8,A2:A5,0)),"Yes","No")
+        rule: fragile
+        why: range A2:A6 one row short at the end
+      - formula: =IF(ISNUMBER(MATCH(B8,A3:A6,0)),"Yes","No")
+        rule: fragile
+        why: range A2:A6 skips its first row
+    equivalent:
+      - formula: =IF(ISNUMBER(MATCH(B8,A2:A7,0)),"Yes","No")
+        why: "range A2:A6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

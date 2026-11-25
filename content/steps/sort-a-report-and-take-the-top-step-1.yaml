@@ -1,0 +1,89 @@
+id: sort-a-report-and-take-the-top-step-1
+slug: sort-a-report-and-take-the-top-step-1
+level: 1
+title: Amounts from largest to smallest
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sort-a-report-and-take-the-top
+step: 1
+screens:
+  - prompt: In F2, list all the amounts from largest to smallest. Use SORT with -1.
+    rows:
+      - [Order, Region, Rep, Amount, null, null, null, null, null]
+      - [1001, North, Ana, 820, null, null, null, null, null]
+      - [1002, South, Bo, 450, null, null, null, null, null]
+      - [1003, East, Cy, 1300, null, null, null, null, null]
+      - [1004, north, Di, 610, null, null, null, null, null]
+      - [1005, South, Ed, 1250, null, null, null, null, null]
+      - [1006, West, Fay, 300, null, null, null, null, null]
+      - [1007, North, Ana, 1500, null, null, null, null, null]
+      - [1008, East, Gus, 220, null, null, null, null, null]
+      - [1009, South, Bo, 980, null, null, null, null, null]
+      - [1010, North, Hal, 470, null, null, null, null, null]
+      - [1011, West, Ivy, 1100, null, null, null, null, null]
+      - [1012, South, Jo, 760, null, null, null, null, null]
+      - [1013, East, Cy, 540, null, null, null, null, null]
+      - [1014, North, Di, 90, null, null, null, null, null]
+      - [1015, South, Ed, 1600, null, null, null, null, null]
+      - [1016, West, Fay, 700, null, null, null, null, null]
+      - [1017, north, Kim, 1050, null, null, null, null, null]
+      - [1018, East, Gus, 380, null, null, null, null, null]
+    answerCell: F2
+    expected:
+      - [1600]
+      - [1500]
+      - [1300]
+      - [1250]
+      - [1100]
+      - [1050]
+      - [980]
+      - [820]
+      - [760]
+      - [700]
+      - [610]
+      - [540]
+      - [470]
+      - [450]
+      - [380]
+      - [300]
+      - [220]
+      - [90]
+    variants:
+      - set: { D7: 2000 }
+        expected:
+          - - 2000
+          - - 1600
+          - - 1500
+          - - 1300
+          - - 1250
+          - - 1100
+          - - 1050
+          - - 980
+          - - 820
+          - - 760
+          - - 700
+          - - 610
+          - - 540
+          - - 470
+          - - 450
+          - - 380
+          - - 220
+          - - 90
+    answer: =SORT(D2:D19,,-1)
+    requiredFunctions:
+      - SORT
+    hints:
+      nudge: "The third part of SORT is the order: -1 means largest first."
+      rule: SORT(D2:D19,,-1) spills the amounts in descending order.
+    misses:
+      value: The list should run from the largest amount to the smallest.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SORT(D2:D19,,-1)
+      - =SORT(D2:D19,1,-1)
+    reject:
+      - formula: =SORT(D2:D19)
+        rule: value
+      - formula: =SORT(D2:D19,,-1
+        rule: syntax

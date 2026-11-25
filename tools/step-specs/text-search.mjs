@@ -2,8 +2,13 @@
 // YAML files are the source of truth once written: variants added later by
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 1 at step 1, level 2 at step 3, level 3 at step 4.
-const fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(2));
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 const codes = [
   ["Code", "Region", "Amount", null, null],
@@ -47,7 +52,8 @@ export default [
     value: (e) => `The last four are ${e}.`,
   }),
   step("len-left-and-right-count-and-cut", 3, 2, "Drop a three-letter suffix", {
-    prompt: "In B2, remove the 3-letter currency code from the end of the amount in A2: keep everything but the last 3 characters. Use LEFT and LEN.",
+    prompt:
+      "In B2, remove the 3-letter currency code from the end of the amount in A2: keep everything but the last 3 characters. Use LEFT and LEN.",
     rows: [
       ["Amount", "Without currency"],
       ["1250.00EUR", null],
@@ -121,7 +127,8 @@ export default [
 
   // mid-characters-from-the-middle (level 2, step 3)
   step("mid-characters-from-the-middle", 1, 1, "Month from a date written as text", {
-    prompt: "A2 holds a date as text, year-month-day. In B2, take the 2 characters of the month, starting at character 6. Use MID.",
+    prompt:
+      "A2 holds a date as text, year-month-day. In B2, take the 2 characters of the month, starting at character 6. Use MID.",
     rows: [
       ["Date text", "Month"],
       ["2026-03-15", null],
@@ -140,7 +147,8 @@ export default [
     value: (e) => `The month is ${e}.`,
   }),
   step("mid-characters-from-the-middle", 2, 1, "Product part of a code", {
-    prompt: "In B2, take the 3-letter product part of the code in A2, which starts at character 4. Use MID.",
+    prompt:
+      "In B2, take the 3-letter product part of the code in A2, which starts at character 4. Use MID.",
     rows: [
       ["Code", "Product"],
       ["UK-PEN-0042", null],
@@ -172,11 +180,12 @@ export default [
       ["=RIGHT(A2,7)", "required-function"],
     ],
     nudge: "FIND gives the colon's place; the status starts 2 after it.",
-    rule: "MID(A2,FIND(\":\",A2)+2,LEN(A2)) works whatever the label before the colon.",
+    rule: 'MID(A2,FIND(":",A2)+2,LEN(A2)) works whatever the label before the colon.',
     value: (e) => `The status is ${e}.`,
   }),
   step("mid-characters-from-the-middle", 5, 3, "Middle part of a code of any length", {
-    prompt: "In B2, return the middle part of the code in A2, the text between its two dashes. The parts vary in length.",
+    prompt:
+      "In B2, return the middle part of the code in A2, the text between its two dashes. The parts vary in length.",
     rows: [
       ["Code", "Middle"],
       ["REG-NORTHWEST-07", null],
@@ -213,7 +222,8 @@ export default [
     value: (e) => `The first dash is character ${e}.`,
   }),
   step("left-find-prefix", 2, 2, "First name from a full name", {
-    prompt: "In B2, take the first name from the full name in A2: everything before the first space. Use LEFT and FIND.",
+    prompt:
+      "In B2, take the first name from the full name in A2: everything before the first space. Use LEFT and FIND.",
     rows: [
       ["Full name", "First name"],
       ["Katherine Johnson", null],
@@ -252,7 +262,8 @@ export default [
     value: (e) => `After the first dash: ${e}.`,
   }),
   step("left-find-prefix", 5, 3, "Email domain in lower case", {
-    prompt: "In B2, what is the domain of the email address in A2, the part after the @, in lower case?",
+    prompt:
+      "In B2, what is the domain of the email address in A2, the part after the @, in lower case?",
     rows: [
       ["Email", "Domain"],
       ["Ada.Lovelace@Analytical-Engines.CO.UK", null],
@@ -289,7 +300,8 @@ export default [
     value: (e) => `The first space is character ${e}.`,
   }),
   step("find-and-search-case", 2, 1, "Find a letter in any case", {
-    prompt: "In B2, give the position of the first letter x in A2, upper or lower case. Use SEARCH.",
+    prompt:
+      "In B2, give the position of the first letter x in A2, upper or lower case. Use SEARCH.",
     rows: [
       ["Code", "x at"],
       ["MAX-Box-12", null],
@@ -305,7 +317,8 @@ export default [
     value: (e) => `The first x is character ${e}.`,
   }),
   step("find-and-search-case", 4, 2, "Does the note mention urgent", {
-    prompt: "In B2, show TRUE when the note in A2 contains the word urgent, in any case. Use ISNUMBER and SEARCH.",
+    prompt:
+      "In B2, show TRUE when the note in A2 contains the word urgent, in any case. Use ISNUMBER and SEARCH.",
     rows: [
       ["Note", "Urgent?"],
       ["Please treat as URGENT - client waiting", null],
@@ -319,7 +332,8 @@ export default [
       ['=ISNUMBER(FIND("urgent",A2))', "required-function"],
       ['=SEARCH("urgent",A2)', "required-function"],
     ],
-    nudge: "SEARCH gives a number when found and an error when not; ISNUMBER turns that into TRUE or FALSE.",
+    nudge:
+      "SEARCH gives a number when found and an error when not; ISNUMBER turns that into TRUE or FALSE.",
     rule: 'ISNUMBER(SEARCH("urgent",A2)) is TRUE whatever the case of the word.',
     value: (e) => `The note mentions urgent, so B2 should show ${e}.`,
   }),
@@ -359,7 +373,8 @@ export default [
 
   // wildcards-in-text-criteria (level 2, step 3)
   step("wildcards-in-text-criteria", 1, 1, "Count Gmail addresses", {
-    prompt: 'In C2, count the email addresses in A2:A8 that end with @gmail.com. Use COUNTIF with a wildcard.',
+    prompt:
+      "In C2, count the email addresses in A2:A8 that end with @gmail.com. Use COUNTIF with a wildcard.",
     rows: [
       ["Email", null, "Gmail"],
       ["ana@gmail.com", null, null],
@@ -381,7 +396,8 @@ export default [
     value: (e) => `${e} addresses end with @gmail.com.`,
   }),
   step("wildcards-in-text-criteria", 2, 2, "Total for five-character codes", {
-    prompt: 'In E2, add the amounts in B2:B9 for codes that are A followed by exactly four characters. Use SUMIF with "A????".',
+    prompt:
+      'In E2, add the amounts in B2:B9 for codes that are A followed by exactly four characters. Use SUMIF with "A????".',
     rows: [
       ["Code", "Amount", null, null, null],
       ["A1042", 120, null, "A plus four", null],
@@ -392,7 +408,13 @@ export default [
       ["AX-12", 95, null, null, null],
       ["C4471", 175, null, null, null],
       ["A9900", 40, null, null, null],
-    ].map((r, i) => (i === 0 ? ["Code", "Amount", null, null, "A plus four"] : i === 1 ? ["A1042", 120, null, null, null] : r)),
+    ].map((r, i) =>
+      i === 0
+        ? ["Code", "Amount", null, null, "A plus four"]
+        : i === 1
+          ? ["A1042", 120, null, null, null]
+          : r,
+    ),
     cell: "E2",
     answer: '=SUMIF(A2:A9,"A????",B2:B9)',
     required: ["SUMIF"],
@@ -407,7 +429,8 @@ export default [
     value: (e) => `Codes of A plus four characters add up to ${e}.`,
   }),
   step("wildcards-in-text-criteria", 4, 2, "Count names marked with an asterisk", {
-    prompt: 'Products on offer end with a real * in their name. In C2, count them. Use COUNTIF, with ~* for a real asterisk.',
+    prompt:
+      "Products on offer end with a real * in their name. In C2, count them. Use COUNTIF, with ~* for a real asterisk.",
     rows: [
       ["Product", null, "On offer"],
       ["Desk lamp*", null, null],
@@ -458,7 +481,8 @@ export default [
       ['=SUMIF(A2:A16,"SK-26*",B2:B16)', "value"],
       ['=SUMIF(A2:A16,"SK-26?",B2:B16)', "value"],
     ],
-    nudge: "Two ? marks allow exactly two characters after SK-26, which keeps out the returns and odd codes.",
+    nudge:
+      "Two ? marks allow exactly two characters after SK-26, which keeps out the returns and odd codes.",
     rule: '"SK-26??" matches SK-26 and two more characters only.',
     value: (e) => `The 2026 range sold ${e}.`,
   }),
@@ -481,7 +505,8 @@ export default [
     value: (e) => `The first name is ${e}.`,
   }),
   step("textbefore-and-textafter", 2, 1, "Domain with TEXTAFTER", {
-    prompt: "In B2, take the domain from the email address in A2: the text after the @. Use TEXTAFTER.",
+    prompt:
+      "In B2, take the domain from the email address in A2: the text after the @. Use TEXTAFTER.",
     rows: [
       ["Email", "Domain"],
       ["ada@engines.co.uk", null],
@@ -497,7 +522,8 @@ export default [
     value: (e) => `The domain is ${e}.`,
   }),
   step("textbefore-and-textafter", 4, 2, "File extension after the last dot", {
-    prompt: "In B2, take the file extension: the text after the last dot in A2. Use TEXTAFTER with -1 to count from the end.",
+    prompt:
+      "In B2, take the file extension: the text after the last dot in A2. Use TEXTAFTER with -1 to count from the end.",
     rows: [
       ["File", "Extension"],
       ["report.v2.final.xlsx", null],
@@ -516,7 +542,8 @@ export default [
     value: (e) => `The extension is ${e}.`,
   }),
   step("textbefore-and-textafter", 5, 3, "City from an address line", {
-    prompt: "In B2, which city is in the address in A2? The address is street, city and postcode, separated by commas.",
+    prompt:
+      "In B2, which city is in the address in A2? The address is street, city and postcode, separated by commas.",
     rows: [
       ["Address", "City"],
       ["14 Mill Lane, York, YO1 7HU", null],
@@ -525,7 +552,10 @@ export default [
     answer: '=TRIM(TEXTBEFORE(TEXTAFTER(A2,","),","))',
     required: [],
     accept: ['=TEXTBEFORE(TEXTAFTER(A2,", "),",")'],
-    variants: [{ A2: "2 High St, Newcastle upon Tyne, NE1 4XF" }, { A2: "9 Quay Rd, Hull, HU1 2AB" }],
+    variants: [
+      { A2: "2 High St, Newcastle upon Tyne, NE1 4XF" },
+      { A2: "9 Quay Rd, Hull, HU1 2AB" },
+    ],
     reject: [
       ['=TEXTAFTER(A2,",")', "value"],
       ['=TEXTBEFORE(A2,",")', "value"],
@@ -542,7 +572,7 @@ export default [
     cell: "E2",
     answer: "=LEFT(A2,2)",
     required: ["LEFT"],
-    accept: ["=LEFT(A2,FIND(\"-\",A2)-1)"],
+    accept: ['=LEFT(A2,FIND("-",A2)-1)'],
     variants: [{ A2: "ZZ-9001" }],
     reject: [["=LEFT(A2,3)", "value"]],
     nudge: "LEFT keeps characters from the start.",
@@ -550,7 +580,8 @@ export default [
     value: (e) => `The prefix is ${e}.`,
   }),
   step("text-search-summary", 2, 2, "The number part as a real number", {
-    prompt: "In E2, take the four digits after the dash in A2 and turn them into a real number, so they can be added up. Use VALUE and MID.",
+    prompt:
+      "In E2, take the four digits after the dash in A2 and turn them into a real number, so they can be added up. Use VALUE and MID.",
     rows: codesWith("Number"),
     cell: "E2",
     answer: "=VALUE(MID(A2,4,4))",
@@ -583,12 +614,16 @@ export default [
     value: (e) => `${e} codes in series 1 are over 100.`,
   }),
   step("text-search-summary", 5, 3, "Total for code numbers above 3000", {
-    prompt: "In E2, what is the total amount for the codes whose number part, after the dash, is above 3000?",
+    prompt:
+      "In E2, what is the total amount for the codes whose number part, after the dash, is above 3000?",
     rows: codesWith("Over 3000"),
     cell: "E2",
     answer: "=SUMPRODUCT((VALUE(MID(A2:A16,4,4))>3000)*C2:C16)",
     required: [],
-    accept: ['=SUMPRODUCT((--TEXTAFTER(A2:A16,"-")>3000)*C2:C16)', "=SUM(FILTER(C2:C16,VALUE(MID(A2:A16,4,4))>3000))"],
+    accept: [
+      '=SUMPRODUCT((--TEXTAFTER(A2:A16,"-")>3000)*C2:C16)',
+      "=SUM(FILTER(C2:C16,VALUE(MID(A2:A16,4,4))>3000))",
+    ],
     variants: [{ A3: "BO-3299" }, { C5: 90 }],
     reject: [
       ['=SUMIF(A2:A16,">3000",C2:C16)', "value"],

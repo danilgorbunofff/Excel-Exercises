@@ -1,0 +1,45 @@
+id: a-headcount-and-payroll-summary-step-5
+slug: a-headcount-and-payroll-summary-step-5
+level: 3
+title: Payroll after a raise for most teams
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-headcount-and-payroll-summary
+step: 5
+screens:
+  - prompt: In F2, what will the total payroll be after the raise in F1, a fraction such as 0.03, is given to every team except Admin?
+    rows:
+      - [Team, Heads, Salary, null, null, 0.03]
+      - [Sales, 12, 48000, null, null, null]
+      - [Finance, 5, 56000, null, null, null]
+      - [IT, 8, 61000, null, null, null]
+      - [Admin, 4, 34000, null, null, null]
+    answerCell: F2
+    expected: 1520320
+    variants:
+      - set: { F1: 0.05 }
+        expected: 1547200
+      - set: { B5: 6 }
+        expected: 1588320
+    answer: =SUMPRODUCT(B2:B5,C2:C5,1+(A2:A5<>"Admin")*F1)
+    requiredFunctions: []
+    hints:
+      nudge: Each team's payroll grows by 1 plus the raise, except Admin, which grows by 1.
+      rule: '1+(A2:A5<>"Admin")*F1 is the growth per team: 1 for Admin, 1 plus the raise elsewhere.'
+    misses:
+      value: The new payroll is 1520320.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(B2:B5,C2:C5,1+(A2:A5<>"Admin")*F1)
+      - =SUMPRODUCT(B2:B5,C2:C5)+SUMPRODUCT((A2:A5<>"Admin")*B2:B5*C2:C5)*F1
+    reject:
+      - formula: =SUMPRODUCT(B2:B5,C2:C5)*(1+F1)
+        rule: value
+      - formula: =SUMPRODUCT(B2:B5,C2:C5)
+        rule: value
+      - formula: =1520320
+        rule: reference
+      - formula: =SUMPRODUCT(B2:B5,C2:C5,1+(A2:A5<>"Admin")*F1
+        rule: syntax

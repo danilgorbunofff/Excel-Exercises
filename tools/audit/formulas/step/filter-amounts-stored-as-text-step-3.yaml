@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =FILTER(A$2:A$19,VALUE(D2:D19)<500)
+      - =filter(a2:a19, value(d2:d19)<500)
+      - =LET(data,A2:A19,FILTER(data,VALUE(D2:D19)<500))
+    wrong:
+      - formula: =FILTER(A2:A19,VALUE(D2:D19)<=500)
+        rule: fragile
+        why: < written as <=
+      - formula: =FILTER(A2:A19,VALUE(D2:D19)<501)
+        rule: fragile
+        why: 500 written as 501
+      - formula: =FILTER(A2:A19,VALUE(D2:D19)<499)
+        rule: fragile
+        why: 500 written as 499
+    equivalent: []

@@ -1,0 +1,49 @@
+id: year-on-year-revenue-growth-step-5
+slug: year-on-year-revenue-growth-step-5
+level: 3
+title: Biggest grower in money terms
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: year-on-year-revenue-growth
+step: 5
+screens:
+  - prompt: In E2, which product added the most revenue in money terms, this year minus last year?
+    rows:
+      - [Product, Last year, This year, null, Most added]
+      - [Kettle, 42000, 46200, null, null]
+      - [Toaster, 31000, 29450, null, null]
+      - [Blender, 18000, 22500, null, null]
+      - [Mixer, 25000, 27000, null, null]
+      - [Grill, 12000, 15600, null, null]
+      - [Fryer, 9000, 8100, null, null]
+      - [Juicer, 14000, 17500, null, null]
+      - [Scale, 6000, 6900, null, null]
+    answerCell: E2
+    expected: Blender
+    variants:
+      - set: { C5: 33000 }
+        expected: Mixer
+      - set: { C9: 12000 }
+        expected: Scale
+    answer: =INDEX(A2:A9,MATCH(MAX(C2:C9-B2:B9),C2:C9-B2:B9,0))
+    requiredFunctions: []
+    hints:
+      nudge: Work out every product's change at once, then find the largest.
+      rule: C2:C9-B2:B9 gives each product's change; MAX finds the biggest and INDEX/MATCH names it.
+    misses:
+      value: The product that added the most revenue is Blender.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(A2:A9,MATCH(MAX(C2:C9-B2:B9),C2:C9-B2:B9,0))
+      - =XLOOKUP(MAX(C2:C9-B2:B9),C2:C9-B2:B9,A2:A9)
+    reject:
+      - formula: =INDEX(A2:A9,MATCH(MAX((C2:C9-B2:B9)/B2:B9),(C2:C9-B2:B9)/B2:B9,0))
+        rule: value
+      - formula: =INDEX(A2:A9,MATCH(MAX(C2:C9),C2:C9,0))
+        rule: value
+      - formula: ="Blender"
+        rule: reference
+      - formula: =INDEX(A2:A9,MATCH(MAX(C2:C9-B2:B9),C2:C9-B2:B9,0)
+        rule: syntax

@@ -1,0 +1,45 @@
+id: index-and-match-summary-step-1
+slug: index-and-match-summary-step-1
+level: 1
+title: Rate for an exact band
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: index-and-match-summary
+step: 1
+screens:
+  - prompt: In B7, return the rate for the band named in B6. Use INDEX and MATCH with 0.
+    rows:
+      - [Band, Rate]
+      - [Bronze, 0.02]
+      - [Silver, 0.04]
+      - [Gold, 0.06]
+      - [null, null]
+      - [Band, Silver]
+      - [Rate, null]
+    answerCell: B7
+    expected: 0.04
+    variants:
+      - set: { B6: Gold }
+        expected: 0.06
+    answer: =INDEX(B2:B4,MATCH(B6,A2:A4,0))
+    requiredFunctions:
+      - INDEX
+      - MATCH
+    hints:
+      nudge: 0 asks MATCH for an exact match on the band's name.
+      rule: INDEX(B2:B4,MATCH(B6,A2:A4,0)) returns the rate beside the band.
+    misses:
+      value: Silver pays 0.04.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for INDEX and MATCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(B2:B4,MATCH(B6,A2:A4,0))
+      - =INDEX($B$2:$B$4,MATCH($B$6,$A$2:$A$4,0))
+    reject:
+      - formula: =INDEX(B2:B4,MATCH(B6,A2:A4,1))
+        rule: value
+      - formula: =0.04
+        rule: required-function
+      - formula: =INDEX(B2:B4,MATCH(B6,A2:A4,0)
+        rule: syntax

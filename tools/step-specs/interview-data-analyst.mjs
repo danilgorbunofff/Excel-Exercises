@@ -3,7 +3,13 @@
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 2 at step 3, level 3 at step 4.
 const fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(2));
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 const shipments = [
   ["Order", "Promised", "Shipped", "Days late", "Carrier", null, null],
@@ -60,7 +66,8 @@ const stock = [
 export default [
   // count-late-shipments (level 2, step 3)
   step("count-late-shipments", 1, 1, "Days late for one order", {
-    prompt: "In F2, work out how many days late order O-03 shipped: its shipped date in C4 minus its promised date in B4.",
+    prompt:
+      "In F2, work out how many days late order O-03 shipped: its shipped date in C4 minus its promised date in B4.",
     rows: shipments,
     cell: "F2",
     answer: "=C4-B4",
@@ -73,7 +80,8 @@ export default [
     value: (e) => `O-03 shipped ${e} days late.`,
   }),
   step("count-late-shipments", 2, 1, "Count the orders on time", {
-    prompt: 'In F2, count the orders that shipped on time or early, with 0 or fewer days late. Use COUNTIF.',
+    prompt:
+      "In F2, count the orders that shipped on time or early, with 0 or fewer days late. Use COUNTIF.",
     rows: shipments,
     cell: "F2",
     answer: '=COUNTIF(D2:D16,"<=0")',
@@ -86,7 +94,8 @@ export default [
     value: (e) => `${e} orders shipped on time.`,
   }),
   step("count-late-shipments", 4, 2, "Late share as a percentage", {
-    prompt: "In F2, show the share of orders that shipped late as a percentage, rounded to 1 decimal. Use COUNTIF, COUNT and ROUND.",
+    prompt:
+      "In F2, show the share of orders that shipped late as a percentage, rounded to 1 decimal. Use COUNTIF, COUNT and ROUND.",
     rows: shipments,
     cell: "F2",
     answer: '=ROUND(COUNTIF(D2:D16,">0")/COUNT(D2:D16)*100,1)',
@@ -104,10 +113,10 @@ export default [
     cell: "G2",
     answer: '=COUNTIFS(E2:E16,G1,D2:D16,">3")',
     required: [],
-    accept: ['=SUMPRODUCT((E2:E16=G1)*(D2:D16>3))'],
-    variants: [{ G1: "Fastlane" }, { D2: 5 }],
+    accept: ["=SUMPRODUCT((E2:E16=G1)*(D2:D16>3))"],
+    variants: [{ G1: "Fastlane" }, { D2: 5 }, { D2: 3, D4: 2 }],
     reject: [
-      ['=COUNTIFS(E2:E16,G1,D2:D16,">=3")', "value"],
+      ['=COUNTIFS(E2:E16,G1,D2:D16,">=3")', "fragile"],
       ['=COUNTIF(D2:D16,">3")', "value"],
     ],
     nudge: "Two tests: the carrier, and more than 3 days late.",
@@ -117,7 +126,8 @@ export default [
 
   // order-details-from-two-tables (level 2, step 3)
   step("order-details-from-two-tables", 1, 1, "Customer name for an order", {
-    prompt: "In C2, show the name of the customer on the first order, from the customer table in E:G. Use XLOOKUP.",
+    prompt:
+      "In C2, show the name of the customer on the first order, from the customer table in E:G. Use XLOOKUP.",
     rows: [
       ["Order", "Customer ID", "Customer", null, "Customer ID", "Customer", "Region"],
       ["O-1", "C-02", null, null, "C-01", "Arden", "North"],
@@ -136,7 +146,8 @@ export default [
     value: (e) => `The first order is for ${e}.`,
   }),
   step("order-details-from-two-tables", 2, 2, "Region with VLOOKUP", {
-    prompt: "In C3, show the region of the customer on the second order. Use VLOOKUP on E2:G5 with an exact match.",
+    prompt:
+      "In C3, show the region of the customer on the second order. Use VLOOKUP on E2:G5 with an exact match.",
     rows: [
       ["Order", "Customer ID", "Region", null, "Customer ID", "Customer", "Region"],
       ["O-1", "C-02", null, null, "C-01", "Arden", "North"],
@@ -158,7 +169,18 @@ export default [
     prompt:
       "In D2, work out the value of the first order: units in C2 times the unit price of its product from F:G, times 1 minus the customer's discount from I:J. Use XLOOKUP.",
     rows: [
-      ["Order", "Product", "Units", "Value", "Customer", "Product", "Unit price", null, "Customer", "Discount"],
+      [
+        "Order",
+        "Product",
+        "Units",
+        "Value",
+        "Customer",
+        "Product",
+        "Unit price",
+        null,
+        "Customer",
+        "Discount",
+      ],
       ["O-1", "Lamp", 6, null, "Arden", "Lamp", 24, null, "Arden", 0.1],
       ["O-2", "Chair", 2, null, "Brook", "Chair", 89, null, "Brook", 0],
       [null, null, null, null, null, "Shelf", 45, null, "Cole", 0.05],
@@ -180,7 +202,18 @@ export default [
     prompt:
       "In J2, what are the orders worth in total for customers in the North? Orders are in A:C, and each customer's region is in the table E:G.",
     rows: [
-      ["Order", "Customer ID", "Value", null, "Customer ID", "Customer", "Region", null, null, null],
+      [
+        "Order",
+        "Customer ID",
+        "Value",
+        null,
+        "Customer ID",
+        "Customer",
+        "Region",
+        null,
+        null,
+        null,
+      ],
       ["O-01", "C-02", 420, null, "C-01", "Arden", "North", null, "North total", null],
       ["O-02", "C-04", 310, null, "C-02", "Brook", "South", null, null, null],
       ["O-03", "C-01", 275, null, "C-03", "Cole", "North", null, null, null],
@@ -196,7 +229,13 @@ export default [
       ["O-13", "C-04", 120, null, null, null, null, null, null, null],
       ["O-14", "C-03", 215, null, null, null, null, null, null, null],
       ["O-15", "C-02", 175, null, null, null, null, null, null, null],
-    ].map((r, i) => (i === 0 ? [...r.slice(0, 8), null, null] : i === 1 ? [...r.slice(0, 8), "North total", null] : r)),
+    ].map((r, i) =>
+      i === 0
+        ? [...r.slice(0, 8), null, null]
+        : i === 1
+          ? [...r.slice(0, 8), "North total", null]
+          : r,
+    ),
     cell: "J2",
     answer: '=SUMPRODUCT(SUMIFS(C2:C16,B2:B16,E2:E6)*(G2:G6="North"))',
     required: [],
@@ -213,7 +252,7 @@ export default [
 
   // on-time-rate-for-one-carrier (level 2, step 3)
   step("on-time-rate-for-one-carrier", 1, 1, "Count the on-time shipments", {
-    prompt: 'In E2, count the shipments marked On time. Use COUNTIF.',
+    prompt: "In E2, count the shipments marked On time. Use COUNTIF.",
     rows: statuses.map((r, i) => (i === 0 ? [...r.slice(0, 4), "On time", null] : r)),
     cell: "E2",
     answer: '=COUNTIF(C2:C13,"On time")',
@@ -247,21 +286,38 @@ export default [
     required: ["COUNTIFS", "COUNTIF", "ROUND"],
     accept: ['=ROUND(COUNTIFS($B$2:$B$13,$F$1,$C$2:$C$13,"On time")/COUNTIF($B$2:$B$13,$F$1),2)'],
     variants: [{ F1: "Northway" }],
-    reject: [['=ROUND(COUNTIFS(B2:B13,F1,C2:C13,"On time")/COUNTA(B2:B13),2)', "value"]],
+    reject: [
+      ['=ROUND(COUNTIFS(B2:B13,F1,C2:C13,"On time")/COUNTA(B2:B13),2)', "required-function"],
+    ],
     nudge: "On-time shipments of that carrier over all its shipments.",
     rule: "Dividing by the carrier's own count gives its rate, not its share of all shipments.",
     value: (e) => `Swiftco's on-time rate is ${e}.`,
   }),
   step("on-time-rate-for-one-carrier", 5, 3, "Carrier with the best on-time rate", {
     prompt: "In F2, which carrier in E2:E4 has the best on-time rate?",
-    rows: statuses.map((r, i) => (i === 0 ? [...r.slice(0, 4), "Carrier", "Best rate"] : i <= 3 ? [...r.slice(0, 4), ["Northway", "Fastlane", "Swiftco"][i - 1], null] : r)),
+    rows: statuses.map((r, i) =>
+      i === 0
+        ? [...r.slice(0, 4), "Carrier", "Best rate"]
+        : i <= 3
+          ? [...r.slice(0, 4), ["Northway", "Fastlane", "Swiftco"][i - 1], null]
+          : r,
+    ),
     cell: "F2",
-    answer: '=XLOOKUP(MAX(COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4)),COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4),E2:E4)',
+    answer:
+      '=XLOOKUP(MAX(COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4)),COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4),E2:E4)',
     required: [],
-    accept: ['=INDEX(E2:E4,MATCH(MAX(COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4)),COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4),0))'],
-    variants: [{ C6: "On time", C3: "On time", C12: "On time" }, { C2: "Late", C4: "Late" }],
+    accept: [
+      '=INDEX(E2:E4,MATCH(MAX(COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4)),COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4),0))',
+    ],
+    variants: [
+      { C6: "On time", C3: "On time", C12: "On time" },
+      { C2: "Late", C4: "Late" },
+    ],
     reject: [
-      ['=XLOOKUP(MAX(COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")),COUNTIFS(B2:B13,E2:E4,C2:C13,"On time"),E2:E4)', "value"],
+      [
+        '=XLOOKUP(MAX(COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")),COUNTIFS(B2:B13,E2:E4,C2:C13,"On time"),E2:E4)',
+        "fragile",
+      ],
       ['="Northway"', "reference"],
     ],
     nudge: "Work out each carrier's rate at once, then pick the highest.",
@@ -271,7 +327,8 @@ export default [
 
   // stock-days-of-cover-and-reorder-flag (level 2, step 3)
   step("stock-days-of-cover-and-reorder-flag", 1, 1, "Days of cover", {
-    prompt: "In E2, work out the days of cover for pallet wrap: on hand in B2 divided by daily use in C2.",
+    prompt:
+      "In E2, work out the days of cover for pallet wrap: on hand in B2 divided by daily use in C2.",
     rows: stock.map((r, i) => (i === 0 ? [...r.slice(0, 4), "Days of cover", null] : r)),
     cell: "E2",
     answer: "=B2/C2",
@@ -284,7 +341,8 @@ export default [
     value: (e) => `Pallet wrap lasts ${e} days.`,
   }),
   step("stock-days-of-cover-and-reorder-flag", 2, 1, "Stock needed over the lead time", {
-    prompt: "In E2, work out how much pallet wrap is used while waiting for a delivery: daily use in C2 times lead time in D2.",
+    prompt:
+      "In E2, work out how much pallet wrap is used while waiting for a delivery: daily use in C2 times lead time in D2.",
     rows: stock.map((r, i) => (i === 0 ? [...r.slice(0, 4), "Used in lead time", null] : r)),
     cell: "E2",
     answer: "=C2*D2",
@@ -298,7 +356,7 @@ export default [
   }),
   step("stock-days-of-cover-and-reorder-flag", 4, 2, "Reorder with safety stock", {
     prompt:
-      'In E2, show Reorder when the stock on hand is below the use during the lead time plus the safety stock in F1, and OK otherwise. Use IF.',
+      "In E2, show Reorder when the stock on hand is below the use during the lead time plus the safety stock in F1, and OK otherwise. Use IF.",
     rows: stock.map((r, i) => (i === 0 ? [...r.slice(0, 4), "Flag", 10] : r)),
     cell: "E2",
     answer: '=IF(B2<C2*D2+$F$1,"Reorder","OK")',
@@ -317,9 +375,9 @@ export default [
     answer: "=SUMPRODUCT(--(B2:B16/C2:C16<D2:D16))",
     required: [],
     accept: ["=SUMPRODUCT(--(B2:B16<C2:C16*D2:D16))"],
-    variants: [{ B3: 50 }, { D10: 8 }],
+    variants: [{ B3: 50 }, { D10: 8 }, { B2: 28, B3: 50 }],
     reject: [
-      ["=SUMPRODUCT(--(B2:B16/C2:C16<=D2:D16))", "value"],
+      ["=SUMPRODUCT(--(B2:B16/C2:C16<=D2:D16))", "fragile"],
       ["=SUMPRODUCT(--(B2:B16<D2:D16))", "value"],
     ],
     nudge: "Compare each item's days of cover with its lead time.",
@@ -345,7 +403,8 @@ export default [
     value: (e) => `The clean code is ${e}.`,
   }),
   step("clean-a-product-code-then-look-it-up", 2, 2, "Remove inner spaces and fix capitals", {
-    prompt: "In B2, clean the code in A2: remove every space, even inside it, and make it all capitals. Use UPPER and SUBSTITUTE.",
+    prompt:
+      "In B2, clean the code in A2: remove every space, even inside it, and make it all capitals. Use UPPER and SUBSTITUTE.",
     rows: [
       ["Imported code", "Clean"],
       [" px - 104 ", null],
@@ -361,7 +420,8 @@ export default [
     value: (e) => `The clean code is ${e}.`,
   }),
   step("clean-a-product-code-then-look-it-up", 3, 2, "Look up a trimmed code", {
-    prompt: "In B2, look up the price for the imported code in A2 after trimming it, from the price list in D:E. Use XLOOKUP and TRIM.",
+    prompt:
+      "In B2, look up the price for the imported code in A2 after trimming it, from the price list in D:E. Use XLOOKUP and TRIM.",
     rows: [
       ["Imported code", "Price", null, "Code", "List price"],
       [" PX-210  ", null, null, "PX-104", 12.5],
@@ -399,7 +459,7 @@ export default [
       ['=XLOOKUP(UPPER(SUBSTITUTE(A2," ","")),D2:D6,E2:E6)', "fragile"],
     ],
     nudge: "Remove every space and fix the case, then look it up with a fallback.",
-    rule: 'SUBSTITUTE removes all spaces; UPPER fixes the case; XLOOKUP\'s fourth part shows unknown for a code not listed.',
+    rule: "SUBSTITUTE removes all spaces; UPPER fixes the case; XLOOKUP's fourth part shows unknown for a code not listed.",
     value: (e) => `The price is ${e}.`,
   }),
 ];

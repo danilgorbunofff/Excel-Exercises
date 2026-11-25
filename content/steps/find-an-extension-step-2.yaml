@@ -1,0 +1,48 @@
+id: find-an-extension-step-2
+slug: find-an-extension-step-2
+level: 1
+title: Find a team by ID
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: find-an-extension
+step: 2
+screens:
+  - prompt: In B9, find the team of the person whose ID is in B8. Use VLOOKUP with an exact match.
+    rows:
+      - [ID, Name, Team, Extension]
+      - [1041, Ana, Sales, 214]
+      - [1042, Ben, Finance, 305]
+      - [1043, Cleo, Sales, 218]
+      - [1044, Dev, IT, 402]
+      - [1045, Eve, Finance, 311]
+      - [null, null, null, null]
+      - [Find ID, 1045, null, null]
+      - [Team, null, null, null]
+    answerCell: B9
+    expected: Finance
+    variants:
+      - { set: { B8: 1041 }, expected: Sales }
+      - { set: { A2: 1045 }, expected: Sales }
+    answer: =VLOOKUP(B8,A2:D6,3,FALSE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: "Count the columns from the left: ID is 1, Name 2, Team 3."
+      rule: The third part of VLOOKUP is the column number within the table.
+    misses:
+      value: ID 1045 is in Finance.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =VLOOKUP(B8,A2:D6,3,FALSE)
+      - =VLOOKUP(B8,A2:D6,3,0)
+    reject:
+      - formula: =VLOOKUP(B8,A2:D6,2,FALSE)
+        rule: value
+      - formula: =VLOOKUP(B8,A2:D6,4,FALSE)
+        rule: value
+      - formula: ="Finance"
+        rule: required-function
+      - formula: =VLOOKUP(B8,A2:D6,3,FALSE
+        rule: syntax

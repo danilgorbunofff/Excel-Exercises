@@ -1,0 +1,19 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(XLOOKUP($E$2,$A$2:$A$8,$C$2:$C$8)/XLOOKUP($E$2,$A$2:$A$8,$B$2:$B$8),2)
+      - =ROUND(XLOOKUP(E$2,A2:A8,C2:C8)/XLOOKUP(E2,A2:A8,B2:B8),2)
+      - =round(xlookup(e2, a2:a8, c2:c8)/xlookup(e2, a2:a8, b2:b8), 2)
+      - =ROUND(INDEX(C2:C8,MATCH(E2,A2:A8,0))/XLOOKUP(E2,A2:A8,B2:B8),2)
+      - =ROUND(VLOOKUP(E2,A2:C8,3,FALSE)/XLOOKUP(E2,A2:A8,B2:B8),2)
+      - =ROUND(XLOOKUP(E2,A2:A8,C2:C8)/INDEX(B2:B8,MATCH(E2,A2:A8,0)),2)
+      - =ROUND(XLOOKUP(E2,A2:A8,C2:C8)/VLOOKUP(E2,A2:B8,2,FALSE),2)
+      - =LET(data,A2:A8,ROUND(XLOOKUP(E2,data,C2:C8)/XLOOKUP(E2,data,B2:B8),2))
+    wrong:
+      - formula: =ROUND(XLOOKUP(E2,A2:A8,C2:C8)/XLOOKUP(E2,A2:A8,B2:B8),3)
+        rule: fragile
+        why: 2 written as 3
+      - formula: =ROUND(XLOOKUP(E2,A2:A8,C2:C8)/XLOOKUP(E2,A2:A8,B2:B8),1)
+        rule: fragile
+        why: 2 written as 1
+    equivalent: []

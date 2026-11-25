@@ -1,0 +1,43 @@
+id: concat-and-the-operator-step-2
+slug: concat-and-the-operator-step-2
+level: 1
+title: City and country
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: concat-and-the-operator
+step: 2
+screens:
+  - prompt: In C2, join the city in A2 and the country in B2 with a comma and a space between. Use CONCAT.
+    rows:
+      - [City, Country, Place]
+      - [Lyon, France, null]
+    answerCell: C2
+    expected: Lyon, France
+    variants:
+      - set: { A2: Porto, B2: Portugal }
+        expected: Porto, Portugal
+    answer: =CONCAT(A2,", ",B2)
+    requiredFunctions:
+      - CONCAT
+    hints:
+      nudge: CONCAT takes each piece in order, separated by commas.
+      rule: CONCAT(A2,", ",B2) puts a comma and a space between the two cells.
+    misses:
+      value: The place reads Lyon, France.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for CONCAT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =CONCAT(A2,", ",B2)
+      - =CONCAT(A2,", ",B2)
+      - '=CONCAT(A2,", ")&B2'
+      - '=CONCAT(A2&", "&B2)'
+    reject:
+      - formula: =A2&", "&B2
+        rule: required-function
+      - formula: =CONCAT(A2,",",B2)
+        rule: value
+      - formula: ="Lyon, France"
+        rule: required-function
+      - formula: =CONCAT(A2,", ",B2
+        rule: syntax

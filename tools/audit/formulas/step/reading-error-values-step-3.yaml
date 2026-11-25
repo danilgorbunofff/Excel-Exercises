@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(ISERROR(VALUE($A$2)),"text","number")
+      - =IF(ISERROR(VALUE(A$2)),"text","number")
+      - =if(iserror(value(a2)), "text", "number")
+    wrong: []
+    equivalent: []

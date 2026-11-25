@@ -1,0 +1,39 @@
+id: budget-versus-actual-with-a-variance-flag-step-2
+slug: budget-versus-actual-with-a-variance-flag-step-2
+level: 2
+title: Over or within budget
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: budget-versus-actual-with-a-variance-flag
+step: 2
+screens:
+  - prompt: In D2, show over when the actual in C2 is more than the budget in B2, and within otherwise. Use IF.
+    rows:
+      - [Line, Budget, Actual, Flag]
+      - [Travel, 12000, 13450, null]
+    answerCell: D2
+    expected: over
+    variants:
+      - set: { C2: 12000 }
+        expected: within
+    answer: =IF(C2>B2,"over","within")
+    requiredFunctions:
+      - IF
+    hints:
+      nudge: Spending exactly the budget is within it.
+      rule: IF(C2>B2,"over","within") flags only real overspends.
+    misses:
+      value: Travel spent more than its budget, so D2 should show over.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(C2>B2,"over","within")
+      - =IF(C2<=B2,"within","over")
+    reject:
+      - formula: =IF(C2>=B2,"over","within")
+        rule: fragile
+      - formula: ="over"
+        rule: required-function
+      - formula: =IF(C2>B2,"over","within"
+        rule: syntax

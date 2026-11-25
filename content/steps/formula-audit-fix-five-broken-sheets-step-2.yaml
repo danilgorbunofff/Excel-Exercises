@@ -1,0 +1,44 @@
+id: formula-audit-fix-five-broken-sheets-step-2
+slug: formula-audit-fix-five-broken-sheets-step-2
+level: 2
+title: Fix a ratio that divides by zero
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: formula-audit-fix-five-broken-sheets
+step: 2
+screens:
+  - prompt: In D3, repair the orders-per-visit ratio so a rep with no visits shows none instead of an error. Use IFERROR.
+    rows:
+      - [Rep, Visits, Orders, Ratio]
+      - [Ada, 12, 9, null]
+      - [Ben, 0, 2, null]
+    answerCell: D3
+    expected: none
+    variants:
+      - set: { B3: 5 }
+        expected: 0.4
+    answer: =IFERROR(C3/B3,"none")
+    requiredFunctions:
+      - IFERROR
+    hints:
+      nudge: Wrap the division in IFERROR.
+      rule: 'IFERROR(C3/B3,"none") shows none instead of `#DIV/0!` for a rep with no visits.'
+    misses:
+      value: With no visits, D3 should show none.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IFERROR.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IFERROR(C3/B3,"none")
+      - =IFERROR(C3/B3,"none")
+      - '=IFERROR(C3*(1/B3),"none")'
+      - '=IFERROR(C3/$B$3,"none")'
+    reject:
+      - formula: =C3/B3
+        rule: required-function
+      - formula: =IFERROR(B3/C3,"none")
+        rule: value
+      - formula: ="none"
+        rule: required-function
+      - formula: =IFERROR(C3/B3,"none"
+        rule: syntax

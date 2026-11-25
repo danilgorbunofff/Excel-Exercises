@@ -1,0 +1,48 @@
+id: find-a-code-step-5
+slug: find-a-code-step-5
+level: 3
+title: Code of the product with the least stock
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: find-a-code
+step: 5
+screens:
+  - prompt: In H1, what is the code of the product with the least stock?
+    rows:
+      - [Code, Product, Category, Price, Stock, null, Lowest stock, null]
+      - [P-101, Desk lamp, Lighting, 24, 14, null, null, null]
+      - [P-102, Chair, Seating, 89, 6, null, null, null]
+      - [P-103, Shelf, Storage, 45, 9, null, null, null]
+      - [P-104, Rug, Decor, 120, 3, null, null, null]
+      - [P-105, Mirror, Decor, 60, 11, null, null, null]
+      - [P-106, Stool, Seating, 35, 22, null, null, null]
+      - [P-107, Floor lamp, Lighting, 75, 5, null, null, null]
+      - [P-108, Cabinet, Storage, 210, 2, null, null, null]
+    answerCell: H1
+    expected: P-108
+    variants:
+      - { set: { E3: 1 }, expected: P-102 }
+      - { set: { E9: 8 }, expected: P-104 }
+      - { set: { E2: 0 }, expected: P-101 }
+    answer: =INDEX(A2:A9,MATCH(MIN(E2:E9),E2:E9,0))
+    requiredFunctions: []
+    hints:
+      nudge: Find the smallest stock, then look up which row it is on.
+      rule: MIN(E2:E9) gives the lowest stock; MATCH finds its row; INDEX returns the code.
+    misses:
+      value: The product with the least stock is P-108.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(A2:A9,MATCH(MIN(E2:E9),E2:E9,0))
+      - =XLOOKUP(MIN(E2:E9),E2:E9,A2:A9)
+    reject:
+      - formula: =MIN(E2:E9)
+        rule: value
+      - formula: ="P-108"
+        rule: reference
+      - formula: ="P-108"
+        rule: reference
+      - formula: =INDEX(A2:A9,MATCH(MIN(E2:E9),E2:E9,0)
+        rule: syntax

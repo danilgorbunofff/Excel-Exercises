@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFNA(VLOOKUP($B$8,$A$2:$B$6,2,FALSE),0)*$B$9
+      - =IFNA(VLOOKUP(B$8,A2:B6,2,FALSE),0)*B9
+      - =ifna(vlookup(b8, a2:b6, 2, false), 0)*b9
+      - =LET(data,A2:B6,IFNA(VLOOKUP(B8,data,2,FALSE),0)*B9)
+    wrong:
+      - formula: =IFNA(VLOOKUP(B8,A2:B5,2,FALSE),0)*B9
+        rule: fragile
+        why: range A2:B6 one row short at the end
+      - formula: =IFNA(VLOOKUP(B8,A3:B6,2,FALSE),0)*B9
+        rule: fragile
+        why: range A2:B6 skips its first row
+    equivalent:
+      - formula: =IFNA(VLOOKUP(B8,A2:B7,2,FALSE),0)*B9
+        why: "range A2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

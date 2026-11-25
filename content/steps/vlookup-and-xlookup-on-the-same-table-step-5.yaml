@@ -1,0 +1,45 @@
+id: vlookup-and-xlookup-on-the-same-table-step-5
+slug: vlookup-and-xlookup-on-the-same-table-step-5
+level: 3
+title: Stock value from two tables
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: vlookup-and-xlookup-on-the-same-table
+step: 5
+screens:
+  - prompt: In H2, what is the stock of the SKU in H1 worth? Prices are in the table A1:C5 and stock counts in the table E1:F5.
+    rows:
+      - [SKU, Product, Unit price, null, SKU, On hand, SKU, CX-330]
+      - [BX-210, Bracket, 2.4, null, EX-500, 18, Value, null]
+      - [CX-330, Clamp, 3.8, null, BX-210, 240, null, null]
+      - [DX-410, Dowel, 1.15, null, CX-330, 96, null, null]
+      - [EX-500, Extrusion, 9.6, null, DX-410, 60, null, null]
+    answerCell: H2
+    expected: 364.8
+    variants:
+      - set: { H1: EX-500 }
+        expected: 172.8
+      - set: { F4: 120 }
+        expected: 456
+    answer: =XLOOKUP(H1,A2:A5,C2:C5)*XLOOKUP(H1,E2:E5,F2:F5)
+    requiredFunctions: []
+    hints:
+      nudge: The two tables list the SKUs in different orders, so look each one up.
+      rule: One lookup gives the price, the other the stock; their product is the value on hand.
+    misses:
+      value: CX-330's stock is worth 364.80.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(H1,A2:A5,C2:C5)*XLOOKUP(H1,E2:E5,F2:F5)
+      - =VLOOKUP(H1,A2:C5,3,FALSE)*VLOOKUP(H1,E2:F5,2,FALSE)
+    reject:
+      - formula: =XLOOKUP(H1,A2:A5,C2:C5)*F3
+        rule: value
+      - formula: =C3*F4
+        rule: fragile
+      - formula: =364.8
+        rule: reference
+      - formula: =XLOOKUP(H1,A2:A5,C2:C5)*XLOOKUP(H1,E2:E5,F2:F5
+        rule: syntax

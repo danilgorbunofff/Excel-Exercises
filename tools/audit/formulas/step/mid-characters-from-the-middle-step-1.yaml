@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MID($A$2,6,2)
+      - =MID(A$2,6,2)
+      - =mid(a2, 6, 2)
+    wrong: []
+    equivalent: []

@@ -1,0 +1,39 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFERROR((SUMIF($A$2:$A$5,"East",$B$2:$B$5)-SUMIF($A$2:$A$5,"East",$C$2:$C$5))/SUMIF($A$2:$A$5,"East",$B$2:$B$5),"none")
+      - =IFERROR((SUMIF(A$2:A$5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5),"none")
+      - =iferror((sumif(a2:a5, "East", b2:b5)-sumif(a2:a5, "East", c2:c5))/sumif(a2:a5, "East", b2:b5), "none")
+      - =IFERROR((SUMIFS(B2:B5,A2:A5,"East")-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5),"none")
+      - =IFERROR((SUMPRODUCT((A2:A5="East")*B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5),"none")
+      - =IFERROR((SUM(FILTER(B2:B5,(A2:A5="East"),0))-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5),"none")
+      - =IFERROR((SUMIF(A2:A5,"East",B2:B5)-SUMIFS(C2:C5,A2:A5,"East"))/SUMIF(A2:A5,"East",B2:B5),"none")
+      - =IFERROR((SUMIF(A2:A5,"East",B2:B5)-SUMPRODUCT((A2:A5="East")*C2:C5))/SUMIF(A2:A5,"East",B2:B5),"none")
+      - =IFERROR((SUMIF(A2:A5,"East",B2:B5)-SUM(FILTER(C2:C5,(A2:A5="East"),0)))/SUMIF(A2:A5,"East",B2:B5),"none")
+      - =IFERROR((SUMIF(A2:A5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUMIFS(B2:B5,A2:A5,"East"),"none")
+      - =IFERROR((SUMIF(A2:A5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUMPRODUCT((A2:A5="East")*B2:B5),"none")
+      - =IFERROR((SUMIF(A2:A5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUM(FILTER(B2:B5,(A2:A5="East"),0)),"none")
+      - =LET(data,A2:A5,IFERROR((SUMIF(data,"East",B2:B5)-SUMIF(data,"East",C2:C5))/SUMIF(data,"East",B2:B5),"none"))
+    wrong:
+      - formula: =IFERROR((AVERAGEIF(A2:A5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5),"none")
+        rule: fragile
+        why: AVERAGEIF instead of SUMIF
+      - formula: =IFERROR((SUMIF(A2:A5,"East",B2:B5)-AVERAGEIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5),"none")
+        rule: fragile
+        why: AVERAGEIF instead of SUMIF
+      - formula: =IFERROR((SUMIF(A2:A5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/AVERAGEIF(A2:A5,"East",B2:B5),"none")
+        rule: fragile
+        why: AVERAGEIF instead of SUMIF
+    equivalent:
+      - formula: =IFERROR((SUMIF(A2:A6,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5),"none")
+        why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IFERROR((SUMIF(A2:A5,"East",B2:B6)-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5),"none")
+        why: "range B2:B5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IFERROR((SUMIF(A2:A5,"East",B2:B5)-SUMIF(A2:A6,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B5),"none")
+        why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IFERROR((SUMIF(A2:A5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C6))/SUMIF(A2:A5,"East",B2:B5),"none")
+        why: "range C2:C5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IFERROR((SUMIF(A2:A5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A6,"East",B2:B5),"none")
+        why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IFERROR((SUMIF(A2:A5,"East",B2:B5)-SUMIF(A2:A5,"East",C2:C5))/SUMIF(A2:A5,"East",B2:B6),"none")
+        why: "range B2:B5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

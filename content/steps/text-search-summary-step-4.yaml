@@ -1,0 +1,55 @@
+id: text-search-summary-step-4
+slug: text-search-summary-step-4
+level: 2
+title: Count codes in one series over an amount
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: text-search-summary
+step: 4
+screens:
+  - prompt: In E2, count the codes whose number part starts with 1, matched with "??-1*", and whose amount is over 100. Use COUNTIFS.
+    rows:
+      - [Code, Region, Amount, null, Series 1 over 100]
+      - [AN-1042, North, 120, null, null]
+      - [BO-2299, South, 80, null, null]
+      - [CY-3140, North, 200, null, null]
+      - [DE-4471, North, 60, null, null]
+      - [EF-1180, East, 150, null, null]
+      - [GH-3305, West, 95, null, null]
+      - [IJ-2876, North, 175, null, null]
+      - [KL-4012, South, 130, null, null]
+      - [MN-1567, East, 210, null, null]
+      - [OP-3999, West, 45, null, null]
+      - [QR-2050, North, 88, null, null]
+      - [ST-4410, South, 160, null, null]
+      - [UV-1001, East, 72, null, null]
+      - [WX-3721, North, 140, null, null]
+      - [YZ-2600, West, 115, null, null]
+    answerCell: E2
+    expected: 3
+    variants:
+      - { set: { C14: 150 }, expected: 4 }
+      - { set: { C2: 100 }, expected: 2 }
+    answer: =COUNTIFS(A2:A16,"??-1*",C2:C16,">100")
+    requiredFunctions:
+      - COUNTIFS
+    hints:
+      nudge: Two characters, a dash, then 1 and anything after.
+      rule: '"??-1*" matches the series; C2:C16,">100" adds the amount test.'
+    misses:
+      value: 3 codes in series 1 are over 100.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIFS(A2:A16,"??-1*",C2:C16,">100")
+      - =COUNTIFS(C2:C16,">100",A2:A16,"??-1*")
+    reject:
+      - formula: =COUNTIFS(A2:A16,"??-1*")
+        rule: value
+      - formula: =COUNTIFS(A2:A16,"1*",C2:C16,">100")
+        rule: value
+      - formula: =3
+        rule: required-function
+      - formula: =COUNTIFS(A2:A16,"??-1*",C2:C16,">100"
+        rule: syntax

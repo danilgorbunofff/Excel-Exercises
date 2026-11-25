@@ -1,0 +1,14 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT($C$2:$C$6,$D$2:$D$6)+$G$1*SUMIFS($D$2:$D$6,$A$2:$A$6,"Sales",$B$2:$B$6,"Junior")
+      - =SUMPRODUCT(C$2:C$6,D2:D6)+G1*SUMIFS(D2:D6,A2:A6,"Sales",B2:B6,"Junior")
+      - =sumproduct(c2:c6, d2:d6)+g1*sumifs(d2:d6, a2:a6, "Sales", b2:b6, "Junior")
+      - =SUMPRODUCT(C2:C6,D2:D6)+G1*SUMPRODUCT((A2:A6="Sales")*(B2:B6="Junior")*D2:D6)
+      - =SUMPRODUCT(C2:C6,D2:D6)+G1*SUM(FILTER(D2:D6,(A2:A6="Sales")*(B2:B6="Junior"),0))
+      - =LET(data,C2:C6,SUMPRODUCT(data,D2:D6)+G1*SUMIFS(D2:D6,A2:A6,"Sales",B2:B6,"Junior"))
+    wrong:
+      - formula: =SUMPRODUCT(C2:C6,D2:D6)+G1*AVERAGEIFS(D2:D6,A2:A6,"Sales",B2:B6,"Junior")
+        rule: fragile
+        why: AVERAGEIFS instead of SUMIFS
+    equivalent: []

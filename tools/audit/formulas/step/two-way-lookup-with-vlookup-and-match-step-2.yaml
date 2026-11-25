@@ -1,0 +1,10 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =MATCH(B$6,A1:D1,0)
+      - =match(b6, a1:d1, 0)
+      - =LET(data,A1:D1,MATCH(B6,data,0))
+    wrong: []
+    equivalent:
+      - formula: =MATCH(B6,A1:D1,1)
+        why: "0 written as 1: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

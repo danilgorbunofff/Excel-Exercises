@@ -1,0 +1,43 @@
+id: bank-reconciliation-match-step-1
+slug: bank-reconciliation-match-step-1
+level: 1
+title: Is the reference on the statement
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: bank-reconciliation-match
+step: 1
+screens:
+  - prompt: In C2, count how many bank lines have the ledger reference in A2. Use COUNTIF.
+    rows:
+      - [Ledger ref, Ledger amount, Count, null, Bank ref, Bank amount]
+      - [R-101, 1200, null, null, R-101, 1200]
+      - [R-102, 850, null, null, R-103, 430]
+      - [R-103, 430, null, null, R-105, 990]
+      - [R-104, 610, null, null, R-102, 805]
+      - [R-105, 990, null, null, null, null]
+    answerCell: C2
+    expected: 1
+    variants:
+      - { set: { A2: R-104 }, expected: 0 }
+      - { set: { E5: R-101 }, expected: 2 }
+    answer: =COUNTIF($E$2:$E$5,A2)
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: Search the bank references for the ledger reference.
+      rule: COUNTIF($E$2:$E$5,A2) is 0 when the bank has no such line.
+    misses:
+      value: R-101 appears 1 time on the statement.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF($E$2:$E$5,A2)
+      - =COUNTIF(E2:E5,A2)
+    reject:
+      - formula: =COUNTIF($A$2:$A$6,A2)
+        rule: fragile
+      - formula: =1
+        rule: required-function
+      - formula: =COUNTIF($E$2:$E$5,A2
+        rule: syntax

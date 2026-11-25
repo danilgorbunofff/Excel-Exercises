@@ -1,0 +1,49 @@
+id: sumproduct-multiply-then-add-step-2
+slug: sumproduct-multiply-then-add-step-2
+level: 2
+title: Value of one item's lines
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sumproduct-multiply-then-add
+step: 2
+screens:
+  - prompt: 'In C10, total the value of the Pens lines only: (A2:A8="Pens") times the prices times the quantities. Use SUMPRODUCT.'
+    rows:
+      - [Item, Price, Qty]
+      - [Pens, 1.2, 40]
+      - [Pads, 3.5, 15]
+      - [Pens, 1.1, 60]
+      - [Clips, 0.05, 500]
+      - [Pens, 1.25, 24]
+      - [Tape, 2.1, 12]
+      - [Pads, 3.4, 10]
+      - [null, null, null]
+      - [Pens value, null, null]
+    answerCell: C10
+    expected: 144
+    variants:
+      - set: { C4: 80 }
+        expected: 166
+    answer: =SUMPRODUCT((A2:A8="Pens")*B2:B8*C2:C8)
+    requiredFunctions:
+      - SUMPRODUCT
+    hints:
+      nudge: A test in brackets gives 1 or 0 per row, which keeps or drops that row.
+      rule: (A2:A8="Pens") is 1 on the Pens rows and 0 elsewhere, so only those rows count.
+    misses:
+      value: The Pens lines are worth 144.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMPRODUCT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT((A2:A8="Pens")*B2:B8*C2:C8)
+      - =SUMPRODUCT(--(A2:A8="Pens"),B2:B8,C2:C8)
+    reject:
+      - formula: =SUMPRODUCT(B2:B8,C2:C8)
+        rule: value
+      - formula: =SUMIF(A2:A8,"Pens",C2:C8)
+        rule: required-function
+      - formula: =144
+        rule: required-function
+      - formula: =SUMPRODUCT((A2:A8="Pens")*B2:B8*C2:C8
+        rule: syntax

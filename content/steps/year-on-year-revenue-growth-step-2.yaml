@@ -1,0 +1,45 @@
+id: year-on-year-revenue-growth-step-2
+slug: year-on-year-revenue-growth-step-2
+level: 1
+title: Growth as a multiple
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: year-on-year-revenue-growth
+step: 2
+screens:
+  - prompt: "In D2, work out this year's kettle revenue as a multiple of last year's: C2 divided by B2."
+    rows:
+      - [Product, Last year, This year, null]
+      - [Kettle, 42000, 46200, null]
+      - [Toaster, 31000, 29450, null]
+      - [Blender, 18000, 22500, null]
+      - [Mixer, 25000, 27000, null]
+      - [Grill, 12000, 15600, null]
+      - [Fryer, 9000, 8100, null]
+      - [Juicer, 14000, 17500, null]
+      - [Scale, 6000, 6900, null]
+    answerCell: D2
+    expected: 1.1
+    variants:
+      - set: { C2: 50400 }
+        expected: 1.2
+    answer: =C2/B2
+    requiredFunctions: []
+    hints:
+      nudge: This year divided by last year; above 1 means growth.
+      rule: C2/B2 of 1.1 means 10% growth.
+    misses:
+      value: This year is 1.1 times last year.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =C2/B2
+      - =1/(B2/C2)
+    reject:
+      - formula: =B2/C2
+        rule: value
+      - formula: =1.1
+        rule: reference
+      - formula: =C2/B2,
+        rule: syntax

@@ -1,0 +1,53 @@
+id: text-search-summary-step-1
+slug: text-search-summary-step-1
+level: 1
+title: The two-letter prefix
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: text-search-summary
+step: 1
+screens:
+  - prompt: In E2, take the two letters at the start of the code in A2. Use LEFT.
+    rows:
+      - [Code, Region, Amount, null, Prefix]
+      - [AN-1042, North, 120, null, null]
+      - [BO-2299, South, 80, null, null]
+      - [CY-3140, North, 200, null, null]
+      - [DE-4471, North, 60, null, null]
+      - [EF-1180, East, 150, null, null]
+      - [GH-3305, West, 95, null, null]
+      - [IJ-2876, North, 175, null, null]
+      - [KL-4012, South, 130, null, null]
+      - [MN-1567, East, 210, null, null]
+      - [OP-3999, West, 45, null, null]
+      - [QR-2050, North, 88, null, null]
+      - [ST-4410, South, 160, null, null]
+      - [UV-1001, East, 72, null, null]
+      - [WX-3721, North, 140, null, null]
+      - [YZ-2600, West, 115, null, null]
+    answerCell: E2
+    expected: AN
+    variants:
+      - set: { A2: ZZ-9001 }
+        expected: ZZ
+    answer: =LEFT(A2,2)
+    requiredFunctions:
+      - LEFT
+    hints:
+      nudge: LEFT keeps characters from the start.
+      rule: LEFT(A2,2) keeps the two letters before the dash.
+    misses:
+      value: The prefix is AN.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for LEFT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =LEFT(A2,2)
+      - =LEFT(A2,FIND("-",A2)-1)
+    reject:
+      - formula: =LEFT(A2,3)
+        rule: value
+      - formula: ="AN"
+        rule: required-function
+      - formula: =LEFT(A2,2
+        rule: syntax

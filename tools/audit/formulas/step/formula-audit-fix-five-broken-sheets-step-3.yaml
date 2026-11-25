@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =VLOOKUP($E$2,$A$2:$C$5,3,FALSE)
+      - =VLOOKUP(E$2,A2:C5,3,FALSE)
+      - =vlookup(e2, a2:c5, 3, false)
+      - =LET(data,A2:C5,VLOOKUP(E2,data,3,FALSE))
+    wrong:
+      - formula: =VLOOKUP(E2,A2:C5,3)
+        rule: fragile
+        why: VLOOKUP without FALSE
+      - formula: =VLOOKUP(E2,A3:C5,3,FALSE)
+        rule: fragile
+        why: range A2:C5 skips its first row
+      - formula: =VLOOKUP(E2,A2:C5,3,TRUE)
+        rule: fragile
+        why: FALSE written as TRUE
+    equivalent: []

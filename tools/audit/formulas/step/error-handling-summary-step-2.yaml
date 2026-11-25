@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFNA(VLOOKUP(A$8,A2:B6,2,FALSE),"no match")
+      - =ifna(vlookup(a8, a2:b6, 2, false), "no match")
+      - =LET(data,A2:B6,IFNA(VLOOKUP(A8,data,2,FALSE),"no match"))
+    wrong:
+      - formula: =IFNA(VLOOKUP(A8,A2:B5,2,FALSE),"no match")
+        rule: fragile
+        why: range A2:B6 one row short at the end
+    equivalent:
+      - formula: =IFNA(VLOOKUP(A8,A2:B7,2,FALSE),"no match")
+        why: "range A2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

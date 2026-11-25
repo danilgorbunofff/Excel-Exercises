@@ -1,0 +1,54 @@
+id: an-inventory-reorder-report-step-5
+slug: an-inventory-reorder-report-step-5
+level: 3
+title: Units to order across the store
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: an-inventory-reorder-report
+step: 5
+screens:
+  - prompt: In F2, how many units must be ordered in total to bring every item up to its reorder point? Items above their point need nothing.
+    rows:
+      - [Item, On hand, Reorder at, null, null, Units to order]
+      - [Bolts, 120, 200, null, null, null]
+      - [Nuts, 340, 250, null, null, null]
+      - [Washers, 80, 150, null, null, null]
+      - [Screws, 500, 400, null, null, null]
+      - [Rivets, 60, 60, null, null, null]
+      - [Pins, 45, 100, null, null, null]
+      - [Clips, 210, 180, null, null, null]
+      - [Hooks, 15, 40, null, null, null]
+      - [Plugs, 90, 120, null, null, null]
+      - [Caps, 300, 150, null, null, null]
+      - [Springs, 25, 75, null, null, null]
+      - [Seals, 130, 100, null, null, null]
+      - [Shims, 70, 90, null, null, null]
+      - [Tags, 400, 500, null, null, null]
+      - [Ties, 55, 50, null, null, null]
+    answerCell: F2
+    expected: 430
+    variants:
+      - set: { C11: 350 }
+        expected: 480
+    answer: =SUMPRODUCT((C2:C16>B2:B16)*(C2:C16-B2:B16))
+    requiredFunctions: []
+    hints:
+      nudge: Work out each item's shortfall, keep only the positive ones, then add.
+      rule: (C2:C16>B2:B16) is 1 only where an item is short, so the surplus of other items cannot cancel a shortfall.
+    misses:
+      value: 430 units must be ordered.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT((C2:C16>B2:B16)*(C2:C16-B2:B16))
+      - =SUM(IF(C2:C16>B2:B16,C2:C16-B2:B16,0))
+    reject:
+      - formula: =SUM(C2:C16)-SUM(B2:B16)
+        rule: value
+      - formula: =MAX(0,SUM(C2:C16)-SUM(B2:B16))
+        rule: value
+      - formula: =430
+        rule: reference
+      - formula: =SUMPRODUCT((C2:C16>B2:B16)*(C2:C16-B2:B16)
+        rule: syntax

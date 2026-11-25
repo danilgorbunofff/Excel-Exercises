@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =TEXTJOIN(", ",TRUE,XLOOKUP($G$2,$A$2:$A$5,$B$2:$E$5))
+      - =TEXTJOIN(", ",TRUE,XLOOKUP(G$2,A2:A5,B2:E5))
+      - =textjoin(", ", true, xlookup(g2, a2:a5, b2:e5))
+      - =LET(data,A2:A5,TEXTJOIN(", ",TRUE,XLOOKUP(G2,data,B2:E5)))
+    wrong: []
+    equivalent: []

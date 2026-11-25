@@ -1,0 +1,46 @@
+id: reading-error-values-step-2
+slug: reading-error-values-step-2
+level: 2
+title: Is the code missing
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: reading-error-values
+step: 2
+screens:
+  - prompt: In B9, answer TRUE when the code in A8 is not in A2:A6. Use ISNA and MATCH.
+    rows:
+      - [Code, Price]
+      - [A-1, 10]
+      - [B-2, 20]
+      - [C-3, 30]
+      - [D-4, 45]
+      - [E-5, 12]
+      - [null, null]
+      - [F-6, null]
+      - [Missing?, null]
+    answerCell: B9
+    expected: true
+    variants:
+      - { set: { A8: B-2 }, expected: false }
+      - { set: { A8: A-1 }, expected: false }
+      - { set: { A8: E-5 }, expected: false }
+    answer: =ISNA(MATCH(A8,A2:A6,0))
+    requiredFunctions:
+      - ISNA
+      - MATCH
+    hints:
+      nudge: "MATCH gives #N/A for a missing value; ISNA checks for that error only."
+      rule: ISNA(MATCH(A8,A2:A6,0)) is TRUE when the code is not on the list.
+    misses:
+      value: F-6 is missing, so B9 should show true.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for ISNA and MATCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ISNA(MATCH(A8,A2:A6,0))
+      - =ISNA(MATCH($A$8,$A$2:$A$6,0))
+    reject:
+      - formula: =ISERROR(MATCH(A8,A2:A6,0))
+        rule: required-function
+      - formula: =ISNA(MATCH(A8,A2:A6,0)
+        rule: syntax

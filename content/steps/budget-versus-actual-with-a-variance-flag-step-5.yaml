@@ -1,0 +1,60 @@
+id: budget-versus-actual-with-a-variance-flag-step-5
+slug: budget-versus-actual-with-a-variance-flag-step-5
+level: 3
+title: How many lines need review
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: budget-versus-actual-with-a-variance-flag
+step: 5
+screens:
+  - prompt: In F2, how many budget lines need review because their actual is more than the share in F1, such as 0.1 for 10%, away from budget in either direction?
+    rows:
+      - [Line, Budget, Actual, null, null, 0.1]
+      - [Travel, 12000, 13450, null, null, null]
+      - [Training, 8000, 6950, null, null, null]
+      - [Rent, 36000, 36000, null, null, null]
+      - [Software, 9500, 10100, null, null, null]
+      - [Marketing, 15000, 17200, null, null, null]
+      - [Events, 6000, 4800, null, null, null]
+      - [Supplies, 2400, 2550, null, null, null]
+      - [Phones, 3000, 2900, null, null, null]
+      - [Consulting, 20000, 23500, null, null, null]
+      - [Recruiting, 7000, 6100, null, null, null]
+      - [Insurance, 5500, 5500, null, null, null]
+      - [Repairs, 4000, 4450, null, null, null]
+      - [Postage, 1200, 1450, null, null, null]
+      - [Printing, 1800, 1650, null, null, null]
+      - [Catering, 2600, 2200, null, null, null]
+    answerCell: F2
+    expected: 9
+    variants:
+      - set: { F1: 0.05 }
+        expected: 12
+      - set: { C4: 30000 }
+        expected: 10
+      - set: { C4: null }
+        expected: 10
+      - set: { C3: 7200 }
+        expected: 8
+    answer: =SUMPRODUCT(--(ABS(C2:C16-B2:B16)/B2:B16>F1))
+    requiredFunctions: []
+    hints:
+      nudge: Each line's variance, without its sign, as a share of its own budget, compared with F1.
+      rule: ABS(C2:C16-B2:B16)/B2:B16 is each line's variance as a share; >F1 marks those to review and SUMPRODUCT counts them.
+    misses:
+      value: 9 lines need review.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(--(ABS(C2:C16-B2:B16)/B2:B16>F1))
+      - =SUMPRODUCT(--(ABS(C2:C16/B2:B16-1)>F1))
+    reject:
+      - formula: =SUMPRODUCT(--((C2:C16-B2:B16)/B2:B16>F1))
+        rule: value
+      - formula: =SUMPRODUCT(--(ABS(C2:C16-B2:B16)>F1))
+        rule: value
+      - formula: =9
+        rule: reference
+      - formula: =SUMPRODUCT(--(ABS(C2:C16-B2:B16)/B2:B16>F1)
+        rule: syntax

@@ -1,0 +1,44 @@
+id: a-headcount-and-payroll-summary-step-2
+slug: a-headcount-and-payroll-summary-step-2
+level: 2
+title: Payroll of one team
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-headcount-and-payroll-summary
+step: 2
+screens:
+  - prompt: "In F2, work out the payroll of the team typed in F1: its heads times its salary, both looked up. Use XLOOKUP."
+    rows:
+      - [Team, Heads, Salary, null, null, IT]
+      - [Sales, 12, 48000, null, null, null]
+      - [Finance, 5, 56000, null, null, null]
+      - [IT, 8, 61000, null, null, null]
+      - [Admin, 4, 34000, null, null, null]
+    answerCell: F2
+    expected: 488000
+    variants:
+      - set: { F1: Admin }
+        expected: 136000
+    answer: =XLOOKUP(F1,A2:A5,B2:B5)*XLOOKUP(F1,A2:A5,C2:C5)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: "Two lookups on the same team: one for heads, one for salary."
+      rule: Multiplying the two lookups gives the team's payroll for whichever team is in F1.
+    misses:
+      value: IT's payroll is 488000.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(F1,A2:A5,B2:B5)*XLOOKUP(F1,A2:A5,C2:C5)
+      - =XLOOKUP($F$1,$A$2:$A$5,$B$2:$B$5)*XLOOKUP($F$1,$A$2:$A$5,$C$2:$C$5)
+    reject:
+      - formula: =XLOOKUP(F1,A2:A5,C2:C5)
+        rule: value
+      - formula: =B4*C4
+        rule: required-function
+      - formula: =488000
+        rule: required-function
+      - formula: =XLOOKUP(F1,A2:A5,B2:B5)*XLOOKUP(F1,A2:A5,C2:C5
+        rule: syntax

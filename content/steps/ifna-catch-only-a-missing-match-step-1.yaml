@@ -1,0 +1,47 @@
+id: ifna-catch-only-a-missing-match-step-1
+slug: ifna-catch-only-a-missing-match-step-1
+level: 1
+title: Position, or missing
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: ifna-catch-only-a-missing-match
+step: 1
+screens:
+  - prompt: In B9, give the position of the code in A8 in A2:A6, or the word missing when it is not there. Use IFNA and MATCH.
+    rows:
+      - [Code, Price]
+      - [A-1, 10]
+      - [B-2, 20]
+      - [C-3, 30]
+      - [D-4, 45]
+      - [E-5, 12]
+      - [null, null]
+      - [F-6, null]
+      - [Position, null]
+    answerCell: B9
+    expected: missing
+    variants:
+      - { set: { A8: C-3 }, expected: 3 }
+      - { set: { A8: E-5 }, expected: 5 }
+    answer: =IFNA(MATCH(A8,A2:A6,0),"missing")
+    requiredFunctions:
+      - IFNA
+      - MATCH
+    hints:
+      nudge: "MATCH gives #N/A when the code is not there; IFNA replaces exactly that error."
+      rule: 'IFNA(MATCH(A8,A2:A6,0),"missing") shows missing instead of #N/A.'
+    misses:
+      value: F-6 is not on the list, so B9 should show missing.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IFNA and MATCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IFNA(MATCH(A8,A2:A6,0),"missing")
+      - =IFNA(MATCH($A$8,$A$2:$A$6,0),"missing")
+    reject:
+      - formula: =MATCH(A8,A2:A6,0)
+        rule: required-function
+      - formula: ="missing"
+        rule: required-function
+      - formula: =IFNA(MATCH(A8,A2:A6,0),"missing"
+        rule: syntax

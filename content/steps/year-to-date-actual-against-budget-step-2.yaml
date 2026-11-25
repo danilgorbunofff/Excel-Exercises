@@ -1,0 +1,52 @@
+id: year-to-date-actual-against-budget-step-2
+slug: year-to-date-actual-against-budget-step-2
+level: 2
+title: Actual to date from a cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: year-to-date-actual-against-budget
+step: 2
+screens:
+  - prompt: In E2, add up the actuals for the months up to the number closed in D2. Use SUMIF.
+    rows:
+      - [Month, Actual, Budget, Months closed, null]
+      - [1, 41200, 40000, 4, null]
+      - [2, 39800, 40000, null, null]
+      - [3, 43500, 42000, null, null]
+      - [4, 44100, 42000, null, null]
+      - [5, null, 44000, null, null]
+      - [6, null, 44000, null, null]
+      - [7, null, 45000, null, null]
+      - [8, null, 43000, null, null]
+      - [9, null, 46000, null, null]
+      - [10, null, 47000, null, null]
+      - [11, null, 48000, null, null]
+      - [12, null, 52000, null, null]
+    answerCell: E2
+    expected: 168600
+    variants:
+      - set: { D2: 3 }
+        expected: 124500
+    answer: =SUMIF(A2:A13,"<="&D2,B2:B13)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: 'Build the test from D2: "<="&D2.'
+      rule: SUMIF(A2:A13,"<="&D2,B2:B13) follows the months closed as the year goes on.
+    misses:
+      value: The actual to date is 168600.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(A2:A13,"<="&D2,B2:B13)
+      - =SUMIF($A$2:$A$13,"<="&$D$2,$B$2:$B$13)
+    reject:
+      - formula: =SUMIF(A2:A13,"<"&D2,B2:B13)
+        rule: value
+      - formula: =SUMIF(A2:A13,"<=4",B2:B13)
+        rule: fragile
+      - formula: =168600
+        rule: required-function
+      - formula: =SUMIF(A2:A13,"<="&D2,B2:B13
+        rule: syntax

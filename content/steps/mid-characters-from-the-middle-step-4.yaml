@@ -1,0 +1,42 @@
+id: mid-characters-from-the-middle-step-4
+slug: mid-characters-from-the-middle-step-4
+level: 2
+title: Text after a colon
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: mid-characters-from-the-middle
+step: 4
+screens:
+  - prompt: 'In B2, return what follows ": " in the note in A2. Start MID two characters after the colon that FIND locates, and take up to the length of A2.'
+    rows:
+      - [Note, Status]
+      - ["Order status: Shipped", null]
+    answerCell: B2
+    expected: Shipped
+    variants:
+      - set: { A2: "Payment: Overdue" }
+        expected: Overdue
+    answer: =MID(A2,FIND(":",A2)+2,LEN(A2))
+    requiredFunctions:
+      - MID
+      - FIND
+    hints:
+      nudge: FIND gives the colon's place; the status starts 2 after it.
+      rule: MID(A2,FIND(":",A2)+2,LEN(A2)) works whatever the label before the colon.
+    misses:
+      value: The status is Shipped.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for MID and FIND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MID(A2,FIND(":",A2)+2,LEN(A2))
+      - =MID(A2,FIND(":",A2)+2,99)
+    reject:
+      - formula: =MID(A2,FIND(":",A2)+1,LEN(A2))
+        rule: value
+      - formula: =RIGHT(A2,7)
+        rule: required-function
+      - formula: ="Shipped"
+        rule: required-function
+      - formula: =MID(A2,FIND(":",A2)+2,LEN(A2)
+        rule: syntax

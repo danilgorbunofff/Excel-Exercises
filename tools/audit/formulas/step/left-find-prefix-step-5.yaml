@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LOWER(TEXTAFTER($A$2,"@"))
+      - =LOWER(TEXTAFTER(A$2,"@"))
+      - =lower(textafter(a2, "@"))
+    wrong: []
+    equivalent: []

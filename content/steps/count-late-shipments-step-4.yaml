@@ -1,0 +1,56 @@
+id: count-late-shipments-step-4
+slug: count-late-shipments-step-4
+level: 2
+title: Late share as a percentage
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-late-shipments
+step: 4
+screens:
+  - prompt: In F2, show the share of orders that shipped late as a percentage, rounded to 1 decimal. Use COUNTIF, COUNT and ROUND.
+    rows:
+      - [Order, Promised, Shipped, Days late, Carrier, null, null]
+      - [O-01, 45352, 45354, 2, Northway, null, null]
+      - [O-02, 45353, 45353, 0, Fastlane, null, null]
+      - [O-03, 45355, 45361, 6, Northway, null, null]
+      - [O-04, 45356, 45355, -1, Fastlane, null, null]
+      - [O-05, 45358, 45362, 4, Fastlane, null, null]
+      - [O-06, 45359, 45359, 0, Northway, null, null]
+      - [O-07, 45360, 45363, 3, Swiftco, null, null]
+      - [O-08, 45362, 45361, -1, Swiftco, null, null]
+      - [O-09, 45363, 45370, 7, Northway, null, null]
+      - [O-10, 45365, 45366, 1, Fastlane, null, null]
+      - [O-11, 45366, 45366, 0, Swiftco, null, null]
+      - [O-12, 45367, 45372, 5, Northway, null, null]
+      - [O-13, 45369, 45368, -1, Fastlane, null, null]
+      - [O-14, 45370, 45374, 4, Swiftco, null, null]
+      - [O-15, 45372, 45372, 0, Northway, null, null]
+    answerCell: F2
+    expected: 53.3
+    variants:
+      - { set: { D7: 2 }, expected: 60 }
+      - { set: { D2: null }, expected: 50 }
+      - { set: { D16: 2 }, expected: 60 }
+    answer: =ROUND(COUNTIF(D2:D16,">0")/COUNT(D2:D16)*100,1)
+    requiredFunctions:
+      - COUNTIF
+      - COUNT
+      - ROUND
+    hints:
+      nudge: Late orders over all orders, times 100, then round.
+      rule: Only more than 0 days counts as late.
+    misses:
+      value: 53.3% of orders shipped late.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF, COUNT and ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(COUNTIF(D2:D16,">0")/COUNT(D2:D16)*100,1)
+      - =ROUND(100*COUNTIF(D2:D16,">0")/COUNT(D2:D16),1)
+    reject:
+      - formula: =ROUND(COUNTIF(D2:D16,">=0")/COUNT(D2:D16)*100,1)
+        rule: value
+      - formula: =53.3
+        rule: required-function
+      - formula: =ROUND(COUNTIF(D2:D16,">0")/COUNT(D2:D16)*100,1
+        rule: syntax

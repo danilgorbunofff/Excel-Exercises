@@ -1,0 +1,49 @@
+id: department-cost-roll-up-step-2
+slug: department-cost-roll-up-step-2
+level: 2
+title: Department and cost type from cells
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: department-cost-roll-up
+step: 2
+screens:
+  - prompt: In F3, total the cost for the department in F1 and the cost type in F2. Use SUMIFS.
+    rows:
+      - [Department, Cost type, Amount, null, null, IT]
+      - [Marketing, Salaries, 84000, null, null, Travel]
+      - [Marketing, Software, 12500, null, null, null]
+      - [Sales, Salaries, 126000, null, null, null]
+      - [Sales, Software, 9800, null, null, null]
+      - [IT, Salaries, 98000, null, null, null]
+      - [IT, Software, 41000, null, null, null]
+      - [Marketing, Travel, 7400, null, null, null]
+      - [Sales, Travel, 18200, null, null, null]
+      - [IT, Travel, 3100, null, null, null]
+    answerCell: F3
+    expected: 3100
+    variants:
+      - set: { F1: Sales }
+        expected: 18200
+      - set: { F2: Software }
+        expected: 41000
+    answer: =SUMIFS(C2:C10,A2:A10,F1,B2:B10,F2)
+    requiredFunctions:
+      - SUMIFS
+    hints:
+      nudge: Point each condition at its cell.
+      rule: SUMIFS(C2:C10,A2:A10,F1,B2:B10,F2) follows whatever is typed in F1 and F2.
+    misses:
+      value: IT travel costs 3100.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIFS(C2:C10,A2:A10,F1,B2:B10,F2)
+      - =SUMIFS(C2:C10,B2:B10,F2,A2:A10,F1)
+    reject:
+      - formula: =SUMIFS(C2:C10,A2:A10,"IT",B2:B10,"Travel")
+        rule: fragile
+      - formula: =3100
+        rule: required-function
+      - formula: =SUMIFS(C2:C10,A2:A10,F1,B2:B10,F2
+        rule: syntax

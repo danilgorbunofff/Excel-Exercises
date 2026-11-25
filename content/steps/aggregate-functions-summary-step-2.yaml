@@ -1,0 +1,53 @@
+id: aggregate-functions-summary-step-2
+slug: aggregate-functions-summary-step-2
+level: 1
+title: Average line with SUBTOTAL
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: aggregate-functions-summary
+step: 2
+screens:
+  - prompt: In E2, average the line values in D2:D16 with SUBTOTAL, function number 1.
+    rows:
+      - [Item, Price, Qty, Line, Average line]
+      - [Pens, 1.2, 40, 48, null]
+      - [Pads, 3.5, 15, 52.5, null]
+      - [Clips, 0.05, 500, 25, null]
+      - [Tape, 2.1, 12, 25.2, null]
+      - [Files, 4.75, 20, 95, null]
+      - [Ink, 18.9, 6, 113.4, null]
+      - [Glue, 1.85, 30, 55.5, null]
+      - [Rulers, 0.9, 25, 22.5, null]
+      - [Folders, 0.6, 100, 60, null]
+      - [Labels, 5.4, 8, 43.2, null]
+      - [Staples, 1.1, 18, 19.8, null]
+      - [Markers, 7.25, 10, 72.5, null]
+      - [Erasers, 0.35, 60, 21, null]
+      - [Binders, 3.9, 14, 54.6, null]
+      - [Notes, 2.6, 22, 57.2, null]
+    answerCell: E2
+    expected: 51.0266666667
+    variants:
+      - set: { D4: 100 }
+        expected: 56.0266666667
+    answer: =SUBTOTAL(1,D2:D16)
+    requiredFunctions:
+      - SUBTOTAL
+    hints:
+      nudge: 1 is the average.
+      rule: SUBTOTAL(1,D2:D16) averages the line values.
+    misses:
+      value: The average line is 51.03.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUBTOTAL.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUBTOTAL(1,D2:D16)
+      - =SUBTOTAL(101,D2:D16)
+    reject:
+      - formula: =SUBTOTAL(9,D2:D16)
+        rule: value
+      - formula: =51.0266666667
+        rule: required-function
+      - formula: =SUBTOTAL(1,D2:D16
+        rule: syntax

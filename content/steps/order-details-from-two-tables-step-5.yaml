@@ -1,0 +1,56 @@
+id: order-details-from-two-tables-step-5
+slug: order-details-from-two-tables-step-5
+level: 3
+title: Value of all North orders
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: order-details-from-two-tables
+step: 5
+screens:
+  - prompt: In J2, what are the orders worth in total for customers in the North? Orders are in A:C, and each customer's region is in the table E:G.
+    rows:
+      - [Order, Customer ID, Value, null, Customer ID, Customer, Region, null, null, null]
+      - [O-01, C-02, 420, null, C-01, Arden, North, null, North total, null]
+      - [O-02, C-04, 310, null, C-02, Brook, South, null, null, null]
+      - [O-03, C-01, 275, null, C-03, Cole, North, null, null, null]
+      - [O-04, C-03, 190, null, C-04, Dunn, East, null, null, null]
+      - [O-05, C-05, 160, null, C-05, Eske, North, null, null, null]
+      - [O-06, C-02, 230, null, null, null, null, null, null, null]
+      - [O-07, C-01, 145, null, null, null, null, null, null, null]
+      - [O-08, C-04, 205, null, null, null, null, null, null, null]
+      - [O-09, C-03, 180, null, null, null, null, null, null, null]
+      - [O-10, C-05, 95, null, null, null, null, null, null, null]
+      - [O-11, C-02, 260, null, null, null, null, null, null, null]
+      - [O-12, C-01, 310, null, null, null, null, null, null, null]
+      - [O-13, C-04, 120, null, null, null, null, null, null, null]
+      - [O-14, C-03, 215, null, null, null, null, null, null, null]
+      - [O-15, C-02, 175, null, null, null, null, null, null, null]
+    answerCell: J2
+    expected: 1570
+    variants:
+      - set: { G4: West }
+        expected: 985
+      - set: { C5: 500 }
+        expected: 1880
+    answer: =SUMPRODUCT(SUMIFS(C2:C16,B2:B16,E2:E6)*(G2:G6="North"))
+    requiredFunctions: []
+    hints:
+      nudge: Total each customer's orders, then keep only the North customers.
+      rule: SUMIFS with E2:E6 as criteria gives one total per customer; times (G2:G6="North") keeps the North ones.
+    misses:
+      value: North orders are worth 1570.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(SUMIFS(C2:C16,B2:B16,E2:E6)*(G2:G6="North"))
+      - =SUMPRODUCT((XLOOKUP(B2:B16,E2:E6,G2:G6)="North")*C2:C16)
+    reject:
+      - formula: =SUMIF(G2:G6,"North",C2:C6)
+        rule: value
+      - formula: =SUM(C2:C16)
+        rule: value
+      - formula: =1570
+        rule: reference
+      - formula: =SUMPRODUCT(SUMIFS(C2:C16,B2:B16,E2:E6)*(G2:G6="North")
+        rule: syntax

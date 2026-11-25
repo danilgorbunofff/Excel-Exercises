@@ -1,0 +1,54 @@
+id: top-three-customers-share-step-3
+slug: top-three-customers-share-step-3
+level: 2
+title: Revenue of the top two
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: top-three-customers-share
+step: 3
+screens:
+  - prompt: In E2, add up the revenue of the two biggest customers. Use LARGE.
+    rows:
+      - [Customer, Revenue, null, null, Top two]
+      - [Arden, 42000, null, null, null]
+      - [Brook, 18500, null, null, null]
+      - [Calder, 67300, null, null, null]
+      - [Dene, 9200, null, null, null]
+      - [Esk, 31800, null, null, null]
+      - [Frome, 54100, null, null, null]
+      - [Garry, 12600, null, null, null]
+      - [Hull, 23400, null, null, null]
+      - [Isis, 7900, null, null, null]
+      - [Jed, 15200, null, null, null]
+    answerCell: E2
+    expected: 121400
+    variants:
+      - set: { B9: 60000 }
+        expected: 127300
+      - set: { B2: 67300, B4: 67293 }
+        expected: 134593
+      - set: { B11: 67300 }
+        expected: 134600
+      - set: { B11: 90000 }
+        expected: 157300
+    answer: =LARGE(B2:B11,1)+LARGE(B2:B11,2)
+    requiredFunctions:
+      - LARGE
+    hints:
+      nudge: LARGE(range,2) is the second biggest; add the first two.
+      rule: LARGE with 1 and 2 returns the two biggest revenues.
+    misses:
+      value: The top two customers bring 121400.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for LARGE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =LARGE(B2:B11,1)+LARGE(B2:B11,2)
+      - =SUM(LARGE(B2:B11,{1,2}))
+    reject:
+      - formula: =LARGE(B2:B11,2)
+        rule: value
+      - formula: =121400
+        rule: required-function
+      - formula: =LARGE(B2:B11,1)+LARGE(B2:B11,2
+        rule: syntax

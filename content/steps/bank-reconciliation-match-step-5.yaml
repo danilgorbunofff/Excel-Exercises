@@ -1,0 +1,48 @@
+id: bank-reconciliation-match-step-5
+slug: bank-reconciliation-match-step-5
+level: 3
+title: Ledger lines missing from the bank
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: bank-reconciliation-match
+step: 5
+screens:
+  - prompt: In H2, how many ledger lines have no bank line with the same reference and the same amount?
+    rows:
+      - [Ledger ref, Ledger amount, null, null, Bank ref, Bank amount, null, Unmatched]
+      - [R-101, 1200, null, null, R-101, 1200, null, null]
+      - [R-102, 850, null, null, R-103, 430, null, null]
+      - [R-103, 430, null, null, R-105, 990, null, null]
+      - [R-104, 610, null, null, R-102, 805, null, null]
+      - [R-105, 990, null, null, R-107, 1500, null, null]
+      - [R-106, 275, null, null, R-108, 640, null, null]
+      - [R-107, 1500, null, null, R-110, 315, null, null]
+      - [R-108, 660, null, null, null, null, null, null]
+      - [R-109, 420, null, null, null, null, null, null]
+    answerCell: H2
+    expected: 5
+    variants:
+      - set: { F5: 850 }
+        expected: 4
+    answer: =SUMPRODUCT(--(COUNTIFS(E2:E8,A2:A10,F2:F8,B2:B10)=0))
+    requiredFunctions: []
+    hints:
+      nudge: Check every ledger line at once against both bank columns, and count those with no match.
+      rule: COUNTIFS with A2:A10 and B2:B10 as criteria gives one match count per ledger line; =0 marks the unmatched ones.
+    misses:
+      value: 5 ledger lines are unmatched.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(--(COUNTIFS(E2:E8,A2:A10,F2:F8,B2:B10)=0))
+      - =ROWS(A2:A10)-SUMPRODUCT(--(COUNTIFS(E2:E8,A2:A10,F2:F8,B2:B10)>0))
+    reject:
+      - formula: =SUMPRODUCT(--(COUNTIF(E2:E8,A2:A10)=0))
+        rule: value
+      - formula: =ROWS(A2:A10)-ROWS(E2:E8)
+        rule: value
+      - formula: =5
+        rule: reference
+      - formula: =SUMPRODUCT(--(COUNTIFS(E2:E8,A2:A10,F2:F8,B2:B10)=0)
+        rule: syntax

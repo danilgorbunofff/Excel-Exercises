@@ -1,0 +1,43 @@
+id: address-on-one-line-step-5
+slug: address-on-one-line-step-5
+level: 3
+title: Address for a contact by name
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: address-on-one-line
+step: 5
+screens:
+  - prompt: In H2, show the address of the contact named in G2 on one line, parts separated by a comma and a space, skipping empty parts.
+    rows:
+      - [Name, Line 1, Line 2, Town, Postcode, null, Contact, Address]
+      - [Ruth, 12 Mill Lane, null, Hebden, HX7 8AB, null, Sam, null]
+      - [Sam, Flat 3, 8 Bank St, Todmorden, OL14 5AA, null, null, null]
+      - [Tom, 4 Moor Rd, null, Haworth, BD22 8QF, null, null, null]
+      - [Uma, Unit 9, Park Way, Keighley, BD21 4NE, null, null, null]
+    answerCell: H2
+    expected: Flat 3, 8 Bank St, Todmorden, OL14 5AA
+    variants:
+      - set: { G2: Tom }
+        expected: 4 Moor Rd, Haworth, BD22 8QF
+    answer: =TEXTJOIN(", ",TRUE,XLOOKUP(G2,A2:A5,B2:E5))
+    requiredFunctions: []
+    hints:
+      nudge: Look up the whole row of address parts, then join it.
+      rule: XLOOKUP can return the four address cells of a row for TEXTJOIN to join.
+    misses:
+      value: H2 shows Flat 3, 8 Bank St, Todmorden, OL14 5AA.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =TEXTJOIN(", ",TRUE,XLOOKUP(G2,A2:A5,B2:E5))
+      - =TEXTJOIN(", ",TRUE,FILTER(B2:E5,A2:A5=G2))
+    reject:
+      - formula: =TEXTJOIN(", ",TRUE,B2:E2)
+        rule: value
+      - formula: =TEXTJOIN(", ",FALSE,XLOOKUP(G2,A2:A5,B2:E5))
+        rule: fragile
+      - formula: ="Flat 3, 8 Bank St, Todmorden, OL14 5AA"
+        rule: reference
+      - formula: =TEXTJOIN(", ",TRUE,XLOOKUP(G2,A2:A5,B2:E5)
+        rule: syntax

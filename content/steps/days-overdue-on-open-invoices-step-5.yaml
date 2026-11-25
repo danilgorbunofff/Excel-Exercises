@@ -1,0 +1,56 @@
+id: days-overdue-on-open-invoices-step-5
+slug: days-overdue-on-open-invoices-step-5
+level: 3
+title: Average days overdue
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: days-overdue-on-open-invoices
+step: 5
+screens:
+  - prompt: In F2, on average, how many days overdue are the invoices that are past due on the report date in D2?
+    rows:
+      - [Invoice, Due date, Amount, Report date, null, Average days overdue]
+      - [INV-01, 45340, 1200, 45400, null, null]
+      - [INV-02, 45380, 850, null, null, null]
+      - [INV-03, 45410, 2300, null, null, null]
+      - [INV-04, 45355, 640, null, null, null]
+      - [INV-05, 45395, 1750, null, null, null]
+      - [INV-06, 45300, 420, null, null, null]
+      - [INV-07, 45372, 980, null, null, null]
+      - [INV-08, 45420, 1300, null, null, null]
+      - [INV-09, 45365, 760, null, null, null]
+      - [INV-10, 45402, 540, null, null, null]
+      - [INV-11, 45310, 2100, null, null, null]
+      - [INV-12, 45388, 690, null, null, null]
+      - [INV-13, 45325, 1150, null, null, null]
+      - [INV-14, 45399, 880, null, null, null]
+      - [INV-15, 45430, 1600, null, null, null]
+    answerCell: F2
+    expected: 42.8181818182
+    variants:
+      - set: { D2: 45420 }
+        expected: 55.3076923077
+      - set: { B3: 45330 }
+        expected: 47.3636363636
+    answer: =AVERAGE(FILTER(D2-B2:B16,B2:B16<D2))
+    requiredFunctions: []
+    hints:
+      nudge: Work out every invoice's days overdue, keep only the past-due ones, then average.
+      rule: D2-B2:B16 gives each invoice's days; FILTER keeps those with a due date before D2; AVERAGE finishes it.
+    misses:
+      value: Past-due invoices are 42.82 days overdue on average.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AVERAGE(FILTER(D2-B2:B16,B2:B16<D2))
+      - =SUMPRODUCT((B2:B16<D2)*(D2-B2:B16))/SUMPRODUCT(--(B2:B16<D2))
+    reject:
+      - formula: =AVERAGE(D2-B2:B16)
+        rule: value
+      - formula: =AVERAGE(FILTER(D2-B2:B16,B2:B16<=D2))
+        rule: fragile
+      - formula: =42.8181818182
+        rule: reference
+      - formula: =AVERAGE(FILTER(D2-B2:B16,B2:B16<D2)
+        rule: syntax

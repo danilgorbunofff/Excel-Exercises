@@ -1,0 +1,44 @@
+id: capstone-margin-step-1
+slug: capstone-margin-step-1
+level: 1
+title: North revenue
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: capstone-margin
+step: 1
+screens:
+  - prompt: In B7, total the North revenue. Use SUMIF.
+    rows:
+      - [Region, Revenue, Cost]
+      - [North, 4800, 3100]
+      - [South, 3600, 2500]
+      - [North, 2200, 1500]
+      - [West, 1900, 1400]
+      - [null, null, null]
+      - [North revenue, null, null]
+    answerCell: B7
+    expected: 7000
+    variants:
+      - { set: { B4: 2500 }, expected: 7300 }
+      - { set: { A5: North }, expected: 8900 }
+    answer: =SUMIF(A2:A5,"North",B2:B5)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: Test the region, add the revenue.
+      rule: SUMIF(A2:A5,"North",B2:B5) adds North revenue only.
+    misses:
+      value: North revenue is 7000.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(A2:A5,"North",B2:B5)
+      - =SUMIF($A$2:$A$5,"North",$B$2:$B$5)
+    reject:
+      - formula: =SUMIF(A2:A5,"North",C2:C5)
+        rule: value
+      - formula: =7000
+        rule: required-function
+      - formula: =SUMIF(A2:A5,"North",B2:B5
+        rule: syntax

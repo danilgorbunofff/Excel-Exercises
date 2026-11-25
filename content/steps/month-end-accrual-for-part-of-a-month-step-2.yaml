@@ -1,0 +1,42 @@
+id: month-end-accrual-for-part-of-a-month-step-2
+slug: month-end-accrual-for-part-of-a-month-step-2
+level: 2
+title: Days in the start month
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: month-end-accrual-for-part-of-a-month
+step: 2
+screens:
+  - prompt: "In D2, work out how many days the start date's month has: the day number of its last day. Use DAY and EOMONTH."
+    rows:
+      - [Contract, Monthly fee, Start date, Days in month]
+      - [Cleaning, 3100, 45366, null]
+    answerCell: D2
+    expected: 31
+    variants:
+      - set: { C2: 45337 }
+        expected: 29
+    answer: =DAY(EOMONTH(C2,0))
+    requiredFunctions:
+      - DAY
+      - EOMONTH
+    hints:
+      nudge: EOMONTH(C2,0) is the month's last day; DAY of it is the month's length.
+      rule: DAY(EOMONTH(C2,0)) is 28 to 31 depending on the month.
+    misses:
+      value: The start month has 31 days.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for DAY and EOMONTH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =DAY(EOMONTH(C2,0))
+      - =DAY(EOMONTH($C$2,0))
+      - "=DAY(EOMONTH(C2,0))+0"
+      - "=DAY(EOMONTH(C2*1,0))"
+    reject:
+      - formula: =DAY(EOMONTH(C2,1))
+        rule: value
+      - formula: =31
+        rule: required-function
+      - formula: =DAY(EOMONTH(C2,0)
+        rule: syntax

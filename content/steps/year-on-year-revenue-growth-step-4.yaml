@@ -1,0 +1,39 @@
+id: year-on-year-revenue-growth-step-4
+slug: year-on-year-revenue-growth-step-4
+level: 2
+title: Growth, or new for a new product
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: year-on-year-revenue-growth
+step: 4
+screens:
+  - prompt: In D2, work out the growth (C2-B2)/B2, and show new when last year is 0. Use IFERROR.
+    rows:
+      - [Product, Last year, This year, Growth]
+      - [Air fryer, 0, 12500, null]
+    answerCell: D2
+    expected: new
+    variants:
+      - set: { B2: 10000 }
+        expected: 0.25
+    answer: =IFERROR((C2-B2)/B2,"new")
+    requiredFunctions:
+      - IFERROR
+    hints:
+      nudge: Dividing by a zero last year fails; IFERROR shows new instead.
+      rule: IFERROR((C2-B2)/B2,"new") handles products launched this year.
+    misses:
+      value: With no sales last year, D2 should show new.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IFERROR.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IFERROR((C2-B2)/B2,"new")
+      - =IFERROR(C2/B2-1,"new")
+    reject:
+      - formula: =(C2-B2)/B2
+        rule: required-function
+      - formula: ="new"
+        rule: required-function
+      - formula: =IFERROR((C2-B2)/B2,"new"
+        rule: syntax

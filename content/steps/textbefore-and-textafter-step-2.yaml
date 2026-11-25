@@ -1,0 +1,39 @@
+id: textbefore-and-textafter-step-2
+slug: textbefore-and-textafter-step-2
+level: 1
+title: Domain with TEXTAFTER
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: textbefore-and-textafter
+step: 2
+screens:
+  - prompt: "In B2, take the domain from the email address in A2: the text after the @. Use TEXTAFTER."
+    rows:
+      - [Email, Domain]
+      - [ada@engines.co.uk, null]
+    answerCell: B2
+    expected: engines.co.uk
+    variants:
+      - set: { A2: grace@navy.mil }
+        expected: navy.mil
+    answer: =TEXTAFTER(A2,"@")
+    requiredFunctions:
+      - TEXTAFTER
+    hints:
+      nudge: TEXTAFTER returns what comes after the delimiter.
+      rule: TEXTAFTER(A2,"@") returns the domain.
+    misses:
+      value: The domain is engines.co.uk.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for TEXTAFTER.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =TEXTAFTER(A2,"@")
+      - =TEXTAFTER(A2,"@",1)
+    reject:
+      - formula: =TEXTBEFORE(A2,"@")
+        rule: required-function
+      - formula: ="engines.co.uk"
+        rule: required-function
+      - formula: =TEXTAFTER(A2,"@"
+        rule: syntax

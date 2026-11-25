@@ -1,0 +1,49 @@
+id: top-three-customers-share-step-1
+slug: top-three-customers-share-step-1
+level: 1
+title: One customer's share
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: top-three-customers-share
+step: 1
+screens:
+  - prompt: In E2, show Calder's share of all revenue as a percentage rounded to one decimal place. Use SUM and ROUND.
+    rows:
+      - [Customer, Revenue, null, null, Calder %]
+      - [Arden, 42000, null, null, null]
+      - [Brook, 18500, null, null, null]
+      - [Calder, 67300, null, null, null]
+      - [Dene, 9200, null, null, null]
+      - [Esk, 31800, null, null, null]
+      - [Frome, 54100, null, null, null]
+      - [Garry, 12600, null, null, null]
+      - [Hull, 23400, null, null, null]
+      - [Isis, 7900, null, null, null]
+      - [Jed, 15200, null, null, null]
+    answerCell: E2
+    expected: 23.9
+    variants:
+      - set: { B4: 70000 }
+        expected: 24.6
+    answer: =ROUND(B4/SUM(B2:B11)*100,1)
+    requiredFunctions:
+      - SUM
+      - ROUND
+    hints:
+      nudge: Calder's revenue over the total, times 100.
+      rule: B4/SUM(B2:B11) is Calder's slice of the total.
+    misses:
+      value: Calder brings 23.9% of revenue.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM and ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(B4/SUM(B2:B11)*100,1)
+      - =ROUND(100*B4/SUM(B2:B11),1)
+    reject:
+      - formula: =ROUND(B4/SUM(B2:B11),1)
+        rule: value
+      - formula: =23.9
+        rule: required-function
+      - formula: =ROUND(B4/SUM(B2:B11)*100,1
+        rule: syntax

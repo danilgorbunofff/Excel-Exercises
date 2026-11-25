@@ -1,0 +1,52 @@
+id: year-to-date-actual-against-budget-step-4
+slug: year-to-date-actual-against-budget-step-4
+level: 2
+title: Actual to date as a share of budget
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: year-to-date-actual-against-budget
+step: 4
+screens:
+  - prompt: In E2, show the year-to-date actual as a share of the year-to-date budget, for the months up to D2. Use SUMIFS.
+    rows:
+      - [Month, Actual, Budget, Months closed, null]
+      - [1, 41200, 40000, 4, null]
+      - [2, 39800, 40000, null, null]
+      - [3, 43500, 42000, null, null]
+      - [4, 44100, 42000, null, null]
+      - [5, null, 44000, null, null]
+      - [6, null, 44000, null, null]
+      - [7, null, 45000, null, null]
+      - [8, null, 43000, null, null]
+      - [9, null, 46000, null, null]
+      - [10, null, 47000, null, null]
+      - [11, null, 48000, null, null]
+      - [12, null, 52000, null, null]
+    answerCell: E2
+    expected: 1.02804878049
+    variants:
+      - set: { D2: 2 }
+        expected: 1.0125
+    answer: =SUMIFS(B2:B13,A2:A13,"<="&D2)/SUMIFS(C2:C13,A2:A13,"<="&D2)
+    requiredFunctions:
+      - SUMIFS
+    hints:
+      nudge: Both totals use the same months-closed test.
+      rule: "Comparing like with like: only the budget for the closed months goes below the line."
+    misses:
+      value: The actual is 1.028 of the budget so far.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIFS(B2:B13,A2:A13,"<="&D2)/SUMIFS(C2:C13,A2:A13,"<="&D2)
+      - =SUMIFS($B$2:$B$13,$A$2:$A$13,"<="&$D$2)/SUMIFS($C$2:$C$13,$A$2:$A$13,"<="&$D$2)
+    reject:
+      - formula: =SUMIFS(B2:B13,A2:A13,"<="&D2)/SUM(C2:C13)
+        rule: value
+      - formula: =SUMIFS(C2:C13,A2:A13,"<="&D2)/SUMIFS(B2:B13,A2:A13,"<="&D2)
+        rule: value
+      - formula: =1.02804878049
+        rule: required-function
+      - formula: =SUMIFS(B2:B13,A2:A13,"<="&D2)/SUMIFS(C2:C13,A2:A13,"<="&D2
+        rule: syntax

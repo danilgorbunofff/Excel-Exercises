@@ -1,0 +1,43 @@
+id: xlookup-with-a-fallback-when-nothing-matches-step-1
+slug: xlookup-with-a-fallback-when-nothing-matches-step-1
+level: 1
+title: A plain lookup that finds a match
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: xlookup-with-a-fallback-when-nothing-matches
+step: 1
+screens:
+  - prompt: In B6, look up the price of the SKU in B5. Use XLOOKUP.
+    rows:
+      - [SKU, Price]
+      - [TX-101, 19.99]
+      - [TX-102, 14]
+      - [TX-103, 9.5]
+      - [Lookup, TX-102]
+      - [Price, null]
+    answerCell: B6
+    expected: 14
+    variants:
+      - set: { B5: TX-103 }
+        expected: 9.5
+    answer: =XLOOKUP(B5,A2:A4,B2:B4)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: Search the SKU column, return the price column.
+      rule: XLOOKUP(B5,A2:A4,B2:B4) finds the SKU and returns its price.
+    misses:
+      value: TX-102 costs 14.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(B5,A2:A4,B2:B4)
+      - =XLOOKUP(B5,A2:A4,B2:B4,"not stocked")
+    reject:
+      - formula: =XLOOKUP(B5,B2:B4,A2:A4)
+        rule: value
+      - formula: =14
+        rule: required-function
+      - formula: =XLOOKUP(B5,A2:A4,B2:B4
+        rule: syntax

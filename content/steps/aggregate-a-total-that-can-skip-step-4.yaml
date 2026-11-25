@@ -1,0 +1,56 @@
+id: aggregate-a-total-that-can-skip-step-4
+slug: aggregate-a-total-that-can-skip-step-4
+level: 2
+title: Second-largest line
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: aggregate-a-total-that-can-skip
+step: 4
+screens:
+  - prompt: In E2, find the second-largest line value in D2:D16 with AGGREGATE, function 14 (LARGE), option 6 and k of 2.
+    rows:
+      - [Item, Price, Qty, Line, Second largest]
+      - [Pens, 1.2, 40, 48, null]
+      - [Pads, 3.5, 15, 52.5, null]
+      - [Clips, 0.05, 500, 25, null]
+      - [Tape, 2.1, 12, 25.2, null]
+      - [Files, 4.75, 20, 95, null]
+      - [Ink, 18.9, 6, 113.4, null]
+      - [Glue, 1.85, 30, 55.5, null]
+      - [Rulers, 0.9, 25, 22.5, null]
+      - [Folders, 0.6, 100, 60, null]
+      - [Labels, 5.4, 8, 43.2, null]
+      - [Staples, 1.1, 18, 19.8, null]
+      - [Markers, 7.25, 10, 72.5, null]
+      - [Erasers, 0.35, 60, 21, null]
+      - [Binders, 3.9, 14, 54.6, null]
+      - [Notes, 2.6, 22, 57.2, null]
+    answerCell: E2
+    expected: 95
+    variants:
+      - { set: { D6: 110 }, expected: 110 }
+      - { set: { D2: 113.4 }, expected: 113.4 }
+      - { set: { D16: 113.4 }, expected: 113.4 }
+    answer: =AGGREGATE(14,6,D2:D16,2)
+    requiredFunctions:
+      - AGGREGATE
+    hints:
+      nudge: "Functions 14 and 15 take one more part: which place you want."
+      rule: AGGREGATE(14,6,D2:D16,2) works like LARGE(D2:D16,2) but can skip errors.
+    misses:
+      value: The second-largest line is 95.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for AGGREGATE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AGGREGATE(14,6,D2:D16,2)
+      - =AGGREGATE(14,7,D2:D16,2)
+    reject:
+      - formula: =AGGREGATE(14,6,D2:D16,1)
+        rule: value
+      - formula: =LARGE(D2:D16,2)
+        rule: required-function
+      - formula: =95
+        rule: required-function
+      - formula: =AGGREGATE(14,6,D2:D16,2
+        rule: syntax

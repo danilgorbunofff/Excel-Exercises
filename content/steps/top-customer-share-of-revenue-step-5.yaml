@@ -1,0 +1,49 @@
+id: top-customer-share-of-revenue-step-5
+slug: top-customer-share-of-revenue-step-5
+level: 3
+title: Revenue outside the top two
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: top-customer-share-of-revenue
+step: 5
+screens:
+  - prompt: In D2, what share of revenue comes from customers outside the top two?
+    rows:
+      - [Customer, Revenue, null, Outside top two]
+      - [Arden, 120000, null, null]
+      - [Brook, 85000, null, null]
+      - [Cole, 210000, null, null]
+      - [Dunn, 64000, null, null]
+      - [Eske, 47000, null, null]
+      - [Frey, 99000, null, null]
+      - [Gale, 31000, null, null]
+      - [Hart, 58000, null, null]
+    answerCell: D2
+    expected: 0.53781512605
+    variants:
+      - { set: { B7: 250000 }, expected: 0.468208092486 }
+      - { set: { B2: 40000 }, expected: 0.51261829653 }
+      - { set: { B4: 85000, B9: 210000 }, expected: 0.5546558704453441 }
+      - { set: { B2: 240000 }, expected: 0.460431654676259 }
+    answer: =1-(LARGE(B2:B9,1)+LARGE(B2:B9,2))/SUM(B2:B9)
+    requiredFunctions: []
+    hints:
+      nudge: Take the top two out of the total, then divide by the total.
+      rule: LARGE finds the top two wherever they are; what is left over the total is the share outside them.
+    misses:
+      value: The share outside the top two is 0.538.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =1-(LARGE(B2:B9,1)+LARGE(B2:B9,2))/SUM(B2:B9)
+      - =(SUM(B2:B9)-LARGE(B2:B9,1)-LARGE(B2:B9,2))/SUM(B2:B9)
+    reject:
+      - formula: =1-LARGE(B2:B9,1)/SUM(B2:B9)
+        rule: value
+      - formula: =1-(B4+B2)/SUM(B2:B9)
+        rule: fragile
+      - formula: =0.53781512605
+        rule: reference
+      - formula: =1-(LARGE(B2:B9,1)+LARGE(B2:B9,2))/SUM(B2:B9
+        rule: syntax

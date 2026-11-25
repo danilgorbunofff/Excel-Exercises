@@ -1,0 +1,42 @@
+id: date-build-a-date-from-parts-step-5
+slug: date-build-a-date-from-parts-step-5
+level: 3
+title: Due at the end of next month
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: date-build-a-date-from-parts
+step: 5
+screens:
+  - prompt: In C2, when is the invoice due? Payment falls on the last day of the month after the invoice month.
+    rows:
+      - [Invoice, Date, Due]
+      - [INV-2001, 45366, null]
+    answerCell: C2
+    expected: 45412
+    variants:
+      - set: { B2: 45626 }
+        expected: 45657
+      - set: { B2: 45310 }
+        expected: 45351
+    answer: =DATE(YEAR(B2),MONTH(B2)+2,0)
+    requiredFunctions: []
+    hints:
+      nudge: Take the invoice's year and month, go two months on, and step back one day.
+      rule: DATE(YEAR(B2),MONTH(B2)+2,0) is day 0 of the month after next, the last day of next month; DATE rolls over into the next year by itself.
+    misses:
+      value: The invoice is due on serial 45412.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =DATE(YEAR(B2),MONTH(B2)+2,0)
+      - =EOMONTH(B2,1)
+    reject:
+      - formula: =B2+30
+        rule: value
+      - formula: =DATE(YEAR(B2),MONTH(B2)+1,0)
+        rule: value
+      - formula: =45412
+        rule: reference
+      - formula: =DATE(YEAR(B2),MONTH(B2)+2,0
+        rule: syntax

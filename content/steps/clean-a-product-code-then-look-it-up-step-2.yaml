@@ -1,0 +1,40 @@
+id: clean-a-product-code-then-look-it-up-step-2
+slug: clean-a-product-code-then-look-it-up-step-2
+level: 2
+title: Remove inner spaces and fix capitals
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: clean-a-product-code-then-look-it-up
+step: 2
+screens:
+  - prompt: "In B2, clean the code in A2: remove every space, even inside it, and make it all capitals. Use UPPER and SUBSTITUTE."
+    rows:
+      - [Imported code, Clean]
+      - [" px - 104 ", null]
+    answerCell: B2
+    expected: PX-104
+    variants:
+      - set: { A2: px-2 10 }
+        expected: PX-210
+    answer: =UPPER(SUBSTITUTE(A2," ",""))
+    requiredFunctions:
+      - UPPER
+      - SUBSTITUTE
+    hints:
+      nudge: TRIM keeps single spaces inside; SUBSTITUTE removes them all.
+      rule: UPPER(SUBSTITUTE(A2," ","")) gives PX-104.
+    misses:
+      value: The clean code is PX-104.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for UPPER and SUBSTITUTE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =UPPER(SUBSTITUTE(A2," ",""))
+      - =SUBSTITUTE(UPPER(A2)," ","")
+    reject:
+      - formula: =UPPER(TRIM(A2))
+        rule: required-function
+      - formula: ="PX-104"
+        rule: required-function
+      - formula: =UPPER(SUBSTITUTE(A2," ","")
+        rule: syntax

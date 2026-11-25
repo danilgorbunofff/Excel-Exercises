@@ -1,0 +1,51 @@
+id: find-a-code-step-1
+slug: find-a-code-step-1
+level: 1
+title: Find the stock with INDEX and MATCH
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: find-a-code
+step: 1
+screens:
+  - prompt: In H2, find the stock of the product named in H1. Use INDEX and MATCH.
+    rows:
+      - [Code, Product, Category, Price, Stock, null, Product, Mirror]
+      - [P-101, Desk lamp, Lighting, 24, 14, null, Stock, null]
+      - [P-102, Chair, Seating, 89, 6, null, null, null]
+      - [P-103, Shelf, Storage, 45, 9, null, null, null]
+      - [P-104, Rug, Decor, 120, 3, null, null, null]
+      - [P-105, Mirror, Decor, 60, 11, null, null, null]
+      - [P-106, Stool, Seating, 35, 22, null, null, null]
+      - [P-107, Floor lamp, Lighting, 75, 5, null, null, null]
+      - [P-108, Cabinet, Storage, 210, 2, null, null, null]
+    answerCell: H2
+    expected: 11
+    variants:
+      - set: { H1: Stool }
+        expected: 22
+      - set: { H1: Cabinet }
+        expected: 2
+    answer: =INDEX(E2:E9,MATCH(H1,B2:B9,0))
+    requiredFunctions:
+      - INDEX
+      - MATCH
+    hints:
+      nudge: MATCH finds the row number; INDEX reads the stock at that row.
+      rule: INDEX(E2:E9,MATCH(H1,B2:B9,0)) returns the stock on the row where the name matches.
+    misses:
+      value: The Mirror has 11 in stock.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for INDEX and MATCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(E2:E9,MATCH(H1,B2:B9,0))
+      - =INDEX($E$2:$E$9,MATCH($H$1,$B$2:$B$9,0))
+    reject:
+      - formula: =INDEX(D2:D9,MATCH(H1,B2:B9,0))
+        rule: value
+      - formula: =XLOOKUP(H1,B2:B9,E2:E9)
+        rule: required-function
+      - formula: =11
+        rule: required-function
+      - formula: =INDEX(E2:E9,MATCH(H1,B2:B9,0)
+        rule: syntax

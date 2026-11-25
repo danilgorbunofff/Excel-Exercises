@@ -1,0 +1,43 @@
+id: bank-reconciliation-match-step-3
+slug: bank-reconciliation-match-step-3
+level: 2
+title: Match on reference and amount
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: bank-reconciliation-match
+step: 3
+screens:
+  - prompt: In C3, count the bank lines with both the reference in A3 and the amount in B3. Use COUNTIFS.
+    rows:
+      - [Ledger ref, Ledger amount, Count, null, Bank ref, Bank amount]
+      - [R-101, 1200, null, null, R-101, 1200]
+      - [R-102, 850, null, null, R-103, 430]
+      - [R-103, 430, null, null, R-105, 990]
+      - [R-104, 610, null, null, R-102, 805]
+      - [R-105, 990, null, null, null, null]
+    answerCell: C3
+    expected: 0
+    variants:
+      - set: { B3: 805 }
+        expected: 1
+    answer: =COUNTIFS($E$2:$E$5,A3,$F$2:$F$5,B3)
+    requiredFunctions:
+      - COUNTIFS
+    hints:
+      nudge: Both the reference and the amount must agree.
+      rule: COUNTIFS with two pairs catches R-102, whose bank amount differs.
+    misses:
+      value: R-102 matches 0 bank lines on both reference and amount.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIFS($E$2:$E$5,A3,$F$2:$F$5,B3)
+      - =COUNTIFS(F2:F5,B3,E2:E5,A3)
+    reject:
+      - formula: =COUNTIF($E$2:$E$5,A3)
+        rule: required-function
+      - formula: =0
+        rule: required-function
+      - formula: =COUNTIFS($E$2:$E$5,A3,$F$2:$F$5,B3
+        rule: syntax

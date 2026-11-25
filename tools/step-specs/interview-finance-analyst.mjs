@@ -3,7 +3,13 @@
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 2 at step 3, level 3 at step 4.
 const fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(3));
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 const revenue = [
   ["Product", "Last year", "This year", null, null],
@@ -40,7 +46,8 @@ const spend = [
 export default [
   // year-on-year-revenue-growth (level 2, step 3)
   step("year-on-year-revenue-growth", 1, 1, "Change in revenue", {
-    prompt: "In D2, work out how much kettle revenue changed: this year in C2 minus last year in B2.",
+    prompt:
+      "In D2, work out how much kettle revenue changed: this year in C2 minus last year in B2.",
     rows: revenue.map((r) => r.slice(0, 4)),
     cell: "D2",
     answer: "=C2-B2",
@@ -53,7 +60,8 @@ export default [
     value: (e) => `Kettle revenue changed by ${e}.`,
   }),
   step("year-on-year-revenue-growth", 2, 1, "Growth as a multiple", {
-    prompt: "In D2, work out this year's kettle revenue as a multiple of last year's: C2 divided by B2.",
+    prompt:
+      "In D2, work out this year's kettle revenue as a multiple of last year's: C2 divided by B2.",
     rows: revenue.map((r) => r.slice(0, 4)),
     cell: "D2",
     answer: "=C2/B2",
@@ -66,7 +74,7 @@ export default [
     value: (e) => `This year is ${e} times last year.`,
   }),
   step("year-on-year-revenue-growth", 4, 2, "Growth, or new for a new product", {
-    prompt: 'In D2, work out the growth (C2-B2)/B2, and show new when last year is 0. Use IFERROR.',
+    prompt: "In D2, work out the growth (C2-B2)/B2, and show new when last year is 0. Use IFERROR.",
     rows: [
       ["Product", "Last year", "This year", "Growth"],
       ["Air fryer", 0, 12500, null],
@@ -82,7 +90,8 @@ export default [
     value: (e) => `With no sales last year, D2 should show ${e}.`,
   }),
   step("year-on-year-revenue-growth", 5, 3, "Biggest grower in money terms", {
-    prompt: "In E2, which product added the most revenue in money terms, this year minus last year?",
+    prompt:
+      "In E2, which product added the most revenue in money terms, this year minus last year?",
     rows: revenue.map((r, i) => (i === 0 ? [...r.slice(0, 4), "Most added"] : r)),
     cell: "E2",
     answer: "=INDEX(A2:A9,MATCH(MAX(C2:C9-B2:B9),C2:C9-B2:B9,0))",
@@ -100,7 +109,8 @@ export default [
 
   // gross-margin-by-product (level 2, step 3)
   step("gross-margin-by-product", 1, 1, "Gross profit on one product", {
-    prompt: "In D2, work out the gross profit on desk lamps: revenue in B2 minus cost of sales in C2.",
+    prompt:
+      "In D2, work out the gross profit on desk lamps: revenue in B2 minus cost of sales in C2.",
     rows: margins.map((r) => r.slice(0, 4)),
     cell: "D2",
     answer: "=B2-C2",
@@ -113,7 +123,8 @@ export default [
     value: (e) => `Gross profit on desk lamps is ${e}.`,
   }),
   step("gross-margin-by-product", 2, 2, "Markup on cost", {
-    prompt: "In D2, work out the markup on desk lamps: the gross profit divided by the cost of sales, not by revenue.",
+    prompt:
+      "In D2, work out the markup on desk lamps: the gross profit divided by the cost of sales, not by revenue.",
     rows: margins.map((r) => r.slice(0, 4)),
     cell: "D2",
     answer: "=(B2-C2)/C2",
@@ -129,7 +140,8 @@ export default [
     value: (e) => `The markup is ${fmt(e)}.`,
   }),
   step("gross-margin-by-product", 4, 2, "Margin across all products", {
-    prompt: "In F2, work out the overall gross margin of all products: total revenue minus total cost, over total revenue. Use SUM.",
+    prompt:
+      "In F2, work out the overall gross margin of all products: total revenue minus total cost, over total revenue. Use SUM.",
     rows: margins.map((r, i) => (i === 0 ? [...r.slice(0, 5), null] : r)),
     cell: "F2",
     answer: "=(SUM(B2:B9)-SUM(C2:C9))/SUM(B2:B9)",
@@ -186,7 +198,8 @@ export default [
     value: (e) => `IT's variance is ${e}.`,
   }),
   step("variance-to-budget-by-cost-centre", 3, 2, "Over or under budget", {
-    prompt: 'In F4, show Over when the Ops spend is above its budget in E4, and Under otherwise. Use IF and SUMIFS.',
+    prompt:
+      "In F4, show Over when the Ops spend is above its budget in E4, and Under otherwise. Use IF and SUMIFS.",
     rows: spend.map((r, i) => (i === 0 ? [...r.slice(0, 5), "Flag"] : r)),
     cell: "F4",
     answer: '=IF(SUMIFS(B2:B7,A2:A7,D4)>E4,"Over","Under")',
@@ -202,12 +215,18 @@ export default [
     prompt: "In G2, which cost centre is furthest over its budget, spend minus budget?",
     rows: spend.map((r, i) => (i === 0 ? [...r, "Furthest over"] : [...r, null])),
     cell: "G2",
-    answer: "=INDEX(D2:D4,MATCH(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4),SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4,0))",
+    answer:
+      "=INDEX(D2:D4,MATCH(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4),SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4,0))",
     required: [],
-    accept: ["=XLOOKUP(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4),SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4,D2:D4)"],
+    accept: [
+      "=XLOOKUP(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4),SUMIFS(B2:B7,A2:A7,D2:D4)-E2:E4,D2:D4)",
+    ],
     variants: [{ B3: 14000 }, { E2: 20000 }],
     reject: [
-      ["=INDEX(D2:D4,MATCH(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)),SUMIFS(B2:B7,A2:A7,D2:D4),0))", "fragile"],
+      [
+        "=INDEX(D2:D4,MATCH(MAX(SUMIFS(B2:B7,A2:A7,D2:D4)),SUMIFS(B2:B7,A2:A7,D2:D4),0))",
+        "fragile",
+      ],
       ['="Ops"', "reference"],
     ],
     nudge: "Work out every centre's variance at once, then find the largest.",
@@ -235,7 +254,8 @@ export default [
     value: (e) => `${e} units were bought.`,
   }),
   step("weighted-average-unit-cost", 2, 1, "Total spent on the batches", {
-    prompt: "In D2, total the money spent: each batch's units times its unit cost, added up. Use SUMPRODUCT.",
+    prompt:
+      "In D2, total the money spent: each batch's units times its unit cost, added up. Use SUMPRODUCT.",
     rows: [
       ["Batch", "Units", "Unit cost", "Answer"],
       ["B-1", 400, 2.5, null],
@@ -267,7 +287,8 @@ export default [
     accept: ["=-AVERAGE(C2:C4)+SUMPRODUCT(B2:B4,C2:C4)/SUM(B2:B4)"],
     variants: [{ B3: 50 }],
     reject: [["=AVERAGE(C2:C4)-SUMPRODUCT(B2:B4,C2:C4)/SUM(B2:B4)", "value"]],
-    nudge: "The weighted average counts big batches more; the simple one treats each batch the same.",
+    nudge:
+      "The weighted average counts big batches more; the simple one treats each batch the same.",
     rule: "A negative answer means the big batches were the cheap ones.",
     value: (e) => `The weighted average is ${fmt(e)} from the simple one.`,
   }),
@@ -336,7 +357,8 @@ export default [
     value: (e) => `The second-highest revenue is ${e}.`,
   }),
   step("top-customer-share-of-revenue", 3, 2, "Share of a named customer", {
-    prompt: "In E2, work out the share of total revenue from the customer named in E1. Use XLOOKUP and SUM.",
+    prompt:
+      "In E2, work out the share of total revenue from the customer named in E1. Use XLOOKUP and SUM.",
     rows: [
       ["Customer", "Revenue", null, null, "Brook"],
       ["Arden", 120000, null, null, null],

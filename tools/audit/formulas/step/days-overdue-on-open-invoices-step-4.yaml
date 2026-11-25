@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF(B$2:B$6,"<"&D2,C2:C6)
+      - =sumif(b2:b6, "<"&d2, c2:c6)
+      - =LET(data,B2:B6,SUMIF(data,"<"&D2,C2:C6))
+    wrong: []
+    equivalent: []

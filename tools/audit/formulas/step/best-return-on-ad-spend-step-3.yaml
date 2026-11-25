@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(MAX($C$2:$C$8/$B$2:$B$8),2)
+      - =ROUND(MAX(C$2:C$8/B2:B8),2)
+      - =round(max(c2:c8/b2:b8), 2)
+      - =LET(data,C2:C8,ROUND(MAX(data/B2:B8),2))
+    wrong:
+      - formula: =ROUND(MAX(C2:C8/B2:B8),3)
+        rule: fragile
+        why: 2 written as 3
+      - formula: =ROUND(MAX(C2:C8/B2:B8),1)
+        rule: fragile
+        why: 2 written as 1
+    equivalent: []

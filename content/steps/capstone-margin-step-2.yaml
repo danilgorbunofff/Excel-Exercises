@@ -1,0 +1,41 @@
+id: capstone-margin-step-2
+slug: capstone-margin-step-2
+level: 2
+title: Margin of one line as a percentage
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: capstone-margin
+step: 2
+screens:
+  - prompt: In D2, work out the first line's gross margin as a percentage, such as 35.4, rounded to 1 decimal place. Use ROUND.
+    rows:
+      - [Region, Revenue, Cost, Margin %]
+      - [North, 4800, 3100, null]
+    answerCell: D2
+    expected: 35.4
+    variants:
+      - set: { C2: 2900 }
+        expected: 39.6
+    answer: =ROUND((B2-C2)/B2*100,1)
+    requiredFunctions:
+      - ROUND
+    hints:
+      nudge: Profit over revenue, times 100, then round.
+      rule: ROUND((B2-C2)/B2*100,1) gives the margin as a percentage to 1 decimal.
+    misses:
+      value: The margin is 35.4%.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND((B2-C2)/B2*100,1)
+      - =ROUND((1-C2/B2)*100,1)
+    reject:
+      - formula: =(B2-C2)/B2*100
+        rule: required-function
+      - formula: =ROUND((B2-C2)/C2*100,1)
+        rule: value
+      - formula: =35.4
+        rule: required-function
+      - formula: =ROUND((B2-C2)/B2*100,1
+        rule: syntax

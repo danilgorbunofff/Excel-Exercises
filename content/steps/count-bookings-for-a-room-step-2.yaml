@@ -1,0 +1,48 @@
+id: count-bookings-for-a-room-step-2
+slug: count-bookings-for-a-room-step-2
+level: 1
+title: Bookings not in Oak
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-bookings-for-a-room
+step: 2
+screens:
+  - prompt: In F2, count the bookings for every room except Oak. Use COUNTIF.
+    rows:
+      - [Date, Room, Booked by, null, null, null, null]
+      - [Mon, Oak, Ali, null, null, null, null]
+      - [Mon, Elm, Bea, null, null, null, null]
+      - [Tue, Oak, Cid, null, null, null, null]
+      - [Tue, Elm, Dee, null, null, null, null]
+      - [Wed, Ash, Eli, null, null, null, null]
+      - [Wed, Elm, Fay, null, null, null, null]
+      - [Thu, Oak, Gus, null, null, null, null]
+      - [Thu, Elm, Hal, null, null, null, null]
+      - [Fri, Ash, Ivy, null, null, null, null]
+      - [Fri, Elm, Jon, null, null, null, null]
+    answerCell: F2
+    expected: 7
+    variants:
+      - { set: { B3: Oak }, expected: 6 }
+      - { set: { B2: Elm }, expected: 8 }
+    answer: =COUNTIF(B2:B11,"<>Oak")
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: <> means not equal to.
+      rule: COUNTIF(B2:B11,"<>Oak") counts every room that is not Oak.
+    misses:
+      value: 7 bookings are not in Oak.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(B2:B11,"<>Oak")
+      - =COUNTIF($B$2:$B$11,"<>Oak")
+    reject:
+      - formula: =COUNTIF(B2:B11,"Oak")
+        rule: value
+      - formula: =7
+        rule: required-function
+      - formula: =COUNTIF(B2:B11,"<>Oak"
+        rule: syntax

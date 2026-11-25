@@ -1,0 +1,16 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(SUM(TAKE(SORT($B$2:$B$11,1,-1),$E$1))/SUM($B$2:$B$11)*100,1)
+      - =ROUND(SUM(TAKE(SORT(B$2:B$11,1,-1),E1))/SUM(B2:B11)*100,1)
+      - =round(sum(take(sort(b2:b11, 1, -1), e1))/sum(b2:b11)*100, 1)
+      - =ROUND(SUM(TAKE(SORT(B2:B11,1,-1),E1))/SUMPRODUCT(B2:B11)*100,1)
+      - =LET(data,B2:B11,ROUND(SUM(TAKE(SORT(data,1,-1),E1))/SUM(data)*100,1))
+    wrong:
+      - formula: =ROUNDDOWN(SUM(TAKE(SORT(B2:B11,1,-1),E1))/SUM(B2:B11)*100,1)
+        rule: fragile
+        why: ROUNDDOWN instead of ROUND
+      - formula: =ROUND(SUM(TAKE(SORT(B2:B10,1,-1),E1))/SUM(B2:B11)*100,1)
+        rule: fragile
+        why: range B2:B11 one row short at the end
+    equivalent: []

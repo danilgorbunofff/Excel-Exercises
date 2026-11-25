@@ -1,0 +1,43 @@
+id: headcount-cost-plan-step-1
+slug: headcount-cost-plan-step-1
+level: 1
+title: Total heads in the plan
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: headcount-cost-plan
+step: 1
+screens:
+  - prompt: In F2, total the heads in the plan. Use SUM.
+    rows:
+      - [Team, Grade, Heads, Cost per head, null, Heads, null]
+      - [Sales, Junior, 6, 38000, null, null, null]
+      - [Sales, Senior, 3, 62000, null, null, null]
+      - [IT, Junior, 4, 45000, null, null, null]
+      - [IT, Senior, 2, 78000, null, null, null]
+      - [Ops, Junior, 5, 34000, null, null, null]
+    answerCell: F2
+    expected: 20
+    variants:
+      - set: { C3: 4 }
+        expected: 21
+    answer: =SUM(C2:C6)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: SUM the Heads column.
+      rule: SUM(C2:C6) gives every head in the plan.
+    misses:
+      value: The plan has 20 heads.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(C2:C6)
+      - =SUM($C$2:$C$6)
+    reject:
+      - formula: =SUM(D2:D6)
+        rule: value
+      - formula: =20
+        rule: required-function
+      - formula: =SUM(C2:C6
+        rule: syntax

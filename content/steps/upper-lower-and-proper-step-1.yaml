@@ -1,0 +1,42 @@
+id: upper-lower-and-proper-step-1
+slug: upper-lower-and-proper-step-1
+level: 1
+title: Email in lower case
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: upper-lower-and-proper
+step: 1
+screens:
+  - prompt: In B2, put the email address in A2 into lower case. Use LOWER.
+    rows:
+      - [Email, Tidy]
+      - [Ada.Lovelace@Engines.CO.UK, null]
+    answerCell: B2
+    expected: ada.lovelace@engines.co.uk
+    variants:
+      - set: { A2: GRACE@Navy.mil }
+        expected: grace@navy.mil
+    answer: =LOWER(A2)
+    requiredFunctions:
+      - LOWER
+    hints:
+      nudge: LOWER changes every letter to lower case.
+      rule: LOWER(A2) leaves numbers and symbols as they are.
+    misses:
+      value: The tidy email is ada.lovelace@engines.co.uk.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for LOWER.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =LOWER(A2)
+      - =lower(a2)
+      - "=LOWER(LOWER(A2))"
+      - '=LOWER(A2)&""'
+      - '=LOWER(A2)&""'
+    reject:
+      - formula: =PROPER(A2)
+        rule: required-function
+      - formula: ="ada.lovelace@engines.co.uk"
+        rule: required-function
+      - formula: =LOWER(A2
+        rule: syntax

@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUM(INDEX($B$2:$E$5,$B$7,0))
+      - =SUM(INDEX(B$2:E$5,B7,0))
+      - =sum(index(b2:e5, b7, 0))
+      - =LET(data,B2:E5,SUM(INDEX(data,B7,0)))
+    wrong: []
+    equivalent:
+      - formula: =SUM(INDEX(B2:E6,B7,0))
+        why: "range B2:E5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

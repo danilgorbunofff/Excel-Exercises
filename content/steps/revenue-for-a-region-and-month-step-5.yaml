@@ -1,0 +1,51 @@
+id: revenue-for-a-region-and-month-step-5
+slug: revenue-for-a-region-and-month-step-5
+level: 3
+title: Best region in a month
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: revenue-for-a-region-and-month
+step: 5
+screens:
+  - prompt: In F2, name the region in E2:E4 with the most revenue in the month typed in F1.
+    rows:
+      - [Region, Month, Revenue, null, Region, Feb, null]
+      - [North, Jan, 12400, null, North, null, null]
+      - [South, Jan, 9800, null, South, null, null]
+      - [South, Feb, 11250, null, West, null, null]
+      - [North, Feb, 13100, null, null, null, null]
+      - [West, Feb, 7600, null, null, null, null]
+      - [South, Feb, 4300, null, null, null, null]
+      - [North, Mar, 14800, null, null, null, null]
+      - [South, Mar, 10900, null, null, null, null]
+      - [West, Jan, 6900, null, null, null, null]
+      - [South, Feb, 2750, null, null, null, null]
+    answerCell: F2
+    expected: South
+    variants:
+      - set: { F1: Jan }
+        expected: North
+      - set: { C6: 20000 }
+        expected: West
+    answer: =INDEX(E2:E4,MATCH(MAX(SUMIFS(C2:C11,A2:A11,E2:E4,B2:B11,F1)),SUMIFS(C2:C11,A2:A11,E2:E4,B2:B11,F1),0))
+    requiredFunctions: []
+    hints:
+      nudge: Work out every region's total for that month at once, then pick the highest.
+      rule: SUMIFS with E2:E4 as a criteria gives one total per region for the month.
+    misses:
+      value: South made the most that month.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(E2:E4,MATCH(MAX(SUMIFS(C2:C11,A2:A11,E2:E4,B2:B11,F1)),SUMIFS(C2:C11,A2:A11,E2:E4,B2:B11,F1),0))
+      - =XLOOKUP(MAX(SUMIFS(C2:C11,A2:A11,E2:E4,B2:B11,F1)),SUMIFS(C2:C11,A2:A11,E2:E4,B2:B11,F1),E2:E4)
+    reject:
+      - formula: =INDEX(E2:E4,MATCH(MAX(SUMIF(A2:A11,E2:E4,C2:C11)),SUMIF(A2:A11,E2:E4,C2:C11),0))
+        rule: value
+      - formula: ="South"
+        rule: reference
+      - formula: ="South"
+        rule: reference
+      - formula: =INDEX(E2:E4,MATCH(MAX(SUMIFS(C2:C11,A2:A11,E2:E4,B2:B11,F1)),SUMIFS(C2:C11,A2:A11,E2:E4,B2:B11,F1),0)
+        rule: syntax

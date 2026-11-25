@@ -1,0 +1,39 @@
+id: left-find-prefix-step-1
+slug: left-find-prefix-step-1
+level: 1
+title: Where the dash is
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: left-find-prefix
+step: 1
+screens:
+  - prompt: In B2, give the position of the first dash in the reference in A2. Use FIND.
+    rows:
+      - [Reference, Dash at]
+      - [ORD-2024-0917, null]
+    answerCell: B2
+    expected: 4
+    variants:
+      - set: { A2: INVOICE-2024-0612 }
+        expected: 8
+    answer: =FIND("-",A2)
+    requiredFunctions:
+      - FIND
+    hints:
+      nudge: FIND takes the text to look for, then where to look.
+      rule: FIND("-",A2) gives the position of the first dash.
+    misses:
+      value: The first dash is character 4.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for FIND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =FIND("-",A2)
+      - =FIND("-",A2,1)
+    reject:
+      - formula: =FIND("-",A2,5)
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =FIND("-",A2
+        rule: syntax

@@ -1,0 +1,47 @@
+id: index-a-value-at-a-row-and-column-step-1
+slug: index-a-value-at-a-row-and-column-step-1
+level: 1
+title: Value at a position in a list
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: index-a-value-at-a-row-and-column
+step: 1
+screens:
+  - prompt: In B8, return the 4th name in the list A2:A6. Use INDEX.
+    rows:
+      - [Name, null]
+      - [Ana, null]
+      - [Ben, null]
+      - [Cleo, null]
+      - [Dev, null]
+      - [Eve, null]
+      - [null, null]
+      - [4th name, null]
+    answerCell: B8
+    expected: Dev
+    variants:
+      - set: { A5: Dan }
+        expected: Dan
+    answer: =INDEX(A2:A6,4)
+    requiredFunctions:
+      - INDEX
+    hints:
+      nudge: INDEX takes the list and a position in it.
+      rule: INDEX(A2:A6,4) returns the 4th item, counting from A2.
+    misses:
+      value: The 4th name is Dev.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for INDEX.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(A2:A6,4)
+      - =INDEX($A$2:$A$6,4)
+    reject:
+      - formula: =INDEX(A1:A6,4)
+        rule: value
+      - formula: =A5
+        rule: required-function
+      - formula: ="Dev"
+        rule: required-function
+      - formula: =INDEX(A2:A6,4
+        rule: syntax

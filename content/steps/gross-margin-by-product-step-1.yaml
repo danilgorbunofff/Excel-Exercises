@@ -1,0 +1,45 @@
+id: gross-margin-by-product-step-1
+slug: gross-margin-by-product-step-1
+level: 1
+title: Gross profit on one product
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: gross-margin-by-product
+step: 1
+screens:
+  - prompt: "In D2, work out the gross profit on desk lamps: revenue in B2 minus cost of sales in C2."
+    rows:
+      - [Product, Revenue, Cost of sales, null]
+      - [Desk lamp, 24000, 15600, null]
+      - [Chair, 56000, 41440, null]
+      - [Shelf, 18000, 11700, null]
+      - [Rug, 32000, 23360, null]
+      - [Mirror, 15000, 9300, null]
+      - [Stool, 9000, 6840, null]
+      - [Cabinet, 41000, 26650, null]
+      - [Desk, 38000, 27360, null]
+    answerCell: D2
+    expected: 8400
+    variants:
+      - set: { C2: 16000 }
+        expected: 8000
+    answer: =B2-C2
+    requiredFunctions: []
+    hints:
+      nudge: Revenue minus the cost of what was sold.
+      rule: B2-C2 is the gross profit.
+    misses:
+      value: Gross profit on desk lamps is 8400.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2-C2
+      - =-C2+B2
+    reject:
+      - formula: =C2-B2
+        rule: value
+      - formula: =8400
+        rule: reference
+      - formula: =B2-C2,
+        rule: syntax

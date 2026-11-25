@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP(MAX($B$2:$G$2),$B$2:$G$2,$B$3:$G$3)
+      - =XLOOKUP(MAX(B$2:G$2),B2:G2,B3:G3)
+      - =xlookup(max(b2:g2), b2:g2, b3:g3)
+      - =LET(data,B2:G2,XLOOKUP(MAX(data),data,B3:G3))
+    wrong:
+      - formula: =XLOOKUP(MAX(B2:G3),B2:G2,B3:G3)
+        rule: fragile
+        why: range B2:G2 one row long
+      - formula: =XLOOKUP(MAX(C2:H2),B2:G2,B3:G3)
+        rule: fragile
+        why: range B2:G2 one column right
+      - formula: =XLOOKUP(MAX(A2:F2),B2:G2,B3:G3)
+        rule: fragile
+        why: range B2:G2 one column left
+    equivalent: []

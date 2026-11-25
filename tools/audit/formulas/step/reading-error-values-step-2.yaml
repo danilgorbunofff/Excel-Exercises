@@ -1,0 +1,16 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ISNA(MATCH(A$8,A2:A6,0))
+      - =isna(match(a8, a2:a6, 0))
+      - =LET(data,A2:A6,ISNA(MATCH(A8,data,0)))
+    wrong:
+      - formula: =ISNA(MATCH(A8,A2:A5,0))
+        rule: fragile
+        why: range A2:A6 one row short at the end
+      - formula: =ISNA(MATCH(A8,A3:A6,0))
+        rule: fragile
+        why: range A2:A6 skips its first row
+    equivalent:
+      - formula: =ISNA(MATCH(A8,A2:A7,0))
+        why: "range A2:A6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

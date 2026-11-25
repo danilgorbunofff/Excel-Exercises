@@ -1,0 +1,39 @@
+id: tidy-a-pasted-name-step-1
+slug: tidy-a-pasted-name-step-1
+level: 1
+title: Remove extra spaces
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: tidy-a-pasted-name
+step: 1
+screens:
+  - prompt: A team name was pasted with extra spaces. In B2, remove them so only single spaces are left between words, keeping the capitals as they are. Use TRIM.
+    rows:
+      - [Pasted, Tidy]
+      - ["  Office   Supplies ", null]
+    answerCell: B2
+    expected: Office Supplies
+    variants:
+      - set: { A2: " Print  Room" }
+        expected: Print Room
+    answer: =TRIM(A2)
+    requiredFunctions:
+      - TRIM
+    hints:
+      nudge: TRIM removes spaces at both ends and doubles in the middle.
+      rule: TRIM(A2) leaves single spaces between words.
+    misses:
+      value: B2 shows Office Supplies.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for TRIM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =TRIM(A2)
+      - =TRIM(TRIM(A2))
+    reject:
+      - formula: =LOWER(TRIM(A2))
+        rule: value
+      - formula: ="Office Supplies"
+        rule: required-function
+      - formula: =TRIM(A2
+        rule: syntax

@@ -1,0 +1,47 @@
+id: lead-conversion-rate-step-5
+slug: lead-conversion-rate-step-5
+level: 3
+title: Leads needed for a sales goal
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: lead-conversion-rate
+step: 5
+screens:
+  - prompt: In F2, work out how many leads are needed to make the number of sales in F1, at the conversion of all campaigns together. Round up to a whole lead.
+    rows:
+      - [Campaign, Leads, Sales, null, Sales goal, 500]
+      - [Spring email, 1840, 97, null, Leads needed, null]
+      - [Webinar, 620, 58, null, null, null]
+      - [Trade show, 310, 41, null, null, null]
+      - [Search ads, 2950, 112, null, null, null]
+      - [Referral, 240, 36, null, null, null]
+    answerCell: F2
+    expected: 8663
+    variants:
+      - set: { F1: 800 }
+        expected: 13861
+      - set: { C5: 150 }
+        expected: 7802
+    answer: =ROUNDUP(F1/(SUM(C2:C6)/SUM(B2:B6)),0)
+    requiredFunctions: []
+    hints:
+      nudge: Leads needed is the goal divided by the conversion rate.
+      rule: The goal over the overall rate gives the leads; ROUNDUP keeps it a whole lead that still reaches the goal.
+    misses:
+      value: 8663 leads are needed.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUNDUP(F1/(SUM(C2:C6)/SUM(B2:B6)),0)
+      - =ROUNDUP(F1*SUM(B2:B6)/SUM(C2:C6),0)
+      - =CEILING(F1*SUM(B2:B6)/SUM(C2:C6),1)
+    reject:
+      - formula: =ROUND(F1*SUM(B2:B6)/SUM(C2:C6),0)
+        rule: fragile
+      - formula: =ROUNDUP(F1*SUM(C2:C6)/SUM(B2:B6),0)
+        rule: value
+      - formula: =8663
+        rule: reference
+      - formula: =ROUNDUP(F1/(SUM(C2:C6)/SUM(B2:B6)),0
+        rule: syntax

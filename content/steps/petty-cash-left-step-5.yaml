@@ -1,0 +1,49 @@
+id: petty-cash-left-step-5
+slug: petty-cash-left-step-5
+level: 3
+title: Balance from a cash log
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: petty-cash-left
+step: 5
+screens:
+  - prompt: In E2, work out the cash in the tin now. Column B marks each line In (money added) or Out (money spent).
+    rows:
+      - [Date, Type, Amount, null, Balance]
+      - [1 Mar, In, 200, null, null]
+      - [2 Mar, Out, 18.4, null, null]
+      - [4 Mar, Out, 6.75, null, null]
+      - [6 Mar, Out, 22.5, null, null]
+      - [9 Mar, In, 50, null, null]
+      - [11 Mar, Out, 9.99, null, null]
+      - [13 Mar, Out, 25, null, null]
+      - [16 Mar, In, 40, null, null]
+      - [18 Mar, Out, 8.5, null, null]
+    answerCell: E2
+    expected: 198.86
+    variants:
+      - { set: { C6: 80 }, expected: 228.86 }
+      - { set: { B9: Out }, expected: 118.86 }
+      - { set: { B10: In }, expected: 215.86 }
+    answer: =SUMIF(B2:B10,"In",C2:C10)-SUMIF(B2:B10,"Out",C2:C10)
+    requiredFunctions: []
+    hints:
+      nudge: Add up the money in, then take away the money out.
+      rule: Each SUMIF adds one type; the balance is money in minus money out.
+    misses:
+      value: The tin holds 198.86.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(B2:B10,"In",C2:C10)-SUMIF(B2:B10,"Out",C2:C10)
+      - =SUMPRODUCT((B2:B10="In")*C2:C10)-SUMPRODUCT((B2:B10="Out")*C2:C10)
+    reject:
+      - formula: =C2-SUMIF(B2:B10,"Out",C2:C10)
+        rule: value
+      - formula: =SUM(C2:C10)
+        rule: value
+      - formula: =198.86
+        rule: reference
+      - formula: =SUMIF(B2:B10,"In",C2:C10)-SUMIF(B2:B10,"Out",C2:C10
+        rule: syntax

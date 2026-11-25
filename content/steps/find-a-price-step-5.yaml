@@ -1,0 +1,49 @@
+id: find-a-price-step-5
+slug: find-a-price-step-5
+level: 3
+title: Value of a three-line order
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: find-a-price
+step: 5
+screens:
+  - prompt: In H5, what is the order in G2 to H4 worth? Column G holds codes and column H quantities.
+    rows:
+      - [Code, Product, Category, Price, Stock, null, Code, Qty]
+      - [P-101, Desk lamp, Lighting, 24, 14, null, P-103, 2]
+      - [P-102, Chair, Seating, 89, 6, null, P-101, 5]
+      - [P-103, Shelf, Storage, 45, 9, null, P-108, 1]
+      - [P-104, Rug, Decor, 120, 3, null, null, null]
+      - [P-105, Mirror, Decor, 60, 11, null, null, null]
+      - [P-106, Stool, Seating, 35, 22, null, null, null]
+      - [P-107, Floor lamp, Lighting, 75, 5, null, null, null]
+      - [P-108, Cabinet, Storage, 210, 2, null, null, null]
+    answerCell: H5
+    expected: 420
+    variants:
+      - set: { G3: P-104 }
+        expected: 900
+      - set: { H4: 3 }
+        expected: 840
+    answer: =XLOOKUP(G2,A2:A9,D2:D9)*H2+XLOOKUP(G3,A2:A9,D2:D9)*H3+XLOOKUP(G4,A2:A9,D2:D9)*H4
+    requiredFunctions: []
+    hints:
+      nudge: Look up each code's price, multiply by its quantity, and add the three lines.
+      rule: Each line is a lookup times a quantity; the order is the sum of the lines.
+    misses:
+      value: The order is worth 420.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(G2,A2:A9,D2:D9)*H2+XLOOKUP(G3,A2:A9,D2:D9)*H3+XLOOKUP(G4,A2:A9,D2:D9)*H4
+      - =SUMPRODUCT(XLOOKUP(G2:G4,A2:A9,D2:D9),H2:H4)
+    reject:
+      - formula: =XLOOKUP(G2,A2:A9,D2:D9)*H2
+        rule: value
+      - formula: =SUM(H2:H4)
+        rule: value
+      - formula: =420
+        rule: reference
+      - formula: =XLOOKUP(G2,A2:A9,D2:D9)*H2+XLOOKUP(G3,A2:A9,D2:D9)*H3+XLOOKUP(G4,A2:A9,D2:D9)*H4,
+        rule: syntax

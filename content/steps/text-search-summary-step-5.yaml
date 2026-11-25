@@ -1,0 +1,61 @@
+id: text-search-summary-step-5
+slug: text-search-summary-step-5
+level: 3
+title: Total for code numbers above 3000
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: text-search-summary
+step: 5
+screens:
+  - prompt: In E2, what is the total amount for the codes whose number part, after the dash, is above 3000?
+    rows:
+      - [Code, Region, Amount, null, Over 3000]
+      - [AN-1042, North, 120, null, null]
+      - [BO-2299, South, 80, null, null]
+      - [CY-3140, North, 200, null, null]
+      - [DE-4471, North, 60, null, null]
+      - [EF-1180, East, 150, null, null]
+      - [GH-3305, West, 95, null, null]
+      - [IJ-2876, North, 175, null, null]
+      - [KL-4012, South, 130, null, null]
+      - [MN-1567, East, 210, null, null]
+      - [OP-3999, West, 45, null, null]
+      - [QR-2050, North, 88, null, null]
+      - [ST-4410, South, 160, null, null]
+      - [UV-1001, East, 72, null, null]
+      - [WX-3721, North, 140, null, null]
+      - [YZ-2600, West, 115, null, null]
+    answerCell: E2
+    expected: 830
+    variants:
+      - set: { A3: BO-3299 }
+        expected: 910
+      - set: { C5: 90 }
+        expected: 860
+      - set: { A3: BO-3000 }
+        expected: 830
+      - set: { A3: BO-3001 }
+        expected: 910
+    answer: =SUMPRODUCT((VALUE(MID(A2:A16,4,4))>3000)*C2:C16)
+    requiredFunctions: []
+    hints:
+      nudge: Pull out each number part, turn it into a number, then test it.
+      rule: VALUE(MID(A2:A16,4,4)) gives every number part as a number; the test times the amounts keeps the rows above 3000.
+    misses:
+      value: Codes above 3000 total 830.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT((VALUE(MID(A2:A16,4,4))>3000)*C2:C16)
+      - =SUMPRODUCT((--TEXTAFTER(A2:A16,"-")>3000)*C2:C16)
+      - =SUM(FILTER(C2:C16,VALUE(MID(A2:A16,4,4))>3000))
+    reject:
+      - formula: =SUMIF(A2:A16,">3000",C2:C16)
+        rule: value
+      - formula: =SUMPRODUCT((VALUE(MID(A2:A16,4,1))>3)*C2:C16)
+        rule: value
+      - formula: =830
+        rule: reference
+      - formula: =SUMPRODUCT((VALUE(MID(A2:A16,4,4))>3000)*C2:C16
+        rule: syntax

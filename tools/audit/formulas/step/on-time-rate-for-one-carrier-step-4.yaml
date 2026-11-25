@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(COUNTIFS(B$2:B$13,F1,C2:C13,"On time")/COUNTIF(B2:B13,F1),2)
+      - =round(countifs(b2:b13, f1, c2:c13, "On time")/countif(b2:b13, f1), 2)
+      - =LET(data,B2:B13,ROUND(COUNTIFS(data,F1,C2:C13,"On time")/COUNTIF(data,F1),2))
+    wrong: []
+    equivalent: []

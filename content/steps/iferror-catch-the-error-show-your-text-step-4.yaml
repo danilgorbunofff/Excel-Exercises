@@ -1,0 +1,41 @@
+id: iferror-catch-the-error-show-your-text-step-4
+slug: iferror-catch-the-error-show-your-text-step-4
+level: 2
+title: Growth, or new for a new product
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: iferror-catch-the-error-show-your-text
+step: 4
+screens:
+  - prompt: In D2, work out the growth from last year in B2 to this year in C2, (C2-B2)/B2, and show the word new when last year is 0. Use IFERROR.
+    rows:
+      - [Product, Last year, This year, Growth]
+      - [Gizmo, 0, 340, null]
+    answerCell: D2
+    expected: new
+    variants:
+      - set: { B2: 250 }
+        expected: 0.36
+    answer: =IFERROR((C2-B2)/B2,"new")
+    requiredFunctions:
+      - IFERROR
+    hints:
+      nudge: The growth formula fails when last year is 0; IFERROR shows new instead.
+      rule: IFERROR((C2-B2)/B2,"new") shows new for a product with no sales last year.
+    misses:
+      value: With no sales last year, D2 should show new.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IFERROR.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IFERROR((C2-B2)/B2,"new")
+      - =IFERROR(C2/B2-1,"new")
+    reject:
+      - formula: =(C2-B2)/B2
+        rule: required-function
+      - formula: =IFERROR(C2-B2/B2,"new")
+        rule: fragile
+      - formula: ="new"
+        rule: required-function
+      - formula: =IFERROR((C2-B2)/B2,"new"
+        rule: syntax

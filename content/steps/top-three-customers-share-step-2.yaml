@@ -1,0 +1,54 @@
+id: top-three-customers-share-step-2
+slug: top-three-customers-share-step-2
+level: 2
+title: Biggest customer's share
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: top-three-customers-share
+step: 2
+screens:
+  - prompt: In E2, show the share of revenue from the single biggest customer, as a percentage rounded to one decimal place. Use MAX, SUM and ROUND.
+    rows:
+      - [Customer, Revenue, null, null, Biggest %]
+      - [Arden, 42000, null, null, null]
+      - [Brook, 18500, null, null, null]
+      - [Calder, 67300, null, null, null]
+      - [Dene, 9200, null, null, null]
+      - [Esk, 31800, null, null, null]
+      - [Frome, 54100, null, null, null]
+      - [Garry, 12600, null, null, null]
+      - [Hull, 23400, null, null, null]
+      - [Isis, 7900, null, null, null]
+      - [Jed, 15200, null, null, null]
+    answerCell: E2
+    expected: 23.9
+    variants:
+      - set: { B7: 80000 }
+        expected: 26
+      - set: { B2: 67300, B4: 18500 }
+        expected: 26
+      - set: { B11: 90000 }
+        expected: 25.2
+    answer: =ROUND(MAX(B2:B11)/SUM(B2:B11)*100,1)
+    requiredFunctions:
+      - MAX
+      - SUM
+      - ROUND
+    hints:
+      nudge: MAX finds the biggest customer wherever it sits.
+      rule: MAX(B2:B11)/SUM(B2:B11) is the top customer's slice.
+    misses:
+      value: The biggest customer brings 23.9% of revenue.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for MAX, SUM and ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(MAX(B2:B11)/SUM(B2:B11)*100,1)
+      - =ROUND(100*MAX(B2:B11)/SUM(B2:B11),1)
+    reject:
+      - formula: =ROUND(MAX(B2:B11)/SUM(B2:B11),1)
+        rule: value
+      - formula: =23.9
+        rule: required-function
+      - formula: =ROUND(MAX(B2:B11)/SUM(B2:B11)*100,1
+        rule: syntax

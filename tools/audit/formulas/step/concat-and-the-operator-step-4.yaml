@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - ="Order "&$A$2&" item "&TEXT($B$2,"000")
+      - ="Order "&A$2&" item "&TEXT(B2,"000")
+      - ="Order "&a2&" item "&text(b2, "000")
+    wrong: []
+    equivalent: []

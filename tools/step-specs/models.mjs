@@ -3,7 +3,13 @@
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 2 at step 3, level 3 at step 4.
 const fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(2));
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 const sellers = [
   ["Seller", "Sales", "Commission", null, "Sales from", "Rate"],
@@ -25,7 +31,8 @@ const teams = [
 export default [
   // a-commission-sheet-that-updates-itself (level 3, step 4)
   step("a-commission-sheet-that-updates-itself", 1, 1, "Commission at a flat rate", {
-    prompt: "In C2, work out Ana's commission at the flat rate in F1: her sales in B2 times the rate.",
+    prompt:
+      "In C2, work out Ana's commission at the flat rate in F1: her sales in B2 times the rate.",
     rows: [
       ["Seller", "Sales", "Commission", null, "Rate", 0.03],
       ["Ana", 42000, null, null, null, null],
@@ -45,8 +52,11 @@ export default [
     value: (e) => `Ana's commission is ${e}.`,
   }),
   step("a-commission-sheet-that-updates-itself", 2, 2, "Tier rate for a seller", {
-    prompt: "In C2, find the tier rate Ana's sales in B2 reach, from the tier table E2:F4. Use VLOOKUP with TRUE.",
-    rows: sellers.map((r, i) => (i === 0 ? ["Seller", "Sales", "Rate", null, "Sales from", "Rate"] : r)),
+    prompt:
+      "In C2, find the tier rate Ana's sales in B2 reach, from the tier table E2:F4. Use VLOOKUP with TRUE.",
+    rows: sellers.map((r, i) =>
+      i === 0 ? ["Seller", "Sales", "Rate", null, "Sales from", "Rate"] : r,
+    ),
     cell: "C2",
     answer: "=VLOOKUP(B2,$E$2:$F$4,2,TRUE)",
     required: ["VLOOKUP"],
@@ -61,7 +71,8 @@ export default [
     value: (e) => `Ana's sales reach the ${e} tier.`,
   }),
   step("a-commission-sheet-that-updates-itself", 3, 2, "Flat commission to the cent", {
-    prompt: "In C2, work out Ben's commission at the flat rate in F1, rounded to 2 decimals. Use ROUND.",
+    prompt:
+      "In C2, work out Ben's commission at the flat rate in F1, rounded to 2 decimals. Use ROUND.",
     rows: [
       ["Seller", "Sales", "Commission", null, "Rate", 0.0275],
       ["Ben", 18555, null, null, null, null],
@@ -100,7 +111,9 @@ export default [
   // a-headcount-and-payroll-summary (level 3, step 4)
   step("a-headcount-and-payroll-summary", 1, 1, "Total heads", {
     prompt: "In F2, total the heads across all the teams. Use SUM.",
-    rows: teams.map((r, i) => (i === 1 ? [...r.slice(0, 5), null] : i === 0 ? [...r.slice(0, 5), "Heads"] : r)),
+    rows: teams.map((r, i) =>
+      i === 1 ? [...r.slice(0, 5), null] : i === 0 ? [...r.slice(0, 5), "Heads"] : r,
+    ),
     cell: "F2",
     answer: "=SUM(B2:B5)",
     required: ["SUM"],
@@ -112,7 +125,8 @@ export default [
     value: (e) => `There are ${e} heads.`,
   }),
   step("a-headcount-and-payroll-summary", 2, 2, "Payroll of one team", {
-    prompt: "In F2, work out the payroll of the team typed in F1: its heads times its salary, both looked up. Use XLOOKUP.",
+    prompt:
+      "In F2, work out the payroll of the team typed in F1: its heads times its salary, both looked up. Use XLOOKUP.",
     rows: teams.map((r, i) => (i === 0 ? [...r.slice(0, 5), "IT"] : r)),
     cell: "F2",
     answer: "=XLOOKUP(F1,A2:A5,B2:B5)*XLOOKUP(F1,A2:A5,C2:C5)",
@@ -128,7 +142,8 @@ export default [
     value: (e) => `IT's payroll is ${e}.`,
   }),
   step("a-headcount-and-payroll-summary", 3, 2, "Share of heads in one team", {
-    prompt: "In F2, work out the share of all heads that work in Sales, as a fraction. Use XLOOKUP and SUM.",
+    prompt:
+      "In F2, work out the share of all heads that work in Sales, as a fraction. Use XLOOKUP and SUM.",
     rows: teams.map((r, i) => (i === 0 ? [...r.slice(0, 5), "Sales share"] : r)),
     cell: "F2",
     answer: '=XLOOKUP("Sales",A2:A5,B2:B5)/SUM(B2:B5)',
@@ -146,7 +161,9 @@ export default [
   step("a-headcount-and-payroll-summary", 5, 3, "Payroll after a raise for most teams", {
     prompt:
       "In F2, what will the total payroll be after the raise in F1, a fraction such as 0.03, is given to every team except Admin?",
-    rows: teams.map((r, i) => (i === 0 ? [...r.slice(0, 5), 0.03] : i === 1 ? [...r.slice(0, 5), null] : r)),
+    rows: teams.map((r, i) =>
+      i === 0 ? [...r.slice(0, 5), 0.03] : i === 1 ? [...r.slice(0, 5), null] : r,
+    ),
     cell: "F2",
     answer: '=SUMPRODUCT(B2:B5,C2:C5,1+(A2:A5<>"Admin")*F1)',
     required: [],
@@ -163,7 +180,8 @@ export default [
 
   // an-inventory-reorder-report (level 3, step 4)
   step("an-inventory-reorder-report", 1, 1, "Gap to the reorder point", {
-    prompt: "In D2, work out how far the bolts' stock is below their reorder point: the reorder point in C2 minus the stock in B2.",
+    prompt:
+      "In D2, work out how far the bolts' stock is below their reorder point: the reorder point in C2 minus the stock in B2.",
     rows: [
       ["Item", "On hand", "Reorder at", "Gap"],
       ["Bolts", 120, 200, null],
@@ -265,7 +283,8 @@ export default [
 
   // a-monthly-close-checklist-in-formulas (level 2, step 3)
   step("a-monthly-close-checklist-in-formulas", 1, 1, "Ready when the balances agree", {
-    prompt: 'In D2, show ready when the ledger balance in B2 equals the bank balance in C2, and check otherwise. Use IF.',
+    prompt:
+      "In D2, show ready when the ledger balance in B2 equals the bank balance in C2, and check otherwise. Use IF.",
     rows: [
       ["Account", "Ledger", "Bank", "Status"],
       ["Current", 15240.5, 15240.5, null],
@@ -305,7 +324,7 @@ export default [
   }),
   step("a-monthly-close-checklist-in-formulas", 4, 2, "Ready within a tolerance", {
     prompt:
-      'In C2, show ready when the variance in B2 is within the tolerance in F1 either way, and check otherwise. Use IF and ABS.',
+      "In C2, show ready when the variance in B2 is within the tolerance in F1 either way, and check otherwise. Use IF and ABS.",
     rows: [
       ["Check", "Variance", "Status", null, "Tolerance", 5],
       ["VAT", -3, null, null, null, null],
@@ -325,7 +344,7 @@ export default [
   }),
   step("a-monthly-close-checklist-in-formulas", 5, 3, "Can the month be closed", {
     prompt:
-      'In D2, can the month be closed? Show close when every variance in B2:B9 is within the tolerance in D1 either way; otherwise show how many checks are outside it.',
+      "In D2, can the month be closed? Show close when every variance in B2:B9 is within the tolerance in D1 either way; otherwise show how many checks are outside it.",
     rows: [
       ["Check", "Variance", null, 5],
       ["Bank", 0, null, null],

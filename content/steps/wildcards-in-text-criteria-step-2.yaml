@@ -1,0 +1,48 @@
+id: wildcards-in-text-criteria-step-2
+slug: wildcards-in-text-criteria-step-2
+level: 2
+title: Total for five-character codes
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: wildcards-in-text-criteria
+step: 2
+screens:
+  - prompt: In E2, add the amounts in B2:B9 for codes that are A followed by exactly four characters. Use SUMIF with "A????".
+    rows:
+      - [Code, Amount, null, null, A plus four]
+      - [A1042, 120, null, null, null]
+      - [A104, 80, null, null, null]
+      - [B2299, 200, null, null, null]
+      - [A3140, 60, null, null, null]
+      - [A31405, 150, null, null, null]
+      - [AX-12, 95, null, null, null]
+      - [C4471, 175, null, null, null]
+      - [A9900, 40, null, null, null]
+    answerCell: E2
+    expected: 315
+    variants:
+      - set: { B5: 70 }
+        expected: 325
+    answer: =SUMIF(A2:A9,"A????",B2:B9)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: Each ? is exactly one character.
+      rule: '"A????" matches A and exactly four more characters, so A104 and A31405 are left out.'
+    misses:
+      value: Codes of A plus four characters add up to 315.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(A2:A9,"A????",B2:B9)
+      - =SUMIF(A2:A9,"a????",B2:B9)
+    reject:
+      - formula: =SUMIF(A2:A9,"A*",B2:B9)
+        rule: value
+      - formula: =SUMIF(A2:A9,"A???",B2:B9)
+        rule: value
+      - formula: =315
+        rule: required-function
+      - formula: =SUMIF(A2:A9,"A????",B2:B9
+        rule: syntax

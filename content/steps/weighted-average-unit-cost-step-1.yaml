@@ -1,0 +1,42 @@
+id: weighted-average-unit-cost-step-1
+slug: weighted-average-unit-cost-step-1
+level: 1
+title: Total units bought
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: weighted-average-unit-cost
+step: 1
+screens:
+  - prompt: In D2, total the units bought across the batches. Use SUM.
+    rows:
+      - [Batch, Units, Unit cost, Answer]
+      - [B-1, 400, 2.5, null]
+      - [B-2, 250, 2.8, null]
+      - [B-3, 600, 2.35, null]
+      - [B-4, 150, 2.6, null]
+    answerCell: D2
+    expected: 1400
+    variants:
+      - set: { B3: 300 }
+        expected: 1450
+    answer: =SUM(B2:B5)
+    requiredFunctions:
+      - SUM
+    hints:
+      nudge: Add the Units column.
+      rule: SUM(B2:B5) gives all units bought.
+    misses:
+      value: 1400 units were bought.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUM(B2:B5)
+      - =SUM($B$2:$B$5)
+    reject:
+      - formula: =SUM(C2:C5)
+        rule: value
+      - formula: =1400
+        rule: required-function
+      - formula: =SUM(B2:B5
+        rule: syntax

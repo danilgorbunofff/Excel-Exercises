@@ -1,0 +1,21 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($B$2:$E$5,MATCH($B$7,$A$2:$A$5,0),MATCH($B$9,$B$1:$E$1,0))-INDEX($B$2:$E$5,MATCH($B$7,$A$2:$A$5,0),MATCH($B$8,$B$1:$E$1,0))
+      - =INDEX(B$2:E$5,MATCH(B7,A2:A5,0),MATCH(B9,B1:E1,0))-INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,0))
+      - =index(b2:e5, match(b7, a2:a5, 0), match(b9, b1:e1, 0))-index(b2:e5, match(b7, a2:a5, 0), match(b8, b1:e1, 0))
+      - =LET(data,B2:E5,INDEX(data,MATCH(B7,A2:A5,0),MATCH(B9,B1:E1,0))-INDEX(data,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,0)))
+    wrong: []
+    equivalent:
+      - formula: =INDEX(B2:E6,MATCH(B7,A2:A5,0),MATCH(B9,B1:E1,0))-INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,0))
+        why: "range B2:E5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(B2:E5,MATCH(B7,A2:A6,0),MATCH(B9,B1:E1,0))-INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,0))
+        why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B9,B1:E1,1))-INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,0))
+        why: "0 written as 1: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."
+      - formula: =INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B9,B1:E1,0))-INDEX(B2:E6,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,0))
+        why: "range B2:E5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B9,B1:E1,0))-INDEX(B2:E5,MATCH(B7,A2:A6,0),MATCH(B8,B1:E1,0))
+        why: "range A2:A5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B9,B1:E1,0))-INDEX(B2:E5,MATCH(B7,A2:A5,0),MATCH(B8,B1:E1,1))
+        why: "0 written as 1: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

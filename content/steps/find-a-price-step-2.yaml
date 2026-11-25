@@ -1,0 +1,50 @@
+id: find-a-price-step-2
+slug: find-a-price-step-2
+level: 2
+title: Price times quantity
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: find-a-price
+step: 2
+screens:
+  - prompt: "In H3, work out the cost of the order: the price of the code in H1, looked up, times the quantity in H2. Use XLOOKUP."
+    rows:
+      - [Code, Product, Category, Price, Stock, null, Code, P-105]
+      - [P-101, Desk lamp, Lighting, 24, 14, null, Quantity, 4]
+      - [P-102, Chair, Seating, 89, 6, null, Cost, null]
+      - [P-103, Shelf, Storage, 45, 9, null, null, null]
+      - [P-104, Rug, Decor, 120, 3, null, null, null]
+      - [P-105, Mirror, Decor, 60, 11, null, null, null]
+      - [P-106, Stool, Seating, 35, 22, null, null, null]
+      - [P-107, Floor lamp, Lighting, 75, 5, null, null, null]
+      - [P-108, Cabinet, Storage, 210, 2, null, null, null]
+    answerCell: H3
+    expected: 240
+    variants:
+      - set: { H1: P-102 }
+        expected: 356
+      - set: { H2: 7 }
+        expected: 420
+    answer: =XLOOKUP(H1,A2:A9,D2:D9)*H2
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: Look up the price first, then multiply it by the quantity.
+      rule: A lookup gives a number you can use in a calculation like any other.
+    misses:
+      value: The order costs 240.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(H1,A2:A9,D2:D9)*H2
+      - =H2*XLOOKUP(H1,A2:A9,D2:D9)
+    reject:
+      - formula: =XLOOKUP(H1,A2:A9,D2:D9)
+        rule: value
+      - formula: =XLOOKUP(H1,A2:A9,E2:E9)*H2
+        rule: value
+      - formula: =240
+        rule: required-function
+      - formula: =XLOOKUP(H1,A2:A9,D2:D9)*H2,
+        rule: syntax

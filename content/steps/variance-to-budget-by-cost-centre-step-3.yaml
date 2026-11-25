@@ -1,0 +1,47 @@
+id: variance-to-budget-by-cost-centre-step-3
+slug: variance-to-budget-by-cost-centre-step-3
+level: 2
+title: Over or under budget
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: variance-to-budget-by-cost-centre
+step: 3
+screens:
+  - prompt: In F4, show Over when the Ops spend is above its budget in E4, and Under otherwise. Use IF and SUMIFS.
+    rows:
+      - [Cost centre, Spend, null, Centre, Budget, Flag]
+      - [Sales, 14200, null, Sales, 30000, null]
+      - [IT, 9800, null, IT, 18000, null]
+      - [Sales, 17300, null, Ops, 22000, null]
+      - [Ops, 11900, null, null, null, null]
+      - [IT, 9100, null, null, null, null]
+      - [Ops, 8700, null, null, null, null]
+    answerCell: F4
+    expected: Under
+    variants:
+      - set: { E4: 19000 }
+        expected: Over
+      - set: { E4: 20600 }
+        expected: Under
+    answer: =IF(SUMIFS(B2:B7,A2:A7,D4)>E4,"Over","Under")
+    requiredFunctions:
+      - IF
+      - SUMIFS
+    hints:
+      nudge: Compare the Ops total with its budget inside IF.
+      rule: IF(SUMIFS(...)>E4,"Over","Under") flags an overspend.
+    misses:
+      value: Ops is Under budget.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF and SUMIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(SUMIFS(B2:B7,A2:A7,D4)>E4,"Over","Under")
+      - =IF(SUMIFS(B2:B7,A2:A7,D4)<=E4,"Under","Over")
+    reject:
+      - formula: =IF(SUMIFS(B2:B7,A2:A7,D4)<E4,"Over","Under")
+        rule: value
+      - formula: ="Under"
+        rule: required-function
+      - formula: =IF(SUMIFS(B2:B7,A2:A7,D4)>E4,"Over","Under"
+        rule: syntax

@@ -1,0 +1,45 @@
+id: a-lookup-dashboard-from-three-tables-step-5
+slug: a-lookup-dashboard-from-three-tables-step-5
+level: 3
+title: A rep's sales as a share of target
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-lookup-dashboard-from-three-tables
+step: 5
+screens:
+  - prompt: In D2, how far has the rep named in D1 got towards their region's target? Show the percentage, such as 102.5, rounded to 1 decimal place.
+    rows:
+      - [Rep, Region, Sales, Cleo, null, Region, Target]
+      - [Ada, North, 61500, null, null, North, 60000]
+      - [Ben, South, 47000, null, null, South, 50000]
+      - [Cleo, North, 58200, null, null, East, 45000]
+      - [Dev, East, 52300, null, null, West, 55000]
+      - [Eve, West, 49800, null, null, null, null]
+    answerCell: D2
+    expected: 97
+    variants:
+      - { set: { D1: Ben }, expected: 94 }
+      - { set: { G2: 65000 }, expected: 89.5 }
+      - { set: { C4: 52300 }, expected: 87.2 }
+    answer: =ROUND(XLOOKUP(D1,A2:A6,C2:C6)/XLOOKUP(XLOOKUP(D1,A2:A6,B2:B6),F2:F5,G2:G5)*100,1)
+    requiredFunctions: []
+    hints:
+      nudge: Look up the rep's sales and region, then the region's target, then divide.
+      rule: The inner XLOOKUP finds the rep's region; the outer one turns it into a target; sales over target times 100 is the percentage.
+    misses:
+      value: Cleo is at 97% of target.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(XLOOKUP(D1,A2:A6,C2:C6)/XLOOKUP(XLOOKUP(D1,A2:A6,B2:B6),F2:F5,G2:G5)*100,1)
+      - =ROUND(INDEX(C2:C6,MATCH(D1,A2:A6,0))/INDEX(G2:G5,MATCH(INDEX(B2:B6,MATCH(D1,A2:A6,0)),F2:F5,0))*100,1)
+    reject:
+      - formula: =ROUND(XLOOKUP(D1,A2:A6,C2:C6)/G2*100,1)
+        rule: fragile
+      - formula: =XLOOKUP(D1,A2:A6,C2:C6)/XLOOKUP(XLOOKUP(D1,A2:A6,B2:B6),F2:F5,G2:G5)
+        rule: value
+      - formula: =97
+        rule: reference
+      - formula: =ROUND(XLOOKUP(D1,A2:A6,C2:C6)/XLOOKUP(XLOOKUP(D1,A2:A6,B2:B6),F2:F5,G2:G5)*100,1
+        rule: syntax

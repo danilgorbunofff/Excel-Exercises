@@ -1,0 +1,56 @@
+id: subtotal-a-sum-over-a-group-step-5
+slug: subtotal-a-sum-over-a-group-step-5
+level: 3
+title: Biggest line as a share of the total
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: subtotal-a-sum-over-a-group
+step: 5
+screens:
+  - prompt: In E2, what share of the total of all lines does the single biggest line make up? Give a fraction.
+    rows:
+      - [Item, Price, Qty, Line, Biggest line's share]
+      - [Pens, 1.2, 40, 48, null]
+      - [Pads, 3.5, 15, 52.5, null]
+      - [Clips, 0.05, 500, 25, null]
+      - [Tape, 2.1, 12, 25.2, null]
+      - [Files, 4.75, 20, 95, null]
+      - [Ink, 18.9, 6, 113.4, null]
+      - [Glue, 1.85, 30, 55.5, null]
+      - [Rulers, 0.9, 25, 22.5, null]
+      - [Folders, 0.6, 100, 60, null]
+      - [Labels, 5.4, 8, 43.2, null]
+      - [Staples, 1.1, 18, 19.8, null]
+      - [Markers, 7.25, 10, 72.5, null]
+      - [Erasers, 0.35, 60, 21, null]
+      - [Binders, 3.9, 14, 54.6, null]
+      - [Notes, 2.6, 22, 57.2, null]
+    answerCell: E2
+    expected: 0.148157825973
+    variants:
+      - { set: { D7: 150 }, expected: 0.187032418953 }
+      - { set: { D6: 200 }, expected: 0.229779411765 }
+      - { set: { D16: 114.4 }, expected: 0.13907123753950887 }
+      - { set: { D2: 113.4, D7: 48 }, expected: 0.14815782597334726 }
+    answer: =SUBTOTAL(4,D2:D16)/SUBTOTAL(9,D2:D16)
+    requiredFunctions: []
+    hints:
+      nudge: The largest line divided by the sum of all lines.
+      rule: SUBTOTAL(4,...) is the largest and SUBTOTAL(9,...) the total; MAX and SUM work the same here.
+    misses:
+      value: The biggest line is 0.15 of the total.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUBTOTAL(4,D2:D16)/SUBTOTAL(9,D2:D16)
+      - =MAX(D2:D16)/SUM(D2:D16)
+    reject:
+      - formula: =SUBTOTAL(4,D2:D16)
+        rule: value
+      - formula: =D7/SUM(D2:D16)
+        rule: fragile
+      - formula: =0.148157825973
+        rule: reference
+      - formula: =SUBTOTAL(4,D2:D16)/SUBTOTAL(9,D2:D16
+        rule: syntax

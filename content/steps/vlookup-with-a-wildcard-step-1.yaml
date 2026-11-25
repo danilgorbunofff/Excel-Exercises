@@ -1,0 +1,45 @@
+id: vlookup-with-a-wildcard-step-1
+slug: vlookup-with-a-wildcard-step-1
+level: 1
+title: Find a supplier's country
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: vlookup-with-a-wildcard
+step: 1
+screens:
+  - prompt: In B8, find the country of the supplier named in A8. Use VLOOKUP with an exact match.
+    rows:
+      - [Supplier, Country, Lead time (days)]
+      - [Baltic Freight, Latvia, 12]
+      - [Baltic Couriers, Latvia, 4]
+      - [Northwind Air, Ireland, 7]
+      - [Northwind Rail, Ireland, 19]
+      - [Southgate Haulage, Spain, 9]
+      - [null, null, null]
+      - [Northwind Rail, null, null]
+    answerCell: B8
+    expected: Ireland
+    variants:
+      - { set: { A8: Southgate Haulage }, expected: Spain }
+      - { set: { A2: Northwind Rail }, expected: Latvia }
+    answer: =VLOOKUP(A8,A2:C6,2,FALSE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: The country is the 2nd column.
+      rule: VLOOKUP(A8,A2:C6,2,FALSE) finds the full name and returns the country.
+    misses:
+      value: Northwind Rail is in Ireland.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =VLOOKUP(A8,A2:C6,2,FALSE)
+      - =VLOOKUP(A8,A1:C6,2,FALSE)
+    reject:
+      - formula: =VLOOKUP(A8,A2:C6,3,FALSE)
+        rule: value
+      - formula: ="Ireland"
+        rule: required-function
+      - formula: =VLOOKUP(A8,A2:C6,2,FALSE
+        rule: syntax

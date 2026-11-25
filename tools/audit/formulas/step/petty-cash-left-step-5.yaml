@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF($B$2:$B$10,"In",$C$2:$C$10)-SUMIF($B$2:$B$10,"Out",$C$2:$C$10)
+      - =SUMIF(B$2:B$10,"In",C2:C10)-SUMIF(B2:B10,"Out",C2:C10)
+      - =sumif(b2:b10, "In", c2:c10)-sumif(b2:b10, "Out", c2:c10)
+      - =SUMIFS(C2:C10,B2:B10,"In")-SUMIF(B2:B10,"Out",C2:C10)
+      - =SUMPRODUCT((B2:B10="In")*C2:C10)-SUMIF(B2:B10,"Out",C2:C10)
+      - =SUM(FILTER(C2:C10,(B2:B10="In"),0))-SUMIF(B2:B10,"Out",C2:C10)
+      - =SUMIF(B2:B10,"In",C2:C10)-SUMIFS(C2:C10,B2:B10,"Out")
+      - =SUMIF(B2:B10,"In",C2:C10)-SUMPRODUCT((B2:B10="Out")*C2:C10)
+      - =SUMIF(B2:B10,"In",C2:C10)-SUM(FILTER(C2:C10,(B2:B10="Out"),0))
+      - =LET(data,B2:B10,SUMIF(data,"In",C2:C10)-SUMIF(data,"Out",C2:C10))
+    wrong:
+      - formula: =SUMIF(B2:B9,"In",C2:C10)-SUMIF(B2:B10,"Out",C2:C10)
+        rule: fragile
+        why: range B2:B10 one row short at the end
+    equivalent: []

@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LEFT($A$2,LEN($A$2)-3)
+      - =LEFT(A$2,LEN(A2)-3)
+      - =left(a2, len(a2)-3)
+    wrong: []
+    equivalent: []

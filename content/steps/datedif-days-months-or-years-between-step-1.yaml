@@ -1,0 +1,39 @@
+id: datedif-days-months-or-years-between-step-1
+slug: datedif-days-months-or-years-between-step-1
+level: 1
+title: Days between with DATEDIF
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: datedif-days-months-or-years-between
+step: 1
+screens:
+  - prompt: In D2, find the days from the start date in B2 to the end date in C2. Use DATEDIF with "D".
+    rows:
+      - [Project, Start, End, Days]
+      - [Audit, 45352, 45415, null]
+    answerCell: D2
+    expected: 63
+    variants:
+      - set: { C2: 45400 }
+        expected: 48
+    answer: =DATEDIF(B2,C2,"D")
+    requiredFunctions:
+      - DATEDIF
+    hints:
+      nudge: 'The third part of DATEDIF is the unit: "D" for days.'
+      rule: DATEDIF(B2,C2,"D") counts the days from the start to the end.
+    misses:
+      value: The audit ran for 63 days.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for DATEDIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =DATEDIF(B2,C2,"D")
+      - =DATEDIF(B2,C2,"d")
+    reject:
+      - formula: =DATEDIF(B2,C2,"M")
+        rule: value
+      - formula: =63
+        rule: required-function
+      - formula: =DATEDIF(B2,C2,"D"
+        rule: syntax

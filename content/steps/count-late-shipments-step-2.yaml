@@ -1,0 +1,53 @@
+id: count-late-shipments-step-2
+slug: count-late-shipments-step-2
+level: 1
+title: Count the orders on time
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: count-late-shipments
+step: 2
+screens:
+  - prompt: In F2, count the orders that shipped on time or early, with 0 or fewer days late. Use COUNTIF.
+    rows:
+      - [Order, Promised, Shipped, Days late, Carrier, null, null]
+      - [O-01, 45352, 45354, 2, Northway, null, null]
+      - [O-02, 45353, 45353, 0, Fastlane, null, null]
+      - [O-03, 45355, 45361, 6, Northway, null, null]
+      - [O-04, 45356, 45355, -1, Fastlane, null, null]
+      - [O-05, 45358, 45362, 4, Fastlane, null, null]
+      - [O-06, 45359, 45359, 0, Northway, null, null]
+      - [O-07, 45360, 45363, 3, Swiftco, null, null]
+      - [O-08, 45362, 45361, -1, Swiftco, null, null]
+      - [O-09, 45363, 45370, 7, Northway, null, null]
+      - [O-10, 45365, 45366, 1, Fastlane, null, null]
+      - [O-11, 45366, 45366, 0, Swiftco, null, null]
+      - [O-12, 45367, 45372, 5, Northway, null, null]
+      - [O-13, 45369, 45368, -1, Fastlane, null, null]
+      - [O-14, 45370, 45374, 4, Swiftco, null, null]
+      - [O-15, 45372, 45372, 0, Northway, null, null]
+    answerCell: F2
+    expected: 7
+    variants:
+      - { set: { D3: 2 }, expected: 6 }
+      - { set: { D2: 0 }, expected: 8 }
+    answer: =COUNTIF(D2:D16,"<=0")
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: On time includes 0 days late.
+      rule: COUNTIF(D2:D16,"<=0") counts on-time and early orders.
+    misses:
+      value: 7 orders shipped on time.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(D2:D16,"<=0")
+      - =COUNTIF($D$2:$D$16,"<=0")
+    reject:
+      - formula: =COUNTIF(D2:D16,"<0")
+        rule: value
+      - formula: =7
+        rule: required-function
+      - formula: =COUNTIF(D2:D16,"<=0"
+        rule: syntax

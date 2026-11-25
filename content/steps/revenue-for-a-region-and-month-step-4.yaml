@@ -1,0 +1,50 @@
+id: revenue-for-a-region-and-month-step-4
+slug: revenue-for-a-region-and-month-step-4
+level: 2
+title: Revenue for a region outside one month
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: revenue-for-a-region-and-month
+step: 4
+screens:
+  - prompt: In H2, add up the revenue for the region in F2 in every month except the one in G2. Use SUMIFS.
+    rows:
+      - [Region, Month, Revenue, null, null, Region, Not month, Revenue]
+      - [North, Jan, 12400, null, null, South, Feb, null]
+      - [South, Jan, 9800, null, null, null, null, null]
+      - [South, Feb, 11250, null, null, null, null, null]
+      - [North, Feb, 13100, null, null, null, null, null]
+      - [West, Feb, 7600, null, null, null, null, null]
+      - [South, Feb, 4300, null, null, null, null, null]
+      - [North, Mar, 14800, null, null, null, null, null]
+      - [South, Mar, 10900, null, null, null, null, null]
+      - [West, Jan, 6900, null, null, null, null, null]
+      - [South, Feb, 2750, null, null, null, null, null]
+    answerCell: H2
+    expected: 20700
+    variants:
+      - set: { G2: Jan }
+        expected: 29200
+      - set: { F2: North }
+        expected: 27200
+    answer: =SUMIFS(C2:C11,A2:A11,F2,B2:B11,"<>"&G2)
+    requiredFunctions:
+      - SUMIFS
+    hints:
+      nudge: Join "<>" to the month cell to say "not this month".
+      rule: B2:B11,"<>"&G2 keeps every month except the one in G2.
+    misses:
+      value: The South made 20700 outside February.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIFS(C2:C11,A2:A11,F2,B2:B11,"<>"&G2)
+      - =SUMIF(A2:A11,F2,C2:C11)-SUMIFS(C2:C11,A2:A11,F2,B2:B11,G2)
+    reject:
+      - formula: =SUMIFS(C2:C11,A2:A11,F2,B2:B11,G2)
+        rule: value
+      - formula: =20700
+        rule: required-function
+      - formula: =SUMIFS(C2:C11,A2:A11,F2,B2:B11,"<>"&G2
+        rule: syntax

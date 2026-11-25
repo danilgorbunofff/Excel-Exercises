@@ -1,0 +1,43 @@
+id: weighted-average-unit-cost-step-4
+slug: weighted-average-unit-cost-step-4
+level: 2
+title: Weighted against simple average
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: weighted-average-unit-cost
+step: 4
+screens:
+  - prompt: "In D2, show how far the weighted average unit cost is from the simple average of the three costs: weighted minus simple. Use SUMPRODUCT, SUM and AVERAGE."
+    rows:
+      - [Batch, Units, Unit cost, Answer]
+      - [B-1, 400, 2.5, null]
+      - [B-2, 250, 2.8, null]
+      - [B-3, 600, 2.35, null]
+    answerCell: D2
+    expected: -0.062
+    variants:
+      - set: { B3: 50 }
+        expected: -0.121428571429
+    answer: =SUMPRODUCT(B2:B4,C2:C4)/SUM(B2:B4)-AVERAGE(C2:C4)
+    requiredFunctions:
+      - SUMPRODUCT
+      - SUM
+      - AVERAGE
+    hints:
+      nudge: The weighted average counts big batches more; the simple one treats each batch the same.
+      rule: A negative answer means the big batches were the cheap ones.
+    misses:
+      value: The weighted average is -0.062 from the simple one.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMPRODUCT, SUM and AVERAGE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(B2:B4,C2:C4)/SUM(B2:B4)-AVERAGE(C2:C4)
+      - =-AVERAGE(C2:C4)+SUMPRODUCT(B2:B4,C2:C4)/SUM(B2:B4)
+    reject:
+      - formula: =AVERAGE(C2:C4)-SUMPRODUCT(B2:B4,C2:C4)/SUM(B2:B4)
+        rule: value
+      - formula: =-0.062
+        rule: required-function
+      - formula: =SUMPRODUCT(B2:B4,C2:C4)/SUM(B2:B4)-AVERAGE(C2:C4
+        rule: syntax

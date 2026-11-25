@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF(B$2:B$6,"<"&D2)
+      - =countif(b2:b6, "<"&d2)
+      - =LET(data,B2:B6,COUNTIF(data,"<"&D2))
+    wrong:
+      - formula: =COUNTIF(B2:B6,"<="&D2)
+        rule: fragile
+        why: criteria "<" written with <=
+    equivalent: []

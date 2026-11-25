@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =DATE(YEAR($B$2),MONTH($B$2)+2,0)
+      - =DATE(YEAR(B$2),MONTH(B2)+2,0)
+      - =date(year(b2), month(b2)+2, 0)
+    wrong: []
+    equivalent: []

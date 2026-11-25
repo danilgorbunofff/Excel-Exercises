@@ -1,0 +1,45 @@
+id: rep-target-check-step-4
+slug: rep-target-check-step-4
+level: 2
+title: Above, on target or below
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: rep-target-check
+step: 4
+screens:
+  - prompt: In D2, show Above when sales reach 110% of the target, On target when they reach the target, and Below otherwise. Use IF.
+    rows:
+      - [Rep, Target, Sales, Check]
+      - [Nia, 52000, 50850, null]
+    answerCell: D2
+    expected: Below
+    variants:
+      - set: { C2: 58000 }
+        expected: Above
+      - set: { C2: 53400 }
+        expected: On target
+      - set: { C2: 1.1, B2: 1.1 }
+        expected: On target
+      - set: { C2: 52000 }
+        expected: On target
+    answer: =IF(C2>=B2*1.1,"Above",IF(C2>=B2,"On target","Below"))
+    requiredFunctions:
+      - IF
+    hints:
+      nudge: Test the highest bar first, or On target catches everything above it.
+      rule: Checking 110% before 100% lets each rep land in the right band.
+    misses:
+      value: Nia's check shows Below.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(C2>=B2*1.1,"Above",IF(C2>=B2,"On target","Below"))
+      - =IF(C2<B2,"Below",IF(C2<B2*1.1,"On target","Above"))
+    reject:
+      - formula: =IF(C2>=B2,"On target",IF(C2>=B2*1.1,"Above","Below"))
+        rule: fragile
+      - formula: ="Below"
+        rule: required-function
+      - formula: =IF(C2>=B2*1.1,"Above",IF(C2>=B2,"On target","Below")
+        rule: syntax

@@ -1,0 +1,47 @@
+id: vlookup-with-a-wildcard-step-4
+slug: vlookup-with-a-wildcard-step-4
+level: 2
+title: Wildcard match with XLOOKUP
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: vlookup-with-a-wildcard
+step: 4
+screens:
+  - prompt: In B8, find the lead time of the first supplier whose name starts with the text in A8. Use XLOOKUP with match mode 2 for wildcards.
+    rows:
+      - [Supplier, Country, Lead time (days)]
+      - [Baltic Freight, Latvia, 12]
+      - [Baltic Couriers, Latvia, 4]
+      - [Northwind Air, Ireland, 7]
+      - [Northwind Rail, Ireland, 19]
+      - [Southgate Haulage, Spain, 9]
+      - [null, null, null]
+      - [Baltic, null, null]
+    answerCell: B8
+    expected: 12
+    variants:
+      - set: { A8: South }
+        expected: 9
+    answer: =XLOOKUP(A8&"*",A2:A6,C2:C6,,2)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: XLOOKUP only treats * as a wildcard when the match mode is 2.
+      rule: XLOOKUP(A8&"*",A2:A6,C2:C6,,2) finds the first name that starts with the text.
+    misses:
+      value: The first Baltic supplier has a lead time of 12 days.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(A8&"*",A2:A6,C2:C6,,2)
+      - =XLOOKUP(A8&"*",A2:A6,C2:C6,"",2)
+    reject:
+      - formula: =XLOOKUP(A8&"*",A2:A6,C2:C6)
+        rule: value
+      - formula: =VLOOKUP(A8&"*",A2:C6,3,FALSE)
+        rule: required-function
+      - formula: =12
+        rule: required-function
+      - formula: =XLOOKUP(A8&"*",A2:A6,C2:C6,,2
+        rule: syntax

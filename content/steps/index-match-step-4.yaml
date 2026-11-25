@@ -1,0 +1,47 @@
+id: index-match-step-4
+slug: index-match-step-4
+level: 2
+title: Salary after a raise
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: index-match
+step: 4
+screens:
+  - prompt: In E4, return the salary for the ID in D3 after the raise in D4, a fraction such as 0.05. Use INDEX and MATCH.
+    rows:
+      - [ID, Name, Salary, Lookup, Result]
+      - [E-101, Ana, 61500, null, null]
+      - [E-102, Bo, 57000, E-102, null]
+      - [E-103, Cy, 88000, 0.05, null]
+      - [E-104, Dee, 54000, null, null]
+      - [E-105, Eli, 49500, null, null]
+    answerCell: E4
+    expected: 59850
+    variants:
+      - { set: { D3: E-105 }, expected: 51975 }
+      - { set: { D4: 0.1 }, expected: 62700 }
+      - { set: { A2: E-102 }, expected: 64575 }
+    answer: =INDEX(C2:C6,MATCH(D3,A2:A6,0))*(1+D4)
+    requiredFunctions:
+      - INDEX
+      - MATCH
+    hints:
+      nudge: Look up the salary, then multiply by 1 plus the raise.
+      rule: INDEX/MATCH gives the salary; times (1+D4) adds the raise.
+    misses:
+      value: After the raise, E-102 earns 59850.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for INDEX and MATCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(C2:C6,MATCH(D3,A2:A6,0))*(1+D4)
+      - =(1+D4)*INDEX(C2:C6,MATCH(D3,A2:A6,0))
+    reject:
+      - formula: =INDEX(C2:C6,MATCH(D3,A2:A6,0))
+        rule: value
+      - formula: =INDEX(C2:C6,MATCH(D3,A2:A6,0))*D4
+        rule: value
+      - formula: =59850
+        rule: required-function
+      - formula: =INDEX(C2:C6,MATCH(D3,A2:A6,0))*(1+D4
+        rule: syntax

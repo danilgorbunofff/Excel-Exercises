@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =TAKE(SORT(FILTER(CHOOSECOLS($A$2:$D$19,1,4),$B$2:$B$19=$I$1),2,-1),2)
+      - =TAKE(SORT(FILTER(CHOOSECOLS(A$2:D$19,1,4),B2:B19=I1),2,-1),2)
+      - =take(sort(filter(choosecols(a2:d19, 1, 4), b2:b19=i1), 2, -1), 2)
+      - =LET(data,A2:D19,TAKE(SORT(FILTER(CHOOSECOLS(data,1,4),B2:B19=I1),2,-1),2))
+    wrong: []
+    equivalent: []

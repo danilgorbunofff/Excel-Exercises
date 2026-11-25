@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =TEXTJOIN(", ",TRUE,IF($B$2:$B$16=$D$1,$A$2:$A$16,""))
+      - =TEXTJOIN(", ",TRUE,IF(B$2:B$16=D1,A2:A16,""))
+      - =textjoin(", ", true, if(b2:b16=d1, a2:a16, ""))
+      - =TEXTJOIN(", ",TRUE,IFS(B2:B16=D1,A2:A16,TRUE,""))
+      - =LET(data,B2:B16,TEXTJOIN(", ",TRUE,IF(data=D1,A2:A16,"")))
+    wrong:
+      - formula: =TEXTJOIN(", ",TRUE,IF(B2:B16=D1,A2:A15,""))
+        rule: fragile
+        why: range A2:A16 one row short at the end
+    equivalent: []

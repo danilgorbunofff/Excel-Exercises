@@ -1,0 +1,41 @@
+id: reading-error-values-step-3
+slug: reading-error-values-step-3
+level: 2
+title: Number or text
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: reading-error-values
+step: 3
+screens:
+  - prompt: In B2, show text when the reading in A2 cannot be turned into a number, and number when it can. Use IF, ISERROR and VALUE.
+    rows:
+      - [Reading, Kind]
+      - [twelve, null]
+    answerCell: B2
+    expected: text
+    variants:
+      - set: { A2: "12" }
+        expected: number
+    answer: =IF(ISERROR(VALUE(A2)),"text","number")
+    requiredFunctions:
+      - IF
+      - ISERROR
+      - VALUE
+    hints:
+      nudge: VALUE fails on words; ISERROR turns the failure into TRUE.
+      rule: IF(ISERROR(VALUE(A2)),"text","number") tests whether the text can be read as a number.
+    misses:
+      value: twelve cannot be read as a number, so B2 should show text.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF, ISERROR and VALUE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(ISERROR(VALUE(A2)),"text","number")
+      - =IF(NOT(ISERROR(VALUE(A2))),"number","text")
+    reject:
+      - formula: =IF(ISTEXT(A2),"text","number")
+        rule: required-function
+      - formula: ="text"
+        rule: required-function
+      - formula: =IF(ISERROR(VALUE(A2)),"text","number"
+        rule: syntax

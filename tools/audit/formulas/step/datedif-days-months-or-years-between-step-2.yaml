@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =YEAR($C$2)-YEAR($B$2)
+      - =YEAR(C$2)-YEAR(B2)
+      - =year(c2)-year(b2)
+    wrong: []
+    equivalent: []

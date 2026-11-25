@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(($B$2:$B$6="Senior")*$C$2:$C$6*$D$2:$D$6)
+      - =SUMPRODUCT((B$2:B$6="Senior")*C2:C6*D2:D6)
+      - =sumproduct((b2:b6="Senior")*c2:c6*d2:d6)
+      - =LET(data,B2:B6,SUMPRODUCT((data="Senior")*C2:C6*D2:D6))
+    wrong: []
+    equivalent: []

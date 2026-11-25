@@ -1,0 +1,47 @@
+id: department-cost-roll-up-step-1
+slug: department-cost-roll-up-step-1
+level: 1
+title: Total cost of one department
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: department-cost-roll-up
+step: 1
+screens:
+  - prompt: In E2, total the cost of the Marketing department. Use SUMIF.
+    rows:
+      - [Department, Cost type, Amount, null, Marketing total, null]
+      - [Marketing, Salaries, 84000, null, null, null]
+      - [Marketing, Software, 12500, null, null, null]
+      - [Sales, Salaries, 126000, null, null, null]
+      - [Sales, Software, 9800, null, null, null]
+      - [IT, Salaries, 98000, null, null, null]
+      - [IT, Software, 41000, null, null, null]
+      - [Marketing, Travel, 7400, null, null, null]
+      - [Sales, Travel, 18200, null, null, null]
+      - [IT, Travel, 3100, null, null, null]
+    answerCell: E2
+    expected: 103900
+    variants:
+      - { set: { C3: 15000 }, expected: 106400 }
+      - { set: { A10: Marketing }, expected: 107000 }
+    answer: =SUMIF(A2:A10,"Marketing",C2:C10)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: Test the department column, add the amount column.
+      rule: SUMIF(A2:A10,"Marketing",C2:C10) adds every Marketing cost.
+    misses:
+      value: Marketing costs 103900.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(A2:A10,"Marketing",C2:C10)
+      - =SUMIF($A$2:$A$10,"Marketing",$C$2:$C$10)
+    reject:
+      - formula: =SUMIF(A2:A10,"Sales",C2:C10)
+        rule: value
+      - formula: =103900
+        rule: required-function
+      - formula: =SUMIF(A2:A10,"Marketing",C2:C10
+        rule: syntax

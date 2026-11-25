@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF($E$2:$E$5,$A$2)
+      - =countif($e$2:$e$5, a2)
+      - =LET(data,$E$2:$E$5,COUNTIF(data,A2))
+    wrong:
+      - formula: =COUNTIF($E$2:$E$4,A2)
+        rule: fragile
+        why: range $E$2:$E$5 one row short at the end
+    equivalent:
+      - formula: =COUNTIF($E$2:$E$6,A2)
+        why: "range $E$2:$E$5 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

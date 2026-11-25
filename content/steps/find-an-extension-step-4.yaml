@@ -1,0 +1,49 @@
+id: find-an-extension-step-4
+slug: find-an-extension-step-4
+level: 2
+title: Full phone number from an ID
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: find-an-extension
+step: 4
+screens:
+  - prompt: 'In B9, build the full number for the ID in B8: the text "020 7946 " followed by the extension looked up. Use VLOOKUP.'
+    rows:
+      - [ID, Name, Team, Extension]
+      - [1041, Ana, Sales, 214]
+      - [1042, Ben, Finance, 305]
+      - [1043, Cleo, Sales, 218]
+      - [1044, Dev, IT, 402]
+      - [1045, Eve, Finance, 311]
+      - [null, null, null, null]
+      - [Find ID, 1043, null, null]
+      - [Full number, null, null, null]
+    answerCell: B9
+    expected: 020 7946 218
+    variants:
+      - { set: { B8: 1044 }, expected: 020 7946 402 }
+      - { set: { A2: 1043 }, expected: 020 7946 214 }
+      - { set: { B8: 4, A6: 4 }, expected: 020 7946 311 }
+    answer: ="020 7946 "&VLOOKUP(B8,A2:D6,4,FALSE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: Join the fixed text and the looked-up extension with &.
+      rule: '& joins text: "020 7946 "&VLOOKUP(...) adds the extension after the space.'
+    misses:
+      value: The full number is 020 7946 218.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - ="020 7946 "&VLOOKUP(B8,A2:D6,4,FALSE)
+      - =CONCAT("020 7946 ",VLOOKUP(B8,A2:D6,4,FALSE))
+    reject:
+      - formula: =VLOOKUP(B8,A2:D6,4,FALSE)
+        rule: value
+      - formula: ="020 7946"&VLOOKUP(B8,A2:D6,4,FALSE)
+        rule: value
+      - formula: ="020 7946 218"
+        rule: required-function
+      - formula: ="020 7946 "&VLOOKUP(B8,A2:D6,4,FALSE
+        rule: syntax

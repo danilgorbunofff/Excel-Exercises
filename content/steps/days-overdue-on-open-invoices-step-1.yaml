@@ -1,0 +1,44 @@
+id: days-overdue-on-open-invoices-step-1
+slug: days-overdue-on-open-invoices-step-1
+level: 1
+title: Days from due date to report date
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: days-overdue-on-open-invoices
+step: 1
+screens:
+  - prompt: "In E2, work out the days from INV-1041's due date in B2 to the report date in D2: D2 minus B2."
+    rows:
+      - [Invoice, Due date, Amount, Report date, null]
+      - [INV-1041, 45340, 1200, 45400, null]
+      - [INV-1042, 45380, 850, null, null]
+      - [INV-1043, 45410, 2300, null, null]
+      - [INV-1044, 45355, 640, null, null]
+      - [INV-1045, 45395, 1750, null, null]
+    answerCell: E2
+    expected: 60
+    variants:
+      - set: { D2: 45420 }
+        expected: 80
+    answer: =$D$2-B2
+    requiredFunctions: []
+    hints:
+      nudge: The report date minus the due date.
+      rule: Dates are day numbers, so $D$2-B2 counts the days past due.
+    misses:
+      value: INV-1041 is 60 days past due.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =$D$2-B2
+      - =D2-B2
+      - "=D2-B2*1"
+      - "=-(B2-$D$2)"
+    reject:
+      - formula: =B2-$D$2
+        rule: value
+      - formula: =60
+        rule: reference
+      - formula: =$D$2-B2,
+        rule: syntax

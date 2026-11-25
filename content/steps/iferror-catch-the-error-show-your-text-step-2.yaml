@@ -1,0 +1,40 @@
+id: iferror-catch-the-error-show-your-text-step-2
+slug: iferror-catch-the-error-show-your-text-step-2
+level: 2
+title: Text that should be a number
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: iferror-catch-the-error-show-your-text
+step: 2
+screens:
+  - prompt: In B2, turn the reading in A2 into a number, and show 0 when it is not a number at all. Use IFERROR and VALUE.
+    rows:
+      - [Reading, Number]
+      - [n/a, null]
+    answerCell: B2
+    expected: 0
+    variants:
+      - set: { A2: "42" }
+        expected: 42
+    answer: =IFERROR(VALUE(A2),0)
+    requiredFunctions:
+      - IFERROR
+      - VALUE
+    hints:
+      nudge: VALUE fails on words; IFERROR catches that.
+      rule: IFERROR(VALUE(A2),0) gives the number, or 0 for text such as n/a.
+    misses:
+      value: For n/a, B2 should show 0.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IFERROR and VALUE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IFERROR(VALUE(A2),0)
+      - =IFERROR(VALUE(A2),)
+    reject:
+      - formula: =VALUE(A2)
+        rule: required-function
+      - formula: =0
+        rule: required-function
+      - formula: =IFERROR(VALUE(A2),0
+        rule: syntax

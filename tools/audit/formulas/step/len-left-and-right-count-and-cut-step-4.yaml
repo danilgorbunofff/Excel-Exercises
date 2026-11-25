@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LEN($A$2)-LEN(SUBSTITUTE($A$2," ",""))+1
+      - =LEN(A$2)-LEN(SUBSTITUTE(A2," ",""))+1
+      - =len(a2)-len(substitute(a2, " ", ""))+1
+    wrong: []
+    equivalent: []

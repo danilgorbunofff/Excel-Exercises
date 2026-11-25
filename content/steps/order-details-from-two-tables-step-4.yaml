@@ -1,0 +1,45 @@
+id: order-details-from-two-tables-step-4
+slug: order-details-from-two-tables-step-4
+level: 2
+title: Order value with the customer's discount
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: order-details-from-two-tables
+step: 4
+screens:
+  - prompt: "In D2, work out the value of the first order: units in C2 times its product's unit price from F:G. Then take off the customer's discount from I:J. Use XLOOKUP."
+    rows:
+      - [Order, Product, Units, Value, Customer, Product, Unit price, null, Customer, Discount]
+      - [O-1, Lamp, 6, null, Arden, Lamp, 24, null, Arden, 0.1]
+      - [O-2, Chair, 2, null, Brook, Chair, 89, null, Brook, 0]
+      - [null, null, null, null, null, Shelf, 45, null, Cole, 0.05]
+    answerCell: D2
+    expected: 129.6
+    variants:
+      - set: { B2: Shelf }
+        expected: 243
+      - set: { E2: Cole }
+        expected: 136.8
+    answer: =C2*XLOOKUP(B2,$F$2:$F$4,$G$2:$G$4)*(1-XLOOKUP(E2,$I$2:$I$4,$J$2:$J$4))
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: One lookup for the price, one for the discount; what is paid is 1 minus the discount.
+      rule: Each table answers one question; multiply them together for the value.
+    misses:
+      value: The first order is worth 129.60.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =C2*XLOOKUP(B2,$F$2:$F$4,$G$2:$G$4)*(1-XLOOKUP(E2,$I$2:$I$4,$J$2:$J$4))
+      - =C2*XLOOKUP(B2,F2:F4,G2:G4)*(1-XLOOKUP(E2,I2:I4,J2:J4))
+    reject:
+      - formula: =C2*XLOOKUP(B2,$F$2:$F$4,$G$2:$G$4)
+        rule: value
+      - formula: =C2*XLOOKUP(B2,$F$2:$F$4,$G$2:$G$4)*XLOOKUP(E2,$I$2:$I$4,$J$2:$J$4)
+        rule: value
+      - formula: =129.6
+        rule: required-function
+      - formula: =C2*XLOOKUP(B2,$F$2:$F$4,$G$2:$G$4)*(1-XLOOKUP(E2,$I$2:$I$4,$J$2:$J$4)
+        rule: syntax

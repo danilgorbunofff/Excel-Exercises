@@ -1,0 +1,46 @@
+id: index-match-step-2
+slug: index-match-step-2
+level: 2
+title: ID for a name, to the left
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: index-match
+step: 2
+screens:
+  - prompt: In E3, return the ID of the person named in D3. The IDs are left of the names. Use INDEX and MATCH.
+    rows:
+      - [ID, Name, Salary, Lookup, Result]
+      - [E-101, Ana, 61500, null, null]
+      - [E-102, Bo, 57000, Cy, null]
+      - [E-103, Cy, 88000, null, null]
+      - [E-104, Dee, 54000, null, null]
+      - [E-105, Eli, 49500, null, null]
+    answerCell: E3
+    expected: E-103
+    variants:
+      - { set: { D3: Eli }, expected: E-105 }
+      - { set: { B2: Cy }, expected: E-101 }
+    answer: =INDEX(A2:A6,MATCH(D3,B2:B6,0))
+    requiredFunctions:
+      - INDEX
+      - MATCH
+    hints:
+      nudge: Search the names, return from the ID column.
+      rule: INDEX(A2:A6,MATCH(D3,B2:B6,0)) looks left, which VLOOKUP cannot.
+    misses:
+      value: Cy's ID is E-103.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for INDEX and MATCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(A2:A6,MATCH(D3,B2:B6,0))
+      - =INDEX($A$2:$A$6,MATCH($D$3,$B$2:$B$6,0))
+    reject:
+      - formula: =INDEX(A2:A6,MATCH(D3,A2:A6,0))
+        rule: value
+      - formula: =XLOOKUP(D3,B2:B6,A2:A6)
+        rule: required-function
+      - formula: ="E-103"
+        rule: required-function
+      - formula: =INDEX(A2:A6,MATCH(D3,B2:B6,0)
+        rule: syntax

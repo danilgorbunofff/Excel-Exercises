@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF($C$2>=$B$2*1.1,"Above",IF($C$2>=$B$2,"On target","Below"))
+      - =IF(C$2>=B2*1.1,"Above",IF(C2>=B2,"On target","Below"))
+      - =if(c2>=b2*1.1, "Above", if(c2>=b2, "On target", "Below"))
+      - =IFS(C2>=B2*1.1,"Above",TRUE,IF(C2>=B2,"On target","Below"))
+      - =IF(C2>=B2*1.1,"Above",IFS(C2>=B2,"On target",TRUE,"Below"))
+    wrong:
+      - formula: =IF(C2>=B2*1.1,"Above",IF(C2>B2,"On target","Below"))
+        rule: fragile
+        why: ">= written as >"
+    equivalent:
+      - formula: =IF(C2>B2*1.1,"Above",IF(C2>=B2,"On target","Below"))
+        why: ">= written as >: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

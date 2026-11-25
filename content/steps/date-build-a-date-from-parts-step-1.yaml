@@ -1,0 +1,41 @@
+id: date-build-a-date-from-parts-step-1
+slug: date-build-a-date-from-parts-step-1
+level: 1
+title: First day of a year
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: date-build-a-date-from-parts
+step: 1
+screens:
+  - prompt: In C2, build the date of 1 January in the year in B2. Use DATE.
+    rows:
+      - [Plan, Year, Starts]
+      - [Budget, 2025, null]
+    answerCell: C2
+    expected: 45658
+    variants:
+      - set: { B2: 2026 }
+        expected: 46023
+    answer: =DATE(B2,1,1)
+    requiredFunctions:
+      - DATE
+    hints:
+      nudge: DATE takes the year, the month and the day.
+      rule: DATE(B2,1,1) gives 1 January of that year as a real date.
+    misses:
+      value: 1 January of that year is serial 45658.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for DATE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =DATE(B2,1,1)
+      - =DATE($B$2,1,1)
+      - "=DATE(B2,1,1)+0"
+      - "=DATE(B2,1,0)+1"
+    reject:
+      - formula: =DATE(B2,1,0)
+        rule: value
+      - formula: =45658
+        rule: required-function
+      - formula: =DATE(B2,1,1
+        rule: syntax

@@ -1,0 +1,43 @@
+id: headcount-cost-plan-step-2
+slug: headcount-cost-plan-step-2
+level: 2
+title: Heads in one team
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: headcount-cost-plan
+step: 2
+screens:
+  - prompt: In G2, total the heads in the team typed in G1. Use SUMIF.
+    rows:
+      - [Team, Grade, Heads, Cost per head, null, null, IT]
+      - [Sales, Junior, 6, 38000, null, null, null]
+      - [Sales, Senior, 3, 62000, null, null, null]
+      - [IT, Junior, 4, 45000, null, null, null]
+      - [IT, Senior, 2, 78000, null, null, null]
+      - [Ops, Junior, 5, 34000, null, null, null]
+    answerCell: G2
+    expected: 6
+    variants:
+      - { set: { G1: Sales }, expected: 9 }
+      - { set: { A6: IT }, expected: 11 }
+    answer: =SUMIF(A2:A6,G1,C2:C6)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: Test the team column against G1, add the heads.
+      rule: SUMIF(A2:A6,G1,C2:C6) totals whichever team is in G1.
+    misses:
+      value: IT has 6 heads.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(A2:A6,G1,C2:C6)
+      - =SUMIF($A$2:$A$6,$G$1,$C$2:$C$6)
+    reject:
+      - formula: =SUMIF(A2:A6,"IT",C2:C6)
+        rule: fragile
+      - formula: =6
+        rule: required-function
+      - formula: =SUMIF(A2:A6,G1,C2:C6
+        rule: syntax

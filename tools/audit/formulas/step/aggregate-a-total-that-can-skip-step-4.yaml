@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =AGGREGATE(14,6,$D$2:$D$16,2)
+      - =AGGREGATE(14,6,D$2:D$16,2)
+      - =aggregate(14, 6, d2:d16, 2)
+      - =LET(data,D2:D16,AGGREGATE(14,6,data,2))
+    wrong:
+      - formula: =AGGREGATE(14,6,D2:D15,2)
+        rule: fragile
+        why: range D2:D16 one row short at the end
+      - formula: =AGGREGATE(14,6,D3:D16,2)
+        rule: fragile
+        why: range D2:D16 skips its first row
+    equivalent:
+      - formula: =AGGREGATE(14,5,D2:D16,2)
+        why: "6 written as 5: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

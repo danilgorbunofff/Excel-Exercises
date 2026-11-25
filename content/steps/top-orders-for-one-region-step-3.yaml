@@ -1,0 +1,62 @@
+id: top-orders-for-one-region-step-3
+slug: top-orders-for-one-region-step-3
+level: 2
+title: Top two East amounts
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: top-orders-for-one-region
+step: 3
+screens:
+  - prompt: In F2, list the two largest East amounts, largest first. Use TAKE, SORT and FILTER.
+    rows:
+      - [Order, Region, Rep, Amount, null, null, null, null, null]
+      - [1001, North, Ana, 820, null, null, null, null, null]
+      - [1002, South, Bo, 450, null, null, null, null, null]
+      - [1003, East, Cy, 1300, null, null, null, null, null]
+      - [1004, north, Di, 610, null, null, null, null, null]
+      - [1005, South, Ed, 1250, null, null, null, null, null]
+      - [1006, West, Fay, 300, null, null, null, null, null]
+      - [1007, North, Ana, 1500, null, null, null, null, null]
+      - [1008, East, Gus, 220, null, null, null, null, null]
+      - [1009, South, Bo, 980, null, null, null, null, null]
+      - [1010, North, Hal, 470, null, null, null, null, null]
+      - [1011, West, Ivy, 1100, null, null, null, null, null]
+      - [1012, South, Jo, 760, null, null, null, null, null]
+      - [1013, East, Cy, 540, null, null, null, null, null]
+      - [1014, North, Di, 90, null, null, null, null, null]
+      - [1015, South, Ed, 1600, null, null, null, null, null]
+      - [1016, West, Fay, 700, null, null, null, null, null]
+      - [1017, north, Kim, 1050, null, null, null, null, null]
+      - [1018, East, Gus, 380, null, null, null, null, null]
+    answerCell: F2
+    expected:
+      - [1300]
+      - [540]
+    variants:
+      - set: { D9: 1400 }
+        expected:
+          - - 1400
+          - - 1300
+    answer: =TAKE(SORT(FILTER(D2:D19,B2:B19="East"),,-1),2)
+    requiredFunctions:
+      - TAKE
+      - SORT
+      - FILTER
+    hints:
+      nudge: Filter, then sort largest first, then take two rows.
+      rule: "Each function hands its result to the next: FILTER, then SORT, then TAKE."
+    misses:
+      value: The list should show the two largest East amounts.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for TAKE, SORT and FILTER.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =TAKE(SORT(FILTER(D2:D19,B2:B19="East"),,-1),2)
+      - =TAKE(SORT(FILTER($D$2:$D$19,$B$2:$B$19="East"),,-1),2)
+    reject:
+      - formula: =TAKE(SORT(FILTER(D2:D19,B2:B19="East")),2)
+        rule: value
+      - formula: =TAKE(SORT(D2:D19,,-1),2)
+        rule: required-function
+      - formula: =TAKE(SORT(FILTER(D2:D19,B2:B19="East"),,-1),2
+        rule: syntax

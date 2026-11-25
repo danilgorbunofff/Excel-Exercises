@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF($A$2:$A$9,"A????",$B$2:$B$9)
+      - =SUMIF(A$2:A$9,"A????",B2:B9)
+      - =sumif(a2:a9, "A????", b2:b9)
+      - =LET(data,A2:A9,SUMIF(data,"A????",B2:B9))
+    wrong: []
+    equivalent: []

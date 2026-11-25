@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(MAX($B$2:$B$11)/SUM($B$2:$B$11)*100,1)
+      - =ROUND(MAX(B$2:B$11)/SUM(B2:B11)*100,1)
+      - =round(max(b2:b11)/sum(b2:b11)*100, 1)
+      - =LET(data,B2:B11,ROUND(MAX(data)/SUM(data)*100,1))
+    wrong:
+      - formula: =ROUND(MAX(B2:B10)/SUM(B2:B11)*100,1)
+        rule: fragile
+        why: range B2:B11 one row short at the end
+      - formula: =ROUND(MAX(B3:B11)/SUM(B2:B11)*100,1)
+        rule: fragile
+        why: range B2:B11 skips its first row
+    equivalent: []

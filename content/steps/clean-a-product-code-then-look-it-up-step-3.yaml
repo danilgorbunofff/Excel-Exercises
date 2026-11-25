@@ -1,0 +1,42 @@
+id: clean-a-product-code-then-look-it-up-step-3
+slug: clean-a-product-code-then-look-it-up-step-3
+level: 2
+title: Look up a trimmed code
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: clean-a-product-code-then-look-it-up
+step: 3
+screens:
+  - prompt: In B2, look up the price for the imported code in A2 after trimming it, from the price list in D:E. Use XLOOKUP and TRIM.
+    rows:
+      - [Imported code, Price, null, Code, List price]
+      - [" PX-210  ", null, null, PX-104, 12.5]
+      - [null, null, null, PX-210, 8.75]
+      - [null, null, null, PX-330, 22]
+    answerCell: B2
+    expected: 8.75
+    variants:
+      - set: { A2: "PX-330 " }
+        expected: 22
+    answer: =XLOOKUP(TRIM(A2),$D$2:$D$4,$E$2:$E$4)
+    requiredFunctions:
+      - XLOOKUP
+      - TRIM
+    hints:
+      nudge: Clean the code inside the lookup.
+      rule: XLOOKUP(TRIM(A2),...) finds the code even with stray spaces.
+    misses:
+      value: PX-210 costs 8.75.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP and TRIM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(TRIM(A2),$D$2:$D$4,$E$2:$E$4)
+      - =XLOOKUP(TRIM(A2),D2:D4,E2:E4)
+    reject:
+      - formula: =XLOOKUP(A2,$D$2:$D$4,$E$2:$E$4)
+        rule: required-function
+      - formula: =8.75
+        rule: required-function
+      - formula: =XLOOKUP(TRIM(A2),$D$2:$D$4,$E$2:$E$4
+        rule: syntax

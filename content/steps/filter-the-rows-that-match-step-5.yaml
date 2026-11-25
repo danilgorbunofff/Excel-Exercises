@@ -1,0 +1,59 @@
+id: filter-the-rows-that-match-step-5
+slug: filter-the-rows-that-match-step-5
+level: 3
+title: Big West and East orders
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: filter-the-rows-that-match
+step: 5
+screens:
+  - prompt: In F2, show the rep and amount of every West or East order over 500, in the order they appear.
+    rows:
+      - [Order, Region, Rep, Amount, null, null, null, null, null]
+      - [1001, North, Ana, 820, null, null, null, null, null]
+      - [1002, South, Bo, 450, null, null, null, null, null]
+      - [1003, East, Cy, 1300, null, null, null, null, null]
+      - [1004, north, Di, 610, null, null, null, null, null]
+      - [1005, South, Ed, 1250, null, null, null, null, null]
+      - [1006, West, Fay, 300, null, null, null, null, null]
+      - [1007, North, Ana, 1500, null, null, null, null, null]
+      - [1008, East, Gus, 220, null, null, null, null, null]
+      - [1009, South, Bo, 980, null, null, null, null, null]
+      - [1010, North, Hal, 470, null, null, null, null, null]
+      - [1011, West, Ivy, 1100, null, null, null, null, null]
+      - [1012, South, Jo, 760, null, null, null, null, null]
+      - [1013, East, Cy, 540, null, null, null, null, null]
+      - [1014, North, Di, 90, null, null, null, null, null]
+      - [1015, South, Ed, 1600, null, null, null, null, null]
+      - [1016, West, Fay, 700, null, null, null, null, null]
+      - [1017, north, Kim, 1050, null, null, null, null, null]
+      - [1018, East, Gus, 380, null, null, null, null, null]
+    answerCell: F2
+    expected:
+      - [Cy, 1300]
+      - [Ivy, 1100]
+      - [Cy, 540]
+      - [Fay, 700]
+    variants:
+      - { set: { D9: 600 }, expected: [[Cy, 1300], [Gus, 600], [Ivy, 1100], [Cy, 540], [Fay, 700]] }
+      - { set: { D14: 500 }, expected: [[Cy, 1300], [Ivy, 1100], [Fay, 700]] }
+      - { set: { D4: 501 }, expected: [[Cy, 501], [Ivy, 1100], [Cy, 540], [Fay, 700]] }
+    answer: =FILTER(C2:D19,((B2:B19="West")+(B2:B19="East"))*(D2:D19>500))
+    requiredFunctions: []
+    hints:
+      nudge: Adding two tests means OR; multiplying means AND.
+      rule: (B2:B19="West")+(B2:B19="East") is 1 for either region; times (D2:D19>500) keeps only the big ones.
+    misses:
+      value: The list should show the rep and amount of each West or East order over 500.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =FILTER(C2:D19,((B2:B19="West")+(B2:B19="East"))*(D2:D19>500))
+      - =FILTER(C2:D19,(D2:D19>500)*((B2:B19="East")+(B2:B19="West")))
+    reject:
+      - formula: =FILTER(C2:D19,((B2:B19="West")+(B2:B19="East"))*(D2:D19>=500))
+        rule: fragile
+      - formula: =FILTER(C2:D19,(B2:B19="West")*(B2:B19="East")*(D2:D19>500))
+        rule: value
+      - formula: =FILTER(C2:D19,((B2:B19="West")+(B2:B19="East"))*(D2:D19>500)
+        rule: syntax

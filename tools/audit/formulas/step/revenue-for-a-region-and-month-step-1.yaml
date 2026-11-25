@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF(A$2:A$11,"North",C2:C11)
+      - =sumif(a2:a11, "North", c2:c11)
+      - =LET(data,A2:A11,SUMIF(data,"North",C2:C11))
+    wrong:
+      - formula: =SUMIF(A2:A10,"North",C2:C11)
+        rule: fragile
+        why: range A2:A11 one row short at the end
+    equivalent: []

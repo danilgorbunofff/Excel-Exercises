@@ -1,0 +1,44 @@
+id: ageing-buckets-for-receivables-step-2
+slug: ageing-buckets-for-receivables-step-2
+level: 2
+title: Count the 31 to 60 day band
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: ageing-buckets-for-receivables
+step: 2
+screens:
+  - prompt: In D2, count the customers 31 to 60 days overdue, both ends included. Use COUNTIFS.
+    rows:
+      - [Customer, Days overdue, Balance, 31 to 60, null, From day, Band name]
+      - [Arden Ltd, 12, 4200, null, null, 0, Current]
+      - [Brook & Co, 45, 1850, null, null, 31, 31-60]
+      - [Cole plc, 75, 3100, null, null, 61, 61-90]
+      - [Dunn Ltd, 30, 960, null, null, 91, Over 90]
+      - [Eske Group, 120, 2400, null, null, null, null]
+      - [Frey Ltd, 61, 1500, null, null, null, null]
+    answerCell: D2
+    expected: 1
+    variants:
+      - { set: { B7: 60 }, expected: 2 }
+      - { set: { B2: 31 }, expected: 2 }
+    answer: =COUNTIFS(B2:B7,">=31",B2:B7,"<=60")
+    requiredFunctions:
+      - COUNTIFS
+    hints:
+      nudge: Test the days column twice, once for each end of the band.
+      rule: COUNTIFS(B2:B7,">=31",B2:B7,"<=60") counts the band with both ends.
+    misses:
+      value: 1 customers are 31 to 60 days overdue.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIFS(B2:B7,">=31",B2:B7,"<=60")
+      - =COUNTIFS(B2:B7,">30",B2:B7,"<61")
+    reject:
+      - formula: =COUNTIFS(B2:B7,">31",B2:B7,"<60")
+        rule: fragile
+      - formula: =1
+        rule: required-function
+      - formula: =COUNTIFS(B2:B7,">=31",B2:B7,"<=60"
+        rule: syntax

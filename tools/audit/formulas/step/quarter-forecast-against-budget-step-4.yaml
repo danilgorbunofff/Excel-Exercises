@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND((SUMIFS(C$2:C$13,B2:B13,"Q2")-SUMIFS(D2:D13,B2:B13,"Q2"))/SUMIFS(D2:D13,B2:B13,"Q2"),3)
+      - =round((sumifs(c2:c13, b2:b13, "Q2")-sumifs(d2:d13, b2:b13, "Q2"))/sumifs(d2:d13, b2:b13, "Q2"), 3)
+      - =ROUND((SUMPRODUCT((B2:B13="Q2")*C2:C13)-SUMIFS(D2:D13,B2:B13,"Q2"))/SUMIFS(D2:D13,B2:B13,"Q2"),3)
+      - =ROUND((SUM(FILTER(C2:C13,(B2:B13="Q2"),0))-SUMIFS(D2:D13,B2:B13,"Q2"))/SUMIFS(D2:D13,B2:B13,"Q2"),3)
+      - =ROUND((SUMIF(B2:B13,"Q2",C2:C13)-SUMIFS(D2:D13,B2:B13,"Q2"))/SUMIFS(D2:D13,B2:B13,"Q2"),3)
+      - =ROUND((SUMIFS(C2:C13,B2:B13,"Q2")-SUMPRODUCT((B2:B13="Q2")*D2:D13))/SUMIFS(D2:D13,B2:B13,"Q2"),3)
+      - =ROUND((SUMIFS(C2:C13,B2:B13,"Q2")-SUM(FILTER(D2:D13,(B2:B13="Q2"),0)))/SUMIFS(D2:D13,B2:B13,"Q2"),3)
+      - =ROUND((SUMIFS(C2:C13,B2:B13,"Q2")-SUMIF(B2:B13,"Q2",D2:D13))/SUMIFS(D2:D13,B2:B13,"Q2"),3)
+      - =ROUND((SUMIFS(C2:C13,B2:B13,"Q2")-SUMIFS(D2:D13,B2:B13,"Q2"))/SUMPRODUCT((B2:B13="Q2")*D2:D13),3)
+      - =ROUND((SUMIFS(C2:C13,B2:B13,"Q2")-SUMIFS(D2:D13,B2:B13,"Q2"))/SUM(FILTER(D2:D13,(B2:B13="Q2"),0)),3)
+      - =ROUND((SUMIFS(C2:C13,B2:B13,"Q2")-SUMIFS(D2:D13,B2:B13,"Q2"))/SUMIF(B2:B13,"Q2",D2:D13),3)
+      - =LET(data,C2:C13,ROUND((SUMIFS(data,B2:B13,"Q2")-SUMIFS(D2:D13,B2:B13,"Q2"))/SUMIFS(D2:D13,B2:B13,"Q2"),3))
+    wrong: []
+    equivalent: []

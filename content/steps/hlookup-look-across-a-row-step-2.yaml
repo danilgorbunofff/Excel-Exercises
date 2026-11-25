@@ -1,0 +1,44 @@
+id: hlookup-look-across-a-row-step-2
+slug: hlookup-look-across-a-row-step-2
+level: 2
+title: Revenue for a month
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: hlookup-look-across-a-row
+step: 2
+screens:
+  - prompt: "In B5, work out the revenue for the month in B4: its units times its price, both found with HLOOKUP."
+    rows:
+      - [Month, Jan, Feb, Mar, Apr]
+      - [Units, 120, 180, 200, 165]
+      - [Price, 4.5, 5, 5.25, 5.1]
+      - [Lookup, Apr, null, null, null]
+      - [Revenue, null, null, null, null]
+    answerCell: B5
+    expected: 841.5
+    variants:
+      - set: { B4: Feb }
+        expected: 900
+    answer: =HLOOKUP(B4,B1:E3,2,FALSE)*HLOOKUP(B4,B1:E3,3,FALSE)
+    requiredFunctions:
+      - HLOOKUP
+    hints:
+      nudge: "Two HLOOKUPs on the same table: row 2 and row 3."
+      rule: Multiply the units from row 2 by the price from row 3.
+    misses:
+      value: April's revenue is 841.50.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for HLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =HLOOKUP(B4,B1:E3,2,FALSE)*HLOOKUP(B4,B1:E3,3,FALSE)
+      - =HLOOKUP(B4,B1:E3,3,FALSE)*HLOOKUP(B4,B1:E3,2,FALSE)
+    reject:
+      - formula: =HLOOKUP(B4,B1:E3,2,FALSE)
+        rule: value
+      - formula: =HLOOKUP(B4,B1:E3,3,FALSE)
+        rule: value
+      - formula: =841.5
+        rule: required-function
+      - formula: =HLOOKUP(B4,B1:E3,2,FALSE)*HLOOKUP(B4,B1:E3,3,FALSE
+        rule: syntax

@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT($B$2:$B$6,$C$2:$C$6)/SUM($C$2:$C$6)
+      - =SUMPRODUCT(B$2:B$6,C2:C6)/SUM(C2:C6)
+      - =sumproduct(b2:b6, c2:c6)/sum(c2:c6)
+      - =LET(data,B2:B6,SUMPRODUCT(data,C2:C6)/SUM(C2:C6))
+    wrong: []
+    equivalent:
+      - formula: =SUMPRODUCT(B2:B6,C2:C6)/SUM(C2:C7)
+        why: "range C2:C6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

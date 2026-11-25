@@ -1,0 +1,48 @@
+id: ifna-catch-only-a-missing-match-step-3
+slug: ifna-catch-only-a-missing-match-step-3
+level: 2
+title: INDEX and MATCH with a message
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: ifna-catch-only-a-missing-match
+step: 3
+screens:
+  - prompt: In B9, return the price of the code in A8, or the words not listed when it is missing. Use IFNA, INDEX and MATCH.
+    rows:
+      - [Code, Price]
+      - [A-1, 10]
+      - [B-2, 20]
+      - [C-3, 30]
+      - [D-4, 45]
+      - [E-5, 12]
+      - [null, null]
+      - [E-5, null]
+      - [Price, null]
+    answerCell: B9
+    expected: 12
+    variants:
+      - set: { A8: Z-9 }
+        expected: not listed
+    answer: =IFNA(INDEX(B2:B6,MATCH(A8,A2:A6,0)),"not listed")
+    requiredFunctions:
+      - IFNA
+      - INDEX
+      - MATCH
+    hints:
+      nudge: Wrap the whole INDEX and MATCH in IFNA.
+      rule: IFNA(INDEX(B2:B6,MATCH(A8,A2:A6,0)),"not listed") shows the message only when the code is missing.
+    misses:
+      value: E-5 costs 12.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IFNA, INDEX and MATCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IFNA(INDEX(B2:B6,MATCH(A8,A2:A6,0)),"not listed")
+      - =IFNA(INDEX($B$2:$B$6,MATCH($A$8,$A$2:$A$6,0)),"not listed")
+    reject:
+      - formula: =INDEX(B2:B6,MATCH(A8,A2:A6,0))
+        rule: required-function
+      - formula: =12
+        rule: required-function
+      - formula: =IFNA(INDEX(B2:B6,MATCH(A8,A2:A6,0)),"not listed"
+        rule: syntax

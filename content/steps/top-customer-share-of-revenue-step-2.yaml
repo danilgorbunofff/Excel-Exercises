@@ -1,0 +1,42 @@
+id: top-customer-share-of-revenue-step-2
+slug: top-customer-share-of-revenue-step-2
+level: 2
+title: Second-highest revenue
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: top-customer-share-of-revenue
+step: 2
+screens:
+  - prompt: In D2, find the second-highest customer revenue. Use LARGE.
+    rows:
+      - [Customer, Revenue, null, Second highest]
+      - [Arden, 120000, null, null]
+      - [Brook, 85000, null, null]
+      - [Cole, 210000, null, null]
+      - [Dunn, 64000, null, null]
+    answerCell: D2
+    expected: 120000
+    variants:
+      - { set: { B3: 150000 }, expected: 150000 }
+      - { set: { B5: 210000 }, expected: 210000 }
+    answer: =LARGE(B2:B5,2)
+    requiredFunctions:
+      - LARGE
+    hints:
+      nudge: LARGE with 2 gives the second-highest.
+      rule: LARGE(B2:B5,2) skips the top customer.
+    misses:
+      value: The second-highest revenue is 120000.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for LARGE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =LARGE(B2:B5,2)
+      - =LARGE($B$2:$B$5,2)
+    reject:
+      - formula: =MAX(B2:B5)
+        rule: required-function
+      - formula: =120000
+        rule: required-function
+      - formula: =LARGE(B2:B5,2
+        rule: syntax

@@ -1,0 +1,39 @@
+id: a-monthly-close-checklist-in-formulas-step-1
+slug: a-monthly-close-checklist-in-formulas-step-1
+level: 1
+title: Ready when the balances agree
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-monthly-close-checklist-in-formulas
+step: 1
+screens:
+  - prompt: In D2, show ready when the ledger balance in B2 equals the bank balance in C2, and check otherwise. Use IF.
+    rows:
+      - [Account, Ledger, Bank, Status]
+      - [Current, 15240.5, 15240.5, null]
+    answerCell: D2
+    expected: ready
+    variants:
+      - set: { C2: 15200 }
+        expected: check
+    answer: =IF(B2=C2,"ready","check")
+    requiredFunctions:
+      - IF
+    hints:
+      nudge: Compare the two balances inside IF.
+      rule: IF(B2=C2,"ready","check") passes only when the balances agree exactly.
+    misses:
+      value: The balances agree, so D2 should show ready.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(B2=C2,"ready","check")
+      - =IF(B2<>C2,"check","ready")
+    reject:
+      - formula: =IF(B2>C2,"ready","check")
+        rule: value
+      - formula: ="ready"
+        rule: required-function
+      - formula: =IF(B2=C2,"ready","check"
+        rule: syntax

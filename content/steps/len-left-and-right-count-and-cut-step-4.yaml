@@ -1,0 +1,42 @@
+id: len-left-and-right-count-and-cut-step-4
+slug: len-left-and-right-count-and-cut-step-4
+level: 2
+title: Count the words
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: len-left-and-right-count-and-cut
+step: 4
+screens:
+  - prompt: "In B2, count the words in A2: the number of spaces plus 1, where the spaces are the length minus the length without spaces. Use LEN and SUBSTITUTE."
+    rows:
+      - [Title, Words]
+      - [Quarterly sales report for the board, null]
+    answerCell: B2
+    expected: 6
+    variants:
+      - set: { A2: Budget plan }
+        expected: 2
+    answer: =LEN(A2)-LEN(SUBSTITUTE(A2," ",""))+1
+    requiredFunctions:
+      - LEN
+      - SUBSTITUTE
+    hints:
+      nudge: Removing the spaces shortens the text by one for each space.
+      rule: The difference in length counts the spaces; one more than that is the number of words.
+    misses:
+      value: The title has 6 words.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for LEN and SUBSTITUTE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =LEN(A2)-LEN(SUBSTITUTE(A2," ",""))+1
+      - =1+LEN(A2)-LEN(SUBSTITUTE(A2," ",""))
+    reject:
+      - formula: =LEN(A2)-LEN(SUBSTITUTE(A2," ",""))
+        rule: value
+      - formula: =LEN(A2)
+        rule: required-function
+      - formula: =6
+        rule: required-function
+      - formula: =LEN(A2)-LEN(SUBSTITUTE(A2," ",""))+1,
+        rule: syntax

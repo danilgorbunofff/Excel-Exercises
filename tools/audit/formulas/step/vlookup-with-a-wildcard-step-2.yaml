@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =VLOOKUP("*"&$A$8&"*",$A$2:$C$6,3,FALSE)
+      - =VLOOKUP("*"&A$8&"*",A2:C6,3,FALSE)
+      - =vlookup("*"&a8&"*", a2:c6, 3, false)
+      - =LET(data,A2:C6,VLOOKUP("*"&A8&"*",data,3,FALSE))
+    wrong:
+      - formula: =VLOOKUP("*"&A8&"*",A2:C5,3,FALSE)
+        rule: fragile
+        why: range A2:C6 one row short at the end
+      - formula: =VLOOKUP("*"&A8&"*",A3:C6,3,FALSE)
+        rule: fragile
+        why: range A2:C6 skips its first row
+    equivalent:
+      - formula: =VLOOKUP("*"&A8&"*",A2:C7,3,FALSE)
+        why: "range A2:C6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

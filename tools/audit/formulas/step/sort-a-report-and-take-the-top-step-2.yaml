@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SORTBY(C$2:C$19,D2:D19,-1)
+      - =sortby(c2:c19, d2:d19, -1)
+      - =LET(data,C2:C19,SORTBY(data,D2:D19,-1))
+    wrong: []
+    equivalent: []

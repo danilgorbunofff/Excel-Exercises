@@ -1,0 +1,43 @@
+id: mid-characters-from-the-middle-step-5
+slug: mid-characters-from-the-middle-step-5
+level: 3
+title: Middle part of a code of any length
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: mid-characters-from-the-middle
+step: 5
+screens:
+  - prompt: In B2, return the middle part of the code in A2, the text between its two dashes. The parts vary in length.
+    rows:
+      - [Code, Middle]
+      - [REG-NORTHWEST-07, null]
+    answerCell: B2
+    expected: NORTHWEST
+    variants:
+      - set: { A2: R-EAST-1204 }
+        expected: EAST
+      - set: { A2: REGION-SW-9 }
+        expected: SW
+    answer: =MID(A2,FIND("-",A2)+1,FIND("-",A2,FIND("-",A2)+1)-FIND("-",A2)-1)
+    requiredFunctions: []
+    hints:
+      nudge: Find the first dash, then the second dash after it; the middle sits between.
+      rule: The middle starts one after the first dash, and its length is the gap between the two dashes minus 1.
+    misses:
+      value: The middle part is NORTHWEST.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =MID(A2,FIND("-",A2)+1,FIND("-",A2,FIND("-",A2)+1)-FIND("-",A2)-1)
+      - =TEXTBEFORE(TEXTAFTER(A2,"-"),"-")
+      - =TEXTAFTER(TEXTBEFORE(A2,"-",2),"-")
+    reject:
+      - formula: =MID(A2,5,9)
+        rule: fragile
+      - formula: =MID(A2,FIND("-",A2)+1,LEN(A2))
+        rule: value
+      - formula: ="NORTHWEST"
+        rule: reference
+      - formula: =MID(A2,FIND("-",A2)+1,FIND("-",A2,FIND("-",A2)+1)-FIND("-",A2)-1
+        rule: syntax

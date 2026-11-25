@@ -1,0 +1,44 @@
+id: lookup-functions-summary-step-1
+slug: lookup-functions-summary-step-1
+level: 1
+title: On-hand count for a SKU
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: lookup-functions-summary
+step: 1
+screens:
+  - prompt: In B7, return the on-hand count for the SKU in B6. Use XLOOKUP.
+    rows:
+      - [Product, SKU, On hand]
+      - [Bracket, BX-210, 240]
+      - [Clamp, CX-330, 96]
+      - [Dowel, DX-410, 60]
+      - [Extrusion, EX-500, 18]
+      - [Which SKU?, CX-330, null]
+      - [On hand, null, null]
+    answerCell: B7
+    expected: 96
+    variants:
+      - set: { B6: EX-500 }
+        expected: 18
+    answer: =XLOOKUP(B6,B2:B5,C2:C5)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: Search the SKU column, return the on-hand column.
+      rule: XLOOKUP(B6,B2:B5,C2:C5) returns the count on the SKU's row.
+    misses:
+      value: CX-330 has 96 on hand.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(B6,B2:B5,C2:C5)
+      - =XLOOKUP($B$6,$B$2:$B$5,$C$2:$C$5)
+    reject:
+      - formula: =XLOOKUP(B6,B2:B5,A2:A5)
+        rule: value
+      - formula: =96
+        rule: required-function
+      - formula: =XLOOKUP(B6,B2:B5,C2:C5
+        rule: syntax

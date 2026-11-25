@@ -2,7 +2,13 @@
 // YAML files are the source of truth once written: variants added later by
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 3 at step 4.
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 // The orders table of the track's own exercises, A1:D19, with room for spills in F:G
 // and an input cell in I1.
@@ -28,9 +34,18 @@ const orders = [
   [1018, "East", "Gus", 380],
 ];
 const sheet = (input) =>
-  orders.map((r, i) => [...r, null, null, null, i === 0 && input ? input[0] : null, i === 0 && input ? input[1] : null]);
+  orders.map((r, i) => [
+    ...r,
+    null,
+    null,
+    null,
+    i === 0 && input ? input[0] : null,
+    i === 0 && input ? input[1] : null,
+  ]);
 // Some amounts arrived from an import as text.
-const imported = sheet().map((r, i) => ([3, 9, 11, 15].includes(i) ? [r[0], r[1], r[2], String(r[3]), ...r.slice(4)] : r));
+const imported = sheet().map((r, i) =>
+  [3, 9, 11, 15].includes(i) ? [r[0], r[1], r[2], String(r[3]), ...r.slice(4)] : r,
+);
 
 export default [
   // filter-the-rows-that-match (level 3, step 4)
@@ -61,7 +76,8 @@ export default [
     value: () => "The list should hold every order number worth 1,000 or more.",
   }),
   step("filter-the-rows-that-match", 3, 2, "Reps for a region, or none", {
-    prompt: "In F2, list the reps for the region typed in I1, or the word none when it has no orders. Use FILTER.",
+    prompt:
+      "In F2, list the reps for the region typed in I1, or the word none when it has no orders. Use FILTER.",
     rows: sheet(["Region", "Central"]),
     cell: "F2",
     answer: '=FILTER(C2:C19,B2:B19=I1,"none")',
@@ -77,7 +93,8 @@ export default [
     value: (e) => `For a region with no orders, F2 should show ${e}.`,
   }),
   step("filter-the-rows-that-match", 5, 3, "Big West and East orders", {
-    prompt: "In F2, show the rep and amount of every West or East order over 500, in the order they appear.",
+    prompt:
+      "In F2, show the rep and amount of every West or East order over 500, in the order they appear.",
     rows: sheet(),
     cell: "F2",
     answer: '=FILTER(C2:D19,((B2:B19="West")+(B2:B19="East"))*(D2:D19>500))',
@@ -108,7 +125,8 @@ export default [
     value: () => "The list should show each rep once, in order of first appearance.",
   }),
   step("unique-list-each-value-once", 2, 2, "How many regions", {
-    prompt: "In F2, count the different regions. North and north count as one. Use COUNTA and UNIQUE.",
+    prompt:
+      "In F2, count the different regions. North and north count as one. Use COUNTA and UNIQUE.",
     rows: sheet(),
     cell: "F2",
     answer: "=COUNTA(UNIQUE(B2:B19))",
@@ -171,7 +189,8 @@ export default [
     value: () => "The list should run from the largest amount to the smallest.",
   }),
   step("sort-a-report-and-take-the-top", 2, 2, "Reps by order size", {
-    prompt: "In F2, list the rep of every order, from the largest order to the smallest. Use SORTBY.",
+    prompt:
+      "In F2, list the rep of every order, from the largest order to the smallest. Use SORTBY.",
     rows: sheet(),
     cell: "F2",
     answer: "=SORTBY(C2:C19,D2:D19,-1)",
@@ -203,7 +222,8 @@ export default [
     value: () => "The list should show the five largest amounts, largest first.",
   }),
   step("sort-a-report-and-take-the-top", 5, 3, "The three smallest orders", {
-    prompt: "In F2, list the three smallest orders, smallest first: the order number in column F and its amount in column G.",
+    prompt:
+      "In F2, list the three smallest orders, smallest first: the order number in column F and its amount in column G.",
     rows: sheet(),
     cell: "F2",
     answer: "=TAKE(SORT(CHOOSECOLS(A2:D19,1,4),2,1),3)",
@@ -214,7 +234,8 @@ export default [
       ["=TAKE(SORT(CHOOSECOLS(A2:D19,1,4),2,-1),3)", "value"],
       ["=TAKE(SORT(CHOOSECOLS(A2:D19,1,4),1,1),3)", "value"],
     ],
-    nudge: "Pick the order and amount columns, sort by the amount from small to large, then take three rows.",
+    nudge:
+      "Pick the order and amount columns, sort by the amount from small to large, then take three rows.",
     rule: "CHOOSECOLS keeps columns 1 and 4; SORT by column 2 of that, ascending; TAKE the first 3.",
     value: () => "The block should show the three smallest orders with their amounts.",
   }),
@@ -234,7 +255,8 @@ export default [
     value: (e) => `As a number, D4 is ${e}.`,
   }),
   step("filter-amounts-stored-as-text", 2, 2, "Total that includes text amounts", {
-    prompt: "In F2, total every amount in D2:D19, including the ones stored as text. Use SUMPRODUCT with --.",
+    prompt:
+      "In F2, total every amount in D2:D19, including the ones stored as text. Use SUMPRODUCT with --.",
     rows: imported,
     cell: "F2",
     answer: "=SUMPRODUCT(--D2:D19)",
@@ -247,7 +269,8 @@ export default [
     value: (e) => `All the amounts add up to ${e}.`,
   }),
   step("filter-amounts-stored-as-text", 3, 2, "Small orders, text amounts included", {
-    prompt: "In F2, list the order numbers worth less than 500, counting the text amounts as numbers. Use FILTER and VALUE.",
+    prompt:
+      "In F2, list the order numbers worth less than 500, counting the text amounts as numbers. Use FILTER and VALUE.",
     rows: imported,
     cell: "F2",
     answer: "=FILTER(A2:A19,VALUE(D2:D19)<500)",
@@ -260,7 +283,8 @@ export default [
     value: () => "The list should show every order under 500, including those with a text amount.",
   }),
   step("filter-amounts-stored-as-text", 5, 3, "Average South order, text amounts included", {
-    prompt: "In F2, what is the average South order? Some South amounts came in as text and must count.",
+    prompt:
+      "In F2, what is the average South order? Some South amounts came in as text and must count.",
     rows: imported,
     cell: "F2",
     answer: '=AVERAGE(--FILTER(D2:D19,B2:B19="South"))',
@@ -278,7 +302,8 @@ export default [
 
   // let-name-the-steps-of-a-formula (level 3, step 4)
   step("let-name-the-steps-of-a-formula", 1, 1, "Average with named steps", {
-    prompt: "In F2, work out the average order: name the total t and the count n with LET, then divide t by n.",
+    prompt:
+      "In F2, work out the average order: name the total t and the count n with LET, then divide t by n.",
     rows: sheet(),
     cell: "F2",
     answer: "=LET(t,SUM(D2:D19),n,COUNT(D2:D19),t/n)",
@@ -294,7 +319,8 @@ export default [
     value: (e) => `The average order is ${e}.`,
   }),
   step("let-name-the-steps-of-a-formula", 2, 2, "Name a filtered list", {
-    prompt: "In F2, total the East orders: name the East amounts east with LET and FILTER, then SUM them.",
+    prompt:
+      "In F2, total the East orders: name the East amounts east with LET and FILTER, then SUM them.",
     rows: sheet(),
     cell: "F2",
     answer: '=LET(east,FILTER(D2:D19,B2:B19="East"),SUM(east))',
@@ -310,7 +336,8 @@ export default [
     value: (e) => `The East orders total ${e}.`,
   }),
   step("let-name-the-steps-of-a-formula", 3, 2, "Rounded average for one region", {
-    prompt: 'In F2, show the average North order to the nearest whole number: name it avg with LET and AVERAGEIF, then ROUND it.',
+    prompt:
+      "In F2, show the average North order to the nearest whole number: name it avg with LET and AVERAGEIF, then ROUND it.",
     rows: sheet(),
     cell: "F2",
     answer: '=LET(avg,AVERAGEIF(B2:B19,"North",D2:D19),ROUND(avg,0))',
@@ -326,7 +353,8 @@ export default [
     value: (e) => `The average North order, rounded, is ${e}.`,
   }),
   step("let-name-the-steps-of-a-formula", 5, 3, "Gap between the best and worst region", {
-    prompt: "In F2, by how much does the best-selling region's total beat the worst-selling region's total?",
+    prompt:
+      "In F2, by how much does the best-selling region's total beat the worst-selling region's total?",
     rows: sheet(),
     cell: "F2",
     answer: "=LET(r,UNIQUE(B2:B19),t,SUMIF(B2:B19,r,D2:D19),MAX(t)-MIN(t))",
@@ -398,7 +426,9 @@ export default [
     cell: "F2",
     answer: "=TAKE(SORT(FILTER(CHOOSECOLS(A2:D19,1,4),B2:B19=I1),2,-1),2)",
     required: [],
-    accept: ["=TAKE(SORTBY(FILTER(CHOOSECOLS(A2:D19,1,4),B2:B19=I1),FILTER(D2:D19,B2:B19=I1),-1),2)"],
+    accept: [
+      "=TAKE(SORTBY(FILTER(CHOOSECOLS(A2:D19,1,4),B2:B19=I1),FILTER(D2:D19,B2:B19=I1),-1),2)",
+    ],
     variants: [{ I1: "West" }, { D3: 1700 }],
     reject: [
       ['=TAKE(SORT(FILTER(CHOOSECOLS(A2:D19,1,4),B2:B19="South"),2,-1),2)', "fragile"],

@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX(B$2:B$6,MATCH(D3,A2:A6,0))
+      - =index(b2:b6, match(d3, a2:a6, 0))
+      - =LET(data,B2:B6,INDEX(data,MATCH(D3,A2:A6,0)))
+    wrong:
+      - formula: =INDEX(B2:B5,MATCH(D3,A2:A6,0))
+        rule: fragile
+        why: range B2:B6 one row short at the end
+      - formula: =INDEX(B2:B6,MATCH(D3,A2:A5,0))
+        rule: fragile
+        why: range A2:A6 one row short at the end
+      - formula: =INDEX(B2:B6,MATCH(D3,A2:A6,1))
+        rule: fragile
+        why: 0 written as 1
+    equivalent: []

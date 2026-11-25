@@ -1,0 +1,45 @@
+id: wildcards-in-text-criteria-step-4
+slug: wildcards-in-text-criteria-step-4
+level: 2
+title: Count names marked with an asterisk
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: wildcards-in-text-criteria
+step: 4
+screens:
+  - prompt: Products on offer end with a real * in their name. In C2, count them. Use COUNTIF, with ~* for a real asterisk.
+    rows:
+      - [Product, null, On offer]
+      - [Desk lamp*, null, null]
+      - [Chair, null, null]
+      - [Shelf*, null, null]
+      - [Rug, null, null]
+      - [Mirror*, null, null]
+      - [Stool, null, null]
+      - [Cabinet*, null, null]
+    answerCell: C2
+    expected: 4
+    variants:
+      - set: { A3: Chair* }
+        expected: 5
+    answer: =COUNTIF(A2:A8,"*~*")
+    requiredFunctions:
+      - COUNTIF
+    hints:
+      nudge: On its own * means anything; ~ in front makes it a real asterisk.
+      rule: '"*~*" means any text that ends with a real *.'
+    misses:
+      value: 4 products are on offer.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for COUNTIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(A2:A8,"*~*")
+      - =COUNTIF($A$2:$A$8,"*~*")
+    reject:
+      - formula: =COUNTIF(A2:A8,"**")
+        rule: value
+      - formula: =4
+        rule: required-function
+      - formula: =COUNTIF(A2:A8,"*~*"
+        rule: syntax

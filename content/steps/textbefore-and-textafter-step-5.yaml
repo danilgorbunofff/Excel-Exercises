@@ -1,0 +1,42 @@
+id: textbefore-and-textafter-step-5
+slug: textbefore-and-textafter-step-5
+level: 3
+title: City from an address line
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: textbefore-and-textafter
+step: 5
+screens:
+  - prompt: In B2, which city is in the address in A2? The address is street, city and postcode, separated by commas.
+    rows:
+      - [Address, City]
+      - ["14 Mill Lane, York, YO1 7HU", null]
+    answerCell: B2
+    expected: York
+    variants:
+      - set: { A2: "2 High St, Newcastle upon Tyne, NE1 4XF" }
+        expected: Newcastle upon Tyne
+      - set: { A2: "9 Quay Rd, Hull, HU1 2AB" }
+        expected: Hull
+    answer: =TRIM(TEXTBEFORE(TEXTAFTER(A2,","),","))
+    requiredFunctions: []
+    hints:
+      nudge: The city sits after the first comma and before the next one.
+      rule: TEXTAFTER(A2,",") drops the street; TEXTBEFORE(...,",") drops the postcode; TRIM removes the leading space.
+    misses:
+      value: The city is York.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =TRIM(TEXTBEFORE(TEXTAFTER(A2,","),","))
+      - =TEXTBEFORE(TEXTAFTER(A2,", "),",")
+    reject:
+      - formula: =TEXTAFTER(A2,",")
+        rule: value
+      - formula: =TEXTBEFORE(A2,",")
+        rule: value
+      - formula: ="York"
+        rule: reference
+      - formula: =TRIM(TEXTBEFORE(TEXTAFTER(A2,","),",")
+        rule: syntax

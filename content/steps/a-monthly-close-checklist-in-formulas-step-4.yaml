@@ -1,0 +1,46 @@
+id: a-monthly-close-checklist-in-formulas-step-4
+slug: a-monthly-close-checklist-in-formulas-step-4
+level: 2
+title: Ready within a tolerance
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-monthly-close-checklist-in-formulas
+step: 4
+screens:
+  - prompt: In C2, show ready when the variance in B2 is within the tolerance in F1 either way, and check otherwise. Use IF and ABS.
+    rows:
+      - [Check, Variance, Status, null, Tolerance, 5]
+      - [VAT, -3, null, null, null, null]
+    answerCell: C2
+    expected: ready
+    variants:
+      - set: { B2: -7 }
+        expected: check
+      - set: { F1: 2 }
+        expected: check
+      - set: { B2: 5 }
+        expected: ready
+    answer: =IF(ABS(B2)<=$F$1,"ready","check")
+    requiredFunctions:
+      - IF
+      - ABS
+    hints:
+      nudge: ABS drops the sign, so -3 and 3 are both 3 away from zero.
+      rule: IF(ABS(B2)<=$F$1,"ready","check") allows a small variance in either direction.
+    misses:
+      value: A variance of -3 is within 5, so C2 should show ready.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for IF and ABS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(ABS(B2)<=$F$1,"ready","check")
+      - =IF(ABS(B2)<=F1,"ready","check")
+    reject:
+      - formula: =IF(B2<=$F$1,"ready","check")
+        rule: required-function
+      - formula: =IF(ABS(B2)<$F$1,"ready","check")
+        rule: fragile
+      - formula: ="ready"
+        rule: required-function
+      - formula: =IF(ABS(B2)<=$F$1,"ready","check"
+        rule: syntax

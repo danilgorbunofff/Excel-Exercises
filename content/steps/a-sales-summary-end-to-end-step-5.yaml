@@ -1,0 +1,56 @@
+id: a-sales-summary-end-to-end-step-5
+slug: a-sales-summary-end-to-end-step-5
+level: 3
+title: The best-selling region
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-sales-summary-end-to-end
+step: 5
+screens:
+  - prompt: In F2, which of the regions listed in E2:E5 has the highest total sales?
+    rows:
+      - [Region, Rep, Amount, null, Region, Best region]
+      - [North, Ada, 320, null, North, null]
+      - [South, Ben, 250, null, South, null]
+      - [North, Cleo, 180, null, East, null]
+      - [West, Dev, 300, null, West, null]
+      - [North, Ada, 400, null, null, null]
+      - [East, Eve, 275, null, null, null]
+      - [South, Finn, 360, null, null, null]
+      - [West, Gus, 140, null, null, null]
+      - [East, Eve, 410, null, null, null]
+      - [South, Ada, 195, null, null, null]
+      - [North, Hana, 230, null, null, null]
+      - [West, Dev, 505, null, null, null]
+      - [East, Ivo, 160, null, null, null]
+      - [South, Finn, 290, null, null, null]
+      - [North, Cleo, 145, null, null, null]
+    answerCell: F2
+    expected: North
+    variants:
+      - set: { C13: 900 }
+        expected: West
+      - set: { C8: 700 }
+        expected: South
+    answer: =XLOOKUP(MAX(SUMIFS(C2:C16,A2:A16,E2:E5)),SUMIFS(C2:C16,A2:A16,E2:E5),E2:E5)
+    requiredFunctions: []
+    hints:
+      nudge: Work out every region's total at once, then find the largest and its region.
+      rule: SUMIFS with E2:E5 as the criteria gives one total per region; MAX picks the biggest and XLOOKUP returns its name.
+    misses:
+      value: The best-selling region is North.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(MAX(SUMIFS(C2:C16,A2:A16,E2:E5)),SUMIFS(C2:C16,A2:A16,E2:E5),E2:E5)
+      - =INDEX(E2:E5,MATCH(MAX(SUMIFS(C2:C16,A2:A16,E2:E5)),SUMIFS(C2:C16,A2:A16,E2:E5),0))
+    reject:
+      - formula: =XLOOKUP(MAX(C2:C16),C2:C16,A2:A16)
+        rule: value
+      - formula: ="North"
+        rule: reference
+      - formula: ="North"
+        rule: reference
+      - formula: =XLOOKUP(MAX(SUMIFS(C2:C16,A2:A16,E2:E5)),SUMIFS(C2:C16,A2:A16,E2:E5),E2:E5
+        rule: syntax

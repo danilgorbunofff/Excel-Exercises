@@ -1,0 +1,44 @@
+id: extension-for-a-colleague-step-4
+slug: extension-for-a-colleague-step-4
+level: 2
+title: Extension, or Not found
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: extension-for-a-colleague
+step: 4
+screens:
+  - prompt: In F2, show the extension of the colleague named in E2, or Not found when the name is not in the list. Use XLOOKUP.
+    rows:
+      - [Name, Office, Ext, null, null, null]
+      - [Asha, Leeds, 3104, null, Hana, null]
+      - [Bryn, York, 3211, null, null, null]
+      - [Cleo, Leeds, 3187, null, null, null]
+      - [Dara, Hull, 3320, null, null, null]
+      - [Femi, York, 3245, null, null, null]
+      - [Gwen, Hull, 3352, null, null, null]
+    answerCell: F2
+    expected: Not found
+    variants:
+      - set: { E2: Gwen }
+        expected: 3352
+    answer: =XLOOKUP(E2,A2:A7,C2:C7,"Not found")
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: XLOOKUP's fourth argument is what to show when nothing matches.
+      rule: 'XLOOKUP(E2,A2:A7,C2:C7,"Not found") replaces #N/A with a message.'
+    misses:
+      value: F2 shows Not found.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(E2,A2:A7,C2:C7,"Not found")
+      - =IFERROR(XLOOKUP(E2,A2:A7,C2:C7),"Not found")
+    reject:
+      - formula: =XLOOKUP(E2,A2:A7,C2:C7)
+        rule: value
+      - formula: ="Not found"
+        rule: required-function
+      - formula: =XLOOKUP(E2,A2:A7,C2:C7,"Not found"
+        rule: syntax

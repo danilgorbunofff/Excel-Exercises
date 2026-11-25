@@ -1,0 +1,45 @@
+id: a-headcount-and-payroll-summary-step-3
+slug: a-headcount-and-payroll-summary-step-3
+level: 2
+title: Share of heads in one team
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-headcount-and-payroll-summary
+step: 3
+screens:
+  - prompt: In F2, work out the share of all heads that work in Sales, as a fraction. Use XLOOKUP and SUM.
+    rows:
+      - [Team, Heads, Salary, null, null, Sales share]
+      - [Sales, 12, 48000, null, null, null]
+      - [Finance, 5, 56000, null, null, null]
+      - [IT, 8, 61000, null, null, null]
+      - [Admin, 4, 34000, null, null, null]
+    answerCell: F2
+    expected: 0.413793103448
+    variants:
+      - set: { B2: 15 }
+        expected: 0.46875
+    answer: =XLOOKUP("Sales",A2:A5,B2:B5)/SUM(B2:B5)
+    requiredFunctions:
+      - XLOOKUP
+      - SUM
+    hints:
+      nudge: Sales' heads divided by all heads.
+      rule: Looking the team up by name keeps the formula right even if the rows are re-sorted.
+    misses:
+      value: Sales holds 0.41 of all heads.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP and SUM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP("Sales",A2:A5,B2:B5)/SUM(B2:B5)
+      - =XLOOKUP("Sales",$A$2:$A$5,$B$2:$B$5)/SUM($B$2:$B$5)
+    reject:
+      - formula: =B2/SUM(B2:B5)
+        rule: required-function
+      - formula: =XLOOKUP("Sales",A2:A5,C2:C5)/SUM(C2:C5)
+        rule: value
+      - formula: =0.413793103448
+        rule: required-function
+      - formula: =XLOOKUP("Sales",A2:A5,B2:B5)/SUM(B2:B5
+        rule: syntax

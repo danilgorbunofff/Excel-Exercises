@@ -1,0 +1,46 @@
+id: a-commission-sheet-that-updates-itself-step-5
+slug: a-commission-sheet-that-updates-itself-step-5
+level: 3
+title: Tier commission with a target bonus
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-commission-sheet-that-updates-itself
+step: 5
+screens:
+  - prompt: In C2, what does Ana earn? Her sales times the tier rate they reach, plus the bonus in F7 when her sales beat the target in F6.
+    rows:
+      - [Seller, Sales, Commission, null, Sales from, Rate]
+      - [Ana, 42000, null, null, 0, 0.02]
+      - [Ben, 18500, null, null, 20000, 0.035]
+      - [Cy, 61000, null, null, 50000, 0.05]
+      - [Di, 27500, null, null, null, null]
+      - [Ed, 50000, null, null, Target, 45000]
+      - [null, null, null, null, Bonus, 250]
+    answerCell: C2
+    expected: 1470
+    variants:
+      - { set: { B2: 44000 }, expected: 1540 }
+      - { set: { B2: 52000 }, expected: 2850 }
+      - { set: { B2: 2, F6: 2 }, expected: 0.04 }
+    answer: =B2*VLOOKUP(B2,$E$2:$F$4,2,TRUE)+(B2>$F$6)*$F$7
+    requiredFunctions: []
+    hints:
+      nudge: "Two parts: the tier commission, and the bonus only above the target."
+      rule: (B2>$F$6) is 1 above the target and 0 otherwise, so (B2>$F$6)*$F$7 adds the bonus only when earned.
+    misses:
+      value: Ana earns 1470 in total.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2*VLOOKUP(B2,$E$2:$F$4,2,TRUE)+(B2>$F$6)*$F$7
+      - =B2*VLOOKUP(B2,E2:F4,2,TRUE)+(B2>F6)*F7
+    reject:
+      - formula: =B2*VLOOKUP(B2,$E$2:$F$4,2,TRUE)
+        rule: fragile
+      - formula: =B2*VLOOKUP(B2,$E$2:$F$4,2,TRUE)+$F$7
+        rule: value
+      - formula: =1470
+        rule: reference
+      - formula: =B2*VLOOKUP(B2,$E$2:$F$4,2,TRUE)+(B2>$F$6)*$F$7,
+        rule: syntax

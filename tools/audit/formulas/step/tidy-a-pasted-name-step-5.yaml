@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =PROPER(TEXTAFTER(TRIM($A$2)," ")&", "&TEXTBEFORE(TRIM($A$2)," "))
+      - =PROPER(TEXTAFTER(TRIM(A$2)," ")&", "&TEXTBEFORE(TRIM(A2)," "))
+      - =proper(textafter(trim(a2), " ")&", "&textbefore(trim(a2), " "))
+    wrong: []
+    equivalent: []

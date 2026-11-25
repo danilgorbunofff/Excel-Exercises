@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP($E$2,$C$2:$C$7,$A$2:$A$7)&" ("&XLOOKUP($E$2,$C$2:$C$7,$B$2:$B$7)&")"
+      - =XLOOKUP(E$2,C2:C7,A2:A7)&" ("&XLOOKUP(E2,C2:C7,B2:B7)&")"
+      - =xlookup(e2, c2:c7, a2:a7)&" ("&xlookup(e2, c2:c7, b2:b7)&")"
+      - =INDEX(A2:A7,MATCH(E2,C2:C7,0))&" ("&XLOOKUP(E2,C2:C7,B2:B7)&")"
+      - =XLOOKUP(E2,C2:C7,A2:A7)&" ("&INDEX(B2:B7,MATCH(E2,C2:C7,0))&")"
+      - =LET(data,C2:C7,XLOOKUP(E2,data,A2:A7)&" ("&XLOOKUP(E2,data,B2:B7)&")")
+    wrong: []
+    equivalent: []

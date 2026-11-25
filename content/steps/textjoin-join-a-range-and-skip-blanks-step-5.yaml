@@ -1,0 +1,55 @@
+id: textjoin-join-a-range-and-skip-blanks-step-5
+slug: textjoin-join-a-range-and-skip-blanks-step-5
+level: 3
+title: Everyone in one team, on one line
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: textjoin-join-a-range-and-skip-blanks
+step: 5
+screens:
+  - prompt: In D2, list the names of everyone in the team typed in D1, separated by a comma and a space.
+    rows:
+      - [Name, Team, null, Sales]
+      - [Ada, Sales, null, null]
+      - [Ben, Finance, null, null]
+      - [Cleo, Sales, null, null]
+      - [Dev, IT, null, null]
+      - [Eve, Sales, null, null]
+      - [Finn, Finance, null, null]
+      - [Gus, IT, null, null]
+      - [Hana, Sales, null, null]
+      - [Ivo, Ops, null, null]
+      - [Jana, Finance, null, null]
+      - [Kai, Sales, null, null]
+      - [Lee, IT, null, null]
+      - [Mo, Ops, null, null]
+      - [Nia, Sales, null, null]
+      - [Ola, Finance, null, null]
+    answerCell: D2
+    expected: Ada, Cleo, Eve, Hana, Kai, Nia
+    variants:
+      - { set: { D1: IT }, expected: "Dev, Gus, Lee" }
+      - { set: { B3: Sales }, expected: "Ada, Ben, Cleo, Eve, Hana, Kai, Nia" }
+      - { set: { B16: Sales }, expected: "Ada, Cleo, Eve, Hana, Kai, Nia, Ola" }
+    answer: =TEXTJOIN(", ",TRUE,IF(B2:B16=D1,A2:A16,""))
+    requiredFunctions: []
+    hints:
+      nudge: Keep only the names whose team matches D1, then join them.
+      rule: IF(B2:B16=D1,A2:A16,"") gives the name or nothing on each row; TEXTJOIN skips the empty ones.
+    misses:
+      value: The Sales team is Ada, Cleo, Eve, Hana, Kai, Nia.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =TEXTJOIN(", ",TRUE,IF(B2:B16=D1,A2:A16,""))
+      - =TEXTJOIN(", ",TRUE,FILTER(A2:A16,B2:B16=D1))
+    reject:
+      - formula: =TEXTJOIN(", ",TRUE,A2:A16)
+        rule: value
+      - formula: =TEXTJOIN(", ",TRUE,IF(B2:B16="Sales",A2:A16,""))
+        rule: fragile
+      - formula: ="Ada, Cleo, Eve, Hana, Kai, Nia"
+        rule: reference
+      - formula: =TEXTJOIN(", ",TRUE,IF(B2:B16=D1,A2:A16,"")
+        rule: syntax

@@ -1,0 +1,56 @@
+id: aggregate-a-total-that-can-skip-step-5
+slug: aggregate-a-total-that-can-skip-step-5
+level: 3
+title: Second-smallest positive amount
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: aggregate-a-total-that-can-skip
+step: 5
+screens:
+  - prompt: In D2, what is the second-smallest amount above 0 in B2:B16? Zeros and refunds below 0 do not count.
+    rows:
+      - [Line, Amount, null, Second smallest positive]
+      - ["1", 120, null, null]
+      - ["2", 0, null, null]
+      - ["3", -40, null, null]
+      - ["4", 85, null, null]
+      - ["5", 30, null, null]
+      - ["6", 0, null, null]
+      - ["7", 210, null, null]
+      - ["8", -15, null, null]
+      - ["9", 55, null, null]
+      - ["10", 18, null, null]
+      - ["11", 0, null, null]
+      - ["12", 140, null, null]
+      - ["13", 62, null, null]
+      - ["14", -5, null, null]
+      - ["15", 95, null, null]
+    answerCell: D2
+    expected: 30
+    variants:
+      - { set: { B11: 50 }, expected: 50 }
+      - { set: { B6: 10 }, expected: 18 }
+      - { set: { B16: 1 }, expected: 18 }
+    answer: =AGGREGATE(15,6,B2:B16/(B2:B16>0),2)
+    requiredFunctions: []
+    hints:
+      nudge: Dividing by the test turns every amount that is not above 0 into an error, which option 6 skips.
+      rule: "B2:B16/(B2:B16>0) gives `#DIV/0!` wherever the test fails; AGGREGATE(15,6,...,2) ignores those and returns the 2nd smallest."
+    misses:
+      value: The second-smallest positive amount is 30.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AGGREGATE(15,6,B2:B16/(B2:B16>0),2)
+      - =SMALL(IF(B2:B16>0,B2:B16),2)
+      - =SMALL(FILTER(B2:B16,B2:B16>0),2)
+    reject:
+      - formula: =SMALL(B2:B16,2)
+        rule: value
+      - formula: =AGGREGATE(15,6,B2:B16/(B2:B16>=0),2)
+        rule: value
+      - formula: =30
+        rule: reference
+      - formula: =AGGREGATE(15,6,B2:B16/(B2:B16>0),2
+        rule: syntax

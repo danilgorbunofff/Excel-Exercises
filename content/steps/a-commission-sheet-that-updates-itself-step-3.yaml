@@ -1,0 +1,41 @@
+id: a-commission-sheet-that-updates-itself-step-3
+slug: a-commission-sheet-that-updates-itself-step-3
+level: 2
+title: Flat commission to the cent
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-commission-sheet-that-updates-itself
+step: 3
+screens:
+  - prompt: In C2, work out Ben's commission at the flat rate in F1, rounded to 2 decimals. Use ROUND.
+    rows:
+      - [Seller, Sales, Commission, null, Rate, 0.0275]
+      - [Ben, 18555, null, null, null, null]
+    answerCell: C2
+    expected: 510.26
+    variants:
+      - set: { B2: 20111 }
+        expected: 553.05
+    answer: =ROUND(B2*$F$1,2)
+    requiredFunctions:
+      - ROUND
+    hints:
+      nudge: Work out the commission, then round it to the cent.
+      rule: ROUND(B2*$F$1,2) pays to the nearest cent.
+    misses:
+      value: Ben's commission is 510.26.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(B2*$F$1,2)
+      - =ROUND(B2*F1,2)
+    reject:
+      - formula: =B2*$F$1
+        rule: required-function
+      - formula: =ROUND(B2*$F$1,0)
+        rule: value
+      - formula: =510.26
+        rule: required-function
+      - formula: =ROUND(B2*$F$1,2
+        rule: syntax

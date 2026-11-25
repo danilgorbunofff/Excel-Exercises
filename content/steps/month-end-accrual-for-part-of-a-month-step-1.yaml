@@ -1,0 +1,41 @@
+id: month-end-accrual-for-part-of-a-month-step-1
+slug: month-end-accrual-for-part-of-a-month-step-1
+level: 1
+title: Day of the month
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: month-end-accrual-for-part-of-a-month
+step: 1
+screens:
+  - prompt: In D2, take the day of the month from the start date in C2. Use DAY.
+    rows:
+      - [Contract, Monthly fee, Start date, Day]
+      - [Cleaning, 3100, 45366, null]
+    answerCell: D2
+    expected: 15
+    variants:
+      - set: { C2: 45380 }
+        expected: 29
+    answer: =DAY(C2)
+    requiredFunctions:
+      - DAY
+    hints:
+      nudge: DAY reads the day number out of a date.
+      rule: DAY(C2) gives 1 to 31.
+    misses:
+      value: The contract starts on day 15.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for DAY.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =DAY(C2)
+      - =day(c2)
+      - "=DAY(C2)+0"
+      - "=DAY(C2*1)"
+    reject:
+      - formula: =MONTH(C2)
+        rule: required-function
+      - formula: =15
+        rule: required-function
+      - formula: =DAY(C2
+        rule: syntax

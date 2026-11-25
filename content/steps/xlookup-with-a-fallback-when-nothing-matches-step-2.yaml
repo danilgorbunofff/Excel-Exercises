@@ -1,0 +1,44 @@
+id: xlookup-with-a-fallback-when-nothing-matches-step-2
+slug: xlookup-with-a-fallback-when-nothing-matches-step-2
+level: 2
+title: Fallback of 0 for a missing price
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: xlookup-with-a-fallback-when-nothing-matches
+step: 2
+screens:
+  - prompt: "In B7, work out the line cost: the price of the SKU in B5, or 0 when it is not in the list, times the quantity in B6. Use XLOOKUP."
+    rows:
+      - [SKU, Price]
+      - [TX-101, 19.99]
+      - [TX-102, 14]
+      - [TX-103, 9.5]
+      - [SKU, TX-104]
+      - [Quantity, 3]
+      - [Line cost, null]
+    answerCell: B7
+    expected: 0
+    variants:
+      - set: { B5: TX-101 }
+        expected: 59.97
+    answer: =XLOOKUP(B5,A2:A4,B2:B4,0)*B6
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: A fallback of 0 keeps the multiplication working when the SKU is missing.
+      rule: "XLOOKUP(B5,A2:A4,B2:B4,0) gives 0 instead of #N/A for an unknown SKU."
+    misses:
+      value: An unknown SKU gives a line cost of 0.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(B5,A2:A4,B2:B4,0)*B6
+      - =B6*XLOOKUP(B5,A2:A4,B2:B4,0)
+    reject:
+      - formula: =XLOOKUP(B5,A2:A4,B2:B4)*B6
+        rule: value
+      - formula: =0
+        rule: required-function
+      - formula: =XLOOKUP(B5,A2:A4,B2:B4,0)*B6,
+        rule: syntax

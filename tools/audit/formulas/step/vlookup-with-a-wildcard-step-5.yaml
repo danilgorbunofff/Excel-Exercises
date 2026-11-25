@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP("*"&$F$1,$A$2:$A$9,$B$2:$B$9,"none",2)
+      - =XLOOKUP("*"&F$1,A2:A9,B2:B9,"none",2)
+      - =xlookup("*"&f1, a2:a9, b2:b9, "none", 2)
+      - =LET(data,A2:A9,XLOOKUP("*"&F1,data,B2:B9,"none",2))
+    wrong: []
+    equivalent: []

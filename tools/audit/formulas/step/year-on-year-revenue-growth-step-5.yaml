@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($A$2:$A$9,MATCH(MAX($C$2:$C$9-$B$2:$B$9),$C$2:$C$9-$B$2:$B$9,0))
+      - =INDEX(A$2:A$9,MATCH(MAX(C2:C9-B2:B9),C2:C9-B2:B9,0))
+      - =index(a2:a9, match(max(c2:c9-b2:b9), c2:c9-b2:b9, 0))
+      - =LET(data,A2:A9,INDEX(data,MATCH(MAX(C2:C9-B2:B9),C2:C9-B2:B9,0)))
+    wrong: []
+    equivalent: []

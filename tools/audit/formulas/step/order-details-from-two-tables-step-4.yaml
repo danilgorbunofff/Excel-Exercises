@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =$C$2*XLOOKUP($B$2,$F$2:$F$4,$G$2:$G$4)*(1-XLOOKUP($E$2,$I$2:$I$4,$J$2:$J$4))
+      - =C$2*XLOOKUP(B2,$F$2:$F$4,$G$2:$G$4)*(1-XLOOKUP(E2,$I$2:$I$4,$J$2:$J$4))
+      - =c2*xlookup(b2, $f$2:$f$4, $g$2:$g$4)*(1-xlookup(e2, $i$2:$i$4, $j$2:$j$4))
+      - =C2*INDEX($G$2:$G$4,MATCH(B2,$F$2:$F$4,0))*(1-XLOOKUP(E2,$I$2:$I$4,$J$2:$J$4))
+      - =C2*VLOOKUP(B2,$F$2:$G$4,2,FALSE)*(1-XLOOKUP(E2,$I$2:$I$4,$J$2:$J$4))
+      - =C2*XLOOKUP(B2,$F$2:$F$4,$G$2:$G$4)*(1-INDEX($J$2:$J$4,MATCH(E2,$I$2:$I$4,0)))
+      - =C2*XLOOKUP(B2,$F$2:$F$4,$G$2:$G$4)*(1-VLOOKUP(E2,$I$2:$J$4,2,FALSE))
+      - =LET(data,$F$2:$F$4,C2*XLOOKUP(B2,data,$G$2:$G$4)*(1-XLOOKUP(E2,$I$2:$I$4,$J$2:$J$4)))
+    wrong: []
+    equivalent: []

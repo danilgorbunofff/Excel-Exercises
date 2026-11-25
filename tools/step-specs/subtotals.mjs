@@ -3,7 +3,13 @@
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 2 at step 3, level 3 at step 4.
 const fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(2));
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 const lines = [
   ["Item", "Price", "Qty", "Line", null],
@@ -28,7 +34,8 @@ const linesWith = (label) => lines.map((r, i) => (i === 0 ? [...r.slice(0, 4), l
 export default [
   // sumproduct-multiply-then-add (level 3, step 4)
   step("sumproduct-multiply-then-add", 1, 1, "Value of the stock", {
-    prompt: "In C8, total the value of the stock: each price in B2:B6 times its quantity in C2:C6, added up. Use SUMPRODUCT.",
+    prompt:
+      "In C8, total the value of the stock: each price in B2:B6 times its quantity in C2:C6, added up. Use SUMPRODUCT.",
     rows: [
       ["Item", "Price", "Qty"],
       ["Pens", 1.2, 40],
@@ -107,7 +114,8 @@ export default [
     value: (e) => `The average price per unit is ${fmt(e)}.`,
   }),
   step("sumproduct-multiply-then-add", 5, 3, "Revenue from large North orders", {
-    prompt: "In F2, what is the revenue from North orders of more than 5 units? Revenue is units times unit price.",
+    prompt:
+      "In F2, what is the revenue from North orders of more than 5 units? Revenue is units times unit price.",
     rows: [
       ["Order", "Region", "Units", "Price", null, null],
       ["SO-01", "North", 5, 12, null, null],
@@ -171,7 +179,8 @@ export default [
     value: (e) => `${e} quantities are counted.`,
   }),
   step("subtotal-a-sum-over-a-group", 4, 2, "Total two separate blocks", {
-    prompt: "In E2, total the line values of the first five rows, D2:D6, and the last five, D12:D16, with one SUBTOTAL.",
+    prompt:
+      "In E2, total the line values of the first five rows, D2:D6, and the last five, D12:D16, with one SUBTOTAL.",
     rows: linesWith("Two blocks"),
     cell: "E2",
     answer: "=SUBTOTAL(9,D2:D6,D12:D16)",
@@ -187,7 +196,8 @@ export default [
     value: (e) => `The two blocks add up to ${fmt(e)}.`,
   }),
   step("subtotal-a-sum-over-a-group", 5, 3, "Biggest line as a share of the total", {
-    prompt: "In E2, what share of the total of all lines does the single biggest line make up? Give a fraction.",
+    prompt:
+      "In E2, what share of the total of all lines does the single biggest line make up? Give a fraction.",
     rows: linesWith("Biggest line's share"),
     cell: "E2",
     answer: "=SUBTOTAL(4,D2:D16)/SUBTOTAL(9,D2:D16)",
@@ -205,7 +215,8 @@ export default [
 
   // aggregate-a-total-that-can-skip (level 2, step 3)
   step("aggregate-a-total-that-can-skip", 1, 1, "Largest with AGGREGATE", {
-    prompt: "In E2, find the largest price in B2:B16 with AGGREGATE, function 4 and option 6 to ignore errors.",
+    prompt:
+      "In E2, find the largest price in B2:B16 with AGGREGATE, function 4 and option 6 to ignore errors.",
     rows: linesWith("Largest price"),
     cell: "E2",
     answer: "=AGGREGATE(4,6,B2:B16)",
@@ -234,7 +245,8 @@ export default [
     value: (e) => `The smallest quantity is ${e}.`,
   }),
   step("aggregate-a-total-that-can-skip", 4, 2, "Second-largest line", {
-    prompt: "In E2, find the second-largest line value in D2:D16 with AGGREGATE, function 14 (LARGE), option 6 and k of 2.",
+    prompt:
+      "In E2, find the second-largest line value in D2:D16 with AGGREGATE, function 14 (LARGE), option 6 and k of 2.",
     rows: linesWith("Second largest"),
     cell: "E2",
     answer: "=AGGREGATE(14,6,D2:D16,2)",
@@ -250,7 +262,8 @@ export default [
     value: (e) => `The second-largest line is ${fmt(e)}.`,
   }),
   step("aggregate-a-total-that-can-skip", 5, 3, "Second-smallest positive amount", {
-    prompt: "In D2, what is the second-smallest amount above 0 in B2:B16? Zeros and refunds below 0 do not count.",
+    prompt:
+      "In D2, what is the second-smallest amount above 0 in B2:B16? Zeros and refunds below 0 do not count.",
     rows: [
       ["Line", "Amount", null, null],
       ["1", 120, null, null],
@@ -278,14 +291,16 @@ export default [
       ["=SMALL(B2:B16,2)", "value"],
       ["=AGGREGATE(15,6,B2:B16/(B2:B16>=0),2)", "value"],
     ],
-    nudge: "Dividing by the test turns every amount that is not above 0 into an error, which option 6 skips.",
+    nudge:
+      "Dividing by the test turns every amount that is not above 0 into an error, which option 6 skips.",
     rule: "B2:B16/(B2:B16>0) gives #DIV/0! wherever the test fails; AGGREGATE(15,6,...,2) ignores those and returns the 2nd smallest.",
     value: (e) => `The second-smallest positive amount is ${e}.`,
   }),
 
   // aggregate-functions-summary (level 2, step 3)
   step("aggregate-functions-summary", 1, 1, "Order value with SUMPRODUCT", {
-    prompt: "In E2, total the order: prices in B2:B16 times quantities in C2:C16, added up. Use SUMPRODUCT.",
+    prompt:
+      "In E2, total the order: prices in B2:B16 times quantities in C2:C16, added up. Use SUMPRODUCT.",
     rows: linesWith("Order value"),
     cell: "E2",
     answer: "=SUMPRODUCT(B2:B16,C2:C16)",
@@ -320,14 +335,17 @@ export default [
     accept: ["=ROUND(SUBTOTAL(9,D2:D16),2)=ROUND(SUMPRODUCT(B2:B16,C2:C16),2)"],
     variants: [{ D5: 30 }],
     reject: [["=SUMPRODUCT(B2:B16,C2:C16)>0", "required-function"]],
-    nudge: "Round both totals the same way before comparing, so tiny decimal noise does not matter.",
+    nudge:
+      "Round both totals the same way before comparing, so tiny decimal noise does not matter.",
     rule: "The comparison is TRUE only when the stored lines add up to the true order value.",
     value: (e) => `The lines reconcile, so E2 should show ${e}.`,
   }),
   step("aggregate-functions-summary", 5, 3, "How far the Line column is off", {
     prompt:
       "In E2, by how much in total are the stored line values off from price times quantity? Count every difference as positive.",
-    rows: linesWith("Total difference").map((r, i) => (i === 4 ? ["Tape", 2.1, 12, 21.2, null] : i === 11 ? ["Staples", 1.1, 18, 22.8, null] : r)),
+    rows: linesWith("Total difference").map((r, i) =>
+      i === 4 ? ["Tape", 2.1, 12, 21.2, null] : i === 11 ? ["Staples", 1.1, 18, 22.8, null] : r,
+    ),
     cell: "E2",
     answer: "=SUMPRODUCT(ABS(D2:D16-B2:B16*C2:C16))",
     required: [],

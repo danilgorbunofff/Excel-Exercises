@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(XLOOKUP($D$1,$A$2:$A$6,$C$2:$C$6)/XLOOKUP(XLOOKUP($D$1,$A$2:$A$6,$B$2:$B$6),$F$2:$F$5,$G$2:$G$5)*100,1)
+      - =ROUND(XLOOKUP(D$1,A2:A6,C2:C6)/XLOOKUP(XLOOKUP(D1,A2:A6,B2:B6),F2:F5,G2:G5)*100,1)
+      - =round(xlookup(d1, a2:a6, c2:c6)/xlookup(xlookup(d1, a2:a6, b2:b6), f2:f5, g2:g5)*100, 1)
+      - =ROUND(INDEX(C2:C6,MATCH(D1,A2:A6,0))/XLOOKUP(XLOOKUP(D1,A2:A6,B2:B6),F2:F5,G2:G5)*100,1)
+      - =ROUND(VLOOKUP(D1,A2:C6,3,FALSE)/XLOOKUP(XLOOKUP(D1,A2:A6,B2:B6),F2:F5,G2:G5)*100,1)
+      - =ROUND(XLOOKUP(D1,A2:A6,C2:C6)/INDEX(G2:G5,MATCH(XLOOKUP(D1,A2:A6,B2:B6),F2:F5,0))*100,1)
+      - =ROUND(XLOOKUP(D1,A2:A6,C2:C6)/VLOOKUP(XLOOKUP(D1,A2:A6,B2:B6),F2:G5,2,FALSE)*100,1)
+      - =ROUND(XLOOKUP(D1,A2:A6,C2:C6)/XLOOKUP(INDEX(B2:B6,MATCH(D1,A2:A6,0)),F2:F5,G2:G5)*100,1)
+      - =ROUND(XLOOKUP(D1,A2:A6,C2:C6)/XLOOKUP(VLOOKUP(D1,A2:B6,2,FALSE),F2:F5,G2:G5)*100,1)
+      - =LET(data,A2:A6,ROUND(XLOOKUP(D1,data,C2:C6)/XLOOKUP(XLOOKUP(D1,data,B2:B6),F2:F5,G2:G5)*100,1))
+    wrong:
+      - formula: =ROUNDDOWN(XLOOKUP(D1,A2:A6,C2:C6)/XLOOKUP(XLOOKUP(D1,A2:A6,B2:B6),F2:F5,G2:G5)*100,1)
+        rule: fragile
+        why: ROUNDDOWN instead of ROUND
+    equivalent: []

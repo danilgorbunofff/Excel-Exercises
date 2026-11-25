@@ -1,0 +1,42 @@
+id: clean-up-an-imported-list-step-3
+slug: clean-up-an-imported-list-step-3
+level: 2
+title: Last name from a messy name
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: clean-up-an-imported-list
+step: 3
+screens:
+  - prompt: In B2, take the last name from the imported name in A2, after tidying the spaces. Use TEXTAFTER and TRIM.
+    rows:
+      - [Imported, Answer]
+      - ["  Grace    Hopper ", null]
+    answerCell: B2
+    expected: Hopper
+    variants:
+      - set: { A2: Alan  Turing }
+        expected: Turing
+    answer: =TEXTAFTER(TRIM(A2)," ")
+    requiredFunctions:
+      - TEXTAFTER
+      - TRIM
+    hints:
+      nudge: Tidy the spaces first, or the first space is a stray one.
+      rule: TEXTAFTER(TRIM(A2)," ") returns everything after the single space between the names.
+    misses:
+      value: The last name is Hopper.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for TEXTAFTER and TRIM.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =TEXTAFTER(TRIM(A2)," ")
+      - =TEXTAFTER(TRIM(A2)," ",-1)
+    reject:
+      - formula: =TEXTAFTER(A2," ")
+        rule: required-function
+      - formula: =TEXTBEFORE(TRIM(A2)," ")
+        rule: required-function
+      - formula: ="Hopper"
+        rule: required-function
+      - formula: =TEXTAFTER(TRIM(A2)," "
+        rule: syntax

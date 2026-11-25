@@ -3,7 +3,13 @@
 // tools/suggest-variants.ts and by hand live only there, so do not --write this again.
 // Each exercise's own slot: level 2 at step 3, level 3 at step 4.
 const fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(2));
-const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+const step = (parent, n, level, title, screen) => ({
+  parent,
+  step: n,
+  level,
+  title,
+  screens: [screen],
+});
 
 // A product table in A1:E9, with labels in G and inputs or answers in H.
 const products = [
@@ -25,7 +31,10 @@ export default [
   // find-a-price (level 2, step 3)
   step("find-a-price", 1, 1, "Find a product name", {
     prompt: "In H2, find the name of the product whose code is in H1. Use XLOOKUP.",
-    rows: table([["Code", "P-103"], ["Product", null]]),
+    rows: table([
+      ["Code", "P-103"],
+      ["Product", null],
+    ]),
     cell: "H2",
     answer: "=XLOOKUP(H1,A2:A9,B2:B9)",
     required: ["XLOOKUP"],
@@ -40,8 +49,13 @@ export default [
     value: (e) => `Code P-103 is the ${e}.`,
   }),
   step("find-a-price", 2, 2, "Price times quantity", {
-    prompt: "In H3, work out the cost of the order: the price of the code in H1, looked up, times the quantity in H2. Use XLOOKUP.",
-    rows: table([["Code", "P-105"], ["Quantity", 4], ["Cost", null]]),
+    prompt:
+      "In H3, work out the cost of the order: the price of the code in H1, looked up, times the quantity in H2. Use XLOOKUP.",
+    rows: table([
+      ["Code", "P-105"],
+      ["Quantity", 4],
+      ["Cost", null],
+    ]),
     cell: "H3",
     answer: "=XLOOKUP(H1,A2:A9,D2:D9)*H2",
     required: ["XLOOKUP"],
@@ -73,13 +87,17 @@ export default [
     value: () => "H2 to J2 should show the product, category and price of the code in H1.",
   }),
   step("find-a-price", 5, 3, "Value of a three-line order", {
-    prompt: "In H5, what is the order in G2 to H4 worth? Column G holds codes and column H quantities.",
-    rows: products.map((r, i) => [
-      ...r,
-      null,
-      [null, "P-103", "P-101", "P-108"][i] ?? null,
-      [null, 2, 5, 1][i] ?? null,
-    ]).map((r, i) => (i === 0 ? [...r.slice(0, 6), "Code", "Qty"] : r)).concat([]),
+    prompt:
+      "In H5, what is the order in G2 to H4 worth? Column G holds codes and column H quantities.",
+    rows: products
+      .map((r, i) => [
+        ...r,
+        null,
+        [null, "P-103", "P-101", "P-108"][i] ?? null,
+        [null, 2, 5, 1][i] ?? null,
+      ])
+      .map((r, i) => (i === 0 ? [...r.slice(0, 6), "Code", "Qty"] : r))
+      .concat([]),
     cell: "H5",
     answer: "=XLOOKUP(G2,A2:A9,D2:D9)*H2+XLOOKUP(G3,A2:A9,D2:D9)*H3+XLOOKUP(G4,A2:A9,D2:D9)*H4",
     required: [],
@@ -96,7 +114,8 @@ export default [
 
   // find-an-extension (level 2, step 3)
   step("find-an-extension", 1, 1, "Find a name by ID", {
-    prompt: "In B9, find the name of the person whose ID is in B8. Use VLOOKUP with an exact match.",
+    prompt:
+      "In B9, find the name of the person whose ID is in B8. Use VLOOKUP with an exact match.",
     rows: [
       ["ID", "Name", "Team", "Extension"],
       [1041, "Ana", "Sales", 214],
@@ -122,7 +141,8 @@ export default [
     value: (e) => `ID 1044 belongs to ${e}.`,
   }),
   step("find-an-extension", 2, 1, "Find a team by ID", {
-    prompt: "In B9, find the team of the person whose ID is in B8. Use VLOOKUP with an exact match.",
+    prompt:
+      "In B9, find the team of the person whose ID is in B8. Use VLOOKUP with an exact match.",
     rows: [
       ["ID", "Name", "Team", "Extension"],
       [1041, "Ana", "Sales", 214],
@@ -202,7 +222,8 @@ export default [
 
   // delivery-band (level 2, step 3)
   step("delivery-band", 1, 1, "Grade from a score band", {
-    prompt: "In B9, find the grade for the score in B8 from the bands. Use VLOOKUP with TRUE for an approximate match.",
+    prompt:
+      "In B9, find the grade for the score in B8 from the bands. Use VLOOKUP with TRUE for an approximate match.",
     rows: [
       ["From score", "Grade"],
       [0, "F"],
@@ -251,7 +272,8 @@ export default [
     value: (e) => `A 9.2 kg parcel costs ${e}.`,
   }),
   step("delivery-band", 4, 2, "Tax from a rate band", {
-    prompt: "In B8, work out the tax: the income in B7 times the rate for its band. Use VLOOKUP with TRUE.",
+    prompt:
+      "In B8, work out the tax: the income in B7 times the rate for its band. Use VLOOKUP with TRUE.",
     rows: [
       ["From income", "Rate"],
       [0, 0.1],
@@ -288,7 +310,10 @@ export default [
     cell: "E2",
     answer: "=VLOOKUP(E1,A2:B5,2,TRUE)+(E1>E3)*(E1-E3)*E4",
     required: [],
-    accept: ["=XLOOKUP(E1,A2:A5,B2:B5,,-1)+(E1>E3)*(E1-E3)*E4", "=VLOOKUP(E1,A2:B5,2,TRUE)+(E1-E3)*E4*(E1>E3)"],
+    accept: [
+      "=XLOOKUP(E1,A2:A5,B2:B5,,-1)+(E1>E3)*(E1-E3)*E4",
+      "=VLOOKUP(E1,A2:B5,2,TRUE)+(E1-E3)*E4*(E1>E3)",
+    ],
     variants: [{ E1: 7 }, { E1: 12 }, { E1: 22 }, { E4: 2 }],
     reject: [
       ["=VLOOKUP(E1,A2:B5,2,TRUE)", "value"],
@@ -302,7 +327,10 @@ export default [
   // find-a-code (level 2, step 3)
   step("find-a-code", 1, 1, "Find the stock with INDEX and MATCH", {
     prompt: "In H2, find the stock of the product named in H1. Use INDEX and MATCH.",
-    rows: table([["Product", "Mirror"], ["Stock", null]]),
+    rows: table([
+      ["Product", "Mirror"],
+      ["Stock", null],
+    ]),
     cell: "H2",
     answer: "=INDEX(E2:E9,MATCH(H1,B2:B9,0))",
     required: ["INDEX", "MATCH"],
@@ -317,8 +345,12 @@ export default [
     value: (e) => `The Mirror has ${e} in stock.`,
   }),
   step("find-a-code", 2, 2, "Find a code to the left", {
-    prompt: "In H2, find the code of the product named in H1. The codes are left of the names. Use INDEX and MATCH.",
-    rows: table([["Product", "Chair"], ["Code", null]]),
+    prompt:
+      "In H2, find the code of the product named in H1. The codes are left of the names. Use INDEX and MATCH.",
+    rows: table([
+      ["Product", "Chair"],
+      ["Code", null],
+    ]),
     cell: "H2",
     answer: "=INDEX(A2:A9,MATCH(H1,B2:B9,0))",
     required: ["INDEX", "MATCH"],
@@ -333,8 +365,12 @@ export default [
     value: (e) => `The Chair's code is ${e}.`,
   }),
   step("find-a-code", 4, 2, "Find a code to the left with XLOOKUP", {
-    prompt: "In H2, find the code of the product named in H1. Use XLOOKUP, which can return a column to the left.",
-    rows: table([["Product", "Cabinet"], ["Code", null]]),
+    prompt:
+      "In H2, find the code of the product named in H1. Use XLOOKUP, which can return a column to the left.",
+    rows: table([
+      ["Product", "Cabinet"],
+      ["Code", null],
+    ]),
     cell: "H2",
     answer: "=XLOOKUP(H1,B2:B9,A2:A9)",
     required: ["XLOOKUP"],
@@ -367,7 +403,8 @@ export default [
 
   // hlookup-look-across-a-row (level 2, step 3)
   step("hlookup-look-across-a-row", 1, 1, "Units for a month", {
-    prompt: "In B5, look up the month in B4 across the top row and return its units from row 2. Use HLOOKUP.",
+    prompt:
+      "In B5, look up the month in B4 across the top row and return its units from row 2. Use HLOOKUP.",
     rows: [
       ["Month", "Jan", "Feb", "Mar", "Apr"],
       ["Units", 120, 180, 200, 165],
@@ -389,7 +426,8 @@ export default [
     value: (e) => `March sold ${e} units.`,
   }),
   step("hlookup-look-across-a-row", 2, 2, "Revenue for a month", {
-    prompt: "In B5, work out the revenue for the month in B4: its units times its price, both found with HLOOKUP.",
+    prompt:
+      "In B5, work out the revenue for the month in B4: its units times its price, both found with HLOOKUP.",
     rows: [
       ["Month", "Jan", "Feb", "Mar", "Apr"],
       ["Units", 120, 180, 200, 165],
@@ -411,7 +449,8 @@ export default [
     value: (e) => `April's revenue is ${fmt(e)}.`,
   }),
   step("hlookup-look-across-a-row", 4, 2, "Look across a row with XLOOKUP", {
-    prompt: "In B5, return the price for the month in B4 with XLOOKUP: search the month row, return the price row.",
+    prompt:
+      "In B5, return the price for the month in B4 with XLOOKUP: search the month row, return the price row.",
     rows: [
       ["Month", "Jan", "Feb", "Mar", "Apr"],
       ["Units", 120, 180, 200, 165],
@@ -543,7 +582,13 @@ export default [
       ["Alpine Air", "Austria", 6, null, null, null],
       ["Baltic Couriers", "Latvia", 4, null, null, null],
       ["Danube Freight", "Hungary", 14, null, null, null],
-    ].map((r, i) => (i === 0 ? [...r.slice(0, 4), "Ends with", "Air"] : i === 1 ? [...r.slice(0, 4), "Country", null] : r)),
+    ].map((r, i) =>
+      i === 0
+        ? [...r.slice(0, 4), "Ends with", "Air"]
+        : i === 1
+          ? [...r.slice(0, 4), "Country", null]
+          : r,
+    ),
     cell: "F2",
     answer: '=XLOOKUP("*"&F1,A2:A9,B2:B9,"none",2)',
     required: [],
@@ -581,7 +626,8 @@ export default [
     value: (e) => `Sprocket sold ${e} units in Q2.`,
   }),
   step("two-way-lookup-with-vlookup-and-match", 2, 2, "Position of a quarter", {
-    prompt: "In B7, find which column of the table A1:D1 holds the quarter typed in B6, counting Product as 1. Use MATCH.",
+    prompt:
+      "In B7, find which column of the table A1:D1 holds the quarter typed in B6, counting Product as 1. Use MATCH.",
     rows: [
       ["Product", "Q1", "Q2", "Q3"],
       ["Gizmo", 120, 140, 130],
@@ -649,14 +695,16 @@ export default [
       ["=VLOOKUP(A8,A1:E6,MATCH(B8,A1:E1,0),FALSE)", "fragile"],
       ['=IFERROR(VLOOKUP(A8,A1:E6,MATCH(B8,B1:E1,0),FALSE),"Not found")', "value"],
     ],
-    nudge: "MATCH gives the column for VLOOKUP; IFERROR catches a product or quarter that is missing.",
+    nudge:
+      "MATCH gives the column for VLOOKUP; IFERROR catches a product or quarter that is missing.",
     rule: 'VLOOKUP with MATCH as its column does the two-way lookup; IFERROR(..., "Not found") replaces any error.',
     value: (e) => `Widget's Q4 units are ${e}.`,
   }),
 
   // xlookup-search-from-the-bottom (level 2, step 3)
   step("xlookup-search-from-the-bottom", 1, 1, "The first price logged", {
-    prompt: "In E2, return the first price logged for the SKU in E1, searching from the top. Use XLOOKUP.",
+    prompt:
+      "In E2, return the first price logged for the SKU in E1, searching from the top. Use XLOOKUP.",
     rows: [
       ["SKU", "Price", null, "SKU", "TX-101"],
       ["TX-101", 19.99, null, "First price", null],
@@ -676,7 +724,8 @@ export default [
     value: (e) => `The first price logged for TX-101 is ${e}.`,
   }),
   step("xlookup-search-from-the-bottom", 2, 2, "The latest status of a ticket", {
-    prompt: "In E2, return the latest status logged for the ticket in E1, searching from the bottom. Use XLOOKUP.",
+    prompt:
+      "In E2, return the latest status logged for the ticket in E1, searching from the bottom. Use XLOOKUP.",
     rows: [
       ["Ticket", "Status", null, "Ticket", "T-7"],
       ["T-7", "Opened", null, "Latest", null],
@@ -722,7 +771,8 @@ export default [
     value: (e) => `For a SKU not in the log, E2 should show ${e}.`,
   }),
   step("xlookup-search-from-the-bottom", 5, 3, "Price change since the first entry", {
-    prompt: "In E2, by how much has the price of the SKU in E1 changed between its first and its latest entry in the log?",
+    prompt:
+      "In E2, by how much has the price of the SKU in E1 changed between its first and its latest entry in the log?",
     rows: [
       ["SKU", "Price", null, "SKU", "TX-101"],
       ["TX-101", 19.99, null, "Change", null],
@@ -827,13 +877,17 @@ export default [
       [null, null, null, "Total", null],
     ],
     cell: "E6",
-    answer: "=XLOOKUP(D2,A2:A5,B2:B5,0)*E2+XLOOKUP(D3,A2:A5,B2:B5,0)*E3+XLOOKUP(D4,A2:A5,B2:B5,0)*E4",
+    answer:
+      "=XLOOKUP(D2,A2:A5,B2:B5,0)*E2+XLOOKUP(D3,A2:A5,B2:B5,0)*E3+XLOOKUP(D4,A2:A5,B2:B5,0)*E4",
     required: [],
     accept: ["=SUMPRODUCT(XLOOKUP(D2:D4,A2:A5,B2:B5,0),E2:E4)"],
     variants: [{ D3: "TX-104" }, { E2: 6 }],
     reject: [
       ["=XLOOKUP(D2,A2:A5,B2:B5,0)*E2", "value"],
-      ["=XLOOKUP(D2,A2:A5,B2:B5)*E2+XLOOKUP(D3,A2:A5,B2:B5)*E3+XLOOKUP(D4,A2:A5,B2:B5)*E4", "value"],
+      [
+        "=XLOOKUP(D2,A2:A5,B2:B5)*E2+XLOOKUP(D3,A2:A5,B2:B5)*E3+XLOOKUP(D4,A2:A5,B2:B5)*E4",
+        "value",
+      ],
     ],
     nudge: "Look up each SKU with a fallback of 0, multiply by its quantity, and add.",
     rule: "The fallback 0 stops one unknown SKU from turning the whole total into #N/A.",
@@ -863,7 +917,8 @@ export default [
     value: (e) => `EX-500 is the ${e}.`,
   }),
   step("vlookup-and-xlookup-on-the-same-table", 2, 1, "Product name with XLOOKUP", {
-    prompt: "In B7, return the same product name with XLOOKUP: the SKU in B6, the SKU column, the product column.",
+    prompt:
+      "In B7, return the same product name with XLOOKUP: the SKU in B6, the SKU column, the product column.",
     rows: [
       ["SKU", "Product", "Unit price"],
       ["BX-210", "Bracket", 2.4],
@@ -887,7 +942,8 @@ export default [
     value: (e) => `DX-410 is the ${e}.`,
   }),
   step("vlookup-and-xlookup-on-the-same-table", 4, 2, "Name and price in one lookup", {
-    prompt: "In B7, return both the product and the unit price for the SKU in B6 in one formula, filling B7 and C7. Use XLOOKUP.",
+    prompt:
+      "In B7, return both the product and the unit price for the SKU in B6 in one formula, filling B7 and C7. Use XLOOKUP.",
     rows: [
       ["SKU", "Product", "Unit price"],
       ["BX-210", "Bracket", 2.4],
@@ -976,7 +1032,8 @@ export default [
     value: (e) => `For a SKU not in the list, B7 should show ${e}.`,
   }),
   step("lookup-functions-summary", 4, 2, "Left lookup with INDEX and MATCH", {
-    prompt: "In B7, return the product name for the SKU in B6 with INDEX and MATCH instead of XLOOKUP.",
+    prompt:
+      "In B7, return the product name for the SKU in B6 with INDEX and MATCH instead of XLOOKUP.",
     rows: [
       ["Product", "SKU", "On hand"],
       ["Bracket", "BX-210", 240],

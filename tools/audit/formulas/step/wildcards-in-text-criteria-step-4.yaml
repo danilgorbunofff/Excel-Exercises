@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =COUNTIF(A$2:A$8,"*~*")
+      - =countif(a2:a8, "*~*")
+      - =LET(data,A2:A8,COUNTIF(data,"*~*"))
+    wrong: []
+    equivalent: []

@@ -1,0 +1,38 @@
+id: budget-versus-actual-with-a-variance-flag-step-1
+slug: budget-versus-actual-with-a-variance-flag-step-1
+level: 1
+title: Variance in money
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: budget-versus-actual-with-a-variance-flag
+step: 1
+screens:
+  - prompt: "In D2, work out the variance of the first line: the actual in C2 minus the budget in B2."
+    rows:
+      - [Line, Budget, Actual, Variance]
+      - [Travel, 12000, 13450, null]
+    answerCell: D2
+    expected: 1450
+    variants:
+      - set: { C2: 11200 }
+        expected: -800
+    answer: =C2-B2
+    requiredFunctions: []
+    hints:
+      nudge: Actual minus budget; a positive answer means overspent.
+      rule: C2-B2 is how far the actual is from the budget.
+    misses:
+      value: The variance is 1450.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =C2-B2
+      - =-B2+C2
+    reject:
+      - formula: =B2-C2
+        rule: value
+      - formula: =1450
+        rule: reference
+      - formula: =C2-B2,
+        rule: syntax

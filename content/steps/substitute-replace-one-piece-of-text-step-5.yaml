@@ -1,0 +1,44 @@
+id: substitute-replace-one-piece-of-text-step-5
+slug: substitute-replace-one-piece-of-text-step-5
+level: 3
+title: Items in a comma-separated list
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: substitute-replace-one-piece-of-text
+step: 5
+screens:
+  - prompt: In B2, how many items are in the comma-separated list in A2? An empty list has 0 items.
+    rows:
+      - [List, Items]
+      - ["pens,pads,clips,tape", null]
+    answerCell: B2
+    expected: 4
+    variants:
+      - set: { A2: ink }
+        expected: 1
+      - set: { A2: "" }
+        expected: 0
+      - set: { A2: "a,b,c,d,e,f" }
+        expected: 6
+    answer: =IF(TRIM(A2)="",0,LEN(A2)-LEN(SUBSTITUTE(A2,",",""))+1)
+    requiredFunctions: []
+    hints:
+      nudge: Each comma separates two items, so items are commas plus 1, except for an empty list.
+      rule: LEN minus LEN without commas counts the commas; +1 gives the items; the IF gives 0 for an empty cell.
+    misses:
+      value: The list has 4 items.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(TRIM(A2)="",0,LEN(A2)-LEN(SUBSTITUTE(A2,",",""))+1)
+      - =IF(A2="",0,LEN(A2)-LEN(SUBSTITUTE(A2,",",""))+1)
+    reject:
+      - formula: =LEN(A2)-LEN(SUBSTITUTE(A2,",",""))+1
+        rule: fragile
+      - formula: =LEN(A2)-LEN(SUBSTITUTE(A2,",",""))
+        rule: value
+      - formula: =4
+        rule: reference
+      - formula: =IF(TRIM(A2)="",0,LEN(A2)-LEN(SUBSTITUTE(A2,",",""))+1
+        rule: syntax

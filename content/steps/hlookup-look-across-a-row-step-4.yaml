@@ -1,0 +1,44 @@
+id: hlookup-look-across-a-row-step-4
+slug: hlookup-look-across-a-row-step-4
+level: 2
+title: Look across a row with XLOOKUP
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: hlookup-look-across-a-row
+step: 4
+screens:
+  - prompt: "In B5, return the price for the month in B4 with XLOOKUP: search the month row, return the price row."
+    rows:
+      - [Month, Jan, Feb, Mar, Apr]
+      - [Units, 120, 180, 200, 165]
+      - [Price, 4.5, 5, 5.25, 5.1]
+      - [Lookup, Mar, null, null, null]
+      - [Price, null, null, null, null]
+    answerCell: B5
+    expected: 5.25
+    variants:
+      - set: { B4: Jan }
+        expected: 4.5
+    answer: =XLOOKUP(B4,B1:E1,B3:E3)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: XLOOKUP works across rows just as down columns.
+      rule: XLOOKUP(B4,B1:E1,B3:E3) searches the month row and returns from the price row.
+    misses:
+      value: March's price is 5.25.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(B4,B1:E1,B3:E3)
+      - =XLOOKUP($B$4,$B$1:$E$1,$B$3:$E$3)
+    reject:
+      - formula: =XLOOKUP(B4,B1:E1,B2:E2)
+        rule: value
+      - formula: =HLOOKUP(B4,B1:E3,3,FALSE)
+        rule: required-function
+      - formula: =5.25
+        rule: required-function
+      - formula: =XLOOKUP(B4,B1:E1,B3:E3
+        rule: syntax

@@ -1,0 +1,46 @@
+id: two-way-index-match-step-1
+slug: two-way-index-match-step-1
+level: 1
+title: Row by MATCH, fixed column
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: two-way-index-match
+step: 1
+screens:
+  - prompt: In B8, return the Q2 units, the 2nd column of B2:E5, for the region in B7. Use INDEX and MATCH.
+    rows:
+      - [Region, Q1, Q2, Q3, Q4]
+      - [North, 120, 140, 160, 150]
+      - [South, 90, 110, 130, 145]
+      - [East, 105, 95, 120, 135]
+      - [West, 75, 95, 115, 100]
+      - [null, null, null, null, null]
+      - [Region, East, null, null, null]
+      - [Q2 units, null, null, null, null]
+    answerCell: B8
+    expected: 95
+    variants:
+      - { set: { B7: North }, expected: 140 }
+      - { set: { B7: West }, expected: 95 }
+    answer: =INDEX(B2:E5,MATCH(B7,A2:A5,0),2)
+    requiredFunctions:
+      - INDEX
+      - MATCH
+    hints:
+      nudge: MATCH finds the region's row; the column is fixed at 2.
+      rule: INDEX(B2:E5,MATCH(B7,A2:A5,0),2) reads Q2 for that region.
+    misses:
+      value: East sold 95 in Q2.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for INDEX and MATCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(B2:E5,MATCH(B7,A2:A5,0),2)
+      - =INDEX(C2:C5,MATCH(B7,A2:A5,0))
+    reject:
+      - formula: =INDEX(B2:E5,MATCH(B7,A2:A5,0),1)
+        rule: value
+      - formula: =95
+        rule: required-function
+      - formula: =INDEX(B2:E5,MATCH(B7,A2:A5,0),2
+        rule: syntax

@@ -1,0 +1,56 @@
+id: wildcards-in-text-criteria-step-5
+slug: wildcards-in-text-criteria-step-5
+level: 3
+title: Sales of the 2026 SKU range
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: wildcards-in-text-criteria
+step: 5
+screens:
+  - prompt: In E2, what did the 2026 SKU range sell? Those SKUs are SK-26 followed by exactly two characters. Returns end in -R and should not count.
+    rows:
+      - [SKU, Sales, null, null, 2026 range]
+      - [SK-2601, 420, null, null, null]
+      - [SK-2512, 310, null, null, null]
+      - [SK-2602, 275, null, null, null]
+      - [SK-2601-R, -60, null, null, null]
+      - [SK-2610, 190, null, null, null]
+      - [SK-2490, 160, null, null, null]
+      - [SK-2615, 230, null, null, null]
+      - [SK-26A, 145, null, null, null]
+      - [SK-2620, 205, null, null, null]
+      - [SK-2602-R, -40, null, null, null]
+      - [SK-2633, 180, null, null, null]
+      - [SK-2701, 260, null, null, null]
+      - [SK-2640, 95, null, null, null]
+      - [SK-26123, 120, null, null, null]
+      - [SK-2650, 310, null, null, null]
+    answerCell: E2
+    expected: 1905
+    variants:
+      - set: { B4: 300 }
+        expected: 1930
+      - set: { A13: SK-2655 }
+        expected: 2165
+    answer: =SUMIF(A2:A16,"SK-26??",B2:B16)
+    requiredFunctions: []
+    hints:
+      nudge: Two ? marks allow exactly two characters after SK-26, which keeps out the returns and odd codes.
+      rule: '"SK-26??" matches SK-26 and two more characters only.'
+    misses:
+      value: The 2026 range sold 1905.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(A2:A16,"SK-26??",B2:B16)
+      - =SUMIFS(B2:B16,A2:A16,"SK-26??")
+    reject:
+      - formula: =SUMIF(A2:A16,"SK-26*",B2:B16)
+        rule: value
+      - formula: =SUMIF(A2:A16,"SK-26?",B2:B16)
+        rule: value
+      - formula: =1905
+        rule: reference
+      - formula: =SUMIF(A2:A16,"SK-26??",B2:B16
+        rule: syntax

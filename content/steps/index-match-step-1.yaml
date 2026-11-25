@@ -1,0 +1,44 @@
+id: index-match-step-1
+slug: index-match-step-1
+level: 1
+title: Name for an ID
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: index-match
+step: 1
+screens:
+  - prompt: In E3, return the name for the ID in D3. Use INDEX and MATCH.
+    rows:
+      - [ID, Name, Salary, Lookup, Result]
+      - [E-101, Ana, 61500, null, null]
+      - [E-102, Bo, 57000, E-104, null]
+      - [E-103, Cy, 88000, null, null]
+      - [E-104, Dee, 54000, null, null]
+      - [E-105, Eli, 49500, null, null]
+    answerCell: E3
+    expected: Dee
+    variants:
+      - { set: { D3: E-101 }, expected: Ana }
+      - { set: { D3: Ana, A6: Ana }, expected: Eli }
+    answer: =INDEX(B2:B6,MATCH(D3,A2:A6,0))
+    requiredFunctions:
+      - INDEX
+      - MATCH
+    hints:
+      nudge: MATCH finds the ID's row; INDEX returns the name on it.
+      rule: INDEX(B2:B6,MATCH(D3,A2:A6,0)) returns the name for the ID.
+    misses:
+      value: E-104 is Dee.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for INDEX and MATCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(B2:B6,MATCH(D3,A2:A6,0))
+      - =INDEX($B$2:$B$6,MATCH($D$3,$A$2:$A$6,0))
+    reject:
+      - formula: =INDEX(C2:C6,MATCH(D3,A2:A6,0))
+        rule: value
+      - formula: ="Dee"
+        rule: required-function
+      - formula: =INDEX(B2:B6,MATCH(D3,A2:A6,0)
+        rule: syntax

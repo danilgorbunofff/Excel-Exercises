@@ -1,0 +1,42 @@
+id: order-details-from-two-tables-step-1
+slug: order-details-from-two-tables-step-1
+level: 1
+title: Customer name for an order
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: order-details-from-two-tables
+step: 1
+screens:
+  - prompt: In C2, show the name of the customer on the first order, from the customer table in E:G. Use XLOOKUP.
+    rows:
+      - [Order, Customer ID, Customer, null, Customer ID, Customer, Region]
+      - [O-1, C-02, null, null, C-01, Arden, North]
+      - [O-2, C-04, null, null, C-02, Brook, South]
+      - [O-3, C-01, null, null, C-03, Cole, North]
+      - [null, null, null, null, C-04, Dunn, East]
+    answerCell: C2
+    expected: Brook
+    variants:
+      - set: { B2: C-03 }
+        expected: Cole
+    answer: =XLOOKUP(B2,$E$2:$E$5,$F$2:$F$5)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: Search the customer IDs, return the names.
+      rule: XLOOKUP(B2,$E$2:$E$5,$F$2:$F$5) returns the customer's name.
+    misses:
+      value: The first order is for Brook.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(B2,$E$2:$E$5,$F$2:$F$5)
+      - =XLOOKUP(B2,E2:E5,F2:F5)
+    reject:
+      - formula: =XLOOKUP(B2,$E$2:$E$5,$G$2:$G$5)
+        rule: value
+      - formula: ="Brook"
+        rule: required-function
+      - formula: =XLOOKUP(B2,$E$2:$E$5,$F$2:$F$5
+        rule: syntax

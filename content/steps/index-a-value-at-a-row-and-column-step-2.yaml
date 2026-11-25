@@ -1,0 +1,48 @@
+id: index-a-value-at-a-row-and-column-step-2
+slug: index-a-value-at-a-row-and-column-step-2
+level: 2
+title: Value at a row and column from cells
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: index-a-value-at-a-row-and-column
+step: 2
+screens:
+  - prompt: In B9, return the units at the row in B7 and the quarter number in B8 of the grid B2:E5. Use INDEX.
+    rows:
+      - [Region, Q1, Q2, Q3, Q4]
+      - [North, 120, 140, 160, 150]
+      - [South, 90, 110, 130, 145]
+      - [East, 105, 95, 120, 135]
+      - [West, 75, 95, 115, 100]
+      - [null, null, null, null, null]
+      - [Row, 2, null, null, null]
+      - [Quarter, 4, null, null, null]
+      - [Units, null, null, null, null]
+    answerCell: B9
+    expected: 145
+    variants:
+      - { set: { B7: 4 }, expected: 100 }
+      - { set: { B8: 1 }, expected: 90 }
+    answer: =INDEX(B2:E5,B7,B8)
+    requiredFunctions:
+      - INDEX
+    hints:
+      nudge: Row first, then column, both counted inside the grid.
+      rule: INDEX(B2:E5,B7,B8) reads the cell at that row and column of the grid.
+    misses:
+      value: Row 2, quarter 4 holds 145.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for INDEX.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =INDEX(B2:E5,B7,B8)
+      - =INDEX($B$2:$E$5,$B$7,$B$8)
+    reject:
+      - formula: =INDEX(B2:E5,B8,B7)
+        rule: value
+      - formula: =INDEX(A1:E5,B7,B8)
+        rule: value
+      - formula: =145
+        rule: required-function
+      - formula: =INDEX(B2:E5,B7,B8
+        rule: syntax

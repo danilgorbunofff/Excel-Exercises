@@ -1,0 +1,39 @@
+id: address-on-one-line-step-2
+slug: address-on-one-line-step-2
+level: 1
+title: First line and town with CONCAT
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: address-on-one-line
+step: 2
+screens:
+  - prompt: In E2, join the first line in A2 and the town in C2, separated by a comma and a space. Use CONCAT.
+    rows:
+      - [Line 1, Line 2, Town, Postcode, Address]
+      - [12 Mill Lane, null, Hebden, HX7 8AB, null]
+    answerCell: E2
+    expected: 12 Mill Lane, Hebden
+    variants:
+      - set: { C2: Halifax }
+        expected: 12 Mill Lane, Halifax
+    answer: =CONCAT(A2,", ",C2)
+    requiredFunctions:
+      - CONCAT
+    hints:
+      nudge: The separator ", " is its own argument.
+      rule: CONCAT(A2,", ",C2) joins the parts in order.
+    misses:
+      value: E2 shows 12 Mill Lane, Hebden.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for CONCAT.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =CONCAT(A2,", ",C2)
+      - =CONCAT(A2,", ")&C2
+    reject:
+      - formula: =CONCAT(A2,C2)
+        rule: value
+      - formula: ="12 Mill Lane, Hebden"
+        rule: required-function
+      - formula: =CONCAT(A2,", ",C2
+        rule: syntax

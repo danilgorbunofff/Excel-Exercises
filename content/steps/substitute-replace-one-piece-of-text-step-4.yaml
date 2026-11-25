@@ -1,0 +1,39 @@
+id: substitute-replace-one-piece-of-text-step-4
+slug: substitute-replace-one-piece-of-text-step-4
+level: 2
+title: Remove two kinds of character
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: substitute-replace-one-piece-of-text
+step: 4
+screens:
+  - prompt: In B2, remove both brackets from the phone number in A2. Use SUBSTITUTE inside SUBSTITUTE.
+    rows:
+      - [Phone, No brackets]
+      - [(020) 7946 0018, null]
+    answerCell: B2
+    expected: 020 7946 0018
+    variants:
+      - set: { A2: (0113) 496 0221 }
+        expected: 0113 496 0221
+    answer: =SUBSTITUTE(SUBSTITUTE(A2,"(",""),")","")
+    requiredFunctions:
+      - SUBSTITUTE
+    hints:
+      nudge: The inner SUBSTITUTE removes one bracket; the outer one removes the other.
+      rule: Nesting applies the second replacement to the result of the first.
+    misses:
+      value: "Without brackets: 020 7946 0018."
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUBSTITUTE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUBSTITUTE(SUBSTITUTE(A2,"(",""),")","")
+      - =SUBSTITUTE(SUBSTITUTE(A2,")",""),"(","")
+    reject:
+      - formula: =SUBSTITUTE(A2,"(","")
+        rule: value
+      - formula: ="020 7946 0018"
+        rule: required-function
+      - formula: =SUBSTITUTE(SUBSTITUTE(A2,"(",""),")",""
+        rule: syntax

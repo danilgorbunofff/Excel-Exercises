@@ -1,0 +1,59 @@
+id: a-monthly-close-checklist-in-formulas-step-5
+slug: a-monthly-close-checklist-in-formulas-step-5
+level: 3
+title: Can the month be closed
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-monthly-close-checklist-in-formulas
+step: 5
+screens:
+  - prompt: In D2, can the month be closed? Show close when every variance in B2:B9 is within the tolerance in D1 either way; otherwise show how many checks are outside it.
+    rows:
+      - [Check, Variance, null, 5]
+      - [Bank, 0, null, null]
+      - [Cash, 12.5, null, null]
+      - [Payroll, 0, null, null]
+      - [VAT, -3, null, null]
+      - [Fixed assets, 0, null, null]
+      - [Accruals, -8, null, null]
+      - [Prepayments, 4, null, null]
+      - [Intercompany, 0, null, null]
+    answerCell: D2
+    expected: 2
+    variants:
+      - set: { B3: 2, B7: 1 }
+        expected: close
+      - set: { D1: 10 }
+        expected: 1
+      - set: { B2: 12.5, B8: 5 }
+        expected: 3
+      - set: { B3: -8, B9: -8 }
+        expected: 3
+      - set: { B3: 5, B5: 0, B7: 0, B8: 0 }
+        expected: close
+      - set: { B3: 0, B5: 0, B7: 0, B8: 0, B9: 20 }
+        expected: 1
+      - set: { B2: 20, B3: 0, B5: 0, B7: 0, B8: 0 }
+        expected: 1
+    answer: =IF(SUMPRODUCT(--(ABS(B2:B9)>D1))=0,"close",SUMPRODUCT(--(ABS(B2:B9)>D1)))
+    requiredFunctions: []
+    hints:
+      nudge: Count the checks outside the tolerance; 0 means the month can close.
+      rule: ABS(B2:B9)>D1 marks each check outside the tolerance; SUMPRODUCT counts them, and IF turns a count of 0 into close.
+    misses:
+      value: 2 checks are outside the tolerance.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IF(SUMPRODUCT(--(ABS(B2:B9)>D1))=0,"close",SUMPRODUCT(--(ABS(B2:B9)>D1)))
+      - =LET(n,SUMPRODUCT(--(ABS(B2:B9)>D1)),IF(n=0,"close",n))
+    reject:
+      - formula: =SUMPRODUCT(--(ABS(B2:B9)>D1))
+        rule: fragile
+      - formula: =IF(SUMPRODUCT(--(B2:B9>D1))=0,"close",SUMPRODUCT(--(B2:B9>D1)))
+        rule: value
+      - formula: =2
+        rule: reference
+      - formula: =IF(SUMPRODUCT(--(ABS(B2:B9)>D1))=0,"close",SUMPRODUCT(--(ABS(B2:B9)>D1))
+        rule: syntax

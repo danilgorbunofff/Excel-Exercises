@@ -1,0 +1,21 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFERROR(ROUND((SUMIF($A$2:$A$7,$E$1,$B$2:$B$7)-SUMIF($A$2:$A$7,$E$1,$C$2:$C$7))/SUMIF($A$2:$A$7,$E$1,$B$2:$B$7)*100,1),"")
+      - =IFERROR(ROUND((SUMIF(A$2:A$7,E1,B2:B7)-SUMIF(A2:A7,E1,C2:C7))/SUMIF(A2:A7,E1,B2:B7)*100,1),"")
+      - =iferror(round((sumif(a2:a7, e1, b2:b7)-sumif(a2:a7, e1, c2:c7))/sumif(a2:a7, e1, b2:b7)*100, 1), "")
+      - =IFERROR(ROUND((SUMIFS(B2:B7,A2:A7,E1)-SUMIF(A2:A7,E1,C2:C7))/SUMIF(A2:A7,E1,B2:B7)*100,1),"")
+      - =IFERROR(ROUND((SUMPRODUCT((A2:A7=E1)*B2:B7)-SUMIF(A2:A7,E1,C2:C7))/SUMIF(A2:A7,E1,B2:B7)*100,1),"")
+      - =IFERROR(ROUND((SUM(FILTER(B2:B7,(A2:A7=E1),0))-SUMIF(A2:A7,E1,C2:C7))/SUMIF(A2:A7,E1,B2:B7)*100,1),"")
+      - =IFERROR(ROUND((SUMIF(A2:A7,E1,B2:B7)-SUMIFS(C2:C7,A2:A7,E1))/SUMIF(A2:A7,E1,B2:B7)*100,1),"")
+      - =IFERROR(ROUND((SUMIF(A2:A7,E1,B2:B7)-SUMPRODUCT((A2:A7=E1)*C2:C7))/SUMIF(A2:A7,E1,B2:B7)*100,1),"")
+      - =IFERROR(ROUND((SUMIF(A2:A7,E1,B2:B7)-SUM(FILTER(C2:C7,(A2:A7=E1),0)))/SUMIF(A2:A7,E1,B2:B7)*100,1),"")
+      - =IFERROR(ROUND((SUMIF(A2:A7,E1,B2:B7)-SUMIF(A2:A7,E1,C2:C7))/SUMIFS(B2:B7,A2:A7,E1)*100,1),"")
+      - =IFERROR(ROUND((SUMIF(A2:A7,E1,B2:B7)-SUMIF(A2:A7,E1,C2:C7))/SUMPRODUCT((A2:A7=E1)*B2:B7)*100,1),"")
+      - =IFERROR(ROUND((SUMIF(A2:A7,E1,B2:B7)-SUMIF(A2:A7,E1,C2:C7))/SUM(FILTER(B2:B7,(A2:A7=E1),0))*100,1),"")
+      - =LET(data,A2:A7,IFERROR(ROUND((SUMIF(data,E1,B2:B7)-SUMIF(data,E1,C2:C7))/SUMIF(data,E1,B2:B7)*100,1),""))
+    wrong:
+      - formula: =IFERROR(ROUNDUP((SUMIF(A2:A7,E1,B2:B7)-SUMIF(A2:A7,E1,C2:C7))/SUMIF(A2:A7,E1,B2:B7)*100,1),"")
+        rule: fragile
+        why: ROUNDUP instead of ROUND
+    equivalent: []

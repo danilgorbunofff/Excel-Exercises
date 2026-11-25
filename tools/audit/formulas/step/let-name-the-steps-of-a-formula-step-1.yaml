@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LET(t,SUM($D$2:$D$19),n,COUNT($D$2:$D$19),t/n)
+      - =LET(t,SUM(D$2:D$19),n,COUNT(D2:D19),t/n)
+      - =let(t, sum(d2:d19), n, count(d2:d19), t/n)
+      - =LET(t,SUMPRODUCT(D2:D19),n,COUNT(D2:D19),t/n)
+      - =LET(data,D2:D19,LET(t,SUM(data),n,COUNT(data),t/n))
+    wrong:
+      - formula: =LET(t,SUM(D2:D19),n,COUNTA(D2:D19),t/n)
+        rule: fragile
+        why: COUNTA instead of COUNT
+    equivalent: []

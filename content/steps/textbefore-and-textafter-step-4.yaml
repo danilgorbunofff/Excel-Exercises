@@ -1,0 +1,45 @@
+id: textbefore-and-textafter-step-4
+slug: textbefore-and-textafter-step-4
+level: 2
+title: File extension after the last dot
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: textbefore-and-textafter
+step: 4
+screens:
+  - prompt: "In B2, take the file extension: the text after the last dot in A2. Use TEXTAFTER with -1 to count from the end."
+    rows:
+      - [File, Extension]
+      - [report.v2.final.xlsx, null]
+    answerCell: B2
+    expected: xlsx
+    variants:
+      - set: { A2: notes.txt }
+        expected: txt
+    answer: =TEXTAFTER(A2,".",-1)
+    requiredFunctions:
+      - TEXTAFTER
+    hints:
+      nudge: A negative instance counts the dots from the end.
+      rule: TEXTAFTER(A2,".",-1) splits at the last dot, however many dots the name has.
+    misses:
+      value: The extension is xlsx.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for TEXTAFTER.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =TEXTAFTER(A2,".",-1)
+      - =TEXTAFTER($A$2,".",-1)
+      - '=TEXTAFTER(A2,".",-1,0)'
+      - '=TEXTAFTER(A2,".",-1)&""'
+      - '=TEXTAFTER(A2,".",-1,0)'
+      - '=TEXTAFTER(A2,".",-1)&""'
+    reject:
+      - formula: =TEXTAFTER(A2,".")
+        rule: value
+      - formula: =TEXTAFTER(A2,".",3)
+        rule: fragile
+      - formula: ="xlsx"
+        rule: required-function
+      - formula: =TEXTAFTER(A2,".",-1
+        rule: syntax

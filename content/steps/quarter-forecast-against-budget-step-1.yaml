@@ -1,0 +1,50 @@
+id: quarter-forecast-against-budget-step-1
+slug: quarter-forecast-against-budget-step-1
+level: 1
+title: Forecast for one quarter
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: quarter-forecast-against-budget
+step: 1
+screens:
+  - prompt: In F2, total the Q1 forecast. Use SUMIF.
+    rows:
+      - [Month, Quarter, Forecast, Budget, null, Q1 forecast]
+      - [1, Q1, 41000, 40000, null, null]
+      - [2, Q1, 39500, 40000, null, null]
+      - [3, Q1, 43000, 42000, null, null]
+      - [4, Q2, 44500, 42000, null, null]
+      - [5, Q2, 43000, 44000, null, null]
+      - [6, Q2, 46500, 44000, null, null]
+      - [7, Q3, 45500, 45000, null, null]
+      - [8, Q3, 42000, 43000, null, null]
+      - [9, Q3, 47500, 46000, null, null]
+      - [10, Q4, 48000, 47000, null, null]
+      - [11, Q4, 50500, 48000, null, null]
+      - [12, Q4, 51000, 52000, null, null]
+    answerCell: F2
+    expected: 123500
+    variants:
+      - { set: { C3: 41000 }, expected: 125000 }
+      - { set: { B13: Q1 }, expected: 174500 }
+    answer: =SUMIF(B2:B13,"Q1",C2:C13)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: Test the quarter column, add the forecast.
+      rule: SUMIF(B2:B13,"Q1",C2:C13) adds the three Q1 months.
+    misses:
+      value: The Q1 forecast is 123500.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(B2:B13,"Q1",C2:C13)
+      - =SUMIF($B$2:$B$13,"Q1",$C$2:$C$13)
+    reject:
+      - formula: =SUMIF(B2:B13,"Q1",D2:D13)
+        rule: value
+      - formula: =123500
+        rule: required-function
+      - formula: =SUMIF(B2:B13,"Q1",C2:C13
+        rule: syntax

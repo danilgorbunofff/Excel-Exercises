@@ -1,0 +1,52 @@
+id: stock-days-of-cover-and-reorder-flag-step-2
+slug: stock-days-of-cover-and-reorder-flag-step-2
+level: 1
+title: Stock needed over the lead time
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: stock-days-of-cover-and-reorder-flag
+step: 2
+screens:
+  - prompt: "In E2, work out how much pallet wrap is used while waiting for a delivery: daily use in C2 times lead time in D2."
+    rows:
+      - [Item, On hand, Daily use, Lead time days, Used in lead time, null]
+      - [Pallet wrap, 46, 4, 7, null, null]
+      - [Label rolls, 30, 6, 6, null, null]
+      - [Tape, 120, 15, 5, null, null]
+      - [Boxes S, 400, 35, 10, null, null]
+      - [Boxes M, 260, 40, 8, null, null]
+      - [Boxes L, 90, 12, 9, null, null]
+      - [Void fill, 55, 9, 4, null, null]
+      - [Gloves, 80, 5, 12, null, null]
+      - [Seals, 150, 20, 6, null, null]
+      - [Ties, 70, 8, 7, null, null]
+      - [Tags, 300, 25, 14, null, null]
+      - [Ink, 12, 2, 5, null, null]
+      - [Pens, 60, 7, 3, null, null]
+      - [Pads, 40, 3, 10, null, null]
+      - [Clips, 500, 45, 9, null, null]
+    answerCell: E2
+    expected: 28
+    variants:
+      - set: { D2: 9 }
+        expected: 36
+    answer: =C2*D2
+    requiredFunctions: []
+    hints:
+      nudge: Each day of waiting uses the daily amount.
+      rule: C2*D2 is the stock used before a new delivery arrives.
+    misses:
+      value: 28 units are used during the lead time.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =C2*D2
+      - =D2*C2
+    reject:
+      - formula: =C2+D2
+        rule: value
+      - formula: =28
+        rule: reference
+      - formula: =C2*D2,
+        rule: syntax

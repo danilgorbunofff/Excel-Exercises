@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP(D$1,F2:F5,G2:G5)
+      - =xlookup(d1, f2:f5, g2:g5)
+      - =LET(data,F2:F5,XLOOKUP(D1,data,G2:G5))
+    wrong: []
+    equivalent: []

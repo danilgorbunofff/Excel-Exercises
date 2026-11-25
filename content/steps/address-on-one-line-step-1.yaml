@@ -1,0 +1,38 @@
+id: address-on-one-line-step-1
+slug: address-on-one-line-step-1
+level: 1
+title: Town and postcode together
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: address-on-one-line
+step: 1
+screens:
+  - prompt: In E2, join the town in C2 and the postcode in D2, with a space between them.
+    rows:
+      - [Line 1, Line 2, Town, Postcode, Address]
+      - [12 Mill Lane, null, Hebden, HX7 8AB, null]
+    answerCell: E2
+    expected: Hebden HX7 8AB
+    variants:
+      - set: { D2: LS1 4AP }
+        expected: Hebden LS1 4AP
+    answer: =C2&" "&D2
+    requiredFunctions: []
+    hints:
+      nudge: Put " " between the two cells.
+      rule: C2&" "&D2 joins the two with a space.
+    misses:
+      value: E2 shows Hebden HX7 8AB.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =C2&" "&D2
+      - =CONCAT(C2," ",D2)
+    reject:
+      - formula: =C2&D2
+        rule: value
+      - formula: ="Hebden HX7 8AB"
+        rule: reference
+      - formula: =C2&" "&D2,
+        rule: syntax

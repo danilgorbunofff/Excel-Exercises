@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =TAKE(SORT($D$2:$D$19,,-1),5)
+      - =TAKE(SORT(D$2:D$19,,-1),5)
+      - =take(sort(d2:d19, , -1), 5)
+      - =LET(data,D2:D19,TAKE(SORT(data,,-1),5))
+    wrong:
+      - formula: =TAKE(SORT(D2:D18,,-1),5)
+        rule: fragile
+        why: range D2:D19 one row short at the end
+      - formula: =TAKE(SORT(D3:D19,,-1),5)
+        rule: fragile
+        why: range D2:D19 skips its first row
+    equivalent: []

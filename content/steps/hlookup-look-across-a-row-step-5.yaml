@@ -1,0 +1,47 @@
+id: hlookup-look-across-a-row-step-5
+slug: hlookup-look-across-a-row-step-5
+level: 3
+title: Price in the busiest month
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: hlookup-look-across-a-row
+step: 5
+screens:
+  - prompt: In B5, what was the price in the month that sold the most units?
+    rows:
+      - [Month, Jan, Feb, Mar, Apr, May, Jun]
+      - [Units, 120, 180, 200, 165, 190, 150]
+      - [Price, 4.5, 5, 5.25, 5.1, 5.4, 5.2]
+      - [null, null, null, null, null, null, null]
+      - [Price, null, null, null, null, null, null]
+    answerCell: B5
+    expected: 5.25
+    variants:
+      - { set: { F2: 230 }, expected: 5.4 }
+      - { set: { C2: 240 }, expected: 5 }
+      - { set: { B2: 240 }, expected: 4.5 }
+      - { set: { G2: 206 }, expected: 5.2 }
+      - { set: { D2: 5.25, D3: 200 }, expected: 5.4 }
+    answer: =XLOOKUP(MAX(B2:G2),B2:G2,B3:G3)
+    requiredFunctions: []
+    hints:
+      nudge: Find the highest units, then the price in that same column.
+      rule: MAX(B2:G2) is the best month's units; XLOOKUP finds that column and returns the price under it.
+    misses:
+      value: The busiest month's price was 5.25.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(MAX(B2:G2),B2:G2,B3:G3)
+      - =INDEX(B3:G3,MATCH(MAX(B2:G2),B2:G2,0))
+      - =HLOOKUP(MAX(B2:G2),B2:G3,2,FALSE)
+    reject:
+      - formula: =MAX(B3:G3)
+        rule: value
+      - formula: =D3
+        rule: fragile
+      - formula: =5.25
+        rule: reference
+      - formula: =XLOOKUP(MAX(B2:G2),B2:G2,B3:G3
+        rule: syntax

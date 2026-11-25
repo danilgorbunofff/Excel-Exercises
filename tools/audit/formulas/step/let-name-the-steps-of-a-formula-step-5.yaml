@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =LET(r,UNIQUE($B$2:$B$19),t,SUMIF($B$2:$B$19,r,$D$2:$D$19),MAX(t)-MIN(t))
+      - =LET(r,UNIQUE(B$2:B$19),t,SUMIF(B2:B19,r,D2:D19),MAX(t)-MIN(t))
+      - =let(r, unique(b2:b19), t, sumif(b2:b19, r, d2:d19), max(t)-min(t))
+      - =LET(r,UNIQUE(B2:B19),t,SUMIFS(D2:D19,B2:B19,r),MAX(t)-MIN(t))
+      - =LET(data,B2:B19,LET(r,UNIQUE(data),t,SUMIF(data,r,D2:D19),MAX(t)-MIN(t)))
+    wrong:
+      - formula: =LET(r,UNIQUE(B2:B18),t,SUMIF(B2:B19,r,D2:D19),MAX(t)-MIN(t))
+        rule: fragile
+        why: range B2:B19 one row short at the end
+      - formula: =LET(r,UNIQUE(B3:B19),t,SUMIF(B2:B19,r,D2:D19),MAX(t)-MIN(t))
+        rule: fragile
+        why: range B2:B19 skips its first row
+    equivalent:
+      - formula: =LET(r,B2:B19,t,SUMIF(B2:B19,r,D2:D19),MAX(t)-MIN(t))
+        why: "without UNIQUE: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

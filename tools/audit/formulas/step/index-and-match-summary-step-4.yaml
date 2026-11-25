@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =$B$6*INDEX($B$2:$B$4,MATCH($B$6,$A$2:$A$4,1))
+      - =B$6*INDEX(B2:B4,MATCH(B6,A2:A4,1))
+      - =b6*index(b2:b4, match(b6, a2:a4, 1))
+      - =LET(data,B2:B4,B6*INDEX(data,MATCH(B6,A2:A4,1)))
+    wrong: []
+    equivalent:
+      - formula: =B6*INDEX(B2:B5,MATCH(B6,A2:A4,1))
+        why: "range B2:B4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =B6*INDEX(B2:B4,MATCH(B6,A2:A5,1))
+        why: "range A2:A4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =B6*INDEX(B2:B4,MATCH(B6,A2:A4,2))
+        why: "1 written as 2: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

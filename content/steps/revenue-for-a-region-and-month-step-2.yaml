@@ -1,0 +1,48 @@
+id: revenue-for-a-region-and-month-step-2
+slug: revenue-for-a-region-and-month-step-2
+level: 1
+title: Revenue for the region in a cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: revenue-for-a-region-and-month
+step: 2
+screens:
+  - prompt: In G2, add up the revenue for the region typed in F2. Use SUMIF.
+    rows:
+      - [Region, Month, Revenue, null, null, Region, Revenue]
+      - [North, Jan, 12400, null, null, West, null]
+      - [South, Jan, 9800, null, null, null, null]
+      - [South, Feb, 11250, null, null, null, null]
+      - [North, Feb, 13100, null, null, null, null]
+      - [West, Feb, 7600, null, null, null, null]
+      - [South, Feb, 4300, null, null, null, null]
+      - [North, Mar, 14800, null, null, null, null]
+      - [South, Mar, 10900, null, null, null, null]
+      - [West, Jan, 6900, null, null, null, null]
+      - [South, Feb, 2750, null, null, null, null]
+    answerCell: G2
+    expected: 14500
+    variants:
+      - set: { F2: South }
+        expected: 39000
+    answer: =SUMIF(A2:A11,F2,C2:C11)
+    requiredFunctions:
+      - SUMIF
+    hints:
+      nudge: Point the condition at F2 instead of typing the region.
+      rule: SUMIF(A2:A11,F2,C2:C11) follows whatever region F2 holds.
+    misses:
+      value: The West made 14500.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIF.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIF(A2:A11,F2,C2:C11)
+      - =SUMIF($A$2:$A$11,$F$2,$C$2:$C$11)
+    reject:
+      - formula: =SUMIF(B2:B11,F2,C2:C11)
+        rule: value
+      - formula: =14500
+        rule: required-function
+      - formula: =SUMIF(A2:A11,F2,C2:C11
+        rule: syntax

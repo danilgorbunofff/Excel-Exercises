@@ -1,0 +1,38 @@
+id: lead-conversion-rate-step-1
+slug: lead-conversion-rate-step-1
+level: 1
+title: Conversion as a fraction
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: lead-conversion-rate
+step: 1
+screens:
+  - prompt: "In D2, work out the share of leads that became sales: the sales in C2 divided by the leads in B2."
+    rows:
+      - [Campaign, Leads, Sales, Conversion]
+      - [Spring email, 1840, 97, null]
+    answerCell: D2
+    expected: 0.0527173913043
+    variants:
+      - set: { C2: 120 }
+        expected: 0.0652173913043
+    answer: =C2/B2
+    requiredFunctions: []
+    hints:
+      nudge: Sales over leads, not leads over sales.
+      rule: C2/B2 is the fraction of leads that bought.
+    misses:
+      value: D2 shows 0.0527173913043.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =C2/B2
+      - =C2*(1/B2)
+    reject:
+      - formula: =B2/C2
+        rule: value
+      - formula: =0.0527173913043
+        rule: reference
+      - formula: =C2/B2,
+        rule: syntax

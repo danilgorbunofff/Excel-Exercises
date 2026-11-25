@@ -1,0 +1,55 @@
+id: a-sales-summary-end-to-end-step-2
+slug: a-sales-summary-end-to-end-step-2
+level: 2
+title: Total for the region in a cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-sales-summary-end-to-end
+step: 2
+screens:
+  - prompt: In F2, total the amounts for the region typed in F1. Use SUMIFS.
+    rows:
+      - [Region, Rep, Amount, null, Region, West]
+      - [North, Ada, 320, null, Total, null]
+      - [South, Ben, 250, null, null, null]
+      - [North, Cleo, 180, null, null, null]
+      - [West, Dev, 300, null, null, null]
+      - [North, Ada, 400, null, null, null]
+      - [East, Eve, 275, null, null, null]
+      - [South, Finn, 360, null, null, null]
+      - [West, Gus, 140, null, null, null]
+      - [East, Eve, 410, null, null, null]
+      - [South, Ada, 195, null, null, null]
+      - [North, Hana, 230, null, null, null]
+      - [West, Dev, 505, null, null, null]
+      - [East, Ivo, 160, null, null, null]
+      - [South, Finn, 290, null, null, null]
+      - [North, Cleo, 145, null, null, null]
+    answerCell: F2
+    expected: 945
+    variants:
+      - set: { F1: East }
+        expected: 845
+    answer: =SUMIFS(C2:C16,A2:A16,F1)
+    requiredFunctions:
+      - SUMIFS
+    hints:
+      nudge: The range to add comes first in SUMIFS.
+      rule: SUMIFS(C2:C16,A2:A16,F1) totals whichever region is in F1.
+    misses:
+      value: The West sold 945.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIFS.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIFS(C2:C16,A2:A16,F1)
+      - =SUMIFS($C$2:$C$16,$A$2:$A$16,$F$1)
+    reject:
+      - formula: =SUMIFS(C2:C16,A2:A16,"West")
+        rule: fragile
+      - formula: =SUMIF(A2:A16,F1,C2:C16)
+        rule: required-function
+      - formula: =945
+        rule: required-function
+      - formula: =SUMIFS(C2:C16,A2:A16,F1
+        rule: syntax

@@ -1,0 +1,21 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =$B$2*VLOOKUP($B$2,$E$2:$F$4,2,TRUE)+($B$2>$F$6)*$F$7
+      - =B$2*VLOOKUP(B2,$E$2:$F$4,2,TRUE)+(B2>$F$6)*$F$7
+      - =b2*vlookup(b2, $e$2:$f$4, 2, true)+(b2>$f$6)*$f$7
+      - =B2*XLOOKUP(B2,$E$2:$E$4,$F$2:$F$4,,-1)+(B2>$F$6)*$F$7
+      - =B2*INDEX($F$2:$F$4,MATCH(B2,$E$2:$E$4,1))+(B2>$F$6)*$F$7
+      - =LET(data,$E$2:$F$4,B2*VLOOKUP(B2,data,2,TRUE)+(B2>$F$6)*$F$7)
+    wrong:
+      - formula: =B2*VLOOKUP(B2,$E$3:$F$4,2,TRUE)+(B2>$F$6)*$F$7
+        rule: fragile
+        why: range $E$2:$F$4 skips its first row
+      - formula: =B2*VLOOKUP(B2,$E$2:$F$4,2,TRUE)+(B2>=$F$6)*$F$7
+        rule: fragile
+        why: "> written as >="
+    equivalent:
+      - formula: =B2*VLOOKUP(B2,$E$2:$F$4,2)+(B2>$F$6)*$F$7
+        why: "VLOOKUP without FALSE: The table is sorted and the answer already matches approximately, so Excel gives the same answer here."
+      - formula: =B2*VLOOKUP(B2,$E$2:$F$5,2,TRUE)+(B2>$F$6)*$F$7
+        why: "range $E$2:$F$4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

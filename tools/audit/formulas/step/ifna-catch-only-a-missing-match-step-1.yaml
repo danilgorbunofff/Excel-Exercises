@@ -1,0 +1,13 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFNA(MATCH(A$8,A2:A6,0),"missing")
+      - =ifna(match(a8, a2:a6, 0), "missing")
+      - =LET(data,A2:A6,IFNA(MATCH(A8,data,0),"missing"))
+    wrong:
+      - formula: =IFNA(MATCH(A8,A2:A5,0),"missing")
+        rule: fragile
+        why: range A2:A6 one row short at the end
+    equivalent:
+      - formula: =IFNA(MATCH(A8,A2:A7,0),"missing")
+        why: "range A2:A6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

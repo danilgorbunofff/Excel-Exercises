@@ -1,0 +1,55 @@
+id: clean-up-an-imported-list-step-5
+slug: clean-up-an-imported-list-step-5
+level: 3
+title: How many duplicates after tidying
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: clean-up-an-imported-list
+step: 5
+screens:
+  - prompt: In C2, how many of the imported names in A2:A16 are repeats of a name above them, once spaces are tidied and capitals ignored?
+    rows:
+      - [Imported, null, Repeats]
+      - [Ada Lovelace, null, null]
+      - ["  ada  lovelace", null, null]
+      - [Grace Hopper, null, null]
+      - [Alan Turing, null, null]
+      - ["GRACE HOPPER ", null, null]
+      - [Katherine Johnson, null, null]
+      - [Mary Jackson, null, null]
+      - [alan turing, null, null]
+      - [Dorothy Vaughan, null, null]
+      - [Ada Lovelace, null, null]
+      - [Hedy Lamarr, null, null]
+      - [Joan Clarke, null, null]
+      - [hedy   lamarr, null, null]
+      - [Annie Easley, null, null]
+      - ["Joan Clarke ", null, null]
+    answerCell: C2
+    expected: 6
+    variants:
+      - { set: { A3: Ada King }, expected: 5 }
+      - { set: { A13: Ada Lovelace }, expected: 6 }
+      - { set: { A2: Katherine Johnson, A7: Ada Lovelace }, expected: 6 }
+    answer: =ROWS(A2:A16)-ROWS(UNIQUE(LOWER(TRIM(A2:A16))))
+    requiredFunctions: []
+    hints:
+      nudge: Tidy every name the same way, list each tidy name once, and compare the counts.
+      rule: LOWER(TRIM(A2:A16)) gives each name in one form; UNIQUE lists each once; the names it removes are the repeats.
+    misses:
+      value: 6 names are repeats.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROWS(A2:A16)-ROWS(UNIQUE(LOWER(TRIM(A2:A16))))
+      - =COUNTA(A2:A16)-COUNTA(UNIQUE(LOWER(TRIM(A2:A16))))
+    reject:
+      - formula: =ROWS(A2:A16)-ROWS(UNIQUE(A2:A16))
+        rule: value
+      - formula: =ROWS(A2:A16)-ROWS(UNIQUE(LOWER(A2:A16)))
+        rule: value
+      - formula: =6
+        rule: reference
+      - formula: =ROWS(A2:A16)-ROWS(UNIQUE(LOWER(TRIM(A2:A16)))
+        rule: syntax

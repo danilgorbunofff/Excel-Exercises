@@ -1,0 +1,39 @@
+id: textjoin-join-a-range-and-skip-blanks-step-4
+slug: textjoin-join-a-range-and-skip-blanks-step-4
+level: 2
+title: Keep blanks as empty slots
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: textjoin-join-a-range-and-skip-blanks
+step: 4
+screens:
+  - prompt: In F2, join A2:E2 into a CSV line with plain commas, keeping each empty cell as an empty slot so the columns stay in place. Use TEXTJOIN.
+    rows:
+      - [Code, Name, Phone, City, Notes, CSV]
+      - [C-7, Lee, null, York, null, null]
+    answerCell: F2
+    expected: C-7,Lee,,York,
+    variants:
+      - set: { C2: 0711 223 }
+        expected: C-7,Lee,0711 223,York,
+    answer: =TEXTJOIN(",",FALSE,A2:E2)
+    requiredFunctions:
+      - TEXTJOIN
+    hints:
+      nudge: FALSE keeps the empty cells, so two commas mark a blank.
+      rule: TEXTJOIN(",",FALSE,A2:E2) keeps every slot, which a CSV file needs.
+    misses:
+      value: The CSV line is C-7,Lee,,York,.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for TEXTJOIN.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =TEXTJOIN(",",FALSE,A2:E2)
+      - =TEXTJOIN(",",0,A2:E2)
+    reject:
+      - formula: =TEXTJOIN(",",TRUE,A2:E2)
+        rule: value
+      - formula: ="C-7,Lee,,York,"
+        rule: required-function
+      - formula: =TEXTJOIN(",",FALSE,A2:E2
+        rule: syntax

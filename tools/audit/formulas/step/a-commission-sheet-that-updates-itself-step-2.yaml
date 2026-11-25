@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =VLOOKUP($B$2,$E$2:$F$4,2,TRUE)
+      - =VLOOKUP(B$2,$E$2:$F$4,2,TRUE)
+      - =vlookup(b2, $e$2:$f$4, 2, true)
+      - =LET(data,$E$2:$F$4,VLOOKUP(B2,data,2,TRUE))
+    wrong: []
+    equivalent:
+      - formula: =VLOOKUP(B2,$E$2:$F$5,2,TRUE)
+        why: "range $E$2:$F$4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

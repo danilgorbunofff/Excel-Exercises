@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(ABS($B$2)<=$F$1,"ready","check")
+      - =IF(ABS(B$2)<=$F$1,"ready","check")
+      - =if(abs(b2)<=$f$1, "ready", "check")
+    wrong: []
+    equivalent: []

@@ -1,0 +1,54 @@
+id: days-and-simple-date-maths-step-5
+slug: days-and-simple-date-maths-step-5
+level: 3
+title: Invoices older than 30 days
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: days-and-simple-date-maths
+step: 5
+screens:
+  - prompt: In E2, how many invoices were issued more than 30 days before the date in E1?
+    rows:
+      - [Invoice, Issued, null, As of, 45400]
+      - [INV-01, 45340, null, Over 30 days, null]
+      - [INV-02, 45380, null, null, null]
+      - [INV-03, 45355, null, null, null]
+      - [INV-04, 45369, null, null, null]
+      - [INV-05, 45390, null, null, null]
+      - [INV-06, 45300, null, null, null]
+      - [INV-07, 45372, null, null, null]
+      - [INV-08, 45365, null, null, null]
+      - [INV-09, 45395, null, null, null]
+      - [INV-10, 45310, null, null, null]
+      - [INV-11, 45368, null, null, null]
+      - [INV-12, 45388, null, null, null]
+      - [INV-13, 45325, null, null, null]
+      - [INV-14, 45371, null, null, null]
+      - [INV-15, 45399, null, null, null]
+    answerCell: E2
+    expected: 8
+    variants:
+      - { set: { E1: 45420 }, expected: 12 }
+      - { set: { B16: 45340 }, expected: 9 }
+    answer: =COUNTIF(B2:B16,"<"&E1-30)
+    requiredFunctions: []
+    hints:
+      nudge: An invoice is too old when its date is before E1 minus 30.
+      rule: COUNTIF(B2:B16,"<"&E1-30) counts the dates more than 30 days before E1; exactly 30 days does not count.
+    misses:
+      value: 8 invoices are more than 30 days old.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =COUNTIF(B2:B16,"<"&E1-30)
+      - =SUMPRODUCT(--(E1-B2:B16>30))
+    reject:
+      - formula: =COUNTIF(B2:B16,"<="&E1-30)
+        rule: fragile
+      - formula: =COUNTIF(B2:B16,"<45370")
+        rule: fragile
+      - formula: =8
+        rule: reference
+      - formula: =COUNTIF(B2:B16,"<"&E1-30
+        rule: syntax

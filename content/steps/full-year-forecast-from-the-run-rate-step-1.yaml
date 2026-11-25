@@ -1,0 +1,43 @@
+id: full-year-forecast-from-the-run-rate-step-1
+slug: full-year-forecast-from-the-run-rate-step-1
+level: 1
+title: Average month so far
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: full-year-forecast-from-the-run-rate
+step: 1
+screens:
+  - prompt: In D2, work out the average month so far, B2 to B6. Use AVERAGE.
+    rows:
+      - [Month, Actual, Months closed, null, null]
+      - [1, 41200, 5, null, null]
+      - [2, 39800, null, null, null]
+      - [3, 43500, null, null, null]
+      - [4, 44100, null, null, null]
+      - [5, 45600, null, null, null]
+    answerCell: D2
+    expected: 42840
+    variants:
+      - set: { B4: 40000 }
+        expected: 42140
+    answer: =AVERAGE(B2:B6)
+    requiredFunctions:
+      - AVERAGE
+    hints:
+      nudge: AVERAGE of the closed months.
+      rule: AVERAGE(B2:B6) is the run rate per month.
+    misses:
+      value: The average month is 42840.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for AVERAGE.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AVERAGE(B2:B6)
+      - =AVERAGE($B$2:$B$6)
+    reject:
+      - formula: =SUM(B2:B6)
+        rule: required-function
+      - formula: =42840
+        rule: required-function
+      - formula: =AVERAGE(B2:B6
+        rule: syntax

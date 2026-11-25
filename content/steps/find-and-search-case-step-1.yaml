@@ -1,0 +1,39 @@
+id: find-and-search-case-step-1
+slug: find-and-search-case-step-1
+level: 1
+title: Position of a space
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: find-and-search-case
+step: 1
+screens:
+  - prompt: In B2, give the position of the first space in A2. Use FIND.
+    rows:
+      - [Product, Space at]
+      - [Desk lamp black, null]
+    answerCell: B2
+    expected: 5
+    variants:
+      - set: { A2: Floor lamp }
+        expected: 6
+    answer: =FIND(" ",A2)
+    requiredFunctions:
+      - FIND
+    hints:
+      nudge: 'The space goes in quotes: " ".'
+      rule: FIND(" ",A2) gives the position of the first space.
+    misses:
+      value: The first space is character 5.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for FIND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =FIND(" ",A2)
+      - =FIND(" ",A2,1)
+    reject:
+      - formula: =FIND(" ",A2,6)
+        rule: value
+      - formula: =5
+        rule: required-function
+      - formula: =FIND(" ",A2
+        rule: syntax

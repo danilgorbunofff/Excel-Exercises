@@ -1,0 +1,39 @@
+id: tidy-a-pasted-name-step-2
+slug: tidy-a-pasted-name-step-2
+level: 1
+title: Capitals at the start of each word
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: tidy-a-pasted-name
+step: 2
+screens:
+  - prompt: In B2, give the name a capital at the start of each word and small letters after. Use PROPER.
+    rows:
+      - [Pasted, Tidy]
+      - [mARY o'NEIL, null]
+    answerCell: B2
+    expected: Mary O'Neil
+    variants:
+      - set: { A2: OWEN lLOYD }
+        expected: Owen Lloyd
+    answer: =PROPER(A2)
+    requiredFunctions:
+      - PROPER
+    hints:
+      nudge: PROPER capitalises the first letter of each word.
+      rule: PROPER(A2) gives each word a capital, then small letters.
+    misses:
+      value: B2 shows Mary O'Neil.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for PROPER.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =PROPER(A2)
+      - =PROPER(LOWER(A2))
+    reject:
+      - formula: =UPPER(A2)
+        rule: required-function
+      - formula: ="Mary O'Neil"
+        rule: required-function
+      - formula: =PROPER(A2
+        rule: syntax

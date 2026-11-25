@@ -1,0 +1,10 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =XLOOKUP($B$7,$A$2:$A$5,XLOOKUP($B$8,$B$1:$E$1,$B$2:$E$5))
+      - =XLOOKUP(B$7,A2:A5,XLOOKUP(B8,B1:E1,B2:E5))
+      - =xlookup(b7, a2:a5, xlookup(b8, b1:e1, b2:e5))
+      - =INDEX(XLOOKUP(B8,B1:E1,B2:E5),MATCH(B7,A2:A5,0))
+      - =LET(data,A2:A5,XLOOKUP(B7,data,XLOOKUP(B8,B1:E1,B2:E5)))
+    wrong: []
+    equivalent: []

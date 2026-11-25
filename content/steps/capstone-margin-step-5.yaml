@@ -1,0 +1,46 @@
+id: capstone-margin-step-5
+slug: capstone-margin-step-5
+level: 3
+title: Margin for the region in a cell
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: capstone-margin
+step: 5
+screens:
+  - prompt: In E2, what is the gross margin percentage, rounded to 1 decimal, for the region typed in E1? Show a blank when that region has no sales.
+    rows:
+      - [Region, Revenue, Cost, null, West]
+      - [North, 4800, 3100, null, null]
+      - [South, 3600, 2500, null, null]
+      - [North, 2200, 1500, null, null]
+      - [West, 1900, 1400, null, null]
+      - [South, 2700, 1950, null, null]
+      - [West, 3100, 2050, null, null]
+    answerCell: E2
+    expected: 31
+    variants:
+      - { set: { E1: South }, expected: 29.4 }
+      - { set: { E1: East }, expected: "" }
+      - { set: { A3: West }, expected: 30.8 }
+    answer: =IFERROR(ROUND((SUMIF(A2:A7,E1,B2:B7)-SUMIF(A2:A7,E1,C2:C7))/SUMIF(A2:A7,E1,B2:B7)*100,1),"")
+    requiredFunctions: []
+    hints:
+      nudge: Total the region's revenue and cost with SUMIF on E1, work out the margin, round it, and guard against no sales.
+      rule: Every SUMIF reads the region from E1, so the margin follows it; IFERROR leaves a blank for a region with no sales.
+    misses:
+      value: The West margin is 31%.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =IFERROR(ROUND((SUMIF(A2:A7,E1,B2:B7)-SUMIF(A2:A7,E1,C2:C7))/SUMIF(A2:A7,E1,B2:B7)*100,1),"")
+      - =IFERROR(ROUND((1-SUMIF(A2:A7,E1,C2:C7)/SUMIF(A2:A7,E1,B2:B7))*100,1),"")
+    reject:
+      - formula: =IFERROR(ROUND((SUMIF(A2:A7,"West",B2:B7)-SUMIF(A2:A7,"West",C2:C7))/SUMIF(A2:A7,"West",B2:B7)*100,1),"")
+        rule: fragile
+      - formula: =ROUND((SUMIF(A2:A7,E1,B2:B7)-SUMIF(A2:A7,E1,C2:C7))/SUMIF(A2:A7,E1,B2:B7)*100,1)
+        rule: fragile
+      - formula: =31
+        rule: reference
+      - formula: =IFERROR(ROUND((SUMIF(A2:A7,E1,B2:B7)-SUMIF(A2:A7,E1,C2:C7))/SUMIF(A2:A7,E1,B2:B7)*100,1),""
+        rule: syntax

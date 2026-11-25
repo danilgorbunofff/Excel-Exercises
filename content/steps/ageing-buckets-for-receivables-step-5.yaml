@@ -1,0 +1,46 @@
+id: ageing-buckets-for-receivables-step-5
+slug: ageing-buckets-for-receivables-step-5
+level: 3
+title: Share of receivables over 60 days
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: ageing-buckets-for-receivables
+step: 5
+screens:
+  - prompt: In D2, what share of all receivables is more than 60 days overdue? Round to 3 decimals.
+    rows:
+      - [Customer, Days overdue, Balance, Over 60 share, null, From day, Band name]
+      - [Arden Ltd, 12, 4200, null, null, 0, Current]
+      - [Brook & Co, 45, 1850, null, null, 31, 31-60]
+      - [Cole plc, 75, 3100, null, null, 61, 61-90]
+      - [Dunn Ltd, 30, 960, null, null, 91, Over 90]
+      - [Eske Group, 120, 2400, null, null, null, null]
+      - [Frey Ltd, 61, 1500, null, null, null, null]
+    answerCell: D2
+    expected: 0.5
+    variants:
+      - { set: { B7: 60 }, expected: 0.393 }
+      - { set: { C6: 5000 }, expected: 0.578 }
+      - { set: { B2: 75 }, expected: 0.799 }
+    answer: =ROUND(SUMIF(B2:B7,">60",C2:C7)/SUM(C2:C7),3)
+    requiredFunctions: []
+    hints:
+      nudge: The balances over 60 days, over all balances.
+      rule: The share is weighted by money, not by the number of customers.
+    misses:
+      value: 0.5 of receivables is over 60 days.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND(SUMIF(B2:B7,">60",C2:C7)/SUM(C2:C7),3)
+      - =ROUND(SUMIFS(C2:C7,B2:B7,">60")/SUM(C2:C7),3)
+    reject:
+      - formula: =ROUND(SUMIF(B2:B7,">=60",C2:C7)/SUM(C2:C7),3)
+        rule: fragile
+      - formula: =ROUND(COUNTIF(B2:B7,">60")/COUNT(B2:B7),3)
+        rule: fragile
+      - formula: =0.5
+        rule: reference
+      - formula: =ROUND(SUMIF(B2:B7,">60",C2:C7)/SUM(C2:C7),3
+        rule: syntax

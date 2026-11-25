@@ -1,0 +1,53 @@
+id: year-to-date-actual-against-budget-step-5
+slug: year-to-date-actual-against-budget-step-5
+level: 3
+title: Full-year outlook
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: year-to-date-actual-against-budget
+step: 5
+screens:
+  - prompt: "In E2, what is the full-year outlook: the actuals for the months closed, as D2 says, plus the budget for the months still to come?"
+    rows:
+      - [Month, Actual, Budget, Months closed, null]
+      - [1, 41200, 40000, 4, null]
+      - [2, 39800, 40000, null, null]
+      - [3, 43500, 42000, null, null]
+      - [4, 44100, 42000, null, null]
+      - [5, null, 44000, null, null]
+      - [6, null, 44000, null, null]
+      - [7, null, 45000, null, null]
+      - [8, null, 43000, null, null]
+      - [9, null, 46000, null, null]
+      - [10, null, 47000, null, null]
+      - [11, null, 48000, null, null]
+      - [12, null, 52000, null, null]
+    answerCell: E2
+    expected: 537600
+    variants:
+      - set: { D2: 3 }
+        expected: 535500
+      - set: { C10: 50000 }
+        expected: 541600
+    answer: =SUMIFS(B2:B13,A2:A13,"<="&D2)+SUMIFS(C2:C13,A2:A13,">"&D2)
+    requiredFunctions: []
+    hints:
+      nudge: Actuals where a month is closed, budget where it is not.
+      rule: "Two SUMIFS split the year at D2: <= for the closed months, > for the rest."
+    misses:
+      value: The full-year outlook is 537600.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMIFS(B2:B13,A2:A13,"<="&D2)+SUMIFS(C2:C13,A2:A13,">"&D2)
+      - =SUMIF(A2:A13,"<="&D2,B2:B13)+SUMIF(A2:A13,">"&D2,C2:C13)
+    reject:
+      - formula: =SUM(B2:B13)+SUM(C2:C13)
+        rule: value
+      - formula: =SUMIFS(B2:B13,A2:A13,"<="&D2)+SUMIFS(C2:C13,A2:A13,">="&D2)
+        rule: value
+      - formula: =537600
+        rule: reference
+      - formula: =SUMIFS(B2:B13,A2:A13,"<="&D2)+SUMIFS(C2:C13,A2:A13,">"&D2
+        rule: syntax

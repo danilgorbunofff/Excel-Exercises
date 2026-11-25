@@ -1,0 +1,42 @@
+id: a-commission-sheet-that-updates-itself-step-1
+slug: a-commission-sheet-that-updates-itself-step-1
+level: 1
+title: Commission at a flat rate
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: a-commission-sheet-that-updates-itself
+step: 1
+screens:
+  - prompt: "In C2, work out Ana's commission at the flat rate in F1: her sales in B2 times the rate."
+    rows:
+      - [Seller, Sales, Commission, null, Rate, 0.03]
+      - [Ana, 42000, null, null, null, null]
+      - [Ben, 18500, null, null, null, null]
+    answerCell: C2
+    expected: 1260
+    variants:
+      - set: { F1: 0.04 }
+        expected: 1680
+    answer: =B2*$F$1
+    requiredFunctions: []
+    hints:
+      nudge: Point at the rate in F1 rather than typing it.
+      rule: B2*$F$1 follows the rate, and the $ keeps it fixed if copied down.
+    misses:
+      value: Ana's commission is 1260.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B2*$F$1
+      - =B2*F1
+      - =$F$1*B2
+    reject:
+      - formula: =B2*0.03
+        rule: reference
+      - formula: =B2+$F$1
+        rule: value
+      - formula: =1260
+        rule: reference
+      - formula: =B2*$F$1,
+        rule: syntax

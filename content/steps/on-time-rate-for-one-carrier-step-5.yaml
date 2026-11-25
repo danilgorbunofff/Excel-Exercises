@@ -1,0 +1,51 @@
+id: on-time-rate-for-one-carrier-step-5
+slug: on-time-rate-for-one-carrier-step-5
+level: 3
+title: Carrier with the best on-time rate
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: on-time-rate-for-one-carrier
+step: 5
+screens:
+  - prompt: In F2, which carrier in E2:E4 has the best on-time rate?
+    rows:
+      - [Shipment, Carrier, Status, null, Carrier, Best rate]
+      - [S-01, Northway, On time, null, Northway, null]
+      - [S-02, Fastlane, Late, null, Fastlane, null]
+      - [S-03, Northway, On time, null, Swiftco, null]
+      - [S-04, Swiftco, On time, null, null, null]
+      - [S-05, Northway, Late, null, null, null]
+      - [S-06, Fastlane, On time, null, null, null]
+      - [S-07, Swiftco, Late, null, null, null]
+      - [S-08, Fastlane, On time, null, null, null]
+      - [S-09, Northway, On time, null, null, null]
+      - [S-10, Swiftco, On time, null, null, null]
+      - [S-11, Fastlane, Late, null, null, null]
+      - [S-12, Northway, On time, null, null, null]
+    answerCell: F2
+    expected: Northway
+    variants:
+      - set: { C2: Late, C4: Late }
+        expected: Swiftco
+    answer: =XLOOKUP(MAX(COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4)),COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4),E2:E4)
+    requiredFunctions: []
+    hints:
+      nudge: Work out each carrier's rate at once, then pick the highest.
+      rule: COUNTIFS over COUNTIF, each with E2:E4 as criteria, gives one rate per carrier.
+    misses:
+      value: The best on-time rate belongs to Northway.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(MAX(COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4)),COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4),E2:E4)
+      - =INDEX(E2:E4,MATCH(MAX(COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4)),COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4),0))
+    reject:
+      - formula: =XLOOKUP(MAX(COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")),COUNTIFS(B2:B13,E2:E4,C2:C13,"On time"),E2:E4)
+        rule: fragile
+      - formula: ="Northway"
+        rule: reference
+      - formula: ="Northway"
+        rule: reference
+      - formula: =XLOOKUP(MAX(COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4)),COUNTIFS(B2:B13,E2:E4,C2:C13,"On time")/COUNTIF(B2:B13,E2:E4),E2:E4
+        rule: syntax

@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =EOMONTH($C$2,0)-$C$2+1
+      - =EOMONTH(C$2,0)-C2+1
+      - =eomonth(c2, 0)-c2+1
+    wrong: []
+    equivalent: []

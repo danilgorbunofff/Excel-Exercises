@@ -1,0 +1,31 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IF(SUMPRODUCT(--(ABS($B$2:$B$9)>$D$1))=0,"close",SUMPRODUCT(--(ABS($B$2:$B$9)>$D$1)))
+      - =IF(SUMPRODUCT(--(ABS(B$2:B$9)>D1))=0,"close",SUMPRODUCT(--(ABS(B2:B9)>D1)))
+      - =if(sumproduct(--(abs(b2:b9)>d1))=0, "close", sumproduct(--(abs(b2:b9)>d1)))
+      - =IFS(SUMPRODUCT(--(ABS(B2:B9)>D1))=0,"close",TRUE,SUMPRODUCT(--(ABS(B2:B9)>D1)))
+      - =LET(data,B2:B9,IF(SUMPRODUCT(--(ABS(data)>D1))=0,"close",SUMPRODUCT(--(ABS(data)>D1))))
+    wrong:
+      - formula: =IF(SUMPRODUCT(--(ABS(B2:B9)>=D1))=0,"close",SUMPRODUCT(--(ABS(B2:B9)>D1)))
+        rule: fragile
+        why: "> written as >="
+      - formula: =IF(SUMPRODUCT(--(B2:B9>D1))=0,"close",SUMPRODUCT(--(ABS(B2:B9)>D1)))
+        rule: fragile
+        why: without ABS
+      - formula: =IF(SUMPRODUCT(--(ABS(B2:B8)>D1))=0,"close",SUMPRODUCT(--(ABS(B2:B9)>D1)))
+        rule: fragile
+        why: range B2:B9 one row short at the end
+      - formula: =IF(SUMPRODUCT(--(ABS(B3:B9)>D1))=0,"close",SUMPRODUCT(--(ABS(B2:B9)>D1)))
+        rule: fragile
+        why: range B2:B9 skips its first row
+      - formula: =IF(SUMPRODUCT(--(ABS(B2:B9)>D1))=0,"close",SUMPRODUCT(--(ABS(B2:B9)>=D1)))
+        rule: fragile
+        why: "> written as >="
+      - formula: =IF(SUMPRODUCT(--(ABS(B2:B9)>D1))=0,"close",SUMPRODUCT(--(ABS(B2:B8)>D1)))
+        rule: fragile
+        why: range B2:B9 one row short at the end
+      - formula: =IF(SUMPRODUCT(--(ABS(B2:B9)>D1))=0,"close",SUMPRODUCT(--(ABS(B3:B9)>D1)))
+        rule: fragile
+        why: range B2:B9 skips its first row
+    equivalent: []

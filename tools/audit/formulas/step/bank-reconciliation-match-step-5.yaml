@@ -1,0 +1,9 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(--(COUNTIFS($E$2:$E$8,$A$2:$A$10,$F$2:$F$8,$B$2:$B$10)=0))
+      - =SUMPRODUCT(--(COUNTIFS(E$2:E$8,A2:A10,F2:F8,B2:B10)=0))
+      - =sumproduct(--(countifs(e2:e8, a2:a10, f2:f8, b2:b10)=0))
+      - =LET(data,E2:E8,SUMPRODUCT(--(COUNTIFS(data,A2:A10,F2:F8,B2:B10)=0)))
+    wrong: []
+    equivalent: []

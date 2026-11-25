@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMPRODUCT(--ISERROR(VALUE($B$2:$B$16)))
+      - =SUMPRODUCT(--ISERROR(VALUE(B$2:B$16)))
+      - =sumproduct(--iserror(value(b2:b16)))
+      - =LET(data,B2:B16,SUMPRODUCT(--ISERROR(VALUE(data))))
+    wrong:
+      - formula: =SUMPRODUCT(--ISERROR(VALUE(B3:B16)))
+        rule: fragile
+        why: range B2:B16 skips its first row
+    equivalent: []

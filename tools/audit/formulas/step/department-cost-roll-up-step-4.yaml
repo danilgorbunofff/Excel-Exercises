@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUND(SUMIF(B$2:B$10,"Salaries",C2:C10)/SUM(C2:C10),2)
+      - =round(sumif(b2:b10, "Salaries", c2:c10)/sum(c2:c10), 2)
+      - =LET(data,B2:B10,ROUND(SUMIF(data,"Salaries",C2:C10)/SUM(C2:C10),2))
+    wrong:
+      - formula: =ROUND(SUMIF(B2:B9,"Salaries",C2:C10)/SUM(C2:C10),2)
+        rule: fragile
+        why: range B2:B10 one row short at the end
+    equivalent: []

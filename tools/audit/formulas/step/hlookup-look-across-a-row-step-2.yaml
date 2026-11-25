@@ -1,0 +1,19 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =HLOOKUP($B$4,$B$1:$E$3,2,FALSE)*HLOOKUP($B$4,$B$1:$E$3,3,FALSE)
+      - =HLOOKUP(B$4,B1:E3,2,FALSE)*HLOOKUP(B4,B1:E3,3,FALSE)
+      - =hlookup(b4, b1:e3, 2, false)*hlookup(b4, b1:e3, 3, false)
+      - =LET(data,B1:E3,HLOOKUP(B4,data,2,FALSE)*HLOOKUP(B4,data,3,FALSE))
+    wrong: []
+    equivalent:
+      - formula: =HLOOKUP(B4,B1:E2,2,FALSE)*HLOOKUP(B4,B1:E3,3,FALSE)
+        why: "range B1:E3 one row short at the end: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =HLOOKUP(B4,B1:E4,2,FALSE)*HLOOKUP(B4,B1:E3,3,FALSE)
+        why: "range B1:E3 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =HLOOKUP(B4,C1:F3,2,FALSE)*HLOOKUP(B4,B1:E3,3,FALSE)
+        why: "range B1:E3 one column right: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =HLOOKUP(B4,B1:E3,2,FALSE)*HLOOKUP(B4,B1:E4,3,FALSE)
+        why: "range B1:E3 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =HLOOKUP(B4,B1:E3,2,FALSE)*HLOOKUP(B4,C1:F3,3,FALSE)
+        why: "range B1:E3 one column right: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

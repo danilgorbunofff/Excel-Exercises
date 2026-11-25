@@ -1,0 +1,12 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =FILTER($C$2:$D$19,(($B$2:$B$19="West")+($B$2:$B$19="East"))*($D$2:$D$19>500))
+      - =FILTER(C$2:D$19,((B2:B19="West")+(B2:B19="East"))*(D2:D19>500))
+      - =filter(c2:d19, ((b2:b19="West")+(b2:b19="East"))*(d2:d19>500))
+      - =LET(data,C2:D19,FILTER(data,((B2:B19="West")+(B2:B19="East"))*(D2:D19>500)))
+    wrong:
+      - formula: =FILTER(C2:D19,((B2:B19="West")+(B2:B19="East"))*(D2:D19>501))
+        rule: fragile
+        why: 500 written as 501
+    equivalent: []

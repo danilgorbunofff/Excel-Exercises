@@ -1,0 +1,48 @@
+id: vlookup-with-a-wildcard-step-2
+slug: vlookup-with-a-wildcard-step-2
+level: 2
+title: Find by a word in the middle
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: vlookup-with-a-wildcard
+step: 2
+screens:
+  - prompt: In B8, find the lead time of the first supplier whose name contains the word in A8 anywhere. Use VLOOKUP with * on both sides.
+    rows:
+      - [Supplier, Country, Lead time (days)]
+      - [Baltic Freight, Latvia, 12]
+      - [Baltic Couriers, Latvia, 4]
+      - [Northwind Air, Ireland, 7]
+      - [Northwind Rail, Ireland, 19]
+      - [Southgate Rail Freight, Spain, 9]
+      - [null, null, null]
+      - [Rail, null, null]
+    answerCell: B8
+    expected: 19
+    variants:
+      - { set: { A8: Couriers }, expected: 4 }
+      - { set: { A8: Baltic Freight }, expected: 12 }
+      - { set: { A8: Southgate Rail Freight }, expected: 9 }
+    answer: =VLOOKUP("*"&A8&"*",A2:C6,3,FALSE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: '"*"&A8&"*" means the word can have anything before or after it.'
+      rule: With wildcards on both sides, VLOOKUP returns the first name that contains the word.
+    misses:
+      value: The first supplier with that word has a lead time of 19 days.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =VLOOKUP("*"&A8&"*",A2:C6,3,FALSE)
+      - =VLOOKUP("*"&A8&"*",A1:C6,3,FALSE)
+    reject:
+      - formula: =VLOOKUP(A8&"*",A2:C6,3,FALSE)
+        rule: value
+      - formula: =VLOOKUP("*"&A8&"*",A2:C6,2,FALSE)
+        rule: value
+      - formula: =19
+        rule: required-function
+      - formula: =VLOOKUP("*"&A8&"*",A2:C6,3,FALSE
+        rule: syntax

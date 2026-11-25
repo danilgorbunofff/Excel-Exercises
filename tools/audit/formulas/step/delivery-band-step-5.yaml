@@ -1,0 +1,17 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =VLOOKUP($E$1,$A$2:$B$5,2,TRUE)+($E$1>$E$3)*($E$1-$E$3)*$E$4
+      - =VLOOKUP(E$1,A2:B5,2,TRUE)+(E1>E3)*(E1-E3)*E4
+      - =vlookup(e1, a2:b5, 2, true)+(e1>e3)*(e1-e3)*e4
+      - =INDEX(B2:B5,MATCH(E1,A2:A5,1))+(E1>E3)*(E1-E3)*E4
+      - =LET(data,A2:B5,VLOOKUP(E1,data,2,TRUE)+(E1>E3)*(E1-E3)*E4)
+    wrong:
+      - formula: =VLOOKUP(E1,A3:B5,2,TRUE)+(E1>E3)*(E1-E3)*E4
+        rule: fragile
+        why: range A2:B5 skips its first row
+    equivalent:
+      - formula: =VLOOKUP(E1,A2:B5,2)+(E1>E3)*(E1-E3)*E4
+        why: "VLOOKUP without FALSE: The table is sorted and the answer already matches approximately, so Excel gives the same answer here."
+      - formula: =VLOOKUP(E1,A2:B5,2,TRUE)+(E1>=E3)*(E1-E3)*E4
+        why: "> written as >=: Excel gives the same answer on the sheet and every variant, and no realistic change to the data tells it apart (reviewed)."

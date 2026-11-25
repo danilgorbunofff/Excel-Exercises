@@ -1,0 +1,47 @@
+id: xlookup-with-a-fallback-when-nothing-matches-step-4
+slug: xlookup-with-a-fallback-when-nothing-matches-step-4
+level: 2
+title: Fallback to a default price
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: xlookup-with-a-fallback-when-nothing-matches
+step: 4
+screens:
+  - prompt: In B6, look up the price of the SKU in B5, and when it is not in the list use the default price in E1. Use XLOOKUP.
+    rows:
+      - [SKU, Price, null, Default, 12]
+      - [TX-101, 19.99, null, null, null]
+      - [TX-102, 14, null, null, null]
+      - [TX-103, 9.5, null, null, null]
+      - [Lookup, TX-109, null, null, null]
+      - [Price, null, null, null, null]
+    answerCell: B6
+    expected: 12
+    variants:
+      - set: { E1: 15 }
+        expected: 15
+      - set: { B5: TX-101 }
+        expected: 19.99
+    answer: =XLOOKUP(B5,A2:A4,B2:B4,E1)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: The fallback can be a cell, not only typed text.
+      rule: XLOOKUP(B5,A2:A4,B2:B4,E1) uses whatever default is in E1 when nothing matches.
+    misses:
+      value: An unknown SKU gets the default price, 12.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for XLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(B5,A2:A4,B2:B4,E1)
+      - =XLOOKUP(B5,A2:A4,B2:B4,$E$1)
+    reject:
+      - formula: =XLOOKUP(B5,A2:A4,B2:B4,12)
+        rule: fragile
+      - formula: =XLOOKUP(B5,A2:A4,B2:B4,"none")
+        rule: value
+      - formula: =12
+        rule: required-function
+      - formula: =XLOOKUP(B5,A2:A4,B2:B4,E1
+        rule: syntax

@@ -1,0 +1,42 @@
+id: left-find-prefix-step-2
+slug: left-find-prefix-step-2
+level: 2
+title: First name from a full name
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: left-find-prefix
+step: 2
+screens:
+  - prompt: "In B2, take the first name from the full name in A2: everything before the first space. Use LEFT and FIND."
+    rows:
+      - [Full name, First name]
+      - [Katherine Johnson, null]
+    answerCell: B2
+    expected: Katherine
+    variants:
+      - set: { A2: Ada Lovelace }
+        expected: Ada
+    answer: =LEFT(A2,FIND(" ",A2)-1)
+    requiredFunctions:
+      - LEFT
+      - FIND
+    hints:
+      nudge: The first name stops one character before the space.
+      rule: LEFT(A2,FIND(" ",A2)-1) keeps everything before the space, for a name of any length.
+    misses:
+      value: The first name is Katherine.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for LEFT and FIND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =LEFT(A2,FIND(" ",A2)-1)
+      - =LEFT(A2,FIND(" ",A2,1)-1)
+    reject:
+      - formula: =LEFT(A2,FIND(" ",A2))
+        rule: value
+      - formula: =LEFT(A2,9)
+        rule: required-function
+      - formula: ="Katherine"
+        rule: required-function
+      - formula: =LEFT(A2,FIND(" ",A2)-1
+        rule: syntax

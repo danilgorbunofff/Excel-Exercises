@@ -1,0 +1,56 @@
+id: sumproduct-multiply-then-add-step-5
+slug: sumproduct-multiply-then-add-step-5
+level: 3
+title: Revenue from large North orders
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: sumproduct-multiply-then-add
+step: 5
+screens:
+  - prompt: In F2, what is the revenue from North orders of more than 5 units? Revenue is units times unit price.
+    rows:
+      - [Order, Region, Units, Price, null, "North, over 5 units"]
+      - [SO-01, North, 5, 12, null, null]
+      - [SO-02, South, 8, 11, null, null]
+      - [SO-03, North, 9, 10.5, null, null]
+      - [SO-04, East, 2, 14, null, null]
+      - [SO-05, North, 6, 12, null, null]
+      - [SO-06, South, 1, 15, null, null]
+      - [SO-07, North, 12, 9.5, null, null]
+      - [SO-08, West, 7, 11.5, null, null]
+      - [SO-09, North, 3, 13, null, null]
+      - [SO-10, North, 8, 10, null, null]
+      - [SO-11, South, 9, 10, null, null]
+      - [SO-12, East, 4, 12.5, null, null]
+      - [SO-13, North, 15, 9, null, null]
+      - [SO-14, West, 6, 11, null, null]
+      - [SO-15, North, 1, 16, null, null]
+    answerCell: F2
+    expected: 495.5
+    variants:
+      - set: { C2: 7 }
+        expected: 579.5
+      - set: { B9: North }
+        expected: 576
+    answer: =SUMPRODUCT((B2:B16="North")*(C2:C16>5)*C2:C16*D2:D16)
+    requiredFunctions: []
+    hints:
+      nudge: Two tests, each in brackets, times units times price.
+      rule: Each bracketed test is 1 or 0 per row; multiplying them keeps rows that pass both.
+    misses:
+      value: North orders over 5 units brought in 495.50.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT((B2:B16="North")*(C2:C16>5)*C2:C16*D2:D16)
+      - =SUM(FILTER(C2:C16*D2:D16,(B2:B16="North")*(C2:C16>5)))
+    reject:
+      - formula: =SUMPRODUCT((B2:B16="North")*C2:C16*D2:D16)
+        rule: value
+      - formula: =SUMPRODUCT((B2:B16="North")*(C2:C16>=5)*C2:C16*D2:D16)
+        rule: value
+      - formula: =495.5
+        rule: reference
+      - formula: =SUMPRODUCT((B2:B16="North")*(C2:C16>5)*C2:C16*D2:D16
+        rule: syntax

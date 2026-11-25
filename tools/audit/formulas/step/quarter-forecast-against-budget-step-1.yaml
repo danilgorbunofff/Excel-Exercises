@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =SUMIF(B$2:B$13,"Q1",C2:C13)
+      - =sumif(b2:b13, "Q1", c2:c13)
+      - =LET(data,B2:B13,SUMIF(data,"Q1",C2:C13))
+    wrong:
+      - formula: =SUMIF(B2:B12,"Q1",C2:C13)
+        rule: fragile
+        why: range B2:B13 one row short at the end
+    equivalent: []

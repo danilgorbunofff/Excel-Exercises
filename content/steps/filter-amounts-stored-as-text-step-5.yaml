@@ -1,0 +1,59 @@
+id: filter-amounts-stored-as-text-step-5
+slug: filter-amounts-stored-as-text-step-5
+level: 3
+title: Average South order, text amounts included
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: filter-amounts-stored-as-text
+step: 5
+screens:
+  - prompt: In F2, what is the average South order? Some South amounts came in as text and must count.
+    rows:
+      - [Order, Region, Rep, Amount, null, null, null, null, null]
+      - [1001, North, Ana, 820, null, null, null, null, null]
+      - [1002, South, Bo, 450, null, null, null, null, null]
+      - [1003, East, Cy, "1300", null, null, null, null, null]
+      - [1004, north, Di, 610, null, null, null, null, null]
+      - [1005, South, Ed, 1250, null, null, null, null, null]
+      - [1006, West, Fay, 300, null, null, null, null, null]
+      - [1007, North, Ana, 1500, null, null, null, null, null]
+      - [1008, East, Gus, 220, null, null, null, null, null]
+      - [1009, South, Bo, "980", null, null, null, null, null]
+      - [1010, North, Hal, 470, null, null, null, null, null]
+      - [1011, West, Ivy, "1100", null, null, null, null, null]
+      - [1012, South, Jo, 760, null, null, null, null, null]
+      - [1013, East, Cy, 540, null, null, null, null, null]
+      - [1014, North, Di, 90, null, null, null, null, null]
+      - [1015, South, Ed, "1600", null, null, null, null, null]
+      - [1016, West, Fay, 700, null, null, null, null, null]
+      - [1017, north, Kim, 1050, null, null, null, null, null]
+      - [1018, East, Gus, 380, null, null, null, null, null]
+    answerCell: F2
+    expected: 1008
+    variants:
+      - set: { D3: "550" }
+        expected: 1028
+      - set: { B5: South }
+        expected: 941.666666667
+    answer: =AVERAGE(--FILTER(D2:D19,B2:B19="South"))
+    requiredFunctions: []
+    hints:
+      nudge: FILTER the South amounts, convert them with --, then average.
+      rule: AVERAGEIF skips the text amounts; -- after FILTER turns them into numbers so every South order counts.
+    misses:
+      value: The average South order is 1008.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =AVERAGE(--FILTER(D2:D19,B2:B19="South"))
+      - =SUMPRODUCT((B2:B19="South")*D2:D19)/COUNTIF(B2:B19,"South")
+    reject:
+      - formula: =AVERAGEIF(B2:B19,"South",D2:D19)
+        rule: value
+      - formula: =AVERAGE(FILTER(D2:D19,B2:B19="South"))
+        rule: value
+      - formula: =1008
+        rule: reference
+      - formula: =AVERAGE(--FILTER(D2:D19,B2:B19="South")
+        rule: syntax

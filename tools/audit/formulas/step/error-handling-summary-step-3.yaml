@@ -1,0 +1,18 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =IFERROR(INDEX(B$2:B$6,MATCH(A8,A2:A6,0)),"no match")
+      - =iferror(index(b2:b6, match(a8, a2:a6, 0)), "no match")
+      - =LET(data,B2:B6,IFERROR(INDEX(data,MATCH(A8,A2:A6,0)),"no match"))
+    wrong:
+      - formula: =IFERROR(INDEX(B2:B5,MATCH(A8,A2:A6,0)),"no match")
+        rule: fragile
+        why: range B2:B6 one row short at the end
+      - formula: =IFERROR(INDEX(B2:B6,MATCH(A8,A2:A5,0)),"no match")
+        rule: fragile
+        why: range A2:A6 one row short at the end
+    equivalent:
+      - formula: =IFERROR(INDEX(B2:B7,MATCH(A8,A2:A6,0)),"no match")
+        why: "range B2:B6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =IFERROR(INDEX(B2:B6,MATCH(A8,A2:A7,0)),"no match")
+        why: "range A2:A6 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

@@ -1,0 +1,51 @@
+id: quarter-forecast-against-budget-step-4
+slug: quarter-forecast-against-budget-step-4
+level: 2
+title: Quarter variance as a share
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: quarter-forecast-against-budget
+step: 4
+screens:
+  - prompt: In F2, show the Q2 variance as a share of the Q2 budget, rounded to three decimals. Use SUMIFS and ROUND.
+    rows:
+      - [Month, Quarter, Forecast, Budget, null, Q2 variance %]
+      - [1, Q1, 41000, 40000, null, null]
+      - [2, Q1, 39500, 40000, null, null]
+      - [3, Q1, 43000, 42000, null, null]
+      - [4, Q2, 44500, 42000, null, null]
+      - [5, Q2, 43000, 44000, null, null]
+      - [6, Q2, 46500, 44000, null, null]
+      - [7, Q3, 45500, 45000, null, null]
+      - [8, Q3, 42000, 43000, null, null]
+      - [9, Q3, 47500, 46000, null, null]
+      - [10, Q4, 48000, 47000, null, null]
+      - [11, Q4, 50500, 48000, null, null]
+      - [12, Q4, 51000, 52000, null, null]
+    answerCell: F2
+    expected: 0.031
+    variants:
+      - set: { C6: 41000 }
+        expected: 0.015
+    answer: =ROUND((SUMIFS(C2:C13,B2:B13,"Q2")-SUMIFS(D2:D13,B2:B13,"Q2"))/SUMIFS(D2:D13,B2:B13,"Q2"),3)
+    requiredFunctions:
+      - SUMIFS
+      - ROUND
+    hints:
+      nudge: Variance over budget, then round.
+      rule: Dividing by the budget shows the variance in proportion to the plan.
+    misses:
+      value: Q2 is 0.031 away from budget.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUMIFS and ROUND.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =ROUND((SUMIFS(C2:C13,B2:B13,"Q2")-SUMIFS(D2:D13,B2:B13,"Q2"))/SUMIFS(D2:D13,B2:B13,"Q2"),3)
+      - =ROUND((SUMIFS($C$2:$C$13,$B$2:$B$13,"Q2")-SUMIFS($D$2:$D$13,$B$2:$B$13,"Q2"))/SUMIFS($D$2:$D$13,$B$2:$B$13,"Q2"),3)
+    reject:
+      - formula: =ROUND((SUMIFS(C2:C13,B2:B13,"Q2")-SUMIFS(D2:D13,B2:B13,"Q2"))/SUMIFS(C2:C13,B2:B13,"Q2"),3)
+        rule: value
+      - formula: =0.031
+        rule: required-function
+      - formula: =ROUND((SUMIFS(C2:C13,B2:B13,"Q2")-SUMIFS(D2:D13,B2:B13,"Q2"))/SUMIFS(D2:D13,B2:B13,"Q2"),3
+        rule: syntax

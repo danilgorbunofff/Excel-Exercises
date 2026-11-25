@@ -1,0 +1,55 @@
+id: subtotal-a-sum-over-a-group-step-1
+slug: subtotal-a-sum-over-a-group-step-1
+level: 1
+title: Average with SUBTOTAL
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: subtotal-a-sum-over-a-group
+step: 1
+screens:
+  - prompt: In E2, average the prices in B2:B16 with SUBTOTAL, function number 1.
+    rows:
+      - [Item, Price, Qty, Line, Average price]
+      - [Pens, 1.2, 40, 48, null]
+      - [Pads, 3.5, 15, 52.5, null]
+      - [Clips, 0.05, 500, 25, null]
+      - [Tape, 2.1, 12, 25.2, null]
+      - [Files, 4.75, 20, 95, null]
+      - [Ink, 18.9, 6, 113.4, null]
+      - [Glue, 1.85, 30, 55.5, null]
+      - [Rulers, 0.9, 25, 22.5, null]
+      - [Folders, 0.6, 100, 60, null]
+      - [Labels, 5.4, 8, 43.2, null]
+      - [Staples, 1.1, 18, 19.8, null]
+      - [Markers, 7.25, 10, 72.5, null]
+      - [Erasers, 0.35, 60, 21, null]
+      - [Binders, 3.9, 14, 54.6, null]
+      - [Notes, 2.6, 22, 57.2, null]
+    answerCell: E2
+    expected: 3.63
+    variants:
+      - set: { B7: 22 }
+        expected: 3.83666666667
+    answer: =SUBTOTAL(1,B2:B16)
+    requiredFunctions:
+      - SUBTOTAL
+    hints:
+      nudge: "The first part of SUBTOTAL picks the summary: 1 is average."
+      rule: SUBTOTAL(1,B2:B16) averages the range and would skip any rows filtered out.
+    misses:
+      value: The average price is 3.63.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for SUBTOTAL.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUBTOTAL(1,B2:B16)
+      - =SUBTOTAL(101,B2:B16)
+    reject:
+      - formula: =AVERAGE(B2:B16)
+        rule: required-function
+      - formula: =SUBTOTAL(9,B2:B16)
+        rule: value
+      - formula: =3.63
+        rule: required-function
+      - formula: =SUBTOTAL(1,B2:B16
+        rule: syntax

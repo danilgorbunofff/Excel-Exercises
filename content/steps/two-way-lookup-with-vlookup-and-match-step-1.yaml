@@ -1,0 +1,44 @@
+id: two-way-lookup-with-vlookup-and-match-step-1
+slug: two-way-lookup-with-vlookup-and-match-step-1
+level: 1
+title: Units for one quarter
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: two-way-lookup-with-vlookup-and-match
+step: 1
+screens:
+  - prompt: In B7, return the Q2 units, the 3rd column, for the product in B6. Use VLOOKUP.
+    rows:
+      - [Product, Q1, Q2, Q3]
+      - [Gizmo, 120, 140, 130]
+      - [Widget, 90, 110, 125]
+      - [Sprocket, 60, 75, 80]
+      - [Flange, 150, 165, 170]
+      - [Product, Sprocket, null, null]
+      - [Q2 units, null, null, null]
+    answerCell: B7
+    expected: 75
+    variants:
+      - { set: { B6: Flange }, expected: 165 }
+      - { set: { B6: Gizmo }, expected: 140 }
+    answer: =VLOOKUP(B6,A2:D5,3,FALSE)
+    requiredFunctions:
+      - VLOOKUP
+    hints:
+      nudge: Product is column 1, Q1 column 2, Q2 column 3.
+      rule: VLOOKUP(B6,A2:D5,3,FALSE) returns the Q2 units on the product's row.
+    misses:
+      value: Sprocket sold 75 units in Q2.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for VLOOKUP.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =VLOOKUP(B6,A2:D5,3,FALSE)
+      - =VLOOKUP(B6,A1:D5,3,FALSE)
+    reject:
+      - formula: =VLOOKUP(B6,A2:D5,2,FALSE)
+        rule: value
+      - formula: =75
+        rule: required-function
+      - formula: =VLOOKUP(B6,A2:D5,3,FALSE
+        rule: syntax

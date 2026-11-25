@@ -1,0 +1,11 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =ROUNDUP($F$1/(SUM($C$2:$C$6)/SUM($B$2:$B$6)),0)
+      - =ROUNDUP(F$1/(SUM(C2:C6)/SUM(B2:B6)),0)
+      - =roundup(f1/(sum(c2:c6)/sum(b2:b6)), 0)
+      - =ROUNDUP(F1/(SUMPRODUCT(C2:C6)/SUM(B2:B6)),0)
+      - =ROUNDUP(F1/(SUM(C2:C6)/SUMPRODUCT(B2:B6)),0)
+      - =LET(data,C2:C6,ROUNDUP(F1/(SUM(data)/SUM(B2:B6)),0))
+    wrong: []
+    equivalent: []

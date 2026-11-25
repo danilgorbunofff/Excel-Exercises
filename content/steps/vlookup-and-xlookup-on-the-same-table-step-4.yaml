@@ -1,0 +1,44 @@
+id: vlookup-and-xlookup-on-the-same-table-step-4
+slug: vlookup-and-xlookup-on-the-same-table-step-4
+level: 2
+title: Name and price in one lookup
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: vlookup-and-xlookup-on-the-same-table
+step: 4
+screens:
+  - prompt: In B7, return both the product and the unit price for the SKU in B6 in one formula, filling B7 and C7. Use XLOOKUP.
+    rows:
+      - [SKU, Product, Unit price]
+      - [BX-210, Bracket, 2.4]
+      - [CX-330, Clamp, 3.8]
+      - [DX-410, Dowel, 1.15]
+      - [EX-500, Extrusion, 9.6]
+      - [Which SKU?, BX-210, null]
+      - [Details, null, null]
+    answerCell: B7
+    expected:
+      - [Bracket, 2.4]
+    variants:
+      - set: { B6: EX-500 }
+        expected:
+          - - Extrusion
+            - 9.6
+    answer: =XLOOKUP(B6,A2:A5,B2:C5)
+    requiredFunctions:
+      - XLOOKUP
+    hints:
+      nudge: "Return two columns at once: B2:C5."
+      rule: With a two-column return range, XLOOKUP spills the product and the price side by side.
+    misses:
+      value: B7 and C7 should show the product and the unit price of the SKU in B6.
+      syntax: Check the brackets, commas and quotes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =XLOOKUP(B6,A2:A5,B2:C5)
+      - =XLOOKUP($B$6,$A$2:$A$5,$B$2:$C$5)
+    reject:
+      - formula: =XLOOKUP(B6,A2:A5,B2:B5)
+        rule: value
+      - formula: =XLOOKUP(B6,A2:A5,B2:C5
+        rule: syntax

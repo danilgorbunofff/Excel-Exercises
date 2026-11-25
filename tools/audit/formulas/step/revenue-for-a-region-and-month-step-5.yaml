@@ -1,0 +1,15 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =INDEX($E$2:$E$4,MATCH(MAX(SUMIFS($C$2:$C$11,$A$2:$A$11,$E$2:$E$4,$B$2:$B$11,$F$1)),SUMIFS($C$2:$C$11,$A$2:$A$11,$E$2:$E$4,$B$2:$B$11,$F$1),0))
+      - =INDEX(E$2:E$4,MATCH(MAX(SUMIFS(C2:C11,A2:A11,E2:E4,B2:B11,F1)),SUMIFS(C2:C11,A2:A11,E2:E4,B2:B11,F1),0))
+      - =index(e2:e4, match(max(sumifs(c2:c11, a2:a11, e2:e4, b2:b11, f1)), sumifs(c2:c11, a2:a11, e2:e4, b2:b11, f1), 0))
+      - =LET(data,E2:E4,INDEX(data,MATCH(MAX(SUMIFS(C2:C11,A2:A11,data,B2:B11,F1)),SUMIFS(C2:C11,A2:A11,data,B2:B11,F1),0)))
+    wrong: []
+    equivalent:
+      - formula: =INDEX(E2:E5,MATCH(MAX(SUMIFS(C2:C11,A2:A11,E2:E4,B2:B11,F1)),SUMIFS(C2:C11,A2:A11,E2:E4,B2:B11,F1),0))
+        why: "range E2:E4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(E2:E4,MATCH(MAX(SUMIFS(C2:C11,A2:A11,E2:E5,B2:B11,F1)),SUMIFS(C2:C11,A2:A11,E2:E4,B2:B11,F1),0))
+        why: "range E2:E4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."
+      - formula: =INDEX(E2:E4,MATCH(MAX(SUMIFS(C2:C11,A2:A11,E2:E4,B2:B11,F1)),SUMIFS(C2:C11,A2:A11,E2:E5,B2:B11,F1),0))
+        why: "range E2:E4 one row long: The cells it adds or drops hold nothing that changes the result here, so Excel gives the same answer on the sheet and every variant."

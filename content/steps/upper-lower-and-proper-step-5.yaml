@@ -1,0 +1,56 @@
+id: upper-lower-and-proper-step-5
+slug: upper-lower-and-proper-step-5
+level: 3
+title: Count exact matches, capitals included
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: upper-lower-and-proper
+step: 5
+screens:
+  - prompt: In D2, how many codes in A2:A16 match the code in D1 exactly, capitals included?
+    rows:
+      - [Code, null, null, Ab-12x]
+      - [Ab-12x, null, null, null]
+      - [AB-12X, null, null, null]
+      - [ab-12x, null, null, null]
+      - [Ab-12x, null, null, null]
+      - [Ab-13x, null, null, null]
+      - [Ab-12X, null, null, null]
+      - [Ab-12x, null, null, null]
+      - [CD-44, null, null, null]
+      - [ab-12X, null, null, null]
+      - [Ab-12x, null, null, null]
+      - ["Ab-12x ", null, null, null]
+      - [EF-90, null, null, null]
+      - [Ab-12x, null, null, null]
+      - [AB-12x, null, null, null]
+      - [Ab-12x, null, null, null]
+    answerCell: D2
+    expected: 6
+    variants:
+      - set: { D1: AB-12X }
+        expected: 1
+      - set: { A3: Ab-12x }
+        expected: 7
+    answer: =SUMPRODUCT(--EXACT(A2:A16,D1))
+    requiredFunctions: []
+    hints:
+      nudge: COUNTIF and = ignore capitals; EXACT does not.
+      rule: EXACT(A2:A16,D1) is TRUE only for an identical code, capitals and spaces included; SUMPRODUCT counts them.
+    misses:
+      value: 6 codes match exactly.
+      syntax: Check the brackets, commas and quotes.
+      reference: Point at the cells, so the result follows the data when it changes.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =SUMPRODUCT(--EXACT(A2:A16,D1))
+      - =SUM(--EXACT(A2:A16,D1))
+    reject:
+      - formula: =COUNTIF(A2:A16,D1)
+        rule: value
+      - formula: =SUMPRODUCT(--(A2:A16=D1))
+        rule: value
+      - formula: =6
+        rule: reference
+      - formula: =SUMPRODUCT(--EXACT(A2:A16,D1)
+        rule: syntax

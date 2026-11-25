@@ -1,0 +1,8 @@
+# Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
+screens:
+  - correct:
+      - =UPPER(TRIM($A$2))
+      - =UPPER(TRIM(A$2))
+      - =upper(trim(a2))
+    wrong: []
+    equivalent: []

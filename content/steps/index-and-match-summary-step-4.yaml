@@ -1,0 +1,49 @@
+id: index-and-match-summary-step-4
+slug: index-and-match-summary-step-4
+level: 2
+title: Commission from a band
+updated: 2026-11-25
+checkedInExcel: 2026-11-25
+parent: index-and-match-summary
+step: 4
+screens:
+  - prompt: "In B7, work out the commission: the sales in B6 times the rate for their band. Use INDEX and MATCH with 1."
+    rows:
+      - [Sales from, Rate]
+      - [0, 0.02]
+      - [5000, 0.04]
+      - [10000, 0.06]
+      - [null, null]
+      - [Sales, 7400]
+      - [Commission, null]
+    answerCell: B7
+    expected: 296
+    variants:
+      - set: { B6: 12000 }
+        expected: 720
+      - set: { B6: 5000 }
+        expected: 200
+    answer: =B6*INDEX(B2:B4,MATCH(B6,A2:A4,1))
+    requiredFunctions:
+      - INDEX
+      - MATCH
+    hints:
+      nudge: Look up the rate, then multiply the sales by it.
+      rule: The approximate MATCH picks the band's rate; times B6 gives the commission.
+    misses:
+      value: The commission on 7,400 is 296.
+      syntax: Check the brackets, commas and quotes.
+      required-function: This task asks for INDEX and MATCH.
+      fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
+    accept:
+      - =B6*INDEX(B2:B4,MATCH(B6,A2:A4,1))
+      - =INDEX(B2:B4,MATCH(B6,A2:A4,1))*B6
+    reject:
+      - formula: =INDEX(B2:B4,MATCH(B6,A2:A4,1))
+        rule: value
+      - formula: =B6*0.04
+        rule: required-function
+      - formula: =296
+        rule: required-function
+      - formula: =B6*INDEX(B2:B4,MATCH(B6,A2:A4,1)
+        rule: syntax

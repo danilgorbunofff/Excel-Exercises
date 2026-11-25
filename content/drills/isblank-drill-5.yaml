@@ -29,6 +29,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IF(ISBLANK(B2),"Missing","OK")
+      - =LET(v,B2,IF(ISBLANK(v),"Missing","OK"))
     reject:
       - formula: =IF(B2="","Missing","OK")
         rule: required-function

@@ -16,8 +16,6 @@ screens:
     answerCell: E3
     expected: 0.3
     variants:
-      - set: { E2: 40000 }
-        expected: 0.3
       - set: { E2: 9999 }
         expected: 0.1
       - set: { E2: 100000 }

@@ -31,6 +31,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IF(ISERROR(B2/C2),"Check",B2/C2)
+      - =LET(v,B2,IF(ISERROR(v/C2),"Check",v/C2))
     reject:
       - formula: =IFERROR(B2/C2,"Check")
         rule: required-function

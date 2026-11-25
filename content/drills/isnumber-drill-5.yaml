@@ -29,6 +29,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IF(ISNUMBER(B2),B2*2,"Not a number")
+      - =LET(v,B2,IF(ISNUMBER(v),v*2,"Not a number"))
     reject:
       - formula: =IFERROR(B2*2,"Not a number")
         rule: required-function

@@ -13,8 +13,6 @@ screens:
     answerCell: E2
     expected: Check
     variants:
-      - set: { C2: 620 }
-        expected: Check
       - set: { C2: 450 }
         expected: OK
       - set: { C2: 600 }

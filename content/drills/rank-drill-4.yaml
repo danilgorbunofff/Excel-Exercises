@@ -19,7 +19,6 @@ screens:
     answerCell: C4
     expected: 3
     variants:
-      - { set: { B6: 80 }, expected: 3 }
       - { set: { B3: 70 }, expected: 2 }
       - { set: { B4: 59 }, expected: 6 }
     answer: =RANK(B4,B2:B8)

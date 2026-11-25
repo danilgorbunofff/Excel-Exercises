@@ -16,8 +16,6 @@ screens:
     answerCell: B5
     expected: 12
     variants:
-      - set: { B4: 5 }
-        expected: 12
       - set: { B4: 4.9 }
         expected: 7
       - set: { B4: 10 }

@@ -4,5 +4,23 @@ screens:
       - =OR($B$2="NY",$B$2="LA",$B$2="SF")
       - =OR(B$2="NY",B2="LA",B2="SF")
       - =or(b2="NY", b2="LA", b2="SF")
-    wrong: []
+    wrong:
+      - formula: =OR(B3="NY",B2="LA",B2="SF")
+        rule: fragile
+        why: B2 read from the next row
+      - formula: =OR(B1="NY",B2="LA",B2="SF")
+        rule: fragile
+        why: B2 read from the row above
+      - formula: =OR(A2="NY",B2="LA",B2="SF")
+        rule: fragile
+        why: B2 read from the column to the left
+      - formula: =OR(B2="NY",B2="LA",B3="SF")
+        rule: fragile
+        why: B2 read from the next row
+      - formula: =OR(B2="NY",B2="LA",B1="SF")
+        rule: fragile
+        why: B2 read from the row above
+      - formula: =OR(B2="NY",B2="LA",A2="SF")
+        rule: fragile
+        why: B2 read from the column to the left
     equivalent: []

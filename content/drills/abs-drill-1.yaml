@@ -13,8 +13,6 @@ screens:
     answerCell: C2
     expected: 42
     variants:
-      - set: { B2: 42 }
-        expected: 42
       - set: { B2: -7.5 }
         expected: 7.5
     answer: =ABS(B2)
@@ -30,6 +28,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =ABS(B2)
+      - =LET(v,B2,ABS(v))
     reject:
       - formula: =-B2
         rule: required-function

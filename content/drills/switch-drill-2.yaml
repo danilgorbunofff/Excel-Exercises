@@ -29,6 +29,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SWITCH(A2,1,"Mon",2,"Tue",3,"Wed","Other")
+      - =LET(v,A2,SWITCH(v,1,"Mon",2,"Tue",3,"Wed","Other"))
     reject:
       - formula: =SWITCH(A2,1,"Mon",2,"Tue",3,"Wed")
         rule: fragile

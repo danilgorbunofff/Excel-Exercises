@@ -30,6 +30,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SWITCH(A2,"Standard",4.5,"Express",9.9,"Pickup",0)
+      - =LET(v,A2,SWITCH(v,"Standard",4.5,"Express",9.9,"Pickup",0))
     reject:
       - formula: =SWITCH(A2,"Standard",4.5,"Express",4.5,"Pickup",0)
         rule: value

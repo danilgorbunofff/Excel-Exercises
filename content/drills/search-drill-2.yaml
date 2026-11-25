@@ -28,6 +28,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SEARCH("b?t",A2)
+      - =LET(v,A2,SEARCH("b?t",v))
     reject:
       - formula: =SEARCH("bit",A2)
         rule: value

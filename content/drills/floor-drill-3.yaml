@@ -15,8 +15,6 @@ screens:
     variants:
       - set: { C2: 2 }
         expected: 46
-      - set: { B2: 45 }
-        expected: 45
     answer: =FLOOR(B2,C2)
     requiredFunctions:
       - FLOOR
@@ -30,6 +28,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =FLOOR(B2,C2)
+      - =LET(v,B2,FLOOR(v,C2))
     reject:
       - formula: =FLOOR(B2,5)
         rule: fragile

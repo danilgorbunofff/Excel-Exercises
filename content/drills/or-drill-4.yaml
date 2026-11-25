@@ -32,6 +32,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =OR(B2="NY",B2="LA",B2="SF")
+      - =LET(v,B2,OR(v="NY",v="LA",v="SF"))
     reject:
       - formula: =OR(B2="NY",B2="SF")
         rule: value

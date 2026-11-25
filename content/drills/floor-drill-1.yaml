@@ -30,6 +30,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =FLOOR(B2,5)
+      - =LET(v,B2,FLOOR(v,5))
     reject:
       - formula: =MROUND(B2,5)
         rule: required-function

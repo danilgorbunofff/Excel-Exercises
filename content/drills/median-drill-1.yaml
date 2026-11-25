@@ -19,8 +19,6 @@ screens:
     answerCell: B8
     expected: 14
     variants:
-      - set: { B5: 30 }
-        expected: 14
       - set: { B3: 13 }
         expected: 13
     answer: =MEDIAN(B2:B6)

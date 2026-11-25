@@ -30,6 +30,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SWITCH(A2,"N","North","S","South","E","East","W","West")
+      - =LET(v,A2,SWITCH(v,"N","North","S","South","E","East","W","West"))
     reject:
       - formula: =IF(A2="N","North","South")
         rule: required-function

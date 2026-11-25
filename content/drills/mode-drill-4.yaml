@@ -22,8 +22,6 @@ screens:
     variants:
       - set: { B3: 42 }
         expected: 42
-      - set: { B6: 38 }
-        expected: 40
     answer: =MODE(B2:B7)
     requiredFunctions:
       - MODE

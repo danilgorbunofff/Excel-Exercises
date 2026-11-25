@@ -14,6 +14,12 @@ screens:
       - formula: =IFS(B2>=79,"A",B2>=60,"B",TRUE,"C")
         rule: fragile
         why: 80 written as 79
+      - formula: =IFS(B2>=80,"A",B2>60,"B",TRUE,"C")
+        rule: fragile
+        why: ">= written as >"
+      - formula: =IFS(B2>=80,"A",B2>=61,"B",TRUE,"C")
+        rule: fragile
+        why: 60 written as 61
       - formula: =IFS(B2>=80,"A",B2>=59,"B",TRUE,"C")
         rule: fragile
         why: 60 written as 59

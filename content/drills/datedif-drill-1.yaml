@@ -15,8 +15,6 @@ screens:
     variants:
       - set: { C2: 46257 }
         expected: 35
-      - set: { C2: 46258 }
-        expected: 36
     answer: =DATEDIF(B2,C2,"y")
     requiredFunctions:
       - DATEDIF

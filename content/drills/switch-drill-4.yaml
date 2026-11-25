@@ -32,6 +32,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SWITCH(TRUE,B2>=80,"A",B2>=60,"B","C")
+      - =LET(v,B2,SWITCH(TRUE,v>=80,"A",v>=60,"B","C"))
     reject:
       - formula: =IFS(B2>=80,"A",B2>=60,"B",TRUE,"C")
         rule: required-function

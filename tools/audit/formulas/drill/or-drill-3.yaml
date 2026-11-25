@@ -11,4 +11,19 @@ screens:
       - formula: =OR(B2>D2,C2>=D2)
         rule: fragile
         why: "> written as >="
+      - formula: =OR(B2>D2,C3>D2)
+        rule: fragile
+        why: C2 read from the next row
+      - formula: =OR(B2>D2,D2>D2)
+        rule: fragile
+        why: C2 read from the next column
+      - formula: =OR(B2>D2,B2>D2)
+        rule: fragile
+        why: C2 read from the column to the left
+      - formula: =OR(B2>D2,C2>D1)
+        rule: fragile
+        why: D2 read from the row above
+      - formula: =OR(B2>D2,C2>C2)
+        rule: fragile
+        why: D2 read from the column to the left
     equivalent: []

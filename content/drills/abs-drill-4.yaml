@@ -19,8 +19,6 @@ screens:
     answerCell: B8
     expected: 43
     variants:
-      - set: { B3: 8 }
-        expected: 43
       - set: { B5: -20 }
         expected: 48
     answer: =SUMPRODUCT(ABS(B2:B6))

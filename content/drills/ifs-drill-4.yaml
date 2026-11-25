@@ -37,6 +37,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IFS(B2>=90,"Excellent",B2>=70,"Good",B2>=50,"Fair",TRUE,"Poor")
+      - =LET(v,B2,IFS(v>=90,"Excellent",v>=70,"Good",v>=50,"Fair",TRUE,"Poor"))
     reject:
       - formula: =IFS(B2>=50,"Fair",B2>=70,"Good",B2>=90,"Excellent",TRUE,"Poor")
         rule: value

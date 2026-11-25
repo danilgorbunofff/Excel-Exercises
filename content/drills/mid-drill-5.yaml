@@ -31,6 +31,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =MID(A2,FIND("-",A2)+1,3)
+      - =LET(v,A2,MID(v,FIND("-",v)+1,3))
     reject:
       - formula: =MID(A2,5,3)
         rule: required-function

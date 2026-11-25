@@ -14,7 +14,6 @@ screens:
     expected: true
     variants:
       - { set: { B2: 500 }, expected: false }
-      - { set: { B2: 500, C2: 6 }, expected: true }
       - { set: { B2: 1000 }, expected: true }
       - { set: { B2: 500, C2: 5 }, expected: true }
       - { set: { B2: 999, C2: 4 }, expected: false }

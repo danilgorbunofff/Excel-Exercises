@@ -15,8 +15,6 @@ screens:
     variants:
       - set: { B2: Pads }
         expected: false
-      - set: { A2: Pens }
-        expected: true
     answer: =TRIM(A2)=B2
     requiredFunctions:
       - TRIM

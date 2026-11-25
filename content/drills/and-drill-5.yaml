@@ -14,7 +14,6 @@ screens:
     expected: Resit
     variants:
       - { set: { C2: 55 }, expected: Pass }
-      - { set: { B2: 40 }, expected: Resit }
       - { set: { B2: 50, C2: 50 }, expected: Pass }
       - { set: { B2: 49, C2: 50 }, expected: Resit }
       - { set: { C2: 49 }, expected: Resit }
@@ -32,6 +31,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IF(AND(B2>=50,C2>=50),"Pass","Resit")
+      - =LET(v,B2,IF(AND(v>=50,C2>=50),"Pass","Resit"))
     reject:
       - formula: =IF(B2>=50,"Pass","Resit")
         rule: required-function

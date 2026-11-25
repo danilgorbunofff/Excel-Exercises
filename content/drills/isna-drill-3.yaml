@@ -12,9 +12,6 @@ screens:
       - [Pens, 120, 0, null]
     answerCell: D2
     expected: false
-    variants:
-      - set: { C2: 4 }
-        expected: false
     answer: =ISNA(B2/C2)
     requiredFunctions:
       - ISNA
@@ -28,6 +25,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =ISNA(B2/C2)
+      - =LET(v,B2,ISNA(v/C2))
     reject:
       - formula: =ISERROR(B2/C2)
         rule: required-function

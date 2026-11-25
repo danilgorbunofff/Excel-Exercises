@@ -36,6 +36,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =OR(B2>D2,C2>D2)
+      - =LET(v,B2,OR(v>D2,C2>D2))
     reject:
       - formula: =OR(B2>100,C2>100)
         rule: fragile

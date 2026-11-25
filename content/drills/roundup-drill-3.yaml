@@ -13,8 +13,6 @@ screens:
     answerCell: C2
     expected: 2.35
     variants:
-      - set: { B2: 2.35 }
-        expected: 2.35
       - set: { B2: 5.001 }
         expected: 5.01
     answer: =ROUNDUP(B2,2)
@@ -30,6 +28,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =ROUNDUP(B2,2)
+      - =LET(v,B2,ROUNDUP(v,2))
     reject:
       - formula: =ROUND(B2,2)
         rule: required-function

@@ -30,6 +30,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =MID(A2,B2,1)
+      - =LET(v,A2,MID(v,B2,1))
     reject:
       - formula: =MID(A2,B2,2)
         rule: value

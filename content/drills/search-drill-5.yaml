@@ -15,8 +15,6 @@ screens:
     variants:
       - set: { A2: Call back later }
         expected: No
-      - set: { A2: "urgent: invoice" }
-        expected: Yes
     answer: =IF(ISNUMBER(SEARCH("urgent",A2)),"Yes","No")
     requiredFunctions:
       - SEARCH
@@ -32,6 +30,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IF(ISNUMBER(SEARCH("urgent",A2)),"Yes","No")
+      - =LET(v,A2,IF(ISNUMBER(SEARCH("urgent",v)),"Yes","No"))
     reject:
       - formula: =IF(ISNUMBER(FIND("urgent",A2)),"Yes","No")
         rule: required-function

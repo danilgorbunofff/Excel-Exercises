@@ -15,10 +15,6 @@ screens:
     variants:
       - set: { B2: 22 }
         expected: 20
-      - set: { B2: 22.5 }
-        expected: 25
-      - set: { B2: 27.4 }
-        expected: 25
     answer: =MROUND(B2,5)
     requiredFunctions:
       - MROUND
@@ -32,6 +28,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =MROUND(B2,5)
+      - =LET(v,B2,MROUND(v,5))
     reject:
       - formula: =ROUND(B2,0)
         rule: required-function

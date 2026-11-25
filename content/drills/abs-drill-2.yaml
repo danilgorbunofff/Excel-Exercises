@@ -13,8 +13,6 @@ screens:
     answerCell: D2
     expected: 120
     variants:
-      - set: { C2: 380 }
-        expected: 120
       - set: { C2: 500 }
         expected: 0
     answer: =ABS(B2-C2)

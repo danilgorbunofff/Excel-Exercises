@@ -31,6 +31,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =AND(B2>=70,C2>=3,D2="Yes")
+      - =LET(v,B2,AND(v>=70,C2>=3,D2="Yes"))
     reject:
       - formula: =AND(B2>=70,C2>=3)
         rule: fragile

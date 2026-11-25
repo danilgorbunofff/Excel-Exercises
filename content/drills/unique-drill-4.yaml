@@ -19,8 +19,6 @@ screens:
     answerCell: E2
     expected: 3
     variants:
-      - set: { B5: South }
-        expected: 3
       - set: { B5: East }
         expected: 2
       - set: { B7: South }

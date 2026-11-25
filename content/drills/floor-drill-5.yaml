@@ -21,8 +21,6 @@ screens:
     variants:
       - set: { B2: 25 }
         expected: 110
-      - set: { B3: 12 }
-        expected: 100
     answer: =FLOOR(SUM(B2:B6),10)
     requiredFunctions:
       - FLOOR

@@ -4,5 +4,14 @@ screens:
       - =IF(OR($B$2="Yes",$C$2="Yes"),"Double","Normal")
       - =IF(OR(B$2="Yes",C2="Yes"),"Double","Normal")
       - =if(or(b2="Yes", c2="Yes"), "Double", "Normal")
-    wrong: []
+    wrong:
+      - formula: =IF(OR(B2="Yes",C3="Yes"),"Double","Normal")
+        rule: fragile
+        why: C2 read from the next row
+      - formula: =IF(OR(B2="Yes",C1="Yes"),"Double","Normal")
+        rule: fragile
+        why: C2 read from the row above
+      - formula: =IF(OR(B2="Yes",B2="Yes"),"Double","Normal")
+        rule: fragile
+        why: C2 read from the column to the left
     equivalent: []

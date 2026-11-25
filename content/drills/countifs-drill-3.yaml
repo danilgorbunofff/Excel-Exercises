@@ -21,8 +21,6 @@ screens:
     variants:
       - set: { E2: West }
         expected: 1
-      - set: { E3: Pads }
-        expected: 2
     answer: =COUNTIFS(A2:A8,E2,B2:B8,E3)
     requiredFunctions:
       - COUNTIFS

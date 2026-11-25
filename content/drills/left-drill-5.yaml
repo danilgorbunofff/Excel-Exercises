@@ -31,6 +31,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =LEFT(A2,FIND(" ",A2)-1)
+      - =LET(v,A2,LEFT(v,FIND(" ",v)-1))
     reject:
       - formula: =LEFT(A2,4)
         rule: required-function

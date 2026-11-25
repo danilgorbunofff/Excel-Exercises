@@ -21,7 +21,6 @@ screens:
     expected: 90
     variants:
       - { set: { B4: 80 }, expected: 85 }
-      - { set: { B7: 95 }, expected: 90 }
       - { set: { B2: 97, B7: 120 }, expected: 97 }
     answer: =LARGE(B2:B7,2)
     requiredFunctions:

@@ -32,6 +32,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =IFS(AND(B2>=80,C2>=5),"Senior",B2>=80,"Mid",TRUE,"Junior")
+      - =LET(v,B2,IFS(AND(v>=80,C2>=5),"Senior",v>=80,"Mid",TRUE,"Junior"))
     reject:
       - formula: =IFS(B2>=80,"Senior",TRUE,"Junior")
         rule: required-function

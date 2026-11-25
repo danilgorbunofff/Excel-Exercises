@@ -32,6 +32,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =AND(B2>=18,OR(C2="Yes",D2="Yes"))
+      - =LET(v,B2,AND(v>=18,OR(C2="Yes",D2="Yes")))
     reject:
       - formula: =OR(C2="Yes",D2="Yes")
         rule: required-function

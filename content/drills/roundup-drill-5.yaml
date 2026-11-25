@@ -20,8 +20,6 @@ screens:
     answerCell: B9
     expected: 6
     variants:
-      - set: { B3: 6 }
-        expected: 6
       - set: { B8: 18 }
         expected: 3
     answer: =ROUNDUP(SUM(B2:B6)/B8,0)

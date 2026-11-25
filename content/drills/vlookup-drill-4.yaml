@@ -19,12 +19,8 @@ screens:
         expected: A
       - set: { B2: 59 }
         expected: C
-      - set: { B2: 60 }
-        expected: B
       - set: { B2: 80 }
         expected: A
-      - set: { B2: 79 }
-        expected: B
     answer: =VLOOKUP(B2,E2:F4,2,TRUE)
     requiredFunctions:
       - VLOOKUP

@@ -28,6 +28,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =DATEDIF(B2,C2,"y")&" years, "&DATEDIF(B2,C2,"ym")&" months"
+      - =LET(v,B2,DATEDIF(v,C2,"y")&" years, "&DATEDIF(v,C2,"ym")&" months")
     reject:
       - formula: =DATEDIF(B2,C2,"y")&" years, "&DATEDIF(B2,C2,"m")&" months"
         rule: value

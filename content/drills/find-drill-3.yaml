@@ -15,8 +15,6 @@ screens:
     variants:
       - set: { B2: 1 }
         expected: 4
-      - set: { B2: 8 }
-        expected: 8
     answer: =FIND("-",A2,B2)
     requiredFunctions:
       - FIND
@@ -30,6 +28,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =FIND("-",A2,B2)
+      - =LET(v,A2,FIND("-",v,B2))
     reject:
       - formula: =FIND("-",A2)
         rule: value

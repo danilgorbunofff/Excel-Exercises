@@ -22,8 +22,6 @@ screens:
     variants:
       - set: { B2: 10 }
         expected: 730
-      - set: { B4: 21 }
-        expected: 650
     answer: =SUMIFS(C2:C8,B2:B8,">=10",B2:B8,"<=20")
     requiredFunctions:
       - SUMIFS

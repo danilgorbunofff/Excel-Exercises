@@ -13,8 +13,6 @@ screens:
     answerCell: C2
     expected: 7.75
     variants:
-      - set: { B2: 7.75 }
-        expected: 7.75
       - set: { B2: 2.2 }
         expected: 2
     answer: =FLOOR(B2,0.25)
@@ -30,6 +28,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =FLOOR(B2,0.25)
+      - =LET(v,B2,FLOOR(v,0.25))
     reject:
       - formula: =ROUNDDOWN(B2,1)
         rule: required-function

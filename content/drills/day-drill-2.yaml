@@ -29,6 +29,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =DAY(C2)
+      - =LET(v,C2,DAY(v))
     reject:
       - formula: =DAY(B2)
         rule: value

@@ -31,6 +31,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =E1-DAY(B2)
+      - =LET(v,E1,v-DAY(B2))
     reject:
       - formula: =25-DAY(B2)
         rule: reference

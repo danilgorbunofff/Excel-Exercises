@@ -14,4 +14,16 @@ screens:
       - formula: =AND(B2>=17,OR(C2="Yes",D2="Yes"))
         rule: fragile
         why: 18 written as 17
+      - formula: =AND(B2>=18,OR(C3="Yes",D2="Yes"))
+        rule: fragile
+        why: C2 read from the next row
+      - formula: =AND(B2>=18,OR(C1="Yes",D2="Yes"))
+        rule: fragile
+        why: C2 read from the row above
+      - formula: =AND(B2>=18,OR(D2="Yes",D2="Yes"))
+        rule: fragile
+        why: C2 read from the next column
+      - formula: =AND(B2>=18,OR(B2="Yes",D2="Yes"))
+        rule: fragile
+        why: C2 read from the column to the left
     equivalent: []

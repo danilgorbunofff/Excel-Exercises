@@ -16,8 +16,6 @@ screens:
     answerCell: D3
     expected: 3
     variants:
-      - set: { D2: 50 }
-        expected: 3
       - set: { D2: 49 }
         expected: 2
       - set: { D2: 99 }

@@ -30,6 +30,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =LEFT(A2,B2)
+      - =LET(v,A2,LEFT(v,B2))
     reject:
       - formula: =LEFT(A2,5)
         rule: fragile

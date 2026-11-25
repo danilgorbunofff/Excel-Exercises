@@ -30,6 +30,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =SEARCH(B2,A2)
+      - =LET(v,B2,SEARCH(v,A2))
     reject:
       - formula: =FIND(B2,A2)
         rule: required-function

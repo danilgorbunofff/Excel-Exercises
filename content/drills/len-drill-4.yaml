@@ -29,6 +29,7 @@ screens:
       fragile: The data can change, so the formula must calculate the result from the cells. A typed value, or a formula that is right by chance, will not follow the change.
     accept:
       - =LEN(A2)=8
+      - =LET(v,A2,LEN(v)=8)
     reject:
       - formula: =LEN(A2)>=8
         rule: fragile

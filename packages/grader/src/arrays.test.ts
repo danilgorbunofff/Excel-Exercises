@@ -102,6 +102,14 @@ describe("arrays: dynamic-array functions", () => {
     expect(ev("=LET(x,2,y,x*3,x+y)")).toBe(8);
     expect(ev("=LET(x,2)")).toBe(errorValue("#VALUE!"));
   });
+
+  it("LET keeps a cell reference, so a blank cell stays blank", () => {
+    expect(ev("=LET(v,C5,ISBLANK(v))")).toBe(true);
+    expect(ev("=LET(v,C5,v)")).toBe(0);
+    expect(ev("=LET(v,C5,v=0)")).toBe(true);
+    expect(ev("=LET(v,C4,ROW(v))")).toBe(4);
+    expect(ev("=LET(v,C2,ABS(v)*2)")).toBe(600);
+  });
 });
 
 const spill: GradeSpec = {

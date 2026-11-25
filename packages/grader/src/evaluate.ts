@@ -83,11 +83,15 @@ export function evaluate(node: Node, grid: Grid, options: EvaluateOptions = {}):
         return array(n.rows.map((r) => [...r]));
       case "empty":
         return null;
-      case "name":
-        return names.get(n.name.toUpperCase()) ?? errorValue("#NAME?");
-      case "ref":
+      case "name": {
+        const key = n.name.toUpperCase();
+        return names.has(key) ? (names.get(key) as Value) : errorValue("#NAME?");
+      }
+      case "ref": {
         // LET may bind a name that looks like a cell, such as a1; Excel then reads the name.
-        return names.get(n.text.toUpperCase()) ?? cell(n.address);
+        const key = n.text.toUpperCase();
+        return names.has(key) ? (names.get(key) as Value) : cell(n.address);
+      }
       case "range":
         return rangeOf(n);
       case "call": {
@@ -167,7 +171,11 @@ export function evaluate(node: Node, grid: Grid, options: EvaluateOptions = {}):
               ? name.text
               : null;
         if (key === null || !value) return errorValue("#VALUE!");
-        names.set(key.toUpperCase(), run(value));
+        // A name bound to a cell keeps the reference, as in Excel, so ISBLANK(v) and ROW(v) work.
+        names.set(
+          key.toUpperCase(),
+          value.type === "ref" ? block(value.address, 1, 1) : run(value),
+        );
       }
       return run(args[args.length - 1] as Node);
     } finally {

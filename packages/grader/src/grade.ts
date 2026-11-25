@@ -75,6 +75,14 @@ export interface Verdict {
   reads: Read[];
 }
 
+/** The result arguments of each branching function, for a given argument count. */
+const ZERO_RESULT_ARGS: Record<string, (n: number) => number[]> = {
+  IF: () => [1, 2],
+  IFS: (n) => Array.from({ length: Math.floor(n / 2) }, (_, i) => 2 * i + 1),
+  IFERROR: () => [1],
+  IFNA: () => [1],
+};
+
 /** Arguments that set how a function works. Typed numbers there are not data. */
 /** Where each criteria argument sits: the first index, then every step after it. */
 const CRITERIA_ARGS: Record<string, { first: number; step: number }> = {
@@ -320,6 +328,13 @@ function typedDataNumber(
           const a = n.args[i];
           if (a) walkAst(a, (x) => settings.add(x));
         }
+      // A bare 0 as the result of a branch is a fallback, as in IF(B6>=A4,0,...),
+      // not a value copied from the data, even when a 0 sits in the sheet.
+      const results = ZERO_RESULT_ARGS[n.name]?.(n.args.length) ?? [];
+      for (const i of results) {
+        const a = n.args[i];
+        if (a?.type === "number" && a.value === 0) settings.add(a);
+      }
       // SWITCH's case values sit at 1, 3, 5 and so on; a last odd one is the default.
       if (n.name === "SWITCH") {
         for (let i = 1; i + 1 < n.args.length; i += 2) {

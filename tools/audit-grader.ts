@@ -3,7 +3,7 @@
 // each difference, and writes tools/audit/grader-excel.json for the parity
 // test. Excel answers come from tools/audit/excel-cache.json when cached.
 // Usage: node tools/audit-grader.ts [--area=<name>]
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { createGrid, evaluateFormula, grade, parseAddress } from "@practice/grader";
 import { CASES, CELL, SHEET, SYNTAX_CASES } from "./audit/grader-cases.ts";
 import { type ExcelScalar, runInExcel } from "./lib/excel-bridge.ts";
@@ -79,20 +79,19 @@ const syntax = SYNTAX_CASES.map((formula, i) => {
 for (const s of syntax)
   console.log(`SYNTAX ${s.formula}  excel=${s.excel}  grader=${s.rule}: ${s.message}`);
 
-writeFileSync(
-  "tools/audit/grader-excel.json",
-  `${JSON.stringify(
-    rows.map(({ area, formula, locale, excel: e, match }) => ({
-      area,
-      formula,
-      locale,
-      excel: e,
-      match,
-    })),
-    null,
-    1,
-  )}\n`,
-);
+const RECORD = "tools/audit/grader-excel.json";
+const recorded = rows.map(({ area, formula, locale, excel: e, match }) => ({
+  area,
+  formula,
+  locale,
+  excel: e,
+  match,
+}));
+// With --area, keep the other areas' records and replace only this one.
+const kept = AREA
+  ? (JSON.parse(readFileSync(RECORD, "utf8")) as { area: string }[]).filter((r) => r.area !== AREA)
+  : [];
+writeFileSync(RECORD, `${JSON.stringify([...kept, ...recorded], null, 1)}\n`);
 for (const c of skipped) console.log(`SKIPPED ${c.formula}: ${c.skip}`);
 console.log(
   `\n${rows.length} cases, ${bad} differ (${rows.filter((r) => !r.match && r.locale).length} locale-sensitive).`,

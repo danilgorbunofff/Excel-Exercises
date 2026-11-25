@@ -81,5 +81,6 @@ export const LIFTED: Readonly<Record<string, (count: number) => readonly number[
   MAXIFS: criteriaFrom(2),
   MINIFS: criteriaFrom(2),
   LARGE: (n) => (n > 1 ? [1] : []),
+  RANK: first,
   SMALL: (n) => (n > 1 ? [1] : []),
 };

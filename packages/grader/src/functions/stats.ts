@@ -3,9 +3,12 @@
 // function to run. The sheets here have no hidden rows, so SUBTOTAL's 101 to
 // 111 codes give the same results as 1 to 11.
 import { isError } from "../errors.ts";
-import type { Arg, FunctionSpec } from "../values.ts";
+import { type Arg, type FunctionSpec, isRange, type Value } from "../values.ts";
 import { cells, fail, fn, num, numbersFrom, range, safe } from "./helpers.ts";
 import { MATH } from "./math.ts";
+
+/** A computed array, as array() builds it, sits at row 0, which no cell has. */
+const isComputedArray = (v: Value) => isRange(v) && v.origin.row === 0;
 
 /** The numbers in a range argument; text, logicals and blanks are skipped. */
 const numbersIn = (arg: Arg | undefined): number[] =>
@@ -112,6 +115,8 @@ export const STATS: Record<string, FunctionSpec> = {
       const options = Math.trunc(num(args[1]));
       if (options < 0 || options > 7) return fail("#VALUE!");
       const rest = args.slice(2);
+      // Codes 1 to 13 take references only: a computed array such as B2:B9/(B2:B9>0) is #VALUE!.
+      if (code < 14 && rest.some((a) => isComputedArray(a.get()))) return fail("#VALUE!");
       // Options 0, 1, 4 and 5 keep error values, so the first one in the data is the result.
       if ([0, 1, 4, 5].includes(options)) {
         const data = code >= 14 ? rest.slice(0, 1) : rest;

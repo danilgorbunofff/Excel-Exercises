@@ -3730,6 +3730,42 @@
   "match": false
  },
  {
+  "area": "let",
+  "formula": "=LET(v,C5,ISBLANK(v))",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "let",
+  "formula": "=LET(v,C5,v)",
+  "excel": 0,
+  "match": true
+ },
+ {
+  "area": "let",
+  "formula": "=LET(v,C5,v=0)",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "let",
+  "formula": "=LET(v,F4,ROW(v))",
+  "excel": 4,
+  "match": true
+ },
+ {
+  "area": "let",
+  "formula": "=LET(v,G7,ISBLANK(v))",
+  "excel": true,
+  "match": true
+ },
+ {
+  "area": "let",
+  "formula": "=LET(v,A2:A9,COUNTBLANK(v))",
+  "excel": 1,
+  "match": true
+ },
+ {
   "area": "lifting",
   "formula": "=LEN(A2:A4)",
   "excel": [
@@ -4838,5 +4874,125 @@
    "error": "#VALUE!"
   },
   "match": false
+ },
+ {
+  "area": "ladder fixes",
+  "formula": "=SUM(IFS(F2:F9>2,1,TRUE,0))",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "ladder fixes",
+  "formula": "=SUM(IFS((F2:F9>1)*(B2:B9<>\"South\"),F2:F9,TRUE,0))",
+  "excel": 11,
+  "match": true
+ },
+ {
+  "area": "ladder fixes",
+  "formula": "=SUM(IFERROR(IFS(F2:F9>2,1),0))",
+  "excel": 3,
+  "match": true
+ },
+ {
+  "area": "ladder fixes",
+  "formula": "=AGGREGATE(9,0,F2:F9/(F2:F9>1))",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "ladder fixes",
+  "formula": "=AGGREGATE(9,6,F2:F9/(F2:F9>1))",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "ladder fixes",
+  "formula": "=AGGREGATE(4,1,F2:F9/(F2:F9>1))",
+  "excel": {
+   "error": "#VALUE!"
+  },
+  "match": true
+ },
+ {
+  "area": "ladder fixes",
+  "formula": "=AGGREGATE(14,6,F2:F9/(F2:F9>1),1)",
+  "excel": 5,
+  "match": true
+ },
+ {
+  "area": "ladder fixes",
+  "formula": "=AGGREGATE(15,5,F2:F9/(F2:F9>1),1)",
+  "excel": {
+   "error": "#DIV/0!"
+  },
+  "match": true
+ },
+ {
+  "area": "ladder fixes",
+  "formula": "=AGGREGATE(15,6,F2:F9/(F2:F9>1),1)",
+  "excel": 2,
+  "match": true
+ },
+ {
+  "area": "ladder fixes",
+  "formula": "=AGGREGATE(14,4,F2:F9/(F2:F9>1),2)",
+  "excel": {
+   "error": "#DIV/0!"
+  },
+  "match": true
+ },
+ {
+  "area": "ladder fixes",
+  "formula": "=AGGREGATE(9,4,F2:F9)",
+  "excel": 17,
+  "match": true
+ },
+ {
+  "area": "ladder fixes",
+  "formula": "=INDEX(A2:H9,2)",
+  "excel": {
+   "error": "#REF!"
+  },
+  "match": true
+ },
+ {
+  "area": "ladder fixes",
+  "formula": "=INDEX(A2:B9,2)",
+  "excel": {
+   "error": "#REF!"
+  },
+  "match": true
+ },
+ {
+  "area": "ladder fixes",
+  "formula": "=INDEX(A2:B9,2,2)",
+  "excel": "South",
+  "match": true
+ },
+ {
+  "area": "ladder fixes",
+  "formula": "=RANK(F2:F4,F2:F9)",
+  "excel": [
+   [
+    3
+   ],
+   [
+    6
+   ],
+   [
+    4
+   ]
+  ],
+  "match": true
+ },
+ {
+  "area": "ladder fixes",
+  "formula": "=SUM(RANK(F2:F6,F2:F6,1))",
+  "excel": 14,
+  "match": true
  }
 ]

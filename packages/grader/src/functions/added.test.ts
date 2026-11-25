@@ -257,7 +257,9 @@ describe("SUBTOTAL and AGGREGATE", () => {
     ["=AGGREGATE(9,8,B1:B5)", "#VALUE!"],
     ["=AGGREGATE(14,6,B1:B5)", "#VALUE!"],
     ["=AGGREGATE(15,5,B1:B5/(B1:B5>1),1)", "#DIV/0!"],
-    ["=AGGREGATE(9,0,B1:B5/(B1:B5>1))", "#DIV/0!"],
+    // Codes 1 to 13 take references only, so a computed array is #VALUE! in Excel.
+    ["=AGGREGATE(9,0,B1:B5/(B1:B5>1))", "#VALUE!"],
+    ["=AGGREGATE(9,6,B1:B5/(B1:B5>1))", "#VALUE!"],
   ])("%s is %s", (f, code) => {
     expect(ev(f)).toBe(E(code as ErrorCode));
   });

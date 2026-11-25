@@ -77,14 +77,16 @@ Deferred, with reasons:
 
 Phase 1 ran 582 cases (`tools/audit/grader-cases.ts`) in Excel and the grader, including XLOOKUP and XMATCH binary search and a MODE tie. Results are kept in `tools/audit/grader-excel.json` and replayed by `packages/grader/src/functions/excel-parity.test.ts` without Excel.
 
-| Gap                                                                                             | Decision                                                    |
-| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| SUMIF with a sum range shorter than the criteria range: Excel stretches it over the sheet.      | Kept. Needs sheet access inside functions; no task uses it. |
-| The space intersection operator (`=F2:F4 F3:F5`).                                               | Kept as a syntax message. Rare.                             |
-| `@` before a multi-cell range: Excel `#VALUE!`, grader returns the block.                       | Kept. Both fail a one-cell answer.                          |
-| TEXT format codes beyond numbers, percents, thousands, dates and times (fractions, scientific). | `#VALUE!` in the grader. Needs an en-US Excel check.        |
-| Locale-dependent cases: `="1,050"+0`, `VALUE("1,050")`, `="1.5"*2`, TEXT formats.               | Needs an en-US Excel check. The grader follows en-US.       |
-| `=HSTACK(A2:A3,B2:B4)` crashes Excel 16.109 when entered through automation.                    | Needs a manual Excel check. The grader pads with `#N/A`.    |
+| Gap                                                                                             | Decision                                                                      |
+| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| SUMIF with a sum range shorter than the criteria range: Excel stretches it over the sheet.      | Fixed in 231df9b (merged 2026-11-25).                                         |
+| The space intersection operator (`=F2:F4 F3:F5`).                                               | Kept as a syntax message. Rare.                                               |
+| `@` before a multi-cell range: Excel `#VALUE!`, grader returns the block.                       | Kept. Both fail a one-cell answer.                                            |
+| TEXT format codes beyond numbers, percents, thousands, dates and times (fractions, scientific). | `#VALUE!` in the grader. Needs an en-US Excel check.                          |
+| Locale-dependent cases: `="1,050"+0`, `VALUE("1,050")`, `="1.5"*2`, TEXT formats.               | Needs an en-US Excel check. The grader follows en-US.                         |
+| `=HSTACK(A2:A3,B2:B4)` crashes Excel 16.109 when entered through automation.                    | Needs a manual Excel check. The grader pads with `#N/A`.                      |
+| LET forms Excel refuses to enter: a repeated name, no calculation, a name with a dot.           | Kept. The grader evaluates them; no task uses them.                           |
+| Arrays of different heights (`=F2:F4*F2:F3`): the Excel bridge reads back two rows.             | Kept. The grader pads the short one with `#N/A`, as Excel shows on the sheet. |
 
 ## 4. Excel checks
 
@@ -182,3 +184,93 @@ What changed:
 - The conditions spec put its label on the answer cell; it sits in G2 now.
 
 The 38 reviewed equivalents are the same formula on any realistic data: VLOOKUP with TRUE left out, MATCH or RANK with 2 for 1, XLOOKUP and UNIQUE ignoring case, `>=0` on a sum, `>=` where the difference is then 0, AGGREGATE options 5 and 6 on a sheet with no error cells (rows cannot hold error values), approximate match on exact header text, SUMIF resizing its sum range, a missing key that errors either way, MID one character longer on fixed-length codes, and the 110% target boundary, where floating point makes an exact test unreliable.
+
+## 7. Full reverification of the ladder steps (2026-11-25, second pass)
+
+The first pass (section 6) checked the steps in Excel only. This pass ran the whole brief on them: the grader against Excel again, every screen read by hand, the logic checks and the browser checks. The SUMIF and AVERAGEIF sum-range fix (231df9b) was merged first, and everything below runs with it.
+
+### Phase 1: grader against Excel
+
+`tools/audit/grader-cases.ts` gained the cases fixed during the ladder work and this pass: array IFS, AGGREGATE codes 1 to 13 and 14 to 15 on computed arrays, INDEX on a 2-D range without a column, LET names bound to cells, and RANK over an array of values. The run covers 612 cases; 14 differ: the 7 locale cases and the 7 gaps in section 3.
+
+Grader fixes from this pass, each with a test:
+
+| Severity | Area          | Fix                                                                                                                                                                                                                     |
+| -------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Medium   | LET           | A name bound to a blank cell gave `#NAME?`, and a name lost its cell reference, so `=LET(v,B2,ISBLANK(v))` was FALSE and `ROW(v)` was `#VALUE!`. Names now keep the reference, as in Excel.                             |
+| Medium   | AGGREGATE     | Codes 1 to 13 take references only: on a computed array such as `B2:B9/(B2:B9>1)` Excel gives `#VALUE!`. The grader gave `#DIV/0!` (and the earlier test expected it).                                                  |
+| Medium   | RANK          | RANK over an array of values, `=RANK(B2:B16,B2:B16)`, spills in Excel 365. The grader gave `#VALUE!`.                                                                                                                   |
+| Low      | typed numbers | A bare 0 returned by IF, IFS, IFERROR or IFNA counted as a value copied from the sheet when a 0 sat in the data, so `=IF(B6>=A4,0,...)` failed on `reference`. It is a fallback, not data. No existing verdict changed. |
+| Low      | tooling       | `audit-grader.ts --area=<name>` overwrote `grader-excel.json` with that area alone. It now replaces only that area's records.                                                                                           |
+
+### Phase 2: every step read by hand
+
+All 512 steps were read track by track from a review sheet (prompt, grid, answer, expected value, variants, hints and value miss). A script also checked the track order: every function a step requires, or that its only accepted forms need, must be taught at or before its exercise's topic.
+
+| Severity | Count     | Finding                                                                                                                                                                                                                                                                              | Fix                                                                                                                                                                |
+| -------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| High     | 293 steps | Hint 2 (`rule`) quoted the full reference answer, such as "SUM(B2:B5) adds the heads of the four teams". The answer is meant to appear only at hint 3, which marks the solve as with help, so a learner could copy it and still count as solving alone. No track exercise does this. | Every one rewritten to state the method without the formula, in the style of the exercises.                                                                        |
+| High     | 2 steps   | count-orders-by-region step 3 named E1 for the region, which holds the label; xlookup-with-a-fallback step 5 named E5 as the answer cell, which is E6.                                                                                                                               | Prompts fixed.                                                                                                                                                     |
+| Medium   | 34 steps  | A step needed a function taught later in the track: SUMPRODUCT, AVERAGEIF, ABS, IFERROR, COUNTIFS, TRIM, ROWS or SUBSTITUTE before their topic, and YEAR, MONTH, MAXIFS, MINIFS, CEILING and EXACT, which no exercise teaches.                                                       | 26 rewritten with taught functions (new data or a new twist where needed); 8 got a reference answer in taught functions, such as SUM over an array for SUMPRODUCT. |
+| Low      | 10 steps  | The reference answer and rule used a later function, though an accepted form with taught functions existed.                                                                                                                                                                          | Reference answers switched to the taught form; the old one stays accepted.                                                                                         |
+| Low      | 21 steps  | Value misses: TRUE and FALSE in lower case, long decimals (784.444444444), "1 customers are", "-0.062 from", "1000 against budget"; one 45-word prompt; one prompt where "the average order" could mean two things.                                                                  | Rewritten.                                                                                                                                                         |
+
+The level of every step still fits the rubric in `docs/content.md` and never drops along a ladder (`content:validate`).
+
+Rewritten steps were built with `tools/new-steps.ts`, which recomputes the expected values and checks every accept and reject, then audited in Excel.
+
+### Drills
+
+The merged audit also covered the 350 PRO drills, which had 154 screens with problems:
+
+- 130 drills had only 4 Excel-checked correct forms. Each now accepts a LET form of its answer, which also tests the LET fix above.
+- 48 variants did not change the expected result. 41 were dead and are removed; 7 caught a wrong formula after all, so they stay and the fixtures record those formulas as wrong.
+
+All 350 drill screens are clean.
+
+### Phase 3: logic
+
+- Access: a step shares its exercise's lock. `exercises-api.test.ts` covers a free step signed out, and a PRO step signed out, signed in and with PRO.
+- Leaks: `audit-access.ts` finds no PRO or held-out answer on a free page (exit code 0). The 26 older drill leaks came from two function-card notes that quoted a formula (`=CONCAT(A2,B2)` and `=UPPER(A2)/2`) and from concat step 5, whose answer contained a PRO drill answer; the notes no longer quote a formula and concat step 5 moved to new columns. A rewritten add-two-cells step 5 briefly contained a held-out mock answer and was rearranged.
+- Discovery, checked in `dist`: no step URL in `sitemap.xml` or `search-index.json`; step pages carry `noindex`; the catalogue lists 128 exercises and no step links; the daily and mock pages hold no steps.
+- Progress: `foldSets` counts a solved step as its exercise solved and a later step as a review (`progress.test.ts`). A new `profile-stats.test.ts` case checks that several solved steps count their exercise once, by level and by track. Certificates come from mock attempts, so steps cannot add to them.
+
+### Phase 4: in the browser
+
+Built site, signed out, in the browser pane:
+
+- sum-a-column step 2 (free): `=SUM(B2:F2)` is solved; the ladder ticks step 2, marks step 3 as current, and "Try a harder one" opens step 3.
+- upper-lower-and-proper step 2 (PRO): the PRO panel shows, the answer is not in the page, and the page is `noindex`.
+- filter-the-rows-that-match step 1: a formula right only by chance gets the fragile message; `=FILTER(C2:C19,B2:B19="South")` spills F2:F6 and is solved.
+- Progress page with step 2 solved 15 days ago: the review row opens step 3, not the step already solved.
+
+The axe and route specs take their pages from the sitemap, which leaves steps out, so no e2e check visited a step page. `tests/e2e/routes.ts` now adds four sample steps (free beginner, intermediate and spilled advanced, and a locked PRO step), so axe in light and dark, CSP and privacy run on them, and the 320 px test covers them.
+
+Playwright on the final build:
+
+| Browser  | Result                                                                                                         | Notes                                                                                                                                                                                                                                                 |
+| -------- | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Chromium | 1434 passed                                                                                                    | The four step pages pass axe in light and dark, CSP, privacy and the 320 px check.                                                                                                                                                                    |
+| Firefox  | 1207 passed in the full run; the other 227 pass after the fixes below (their four spec files rerun: 384 tests) | Two harness fixes, below.                                                                                                                                                                                                                             |
+| WebKit   | 1380 passed, 53 failed, 1 skipped                                                                              | Every failure is a click. On this Mac (macOS 26.6.2, Playwright 1.65) WebKit cannot click even a bare `<button>` on an empty page ("`<html>` intercepts pointer events"), while Chromium can. Environmental; needs a rerun on another macOS or in CI. |
+
+Fixes found by the new browsers:
+
+- Firefox never finished a script-free browser context (`metadata.spec.ts`, the no-JavaScript exercise test): the shared `storageState` seeds localStorage, which needs script. Those contexts now start with an empty storage state. The crash of Firefox's page when axe is scoped to the tour card is Playwright's Firefox, so that one scoped check runs on Chromium and WebKit; the full-page axe runs on all three.
+- WebKit laid out the mock assessment cover wrongly: the Start row's `min-width: min(100%, 17rem)` made it 35 px wider than its grid column, so the Start button ran under the card's clipped edge. It is a plain `17rem` minimum in the two-column layout now, and both engines draw the cover the same.
+
+### Deferred
+
+- en-US locale: this Mac's Excel reads en_CZ separators, so the 7 locale cases in section 3 and the locale-sensitive screens still need an en-US Excel check.
+- Drill hints: 68 of the 350 drills quote the full answer in hint 2, as the steps did. Drills were outside this pass; it is a follow-up of its own.
+
+### Final state
+
+| Check                                        | Result                                                                                                                                      |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `audit-grader.ts`                            | 612 cases; 14 differ: 7 locale, 7 gaps in section 3                                                                                         |
+| `audit-tasks.ts --cached-only`               | 1172 of 1176 screens clean: all 512 steps and 350 drills; the 4 left are the 3 locale screens and reading-error-values 2 (sections 2 and 4) |
+| `audit-access.ts`                            | 0 leaks (exit 0)                                                                                                                            |
+| Track order check                            | 0 steps need a function taught later                                                                                                        |
+| `typecheck`, `vitest`                        | 0 errors; 12073 tests pass                                                                                                                  |
+| `content:validate`, `lint:copy`, `check:csp` | pass                                                                                                                                        |

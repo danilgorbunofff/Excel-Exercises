@@ -1,0 +1,243 @@
+// Ladder steps for the "dates" track (docs/content.md, Ladder steps). The
+// YAML files are the source of truth once written: variants added later by
+// tools/suggest-variants.ts and by hand live only there, so do not --write this again.
+// Each exercise's own slot: level 2 at step 3. Dates are Excel serial numbers
+// (45352 is 1 March 2024), so the sheet and Excel agree whatever the locale.
+const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+
+export default [
+  // date-build-a-date-from-parts (level 2, step 3)
+  step("date-build-a-date-from-parts", 1, 1, "First day of a year", {
+    prompt: "In C2, build the date of 1 January in the year in B2. Use DATE.",
+    rows: [
+      ["Plan", "Year", "Starts"],
+      ["Budget", 2025, null],
+    ],
+    cell: "C2",
+    answer: "=DATE(B2,1,1)",
+    required: ["DATE"],
+    accept: ["=DATE($B$2,1,1)"],
+    variants: [{ B2: 2026 }],
+    reject: [["=DATE(B2,1,0)", "value"]],
+    nudge: "DATE takes the year, the month and the day.",
+    rule: "DATE(B2,1,1) gives 1 January of that year as a real date.",
+    value: (e) => `1 January of that year is serial ${e}.`,
+  }),
+  step("date-build-a-date-from-parts", 2, 1, "Year of a date", {
+    prompt: "In C2, take the year from the date in B2. Use YEAR.",
+    rows: [
+      ["Invoice", "Date", "Year"],
+      ["INV-2001", 45352, null],
+    ],
+    cell: "C2",
+    answer: "=YEAR(B2)",
+    required: ["YEAR"],
+    accept: ["=year(b2)"],
+    variants: [{ B2: 45700 }],
+    reject: [["=MONTH(B2)", "required-function"]],
+    nudge: "YEAR reads the year out of a real date.",
+    rule: "YEAR(B2) gives 2024 for any date in 2024.",
+    value: (e) => `The invoice is from ${e}.`,
+  }),
+  step("date-build-a-date-from-parts", 4, 2, "Last day of a month", {
+    prompt:
+      "In D2, build the last day of the month in C2 of the year in B2: day 0 of the following month. Use DATE.",
+    rows: [
+      ["Report", "Year", "Month", "Month end"],
+      ["Feb close", 2024, 2, null],
+    ],
+    cell: "D2",
+    answer: "=DATE(B2,C2+1,0)",
+    required: ["DATE"],
+    accept: ["=DATE(B2,C2+1,1)-1"],
+    variants: [{ C2: 12 }, { B2: 2023 }],
+    reject: [
+      ["=DATE(B2,C2,30)", "value"],
+      ["=DATE(B2,C2,0)", "value"],
+    ],
+    nudge: "Day 0 of next month is the last day of this month.",
+    rule: "DATE(B2,C2+1,0) handles months of any length and leap years.",
+    value: (e) => `The last day of February 2024 is serial ${e}.`,
+  }),
+  step("date-build-a-date-from-parts", 5, 3, "Due at the end of next month", {
+    prompt: "In C2, when is the invoice due? Payment falls on the last day of the month after the invoice month.",
+    rows: [
+      ["Invoice", "Date", "Due"],
+      ["INV-2001", 45366, null],
+    ],
+    cell: "C2",
+    answer: "=DATE(YEAR(B2),MONTH(B2)+2,0)",
+    required: [],
+    accept: ["=EOMONTH(B2,1)"],
+    variants: [{ B2: 45626 }, { B2: 45310 }],
+    reject: [
+      ["=B2+30", "value"],
+      ["=DATE(YEAR(B2),MONTH(B2)+1,0)", "value"],
+    ],
+    nudge: "Take the invoice's year and month, go two months on, and step back one day.",
+    rule: "DATE(YEAR(B2),MONTH(B2)+2,0) is day 0 of the month after next, the last day of next month; DATE rolls over into the next year by itself.",
+    value: (e) => `The invoice is due on serial ${e}.`,
+  }),
+
+  // days-and-simple-date-maths (level 2, step 3)
+  step("days-and-simple-date-maths", 1, 1, "Days between two dates", {
+    prompt: "Both dates are serials. In D2, work out the days from the order date in B2 to the delivery date in C2 by subtracting.",
+    rows: [
+      ["Order", "Ordered", "Delivered", "Days"],
+      ["SO-1", 45352, 45359, null],
+    ],
+    cell: "D2",
+    answer: "=C2-B2",
+    required: [],
+    accept: ["=DAYS(C2,B2)"],
+    variants: [{ C2: 45370 }],
+    reject: [
+      ["=B2-C2", "value"],
+      ["=7", "reference"],
+    ],
+    nudge: "A later date minus an earlier one is the days between them.",
+    rule: "Dates are numbers of days, so C2-B2 counts the days.",
+    value: (e) => `Delivery took ${e} days.`,
+  }),
+  step("days-and-simple-date-maths", 2, 1, "Due date from payment terms", {
+    prompt: "In D2, work out the due date: the invoice date in B2 plus the payment terms in days in C2.",
+    rows: [
+      ["Invoice", "Date", "Terms", "Due"],
+      ["INV-7", 45352, 30, null],
+    ],
+    cell: "D2",
+    answer: "=B2+C2",
+    required: [],
+    accept: ["=C2+B2"],
+    variants: [{ C2: 14 }],
+    reject: [["=B2+30", "reference"]],
+    nudge: "Adding a number of days to a date gives a later date.",
+    rule: "B2+C2 moves the invoice date on by the terms.",
+    value: (e) => `The invoice is due on serial ${e}.`,
+  }),
+  step("days-and-simple-date-maths", 4, 2, "Days overdue as of a date", {
+    prompt:
+      "In D2, work out how many days the invoice is overdue: the days from its due date in C2 to the date in G1. Use DAYS.",
+    rows: [
+      ["Invoice", "Issued", "Due", "Days overdue", null, "As of", 45400],
+      ["INV-9", 45340, 45370, null, null, null, null],
+    ],
+    cell: "D2",
+    answer: "=DAYS(G1,C2)",
+    required: ["DAYS"],
+    accept: ["=DAYS($G$1,C2)"],
+    variants: [{ G1: 45420 }, { C2: 45380 }],
+    reject: [
+      ["=DAYS(C2,G1)", "value"],
+      ["=DAYS(G1,B2)", "value"],
+    ],
+    nudge: "DAYS takes the end date first, then the start date.",
+    rule: "DAYS(G1,C2) counts the days from the due date to the date in G1.",
+    value: (e) => `The invoice is ${e} days overdue.`,
+  }),
+  step("days-and-simple-date-maths", 5, 3, "Invoices older than 30 days", {
+    prompt: "In E2, how many invoices were issued more than 30 days before the date in E1?",
+    rows: [
+      ["Invoice", "Issued", null, "As of", 45400],
+      ["INV-01", 45340, null, "Over 30 days", null],
+      ["INV-02", 45380, null, null, null],
+      ["INV-03", 45355, null, null, null],
+      ["INV-04", 45369, null, null, null],
+      ["INV-05", 45390, null, null, null],
+      ["INV-06", 45300, null, null, null],
+      ["INV-07", 45372, null, null, null],
+      ["INV-08", 45365, null, null, null],
+      ["INV-09", 45395, null, null, null],
+      ["INV-10", 45310, null, null, null],
+      ["INV-11", 45368, null, null, null],
+      ["INV-12", 45388, null, null, null],
+      ["INV-13", 45325, null, null, null],
+      ["INV-14", 45371, null, null, null],
+      ["INV-15", 45399, null, null, null],
+    ],
+    cell: "E2",
+    answer: '=COUNTIF(B2:B16,"<"&E1-30)',
+    required: [],
+    accept: ["=SUMPRODUCT(--(E1-B2:B16>30))"],
+    variants: [{ E1: 45420 }, { B5: 45360 }],
+    reject: [
+      ['=COUNTIF(B2:B16,"<="&E1-30)', "fragile"],
+      ['=COUNTIF(B2:B16,"<45370")', "fragile"],
+    ],
+    nudge: "An invoice is too old when its date is before E1 minus 30.",
+    rule: 'COUNTIF(B2:B16,"<"&E1-30) counts the dates more than 30 days before E1; exactly 30 days does not count.',
+    value: (e) => `${e} invoices are more than 30 days old.`,
+  }),
+
+  // datedif-days-months-or-years-between (level 2, step 3)
+  step("datedif-days-months-or-years-between", 1, 1, "Days between with DATEDIF", {
+    prompt: 'In D2, find the days from the start date in B2 to the end date in C2. Use DATEDIF with "D".',
+    rows: [
+      ["Project", "Start", "End", "Days"],
+      ["Audit", 45352, 45415, null],
+    ],
+    cell: "D2",
+    answer: '=DATEDIF(B2,C2,"D")',
+    required: ["DATEDIF"],
+    accept: ['=DATEDIF(B2,C2,"d")'],
+    variants: [{ C2: 45400 }],
+    reject: [['=DATEDIF(B2,C2,"M")', "value"]],
+    nudge: 'The third part of DATEDIF is the unit: "D" for days.',
+    rule: 'DATEDIF(B2,C2,"D") counts the days from the start to the end.',
+    value: (e) => `The audit ran for ${e} days.`,
+  }),
+  step("datedif-days-months-or-years-between", 2, 1, "Calendar years apart", {
+    prompt: "In D2, work out how many calendar years apart the two dates are: the year of C2 minus the year of B2. Use YEAR.",
+    rows: [
+      ["Employee", "Started", "Review date", "Years apart"],
+      ["Ada Lovelace", 44562, 45352, null],
+    ],
+    cell: "D2",
+    answer: "=YEAR(C2)-YEAR(B2)",
+    required: ["YEAR"],
+    accept: ["=-YEAR(B2)+YEAR(C2)"],
+    variants: [{ B2: 44197 }],
+    reject: [["=YEAR(B2)-YEAR(C2)", "value"]],
+    nudge: "Take each year out of its date, then subtract.",
+    rule: "YEAR(C2)-YEAR(B2) counts calendar years, not complete years served.",
+    value: (e) => `The dates are ${e} calendar years apart.`,
+  }),
+  step("datedif-days-months-or-years-between", 4, 2, "Months beyond the full years", {
+    prompt: 'In D2, find the months left over after the complete years between B2 and C2. Use DATEDIF with "YM".',
+    rows: [
+      ["Employee", "Started", "Review date", "Extra months"],
+      ["Grace Hopper", 44197, 45366, null],
+    ],
+    cell: "D2",
+    answer: '=DATEDIF(B2,C2,"YM")',
+    required: ["DATEDIF"],
+    accept: ['=DATEDIF(B2,C2,"ym")'],
+    variants: [{ B2: 44300 }],
+    reject: [
+      ['=DATEDIF(B2,C2,"M")', "value"],
+      ['=DATEDIF(B2,C2,"Y")', "value"],
+    ],
+    nudge: '"YM" ignores the full years and counts only the remaining months.',
+    rule: 'DATEDIF(B2,C2,"YM") gives months from 0 to 11.',
+    value: (e) => `After the full years there are ${e} more months.`,
+  }),
+  step("datedif-days-months-or-years-between", 5, 3, "Length of service in words", {
+    prompt: "In D2, how long has the employee served by the review date, written like 3 years 2 months?",
+    rows: [
+      ["Employee", "Started", "Review date", "Service"],
+      ["Grace Hopper", 44197, 45366, null],
+    ],
+    cell: "D2",
+    answer: '=DATEDIF(B2,C2,"Y")&" years "&DATEDIF(B2,C2,"YM")&" months"',
+    required: [],
+    accept: ['=CONCAT(DATEDIF(B2,C2,"Y")," years ",DATEDIF(B2,C2,"YM")," months")'],
+    variants: [{ B2: 44562 }, { C2: 45658 }],
+    reject: [
+      ['=DATEDIF(B2,C2,"Y")&" years "&DATEDIF(B2,C2,"M")&" months"', "value"],
+      ['="3 years 2 months"', "reference"],
+    ],
+    nudge: '"Y" gives the full years and "YM" the months left over; join them with the words.',
+    rule: 'Two DATEDIFs joined with & give a readable length, and both follow the dates.',
+    value: (e) => `The service reads ${e}.`,
+  }),
+];

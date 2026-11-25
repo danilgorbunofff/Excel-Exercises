@@ -1,0 +1,276 @@
+// Ladder steps for the "rounding" track (docs/content.md, Ladder steps). The
+// YAML files are the source of truth once written: variants added later by
+// tools/suggest-variants.ts and by hand live only there, so do not --write this again.
+// Each exercise's own slot: level 2 at step 3.
+const fmt = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(2));
+const step = (parent, n, level, title, screen) => ({ parent, step: n, level, title, screens: [screen] });
+
+export default [
+  // round-markup (level 2, step 3)
+  step("round-markup", 1, 1, "Round a price to the cent", {
+    prompt: "In C2, round the unit price in B2 to 2 decimal places. Use ROUND.",
+    rows: [
+      ["Item", "Unit price", "Rounded"],
+      ["Bolt", 12.3456, null],
+    ],
+    cell: "C2",
+    answer: "=ROUND(B2,2)",
+    required: ["ROUND"],
+    accept: ["=round(b2,2)"],
+    variants: [{ B2: 7.004 }],
+    reject: [
+      ["=ROUND(B2,0)", "value"],
+      ["=ROUNDDOWN(B2,2)", "required-function"],
+    ],
+    nudge: "The second part of ROUND is how many decimal places to keep.",
+    rule: "ROUND(B2,2) keeps two decimals, rounding the third one up from 5.",
+    value: (e) => `The price rounds to ${e}.`,
+  }),
+  step("round-markup", 2, 1, "Round to a whole number", {
+    prompt: "In C2, round the distance in B2 to the nearest whole kilometre. Use ROUND.",
+    rows: [
+      ["Trip", "Km", "Whole km"],
+      ["Depot to site", 12.5, null],
+    ],
+    cell: "C2",
+    answer: "=ROUND(B2,0)",
+    required: ["ROUND"],
+    accept: ["=ROUND(B2,)"],
+    variants: [{ B2: 12.4 }],
+    reject: [
+      ["=ROUND(B2,1)", "value"],
+      ["=INT(B2)", "required-function"],
+    ],
+    nudge: "0 decimal places means a whole number.",
+    rule: "ROUND(B2,0) gives the nearest whole number; halves round away from zero.",
+    value: (e) => `12.5 km rounds to ${e}.`,
+  }),
+  step("round-markup", 4, 2, "Round a budget to the nearest hundred", {
+    prompt: "In C2, round the budget in B2 to the nearest hundred. Use ROUND with a negative number of places.",
+    rows: [
+      ["Team", "Budget", "To the hundred"],
+      ["Sales", 48362, null],
+    ],
+    cell: "C2",
+    answer: "=ROUND(B2,-2)",
+    required: ["ROUND"],
+    accept: ["=ROUND($B$2,-2)"],
+    variants: [{ B2: 48349 }],
+    reject: [
+      ["=ROUND(B2,2)", "value"],
+      ["=ROUND(B2,-3)", "value"],
+    ],
+    nudge: "-1 rounds to tens, -2 to hundreds.",
+    rule: "A negative number of places rounds to the left of the decimal point: ROUND(B2,-2) gives the nearest hundred.",
+    value: (e) => `The budget to the nearest hundred is ${e}.`,
+  }),
+  step("round-markup", 5, 3, "Invoice total with every line rounded", {
+    prompt:
+      "In E2, what is the invoice total? Each line, price times quantity, is billed rounded to the cent before the lines are added up.",
+    rows: [
+      ["Item", "Price", "Qty", null, null],
+      ["Bolts", 0.125, 37, null, "Invoice total"],
+      ["Nuts", 0.085, 53, null, null],
+      ["Washers", 0.045, 125, null, null],
+      ["Screws", 0.115, 63, null, null],
+      ["Rivets", 0.065, 77, null, null],
+      ["Pins", 0.035, 211, null, null],
+      ["Clips", 0.155, 19, null, null],
+      ["Hooks", 0.295, 11, null, null],
+      ["Plugs", 0.075, 93, null, null],
+      ["Caps", 0.105, 41, null, null],
+      ["Springs", 0.215, 23, null, null],
+      ["Seals", 0.185, 29, null, null],
+      ["Shims", 0.055, 87, null, null],
+      ["Tags", 0.025, 301, null, null],
+      ["Ties", 0.045, 147, null, null],
+    ].map((r, i) => (i === 0 ? ["Item", "Price", "Qty", null, "Invoice total"] : i === 1 ? ["Bolts", 0.125, 37, null, null] : r)),
+    cell: "E2",
+    answer: "=SUMPRODUCT(ROUND(B2:B16*C2:C16,2))",
+    required: [],
+    accept: ["=SUM(ROUND(B2:B16*C2:C16,2))"],
+    variants: [{ C3: 54 }, { B16: 0.065 }],
+    reject: [
+      ["=ROUND(SUMPRODUCT(B2:B16,C2:C16),2)", "value"],
+      ["=SUMPRODUCT(B2:B16,C2:C16)", "value"],
+    ],
+    nudge: "Round each line first, then add the rounded lines.",
+    rule: "ROUND(B2:B16*C2:C16,2) rounds every line to the cent; SUMPRODUCT adds them. Rounding only the total can differ by a cent or more.",
+    value: (e) => `The invoice comes to ${e} when each line is rounded first.`,
+  }),
+
+  // roundup-and-rounddown-one-direction-only (level 2, step 3)
+  step("roundup-and-rounddown-one-direction-only", 1, 1, "Always round up", {
+    prompt: "A taxi company charges for every started kilometre. In C2, round the distance in B2 up to a whole number. Use ROUNDUP.",
+    rows: [
+      ["Trip", "Km", "Charged km"],
+      ["T-1", 4.01, null],
+    ],
+    cell: "C2",
+    answer: "=ROUNDUP(B2,0)",
+    required: ["ROUNDUP"],
+    accept: ["=roundup(b2,0)"],
+    variants: [{ B2: 6.6 }],
+    reject: [
+      ["=ROUND(B2,0)", "required-function"],
+      ["=ROUNDUP(B2,1)", "value"],
+    ],
+    nudge: "ROUNDUP never rounds down, however small the part left over.",
+    rule: "ROUNDUP(B2,0) turns 4.01 into 5.",
+    value: (e) => `4.01 km is charged as ${e}.`,
+  }),
+  step("roundup-and-rounddown-one-direction-only", 2, 1, "Always round down", {
+    prompt: "Only full hours are paid. In C2, round the hours in B2 down to a whole number. Use ROUNDDOWN.",
+    rows: [
+      ["Shift", "Hours", "Paid hours"],
+      ["S-1", 7.9, null],
+    ],
+    cell: "C2",
+    answer: "=ROUNDDOWN(B2,0)",
+    required: ["ROUNDDOWN"],
+    accept: ["=rounddown(b2,0)"],
+    variants: [{ B2: 6.2 }],
+    reject: [
+      ["=ROUND(B2,0)", "required-function"],
+      ["=ROUNDDOWN(B2,1)", "value"],
+    ],
+    nudge: "ROUNDDOWN cuts off the part after the point.",
+    rule: "ROUNDDOWN(B2,0) turns 7.9 into 7.",
+    value: (e) => `7.9 hours are paid as ${e}.`,
+  }),
+  step("roundup-and-rounddown-one-direction-only", 4, 2, "Split a bill so it is covered", {
+    prompt:
+      "In D2, work out each person's share of the bill: the bill in B2 divided by the people in C2, rounded up to the cent so the bill is always covered. Use ROUNDUP.",
+    rows: [
+      ["Dinner", "Bill", "People", "Each pays"],
+      ["Team lunch", 187.45, 6, null],
+    ],
+    cell: "D2",
+    answer: "=ROUNDUP(B2/C2,2)",
+    required: ["ROUNDUP"],
+    accept: ["=ROUNDUP(B2/C2,2)+0"],
+    variants: [{ C2: 7 }],
+    reject: [
+      ["=ROUND(B2/C2,2)", "required-function"],
+      ["=ROUNDUP(B2/C2,0)", "value"],
+    ],
+    nudge: "Divide first, then round up to 2 decimals.",
+    rule: "ROUNDUP(B2/C2,2) rounds the share up to the next cent, so six shares never fall short of the bill.",
+    value: (e) => `Each person pays ${e}.`,
+  }),
+  step("roundup-and-rounddown-one-direction-only", 5, 3, "Buses needed for a trip", {
+    prompt:
+      "In E2, how many buses are needed? B2 holds the number of travellers, B3 the seats on a bus and B4 the seats on each bus kept for staff.",
+    rows: [
+      ["Trip", null, null, null, null],
+      ["Travellers", 240, null, null, null],
+      ["Seats per bus", 52, null, null, null],
+      ["Staff seats per bus", 5, null, null, null],
+    ].map((r, i) => (i === 0 ? ["Trip", null, null, null, "Buses"] : r)),
+    cell: "E2",
+    answer: "=ROUNDUP(B2/(B3-B4),0)",
+    required: [],
+    accept: ["=CEILING(B2/(B3-B4),1)", "=-INT(-B2/(B3-B4))"],
+    variants: [{ B2: 300 }, { B4: 2 }, { B2: 235 }],
+    reject: [
+      ["=ROUNDUP(B2/B3,0)", "value"],
+      ["=ROUND(B2/(B3-B4),0)", "value"],
+    ],
+    nudge: "Only the seats left after the staff seats carry travellers, and a part-full bus still goes.",
+    rule: "B3-B4 is the travellers each bus can take; ROUNDUP of B2 divided by that gives whole buses.",
+    value: (e) => `The trip needs ${e} buses.`,
+  }),
+
+  // mround-and-floor-round-to-a-multiple (level 2, step 3)
+  step("mround-and-floor-round-to-a-multiple", 1, 1, "Round to the nearest 10", {
+    prompt: "In C2, round the head count in B2 to the nearest 10. Use MROUND.",
+    rows: [
+      ["Event", "Head count", "Nearest 10"],
+      ["Launch", 74, null],
+    ],
+    cell: "C2",
+    answer: "=MROUND(B2,10)",
+    required: ["MROUND"],
+    accept: ["=mround(b2,10)"],
+    variants: [{ B2: 75 }],
+    reject: [
+      ["=ROUND(B2,-1)", "required-function"],
+      ["=MROUND(B2,5)", "value"],
+    ],
+    nudge: "MROUND takes the number and the multiple to round to.",
+    rule: "MROUND(B2,10) gives the nearest multiple of 10.",
+    value: (e) => `74 to the nearest 10 is ${e}.`,
+  }),
+  step("mround-and-floor-round-to-a-multiple", 2, 2, "Order enough whole packs", {
+    prompt:
+      "Screws come in packs of the size in C2. In D2, work out how many screws to order so the need in B2 is covered with whole packs. Use CEILING.",
+    rows: [
+      ["Job", "Need", "Pack", "Order"],
+      ["Deck", 230, 50, null],
+    ],
+    cell: "D2",
+    answer: "=CEILING(B2,C2)",
+    required: ["CEILING"],
+    accept: ["=CEILING(B2,C2)+0"],
+    variants: [{ C2: 40 }, { B2: 250 }],
+    reject: [
+      ["=FLOOR(B2,C2)", "required-function"],
+      ["=CEILING(B2,50)", "fragile"],
+    ],
+    nudge: "CEILING rounds up to the next multiple, so the need is always covered.",
+    rule: "CEILING(B2,C2) rounds 230 up to the next multiple of the pack size.",
+    value: (e) => `Ordering ${e} screws covers the need in whole packs.`,
+  }),
+  step("mround-and-floor-round-to-a-multiple", 4, 2, "Round a price to 5 cents", {
+    prompt: "Cash prices end in 0 or 5 cents. In C2, round the price in B2 to the nearest 0.05. Use MROUND.",
+    rows: [
+      ["Item", "Price", "Cash price"],
+      ["Coffee", 2.47, null],
+    ],
+    cell: "C2",
+    answer: "=MROUND(B2,0.05)",
+    required: ["MROUND"],
+    accept: ["=MROUND(B2,5%)"],
+    variants: [{ B2: 2.42 }],
+    reject: [
+      ["=ROUND(B2,1)", "required-function"],
+      ["=MROUND(B2,0.1)", "value"],
+    ],
+    nudge: "The multiple can be a decimal, such as 0.05.",
+    rule: "MROUND(B2,0.05) gives the nearest multiple of 5 cents.",
+    value: (e) => `2.47 rounds to ${fmt(e)} for cash.`,
+  }),
+  step("mround-and-floor-round-to-a-multiple", 5, 3, "Total hours in quarter hours", {
+    prompt: "In E2, what are the total paid hours? Each shift is first rounded to the nearest quarter of an hour.",
+    rows: [
+      ["Shift", "Hours", null, null, null],
+      ["S-01", 7.9, null, null, null],
+      ["S-02", 8.1, null, null, null],
+      ["S-03", 6.55, null, null, null],
+      ["S-04", 4.3, null, null, null],
+      ["S-05", 7.62, null, null, null],
+      ["S-06", 8.88, null, null, null],
+      ["S-07", 5.2, null, null, null],
+      ["S-08", 3.7, null, null, null],
+      ["S-09", 7.4, null, null, null],
+      ["S-10", 6.05, null, null, null],
+      ["S-11", 8.35, null, null, null],
+      ["S-12", 4.95, null, null, null],
+      ["S-13", 7.15, null, null, null],
+      ["S-14", 2.6, null, null, null],
+      ["S-15", 6.8, null, null, null],
+    ].map((r, i) => (i === 0 ? ["Shift", "Hours", null, null, "Paid hours"] : r)),
+    cell: "E2",
+    answer: "=SUMPRODUCT(ROUND(B2:B16*4,0)/4)",
+    required: [],
+    accept: ["=SUM(ROUND(B2:B16*4,0)/4)"],
+    variants: [{ B4: 6.4 }, { B16: 6.9 }],
+    reject: [
+      ["=SUM(B2:B16)", "value"],
+      ["=SUMPRODUCT(ROUNDUP(B2:B16*4,0)/4)", "value"],
+    ],
+    nudge: "Four quarters make an hour: times 4, round, then divide by 4.",
+    rule: "ROUND(B2:B16*4,0)/4 rounds each shift to a quarter hour; SUMPRODUCT adds them.",
+    value: (e) => `The paid hours add up to ${e}.`,
+  }),
+];

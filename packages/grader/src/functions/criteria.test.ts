@@ -78,6 +78,20 @@ describe("SUMIF and AVERAGEIF", () => {
     expect(ev(f)).toBe(v);
   });
 
+  // Excel reads a sum_range of another size as the criteria range's shape from
+  // its top-left cell. Each answer is the one Excel 16.109 gave on this sheet.
+  it.each([
+    ['=SUMIF(A2:A7,"West",B2:B3)', 150],
+    ['=SUMIF(A2:A4,"West",B2:B7)', 150],
+    ['=SUMIF(A3:A7,"West",B2)', 250],
+    ['=SUMIF(A2:A7,"West",B2:C2)', 150],
+    ['=SUMIF(A2:A7,"<>West",B4:B5)', 10],
+    ['=AVERAGEIF(A2:A7,"West",B2)', 75],
+    ['=AVERAGEIF(A2:A7,"West",B3:B9)', 250],
+  ])("%s resizes the sum range to %j", (f, v) => {
+    expect(ev(f)).toBe(v);
+  });
+
   it.each([
     ['=AVERAGEIF(A2:A7,"South",B2:B7)', "#DIV/0!"],
     ['=SUMIFS(B2:B7,A2:A6,"West")', "#VALUE!"],

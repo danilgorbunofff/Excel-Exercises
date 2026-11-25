@@ -305,6 +305,13 @@ export function mutants(formula: string, s: Screen): Candidate[] {
   const p = parse(formula);
   if (!p.ok) return out;
   const nodes = nodesOf(formula);
+  // Excel reads SUMIF's and AVERAGEIF's sum_range at the criteria range's size, so
+  // making it a row shorter or longer gives the same formula, not a slip.
+  const resized = new Set<number>();
+  walkAst(p.ast, (n, parent) => {
+    if (parent?.type === "call" && /^(SUMIF|AVERAGEIF)$/u.test(parent.name) && parent.args[2] === n)
+      resized.add(n.start);
+  });
   for (const n of nodes) {
     const text = formula.slice(n.start, n.end);
     if (n.type === "range") {
@@ -312,7 +319,7 @@ export function mutants(formula: string, s: Screen): Candidate[] {
       if (!a || !b || !COL.test(a) || !COL.test(b)) continue;
       const r1 = Number(COL.exec(a)?.[4]);
       const r2 = Number(COL.exec(b)?.[4]);
-      if (r2 > r1)
+      if (r2 > r1 && !resized.has(n.start))
         add(
           splice(formula, n.start, n.end, `${a}:${moveRef(b, -1, 0)}`),
           `range ${text} one row short at the end`,
@@ -323,7 +330,7 @@ export function mutants(formula: string, s: Screen): Candidate[] {
           `range ${text} skips its first row`,
         );
       // A range run on past the data reads only empty cells: the same formula, not a slip.
-      if (r2 < s.rows.length)
+      if (r2 < s.rows.length && !resized.has(n.start))
         add(
           splice(formula, n.start, n.end, `${a}:${moveRef(b, 1, 0)}`),
           `range ${text} one row long`,

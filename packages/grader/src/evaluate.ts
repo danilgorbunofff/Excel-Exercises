@@ -8,7 +8,7 @@ import { FUNCTIONS } from "./functions/index.ts";
 import { LIFTED } from "./functions/lifted.ts";
 import type { Grid } from "./grid.ts";
 import { type Node, parse } from "./parse.ts";
-import { expandRange } from "./range.ts";
+import { expandRange, rangeBox } from "./range.ts";
 import {
   type Arg,
   array,
@@ -45,6 +45,23 @@ export function evaluate(node: Node, grid: Grid, options: EvaluateOptions = {}):
     };
   };
 
+  /** The rows × cols block of cells whose top-left cell is `at`. */
+  const block = (at: Address, rows: number, cols: number): RangeValue => ({
+    kind: "range",
+    origin: at,
+    rows: Array.from({ length: rows }, (_, r) =>
+      Array.from({ length: cols }, (_, c) => cell({ col: at.col + c, row: at.row + r })),
+    ),
+  });
+
+  /** The top-left cell of a reference argument, or undefined for any other argument. */
+  const topLeft = (n: Node): Address | undefined => {
+    if (n.type === "ref") return n.address;
+    if (n.type !== "range") return undefined;
+    const box = rangeBox(n.first, n.last, grid.size);
+    return { col: box.left, row: box.top };
+  };
+
   /** Names that LET has bound, keyed in upper case. */
   const names = new Map<string, Value>();
 
@@ -79,15 +96,15 @@ export function evaluate(node: Node, grid: Grid, options: EvaluateOptions = {}):
         if (!impl) return errorValue("#NAME?");
         // A single cell passed to a function behaves like a one-cell range, so
         // SUM(A1) skips text in A1 while SUM("x") is #VALUE!, as in Excel.
-        const argOf = (a: Node, value?: Value): Arg => ({
-          empty: a.type === "empty",
-          get: () =>
-            value !== undefined
-              ? value
-              : a.type === "ref"
-                ? { kind: "range", origin: a.address, rows: [[cell(a.address)]] }
-                : run(a),
-        });
+        const argOf = (a: Node, value?: Value): Arg => {
+          const at = topLeft(a);
+          return {
+            empty: a.type === "empty",
+            get: () =>
+              value !== undefined ? value : a.type === "ref" ? block(a.address, 1, 1) : run(a),
+            ...(at && { resize: (rows: number, cols: number) => block(at, rows, cols) }),
+          };
+        };
         // Arguments Excel takes one value at a time: a range there runs the
         // function once per cell, and the results spill.
         const many = new Map<number, Scalar[][]>();
@@ -175,7 +192,14 @@ function binary(op: Extract<Node, { type: "binary" }>["op"], a: Scalar, b: Scala
   }
   if (op === "=" || op === "<>" || op === "<" || op === ">" || op === "<=" || op === ">=") {
     const c = compare(a, b);
-    return { "=": c === 0, "<>": c !== 0, "<": c < 0, ">": c > 0, "<=": c <= 0, ">=": c >= 0 }[op];
+    return {
+      "=": c === 0,
+      "<>": c !== 0,
+      "<": c < 0,
+      ">": c > 0,
+      "<=": c <= 0,
+      ">=": c >= 0,
+    }[op];
   }
   const x = toNumber(a);
   if (isError(x)) return x;

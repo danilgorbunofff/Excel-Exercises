@@ -1,7 +1,7 @@
 # Written by tools/write-audit-fixtures.ts from Excel results; replayed by src/content/audit-fixtures.test.ts.
 screens:
   - correct:
-      - =UPPER($B$2)
-      - =UPPER(B$2)
+      - =UPPER($C$2)
+      - =UPPER(C$2)
     wrong: []
     equivalent: []

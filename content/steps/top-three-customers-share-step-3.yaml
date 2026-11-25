@@ -31,7 +31,7 @@ screens:
         expected: 134600
       - set: { B11: 90000 }
         expected: 157300
-    answer: =LARGE(B2:B11,1)+LARGE(B2:B11,2)
+    answer: "=SUM(LARGE(B2:B11,{1,2}))"
     requiredFunctions:
       - LARGE
     hints:

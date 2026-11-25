@@ -162,3 +162,23 @@ Fixtures were regenerated with Excel on 2026-11-17. One `correct` form for `swit
 Tools to rerun the audit: `node tools/audit-grader.ts`, `node tools/audit-tasks.ts`, `node tools/suggest-variants.ts`, `node tools/write-audit-fixtures.ts`, `node tools/audit-access.ts`.
 
 Environment note: the Desktop folder syncs with iCloud, and `dist/client` held 626 copies of build folders named like `daily 14`. 19 of them were iCloud placeholders whose contents cannot be read while sync is off. Any walk of `dist/client` hung on them, so `npm run lint:copy` never finished. The copies were removed and the 19 placeholders moved to `node_modules/.cache/stale-dist/`; delete that folder in Finder when sync is back.
+
+## 6. Ladder steps (2026-11-25)
+
+Every one of the 128 track exercises now has a five-step ladder: 512 new tasks in `content/steps/`, built from `tools/step-specs/<track>.mjs` (see `docs/content.md`, Ladder steps). The same checks were run on them as on the exercises.
+
+| Check                                   | First pass                                                                                                | After fixes                                                                              |
+| --------------------------------------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Excel audit (`audit-tasks --kind=step`) | 317 of 512 clean; 329 survivors, 50 dead variants, 17 short of five right answers, 5 locale, 1 grader gap | 512 of 512 clean                                                                         |
+| Equivalents in the step fixtures        | 356, about 97 of them real gaps                                                                           | 173: 126 ranges stretched into empty rows, 9 off by an empty column, 38 reviewed (below) |
+| `audit-access` on `step/`               | 12 leaks on 4 steps                                                                                       | 0 (26 older drill leaks on the CONCAT and UPPER pages remain)                            |
+
+What changed:
+
+- Variants catch the wrong formulas that passed: ranges dropping a first or last row, `>` for `>=` at the exact boundary, thresholds off by one, approximate match where exact is wanted, ROUNDUP for ROUND, AVERAGEIF for SUMIF, COUNTA for COUNT, the wrong cell. `suggest-variants.ts` found most; the rest were written by hand. Refusals are in `tools/audit/variant-skips.json`.
+- Grader, matching Excel: IFS with array tests works per cell; AGGREGATE options 0, 1, 4 and 5 keep error values; INDEX on a 2-D range without a column number gives `#REF!`.
+- Answers that leaked were rewritten: top-three step 3 (now the top two, answered with `SUM(LARGE(...,{1,2}))`), tidy-a-pasted-name step 4 (underscore email), upper-lower step 2 (postcode in C2), weighted-average step 1 (four batches).
+- concat step 4 formats with `"000"` instead of `"0.00"`, so it does not depend on the decimal separator.
+- The conditions spec put its label on the answer cell; it sits in G2 now.
+
+The 38 reviewed equivalents are the same formula on any realistic data: VLOOKUP with TRUE left out, MATCH or RANK with 2 for 1, XLOOKUP and UNIQUE ignoring case, `>=0` on a sum, `>=` where the difference is then 0, AGGREGATE options 5 and 6 on a sheet with no error cells (rows cannot hold error values), approximate match on exact header text, SUMIF resizing its sum range, a missing key that errors either way, MID one character longer on fixed-length codes, and the 110% target boundary, where floating point makes an exact test unreliable.

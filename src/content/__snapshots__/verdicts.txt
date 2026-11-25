@@ -4594,9 +4594,9 @@ steps/unique-list-each-value-once-step-5.yaml 1 | =UNIQUE(FILTER(C2:C19,B2:B19="
 steps/upper-lower-and-proper-step-1.yaml 1 | =PROPER(A2) | required-function | This exercise asks for LOWER, and the formula does not use it. | This task asks for LOWER.
 steps/upper-lower-and-proper-step-1.yaml 1 | ="ada.lovelace@engines.co.uk" | required-function | This exercise asks for LOWER, and the formula does not use it. | This task asks for LOWER.
 steps/upper-lower-and-proper-step-1.yaml 1 | =LOWER(A2 | syntax | Add ) to close LOWER(. | Check the brackets, commas and quotes.
-steps/upper-lower-and-proper-step-2.yaml 1 | =PROPER(B2) | required-function | This exercise asks for UPPER, and the formula does not use it. | This task asks for UPPER.
+steps/upper-lower-and-proper-step-2.yaml 1 | =PROPER(C2) | required-function | This exercise asks for UPPER, and the formula does not use it. | This task asks for UPPER.
 steps/upper-lower-and-proper-step-2.yaml 1 | ="YO1 7HU" | required-function | This exercise asks for UPPER, and the formula does not use it. | This task asks for UPPER.
-steps/upper-lower-and-proper-step-2.yaml 1 | =UPPER(B2 | syntax | Add ) to close UPPER(. | Check the brackets, commas and quotes.
+steps/upper-lower-and-proper-step-2.yaml 1 | =UPPER(C2 | syntax | Add ) to close UPPER(. | Check the brackets, commas and quotes.
 steps/upper-lower-and-proper-step-4.yaml 1 | =PROPER(A2) | required-function | This exercise asks for TRIM, and the formula does not use it. | This task asks for PROPER and TRIM.
 steps/upper-lower-and-proper-step-4.yaml 1 | =TRIM(A2) | required-function | This exercise asks for PROPER, and the formula does not use it. | This task asks for PROPER and TRIM.
 steps/upper-lower-and-proper-step-4.yaml 1 | ="Mary Jackson" | required-function | This exercise asks for PROPER, and the formula does not use it. | This task asks for PROPER and TRIM.

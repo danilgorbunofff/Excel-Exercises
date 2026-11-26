@@ -37,6 +37,8 @@ export function paintStatus(progress: Progress = foldSets(readProgress())): void
     const text = el.querySelector<HTMLElement>("[data-bar-text]");
     if (bar) bar.style.width = `${ids.length ? (done / ids.length) * 100 : 0}%`;
     if (text) text.textContent = `${done} of ${ids.length} solved`;
+    const percent = el.querySelector<HTMLElement>("[data-track-percent]");
+    if (percent) percent.textContent = `${ids.length ? Math.round((done / ids.length) * 100) : 0}%`;
     const status = trackStatus(done, ids.length);
     const pill = el.querySelector<HTMLElement>("[data-track-state]");
     if (pill) {

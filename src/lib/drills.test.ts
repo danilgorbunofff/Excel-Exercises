@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { drillQueue, freeRunSlugs, RANDOM_SIZE, sessionStep } from "./drills.ts";
+import {
+  drillQueue,
+  freeRunSlugs,
+  functionResults,
+  RANDOM_SIZE,
+  sessionStep,
+  taskState,
+} from "./drills.ts";
 
 const pool = ["IF", "SUM", "XLOOKUP"].flatMap((fn) =>
   [1, 2, 3, 4, 5].map((n) => ({ id: `${fn}-${n}`, slug: `${fn}-${n}`, fn, level: n <= 2 ? 1 : 2 })),
@@ -66,5 +73,31 @@ describe("freeRunSlugs", () => {
     expect(slugs).toHaveLength(RANDOM_SIZE);
     expect(new Set(slugs).size).toBe(RANDOM_SIZE);
     for (const s of slugs) expect(pool.some((d) => d.slug === s)).toBe(true);
+  });
+});
+
+describe("a run's results", () => {
+  it("tells a first-try solve from a later one, an unsolved task and an unopened one", () => {
+    expect([
+      taskState({ solved: true }, false),
+      taskState({ solved: true }, true),
+      taskState({ solved: false }, false),
+      taskState(undefined, true),
+    ]).toEqual(["correct", "retry", "open", "none"]);
+  });
+
+  it("counts each function over its opened tasks and weighs the weak ones higher", () => {
+    expect(
+      functionResults([
+        { fn: "SUM", state: "correct" },
+        { fn: "SUM", state: "retry" },
+        { fn: "SUM", state: "open" },
+        { fn: "SUM", state: "none" },
+        { fn: "MAX", state: "none" },
+      ]),
+    ).toEqual([
+      { fn: "SUM", total: 4, seen: 3, solved: 2, first: 1, weight: 1 },
+      { fn: "MAX", total: 1, seen: 0, solved: 0, first: 0, weight: 0 },
+    ]);
   });
 });

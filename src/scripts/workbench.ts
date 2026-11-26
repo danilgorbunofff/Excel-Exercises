@@ -23,14 +23,30 @@ const store = {
 // Tabs: arrow keys move between them, as the tab pattern expects.
 for (const list of document.querySelectorAll<HTMLElement>("[data-tabs]")) {
   const tabs = [...list.querySelectorAll<HTMLButtonElement>("[role=tab]")];
+  // One underline slides to the open tab; CSS draws it from these two values.
+  const slide = () => {
+    const on = tabs.find((t) => t.getAttribute("aria-selected") === "true");
+    if (!on) return;
+    list.style.setProperty("--tab-x", `${on.offsetLeft}px`);
+    list.style.setProperty("--tab-w", `${on.offsetWidth}px`);
+    list.classList.add("slides");
+  };
+  // Runs once at the start, then when fonts or the screen change the widths.
+  new ResizeObserver(slide).observe(list);
   const select = (tab: HTMLButtonElement, focus = false) => {
+    const from = tabs.findIndex((t) => t.getAttribute("aria-selected") === "true");
+    const to = tabs.indexOf(tab);
     for (const t of tabs) {
       const on = t === tab;
       t.setAttribute("aria-selected", String(on));
       t.tabIndex = on ? 0 : -1;
       const panel = document.getElementById(t.getAttribute("aria-controls") ?? "");
-      if (panel) panel.hidden = !on;
+      if (!panel) continue;
+      // The new panel comes in from the side its tab is on.
+      if (on && to !== from) panel.dataset["enter"] = to > from ? "right" : "left";
+      panel.hidden = !on;
     }
+    slide();
     if (focus) tab.focus();
     if (tab.dataset["tab"] === "answer") {
       list.closest("[data-exercise]")?.dispatchEvent(new CustomEvent("answer-shown"));
@@ -99,6 +115,8 @@ for (const timer of document.querySelectorAll<HTMLElement>("[data-timer]")) {
     if (label) label.textContent = hidden ? "Show the timer" : "Hide the timer";
   };
   setHidden(store.get(TIMER_KEY) === "1");
+  void timer.offsetWidth; // Settle that state before transitions switch on.
+  timer.classList.add("is-ready");
   toggle.addEventListener("click", () => {
     const hidden = !timer.classList.contains("is-hidden");
     setHidden(hidden);

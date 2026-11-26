@@ -11,6 +11,15 @@ export type UnlockResult = "open" | "free" | "out" | "error";
 
 /** Unlocks one locked exercise root. The drills page calls it for each drill it adds. */
 export async function unlock(root: HTMLElement): Promise<UnlockResult> {
+  try {
+    return await open(root);
+  } finally {
+    // The paywall card waits for this, so a PRO visitor never sees it flash by.
+    root.dataset["checked"] = "";
+  }
+}
+
+async function open(root: HTMLElement): Promise<UnlockResult> {
   const slug = root.dataset["locked"] ?? "";
   const text = root.querySelector<HTMLElement>("[data-paywall-text]");
   const me = await loadMe();

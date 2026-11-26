@@ -1,8 +1,15 @@
 // Why this exists: the function practice picker. Start (or any address with
 // ?fn= or ?id=) saves the chosen tasks as a session and opens the first drill
-// page; drill-session.ts moves through them. ?done shows the summary: how many
-// were solved, and the functions that needed more than one try.
-import { type DrillRef, drillQueue } from "../lib/drills.ts";
+// page; drill-session.ts moves through them. ?done shows the summary: how each
+// task and each function went, and where to go on from there.
+import {
+  type DrillRef,
+  drillQueue,
+  type FnResult,
+  functionResults,
+  type TaskState,
+  taskState,
+} from "../lib/drills.ts";
 import { DONE_HREF, drillHref, misses, readSession, saveSession } from "./drill-session.ts";
 import { isSolved, readProgress } from "./progress.ts";
 import { loadMe } from "./session.ts";
@@ -16,6 +23,81 @@ const params = new URLSearchParams(location.search);
 const pool: DrillRef[] = poolNode?.textContent ? JSON.parse(poolNode.textContent) : [];
 const queue = drillQueue(pool, { fns: params.getAll("fn"), id: params.get("id") });
 
+// Past this many tasks the summary lists only what needs another look, in pages.
+const BIG_RUN = 20;
+const TASK_PAGE = 10;
+const WEAK_SHOWN = 8;
+const OUTCOMES: Record<TaskState, { word: string; tag: string }> = {
+  correct: { word: "Solved", tag: "free" },
+  retry: { word: "Took more tries", tag: "retry" },
+  open: { word: "Not solved", tag: "" },
+  none: { word: "Not opened", tag: "" },
+};
+
+const el = <K extends keyof HTMLElementTagNameMap>(
+  tag: K,
+  props: Partial<HTMLElementTagNameMap[K]> = {},
+  ...children: (Node | string)[]
+) => {
+  const node = Object.assign(document.createElement(tag), props);
+  node.append(...children);
+  return node;
+};
+
+function fill(selector: string, text: string): void {
+  const node = q<HTMLElement>(selector);
+  if (!node) return;
+  node.textContent = text;
+  node.hidden = text === "";
+}
+
+/** Shows the first rows, and a button that adds the next `step` of them. */
+function paged<T>(
+  list: HTMLElement | null,
+  button: HTMLButtonElement | null,
+  items: readonly T[],
+  first: number,
+  row: (item: T) => HTMLElement,
+  words: (left: number) => string,
+  step = first,
+): void {
+  if (!list || !button) return;
+  let shown = 0;
+  const more = (n: number) => {
+    const added = items.slice(shown, shown + n).map(row);
+    list.append(...added);
+    shown += added.length;
+    button.hidden = shown >= items.length;
+    button.textContent = words(items.length - shown);
+    return added[0];
+  };
+  list.replaceChildren();
+  more(first);
+  // Focus moves to the first new row: the button may be gone.
+  button.onclick = () => more(step)?.querySelector("a")?.focus();
+}
+
+/** A folded list of functions, each a link that practises it. */
+function folded(selector: string, label: string, fns: readonly FnResult[]): void {
+  const box = q<HTMLElement>(selector);
+  if (!box) return;
+  box.hidden = fns.length === 0;
+  const head = box.querySelector("summary");
+  if (head)
+    head.textContent = `${label}: ${fns.length} ${fns.length === 1 ? "function" : "functions"}`;
+  box
+    .querySelector("ul")
+    ?.replaceChildren(
+      ...fns.map((f) => el("li", {}, el("a", { href: practiseHref(f.fn), textContent: f.fn }))),
+    );
+}
+
+const practiseHref = (fn: string) => `/exercises/drills/?fn=${encodeURIComponent(fn)}`;
+
+/** The run's own tasks, for starting it, or part of it, again. */
+const fromPool = (ids: readonly string[]) =>
+  ids.map((id) => pool.find((d) => d.id === id)).filter((d): d is DrillRef => d !== undefined);
+
 function summary(): void {
   const found = readSession();
   // The summary is for a function practice run, not a review run.
@@ -25,49 +107,156 @@ function summary(): void {
   if (!session || !box || !picker) return;
   picker.hidden = true;
   box.hidden = false;
-  const outcomes = session.ids
-    .map((id, i) => ({ id, fn: session.fns[i] ?? "", result: session.results[id] }))
-    .filter((o) => o.result !== undefined)
-    .map((o) => ({
-      fn: o.fn,
-      solved: o.result?.solved === true,
-      missed: misses(o.id) > (o.result?.before ?? 0),
-    }));
-  const solved = outcomes.filter((o) => o.solved).length;
-  const line = q<HTMLElement>("[data-summary-line]");
-  if (line)
-    line.textContent = `You solved ${solved} of ${outcomes.length} ${outcomes.length === 1 ? "task" : "tasks"}.`;
-  const weak = [...new Set(outcomes.filter((o) => o.missed || !o.solved).map((o) => o.fn))];
-  const list = q<HTMLUListElement>("[data-missed-list]");
-  const wrap = q<HTMLElement>("[data-summary-missed]");
-  if (list && wrap) {
-    list.replaceChildren(
-      ...weak.map((fn) => {
-        const li = document.createElement("li");
-        li.append(
-          Object.assign(document.createElement("a"), {
-            href: `/exercises/drills/?fn=${encodeURIComponent(fn)}`,
-            textContent: `Practise ${fn} again`,
-          }),
-          " or ",
-          Object.assign(document.createElement("a"), {
-            href: `/exercises/?fn=${encodeURIComponent(fn)}`,
-            textContent: `see the ${fn} exercises`,
-          }),
-        );
-        return li;
-      }),
-    );
-    wrap.hidden = weak.length === 0;
+  const lead = q<HTMLElement>(".open-head .lead");
+  if (lead) lead.hidden = true;
+
+  const tasks = session.ids.map((id, i) => {
+    const result = session.results[id];
+    return {
+      id,
+      n: i + 1,
+      fn: session.fns[i] ?? "",
+      href: session.hrefs[i] ?? "",
+      title: session.titles?.[i] || `Task ${i + 1}`,
+      state: taskState(result, misses(id) > (result?.before ?? 0)),
+    };
+  });
+  type Task = (typeof tasks)[number];
+  const of = (state: TaskState) => tasks.filter((t) => t.state === state);
+  const unsolved = of("open");
+  const unopened = of("none");
+  const opened = tasks.length - unopened.length;
+  const big = tasks.length > BIG_RUN;
+  const fns = functionResults(tasks);
+
+  fill(
+    "[data-summary-context]",
+    fns.length <= 3
+      ? new Intl.ListFormat("en-GB").format(fns.map((f) => f.fn))
+      : `${fns.length} functions, ${tasks.length} tasks`,
+  );
+  fill("[data-summary-line]", `${opened - unsolved.length} of ${opened} solved`);
+  fill(
+    "[data-summary-unopened]",
+    unopened.length === 0
+      ? ""
+      : `${unopened.length} ${unopened.length === 1 ? "task" : "tasks"} not opened yet.`,
+  );
+
+  // Up to two actions: the first shown is the primary one.
+  const next = q<HTMLAnchorElement>("[data-continue]");
+  const retry = q<HTMLButtonElement>("[data-retry]");
+  const again = q<HTMLButtonElement>("[data-again]");
+  const resume = unopened[0];
+  if (next && resume) {
+    next.href = resume.href;
+    next.textContent = `Continue from task ${resume.n}`;
+    next.hidden = false;
   }
-  const again = q<HTMLAnchorElement>("[data-again]");
-  if (again) again.href = `/exercises/drills/${session.search}`;
+  if (retry && unsolved.length > 0) {
+    retry.textContent = `Retry ${unsolved.length} unsolved`;
+    retry.hidden = false;
+    retry.onclick = () => start(fromPool(unsolved.map((t) => t.id)), session.search);
+  }
+  if (again && !resume) {
+    again.hidden = false;
+    again.onclick = () => start(fromPool(session.ids), session.search);
+  }
+  [next, retry, again]
+    .filter((b) => b !== null && !b.hidden)
+    .forEach((b, i) => {
+      b?.classList.toggle("button-primary", i === 0);
+      b?.classList.toggle("button-outline", i > 0);
+    });
+
+  const bar = q<HTMLElement>("[data-bar]");
+  const segment = (state: TaskState, share?: number) => {
+    const span = el("span", { className: state });
+    if (share !== undefined) span.style.flexGrow = String(share);
+    return span;
+  };
+  bar?.classList.toggle("shares", big);
+  bar?.replaceChildren(
+    ...(big
+      ? (Object.keys(OUTCOMES) as TaskState[])
+          .filter((s) => of(s).length > 0)
+          .map((s) => segment(s, of(s).length))
+      : tasks.map((t) => segment(t.state))),
+  );
+  for (const stat of box.querySelectorAll<HTMLElement>("[data-stat]")) {
+    const state = stat.dataset["stat"] as TaskState;
+    const value = stat.querySelector("dd");
+    if (value) value.textContent = String(of(state).length);
+    stat.hidden = state === "none" && unopened.length === 0;
+  }
+
+  // A short run lists every task; a long one only those to look at again.
+  const listed = big ? [...unsolved, ...of("retry")] : tasks;
+  const section = q<HTMLElement>("[data-tasks]");
+  if (section) section.hidden = listed.length === 0;
+  fill("[data-tasks-title]", big ? "Tasks to look at" : "Tasks");
+  fill("[data-tasks-count]", big ? String(listed.length) : "");
+  paged<Task>(
+    q("[data-task-list]"),
+    q("[data-more-tasks]"),
+    listed,
+    big ? TASK_PAGE : listed.length,
+    (t) =>
+      el(
+        "li",
+        { className: "a-item mid" },
+        el("span", { className: "num", textContent: String(t.n) }),
+        el(
+          "div",
+          { className: "body" },
+          el("span", { className: "title" }, el("a", { href: t.href, textContent: t.title })),
+        ),
+        el("span", {
+          className: `mark-tag ${OUTCOMES[t.state].tag}`,
+          textContent: OUTCOMES[t.state].word,
+        }),
+      ),
+    (left) => `Show ${Math.min(TASK_PAGE, left)} more of ${left}`,
+  );
+
+  // A long run puts the weakest functions at the side and folds the rest away.
+  const weak = big
+    ? fns.filter((f) => f.seen > 0 && f.first < f.total).sort((a, b) => b.weight - a.weight)
+    : fns;
+  folded(
+    "[data-clean]",
+    "Solved on the first try",
+    big ? fns.filter((f) => f.first === f.total) : [],
+  );
+  folded("[data-unopened]", "Not opened", big ? fns.filter((f) => f.seen === 0) : []);
+  const side = q<HTMLElement>("[data-fns]");
+  if (side) side.hidden = weak.length === 0;
+  fill("[data-fns-title]", big ? "Weakest functions" : "By function");
+  paged<FnResult>(
+    q("[data-fn-rows]"),
+    q("[data-more-fns]"),
+    weak,
+    WEAK_SHOWN,
+    (f) => {
+      const link = el("a", { href: practiseHref(f.fn), textContent: "Practise" });
+      link.setAttribute("aria-label", `Practise ${f.fn}`);
+      return el(
+        "tr",
+        { className: f.solved < f.seen ? "weak" : "" },
+        el("td", {}, el("code", { textContent: f.fn })),
+        el("td", { className: "score", textContent: f.seen ? `${f.solved} of ${f.seen}` : "–" }),
+        el("td", {}, link),
+      );
+    },
+    () => `Show all ${weak.length} functions`,
+    weak.length, // One press shows every function, not another page.
+  );
   track("drill_finish");
   q<HTMLElement>("#done-title")?.focus();
 }
 
 /** Saves the chosen tasks and opens the first; replace, so Back returns to the picker. */
-function start(chosen: DrillRef[] = queue): void {
+function start(chosen: DrillRef[] = queue, search: string = location.search): void {
   const first = chosen[0];
   if (!first) return;
   saveSession({
@@ -77,7 +266,7 @@ function start(chosen: DrillRef[] = queue): void {
     fns: chosen.map((d) => d.fn),
     titles: chosen.map((d) => d.title ?? ""),
     levels: chosen.map((d) => d.level),
-    search: location.search,
+    search,
     results: {},
     doneHref: DONE_HREF,
   });

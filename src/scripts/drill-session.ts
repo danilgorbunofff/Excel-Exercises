@@ -56,20 +56,24 @@ const here = location.pathname.endsWith("/") ? location.pathname : `${location.p
 const session = root ? readSession() : null;
 const step = session ? sessionStep(session.hrefs, here) : null;
 
+/** The previous page's path on this site, with a closing slash; empty for any other. */
+function referrerPath(): string {
+  try {
+    const from = new URL(document.referrer);
+    if (from.origin !== location.origin) return "";
+    return from.pathname.endsWith("/") ? from.pathname : `${from.pathname}/`;
+  } catch {
+    return "";
+  }
+}
+
 /** Arrived from a page of the run, or from the page that started it. A task opened from the
  * exercise list is not part of the run, even if the run still sits in this tab's storage. */
 function cameFromRun(s: DrillSession): boolean {
-  try {
-    const from = new URL(document.referrer);
-    if (from.origin !== location.origin) return false;
-    const slash = (p: string) => (p.endsWith("/") ? p : `${p}/`);
-    return (
-      s.hrefs.includes(slash(from.pathname)) ||
-      slash(from.pathname) === slash(new URL(s.doneHref, location.origin).pathname)
-    );
-  } catch {
-    return false;
-  }
+  const from = referrerPath();
+  if (!from) return false;
+  const done = new URL(s.doneHref, location.origin).pathname;
+  return s.hrefs.includes(from) || from === (done.endsWith("/") ? done : `${done}/`);
 }
 
 if (root && session && step && step.index >= 0 && cameFromRun(session)) {
@@ -80,8 +84,8 @@ if (root && session && step && step.index >= 0 && cameFromRun(session)) {
   const nextFn = session.fns[step.index + 1];
   const nextName = session.titles?.[step.index + 1] || `Task ${step.index + 2}`;
   const end = review
-    ? { label: "Back to your progress", word: "Progress", title: "Your progress" }
-    : { label: "See your results", word: "Results", title: "Your results" };
+    ? { label: "Back to your progress", title: "Your progress" }
+    : { label: "See your results", title: "Your results" };
 
   const bar = root.querySelector<HTMLElement>("[data-session]");
   const title = root.querySelector<HTMLElement>("[data-session-title]");
@@ -105,19 +109,29 @@ if (root && session && step && step.index >= 0 && cameFromRun(session)) {
     next.href = nextHref;
     const hidden = next.querySelector("[data-session-next-label]");
     if (hidden && last) hidden.textContent = end.label;
-    const word = next.querySelector("[data-session-next-word]");
-    if (word && last) word.textContent = end.word;
+    if (last) next.title = end.label;
   }
-  if (bar) bar.hidden = false;
-  const finish = root.querySelector<HTMLAnchorElement>("[data-session-finish]");
-  const back = root.querySelector<HTMLAnchorElement>("[data-session-back]");
-  if (review && back) {
+  if (bar) {
+    // The bar starts where the reader came from; from outside the run, at empty.
+    const from = session.hrefs.indexOf(referrerPath());
+    bar.style.setProperty("--from", String((from + 1) / session.hrefs.length));
+    bar.style.setProperty("--p", String((step.index + 1) / session.hrefs.length));
+    bar.hidden = false;
+  }
+  // Each tab ends with its own copy of these links.
+  const finishes = root.querySelectorAll<HTMLAnchorElement>("[data-session-finish]");
+  const backs = root.querySelectorAll<HTMLAnchorElement>("[data-session-back]");
+  if (review && backs.length > 0) {
     // A review needs one way out, back to the due list, so the list link turns into it.
-    back.href = session.doneHref;
-    back.lastChild?.replaceWith(" Back to your progress");
-  } else if (finish) {
-    finish.href = session.doneHref;
-    finish.hidden = false;
+    for (const back of backs) {
+      back.href = session.doneHref;
+      back.lastChild?.replaceWith(" Back to your progress");
+    }
+  } else {
+    for (const finish of finishes) {
+      finish.href = session.doneHref;
+      finish.hidden = false;
+    }
   }
 
   // The next few tasks of the set, listed like "More exercises" on an exercise page.

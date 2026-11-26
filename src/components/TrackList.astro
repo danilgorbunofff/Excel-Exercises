@@ -10,11 +10,13 @@ interface Props {
   detailed?: boolean;
   /** The id of the heading that names the list. */
   labelledby?: string;
+  /** The catalogue's cards: the share solved in the corner, and a hover that only lifts. */
+  catalogue?: boolean;
 }
-const { tracks, detailed = false, labelledby } = Astro.props;
+const { tracks, detailed = false, labelledby, catalogue = false } = Astro.props;
 ---
 
-<ul class="tracks" aria-labelledby={labelledby}>
+<ul class:list={["tracks", { catalogue }]} aria-labelledby={labelledby}>
   {
     tracks.map((t) => (
       <li>
@@ -30,6 +32,11 @@ const { tracks, detailed = false, labelledby } = Astro.props;
           </span>
           {detailed && <span class="summary">{t.topic.summary}</span>}
           <span class="progress" data-track-progress={t.exercises.map((p) => p.exercise.id).join(" ")}>
+            {catalogue && (
+              <span class="percent" aria-hidden="true" data-track-percent>
+                0%
+              </span>
+            )}
             <span class="progress-bar" aria-hidden="true">
               <span data-bar />
             </span>
@@ -77,6 +84,29 @@ const { tracks, detailed = false, labelledby } = Astro.props;
   .track-card:hover .name {
     color: var(--correct);
     text-decoration: underline;
+  }
+  .catalogue .track-card {
+    position: relative;
+  }
+  .catalogue .top {
+    padding-right: 3rem;
+  }
+  .percent {
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    font-size: var(--size-s);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--correct);
+  }
+  /* Only the lift from base.css: no green border, no underlined name. */
+  .catalogue .track-card:hover {
+    border-color: var(--rule);
+  }
+  .catalogue .track-card:hover .name {
+    color: var(--heading);
+    text-decoration: none;
   }
   .facts,
   .progress-text {

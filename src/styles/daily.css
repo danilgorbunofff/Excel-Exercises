@@ -195,30 +195,90 @@ a.d-cell:focus-visible {
 .d-month .d-cell[aria-current="page"] .d-num {
   text-decoration: none;
 }
+/* A solid green foot, edge to edge: the streak large, the two records under it. */
 .d-cal-stats {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-3);
-  margin: 0;
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--rule);
-  font-size: var(--size-s);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0 calc(-1 * var(--space-5)) calc(-1 * var(--space-5));
+  border-radius: 0 0 calc(var(--radius-l) - 1px) calc(var(--radius-l) - 1px);
+  background: var(--primary);
+  color: var(--on-primary);
 }
 .d-cal-stats div {
   display: flex;
-  gap: var(--space-1);
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0 var(--space-2);
+  padding: var(--space-3);
+  background: rgb(0 0 0 / 0.18);
+}
+.d-cal-stats div + div + div {
+  border-left: 1px solid rgb(255 255 255 / 0.2);
+  border-bottom-right-radius: inherit;
+}
+.d-cal-stats div:nth-child(2) {
+  border-bottom-left-radius: calc(var(--radius-l) - 1px);
 }
 .d-cal-stats dt {
-  color: var(--muted);
+  font-size: var(--size-s);
 }
 .d-cal-stats dd {
   margin: 0;
+  font-size: var(--size-l);
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.d-cal-stats .d-streak {
+  grid-column: 1 / -1;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  background: none;
+}
+.d-streak dt {
+  display: flex;
+}
+.d-streak dd {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  line-height: 1.25;
+}
+.d-n {
+  font-size: 2.75rem;
+  line-height: 1;
+}
+.d-u::after {
+  display: block;
+  content: "streak";
+}
+/* An outline until a streak runs; then it fills. */
+.d-flame-outer {
+  fill: transparent;
+  stroke: rgb(255 255 255 / 0.65);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+.d-flame-core {
+  fill: rgb(255 255 255 / 0.35);
+}
+.is-live .d-flame-outer {
+  fill: var(--flame);
+  stroke: var(--flame-edge);
+}
+.is-live .d-flame-core {
+  fill: var(--flame-core);
 }
 /* At phone width a smaller pad and gap keep each date close to a 44 px target. */
 @media (max-width: 39.99rem) {
   .d-cal {
     padding: var(--space-3);
+  }
+  .d-cal-stats {
+    margin: 0 calc(-1 * var(--space-3)) calc(-1 * var(--space-3));
   }
   .d-dow,
   .d-month {

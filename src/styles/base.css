@@ -287,6 +287,20 @@ kbd {
     animation-duration: 150ms;
     animation-timing-function: var(--ease);
   }
+  /* Between the steps of a task (StepLadder.astro): a soft cross-fade, the old
+     page dissolving over the new, while the filled dot slides along the line. */
+  html:has([data-ladder])::view-transition-old(root),
+  html:has([data-ladder])::view-transition-new(root) {
+    animation-duration: 180ms;
+  }
+  ::view-transition-group(step-marker) {
+    animation-duration: 180ms;
+    animation-timing-function: cubic-bezier(0.34, 1.25, 0.64, 1);
+  }
+  ::view-transition-old(step-marker),
+  ::view-transition-new(step-marker) {
+    animation-duration: 180ms;
+  }
 
   html {
     scroll-behavior: smooth;
@@ -573,6 +587,42 @@ ol.ruled {
   background: var(--advanced-bg);
   color: var(--advanced);
 }
+/* Difficulty as three bars (LevelBars.astro): the level lights that many. */
+.signal {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 1rem;
+}
+.signal i {
+  width: 5px;
+  border-radius: 1px;
+  background: var(--muted);
+  opacity: 0.35;
+}
+.signal i:nth-child(1) {
+  height: 45%;
+}
+.signal i:nth-child(2) {
+  height: 72%;
+}
+.signal i:nth-child(3) {
+  height: 100%;
+}
+.signal i.on {
+  background: currentColor;
+  opacity: 1;
+}
+.signal-1 {
+  color: var(--beginner);
+}
+.signal-2 {
+  color: var(--intermediate-bar);
+}
+.signal-3 {
+  color: var(--advanced-bar);
+}
+
 /* An exercise's state, painted by status.ts after load. The word always
    shows; the colour only repeats it. The hidden ::after holds the longest
    label in status.ts, so the box is the same size before and after paint. */

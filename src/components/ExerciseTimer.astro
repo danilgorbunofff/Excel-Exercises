@@ -7,7 +7,12 @@ import Icon from "./Icon.astro";
 ---
 
 <div class="timer" data-timer>
-  <span class="time" role="timer" aria-label="Time on this exercise" data-timer-text>00:00:00</span>
+  <span class="face">
+    <span class="time" role="timer" aria-label="Time on this exercise" data-timer-text>00:00:00</span>
+    <span class="mask" aria-hidden="true">
+      {[..."••:••:••"].map((c) => <span>{c}</span>)}
+    </span>
+  </span>
   <button class="toggle" type="button" aria-pressed="false" data-timer-toggle>
     <span class="visually-hidden">Hide the timer</span>
     <span class="on"><Icon name="eye" size={16} /></span>
@@ -27,8 +32,43 @@ import Icon from "./Icon.astro";
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
   }
+  /* The digits and the dots that cover them share one cell. */
+  .face {
+    display: grid;
+  }
+  .face > *,
+  .toggle > :is(.on, .off) {
+    grid-area: 1 / 1;
+  }
+  /* One digit-wide cell for each character, so the colons never shift: the
+     bullet glyph is not as wide as a digit. */
+  .mask {
+    display: flex;
+    font-family: var(--font-mono);
+  }
+  .mask span {
+    display: flex;
+    justify-content: center;
+    width: 1ch;
+  }
+  .mask,
   .timer.is-hidden .time {
     visibility: hidden;
+    opacity: 0;
+    filter: blur(4px);
+  }
+  /* The digits leave upwards; the dots wait below. */
+  .mask {
+    transform: translateY(0.6em);
+  }
+  .timer.is-hidden .time {
+    transform: translateY(-0.6em);
+  }
+  .timer.is-hidden .mask {
+    visibility: visible;
+    opacity: 1;
+    filter: none;
+    transform: none;
   }
   .toggle {
     display: inline-grid;
@@ -48,11 +88,43 @@ import Icon from "./Icon.astro";
   .off {
     display: grid;
   }
+  /* A shut eye is the same icon squeezed flat, so a change reads as a blink. */
   .off,
   .timer.is-hidden .on {
-    display: none;
+    visibility: hidden;
+    opacity: 0;
+    transform: scaleY(0.1);
   }
   .timer.is-hidden .off {
-    display: grid;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+  }
+  /* .is-ready comes after the saved choice is applied, so nothing moves on load. */
+  @media (prefers-reduced-motion: no-preference) {
+    .timer.is-ready :is(.time, .mask) {
+      transition:
+        opacity 260ms var(--ease),
+        filter 260ms var(--ease),
+        transform 360ms cubic-bezier(0.34, 1.35, 0.64, 1),
+        visibility 260ms;
+    }
+    /* One eye closes, then the other opens. */
+    .timer.is-ready :is(.on, .off) {
+      transition:
+        transform 130ms var(--ease),
+        opacity 130ms var(--ease),
+        visibility 130ms;
+    }
+    .timer.is-ready:not(.is-hidden) .on,
+    .timer.is-ready.is-hidden .off {
+      transition-delay: 130ms;
+    }
+    .toggle {
+      transition: transform var(--duration) var(--ease);
+    }
+    .toggle:active {
+      transform: scale(0.88);
+    }
   }
 </style>

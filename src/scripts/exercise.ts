@@ -295,6 +295,13 @@ function setupScreen(exercise: HTMLElement, page: PageData, index: number, root:
     mirror.scrollLeft = input.scrollLeft;
   });
   reset.addEventListener("click", () => {
+    // One backwards turn of the arrow shows the sheet being wound back.
+    if (matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+      reset.querySelector("svg")?.animate([{ rotate: "0deg" }, { rotate: "-360deg" }], {
+        duration: 500,
+        easing: "cubic-bezier(0.34, 1.3, 0.64, 1)",
+      });
+    }
     resetAll();
     input.focus();
   });

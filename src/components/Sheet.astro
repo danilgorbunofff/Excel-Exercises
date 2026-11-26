@@ -53,7 +53,17 @@ const kind = (v: unknown) =>
 <div class="sheet">
   <div class="sheet-bar">
     <h2>{label}</h2>
-    {!noReset && <button class="reset" type="button" data-reset disabled>Reset</button>}
+    {
+      !noReset && (
+        <button class="reset" type="button" data-reset disabled>
+          {/* Drawn here: heavier and rounder than the shared "reset" icon. */}
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">
+            <path d="M4 4v6h6M20 12a8 8 0 0 1-14 5.3M4.6 10A8 8 0 0 1 20 12" />
+          </svg>
+          Reset
+        </button>
+      )
+    }
   </div>
   <form class="formula-row" id={formId} action={action} method="get" data-form>
     <span class="namebox" aria-hidden="true">{screen.answerCell}</span>
@@ -152,26 +162,52 @@ const kind = (v: unknown) =>
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--space-1) var(--space-2) var(--space-1) var(--space-3);
+    min-height: 3.75rem; /* air above and below the raised Reset button */
+    padding: var(--space-1) var(--space-3);
     background: var(--primary);
     color: var(--on-primary);
   }
+  /* Phones: no extra air, so the verdict stays on the first screen. */
+  @media (max-width: 47.99rem) {
+    .sheet-bar {
+      min-height: 0;
+    }
+  }
+  /* Set like the Reset button beside it. White letters on green look heavier
+     than green on white, so macOS is asked to draw them thinner. */
   h2 {
     margin: 0;
     font-size: var(--size-s);
     font-weight: 600;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+  /* A raised white button on the green bar, in both themes. */
   .reset {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
     min-height: 2.25rem;
     min-width: var(--target);
-    padding: 0 var(--space-3);
+    padding: 0 var(--space-4) 0 var(--space-3);
     border: 0;
-    border-radius: var(--radius-s);
-    background: var(--surface);
-    color: var(--correct);
+    border-radius: var(--radius-m);
+    background: var(--on-primary);
+    box-shadow: 0 2px 0 rgb(0 0 0 / 0.18);
+    color: var(--primary-hover);
     font-size: var(--size-s);
     font-weight: 600;
     cursor: pointer;
+  }
+  .reset svg {
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
   /* Touch screens get the full 44 px target; mice keep the slimmer band. */
   @media (pointer: coarse) {
@@ -180,17 +216,30 @@ const kind = (v: unknown) =>
     }
   }
   .reset:hover {
-    text-decoration: underline;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 0.22);
+    translate: 0 -1px;
   }
   .reset:focus-visible {
     outline-color: var(--on-primary);
   }
+  /* Nothing to reset yet: the same button, dimmed and flat. */
   .reset:disabled {
-    background: transparent;
-    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.55);
-    color: rgb(255 255 255 / 0.8);
+    box-shadow: none;
+    opacity: 0.6;
+    translate: none;
     cursor: not-allowed;
-    text-decoration: none;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .reset {
+      transition:
+        box-shadow var(--duration) var(--ease),
+        opacity var(--duration) var(--ease),
+        translate var(--duration) var(--ease),
+        scale var(--duration) var(--ease);
+    }
+    .reset:active:enabled {
+      scale: 0.94;
+    }
   }
   .formula-row {
     display: flex;

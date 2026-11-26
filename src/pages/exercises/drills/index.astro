@@ -64,20 +64,63 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
       </p>
     </header>
 
-    <section class="ruled" aria-labelledby="done-title" data-summary hidden>
-      <div class="list-head">
-        <h2 id="done-title" tabindex="-1">Tasks done</h2>
-      </div>
-      <div class="a-pad summary">
-        <p data-summary-line></p>
-        <div data-summary-missed hidden>
-          <h3>Practise these again</h3>
-          <ul class="missed" data-missed-list></ul>
+    {/* The summary of a run, filled by drills.ts: the same look as a mock assessment's result. */}
+    <section class="a-page" aria-labelledby="done-title" data-summary hidden>
+      <div class="ruled a-card">
+        <div class="a-head">
+          <div>
+            <h2 id="done-title" tabindex="-1">
+              <span class="a-context" data-summary-context></span>
+              <span class="a-title" data-summary-line></span>
+            </h2>
+            <p class="a-note" data-summary-unopened hidden></p>
+          </div>
+          <div class="a-actions">
+            <a class="button button-primary" href="" data-continue hidden></a>
+            <button type="button" class="button button-primary" data-retry hidden></button>
+            <button type="button" class="button button-primary" data-again hidden>Practise all again</button>
+          </div>
         </div>
-        <p class="summary-actions">
-          <a class="button button-primary" href="" data-again>Practise again</a>
-          <a class="button button-outline" href="/exercises/drills/">Pick other functions</a>
-        </p>
+        <div class="score-bar" aria-hidden="true" data-bar></div>
+        <dl class="a-stats">
+          <div data-stat="correct"><dt><span class="swatch correct"></span>Solved</dt><dd></dd></div>
+          <div data-stat="retry"><dt><span class="swatch retry"></span>Took more tries</dt><dd></dd></div>
+          <div data-stat="open"><dt><span class="swatch"></span>Not solved</dt><dd></dd></div>
+          <div data-stat="none"><dt><span class="swatch none"></span>Not opened</dt><dd></dd></div>
+        </dl>
+      </div>
+      <div class="a-grid">
+        <div class="a-page">
+          <section class="ruled" aria-labelledby="tasks-title" data-tasks>
+            <div class="list-head">
+              <h3 id="tasks-title" data-tasks-title>Tasks</h3>
+              <span data-tasks-count></span>
+            </div>
+            <ol class="a-list" data-task-list></ol>
+            <button type="button" class="a-show-more" data-more-tasks hidden></button>
+          </section>
+          <details class="ruled a-rest" data-clean hidden>
+            <summary></summary>
+            <ul class="a-names"></ul>
+          </details>
+          <details class="ruled a-rest" data-unopened hidden>
+            <summary></summary>
+            <ul class="a-names"></ul>
+          </details>
+        </div>
+        <aside class="ruled a-side" aria-label="Results by function">
+          <div data-fns>
+            <div class="list-head">
+              <h3 data-fns-title>By function</h3>
+            </div>
+            <table>
+              <caption class="visually-hidden">Solved tasks per function</caption>
+              <tbody data-fn-rows></tbody>
+            </table>
+            <button type="button" class="a-show-more" data-more-fns hidden></button>
+          </div>
+          <p class="a-pad"><a href="/exercises/drills/">Pick other functions</a></p>
+        </aside>
       </div>
     </section>
 
@@ -202,23 +245,6 @@ const poolJson = JSON.stringify(pool).replaceAll("<", "\\u003c");
 </script>
 
 <style>
-  .summary-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-  }
-  .summary p {
-    margin: 0 0 var(--space-3);
-  }
-  .summary h3 {
-    margin: 0 0 var(--space-2);
-    font-size: var(--size-base);
-  }
-  .missed {
-    margin: 0 0 var(--space-4);
-    padding-left: var(--space-5);
-  }
-
   /* Three panes on wide screens: groups, the chosen group's functions, your set.
      On narrower screens the groups become a scrolling row above the functions. */
   .picker {

@@ -578,3 +578,81 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* A practice run's result adds two outcomes to the bar and the tags, and folds long
+   lists away: a run can hold every drill. */
+.score-bar span.retry,
+.swatch.retry {
+  background: var(--intermediate-fill);
+}
+.score-bar span.none,
+.swatch.none {
+  background: none;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+/* Past 20 tasks a segment each cannot be read: one share per outcome instead. */
+.score-bar.shares span {
+  flex: 0 1 0;
+  min-width: 2px;
+}
+.mark-tag.retry {
+  background: var(--intermediate-bg);
+  color: var(--intermediate);
+}
+.a-head h2[tabindex="-1"]:focus {
+  outline: none; /* focused by script, so a screen reader starts at the result */
+}
+.a-grid > * {
+  min-width: 0;
+}
+.a-item .title a {
+  color: inherit;
+}
+.a-show-more {
+  display: block;
+  width: 100%;
+  min-height: var(--target);
+  padding: var(--space-3) var(--space-4);
+  border: 0;
+  border-top: 1px solid var(--rule);
+  background: var(--bg);
+  color: var(--correct);
+  font: inherit;
+  font-size: var(--size-s);
+  font-weight: 600;
+  cursor: pointer;
+}
+.a-show-more[hidden] {
+  display: none;
+}
+.a-show-more:hover {
+  background: var(--header);
+}
+.a-rest summary {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--size-s);
+  font-weight: 600;
+  cursor: pointer;
+}
+.a-rest[open] summary {
+  border-bottom: 1px solid var(--rule);
+}
+.a-names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: var(--space-4);
+  list-style: none;
+}
+.ruled .a-names li + li {
+  border-top: 0;
+}
+.ruled .a-names a {
+  display: block;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-m);
+  font-family: var(--font-mono);
+  font-size: var(--size-s);
+}

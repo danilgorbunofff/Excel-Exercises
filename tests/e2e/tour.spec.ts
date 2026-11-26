@@ -50,9 +50,9 @@ test("Escape closes the tour and the Tour button replays it", async ({ page }) =
   await page.keyboard.press("Escape");
   await expect(page.locator(".tour-card")).toHaveCount(0);
 
-  await page.getByRole("button", { name: "Tour" }).click();
+  await page.getByRole("button", { name: "How it works" }).click();
   await expect(page.getByRole("dialog", { name: "Read the task" })).toBeVisible();
   await page.getByRole("button", { name: "Skip tour" }).click();
   await expect(page.locator(".tour-card")).toHaveCount(0);
-  await expect(page.getByRole("button", { name: "Tour" })).toBeFocused();
+  await expect(page.getByRole("button", { name: "How it works" })).toBeFocused();
 });

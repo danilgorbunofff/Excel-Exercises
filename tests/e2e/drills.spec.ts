@@ -47,6 +47,8 @@ test("with PRO, chosen drills open as exercise pages and end on a summary", asyn
   await expect(title(page)).toHaveText("Task 1 of 1");
   await expect(page.locator("[data-paywall]")).toHaveCount(0);
   await expect(page.locator("[data-tabs]")).toBeVisible();
+  // The tour's button appears once the drill opens. The config marks the tour as seen.
+  await expect(page.getByRole("button", { name: "How it works" })).toBeVisible();
   await formula(page).fill("=SUM(B2:B5)");
   await check(page).click();
   await formula(page).fill(answerOf("sum-drill-1"));
@@ -54,8 +56,8 @@ test("with PRO, chosen drills open as exercise pages and end on a summary", asyn
   const done = page.locator("[data-done-next]");
   await expect(done).toContainText("See your results");
   await done.click();
-  await expect(page.locator("[data-summary-line]")).toHaveText("You solved 1 of 1 task.");
-  await expect(page.locator("[data-missed-list]")).toContainText("Practise SUM again");
+  await expect(page.locator("[data-summary-line]")).toHaveText("1 of 1 solved");
+  await expect(page.locator("[data-task-list]")).toContainText("Took more tries");
 
   // Missed and solved on the same day: it comes back with the normal review gap, not at once.
   await page.goto("/progress/");
@@ -68,8 +70,11 @@ test("with PRO, chosen drills open as exercise pages and end on a summary", asyn
   await expect(title(page)).toHaveText("Task 2 of 10");
   await page.locator("[data-session-prev]").click();
   await expect(title(page)).toHaveText("Task 1 of 10");
-  await page.locator("[data-session-finish]").click();
-  await expect(page.locator("[data-summary-line]")).toHaveText("You solved 0 of 2 tasks.");
+  await page.locator("[data-session-finish]").first().click();
+  await expect(page.locator("[data-summary-line]")).toHaveText("0 of 2 solved");
+  await expect(page.getByRole("link", { name: "Continue from task 3" })).toBeVisible();
+  await page.getByRole("button", { name: "Retry 2 unsolved" }).click();
+  await expect(title(page)).toHaveText("Task 1 of 2");
 });
 
 test("without PRO, each drill is a locked preview under the paywall", async ({ page }) => {
@@ -77,6 +82,7 @@ test("without PRO, each drill is a locked preview under the paywall", async ({ p
   await page.goto("/exercises/drills/?fn=AVERAGE");
   await expect(page.locator("[data-paywall]")).toBeVisible();
   await expect(page.locator("#paywall-title")).toHaveText("Practise every function with PRO");
+  await expect(page.locator("[data-tour-start]")).toBeHidden();
   await expect(page.locator(".work:not(.paywall)").first()).toHaveJSProperty("inert", true);
   await page.locator("[data-session-next]").click();
   await expect(title(page)).toHaveText("Task 2 of 5");

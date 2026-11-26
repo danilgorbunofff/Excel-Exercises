@@ -67,7 +67,16 @@ const titlesJson = JSON.stringify(
         <ol class="d-month" aria-labelledby="month-title" data-month></ol>
         <div class="hover-tip" aria-hidden="true"><strong></strong><span></span></div>
         <dl class="d-cal-stats">
-          <div><dt>Streak</dt><dd data-current>0 days</dd></div>
+          <div class="d-streak">
+            <dt>
+              <svg class="d-flame" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true" focusable="false">
+                <path class="d-flame-outer" d="M12 2c1 4.5 7 6.500 7 13a7 7 0 0 1-14 0c0-3 1.500-5 3-6 0 2.300 1 3.600 2.300 4C9.800 9.500 10.500 5 12 2z" />
+                <path class="d-flame-core" d="M12.400 12.500c.8 2 2.800 3 2.800 5.400a3.200 3.200 0 0 1-6.400 0c0-1.300.7-2.200 1.500-2.700.1.900.5 1.500 1.100 1.700-.3-1.600 0-3.200 1-4.400z" />
+              </svg>
+              <span class="visually-hidden">Streak</span>
+            </dt>
+            <dd data-current><span class="d-n">0</span> <span class="d-u">days</span></dd>
+          </div>
           <div><dt>Best</dt><dd data-best>0 days</dd></div>
           <div><dt>This month</dt><dd data-month-solved>0</dd></div>
         </dl>

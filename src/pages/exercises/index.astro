@@ -2,27 +2,45 @@
 // Why this exists: the catalogue, laid out as on Spreadsheet Center: a
 // centred head with a green note, learning track cards, one sortable table of
 // every exercise, a start card and filters on the right, and common questions.
-import { siteConfig } from "../../../site.config.ts";
+// Under the title, this browser's progress: solved, day streak, tracks done.
 import ExerciseTable from "../../components/ExerciseTable.astro";
+import FilterPick from "../../components/FilterPick.astro";
 import Icon from "../../components/Icon.astro";
+import LevelBars from "../../components/LevelBars.astro";
 import PracticeTabs from "../../components/PracticeTabs.astro";
+import StartSheet from "../../components/StartSheet.astro";
 import TrackList from "../../components/TrackList.astro";
 import Base from "../../layouts/Base.astro";
 import {
+  exercisePath,
   functionsOf,
   LEVELS,
   placedExercises,
-  topicPath,
   trackSummaries,
   tracksPath,
 } from "../../lib/exercises.ts";
-import { ACCOUNT_NAV } from "../../lib/nav.ts";
 
 const placed = await placedExercises();
 const tracks = trackSummaries(placed);
 const total = placed.length;
-const firstTrack = tracks[0];
 const functionNames = [...new Set(placed.flatMap((p) => functionsOf(p.exercise)))].sort();
+const functionOptions = functionNames.map((name) => ({
+  value: name,
+  label: name,
+  count: placed.filter((p) => functionsOf(p.exercise).includes(name)).length,
+}));
+const trackOptions = tracks.map((t) => ({
+  value: t.topic.slug,
+  label: t.topic.title,
+  count: t.exercises.length,
+}));
+const progressChoices = [
+  { value: "", label: "All" },
+  { value: "todo", label: "Not solved" },
+  { value: "done", label: "Solved" },
+];
+// A tile is narrow, so Intermediate goes by its shorter name there.
+const tileLabels = { 1: LEVELS[1], 2: "Medium", 3: LEVELS[3] };
 const faq = [
   {
     q: "I am new to Excel. Where do I begin?",
@@ -58,6 +76,20 @@ const faq = [
     <p class="lead">
       Work through {total} short spreadsheet tasks.
     </p>
+    <ul class="stats" data-stats>
+      <li>
+        <Icon name="check" />
+        <span><b data-stat-solved>0</b> of {total} solved</span>
+      </li>
+      <li class="streak">
+        <Icon name="flame" />
+        <span><b data-stat-streak>0</b> day streak</span>
+      </li>
+      <li>
+        <Icon name="trophy" />
+        <span><b data-stat-tracks>0</b> <span data-stat-tracks-word>tracks</span> completed</span>
+      </li>
+    </ul>
   </header>
 
   <div class="layout">
@@ -70,7 +102,7 @@ const faq = [
         <a class="arrow-link" href={tracksPath}>All tracks&nbsp;<span aria-hidden="true">→</span></a>
       </div>
       <div class="track-grid">
-        <TrackList tracks={tracks.slice(0, 4)} labelledby="tracks-heading" />
+        <TrackList tracks={tracks.slice(0, 4)} labelledby="tracks-heading" catalogue />
       </div>
     </section>
 
@@ -93,40 +125,9 @@ const faq = [
 
     <aside class="side" aria-label="Start and filter">
       {
-        firstTrack && (
-          <div class="card start">
-            <h2>Practise on a real sheet</h2>
-            <p>Short tasks, with a check that explains itself.</p>
-            <a class="button button-primary" href={topicPath(firstTrack.topic.slug)}>
-              <Icon name="play" size={16} /> Start the first track
-            </a>
-            <ul class="facts">
-              <li>
-                <Icon name="bolt" /> Checked at once
-              </li>
-              <li>
-                <Icon name="grid" /> {total} exercises
-              </li>
-              <li>
-                <Icon name="hint" /> Two hints each
-              </li>
-            </ul>
-            {
-              siteConfig.accountsOpen ? (
-                <>
-                  <a class="sync" href={ACCOUNT_NAV.register.href} data-when="out">
-                    Sign up to keep progress&nbsp;<span aria-hidden="true">→</span>
-                  </a>
-                  <a class="sync" href="/account/progress/" data-when="in" hidden>
-                    Saved. View your progress&nbsp;<span aria-hidden="true">→</span>
-                  </a>
-                </>
-              ) : (
-                <a class="sync" href="/progress/">
-                  Saved in this browser. See your progress&nbsp;<span aria-hidden="true">→</span>
-                </a>
-              )
-            }
+        placed[0] && (
+          <div class="start">
+            <StartSheet href={exercisePath(placed[0].exercise.slug)} />
           </div>
         )
       }
@@ -154,49 +155,41 @@ const faq = [
           <span data-more-label>More filters</span>
         </button>
         <div class="more" id="more-filters">
-          <div class="field">
-            <label for="progress">Progress</label>
-            <div class="select">
-              <select id="progress" name="progress">
-                <option value="">All</option>
-                <option value="todo">Not solved</option>
-                <option value="done">Solved</option>
-              </select>
-              <Icon name="chevron-down" size={16} />
+          <fieldset class="group">
+            <legend>Progress</legend>
+            <div class="segments">
+              {
+                progressChoices.map((c) => (
+                  <label>
+                    <input class="visually-hidden" type="radio" name="progress" value={c.value} checked={c.value === ""} />
+                    <span>{c.label}</span>
+                  </label>
+                ))
+              }
             </div>
-          </div>
-          <div class="field">
-            <label for="level">Difficulty</label>
-            <div class="select">
-              <select id="level" name="level">
-                <option value="">All</option>
-                {Object.entries(LEVELS).map(([v, l]) => <option value={v}>{l}</option>)}
-              </select>
-              <Icon name="chevron-down" size={16} />
+          </fieldset>
+          <fieldset class="group">
+            <legend>Difficulty</legend>
+            {/* No "All" tile: pressing the chosen one again clears it. */}
+            <div class="tiles">
+              {
+                ([1, 2, 3] as const).map((level) => (
+                  <label class={`tile-${level}`}>
+                    <input class="visually-hidden" type="radio" name="level" value={level} />
+                    <span>
+                      <LevelBars level={level} />
+                      {tileLabels[level]}
+                    </span>
+                  </label>
+                ))
+              }
             </div>
-          </div>
-          <div class="field">
-            <label for="fn">Function</label>
-            <div class="select">
-              <select id="fn" name="fn">
-                <option value="">All</option>
-                {functionNames.map((name) => <option value={name}>{name}</option>)}
-              </select>
-              <Icon name="chevron-down" size={16} />
-            </div>
-          </div>
-          <div class="field">
-            <label for="track">Track</label>
-            <div class="select">
-              <select id="track" name="track">
-                <option value="">All</option>
-                {tracks.map((t) => <option value={t.topic.slug}>{t.topic.title}</option>)}
-              </select>
-              <Icon name="chevron-down" size={16} />
-            </div>
-          </div>
+          </fieldset>
+          <FilterPick name="fn" label="Function" all="All functions" total={total} options={functionOptions} />
+          <FilterPick name="track" label="Track" all="All tracks" total={total} options={trackOptions} />
         </div>
         <p class="count" role="status" data-filter-count>{total} exercises</p>
+        <div class="meter" aria-hidden="true"><span data-filter-meter></span></div>
       </form>
     </aside>
   </div>
@@ -224,6 +217,40 @@ const faq = [
     list-style: none;
     margin: 0;
     padding: 0;
+  }
+  .stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+  }
+  .stats li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+    font-size: var(--size-s);
+    color: var(--muted);
+  }
+  .stats b {
+    font-variant-numeric: tabular-nums;
+    color: var(--heading);
+  }
+  .stats :global(.icon) {
+    color: var(--correct);
+  }
+  .stats .streak :global(.icon) {
+    color: var(--flame);
+    fill: var(--flame);
+  }
+  /* The numbers are this browser's: the room is kept until the script has them. */
+  .stats:not(.ready) {
+    visibility: hidden;
   }
   .tracks-head {
     display: flex;
@@ -257,51 +284,17 @@ const faq = [
     font-size: var(--size-l);
     color: var(--heading);
   }
-  .start p {
-    margin: 0 0 var(--space-4);
-    color: var(--muted);
-    font-size: var(--size-s);
-  }
-  .start .button {
-    width: 100%;
-  }
-  .facts {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-2);
-    margin: var(--space-5) 0;
-    text-align: center;
-    font-size: var(--size-xs);
-    color: var(--muted);
-  }
-  .facts li {
-    display: grid;
-    justify-items: center;
-    gap: var(--space-1);
-  }
-  .facts :global(.icon) {
-    color: var(--chip);
-  }
-  .sync {
-    display: block;
-    text-align: right;
-    white-space: nowrap;
-    font-size: var(--size-xs);
-    color: var(--correct);
-    font-weight: 600;
-    text-decoration: none;
-  }
-  .sync:hover {
-    text-decoration: underline;
-  }
   .filter {
     display: grid;
     gap: var(--space-4);
   }
+  /* The "1 active" tag is taller than the heading: its room is kept, so
+     nothing below moves when it appears. */
   .head {
     display: flex;
     align-items: center;
     gap: var(--space-2);
+    min-height: 1.5rem;
   }
   .head h2 {
     flex: 1;
@@ -357,60 +350,146 @@ const faq = [
     font-size: var(--size-s);
     color: var(--muted);
   }
-  label {
-    font-size: var(--size-s);
-    font-weight: 600;
-  }
-  input,
-  select {
+  .search input {
     width: 100%;
     min-height: var(--target);
-    padding: 0 var(--space-3);
+    padding-right: var(--space-3);
     border: 1px solid var(--line);
-    border-radius: var(--radius-m);
-    background-color: var(--surface);
+    border-radius: 10px;
+    background: var(--surface);
     font-size: var(--size-s);
-  }
-  .filter .button {
-    margin-top: var(--space-3);
   }
   .more {
     display: grid;
     gap: var(--space-4);
   }
-  /* One filter per line: the name over a full-width list. */
-  .field {
-    display: grid;
-    gap: 6px;
+  .group {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
   }
-  .field label {
-    color: var(--muted);
+  legend {
+    margin-bottom: 6px;
+    padding: 0;
     font-size: var(--size-xs);
-  }
-  .select {
-    position: relative;
-  }
-  .select :global(.icon) {
-    position: absolute;
-    top: 50%;
-    right: var(--space-3);
-    translate: 0 -50%;
+    font-weight: 600;
     color: var(--muted);
-    pointer-events: none;
   }
-  .filter select {
-    background-image: none;
-    padding-right: 2.25rem;
+  /* Progress: one switch, with the green block sliding to the chosen part. */
+  .segments {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1.35fr 1fr;
+    padding: 3px;
+    border-radius: 12px;
+    background: var(--bg);
+    box-shadow: inset 0 0 0 1px var(--rule);
   }
-  .filter input,
-  .filter select {
-    border-radius: 10px;
+  .segments::before {
+    content: "";
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: 3px;
+    width: calc((100% - 6px) / 3.35);
+    border-radius: 9px;
+    background: var(--primary);
+  }
+  .segments:has([value="todo"]:checked)::before {
+    left: calc(3px + (100% - 6px) / 3.35);
+    width: calc((100% - 6px) * 1.35 / 3.35);
+  }
+  .segments:has([value="done"]:checked)::before {
+    left: calc(3px + (100% - 6px) * 2.35 / 3.35);
+  }
+  .segments span {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 2.25rem;
+    border-radius: 9px;
+    font-size: var(--size-xs);
+    font-weight: 700;
+    color: var(--muted);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .segments :checked + span {
+    color: var(--on-primary);
+  }
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2);
+  }
+  .tiles label {
+    display: grid;
+  }
+  .tiles label > span {
+    display: grid;
+    justify-items: center;
+    gap: 6px;
+    padding: 0.625rem 0 0.5rem;
+    border-radius: 12px;
+    background: var(--bg);
+    font-size: var(--size-xs);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .tile-1 :checked + span {
+    background: var(--beginner-bg);
+    color: var(--beginner);
+  }
+  .tile-2 :checked + span {
+    background: var(--intermediate-bg);
+    color: var(--intermediate);
+  }
+  .tile-3 :checked + span {
+    background: var(--advanced-bg);
+    color: var(--advanced);
+  }
+  .segments :focus-visible + span,
+  .tiles :focus-visible + span {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  .meter {
+    height: 4px;
+    margin-top: calc(var(--space-3) * -1);
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--rule);
+  }
+  .meter span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--correct);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .segments::before {
+      transition:
+        left 250ms cubic-bezier(0.3, 1.2, 0.5, 1),
+        width 250ms;
+    }
+    .tiles label > span {
+      transition:
+        translate 150ms,
+        background-color 150ms;
+    }
+    .tiles label > span:hover {
+      translate: 0 -2px;
+    }
+    .meter span {
+      transition: width 300ms;
+    }
   }
   .more-toggle {
     display: none;
     gap: var(--space-2);
   }
-  /* Phones: the search stays, the four lists fold behind "More filters", so
+  /* Phones: the search stays, the four filters fold behind "More filters", so
      the first exercise is not 600 px down the page. */
   @media (max-width: 47.99rem) {
     .more-toggle {
@@ -468,9 +547,20 @@ const faq = [
       grid-template-rows: auto 1fr;
       grid-template-areas: "tracks side" "all side";
     }
-    /* The aside spans both rows, so the start card sits by the tracks and
-       only the filter follows the scroll. */
+    /* The aside borrows the page's two rows: the start card is exactly as tall
+       as the tracks, and the filter starts level with the table and follows
+       the scroll. */
+    .side {
+      grid-row: 1 / -1;
+      grid-template-rows: subgrid;
+      row-gap: var(--space-6);
+    }
+    /* The card fills the row, so it is exactly as tall as the tracks. */
+    .start {
+      display: grid;
+    }
     .filter {
+      align-self: start;
       position: sticky;
       top: 5rem;
     }

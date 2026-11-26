@@ -5,6 +5,7 @@
 // catalogue script needs to filter and sort.
 import { isLocked } from "../lib/access.ts";
 import { exercisePath, functionsOf, LEVELS, type Placed } from "../lib/exercises.ts";
+import LevelBars from "./LevelBars.astro";
 
 interface Props {
   rows: readonly Placed[];
@@ -78,9 +79,17 @@ const columns = [
                 </span>
               </th>
               <td>
-                <span class={`badge badge-${p.exercise.level}`}>
-                  {LEVELS[p.exercise.level as 1 | 2 | 3]}
-                </span>
+                {/* A second way in for the pointer only: the pill sits above the row's link. */}
+                <a
+                  class={`badge badge-${p.exercise.level} level-pill`}
+                  href={exercisePath(p.exercise.slug)}
+                  tabindex="-1"
+                  aria-hidden="true"
+                  data-tip={LEVELS[p.exercise.level as 1 | 2 | 3]}
+                >
+                  <LevelBars level={p.exercise.level} />
+                </a>
+                <span class="visually-hidden">{LEVELS[p.exercise.level as 1 | 2 | 3]}</span>
               </td>
             </tr>
           );
@@ -120,9 +129,12 @@ const columns = [
     color: var(--muted);
     white-space: nowrap;
   }
-  .col-state,
   .col-order {
     width: 6.5rem;
+  }
+  /* Room for the longest state, so the column holds still when states are painted. */
+  .col-state {
+    width: 11rem;
   }
   .col-level {
     width: 8rem;
@@ -185,6 +197,115 @@ const columns = [
   }
   tbody tr:hover .title-line a {
     color: var(--correct);
+  }
+  /* A solved state carries a drawn tick. */
+  .state-tag:is([data-state="solved"], [data-state="helped"]) [data-status-label]::before {
+    content: "";
+    display: inline-block;
+    width: 0.3rem;
+    height: 0.55rem;
+    margin-right: 0.5rem;
+    border: solid currentColor;
+    border-width: 0 2px 2px 0;
+    rotate: 45deg;
+  }
+  .level-pill {
+    position: relative;
+    z-index: 1;
+    justify-content: center;
+    width: 3rem;
+    height: 1.75rem;
+    padding: 0;
+  }
+  .level-pill::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    translate: -50% 0;
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--radius-m);
+    background: var(--heading);
+    color: var(--surface);
+    font-size: var(--size-xs);
+    font-weight: 600;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+  }
+  .level-pill:hover::after {
+    opacity: 1;
+    visibility: visible;
+  }
+  /* The state pill turns into the row's action under the pointer: it changes
+     width and colour while the words roll. Each state has a set width, because
+     a width cannot animate from "auto". The action is the pseudo-element base.css
+     otherwise uses to hold the box open. */
+  @media (min-width: 48rem) {
+    .state .state-tag {
+      --w: 5.875rem;
+      --to: 5rem;
+      justify-items: center;
+      width: var(--w);
+      overflow: hidden;
+    }
+    .state .state-tag[data-state="solved"] {
+      --w: 5rem;
+    }
+    .state .state-tag[data-state="helped"] {
+      --w: 9rem;
+    }
+    .state .state-tag[data-state="tried"] {
+      --w: 3.75rem;
+    }
+    .state .state-tag[data-state="revealed"] {
+      --w: 6.625rem;
+    }
+    .state .state-tag:is([data-state="solved"], [data-state="helped"]) {
+      --to: 5.75rem;
+    }
+    .state .state-tag::after {
+      content: "Solve →" / "";
+      visibility: visible;
+      translate: 0 100%;
+      opacity: 0;
+    }
+    .state .state-tag:is([data-state="solved"], [data-state="helped"])::after {
+      content: "Review →" / "";
+    }
+    tbody tr:is(:hover, :focus-within) .state .state-tag {
+      width: var(--to);
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+    tbody tr:is(:hover, :focus-within) .state .state-tag::after {
+      translate: 0 0;
+      opacity: 1;
+    }
+    tbody tr:is(:hover, :focus-within) [data-status-label] {
+      translate: 0 -100%;
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .level-pill::after {
+      transition:
+        opacity 120ms,
+        visibility 120ms;
+    }
+    .state .state-tag {
+      transition:
+        width 320ms cubic-bezier(0.3, 1.3, 0.5, 1),
+        background-color 250ms,
+        color 250ms;
+    }
+    .state .state-tag::after,
+    [data-status-label] {
+      transition:
+        translate 320ms cubic-bezier(0.3, 1.1, 0.5, 1),
+        opacity 220ms;
+    }
   }
   .pro-meta {
     display: none;

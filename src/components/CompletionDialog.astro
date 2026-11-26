@@ -22,7 +22,18 @@ const nextTitle = next.label.replace(/^Next: /u, "");
     <span class="visually-hidden">Close</span>
     <Icon name="close" size={18} />
   </button>
-  <span class="badge" aria-hidden="true"><Icon name="check" size={30} /></span>
+  <div class="hero" aria-hidden="true">
+    {/* The dots that burst out of the tick. Each one is turned to its own angle
+        here, so the styles only push it outwards. */}
+    <svg class="burst" viewBox="-80 -80 160 160" width="160" height="160" focusable="false">
+      {Array.from({ length: 14 }, (_, i) => (
+        <g transform={`rotate(${(i * 360) / 14 - 90})`}>
+          <circle r="3.5" class={`tone-${i % 4}`} />
+        </g>
+      ))}
+    </svg>
+    <span class="badge"><Icon name="check" size={30} /></span>
+  </div>
   <h2 id="done-title">Exercise solved</h2>
   <a
     class="button button-primary next"
@@ -37,7 +48,8 @@ const nextTitle = next.label.replace(/^Next: /u, "");
   {
     harder && (
       <a class="button harder" href={harder} data-done-harder>
-        Try a harder one
+        <Icon name="bolt" size={18} class="bolt" />
+        Or try a harder one
       </a>
     )
   }
@@ -46,16 +58,19 @@ const nextTitle = next.label.replace(/^Next: /u, "");
       siteConfig.accountsOpen ? (
         <>
           <span data-when="out">
-            <a href={ACCOUNT_NAV.register.href}>Create an account</a> to keep your progress on every
-            device.
+            <span class="or">keep your progress</span>
+            <a class="button invite" href={ACCOUNT_NAV.register.href}>
+              <Icon name="user" size={18} />
+              Create a free account
+            </a>
           </span>
           <span data-when="in" hidden>
-            Your progress is saved to your account. <a href="/account/progress/">See what is next</a>.
+            <span class="or">saved to your account</span>
           </span>
         </>
       ) : (
         <>
-          Your progress is saved in this browser. <a href="/progress/">See what is next</a>.
+          <span class="or">saved in this browser</span>
         </>
       )
     }
@@ -94,12 +109,41 @@ const nextTitle = next.label.replace(/^Next: /u, "");
     background: var(--header);
     color: var(--text);
   }
+  .hero {
+    position: relative;
+    width: 4rem;
+    margin: 0 auto var(--space-4);
+  }
+  /* Behind the words, so a dot passing the title never covers it. */
+  .burst {
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .burst circle {
+    opacity: 0;
+  }
+  .tone-0 {
+    fill: var(--correct);
+  }
+  .tone-1 {
+    fill: var(--primary);
+  }
+  .tone-2 {
+    fill: var(--beginner-fill);
+  }
+  .tone-3 {
+    fill: var(--chip-line);
+  }
   .badge {
     display: grid;
     place-items: center;
     width: 4rem;
     height: 4rem;
-    margin: 0 auto var(--space-4);
     border-radius: var(--radius-pill);
     background: var(--primary);
     color: var(--on-primary);
@@ -123,15 +167,56 @@ const nextTitle = next.label.replace(/^Next: /u, "");
     width: 100%;
     margin-top: var(--space-2);
     justify-content: center;
+    gap: var(--space-2);
+    background: var(--chip-bg);
+    color: var(--chip);
+  }
+  .harder:hover {
+    background: var(--correct-tint);
+    box-shadow: inset 0 0 0 1px var(--chip-line);
+  }
+  .harder :global(.bolt) {
+    fill: var(--intermediate-fill);
+    stroke: var(--intermediate-fill);
   }
   .done .save {
-    margin-top: var(--space-4);
+    margin-top: var(--space-3);
     font-size: var(--size-s);
     color: var(--muted);
   }
   .save a {
     color: var(--correct);
     font-weight: 600;
+  }
+  /* A rule on each side of the words, setting the account apart from Next. */
+  .or {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+    font-size: var(--size-xs);
+  }
+  /* Alone, with no button under it, the line closes the dialog. */
+  .or:last-child {
+    margin-bottom: 0;
+  }
+  .or::before,
+  .or::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  .save .invite {
+    width: 100%;
+    justify-content: center;
+    gap: var(--space-2);
+    border: 1px solid var(--correct);
+    background: transparent;
+    text-decoration: none;
+  }
+  .save .invite:hover {
+    background: var(--chip-bg);
   }
   @media (prefers-reduced-motion: no-preference) {
     .done {
@@ -166,6 +251,109 @@ const nextTitle = next.label.replace(/^Next: /u, "");
     @starting-style {
       .done[open]::backdrop {
         background-color: transparent;
+      }
+    }
+    /* Each opening plays in order: the tick pops, draws itself and throws its
+       dots, then the rest rises line by line. */
+    .done[open] .badge {
+      animation: pop 600ms ease-out backwards;
+    }
+    .done[open] .badge :global(path) {
+      stroke-dasharray: 22;
+      animation: draw 350ms 300ms ease-out backwards;
+    }
+    .done[open] .burst circle {
+      animation: burst 850ms 220ms ease-out both;
+    }
+    .done[open] :is(h2, .next, .harder, .save, .close) {
+      animation: rise 380ms 260ms var(--ease) backwards;
+    }
+    .done[open] .next {
+      animation-delay: 340ms;
+    }
+    .done[open] .harder {
+      animation-delay: 400ms;
+    }
+    .done[open] .save {
+      animation-delay: 460ms;
+    }
+    .done[open] .close {
+      animation-delay: 560ms;
+    }
+    .done[open] .next :global(svg) {
+      animation: nudge 600ms 900ms var(--ease) 2;
+    }
+    .save .invite {
+      transition: background-color var(--duration) var(--ease);
+    }
+    /* The bolt flashes now and then, to say the button is there to press. */
+    .done[open] .harder :global(.bolt) {
+      animation: zap 2.4s 900ms ease-in-out infinite;
+    }
+    @keyframes zap {
+      0%,
+      70%,
+      100% {
+        scale: 1;
+        rotate: 0deg;
+      }
+      76% {
+        scale: 1.35;
+        rotate: -12deg;
+      }
+      82% {
+        scale: 0.95;
+        rotate: 10deg;
+      }
+      88% {
+        scale: 1.15;
+        rotate: 0deg;
+      }
+    }
+    @keyframes pop {
+      from {
+        opacity: 0;
+        scale: 0;
+      }
+      60% {
+        opacity: 1;
+        scale: 1.18;
+      }
+      80% {
+        scale: 0.94;
+      }
+    }
+    @keyframes draw {
+      from {
+        stroke-dashoffset: 22;
+      }
+    }
+    @keyframes burst {
+      from {
+        opacity: 0;
+        transform: translateX(31px) scale(0.2);
+      }
+      25% {
+        opacity: 1;
+      }
+      65% {
+        opacity: 1;
+        transform: translateX(62px) scale(1);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(68px) scale(0);
+      }
+    }
+    @keyframes rise {
+      from {
+        opacity: 0;
+        translate: 0 0.5rem;
+      }
+    }
+    @keyframes nudge {
+      50% {
+        translate: 4px 0;
       }
     }
   }

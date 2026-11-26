@@ -1,6 +1,6 @@
 // Why this exists: a short spotlight tour of the exercise page. It opens by
 // itself once, on a new visitor's first exercise (no progress yet), and the
-// Tour button replays it. The page dims, a cutout moves from part to part and a
+// How it works button replays it. The page dims, a cutout moves from part to part and a
 // card explains each one. Nothing here is needed to solve an exercise.
 import { readProgress } from "./progress.ts";
 
@@ -42,7 +42,7 @@ const STOPS: Stop[] = [
   {
     target: "[data-tour-start]",
     title: "See this again",
-    body: "Press Tour at any time to replay this guide.",
+    body: "Press this button at any time to replay this guide.",
   },
 ];
 
@@ -59,7 +59,7 @@ function markSeen() {
   try {
     localStorage.setItem(TOUR_KEY, "1");
   } catch {
-    // Blocked storage: the Tour button still works.
+    // Blocked storage: the How it works button still works.
   }
 }
 
@@ -192,8 +192,13 @@ const button = document.querySelector<HTMLButtonElement>("[data-tour-start]");
 if (root && button) {
   button.hidden = false;
   button.addEventListener("click", () => startTour(root));
-  if (!seen() && Object.keys(readProgress()).length === 0) {
-    // After fonts settle, so the cutout lands on the final layout.
-    void (document.fonts?.ready ?? Promise.resolve()).then(() => startTour(root));
-  }
+  const offer = () => {
+    if (!seen() && Object.keys(readProgress()).length === 0) {
+      // After fonts settle, so the cutout lands on the final layout.
+      void (document.fonts?.ready ?? Promise.resolve()).then(() => startTour(root));
+    }
+  };
+  // A PRO exercise has nothing to explain until it opens; the button stays hidden till then.
+  if (root.dataset["locked"] === undefined) offer();
+  else root.addEventListener("exercise-unlock", offer, { once: true });
 }

@@ -54,3 +54,42 @@ export function drillQueue(
   if (choice.fns.includes("random")) return shuffle(pool, random).slice(0, RANDOM_SIZE);
   return [...new Set(choice.fns)].flatMap((fn) => pool.filter((d) => d.fn === fn));
 }
+
+/** How one task of a run went: solved at once, solved after a wrong check, opened but not
+ * solved, or never opened. */
+export type TaskState = "correct" | "retry" | "open" | "none";
+
+export function taskState(result: { solved: boolean } | undefined, missed: boolean): TaskState {
+  if (!result) return "none";
+  if (!result.solved) return "open";
+  return missed ? "retry" : "correct";
+}
+
+export interface FnResult {
+  fn: string;
+  total: number;
+  /** Tasks opened, solved, and solved at once. */
+  seen: number;
+  solved: number;
+  first: number;
+  /** Higher is weaker: an unsolved task counts twice as much as one that took more tries. */
+  weight: number;
+}
+
+/** A run's result for each function, in the run's order. */
+export function functionResults(tasks: readonly { fn: string; state: TaskState }[]): FnResult[] {
+  const groups = new Map<string, TaskState[]>();
+  for (const t of tasks) groups.set(t.fn, [...(groups.get(t.fn) ?? []), t.state]);
+  return [...groups].map(([fn, states]) => {
+    const count = (s: TaskState) => states.filter((x) => x === s).length;
+    const seen = states.length - count("none");
+    return {
+      fn,
+      total: states.length,
+      seen,
+      solved: count("correct") + count("retry"),
+      first: count("correct"),
+      weight: seen ? (count("open") * 2 + count("retry")) / seen : 0,
+    };
+  });
+}

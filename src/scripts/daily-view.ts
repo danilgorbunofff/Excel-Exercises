@@ -93,7 +93,16 @@ export function renderStreak(root: Element, days: DailyDays): void {
   const set = new Set(Object.keys(days));
   const now = localDay();
   const current = root.querySelector("[data-current]");
-  if (current) current.textContent = dayCount(currentStreak(set, now));
+  if (current) {
+    const run = currentStreak(set, now);
+    // The number and its unit apart, so the number can be set large.
+    const [n = "", unit = ""] = dayCount(run).split(" ");
+    const part = (className: string, textContent: string) =>
+      Object.assign(document.createElement("span"), { className, textContent });
+    current.replaceChildren(part("d-n", n), " ", part("d-u", unit));
+    // A running streak lights the flame.
+    current.parentElement?.classList.toggle("is-live", run > 0);
+  }
   const best = root.querySelector("[data-best]");
   if (best) best.textContent = dayCount(bestStreak(set));
   const strip = root.querySelector("[data-strip]");

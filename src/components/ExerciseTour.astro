@@ -1,21 +1,46 @@
 ---
-// Why this exists: the Tour button beside the timer and the styles of the
-// spotlight tour (tour.ts). Hidden until the script runs, since the tour needs it.
+// Why this exists: the "How it works" button beside the timer, which starts the
+// spotlight tour (tour.ts), and the tour's styles. Hidden until the script runs,
+// since the tour needs it.
+import Icon from "./Icon.astro";
 ---
 
-<button class="link-button tour-start" type="button" data-tour-start hidden>Tour</button>
+<button class="button button-primary tour-start" type="button" data-tour-start hidden>
+  <Icon name="hint" size={16} />
+  <span class="tour-label">How it works</span>
+</button>
 
 <script>
   import "../scripts/tour.ts";
 </script>
 
 <style is:global>
-  .tour-start {
-    color: var(--muted);
+  /* Smaller than a page button: it shares a row with the tabs. */
+  .button.tour-start {
+    gap: var(--space-1);
+    min-height: 2.125rem;
+    padding: 0 var(--space-3);
     font-size: var(--size-s);
+    white-space: nowrap;
   }
-  .tour-start:hover {
-    color: var(--text);
+  /* .button sets display, which would beat the hidden attribute. */
+  .button.tour-start[hidden] {
+    display: none;
+  }
+  /* Phones: the icon alone keeps tabs and timer on one row. The words stay the
+     button's name. */
+  @media (max-width: 47.99rem) {
+    .button.tour-start {
+      min-width: 2.125rem;
+      padding: 0 var(--space-2);
+    }
+    .tour-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
   }
   /* The cutout: one box whose huge shadow dims everything around it. */
   .tour-spot {

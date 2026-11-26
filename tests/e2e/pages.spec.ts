@@ -53,7 +53,7 @@ test("the catalogue filters from a search, including one sent from the 404 page"
   await page.getByLabel("Search the exercises").fill("vlookup");
   await page.getByRole("button", { name: "Search", exact: true }).click();
   await expect(page).toHaveURL(/\/exercises\/\?q=vlookup$/u);
-  await expect(page.locator("tbody tr:not([hidden])")).toHaveCount(9);
+  await expect(page.locator("[data-exercise-table] tbody tr:not([hidden])")).toHaveCount(9);
   await expect(page.getByText("9 of 128 exercises")).toBeVisible();
   await page.getByLabel("Find an exercise").fill("zzzz");
   await expect(page.getByText("No exercise matches.")).toBeVisible();
@@ -97,11 +97,16 @@ test("the catalogue sorts by title and filters by difficulty and track", async (
   );
   const titles = await page.locator("tbody th a").allTextContents();
   expect(titles).toEqual([...titles].sort((a, b) => a.localeCompare(b, "en")));
-  await page.getByLabel("Difficulty").selectOption("3");
-  await expect(page.locator("tbody tr:not([hidden])")).toHaveCount(33);
-  await page.getByLabel("Difficulty").selectOption("");
-  await page.getByLabel("Track", { exact: true }).selectOption("logic");
-  await expect(page.locator("tbody tr:not([hidden])")).toHaveCount(10);
+  const advanced = page.locator(".tiles label", { hasText: "Advanced" });
+  await advanced.click();
+  await expect(page.locator("[data-exercise-table] tbody tr:not([hidden])")).toHaveCount(33);
+  // A second press on the chosen tile clears it.
+  await advanced.click();
+  await expect(page.getByRole("radio", { name: "Advanced" })).not.toBeChecked();
+  await page.locator("summary", { hasText: "Track:" }).click();
+  await page.locator("label:has(input[name=track][value=logic])").click();
+  await expect(page.locator("summary", { hasText: "Track:" })).toContainText("IF, AND and OR");
+  await expect(page.locator("[data-exercise-table] tbody tr:not([hidden])")).toHaveCount(10);
   await expect(page.getByText("10 of 128 exercises")).toBeVisible();
 });
 
@@ -245,9 +250,9 @@ test("a Review link opens a run through the due list, with Previous and Next", a
   await page.locator("[data-session-prev]").click();
   await expect(count).toHaveText("Task 1 of 2");
   await expect(page.locator("[data-session-more-title]")).toHaveText("Next to review");
-  await expect(page.locator("[data-session-finish]")).toBeHidden();
-  await expect(page.locator("[data-session-back]")).toHaveText("← Back to your progress");
-  await page.locator("[data-session-back]").click();
+  await expect(page.locator("[data-session-finish]").first()).toBeHidden();
+  await expect(page.locator("[data-session-back]").first()).toHaveText("← Back to your progress");
+  await page.locator("[data-session-back]").first().click();
   await expect(page).toHaveURL(/\/progress\/$/u);
 });
 
@@ -442,7 +447,8 @@ test("a function link lists only the exercises that use that function", async ({
   await or.hover();
   await or.getByRole("link", { name: /exercise/u }).click();
   await expect(page).toHaveURL(/\/exercises\/\?fn=OR$/u);
-  await expect(page.getByLabel("Function", { exact: true })).toHaveValue("OR");
+  await expect(page.locator("input[name=fn][value=OR]")).toBeChecked();
+  await expect(page.locator("summary", { hasText: "Function:" })).toContainText("OR");
   await expect(page.locator("tbody tr:not([hidden]) th a")).toHaveText([
     "Free delivery when either test passes",
     "AND, OR and NOT: combining tests",
@@ -497,7 +503,7 @@ test("a started track says Continue, and a solved exercise says Review", async (
   await check(page, "=B2+B3");
   // Signed out, the dialog offers an account to keep progress on every device.
   const dialog = page.getByRole("dialog", { name: "Exercise solved" });
-  await expect(dialog.getByRole("link", { name: "Create an account" })).toBeVisible();
+  await expect(dialog.getByRole("link", { name: "Create a free account" })).toBeVisible();
   await page.goto("/exercises/tracks/");
   await expect(
     page.getByRole("link", { name: "Continue track: Cells and arithmetic" }),

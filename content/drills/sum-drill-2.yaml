@@ -24,7 +24,7 @@ screens:
       - SUM
     hints:
       nudge: A range can cover several columns at once.
-      rule: SUM(B2:D4) adds the whole block, from the top-left cell to the bottom-right cell.
+      rule: SUM takes the block from its top-left cell to its bottom-right cell and adds every cell in it.
     misses:
       value: All 9 cells add up to 53. The range has to reach column D.
       syntax: Check the brackets, commas and quotes.

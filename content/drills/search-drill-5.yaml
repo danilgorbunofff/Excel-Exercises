@@ -22,7 +22,7 @@ screens:
       - IF
     hints:
       nudge: SEARCH finds the word in any case; ISNUMBER says whether it did.
-      rule: IF(ISNUMBER(SEARCH("urgent",A2)),"Yes","No") flags the note.
+      rule: SEARCH returns a number when it finds the word and an error when it does not. ISNUMBER turns that into TRUE or FALSE, and IF turns that into Yes or No.
     misses:
       value: The note contains URGENT, so the result is Yes.
       syntax: Check the brackets, commas and quotes.

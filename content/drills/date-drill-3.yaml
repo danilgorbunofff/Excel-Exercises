@@ -24,7 +24,7 @@ screens:
       - DATE
     hints:
       nudge: "Go to the next month, then one day back: day 0."
-      rule: DATE(A2,B2+1,0) works for every month, leap years included.
+      rule: DATE takes a year, a month, then a day. Add 1 to the month cell and use 0 as the day. It works for every month, leap years included.
     misses:
       value: 2028 is a leap year, so February ends on the 29th, date number 46812.
       syntax: Check the brackets, commas and quotes.

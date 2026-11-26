@@ -24,7 +24,7 @@ screens:
       - AND
     hints:
       nudge: One test for the low limit and one for the high.
-      rule: AND(B2>=C2,B2<=D2) is TRUE when the value sits between the limits, ends included.
+      rule: AND returns TRUE only when every test inside it is TRUE. Test the value against the low limit with >= and against the high limit with <=.
     misses:
       value: 22 is between 18 and 25, so the result is TRUE.
       syntax: Check the brackets, commas and quotes.

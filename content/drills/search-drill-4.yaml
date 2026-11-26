@@ -22,7 +22,7 @@ screens:
       - SEARCH
     hints:
       nudge: What to find goes first, then where to look.
-      rule: SEARCH(B2,A2) ignores case, so order finds ORDER.
+      rule: SEARCH takes the cell that holds the word, then the cell to look in. It ignores case, so order finds ORDER.
     misses:
       value: ORDER starts at character 10.
       syntax: Check the brackets, commas and quotes.

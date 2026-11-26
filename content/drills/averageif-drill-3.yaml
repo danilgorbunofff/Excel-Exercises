@@ -28,7 +28,7 @@ screens:
       - AVERAGEIF
     hints:
       nudge: The criteria can be a cell instead of text in quotes.
-      rule: AVERAGEIF(A2:A8,D2,B2:B8) follows whatever region D2 holds.
+      rule: Put the cell D2 where the criteria goes, with no quotes. The average then follows whatever region D2 holds.
     misses:
       value: The two West rows average 290.
       syntax: Check the brackets, commas and quotes.

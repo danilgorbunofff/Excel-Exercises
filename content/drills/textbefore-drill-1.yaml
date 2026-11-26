@@ -20,7 +20,7 @@ screens:
       - TEXTBEFORE
     hints:
       nudge: TEXTBEFORE takes the text, then the delimiter.
-      rule: TEXTBEFORE(A2,"@") returns everything before the at sign.
+      rule: TEXTBEFORE takes the email, then the at sign in quotes. It returns everything before the at sign.
     misses:
       value: Before the at sign is rosa.diaz.
       syntax: Check the brackets, commas and quotes.

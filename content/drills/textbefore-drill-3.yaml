@@ -20,7 +20,7 @@ screens:
       - TEXTBEFORE
     hints:
       nudge: "The third argument says which dash: 2 means the second."
-      rule: TEXTBEFORE(A2,"-",2) stops at the second dash.
+      rule: TEXTBEFORE takes the text, the dash in quotes, then 2. It stops at the second dash.
     misses:
       value: Before the second dash is INV-204.
       syntax: Check the brackets, commas and quotes.

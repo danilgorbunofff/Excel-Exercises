@@ -20,7 +20,7 @@ screens:
       - SUBSTITUTE
     hints:
       nudge: SUBSTITUTE takes the text, what to replace, and what to put in its place. "" means nothing.
-      rule: SUBSTITUTE(A2,"-","") replaces every dash with nothing.
+      rule: SUBSTITUTE takes the code, the dash in quotes, then an empty pair of quotes. It replaces every dash with nothing.
     misses:
       value: Without dashes, the code reads INV20481.
       syntax: Check the brackets, commas and quotes.

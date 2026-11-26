@@ -46,7 +46,7 @@ screens:
       - CHOOSECOLS
     hints:
       nudge: The column number can come from a cell.
-      rule: CHOOSECOLS(A2:C7,I1) follows whatever number I1 holds.
+      rule: Put the cell I1 where the column number goes. CHOOSECOLS then follows whatever number I1 holds.
     misses:
       value: Column 3 holds the sales 400, 250, 310, 520, 190, 330.
       syntax: Check the brackets, commas and quotes.

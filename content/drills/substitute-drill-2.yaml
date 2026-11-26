@@ -20,7 +20,7 @@ screens:
       - SUBSTITUTE
     hints:
       nudge: The old text comes before the new text.
-      rule: SUBSTITUTE(A2,"Street","St") swaps the word wherever it appears.
+      rule: SUBSTITUTE takes the address, the old word in quotes, then the new word in quotes. It swaps the word wherever it appears.
     misses:
       value: Shortened, the address reads 12 High St.
       syntax: Check the brackets, commas and quotes.

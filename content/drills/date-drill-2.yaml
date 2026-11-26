@@ -22,7 +22,7 @@ screens:
       - DATE
     hints:
       nudge: The day is always 1.
-      rule: DATE(A2,B2,1) is the first day of that month.
+      rule: DATE takes a year, a month, then a day. Give it the year cell, the month cell and 1.
     misses:
       value: 1 July 2026 is the date number 46204.
       syntax: Check the brackets, commas and quotes.

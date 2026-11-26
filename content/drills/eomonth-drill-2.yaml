@@ -22,7 +22,7 @@ screens:
       - EOMONTH
     hints:
       nudge: The second argument counts months forward.
-      rule: EOMONTH(B2,1) returns the last day of the next month.
+      rule: EOMONTH takes the invoice date, then 1 to move one month forward. It returns the last day of that next month.
     misses:
       value: 28 February 2026 is the date number 46081.
       syntax: Check the brackets, commas and quotes.

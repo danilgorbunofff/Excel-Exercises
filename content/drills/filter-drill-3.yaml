@@ -33,7 +33,7 @@ screens:
       - FILTER
     hints:
       nudge: Compare the regions with the cell I1.
-      rule: FILTER(A2:A7,B2:B7=I1) follows whatever region I1 holds.
+      rule: The test compares each region with the cell I1, with no quotes. FILTER then follows whatever region I1 holds.
     misses:
       value: The West reps are Bo, Flo.
       syntax: Check the brackets, commas and quotes.

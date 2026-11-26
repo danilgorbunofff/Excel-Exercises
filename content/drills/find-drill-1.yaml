@@ -20,7 +20,7 @@ screens:
       - FIND
     hints:
       nudge: FIND takes what to look for, then the text to look in.
-      rule: FIND("-",A2) returns the position of the first dash.
+      rule: FIND takes the dash in quotes, then the cell to look in. It returns the position of the first dash.
     misses:
       value: The dash in INV-204 is character 4.
       syntax: Check the brackets, commas and quotes.

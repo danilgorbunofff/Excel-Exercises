@@ -22,7 +22,7 @@ screens:
       - FIND
     hints:
       nudge: What to find goes first, then where to look.
-      rule: FIND(B2,A2) returns where the text in B2 starts in A2.
+      rule: FIND takes the cell that holds the text to find, then the cell to look in. It returns where that text starts.
     misses:
       value: The word invoice starts at character 9.
       syntax: Check the brackets, commas and quotes.

@@ -20,7 +20,7 @@ screens:
       - FLOOR
     hints:
       nudge: The multiple can come from a cell.
-      rule: FLOOR(B2,C2) rounds down to whatever step C2 holds.
+      rule: FLOOR takes the price, then the cell that holds the multiple. It rounds down to whatever step C2 holds.
     misses:
       value: 47.6 goes down to 45.
       syntax: Check the brackets, commas and quotes.

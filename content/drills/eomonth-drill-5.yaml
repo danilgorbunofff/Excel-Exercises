@@ -23,7 +23,7 @@ screens:
       - EOMONTH
     hints:
       nudge: The day number of a month's last day is the number of days in that month.
-      rule: DAY(EOMONTH(B2,0)) returns 28, 29, 30 or 31.
+      rule: EOMONTH with 0 returns the last day of the date's month. DAY of that last day is 28, 29, 30 or 31.
     misses:
       value: February 2028 has 29 days.
       syntax: Check the brackets, commas and quotes.

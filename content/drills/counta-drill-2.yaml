@@ -20,7 +20,7 @@ screens:
       - COUNTA
     hints:
       nudge: The days run along row 2.
-      rule: "COUNTA works on a row range: COUNTA(B2:F2)."
+      rule: COUNTA takes a range along a row as well as down a column. It counts every cell that is not empty, so each x counts.
     misses:
       value: 3 days are marked.
       syntax: Check the brackets, commas and quotes.

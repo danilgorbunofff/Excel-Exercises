@@ -23,7 +23,7 @@ screens:
       - DAY
     hints:
       nudge: DAY takes one date.
-      rule: DAY(B2) returns the day of the month, from 1 to 31.
+      rule: DAY takes the date cell and returns the day of the month, from 1 to 31.
     misses:
       value: 15 March 2026 is day 15 of the month.
       syntax: Check the brackets, commas and quotes.

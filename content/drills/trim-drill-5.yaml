@@ -21,7 +21,7 @@ screens:
       - LEN
     hints:
       nudge: Every extra space TRIM removes makes the text one shorter.
-      rule: LEN(A2)-LEN(TRIM(A2)) counts the spaces TRIM removed.
+      rule: LEN counts the characters of A2, before and after TRIM. Take the trimmed length from the full length to count the spaces TRIM removed.
     misses:
       value: TRIM removes 5 spaces.
       syntax: Check the brackets, commas and quotes.

@@ -20,7 +20,7 @@ screens:
       - CONCAT
     hints:
       nudge: CONCAT accepts a whole range.
-      rule: CONCAT(B2:E2) joins every cell of the range in order.
+      rule: Give CONCAT the range from the first letter's cell to the last. It joins every cell of the range in order.
     misses:
       value: The four letters join to QRST.
       syntax: Check the brackets, commas and quotes.

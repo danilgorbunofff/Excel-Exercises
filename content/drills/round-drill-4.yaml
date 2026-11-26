@@ -22,7 +22,7 @@ screens:
       - ROUND
     hints:
       nudge: The number of places can come from a cell.
-      rule: ROUND(B2,C2) rounds to whatever C2 says.
+      rule: ROUND takes the rate, then the number of places. Put the cell C2 there, and the rounding follows whatever C2 says.
     misses:
       value: 0.054675 to 3 places is 0.055.
       syntax: Check the brackets, commas and quotes.

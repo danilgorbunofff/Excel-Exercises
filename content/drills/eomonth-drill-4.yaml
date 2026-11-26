@@ -22,7 +22,7 @@ screens:
       - EOMONTH
     hints:
       nudge: A negative number counts months back.
-      rule: EOMONTH(B2,-1) returns the last day of the month before, leap years included.
+      rule: EOMONTH with -1 as the number of months returns the last day of the month before, leap years included.
     misses:
       value: 2028 is a leap year, so February ends on the 29th, date number 46812.
       syntax: Check the brackets, commas and quotes.

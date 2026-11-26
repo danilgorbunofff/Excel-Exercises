@@ -20,7 +20,7 @@ screens:
       - SUBSTITUTE
     hints:
       nudge: A fourth argument says which one to replace.
-      rule: SUBSTITUTE(A2,"-","/",2) changes the second dash only.
+      rule: SUBSTITUTE takes the text, the dash, the slash, then 2. The fourth argument makes it change the second dash only.
     misses:
       value: With the second dash changed, the code reads INV-204/81.
       syntax: Check the brackets, commas and quotes.

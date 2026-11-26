@@ -33,7 +33,7 @@ screens:
       - FILTER
     hints:
       nudge: FILTER takes what to return, then a test for each row.
-      rule: FILTER(A2:A7,B2:B7="East") spills every rep whose row passes the test.
+      rule: FILTER takes the reps, then a test that compares each region with "East". It spills every rep whose row passes.
     misses:
       value: The East reps are Ann, Cy, Ed.
       syntax: Check the brackets, commas and quotes.

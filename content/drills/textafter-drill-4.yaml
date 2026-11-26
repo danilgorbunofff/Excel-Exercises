@@ -22,7 +22,7 @@ screens:
       - TEXTAFTER
     hints:
       nudge: The delimiter can come from a cell.
-      rule: TEXTAFTER(A2,B2) splits at whatever B2 holds.
+      rule: Put the cell B2 where the delimiter goes, with no quotes. TEXTAFTER then splits at whatever B2 holds.
     misses:
       value: After the first slash is 2026/North.
       syntax: Check the brackets, commas and quotes.

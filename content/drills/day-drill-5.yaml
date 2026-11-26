@@ -23,7 +23,7 @@ screens:
       - DAY
     hints:
       nudge: Test DAY(B2) inside IF.
-      rule: IF(DAY(B2)<=15,"First half","Second half") splits the month at the 15th.
+      rule: IF takes a test, the value when it is true and the value when it is false. The test compares the day of B2 with 15 using <=, and both results are text in quotes.
     misses:
       value: 16 September is in the second half of the month.
       syntax: Check the brackets, commas and quotes.

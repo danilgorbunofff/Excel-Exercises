@@ -24,7 +24,7 @@ screens:
       - FIND
     hints:
       nudge: The surname's length is the full length minus the position of the space.
-      rule: RIGHT(A2,LEN(A2)-FIND(" ",A2)) keeps everything after the space.
+      rule: FIND gives the position of the space, and LEN the full length. RIGHT takes the length minus that position from the end, which is everything after the space.
     misses:
       value: Everything after the space in Rosa Diaz is Diaz.
       syntax: Check the brackets, commas and quotes.

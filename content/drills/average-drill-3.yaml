@@ -24,7 +24,7 @@ screens:
       - AVERAGE
     hints:
       nudge: The range can be a whole block.
-      rule: AVERAGE(B2:D4) takes the mean of all nine cells.
+      rule: AVERAGE takes a block from its top-left cell to its bottom-right cell and finds the mean of all nine ratings.
     misses:
       value: The nine ratings average 4.
       syntax: Check the brackets, commas and quotes.

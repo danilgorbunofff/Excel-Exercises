@@ -29,7 +29,7 @@ screens:
       - AVERAGEIF
     hints:
       nudge: When the test and the average use the same cells, leave out the third argument.
-      rule: AVERAGEIF(B2:B8,">300") averages the sales over 300. 300 itself is not over 300.
+      rule: With two arguments, AVERAGEIF tests and averages the same sales. The operator and the number go together in quotes. 300 itself is not over 300.
     misses:
       value: 400, 520, 330 and 450 average 425.
       syntax: Check the brackets, commas and quotes.

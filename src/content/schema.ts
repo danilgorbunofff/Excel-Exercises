@@ -201,15 +201,35 @@ export const dailySchema = exerciseSchema.omit({ topic: true, notes: true }).ext
 export const mockSchema = exerciseSchema.omit({ topic: true, notes: true });
 
 /**
+ * The answer shows at hint 3, which marks the solve as with help; hints 1 and 2
+ * of a ladder step or a drill must not give it away.
+ */
+function noAnswerInHints(s: z.infer<typeof mockSchema>, ctx: z.RefinementCtx) {
+  s.screens.forEach((screen, i) => {
+    const answer = screen.answer.slice(1).replaceAll("$", "");
+    for (const step of ["nudge", "rule"] as const) {
+      if (answer.length > 6 && screen.hints[step].replaceAll("$", "").includes(answer))
+        ctx.addIssue({
+          code: "custom",
+          path: ["screens", i, "hints", step],
+          message: "quotes the answer, which only hint 3 may show",
+        });
+    }
+  });
+}
+
+/**
  * A PRO function drill, in content/drills/: one short screen that practises one
  * function, named in the prompt. Drills play one after another on
  * /exercises/drills/ and have no page of their own.
  */
-export const drillSchema = mockSchema.extend({
-  /** The function the drill practises, as named in content/function-index.yaml. */
-  function: z.string().regex(/^[A-Z][A-Z0-9.]*$/u),
-  screens: z.array(screenSchema).length(1),
-});
+export const drillSchema = mockSchema
+  .extend({
+    /** The function the drill practises, as named in content/function-index.yaml. */
+    function: z.string().regex(/^[A-Z][A-Z0-9.]*$/u),
+    screens: z.array(screenSchema).length(1),
+  })
+  .superRefine(noAnswerInHints);
 
 /**
  * One step of a track exercise's ladder, in content/steps/: the same theme,
@@ -227,21 +247,7 @@ export const stepSchema = mockSchema
     message: "id and slug must be <parent>-step-<step>",
     path: ["id"],
   })
-  .superRefine((s, ctx) => {
-    // The answer shows at hint 3, which marks the solve as with help; hints 1
-    // and 2 must not give it away.
-    s.screens.forEach((screen, i) => {
-      const answer = screen.answer.slice(1).replaceAll("$", "");
-      for (const step of ["nudge", "rule"] as const) {
-        if (answer.length > 6 && screen.hints[step].replaceAll("$", "").includes(answer))
-          ctx.addIssue({
-            code: "custom",
-            path: ["screens", i, "hints", step],
-            message: "quotes the answer, which only hint 3 may show",
-          });
-      }
-    });
-  });
+  .superRefine(noAnswerInHints);
 
 export const trackSchema = z.object({
   topics: z

@@ -44,7 +44,7 @@ screens:
       - CHOOSECOLS
     hints:
       nudge: List each column number you want, in the order you want them.
-      rule: CHOOSECOLS(A2:C7,1,3) keeps the first and third columns.
+      rule: Give CHOOSECOLS the table, then 1 and 3 as separate arguments. The columns come back in the order you list them.
     misses:
       value: The reps and their sales are Ann 400, Bo 250, Cy 310, Di 520, Ed 190, Flo 330.
       syntax: Check the brackets, commas and quotes.

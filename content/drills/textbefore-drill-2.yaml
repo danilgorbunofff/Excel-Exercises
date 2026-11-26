@@ -20,7 +20,7 @@ screens:
       - TEXTBEFORE
     hints:
       nudge: 'The delimiter here is a space: " ".'
-      rule: TEXTBEFORE(A2," ") returns the first word.
+      rule: TEXTBEFORE takes the text, then a space in quotes. It returns the first word.
     misses:
       value: The first name is Rosa.
       syntax: Check the brackets, commas and quotes.

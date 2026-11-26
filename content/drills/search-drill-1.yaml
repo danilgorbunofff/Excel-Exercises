@@ -17,7 +17,7 @@ screens:
       - SEARCH
     hints:
       nudge: SEARCH does not care about capital letters.
-      rule: SEARCH("york",A2) finds York, YORK or york.
+      rule: SEARCH takes the word in quotes, then the cell to look in. It finds York, YORK or york alike.
     misses:
       value: York starts at character 5 of New York.
       syntax: Check the brackets, commas and quotes.

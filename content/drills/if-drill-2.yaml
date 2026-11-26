@@ -22,7 +22,7 @@ screens:
       - IF
     hints:
       nudge: The true result can be a calculation, such as B2*0.05.
-      rule: IF(B2>10000,B2*0.05,0) pays 5% of all the sales once they pass the target, and 0 otherwise.
+      rule: IF takes a test, the value when it is true and the value when it is false. Test the sales against 10000, pay 5% of the sales when true, and 0 otherwise.
     misses:
       value: 12000 is over the target, so the bonus is 600.
       syntax: Check the brackets, commas and quotes.

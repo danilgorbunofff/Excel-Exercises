@@ -31,7 +31,7 @@ screens:
       - AVERAGEIF
     hints:
       nudge: AVERAGEIF takes the range to test, the criteria, then the range to average.
-      rule: AVERAGEIF(A2:A8,"East",B2:B8) averages the sales of the East rows only.
+      rule: AVERAGEIF takes the regions to test, the text "East" in quotes, then the sales to average. Rows that fail the test are left out.
     misses:
       value: The three East rows average 300.
       syntax: Check the brackets, commas and quotes.

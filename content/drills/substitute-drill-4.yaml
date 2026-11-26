@@ -20,7 +20,7 @@ screens:
       - SUBSTITUTE
     hints:
       nudge: "SUBSTITUTE is case-sensitive: A and a are different letters."
-      rule: SUBSTITUTE(A2,"a","o") changes only lowercase a; the capital A stays.
+      rule: SUBSTITUTE takes the text, the lowercase letter to replace, then the new letter, each in quotes. The capital A stays, because the match is case-sensitive.
     misses:
       value: Changed, the text reads Bonono A.
       syntax: Check the brackets, commas and quotes.

@@ -45,7 +45,7 @@ screens:
       - CHOOSECOLS
     hints:
       nudge: Choose the columns first, then sort the result on its first column.
-      rule: SORT(CHOOSECOLS(A2:C7,3,1),1,-1) puts the largest sale on top.
+      rule: CHOOSECOLS with 3 then 1 puts the sales first. SORT takes that result, sorts on its column 1, and -1 puts the largest sale on top.
     misses:
       value: Largest first, the sales are 520 Di, 400 Ann, 330 Flo, 310 Cy, 250 Bo, 190 Ed.
       syntax: Check the brackets, commas and quotes.

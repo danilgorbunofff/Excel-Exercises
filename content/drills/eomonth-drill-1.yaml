@@ -22,7 +22,7 @@ screens:
       - EOMONTH
     hints:
       nudge: EOMONTH takes a date and a number of months. 0 means this month.
-      rule: EOMONTH(B2,0) returns the last day of the same month.
+      rule: EOMONTH takes the invoice date, then 0 for the same month. It returns the last day of that month.
     misses:
       value: 30 April 2026 is the date number 46142.
       syntax: Check the brackets, commas and quotes.

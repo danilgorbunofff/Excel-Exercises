@@ -22,7 +22,7 @@ screens:
       - CONCAT
     hints:
       nudge: A number joined to text becomes part of the text.
-      rule: CONCAT(A2,"-",B2) makes Q-7.
+      rule: CONCAT takes the letter, the dash in quotes, then the number. The result is Q-7.
     misses:
       value: The label reads Q-7.
       syntax: Check the brackets, commas and quotes.

@@ -21,7 +21,7 @@ screens:
       - DAY
     hints:
       nudge: The date sits in the same column, one row up.
-      rule: DAY(C2) returns the day of the month of the date in C2.
+      rule: DAY takes the date in the cell above and returns its day of the month.
     misses:
       value: 1 December 2026 is day 1 of the month.
       syntax: Check the brackets, commas and quotes.

@@ -22,7 +22,7 @@ screens:
       - TEXTBEFORE
     hints:
       nudge: A negative number counts the delimiters from the end.
-      rule: TEXTBEFORE(A2,".",-1) stops at the last dot.
+      rule: TEXTBEFORE takes the text, the dot in quotes, then -1. The negative number makes it stop at the last dot.
     misses:
       value: Without its extension, the file is report.final.
       syntax: Check the brackets, commas and quotes.

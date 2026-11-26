@@ -22,7 +22,7 @@ screens:
       - EOMONTH
     hints:
       nudge: The number of months can come from a cell.
-      rule: EOMONTH(B2,C2) follows whatever C2 holds.
+      rule: Put the cell C2 where the number of months goes. EOMONTH then follows whatever C2 holds.
     misses:
       value: 6 months after March 2026 is September, which ends on 30 September 2026, date number 46295.
       syntax: Check the brackets, commas and quotes.

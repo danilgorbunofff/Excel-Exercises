@@ -20,7 +20,7 @@ screens:
       - TRIM
     hints:
       nudge: Compare the trimmed text with B2.
-      rule: TRIM(A2)=B2 is TRUE when only spaces were in the way.
+      rule: "TRIM removes the extra spaces from A2. Compare the result with B2 using an equals sign: the test is TRUE when only spaces were in the way."
     misses:
       value: Without the spaces, A2 is Pens, so the result is TRUE.
       syntax: Check the brackets, commas and quotes.

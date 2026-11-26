@@ -38,7 +38,7 @@ screens:
       - CHOOSECOLS
     hints:
       nudge: CHOOSECOLS takes a table, then the column numbers to keep.
-      rule: CHOOSECOLS(A2:C7,1) returns the first column only.
+      rule: CHOOSECOLS takes the whole table, then 1 for the first column. It spills the reps down from E2.
     misses:
       value: The reps are Ann, Bo, Cy, Di, Ed, Flo.
       syntax: Check the brackets, commas and quotes.

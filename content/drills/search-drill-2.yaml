@@ -20,7 +20,7 @@ screens:
       - SEARCH
     hints:
       nudge: A question mark stands for any single character.
-      rule: SEARCH("b?t",A2) matches bat, bit, but and so on.
+      rule: SEARCH takes the pattern in quotes, then the cell to look in. The pattern matches bat, bit, but and so on.
     misses:
       value: The first match, bat, starts at character 3.
       syntax: Check the brackets, commas and quotes.

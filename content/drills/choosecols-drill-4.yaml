@@ -38,7 +38,7 @@ screens:
       - CHOOSECOLS
     hints:
       nudge: A negative number counts columns from the right.
-      rule: CHOOSECOLS(A2:C7,-1) returns the last column, however wide the table is.
+      rule: CHOOSECOLS with -1 as the column number returns the last column, however wide the table is.
     misses:
       value: The last column holds the sales 400, 250, 310, 520, 190, 330.
       syntax: Check the brackets, commas and quotes.

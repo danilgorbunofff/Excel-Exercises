@@ -22,7 +22,7 @@ screens:
       - DAY
     hints:
       nudge: Take the day of the month away from the pay day.
-      rule: E1-DAY(B2) counts the days from the date to pay day in the same month.
+      rule: DAY returns the day of the month of the date. Take that from the pay day in E1 to count the days left.
     misses:
       value: From the 19th to the 25th is 6 days.
       syntax: Check the brackets, commas and quotes.

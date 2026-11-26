@@ -21,7 +21,7 @@ screens:
       - UPPER
     hints:
       nudge: Take the first name, then wrap it in UPPER.
-      rule: UPPER(TEXTBEFORE(A2," ")) gives the first name in capitals.
+      rule: TEXTBEFORE with a space in quotes takes the first name. UPPER wraps around it and turns it into capitals.
     misses:
       value: The first name in capitals is ROSA.
       syntax: Check the brackets, commas and quotes.

@@ -20,7 +20,7 @@ screens:
       - COUNT
     hints:
       nudge: The days run along row 2.
-      rule: "COUNT works on a row range too: COUNT(B2:H2)."
+      rule: COUNT takes a range along a row as well as down a column. It counts only the cells that hold a number.
     misses:
       value: 5 days have a reading.
       syntax: Check the brackets, commas and quotes.

@@ -20,7 +20,7 @@ screens:
       - CONCAT
     hints:
       nudge: Put " " between the two names.
-      rule: CONCAT(A2," ",B2) adds a space between them.
+      rule: "CONCAT takes three arguments here: the first name, a space in quotes, then the surname."
     misses:
       value: With a space between them, the name reads Rosa Diaz.
       syntax: Check the brackets, commas and quotes.

@@ -20,7 +20,7 @@ screens:
       - CONCAT
     hints:
       nudge: CONCAT joins its arguments in order.
-      rule: CONCAT(A2,B2) puts B2 straight after A2.
+      rule: CONCAT takes the prefix cell, then the number cell. It puts the second straight after the first, with nothing between them.
     misses:
       value: INV and 204 join to INV204.
       syntax: Check the brackets, commas and quotes.

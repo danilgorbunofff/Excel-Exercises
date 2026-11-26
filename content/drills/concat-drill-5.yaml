@@ -21,7 +21,7 @@ screens:
       - LEFT
     hints:
       nudge: LEFT takes the initial; CONCAT joins the parts.
-      rule: CONCAT(LEFT(A2,1),". ",B2) makes R. Diaz.
+      rule: LEFT with 1 takes the first letter of A2. CONCAT joins that letter, a full stop and a space in quotes, then the surname.
     misses:
       value: The short name reads R. Diaz.
       syntax: Check the brackets, commas and quotes.

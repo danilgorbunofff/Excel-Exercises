@@ -20,7 +20,7 @@ screens:
       - UPPER
     hints:
       nudge: Join first, then capitalise the whole result.
-      rule: UPPER(A2&B2) capitalises the joined text.
+      rule: The & sign joins A2 and B2. UPPER wraps around the joined text and capitalises all of it.
     misses:
       value: Joined and in capitals, the text is ABCD.
       syntax: Check the brackets, commas and quotes.

@@ -20,7 +20,7 @@ screens:
       - TEXTJOIN
     hints:
       nudge: The range can run along a row.
-      rule: TEXTJOIN("-",TRUE,A2:D2) puts a dash between the parts.
+      rule: TEXTJOIN takes the separator in quotes, TRUE to skip empty cells, then the row range. It puts a dash between the parts.
     misses:
       value: The parts join to NOR-WH-4-B.
       syntax: Check the brackets, commas and quotes.

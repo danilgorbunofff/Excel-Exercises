@@ -28,7 +28,7 @@ screens:
       - AVERAGEIF
     hints:
       nudge: Put <> in front of the text to mean not equal to.
-      rule: AVERAGEIF(A2:A8,"<>East",B2:B8) averages the West and North rows.
+      rule: The criteria puts the operator <> and the word East inside one pair of quotes. AVERAGEIF then averages the West and North rows.
     misses:
       value: The four rows that are not East average 387.5.
       syntax: Check the brackets, commas and quotes.

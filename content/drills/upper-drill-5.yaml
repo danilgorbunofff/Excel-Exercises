@@ -21,7 +21,7 @@ screens:
       - LEFT
     hints:
       nudge: Take the first 3 letters, then wrap them in UPPER.
-      rule: UPPER(LEFT(A2,3)) gives BER for Berlin.
+      rule: LEFT with 3 takes the first 3 letters. UPPER wraps around them and gives BER for Berlin.
     misses:
       value: The city code is BER.
       syntax: Check the brackets, commas and quotes.

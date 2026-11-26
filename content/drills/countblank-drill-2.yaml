@@ -20,7 +20,7 @@ screens:
       - COUNTBLANK
     hints:
       nudge: The weeks run along row 2.
-      rule: "COUNTBLANK works on a row range: COUNTBLANK(B2:G2)."
+      rule: COUNTBLANK takes a range along a row as well as down a column. It counts the weeks with nothing in them.
     misses:
       value: 3 weeks have no score.
       syntax: Check the brackets, commas and quotes.

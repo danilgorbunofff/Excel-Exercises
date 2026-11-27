@@ -17,9 +17,9 @@ export function pageItems(): SearchItem[] {
       keywords: "tracks, paths, courses, where to start, order",
     },
     {
-      title: "Progress",
-      url: "/progress/",
-      keywords: "my progress, solved, due for review, history, clear",
+      title: "Home",
+      url: "/home/",
+      keywords: "home, my progress, streak, solved, due for review, scoreboard, clear",
     },
     {
       title: "Pricing",

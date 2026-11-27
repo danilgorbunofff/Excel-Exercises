@@ -26,7 +26,7 @@ export interface Tally {
 export interface ProfileStats {
   solved: number;
   helped: number;
-  /** Missed and not solved since, or solved and due again, as on /progress/. */
+  /** Missed and not solved since, or solved and due again, as on the Home page. */
   due: number;
   /** Whole percent of exercises solved. */
   percent: number;

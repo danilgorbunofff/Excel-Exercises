@@ -8,7 +8,7 @@ describe("pageItems", () => {
     expect(find("shortcuts")).toContain("/excel-shortcuts/");
     expect(find("keyboard")).toContain("/excel-shortcuts/");
     expect(find("pro")).toContain("/pricing/");
-    expect(find("progress")).toContain("/progress/");
+    expect(find("progress")).toContain("/home/");
   });
   it("marks every one as a page", () => {
     expect(new Set(pageItems().map((i) => i.kind))).toEqual(new Set(["Page"]));

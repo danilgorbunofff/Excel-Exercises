@@ -69,14 +69,14 @@ test("a keyboard reaches a panel link and comes back with Escape", async ({
   await expect(panel(page, "practice")).toBeVisible();
   // WebKit only moves to links with Alt+Tab unless the user changed a setting.
   await page.keyboard.press(browserName === "webkit" ? "Alt+Tab" : "Tab");
-  await expect(panel(page, "practice").getByRole("link", { name: "Exercises" })).toBeFocused();
+  await expect(panel(page, "practice").getByRole("link", { name: "Home" })).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(panel(page, "practice")).toBeHidden();
   await expect(practice).toBeFocused();
   await practice.press("Enter");
   await page.keyboard.press(browserName === "webkit" ? "Alt+Tab" : "Tab");
   await page.keyboard.press("Enter");
-  await expect(page).toHaveURL(/\/exercises\/$/u);
+  await expect(page).toHaveURL(/\/home\/$/u);
 });
 
 test("signed in, the Account button opens the account links", async ({ page }) => {
@@ -135,7 +135,7 @@ for (const [path, current] of [
   ["/exercises/drills/", "Function practice"],
   ["/daily/", "Daily exercise"],
   ["/mock-assessments/", "Mock assessments"],
-  ["/progress/", "Progress"],
+  ["/home/", "Home"],
 ] as const) {
   test(`the Practice tabs mark ${current} on ${path}`, async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });

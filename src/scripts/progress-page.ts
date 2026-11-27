@@ -12,7 +12,7 @@ import {
   type SortDir,
   type SortKey,
 } from "../lib/catalogue.ts";
-import { bestStreak, currentStreak } from "../lib/daily.ts";
+import { bestStreak, currentStreak, type DailyEntry, pickFor } from "../lib/daily.ts";
 import { type Rung, reviewStep } from "../lib/steps.ts";
 import { readDaily } from "./daily-store.ts";
 import { dayCount, longDate } from "./daily-view.ts";
@@ -31,6 +31,7 @@ import {
   type Progress,
   readProgress,
 } from "./progress.ts";
+import "./scoreboard.ts";
 import { loadMe, SYNCED_EVENT, signedIn } from "./session.ts";
 
 interface Item {
@@ -75,8 +76,13 @@ const HEAT_WEEKS = 26;
 function paintActivity(progress: Progress, today: string): void {
   const days = activeDays(progress, Object.keys(readDaily()));
   const set = new Set(days.keys());
-  stat("streak", dayCount(currentStreak(set, today)));
-  stat("best", dayCount(bestStreak(set)));
+  const streak = currentStreak(set, today);
+  const best = bestStreak(set);
+  stat("streak", dayCount(streak));
+  stat("streak-n", String(streak));
+  stat("best", dayCount(best));
+  paintHomeHead(streak, best, set.has(today), days.size > 0);
+  paintWeek(set, today);
   const grid = q("[data-heat]");
   const months = q("[data-heat-months]");
   if (!grid || !months) return;
@@ -117,8 +123,8 @@ function paintActivity(progress: Progress, today: string): void {
   );
 }
 
-/** Rows shown before "Show all": a long due list stays a short table. */
-const REVIEW_SHOWN = 10;
+/** Rows a page of Home's list holds, or rows shown before "Show all" elsewhere. */
+const REVIEW_SHOWN = Number(q("[data-review-table]")?.dataset["reviewShown"]) || 10;
 
 /** Missed and unsolved first (most misses on top), then the rest by due day. */
 function reviewItems(progress: Progress, today: string): Item[] {
@@ -161,13 +167,16 @@ const today0 = reviewNext
 interface ReviewRow {
   item: Item;
   row: CatalogueRow;
-  el: HTMLTableRowElement;
+  el: HTMLElement;
 }
 let dueNow: Item[] = [];
 let rowsNow: ReviewRow[] = [];
 let sortKey: SortKey = "order";
 let sortDir: SortDir = "ascending";
 let showAll = false;
+// Home pages through its list and can narrow it to the unsolved ones.
+let page = 0;
+let only = "";
 
 /** A run through these items, in this order: the page opened from the list
  * gets Previous and Next through it, and the last one leads back here. Saved
@@ -183,13 +192,16 @@ function startReview(run: readonly Item[]): void {
     levels: run.map((i) => i.level),
     search: "",
     results: {},
-    doneHref: "/progress/",
+    doneHref: location.pathname,
   });
 }
 reviewNext?.addEventListener("click", () => startReview(dueNow));
 
 const reviewForm = q<HTMLFormElement>("[data-review-filter]");
-const reviewBody = q<HTMLTableSectionElement>("[data-review-rows]");
+const reviewBody = q<HTMLElement>("[data-review-rows]");
+const pager = q<HTMLElement>("[data-review-pager]");
+const onlyButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-review-only]")];
+const stepButtons = [...document.querySelectorAll<HTMLButtonElement>("[data-review-step]")];
 const reviewCount = q<HTMLElement>("[data-review-count]");
 const activeTag = q<HTMLElement>("[data-review-active]");
 const resetButton = q<HTMLElement>("[data-review-reset]");
@@ -212,15 +224,21 @@ function filteredRows(): ReviewRow[] {
   };
   const why = field("why")?.value ?? "";
   return rowsNow
-    .filter((r) => matches(r.row, f) && (!why || r.row.state === why))
+    .filter(
+      (r) => matches(r.row, f) && (!why || r.row.state === why) && (!only || r.row.state === only),
+    )
     .sort((a, b) => compare(a.row, b.row, sortKey, sortDir));
 }
 
 function paintTable(): void {
   if (!reviewBody) return;
   const shown = filteredRows();
-  const visible = showAll ? shown : shown.slice(0, REVIEW_SHOWN);
+  const pages = Math.max(1, Math.ceil(shown.length / REVIEW_SHOWN));
+  page = Math.min(page, pages - 1);
+  const from = pager ? page * REVIEW_SHOWN : 0;
+  const visible = showAll ? shown : shown.slice(from, from + REVIEW_SHOWN);
   reviewBody.replaceChildren(...visible.map((r) => r.el));
+  if (pager) paintPager(shown.length, pages);
   for (const th of headers) {
     if (th.dataset["sortKey"] === sortKey && sortKey !== "order")
       th.setAttribute("aria-sort", sortDir);
@@ -258,8 +276,52 @@ function paintTable(): void {
   }
 }
 
-function buildRow(item: Item, progress: Progress, urgency: number): ReviewRow {
-  const reason = reasonOf(progress, item.id);
+function paintPager(count: number, pages: number): void {
+  const none = q("[data-review-none]");
+  if (none) none.hidden = count > 0;
+  if (reviewBody) reviewBody.hidden = count === 0;
+  const status = q("[data-review-page]");
+  if (status) status.textContent = `Page ${page + 1} of ${pages}`;
+  for (const b of stepButtons) {
+    const to = page + Number(b.dataset["reviewStep"]);
+    // Not `disabled`: the button keeps the focus on the first and last page.
+    b.setAttribute("aria-disabled", String(to < 0 || to >= pages));
+  }
+}
+
+function titleLink(item: Item): HTMLAnchorElement {
+  return Object.assign(document.createElement("a"), {
+    className: "r-title",
+    href: item.href,
+    textContent: item.title,
+  });
+}
+
+function span(className: string, ...children: (Node | string)[]): HTMLSpanElement {
+  const el = Object.assign(document.createElement("span"), { className });
+  el.append(...children);
+  return el;
+}
+
+const fnsLine = (item: Item) => item.fns.join(", ") || "Cell references";
+
+function levelBadge(item: Item): HTMLSpanElement {
+  return span(`badge badge-${item.level}`, LEVEL_NAMES[item.level] ?? "");
+}
+
+/** Home: a status circle, the title over why it is here, and the level. */
+function listRow(item: Item, reason: ReturnType<typeof reasonOf>): HTMLLIElement {
+  const li = document.createElement("li");
+  // The circle's sign is drawn in CSS; the words are here for screen readers.
+  const why = span("why", span("visually-hidden", reason.text));
+  why.dataset["why"] = reason.key;
+  const said = reason.note ? span("why-note", reason.note) : reason.text;
+  const meta = span("r-meta", said, ` · ${fnsLine(item)}`);
+  li.append(why, span("r-who", titleLink(item), meta), levelBadge(item));
+  return li;
+}
+
+function tableRow(item: Item, reason: ReturnType<typeof reasonOf>): HTMLTableRowElement {
   const tr = document.createElement("tr");
   const whyCell = document.createElement("td");
   whyCell.append(
@@ -278,28 +340,18 @@ function buildRow(item: Item, progress: Progress, urgency: number): ReviewRow {
     );
   const titleCell = document.createElement("th");
   titleCell.scope = "row";
-  titleCell.append(
-    Object.assign(document.createElement("a"), {
-      className: "r-title",
-      href: item.href,
-      textContent: item.title,
-    }),
-    Object.assign(document.createElement("span"), {
-      className: "r-meta",
-      textContent: [item.fns.join(", ") || "Cell references", item.trackTitle].join(" · "),
-    }),
-  );
+  titleCell.append(titleLink(item), span("r-meta", [fnsLine(item), item.trackTitle].join(" · ")));
   const levelCell = document.createElement("td");
-  levelCell.append(
-    Object.assign(document.createElement("span"), {
-      className: `badge badge-${item.level}`,
-      textContent: LEVEL_NAMES[item.level] ?? "",
-    }),
-  );
+  levelCell.append(levelBadge(item));
   tr.append(whyCell, titleCell, levelCell);
+  return tr;
+}
+
+function buildRow(item: Item, progress: Progress, urgency: number): ReviewRow {
+  const reason = reasonOf(progress, item.id);
   return {
     item,
-    el: tr,
+    el: pager ? listRow(item, reason) : tableRow(item, reason),
     row: {
       order: urgency,
       title: item.title,
@@ -335,6 +387,7 @@ function paintReview(progress: Progress, raw: Progress, today: string): void {
   const due = reviewItems(progress, today).map((i) => withStep(i, progress, raw));
   dueNow = due;
   stat("due", String(due.length));
+  stat("never", String(due.filter((i) => !isSolved(progress[i.id])).length));
   if (reviewNext && today0) {
     const first = due[0];
     reviewNext.href = first ? first.href : today0.href;
@@ -351,6 +404,12 @@ function paintReview(progress: Progress, raw: Progress, today: string): void {
       ...[...seen].map(([slug, title]) => new Option(title, slug, false, slug === chosen)),
     );
   }
+  const count = (name: string, n: number) => {
+    const el = q(`[data-review-${name}]`);
+    if (el) el.textContent = String(n);
+  };
+  count("total", rowsNow.length);
+  count("unsolved", rowsNow.filter((r) => r.row.state === "unsolved").length);
   paintTable();
   box.hidden = due.length === 0;
   empty.hidden = due.length > 0;
@@ -368,6 +427,21 @@ if (reviewForm) {
     again();
   });
   reviewForm.addEventListener("reset", () => setTimeout(again));
+}
+for (const b of onlyButtons) {
+  b.addEventListener("click", () => {
+    only = b.dataset["reviewOnly"] ?? "";
+    page = 0;
+    for (const other of onlyButtons) other.setAttribute("aria-pressed", String(other === b));
+    paintTable();
+  });
+}
+for (const b of stepButtons) {
+  b.addEventListener("click", () => {
+    if (b.getAttribute("aria-disabled") === "true") return;
+    page += Number(b.dataset["reviewStep"]);
+    paintTable();
+  });
 }
 moreButton?.addEventListener("click", () => {
   showAll = true;
@@ -410,6 +484,12 @@ function paint(): void {
   stat("solved", String(solved.length));
   stat("own", String(solved.length - helped));
   stat("helped", String(helped));
+  // Home: solves in the last seven days.
+  const weekAgo = addDays(today, -6);
+  stat("week", String(solved.filter((i) => (progress[i.id]?.last ?? "") >= weekAgo).length));
+  stat("practise-solved", String(solved.length));
+  const bar = q("[data-practise-bar]");
+  if (bar) bar.style.width = `${items.length ? (solved.length / items.length) * 100 : 0}%`;
 
   const upNext = items.find((i) => !solved.includes(i) && (pro || !i.locked));
   if (next && start) {
@@ -429,6 +509,80 @@ function paint(): void {
     }
   }
 }
+
+// Home: the greeting and one line on what today asks for.
+function paintHomeHead(streak: number, best: number, today: boolean, any: boolean): void {
+  const title = q("[data-home-title]");
+  const lead = q("[data-home-lead]");
+  if (!title || !lead) return;
+  title.textContent = any ? "Welcome back" : "Welcome";
+  const after = streak + (today ? 0 : 1);
+  lead.textContent = !any
+    ? "Solve one exercise a day to build a streak."
+    : today
+      ? `You practised today. ${dayCount(streak)} in a row${streak >= best && streak > 1 ? ", your best" : ""}.`
+      : streak > 0
+        ? `${dayCount(streak)} in a row. Solve one exercise today to make it ${after}${after > best ? ", a new best" : ""}.`
+        : "Solve one exercise today to start a new streak.";
+}
+
+// Home: this week, Monday to Sunday, with a mark on each day practised.
+const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+function paintWeek(days: ReadonlySet<string>, today: string): void {
+  const list = q("[data-week]");
+  if (!list) return;
+  const monday = addDays(today, -((new Date(`${today}T00:00:00Z`).getUTCDay() + 6) % 7));
+  list.replaceChildren(
+    ...WEEKDAYS.map((name, i) => {
+      const day = addDays(monday, i);
+      const done = days.has(day);
+      const li = document.createElement("li");
+      li.className = [done && "done", day === today && "today", day > today && "future"]
+        .filter(Boolean)
+        .join(" ");
+      const state = done ? "practised" : day > today ? "to come" : "not practised";
+      li.title = `${name}${day === today ? ", today" : ""}: ${state}`;
+      const abbr = Object.assign(document.createElement("abbr"), {
+        title: name,
+        textContent: name[0],
+      });
+      const date = Object.assign(document.createElement("b"), {
+        textContent: String(Number(day.slice(8))),
+      });
+      const said = Object.assign(document.createElement("span"), {
+        className: "visually-hidden",
+        textContent: `, ${day === today ? "today, " : ""}${state}`,
+      });
+      li.append(abbr, date, said);
+      return li;
+    }),
+  );
+}
+
+// Home: today's exercise, picked by the visitor's own date as the daily page does.
+function paintToday(): void {
+  const card = q("[data-today]");
+  const poolNode = document.querySelector("script[data-daily-pool]");
+  const infoNode = document.querySelector("script[data-daily-info]");
+  if (!card || !poolNode?.textContent || !infoNode?.textContent) return;
+  const pool: DailyEntry[] = JSON.parse(poolNode.textContent);
+  const info: Record<string, { title: string; task: string; level: number }> = JSON.parse(
+    infoNode.textContent,
+  );
+  const today = localDay();
+  const pick = info[pickFor(today, pool)?.id ?? ""];
+  if (!pick) return;
+  const set = (key: string, text: string) => {
+    const el = q(`[data-today-${key}]`);
+    if (el) el.textContent = text;
+  };
+  set("name", pick.title);
+  set("task", pick.task);
+  set("level", LEVEL_NAMES[pick.level] ?? "");
+  const level = q("[data-today-level]");
+  if (level) level.className = `badge badge-${pick.level}`;
+}
+paintToday();
 
 paint();
 void loadMe().then((me) => {

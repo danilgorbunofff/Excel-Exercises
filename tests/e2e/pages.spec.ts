@@ -212,6 +212,39 @@ test("a function page has working contents, a checked date and a live exercise",
   await expect(page.locator("[data-status]").first()).toContainText("Correct. B9 shows 218.");
 });
 
+test("Home pages through the review list without changing the card's height", async ({ page }) => {
+  const missed = { state: "tried", date: "2026-01-01", misses: 1, missed: "2026-01-01" };
+  const solved = { state: "solved", date: "2026-01-01", last: "2026-01-01", reviews: 0 };
+  await page.addInitScript(
+    (value) => localStorage.setItem("formula-practice:progress:v1", value),
+    JSON.stringify({
+      "add-two-cells": missed,
+      "subtract-costs": solved,
+      "sum-a-column": solved,
+      "average-score": solved,
+      "count-paid-orders": solved,
+      "count-booked-seats": solved,
+      "pass-or-fail": solved,
+    }),
+  );
+  await page.goto("/home/");
+  const rows = page.locator("[data-review-rows] li");
+  const status = page.locator("[data-review-page]");
+  const card = page.locator("section[aria-labelledby=review-title] > div");
+  await expect(rows).toHaveCount(5);
+  await expect(status).toHaveText(/^Page 1 of 2$/u);
+  const height = (await card.boundingBox())?.height;
+  const next = page.getByRole("button", { name: "Next ›" });
+  await next.click();
+  await expect(status).toHaveText("Page 2 of 2");
+  await expect(next).toHaveAttribute("aria-disabled", "true");
+  expect((await card.boundingBox())?.height).toBe(height);
+  await page.getByRole("button", { name: /^Unsolved 1$/u }).click();
+  await expect(rows).toHaveCount(1);
+  await expect(status).toHaveText("Page 1 of 1");
+  expect((await card.boundingBox())?.height).toBe(height);
+});
+
 test("a Review link opens a run through the due list, with Previous and Next", async ({ page }) => {
   await page.addInitScript(
     (value) => {
@@ -225,30 +258,24 @@ test("a Review link opens a run through the due list, with Previous and Next", a
       "subtract-costs": { state: "tried", date: "2026-01-01", misses: 1, missed: "2026-01-01" },
     }),
   );
-  await page.goto("/progress/");
-  const rows = page.locator("[data-review-rows] tr");
+  await page.goto("/home/");
+  const rows = page.locator("[data-review-rows] li");
   await expect(rows).toHaveCount(2);
-  await expect(page.locator("[data-review-count]")).toHaveText("2 due");
+  await expect(page.locator('[data-stat="due"]')).toHaveText("2");
   await expect(rows.first().locator("[data-why]")).toHaveText("Not solved yet");
   await expect(rows.first().locator(".why-note")).toHaveText("2 wrong checks");
-  // The filter narrows the table; clearing it brings both back.
-  await page.getByLabel("Find an exercise").fill("subtract");
-  await expect(rows).toHaveCount(1);
-  await expect(page.locator("[data-review-count]")).toHaveText("1 of 2 due");
-  await page.getByRole("button", { name: "Clear filters" }).click();
-  await expect(rows).toHaveCount(2);
   await rows.nth(1).getByRole("link").click();
   const count = page.locator("[data-session-title]");
   await expect(count).toHaveText("Task 2 of 2");
   await expect(page.locator("[data-session-more-title]")).toBeHidden();
-  await expect(page.locator("[data-session-next]")).toHaveAttribute("href", "/progress/");
+  await expect(page.locator("[data-session-next]")).toHaveAttribute("href", "/home/");
   await page.locator("[data-session-prev]").click();
   await expect(count).toHaveText("Task 1 of 2");
   await expect(page.locator("[data-session-more-title]")).toHaveText("Next to review");
   await expect(page.locator("[data-session-finish]").first()).toBeHidden();
   await expect(page.locator("[data-session-back]").first()).toHaveText("← Back to your progress");
   await page.locator("[data-session-back]").first().click();
-  await expect(page).toHaveURL(/\/progress\/$/u);
+  await expect(page).toHaveURL(/\/home\/$/u);
 });
 
 test("signed in, Clear my progress clears the account first, and keeps everything if it cannot", async ({
@@ -284,13 +311,18 @@ test("signed in, Clear my progress clears the account first, and keeps everythin
       ? r.fulfill({ json: { "add-two-cells": { state: "solved", date: "2026-11-01" } } })
       : r.fulfill({ json: { saved: 1 } });
   });
-  await page.goto("/progress/");
+  await page.goto("/account/progress/");
   await expect(page.locator('[data-stat="solved"]')).toHaveText("1");
   await expect(page.getByText("from your account, on every device.")).toBeVisible();
 
   await page.getByRole("button", { name: "Clear my progress" }).click();
   const ask = page.getByRole("dialog", { name: "Clear all your progress?" });
   await expect(ask).toContainText("your account, on every device you use");
+  await expect(page.getByRole("button", { name: "Keep it" })).toBeFocused();
+  await page.getByRole("button", { name: "Keep it" }).click();
+  await expect(ask).toBeHidden();
+  expect(deletes).toHaveLength(0);
+  await page.getByRole("button", { name: "Clear my progress" }).click();
   await page.getByRole("button", { name: "Yes, clear it" }).click();
   await expect(page.getByRole("alert")).toHaveText(
     "Your account could not be reached, so nothing was cleared. Try again in a moment.",
@@ -328,14 +360,14 @@ test("a due exercise comes back as another step of its ladder, the next one up",
       "sum-a-column-step-2": { state: "solved", date: day(-4), last: day(-4), reviews: 0 },
     }),
   );
-  await page.goto("/progress/");
+  await page.goto("/home/");
   // Two steps solved count as one exercise, and the second as its first review.
   await expect(page.locator('[data-stat="solved"]')).toHaveText("1");
-  const row = page.locator("[data-review-rows] tr", { hasText: "Add up a column" });
+  const row = page.locator("[data-review-rows] li", { hasText: "Add up a column" });
   await expect(row.locator(".r-title")).toHaveAttribute("href", "/exercises/sum-a-column/3/");
 });
 
-test("the progress page shows what is next, what is due, and clears", async ({ page }) => {
+test("the Home page shows what is next and what is due", async ({ page }) => {
   const day = (offset: number) => {
     const d = new Date();
     d.setDate(d.getDate() + offset);
@@ -353,7 +385,7 @@ test("the progress page shows what is next, what is due, and clears", async ({ p
       "subtract-costs": { state: "helped", date: day(0), last: day(0), reviews: 0 },
     }),
   );
-  await page.goto("/progress/");
+  await page.goto("/home/");
   // Exercise 3 needs PRO, so a free visitor continues with the next free one.
   await expect(page.locator("[data-next]")).toHaveText("Continue: Add up a column");
   await expect(page.locator("[data-next]")).toHaveAttribute("href", "/exercises/sum-a-column/");
@@ -361,21 +393,16 @@ test("the progress page shows what is next, what is due, and clears", async ({ p
   await expect(page.locator('[data-stat="own"]')).toHaveText("1");
   await expect(page.locator('[data-stat="helped"]')).toHaveText("1");
   await expect(page.locator('[data-stat="due"]')).toHaveText("1");
-
-  await page.getByRole("button", { name: "Clear my progress" }).click();
-  const ask = page.getByRole("dialog", { name: "Clear all your progress?" });
-  await expect(ask).toBeVisible();
-  await expect(page.getByRole("button", { name: "Keep it" })).toBeFocused();
-  await page.getByRole("button", { name: "Keep it" }).click();
-  await expect(ask).toBeHidden();
-  await expect(page.locator('[data-stat="solved"]')).toHaveText("2");
-  await page.getByRole("button", { name: "Clear my progress" }).click();
-  await page.getByRole("button", { name: "Yes, clear it" }).click();
-  await expect(page.getByText("Your progress is cleared.")).toBeVisible();
-  await expect(page.locator('[data-stat="solved"]')).toHaveText("0");
-  await expect(page.locator("[data-next]")).toHaveText("Start: Add two cells");
-  await page.reload();
-  await expect(page.locator('[data-stat="solved"]')).toHaveText("0");
+  // The week strip marks both practised days, and Practise counts both solves.
+  const week = page.getByRole("list", { name: "This week" }).getByRole("listitem");
+  await expect(week).toHaveCount(7);
+  await expect(page.locator("[data-week] .today")).toHaveClass("done today");
+  await expect(page.locator("[data-week] .today")).toContainText("today, practised");
+  await expect(page.locator('[data-stat="practise-solved"]')).toHaveText("2");
+  const practise = page.getByRole("region", { name: "Practise" }).getByRole("link");
+  await expect(practise).toHaveCount(5);
+  // Clearing lives on the account's Progress page, not on Home.
+  await expect(page.getByRole("button", { name: "Clear my progress" })).toHaveCount(0);
 });
 
 test("every page shares the footer, keeps breadcrumbs honest and has valid structured data", async ({
@@ -415,7 +442,7 @@ test("every page shares the footer, keeps breadcrumbs honest and has valid struc
     }
   }
   expect(footer).toBe(
-    "Exercises|Function practice|Learning tracks|Daily exercise|Mock assessments|Progress|Functions|Articles|Keyboard shortcuts|Pricing|Terms|Privacy|Contact",
+    "Home|Exercises|Function practice|Learning tracks|Daily exercise|Mock assessments|Functions|Articles|Keyboard shortcuts|Pricing|Terms|Privacy|Contact",
   );
 });
 
@@ -442,8 +469,7 @@ test("a function link lists only the exercises that use that function", async ({
   await or.hover();
   await or.getByRole("link", { name: /exercise/u }).click();
   await expect(page).toHaveURL(/\/exercises\/\?fn=OR$/u);
-  await expect(page.locator("input[name=fn][value=OR]")).toBeChecked();
-  await expect(page.locator("summary", { hasText: "Function:" })).toContainText("OR");
+  await expect(page.getByLabel("Function", { exact: true })).toHaveValue("OR");
   await expect(page.locator("tbody tr:not([hidden]) th a")).toHaveText([
     "Free delivery when either test passes",
     "AND, OR and NOT: combining tests",

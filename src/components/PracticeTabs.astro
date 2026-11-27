@@ -27,7 +27,7 @@ const here = currentHref(PRACTICE_NAV, path);
 
 <script>
   // On phones the row scrolls sideways; bring the current tab into view so
-  // Daily, Mock assessments and Progress are not marked off-screen.
+  // Daily and Mock assessments are not marked off-screen.
   // Measured after the web font loads: the fallback font's widths left the
   // last tab 17 px short of the edge.
   const current = document.querySelector<HTMLElement>(".practice-tabs [aria-current]");

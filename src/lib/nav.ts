@@ -13,8 +13,17 @@ export interface NavItem {
   description: string;
 }
 
+/** The signed-in visitor's start page: progress, what is due and what is next. */
+export const HOME_HREF = "/home/";
+
 /** Ways to practise. The Practice tabs and the Practice header panel. */
 export const PRACTICE_NAV: readonly NavItem[] = [
+  {
+    label: "Home",
+    icon: "home",
+    href: HOME_HREF,
+    description: "Your streak, what is due for review, and today's exercise.",
+  },
   {
     label: "Exercises",
     icon: "grid",
@@ -44,12 +53,6 @@ export const PRACTICE_NAV: readonly NavItem[] = [
     icon: "clock",
     href: "/mock-assessments/",
     description: "Timed sets of tasks like an employer's test, marked at the end.",
-  },
-  {
-    label: "Progress",
-    icon: "chart",
-    href: "/progress/",
-    description: "What you have solved and which exercises are due for review.",
   },
 ];
 

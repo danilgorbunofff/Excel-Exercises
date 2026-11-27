@@ -60,7 +60,7 @@ const PAGES: [string, string, Account[]][] = [
   ["account-certificates", "/account/certificates/", SIGNED],
   ["account-billing", "/account/billing/", SIGNED],
   ["account-settings", "/account/settings/", SIGNED],
-  ["progress", "/progress/", SIGNED],
+  ["progress", "/home/", SIGNED],
   ["mock-assessments", "/mock-assessments/", SIGNED],
   ["mock-sample", "/mock-assessments/sample/", ["out"]],
   ["mock-office", "/mock-assessments/office-essentials/", SIGNED],

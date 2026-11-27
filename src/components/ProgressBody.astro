@@ -1,6 +1,8 @@
 ---
 import { isLocked } from "../lib/access.ts";
+import { ladderPool, pickFor } from "../lib/daily.ts";
 import {
+  dailyTasks,
   drillTasks,
   exercisePath,
   functionsOf,
@@ -9,12 +11,14 @@ import {
   placedExercises,
   stepTasks,
 } from "../lib/exercises.ts";
-import { ACCOUNT_NAV } from "../lib/nav.ts";
-// Why this exists: the body of the progress page, shared by /progress/ (guests
-// and signed-in visitors) and /account/progress/ (inside the account area).
-// It reads progress from this browser, which a signed-in visitor's account
-// keeps in step (session.ts). An open head with what to do next, a grid of the
-// days you practised beside the numbers, then review.
+import { ACCOUNT_NAV, PRACTICE_NAV } from "../lib/nav.ts";
+import { richText } from "../lib/rich-text.ts";
+// Why this exists: what you have done and what is next, shared by the Home
+// page (guests and signed-in visitors) and /account/progress/ (inside the
+// account area). It reads progress from this browser, which a signed-in
+// visitor's account keeps in step (session.ts). An open head with what to do
+// next, the days you practised with the numbers, then review. Home adds the
+// scoreboard, today's exercise and the ways to practise.
 import Icon from "./Icon.astro";
 import "../styles/assessments.css";
 
@@ -50,14 +54,58 @@ const drills = (await drillTasks()).map((d, i) => ({
 interface Props {
   /** Inside the account area: the shell shows the page title, so this leaves out its own. */
   embedded?: boolean;
+  /** The Home page layout: one overview card, then two equal columns per row. */
+  home?: boolean;
 }
-const { embedded = false } = Astro.props;
+const { embedded = false, home = false } = Astro.props;
+
+// Home: today's daily exercise is picked in the browser from this pool, by the
+// visitor's own date; the build day's pick is rendered so the card is never empty.
+const daily = home ? await dailyTasks() : [];
+const dailyPool = ladderPool(daily.map((t) => ({ ...t.exercise, tier: t.tier })));
+const dailyInfo = Object.fromEntries(
+  daily.map((t) => [
+    t.exercise.id,
+    {
+      title: t.exercise.title,
+      task: richText(t.exercise.screens[0]?.prompt ?? "")
+        .map((p) => p.text)
+        .join(""),
+      level: t.exercise.level,
+    },
+  ]),
+);
+const buildPick = pickFor(new Date().toISOString().slice(0, 10), dailyPool);
+const todayTask = dailyInfo[buildPick?.id ?? daily[0]?.exercise.id ?? ""];
+// Home's Practise card: Exercises large, with progress, then four tiles with a
+// shorter line than the header menu has room for.
+const way = (href: string) => {
+  const item = PRACTICE_NAV.find((i) => i.href === href);
+  if (!item) throw new Error(`No practice page at ${href}`);
+  return item;
+};
+const exercisesWay = way("/exercises/");
+const tiles = [
+  { ...way("/exercises/drills/"), tone: "yellow", line: "10 free a day with an account" },
+  { ...way("/exercises/tracks/"), tone: "blue", line: "Learn in teaching order" },
+  { ...way("/mock-assessments/"), tone: "violet", line: "Timed, marked at the end" },
+  { ...way("/daily/"), tone: "red", line: "One free exercise a day" },
+];
+const json = (v: unknown) => JSON.stringify(v).replaceAll("<", "\\u003c");
 ---
 
   <div class:list={["a-page", { embedded }]}>
     <header class="open-head">
       {
-        !embedded && (
+        home && (
+          <>
+            <h1 id="progress-title" data-home-title>Welcome</h1>
+            <p class="lead" data-home-lead>Solve one exercise a day to build a streak.</p>
+          </>
+        )
+      }
+      {
+        !embedded && !home && (
           <>
             <h1 id="progress-title">Your progress</h1>
             <p class="lead" data-when="out">
@@ -79,6 +127,51 @@ const { embedded = false } = Astro.props;
       </p>
     </header>
 
+    {
+      home && (
+        <section class="card h-overview" aria-label="Your practice">
+      <section class="p-heat" aria-labelledby="heat-title">
+        <div class="p-heat-head">
+          <h2 id="heat-title">Days you practised</h2>
+          <span>Last 6 months</span>
+        </div>
+        <div class="heat-months" aria-hidden="true" data-heat-months></div>
+        <div class="heat" role="img" aria-label="No practice yet" data-heat></div>
+        <div class="hover-tip" aria-hidden="true" data-heat-tip><strong></strong><span></span></div>
+        <p class="heat-legend" aria-hidden="true">
+          Less <i></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i> More
+        </p>
+      </section>
+          <dl class="h-kpis" aria-label="Your numbers">
+            <div>
+              <dd class="h-chip" aria-hidden="true"><Icon name="check" size={18} /></dd>
+              <dt>Solved of {placed.length}</dt>
+              <dd class="h-n" data-stat="solved">0</dd>
+              <dd class="h-note"><span data-stat="week">0</span> this week</dd>
+            </div>
+            <div data-tone="yellow">
+              <dd class="h-chip" aria-hidden="true"><Icon name="bolt" size={18} /></dd>
+              <dt>Day streak</dt>
+              <dd class="h-n" data-stat="streak-n">0</dd>
+              <dd class="h-note">Best: <span data-stat="best">0 days</span></dd>
+            </div>
+            <div data-tone="blue">
+              <dd class="h-chip" aria-hidden="true"><Icon name="reset" size={18} /></dd>
+              <dt>Due for review</dt>
+              <dd class="h-n" data-stat="due">0</dd>
+              <dd class="h-note"><span data-stat="never">0</span> never solved</dd>
+            </div>
+            <div data-tone="mint">
+              <dd class="h-chip" aria-hidden="true"><Icon name="user" size={18} /></dd>
+              <dt>On your own</dt>
+              <dd class="h-n" data-stat="own">0</dd>
+              <dd class="h-note"><span data-stat="helped">0</span> with help</dd>
+            </div>
+          </dl>
+        </section>
+      )
+    }
+    {!home && (
     <div class="p-activity">
       <section class="card p-heat" aria-labelledby="heat-title">
         <div class="p-heat-head">
@@ -107,10 +200,162 @@ const { embedded = false } = Astro.props;
         </div>
       </dl>
     </div>
+    )}
     <noscript>
       <p class="ruled a-pad">This page needs JavaScript to read your progress from this browser.</p>
     </noscript>
 
+    {
+      home && (
+        <div class="h-row">
+          <section class="h-block" aria-labelledby="board-title" data-board>
+            <div class="h-board">
+              <div class="h-board-head">
+                <h2 id="board-title">Scoreboard</h2>
+                <div class="h-seg" role="group" aria-label="Scoreboard period">
+                  <button type="button" data-board-period="week" aria-pressed="true">This week</button>
+                  <button type="button" data-board-period="all" aria-pressed="false">All time</button>
+                </div>
+              </div>
+              <table class="h-ranks" aria-labelledby="board-title">
+                <thead>
+                  <tr>
+                    <th scope="col" class="h-rank"><span class="visually-hidden">Rank</span></th>
+                    <th scope="col"><span class="visually-hidden">Learner</span></th>
+                    <th scope="col" class="h-pts"><span class="visually-hidden">Points</span></th>
+                  </tr>
+                </thead>
+                <tbody data-board-rows></tbody>
+                <tbody data-board-me hidden>
+                  <tr class="h-gap" aria-hidden="true"><td colspan="3">⋯</td></tr>
+                  <tr class="h-you">
+                    <td class="h-rank"><span class="h-medal" data-me-rank></span></td>
+                    <th scope="row">
+                      <span class="h-who">
+                        <span class="h-ava" aria-hidden="true"><Icon name="user" size={16} /></span>
+                        <span class="h-me">
+                          <span class="h-name">You</span>
+                          <span class="h-meta" data-me-level></span>
+                        </span>
+                      </span>
+                    </th>
+                    <td class="h-pts"><span data-me-points>0</span> <small>pts</small></td>
+                  </tr>
+                </tbody>
+              </table>
+              <template data-board-row>
+                <tr>
+                  <td class="h-rank"><span class="h-medal"></span></td>
+                  <th scope="row">
+                    <span class="h-who">
+                      <span class="h-ava" aria-hidden="true"></span>
+                      <span class="h-me"><span class="h-name"></span><span class="h-meta"></span></span>
+                    </span>
+                  </th>
+                  <td class="h-pts"><span></span> <small>pts</small></td>
+                </tr>
+              </template>
+              <p class="h-empty" data-board-empty>Loading the scoreboard.</p>
+              <p class="h-foot h-note" data-board-note hidden></p>
+            </div>
+          </section>
+
+          <section class="h-block" aria-labelledby="review-title">
+            <div class="h-board">
+              <div class="h-board-head">
+                <h2 id="review-title">Due for review</h2>
+                <div class="h-seg" role="group" aria-label="Review filter">
+                  <button type="button" data-review-only="" aria-pressed="true">
+                    All <span data-review-total>0</span>
+                  </button>
+                  <button type="button" data-review-only="unsolved" aria-pressed="false">
+                    Unsolved <span data-review-unsolved>0</span>
+                  </button>
+                </div>
+              </div>
+              <p class="h-empty" data-review-empty>
+                Nothing to review. Exercises you got wrong, and solved ones due again, come back
+                here.
+              </p>
+              <div class="h-due-body" data-review hidden>
+                <ol
+                  class="h-due"
+                  aria-labelledby="review-title"
+                  data-review-rows
+                  data-review-table
+                  data-review-shown="5"
+                >
+                </ol>
+                <p class="h-empty" data-review-none hidden>
+                  Every exercise here has been solved once.
+                </p>
+                <div class="h-pager" data-review-pager>
+                  <button type="button" data-review-step="-1">‹ Previous</button>
+                  <span role="status" data-review-page></span>
+                  <button type="button" data-review-step="1">Next ›</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      )
+    }
+    {
+      home && (
+        <div class="h-row">
+          <section class="h-block" aria-labelledby="today-title">
+            <div class="h-board" data-today>
+              <div class="h-board-head">
+                <h2 id="today-title">Today's exercise</h2>
+                <a class="arrow-link" href="/daily/">Past days&nbsp;<span aria-hidden="true">→</span></a>
+              </div>
+              <ol class="h-week" aria-label="This week" data-week></ol>
+              <div class="h-today-main">
+                <span class={`badge badge-${todayTask?.level ?? 1}`} data-today-level>{LEVELS[(todayTask?.level ?? 1) as 1 | 2 | 3]}</span>
+                <h3 data-today-name>{todayTask?.title}</h3>
+                <p data-today-task>{todayTask?.task}</p>
+              </div>
+              <div class="h-today-foot">
+                <a class="button button-primary" href="/daily/">Solve today's exercise</a>
+              </div>
+            </div>
+          </section>
+
+          <section class="h-block" aria-labelledby="practise-title">
+            <div class="h-board h-practise">
+              <div class="h-board-head">
+                <h2 id="practise-title">Practise</h2>
+              </div>
+              <a class="h-way h-way-lead" href={exercisesWay.href}>
+                <span class="h-chip"><Icon name={exercisesWay.icon} size={20} /></span>
+                <span class="h-way-text">
+                  <span class="h-way-name">{exercisesWay.label}</span>
+                  <span class="h-way-line"><span data-stat="practise-solved">0</span> of {placed.length} solved</span>
+                  <span class="progress-bar" aria-hidden="true"><span data-practise-bar></span></span>
+                </span>
+                <span class="h-way-go" aria-hidden="true">›</span>
+              </a>
+              <ul class="h-ways">
+                {
+                  tiles.map((item) => (
+                    <li data-tone={item.tone}>
+                      <a class="h-way" href={item.href}>
+                        <span class="h-chip"><Icon name={item.icon} size={20} /></span>
+                        <span class="h-way-text">
+                          <span class="h-way-name">{item.label}</span>
+                          <span class="h-way-line">{item.line}</span>
+                        </span>
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </section>
+        </div>
+      )
+    }
+    {!home && (
     <section class="p-section" aria-labelledby="review-title">
       <div class="p-section-head">
         <div>
@@ -197,7 +442,10 @@ const { embedded = false } = Astro.props;
         </div>
       </div>
     </section>
+    )}
 
+    {!home && (
+    <>
     <section class="clear" aria-labelledby="clear-head" data-clear>
       <div class="clear-text">
         <h2 id="clear-head">Start over</h2>
@@ -237,9 +485,13 @@ const { embedded = false } = Astro.props;
         <button class="button button-danger" type="button" data-clear-yes>Yes, clear it</button>
       </div>
     </dialog>
+    </>
+    )}
 
     <script type="application/json" data-exercises set:html={JSON.stringify(list).replaceAll("<", "\\u003c")} />
     <script type="application/json" data-drill-items set:html={JSON.stringify(drills).replaceAll("<", "\\u003c")} />
+    {home && <script type="application/json" data-daily-pool set:html={json(dailyPool)} />}
+    {home && <script type="application/json" data-daily-info set:html={json(dailyInfo)} />}
   </div>
 <script>
   import "../scripts/catalogue.ts";
@@ -794,5 +1046,637 @@ const { embedded = false } = Astro.props;
   }
   .confirm[hidden] {
     display: none;
+  }
+
+  /* Home: one overview card, then rows of two equal halves. In a row both
+     cards end on the same line; each section is a title, a line saying what
+     it is, then its card. */
+  .h-overview {
+    display: grid;
+    padding: 0;
+    overflow: hidden;
+  }
+  @media (min-width: 64rem) {
+    .h-overview {
+      grid-template-columns: minmax(0, 1fr) 20rem;
+    }
+  }
+  /* Four equal rows, as on the scoreboard: icon, name over a note, number. */
+  .h-kpis {
+    display: grid;
+    grid-auto-rows: 1fr;
+    margin: 0;
+    padding: var(--space-1) 1.25rem;
+    border-top: 1px solid var(--rule);
+  }
+  @media (min-width: 64rem) {
+    .h-kpis {
+      border-top: 0;
+      border-left: 1px solid var(--rule);
+    }
+  }
+  .h-kpis > div {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+    grid-template-areas:
+      "chip name number"
+      "chip note number";
+    align-content: center;
+    align-items: center;
+    column-gap: var(--space-3);
+    min-height: 4.25rem;
+  }
+  .h-kpis > div + div {
+    border-top: 1px solid var(--rule);
+  }
+  .h-kpis dd {
+    margin: 0;
+  }
+  .h-kpis .h-chip {
+    grid-area: chip;
+  }
+  /* The round icon marks of the numbers and the Practise card. */
+  .h-chip {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--correct-tint);
+    color: var(--correct);
+  }
+  [data-tone="yellow"] .h-chip {
+    background: var(--intermediate-bg);
+    color: var(--intermediate);
+  }
+  [data-tone="blue"] .h-chip {
+    background: var(--read-tint);
+    color: var(--read);
+  }
+  [data-tone="mint"] .h-chip {
+    background: var(--chip-bg);
+    color: var(--chip);
+  }
+  [data-tone="violet"] .h-chip {
+    background: var(--pro-bg);
+    color: var(--pro);
+  }
+  [data-tone="red"] .h-chip {
+    background: var(--advanced-bg);
+    color: var(--advanced);
+  }
+  .h-kpis dt {
+    grid-area: name;
+    font-size: var(--size-s);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+  }
+  .h-kpis .h-n {
+    grid-area: number;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+    color: var(--heading);
+  }
+  .h-kpis .h-note {
+    grid-area: note;
+    font-size: var(--size-xs);
+    line-height: var(--leading-tight);
+    color: var(--faint);
+  }
+  .h-row {
+    display: grid;
+    gap: var(--space-6);
+  }
+  @media (min-width: 64rem) {
+    .h-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .h-block {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  /* Two equal halves, and one white pill under the pressed one. */
+  .h-seg {
+    position: relative;
+    display: inline-grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    margin-left: auto;
+    padding: 2px;
+    border-radius: var(--radius-m);
+    background: var(--header);
+  }
+  .h-seg::before {
+    content: "";
+    position: absolute;
+    inset: 2px auto 2px 2px;
+    width: calc(50% - 3px);
+    border-radius: calc(var(--radius-m) - 2px);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+  }
+  .h-seg:has(button:last-child[aria-pressed="true"])::before {
+    transform: translateX(calc(100% + 2px));
+  }
+  .h-seg button {
+    position: relative; /* above the pill */
+    min-height: 2rem;
+    padding: 0 var(--space-3);
+    border: 0;
+    border-radius: calc(var(--radius-m) - 2px);
+    background: none;
+    font: 500 var(--size-s) var(--font-text);
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .h-seg button[aria-pressed="true"] {
+    font-weight: 600;
+    color: var(--heading);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .h-seg::before {
+      transition: transform var(--duration) var(--ease);
+    }
+    .h-seg button {
+      transition: color var(--duration) var(--ease);
+    }
+  }
+  .h-note {
+    justify-content: flex-start;
+    color: var(--muted);
+  }
+  .h-note :global(a) {
+    font-weight: 600;
+    color: var(--correct);
+  }
+  /* The card fills the row's height, so both halves end together. */
+  .h-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+    margin: auto 0 0;
+    padding: var(--space-3) var(--space-4);
+    border-top: 1px solid var(--rule);
+    background: var(--bg);
+    font-size: var(--size-xs);
+    color: var(--faint);
+  }
+  .h-foot[hidden] {
+    display: none;
+  }
+  /* A sentence with a link in it, not a row of items. */
+  .h-foot.h-note:not([hidden]) {
+    display: block;
+  }
+  /* The scoreboard and the review list: two cards of one height. */
+  .h-board {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-l);
+    background: var(--surface);
+    box-shadow: var(--shadow-card);
+  }
+  .h-board-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    /* One header height, whatever sits beside the title. */
+    min-height: 4.5rem;
+    padding: var(--space-4);
+    border-bottom: 1px solid var(--rule);
+  }
+  .h-board-head h2 {
+    margin: 0;
+    font-size: var(--size-xl);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--heading);
+  }
+  .h-ranks {
+    width: calc(100% - 2 * var(--space-2));
+    margin: var(--space-2);
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+  }
+  .h-ranks thead th {
+    padding: 0;
+  }
+  .h-ranks tbody > :global(tr > *) {
+    padding: var(--space-2);
+    border-block: 1px solid transparent;
+    text-align: left;
+    vertical-align: middle;
+  }
+  .h-ranks tbody > :global(tr > :first-child) {
+    border-left: 1px solid transparent;
+    border-radius: var(--radius-m) 0 0 var(--radius-m);
+  }
+  .h-ranks tbody > :global(tr > :last-child) {
+    border-right: 1px solid transparent;
+    border-radius: 0 var(--radius-m) var(--radius-m) 0;
+  }
+  .h-ranks tbody > :global(tr.h-you > *) {
+    border-color: var(--correct);
+    background: var(--correct-tint);
+  }
+  /* Below the list: a break, then the learner's row in solid green. */
+  .h-ranks .h-gap td {
+    padding: 0;
+    font-size: var(--size-l);
+    line-height: var(--leading-tight);
+    text-align: center;
+    color: var(--muted);
+  }
+  .h-ranks [data-board-me] .h-you > * {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+  [data-board-me] .h-you :is(.h-medal, .h-meta, small) {
+    color: var(--on-primary);
+  }
+  [data-board-me] .h-you .h-ava {
+    background: var(--on-primary);
+    color: var(--primary);
+  }
+  .h-rank {
+    width: 3rem;
+  }
+  .h-pts {
+    width: 5rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .h-ranks .h-pts {
+    text-align: right;
+  }
+  .h-pts small {
+    font-size: var(--size-xs);
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .h-medal {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    font-size: var(--size-s);
+    font-weight: 700;
+    color: var(--muted);
+  }
+  .h-medal[data-rank="1"] {
+    background: var(--gold-bg);
+    color: var(--gold);
+  }
+  .h-medal[data-rank="2"] {
+    background: var(--silver-bg);
+    color: var(--silver);
+  }
+  .h-medal[data-rank="3"] {
+    background: var(--bronze-bg);
+    color: var(--bronze);
+  }
+  .h-who {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .h-ava {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--header);
+    font-size: var(--size-s);
+    font-weight: 700;
+    color: var(--heading);
+  }
+  .h-you .h-ava {
+    background: var(--primary);
+    color: var(--on-primary);
+  }
+  .h-me {
+    display: grid;
+    min-width: 0;
+    line-height: var(--leading-tight);
+  }
+  .h-name {
+    overflow: hidden;
+    font-size: var(--size-m);
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .h-meta {
+    font-size: var(--size-xs);
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .h-empty[hidden],
+  .h-due[hidden] {
+    display: none;
+  }
+  .h-due-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  /* Five equal rows, filled or not, so turning a page never moves the card. */
+  .h-due {
+    flex: 1;
+    display: grid;
+    grid-template-rows: repeat(5, minmax(3.375rem, 1fr));
+    margin: 0;
+    padding: var(--space-2);
+    list-style: none;
+  }
+  .h-due :global(li) {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-3);
+    padding-inline: var(--space-2);
+    border-radius: var(--radius-m);
+  }
+  .h-due :global(li:hover) {
+    background: var(--bg);
+  }
+  .h-due :global(.why) {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--miss-tint);
+    font-weight: 700;
+    color: var(--miss);
+  }
+  .h-due :global(.why::before) {
+    content: "!";
+  }
+  .h-due :global(.why[data-why="due"]) {
+    background: var(--read-tint);
+    color: var(--read);
+  }
+  .h-due :global(.why[data-why="due"]::before) {
+    content: "↻";
+  }
+  .h-due :global(.r-who) {
+    display: grid;
+    min-width: 0;
+    line-height: var(--leading-tight);
+  }
+  .h-due :global(.r-title),
+  .h-due :global(.r-meta) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .h-due :global(.r-title) {
+    font-size: var(--size-m);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  /* The whole row opens the exercise; the click still lands on the link. */
+  .h-due :global(.r-title::after) {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .h-due :global(li:hover .r-title) {
+    color: var(--correct);
+  }
+  .h-due :global(.r-meta) {
+    font-size: var(--size-xs);
+    color: var(--faint);
+  }
+  .h-pager {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-1) var(--space-4);
+    border-top: 1px solid var(--rule);
+    background: var(--bg);
+    font-size: var(--size-xs);
+    color: var(--faint);
+  }
+  .h-pager button {
+    min-height: var(--target);
+    padding: 0;
+    border: 0;
+    background: none;
+    font: 600 var(--size-s) var(--font-text);
+    color: var(--correct);
+    cursor: pointer;
+  }
+  .h-pager button[aria-disabled="true"] {
+    color: var(--faint);
+    cursor: default;
+  }
+  .h-empty {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    margin: 0;
+    padding: var(--space-6) var(--space-5);
+    text-align: center;
+    font-size: var(--size-s);
+    color: var(--faint);
+  }
+  /* This week, Monday to Sunday: a tick and a tint on each day practised. */
+  .h-week {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    min-height: 4rem;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--rule);
+    list-style: none;
+    text-align: center;
+  }
+  .h-week :global(li) {
+    position: relative;
+    display: grid;
+    align-content: center;
+    padding: var(--space-2) 0;
+    font-size: var(--size-xs);
+    line-height: var(--leading-tight);
+    color: var(--faint);
+  }
+  .h-week :global(li + li) {
+    border-left: 1px solid var(--rule);
+  }
+  .h-week :global(abbr) {
+    text-decoration: none;
+  }
+  .h-week :global(b) {
+    font-size: var(--size-l);
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+  }
+  .h-week :global(.done),
+  .h-week :global(.done b) {
+    color: var(--chip);
+  }
+  .h-week :global(.done) {
+    background: var(--correct-tint);
+  }
+  .h-week :global(.done::after) {
+    content: "✓";
+    position: absolute;
+    top: 0.125rem;
+    right: 0.25rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+  }
+  .h-week :global(.today),
+  .h-week :global(.today b) {
+    font-weight: 700;
+    color: var(--correct);
+  }
+  .h-week :global(.today) {
+    box-shadow: inset 0 0 0 2px var(--correct);
+  }
+  .h-week :global(.done.today),
+  .h-week :global(.done.today b) {
+    color: var(--on-primary);
+  }
+  .h-week :global(.done.today) {
+    background: var(--primary);
+    box-shadow: none;
+  }
+  .h-today-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-5) var(--space-4);
+    text-align: center;
+  }
+  .h-today-main h3 {
+    margin: 0;
+    font-size: var(--size-xl);
+    letter-spacing: -0.01em;
+    line-height: var(--leading-tight);
+    color: var(--heading);
+  }
+  .h-today-main p {
+    margin: 0;
+    color: var(--muted);
+  }
+  .h-today-foot {
+    display: grid;
+    padding: 0 var(--space-4) var(--space-4);
+  }
+  .h-way {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    color: inherit;
+    text-decoration: none;
+  }
+  /* Inside the card's clipped edge, so the focus ring is drawn inwards. */
+  .h-way:focus-visible {
+    outline-offset: -3px;
+  }
+  .h-practise .h-chip {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  .h-way-lead {
+    border-bottom: 1px solid var(--rule);
+    background: var(--correct-tint);
+  }
+  .h-way-lead .h-chip {
+    background: var(--surface);
+  }
+  .h-way-lead .progress-bar {
+    margin-top: var(--space-2);
+    background: var(--surface);
+  }
+  .h-way-text {
+    display: grid;
+    flex: 1;
+    min-width: 0;
+  }
+  .h-way-name {
+    font-size: var(--size-s);
+    font-weight: 600;
+    line-height: var(--leading-tight);
+    color: var(--heading);
+  }
+  .h-way-line {
+    font-size: var(--size-xs);
+    color: var(--muted);
+  }
+  .h-way-go {
+    font-size: var(--size-xl);
+    line-height: 1;
+    color: var(--muted);
+  }
+  .h-ways {
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: 1fr;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .h-ways li {
+    display: grid;
+  }
+  .h-ways li + li {
+    border-top: 1px solid var(--rule);
+  }
+  @media (min-width: 30rem) {
+    .h-ways {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .h-ways li:nth-child(2) {
+      border-top: 0;
+    }
+    .h-ways li:nth-child(even) {
+      border-left: 1px solid var(--rule);
+    }
+  }
+  .h-ways .h-way:hover {
+    background: var(--bg);
+  }
+  .h-way-lead:hover .h-way-go {
+    color: var(--correct);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .h-way-go {
+      transition:
+        translate var(--duration) var(--ease),
+        color var(--duration) var(--ease);
+    }
+    .h-way-lead:hover .h-way-go {
+      translate: 2px 0;
+    }
   }
 </style>

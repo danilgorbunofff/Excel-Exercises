@@ -1,0 +1,18 @@
+---
+// Why this exists: the start page for a visitor who practises here: the days
+// practised and the numbers, the scoreboard, what is due for review, today's
+// exercise and every way to practise. It replaces the old Progress page
+// (/progress/ redirects here); the full history stays in the account area.
+import PracticeTabs from "../../components/PracticeTabs.astro";
+import ProgressBody from "../../components/ProgressBody.astro";
+import Base from "../../layouts/Base.astro";
+---
+
+<Base
+  title="Home"
+  description="Your streak, what you have solved, what is due for review and today's exercise."
+  layout="wide"
+>
+  <PracticeTabs />
+  <ProgressBody home />
+</Base>

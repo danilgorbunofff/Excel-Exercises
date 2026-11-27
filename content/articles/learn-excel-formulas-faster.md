@@ -32,7 +32,7 @@ Knowing straight away whether an answer is right stops you from practising a mis
 
 ## Come back later
 
-Redo a task a day later, then a few days after that. Each time it feels harder than expected, and each time it sticks better. The [progress page](/progress/) shows which exercises are due for review.
+Redo a task a day later, then a few days after that. Each time it feels harder than expected, and each time it sticks better. The [Home page](/home/) shows which exercises are due for review.
 
 ## Read the error
 

@@ -60,7 +60,7 @@ test("with PRO, chosen drills open as exercise pages and end on a summary", asyn
   await expect(page.locator("[data-task-list]")).toContainText("Took more tries");
 
   // Missed and solved on the same day: it comes back with the normal review gap, not at once.
-  await page.goto("/progress/");
+  await page.goto("/home/");
   await expect(page.locator("[data-review]")).toBeHidden();
 
   await page.goto("/exercises/drills/?fn=MAX&fn=MIN");
@@ -94,7 +94,7 @@ test("a wrong check on an unsolved drill puts it on the review list", async ({ p
   await page.goto("/exercises/drills/?id=min-drill-1");
   await formula(page).fill("=MIN(B2:B3)");
   await check(page).click();
-  await page.goto("/progress/");
+  await page.goto("/home/");
   await expect(page.locator("[data-review]")).toContainText(
     "MIN practice: Find the cheapest quote",
   );

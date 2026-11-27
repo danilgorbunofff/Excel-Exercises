@@ -57,4 +57,4 @@ Before day 1, try one timed [mock assessment](/mock-assessments/). Your score te
 
 ## Use spaced review
 
-Redo a task a day or two after you first solve it, then again a few days later. The [progress page](/progress/) shows which exercises are due for review, so you do not have to track it yourself.
+Redo a task a day or two after you first solve it, then again a few days later. The [Home page](/home/) shows which exercises are due for review, so you do not have to track it yourself.

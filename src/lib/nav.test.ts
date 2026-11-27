@@ -14,8 +14,9 @@ describe("nav", () => {
     for (const { href } of all) expect(routes.has(href.split("#")[0] ?? ""), href).toBe(true);
   });
 
-  it("starts the practice tabs with Exercises and Function practice", () => {
-    expect(PRACTICE_NAV.slice(0, 2).map((i) => i.label)).toEqual([
+  it("starts the practice tabs with Home, Exercises and Function practice", () => {
+    expect(PRACTICE_NAV.slice(0, 3).map((i) => i.label)).toEqual([
+      "Home",
       "Exercises",
       "Function practice",
     ]);

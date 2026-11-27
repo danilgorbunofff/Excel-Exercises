@@ -18,7 +18,7 @@ const PAGES = [
   ["functions", "/functions/"],
   ["function-sum", "/functions/sum/"],
   ["function-vlookup", "/functions/vlookup/"],
-  ["progress", "/progress/"],
+  ["progress", "/home/"],
   ["privacy", "/privacy/"],
   ["terms", "/terms/"],
   ["contact", "/contact/"],
@@ -69,7 +69,7 @@ try {
       });
       await context.addInitScript(
         ([key, value]) => {
-          if (location.pathname.startsWith("/progress/")) localStorage.setItem(key, value);
+          if (location.pathname.startsWith("/home/")) localStorage.setItem(key, value);
         },
         ["formula-practice:progress:v1", JSON.stringify(sampleProgress())] as const,
       );

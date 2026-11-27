@@ -50,6 +50,13 @@
   --flame: #ffb020;
   --flame-edge: #ffd27a;
   --flame-core: #fff0b3;
+  /* The scoreboard's first three ranks. The rank number goes with the colour. */
+  --gold: light-dark(#894b00, #f7c873);
+  --gold-bg: light-dark(#fef08a, #4a3a00);
+  --silver: light-dark(#364153, #d6dbe4);
+  --silver-bg: light-dark(#e2e5ea, #323c4b);
+  --bronze: light-dark(#9a3412, #ffb086);
+  --bronze-bg: light-dark(#fed7aa, #47220f);
   --pro: light-dark(#5b21b6, #c8b4ff);
   --pro-bg: light-dark(#ede9fe, #251a45);
   --chip: light-dark(#126a41, #7ee2a8);

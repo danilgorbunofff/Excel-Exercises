@@ -9,6 +9,8 @@ Defined in `supabase/seed.sql` (password and emails are there):
 
 - `free@example.test`: plain account.
 - `pro@example.test`: lifetime PRO, set in the seed, no Stripe.
+- `<nickname>@example.test` (for example `pivot_queen@example.test`): twelve
+  learners with different scores, to fill the scoreboard.
 
 Sign in at http://localhost:4321/login/ with the email form. Google sign-in
 does not work locally (it needs a real Google client).

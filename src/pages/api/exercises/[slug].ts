@@ -5,10 +5,11 @@
 
 import { getCollection } from "astro:content";
 import type { APIRoute } from "astro";
-import { hasPro, isLocked } from "../../../lib/access.ts";
+import { isLocked } from "../../../lib/access.ts";
 import { loadAssessments } from "../../../lib/assessments.ts";
 import { placedExercises, stepTasks } from "../../../lib/exercises.ts";
 import { json } from "../../../server/http.ts";
+import { hasPracticeAccess } from "../../../server/practice.ts";
 import { currentUser } from "../../../server/supabase.ts";
 
 export const prerender = false;
@@ -32,25 +33,9 @@ export const GET: APIRoute = async (ctx) => {
 
   const { supabase, user } = await currentUser(ctx);
   if (!user) return json({ error: "signed out" }, 401);
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("pro_status, pro_until")
-    .eq("id", user.id)
-    .maybeSingle();
-  if (!hasPro(profile)) {
-    // A Free account may read the answers of a drill in today's free run.
-    const { data: run } = drill
-      ? await supabase
-          .from("free_drill_runs")
-          .select("day")
-          .eq("user_id", user.id)
-          .eq("day", new Date().toISOString().slice(0, 10))
-          .contains("slugs", [slug])
-          .maybeSingle()
-      : { data: null };
-    if (!run) return json({ error: "PRO needed" }, 403);
-    return json({ answers });
-  }
+  // A Free account may read the answers of a drill in today's free run.
+  if (!(await hasPracticeAccess(supabase, user.id, drill ? slug : null)))
+    return json({ error: "PRO needed" }, 403);
   if (mock) {
     // A held-out task's answers come only after a set that holds it is finished
     // and saved, so a timed attempt cannot read them while it runs.

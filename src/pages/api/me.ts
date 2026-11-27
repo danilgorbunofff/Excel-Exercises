@@ -21,6 +21,8 @@ export interface Me {
   hasPassword: boolean;
   /** When the account was made (ISO), for "Member since" on the profile. */
   createdAt?: string;
+  /** The scoreboard name, or null to stay off the public board. */
+  nickname?: string | null;
 }
 
 export const GET: APIRoute = async (ctx) => {
@@ -31,7 +33,7 @@ export const GET: APIRoute = async (ctx) => {
   }
   const { data: profile } = await supabase
     .from("profiles")
-    .select("pro_status, pro_until, news, digest, daily")
+    .select("pro_status, pro_until, news, digest, daily, nickname")
     .eq("id", user.id)
     .maybeSingle();
   const me: Me = {
@@ -45,6 +47,7 @@ export const GET: APIRoute = async (ctx) => {
     dailyAsked: user.user_metadata?.["daily"] !== undefined,
     hasPassword: (user.identities ?? []).some((i) => i.provider === "email"),
     createdAt: user.created_at,
+    nickname: profile?.nickname ?? null,
   };
   return json(me);
 };

@@ -94,6 +94,7 @@ const data = JSON.stringify({ items, dailyTitles, setTitles }).replaceAll("<", "
           <strong data-solved>0</strong>
           <span class="muted">of {items.length} exercises solved, <span data-percent>0%</span> of the course</span>
         </p>
+        <p class="muted" data-level-line hidden></p>
         <div class="segbar" role="img" aria-label="Solved by difficulty" data-segbar>
           {[1, 2, 3].map((n) => <span class={`seg-${n}`} data-seg={n}></span>)}
         </div>

@@ -10,7 +10,7 @@ import Base from "../../../layouts/Base.astro";
   <AccountShell
     current="settings"
     title="Account settings"
-    lead="Your sign-in details, the emails we send you, and your data."
+    lead="Your sign-in details, your scoreboard name, the emails we send you, and your data."
     outLead="Log in to change your email, password and email preferences."
   >
     <form class="setting" method="post" action="/api/auth/email/" aria-labelledby="st-email">
@@ -54,6 +54,22 @@ import Base from "../../../layouts/Base.astro";
         <p>You sign in with Google, so there is no password to change here.</p>
       </div>
     </section>
+
+    <form class="setting" id="nickname" method="post" action="/api/account/nickname/" aria-labelledby="st-nick">
+      <input type="hidden" name="from" value="/account/settings/" />
+      <div class="setting-body">
+        <h2 id="st-nick">Scoreboard nickname</h2>
+        <p>Other learners see this name and your points on the scoreboard. Leave it empty to stay off the public board.</p>
+        <div class="field">
+          <label for="nick">Nickname</label>
+          <input class="input" id="nick" name="nickname" type="text" autocomplete="nickname" minlength="3" maxlength="20" pattern="[A-Za-z0-9_]{3,20}" data-me-nickname />
+        </div>
+      </div>
+      <div class="setting-foot">
+        <span>3 to 20 letters, digits or underscores.</span>
+        <button class="button button-primary sm" type="submit">Save nickname</button>
+      </div>
+    </form>
 
     <form class="setting" method="post" action="/api/account/news/" aria-labelledby="st-mail">
       <div class="setting-body">

@@ -80,6 +80,7 @@ describe("GET /api/account/export/", () => {
       news: true,
       digest: false,
       daily: true,
+      nickname: null,
       updatedAt: "2026-11-01T00:00:00Z",
     });
     for (const key of [
@@ -103,6 +104,7 @@ describe("GET /api/account/export/", () => {
       "daily_solves",
       "free_drill_runs",
       "mail_log",
+      "points",
       "profiles",
       "progress",
     ]);

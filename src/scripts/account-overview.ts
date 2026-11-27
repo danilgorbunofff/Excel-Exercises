@@ -1,8 +1,10 @@
 // Why this exists: fills the account Overview: the next exercise, the plan,
-// progress by difficulty, this month's numbers and recent activity. It paints
-// again when session.ts has merged the account's progress in.
+// progress by difficulty with the level and points, this month's numbers and
+// recent activity. It paints again when session.ts has merged the account's
+// progress in.
 import { planLine } from "../lib/access.ts";
 import { currentStreak } from "../lib/daily.ts";
+import type { Scoreboard } from "../pages/api/scoreboard.ts";
 import type { DailyDays } from "./daily-store.ts";
 import { syncDaily } from "./daily-sync.ts";
 import { type ProfileItem, profileStats } from "./profile-stats.ts";
@@ -172,3 +174,21 @@ void loadMe().then(async (me) => {
   text("[data-fig=certs]", String(certs.length));
   paint();
 });
+
+// The level and points, from the scoreboard's all-time row for this account.
+void fetch("/api/scoreboard/?period=all")
+  .then((r) => (r.ok ? (r.json() as Promise<Scoreboard>) : null))
+  .then((board) => {
+    const line = document.querySelector<HTMLElement>("[data-level-line]");
+    const me = board?.me;
+    if (!line || !me) return;
+    const { level, title, next } = me.level;
+    const fmt = (n: number) => n.toLocaleString("en-GB");
+    line.textContent =
+      `Level ${level}, ${title}: ${fmt(me.total)} points` +
+      (next === null ? "." : `, ${fmt(next - me.total)} to level ${level + 1}.`);
+    line.hidden = false;
+  })
+  .catch(() => {
+    // The line stays hidden; progress above does not depend on it.
+  });

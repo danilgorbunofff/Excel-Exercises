@@ -11,8 +11,9 @@ import {
   type Rule,
   type Verdict,
 } from "@practice/grader";
+import { POINTS_EVENT, type SolveResult } from "../lib/points.ts";
 import type { Segment } from "../lib/rich-text.ts";
-import { isSolved, readProgress, record } from "./progress.ts";
+import { isSolved, localDay, readProgress, record } from "./progress.ts";
 import { signedIn } from "./session.ts";
 import { trackOnce } from "./track.ts";
 import { compareWithAnswer, outlineClasses, verdictView } from "./view.ts";
@@ -72,6 +73,43 @@ function showProgress(exercise: HTMLElement, id: string) {
   if (!line || !entry) return;
   line.textContent = PROGRESS_TEXT[entry.state];
   line.hidden = false;
+}
+
+/** The right formula of each screen so far, sent with the solve for points. */
+const formulasOf = new WeakMap<HTMLElement, string[]>();
+
+/**
+ * Signed in, asks the server to mark the solve and pay its points, and adds
+ * what it earned to the progress line. A failed request only loses the points.
+ */
+async function sendSolve(exercise: HTMLElement, id: string, helped: boolean): Promise<void> {
+  if (!signedIn()) return;
+  try {
+    const res = await fetch("/api/solves/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id,
+        formulas: formulasOf.get(exercise) ?? [],
+        helped,
+        day: localDay(),
+      }),
+    });
+    if (!res.ok) return;
+    const result = (await res.json()) as SolveResult;
+    const points = result.earned.reduce((n, e) => n + e.points, 0);
+    if (points === 0) return;
+    document.dispatchEvent(new CustomEvent(POINTS_EVENT, { detail: result }));
+    const line = exercise.querySelector<HTMLElement>("[data-progress]");
+    if (!line) return;
+    const earned = document.createElement("span");
+    earned.dataset["pointsEarned"] = "";
+    earned.textContent = ` You earned ${points} points and are on level ${result.level.level}, ${result.level.title}.`;
+    line.append(earned);
+    line.hidden = false;
+  } catch {
+    // Offline or the server is down: the solve still counts in progress.
+  }
 }
 
 function setupScreen(exercise: HTMLElement, page: PageData, index: number, root: HTMLElement) {
@@ -268,8 +306,11 @@ function setupScreen(exercise: HTMLElement, page: PageData, index: number, root:
 
     if (verdict.correct) {
       input.removeAttribute("aria-invalid");
+      const formulas = formulasOf.get(exercise);
+      if (formulas) formulas[index] = formula;
       if (index === page.screens.length - 1) {
-        record(page.id, "solved");
+        const entry = record(page.id, "solved");
+        void sendSolve(exercise, page.id, entry.state === "helped");
         trackSolves();
         showProgress(exercise, page.id);
         askToSignUp(status);
@@ -352,6 +393,7 @@ function setupScreen(exercise: HTMLElement, page: PageData, index: number, root:
 // Each exercise on a page has its own root and data, so a page can hold one
 // as its main content or embed one, as the home and function pages do.
 function start(exercise: HTMLElement, data: PageData): void {
+  formulasOf.set(exercise, []);
   for (const root of exercise.querySelectorAll<HTMLElement>("[data-screen]")) {
     setupScreen(exercise, data, Number(root.dataset["screen"]), root);
   }

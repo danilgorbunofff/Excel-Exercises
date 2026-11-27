@@ -53,7 +53,7 @@ test("the catalogue filters from a search, including one sent from the 404 page"
   await page.getByLabel("Search the exercises").fill("vlookup");
   await page.getByRole("button", { name: "Search", exact: true }).click();
   await expect(page).toHaveURL(/\/exercises\/\?q=vlookup$/u);
-  await expect(page.locator("[data-exercise-table] tbody tr:not([hidden])")).toHaveCount(9);
+  await expect(page.locator("tbody tr:not([hidden])")).toHaveCount(9);
   await expect(page.getByText("9 of 128 exercises")).toBeVisible();
   await page.getByLabel("Find an exercise").fill("zzzz");
   await expect(page.getByText("No exercise matches.")).toBeVisible();
@@ -97,16 +97,11 @@ test("the catalogue sorts by title and filters by difficulty and track", async (
   );
   const titles = await page.locator("tbody th a").allTextContents();
   expect(titles).toEqual([...titles].sort((a, b) => a.localeCompare(b, "en")));
-  const advanced = page.locator(".tiles label", { hasText: "Advanced" });
-  await advanced.click();
-  await expect(page.locator("[data-exercise-table] tbody tr:not([hidden])")).toHaveCount(33);
-  // A second press on the chosen tile clears it.
-  await advanced.click();
-  await expect(page.getByRole("radio", { name: "Advanced" })).not.toBeChecked();
-  await page.locator("summary", { hasText: "Track:" }).click();
-  await page.locator("label:has(input[name=track][value=logic])").click();
-  await expect(page.locator("summary", { hasText: "Track:" })).toContainText("IF, AND and OR");
-  await expect(page.locator("[data-exercise-table] tbody tr:not([hidden])")).toHaveCount(10);
+  await page.getByLabel("Difficulty").selectOption("3");
+  await expect(page.locator("tbody tr:not([hidden])")).toHaveCount(33);
+  await page.getByLabel("Difficulty").selectOption("");
+  await page.getByLabel("Track", { exact: true }).selectOption("logic");
+  await expect(page.locator("tbody tr:not([hidden])")).toHaveCount(10);
   await expect(page.getByText("10 of 128 exercises")).toBeVisible();
 });
 

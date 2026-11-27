@@ -587,42 +587,6 @@ ol.ruled {
   background: var(--advanced-bg);
   color: var(--advanced);
 }
-/* Difficulty as three bars (LevelBars.astro): the level lights that many. */
-.signal {
-  display: inline-flex;
-  align-items: flex-end;
-  gap: 3px;
-  height: 1rem;
-}
-.signal i {
-  width: 5px;
-  border-radius: 1px;
-  background: var(--muted);
-  opacity: 0.35;
-}
-.signal i:nth-child(1) {
-  height: 45%;
-}
-.signal i:nth-child(2) {
-  height: 72%;
-}
-.signal i:nth-child(3) {
-  height: 100%;
-}
-.signal i.on {
-  background: currentColor;
-  opacity: 1;
-}
-.signal-1 {
-  color: var(--beginner);
-}
-.signal-2 {
-  color: var(--intermediate-bar);
-}
-.signal-3 {
-  color: var(--advanced-bar);
-}
-
 /* An exercise's state, painted by status.ts after load. The word always
    shows; the colour only repeats it. The hidden ::after holds the longest
    label in status.ts, so the box is the same size before and after paint. */

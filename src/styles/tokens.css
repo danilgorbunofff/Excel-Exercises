@@ -47,10 +47,6 @@
   --intermediate-fill: light-dark(#e0a800, #f7c873);
   --advanced-fill: light-dark(#dc3d43, #ff9b9b);
   /* The daily streak's flame, drawn on solid green in both themes. */
-  /* The difficulty bars: stronger than the badge words, so Medium and Advanced
-     differ at a few pixels wide. */
-  --intermediate-bar: light-dark(#b87400, #ffd60a);
-  --advanced-bar: light-dark(#d30f26, #ff3b30);
   --flame: #ffb020;
   --flame-edge: #ffd27a;
   --flame-core: #fff0b3;

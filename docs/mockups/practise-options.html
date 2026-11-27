@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Today's exercise and Practise options</title>
+<style>
+  @font-face { font-family: Inter; font-weight: 400; src: url(../../public/fonts/inter-latin-400-normal.woff2); }
+  @font-face { font-family: Inter; font-weight: 600; src: url(../../public/fonts/inter-latin-600-normal.woff2); }
+  @font-face { font-family: Inter; font-weight: 700; src: url(../../public/fonts/inter-latin-700-normal.woff2); }
+  /* Light values from src/styles/tokens.css, inline because the preview pane cannot load linked files. */
+  :root { --bg: #f9fafb; --surface: #fff; --header: #f3f4f6; --text: #101828; --heading: #1e1e1e; --muted: #4a5565; --faint: #6a7282; --rule: #e5e7eb; --green: #18804f; --green-dark: #126a41; --tint: #e9f9ef;
+    --warm: #894b00; --warm-bg: #fef9c2; --due: #0063b1; --due-bg: #e3f0fd; --pro: #5b21b6; --pro-bg: #ede9fe; --miss: #b42318; --miss-bg: #fee4e2; color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 2rem 1rem; background: var(--bg); color: var(--text); font: 1rem/1.5 Inter, system-ui, sans-serif; }
+  h1, main { max-width: 74rem; margin: 0 auto; }
+  h1 { margin-bottom: 2rem; font-size: 1.125rem; }
+  h2, h3, p, ul { margin: 0; padding: 0; }
+  ul { list-style: none; }
+  section + section { margin-top: 3rem; }
+  .tag { margin: 0 0 0.75rem; font-size: 0.875rem; font-weight: 600; color: var(--green); }
+  .pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(28rem, 100%), 1fr)); gap: 2rem; }
+  .card { display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); box-shadow: 0 1px 3px rgb(16 24 40 / 0.08); }
+  /* Same header as the scoreboard card. */
+  .head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; min-height: 4.25rem; padding: 1rem 1.25rem; border-bottom: 1px solid var(--rule); }
+  .head h2 { font-size: 1.25rem; }
+  .head a { font-size: 0.875rem; font-weight: 600; color: var(--green); text-decoration: none; white-space: nowrap; }
+  .head span { font-size: 0.875rem; color: var(--faint); white-space: nowrap; }
+  .body { flex: 1; display: flex; flex-direction: column; gap: 1rem; padding: 1.25rem; }
+  .meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem; font-size: 0.875rem; color: var(--faint); }
+  .badge { padding: 0.125rem 0.625rem; border-radius: 999px; background: var(--warm-bg); font-size: 0.8125rem; font-weight: 600; color: var(--warm); }
+  h3 { font-size: 1.5rem; line-height: 1.25; letter-spacing: -0.01em; color: var(--heading); }
+  .task { margin-top: 0.375rem; color: var(--muted); }
+  .btn { display: grid; place-items: center; min-height: 2.75rem; padding: 0 1.25rem; border-radius: 6px; background: var(--green); font-weight: 600; color: #fff; text-decoration: none; text-align: center; }
+  .week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0.375rem; text-align: center; font-size: 0.8125rem; color: var(--faint); }
+  .week li { display: grid; justify-items: center; gap: 0.375rem; }
+  .dot { display: grid; place-items: center; width: 2rem; height: 2rem; border: 1px solid var(--rule); border-radius: 50%; font-weight: 700; }
+  .done .dot { border-color: var(--green); background: var(--green); color: #fff; }
+  .today { font-weight: 700; color: var(--green); }
+  .today .dot { outline: 2px solid var(--green); outline-offset: 2px; }
+  .chip { display: grid; place-items: center; flex: none; width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--cb); color: var(--c); }
+  .chip svg { width: 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .green { --c: var(--green); --cb: var(--tint); }
+  .yellow { --c: var(--warm); --cb: var(--warm-bg); }
+  .blue { --c: var(--due); --cb: var(--due-bg); }
+  .violet { --c: var(--pro); --cb: var(--pro-bg); }
+  .red { --c: var(--miss); --cb: var(--miss-bg); }
+  .rows { flex: 1; display: grid; grid-auto-rows: 1fr; padding: 0.25rem 1.25rem; }
+  .rows li + li { border-top: 1px solid var(--rule); }
+  .rows a { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 0.875rem; height: 100%; min-height: 4.25rem; padding: 0.5rem 0; color: inherit; text-decoration: none; }
+  .name { display: block; font-size: 0.9375rem; font-weight: 600; line-height: 1.35; }
+  .desc { display: block; font-size: 0.8125rem; line-height: 1.4; color: var(--faint); }
+  .go { color: var(--faint); font-size: 1.25rem; line-height: 1; }
+
+  /* B: the task's sheet beside the text */
+  .split { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr) 13rem; gap: 1.25rem; }
+  .split .col { display: flex; flex-direction: column; justify-content: center; gap: 1rem; min-width: 0; }
+  .sheet { align-self: start; width: 100%; border-collapse: collapse; font-size: 0.75rem; line-height: 1.3; }
+  .sheet th, .sheet td { height: 1.4rem; padding: 0 0.5rem; border: 1px solid var(--rule); text-align: left; font-weight: 400; white-space: nowrap; }
+  .sheet th { background: var(--header); color: var(--faint); text-align: center; }
+  .sheet .ask { outline: 2px solid var(--green); outline-offset: -2px; background: var(--tint); font-weight: 700; color: var(--green); }
+  .figure { padding: 0.125rem 0.625rem; border-radius: 999px; background: var(--header); font-size: 0.75rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
+
+  /* C: green top for today, tiles for the rest */
+  .hero { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 1rem; padding: 1.5rem 1.25rem; background: var(--green-dark); color: #fff; }
+  .hero h3 { color: #fff; font-size: 1.75rem; }
+  .hero .task, .hero .meta { color: #d1fae0; }
+  .hero .badge { background: #fff; color: var(--green-dark); }
+  .hero .btn { align-self: start; background: #fff; color: var(--green-dark); }
+  .under { padding: 1rem 1.25rem; }
+  .tiles { flex: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 0.75rem; padding: 1.25rem; }
+  .tiles a { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 0.625rem; height: 100%; padding: 1rem; border: 1px solid var(--rule); border-radius: 10px; color: inherit; text-decoration: none; }
+
+  /* D: week first; one large practice choice over four small ones */
+  .dates { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); border-bottom: 1px solid var(--rule); text-align: center; }
+  .dates li { display: grid; gap: 0.125rem; padding: 0.625rem 0; font-size: 0.75rem; color: var(--faint); }
+  .dates li + li { border-left: 1px solid var(--rule); }
+  .dates b { font-size: 1.125rem; color: var(--text); }
+  .dates .done { background: var(--tint); color: var(--green-dark); }
+  .dates .done b { color: var(--green-dark); }
+  .dates .today { background: var(--green); color: #fff; }
+  .dates .today b { color: #fff; }
+  .centre { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1rem; padding: 1.5rem 1.25rem; text-align: center; }
+  .foot { padding: 0 1.25rem 1.25rem; }
+  .lead { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 0.875rem; padding: 1.25rem; background: var(--tint); color: inherit; text-decoration: none; }
+  .lead .chip { background: var(--surface); }
+  .track { display: block; height: 0.375rem; margin-top: 0.5rem; border-radius: 999px; background: var(--surface); overflow: hidden; }
+  .track i { display: block; width: 19%; height: 100%; background: var(--green); }
+  .four { flex: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; border-top: 1px solid var(--rule); }
+  .four li:nth-child(odd) { border-right: 1px solid var(--rule); }
+  .four li:nth-child(n + 3) { border-top: 1px solid var(--rule); }
+  .four a { display: flex; align-items: center; gap: 0.75rem; height: 100%; padding: 1rem 1.25rem; color: inherit; text-decoration: none; }
+
+  @media (max-width: 36rem) {
+    .split { grid-template-columns: minmax(0, 1fr); }
+    .tiles, .four { grid-template-columns: minmax(0, 1fr); }
+    .four li:nth-child(odd) { border-right: 0; }
+    .four li + li { border-top: 1px solid var(--rule); }
+    .dot { width: 1.75rem; height: 1.75rem; }
+  }
+</style>
+
+<h1>Today's exercise and Practise: 4 options</h1>
+<main></main>
+
+<script>
+  const icons = {
+    grid: "M4 4h16v16H4zM4 10h16M4 15h16M10 4v16M15 4v16",
+    bolt: "M13 3L5 14h6l-1 7 8-11h-6z",
+    route: "M6 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM18 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM6 15V9a4 4 0 0 1 4-4h6M18 9v6a4 4 0 0 1-4 4H8",
+    calendar: "M4 6h16v14H4zM4 10h16M8 3v4M16 3v4M8 14h2M14 14h2",
+    clock: "M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2",
+  };
+  // icon, tone, name, long line, short line, sample figure
+  const ways = [
+    ["grid", "green", "Exercises", "Filter by level, function and track.", "Filter by level or function", "24 of 128"],
+    ["bolt", "yellow", "Function practice", "Short tasks. 10 free a day with an account.", "10 free tasks a day", "10 a day"],
+    ["route", "blue", "Learning tracks", "Exercises in teaching order, for beginners.", "Learn in teaching order", "In order"],
+    ["calendar", "red", "Daily exercise", "One free exercise a day, with your streak.", "One free task a day", "11 days"],
+    ["clock", "violet", "Mock assessments", "Timed sets like an employer's test.", "Timed, marked at the end", "Timed"],
+  ].map(([icon, tone, name, long, short, figure]) => ({ icon, tone, name, long, short, figure }));
+  // The daily card sits beside the list, so C leaves its link out; D keeps it to even its grid.
+  const others = ways.filter((w) => w.icon !== "calendar");
+
+  const chip = (w) => `<span class="chip ${w.tone}" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="${icons[w.icon]}"/></svg></span>`;
+  const text = (w, line) => `<span><span class="name">${w.name}</span><span class="desc">${line}</span></span>`;
+  const head = (title, right = "") => `<div class="head"><h2>${title}</h2>${right}</div>`;
+  const past = `<a href="#">Past days →</a>`;
+  const count = `<span>24 of 128 solved</span>`;
+  const meta = `<div class="meta"><span class="badge">Intermediate</span><span>Friday 27 November</span></div>`;
+  const title = `<div><h3>Count extra-large sizes</h3><p class="task">In B11, count the product codes that end in -XL.</p></div>`;
+  const btn = `<a class="btn" href="#">Solve today's exercise</a>`;
+  const days = ["M", "T", "W", "T", "F", "S", "S"];
+  const state = (i) => (i < 4 ? "done" : i === 4 ? "done today" : "");
+  const week = `<ul class="week" aria-label="This week">${days.map((d, i) => `<li class="${state(i)}"><span>${d}</span><span class="dot">${i < 5 ? "✓" : ""}</span></li>`).join("")}</ul>`;
+  const rows = (line) => `<ul class="rows">${ways.map((w) => `<li><a href="#">${chip(w)}${text(w, line(w))}<span class="go" aria-hidden="true">›</span></a></li>`).join("")}</ul>`;
+  const codes = ["Code", "TS-S", "TS-XL", "HD-M", "HD-XL", "TS-L", "JK-XL", "JK-XXL", "HD-S", "TS-XL"];
+  const sheet = `<table class="sheet" aria-label="Preview of the sheet"><tr><th></th><th>A</th><th>B</th></tr>${codes.map((c, i) => `<tr><th>${i + 1}</th><td>${c}</td><td></td></tr>`).join("")}<tr><th>11</th><td>Ends in -XL</td><td class="ask">?</td></tr></table>`;
+
+  const options = {
+    "A. Matched to the scoreboard": [
+      `${head("Today's exercise", past)}<div class="body" style="justify-content:space-between">${meta}${title}${week}${btn}</div>`,
+      `${head("Practise", count)}${rows((w) => w.long)}`,
+    ],
+    "B. Sheet preview": [
+      `${head("Today's exercise", past)}<div class="body"><div class="split"><div class="col">${meta}${title}</div>${sheet}</div>${week}${btn}</div>`,
+      `${head("Practise")}<ul class="rows">${ways.map((w) => `<li><a href="#">${chip(w)}${text(w, w.short)}<span class="figure">${w.figure}</span></a></li>`).join("")}</ul>`,
+    ],
+    "C. Green today, tiles": [
+      `${head("Today's exercise", past)}<div class="hero">${meta}${title}${btn}</div><div class="under">${week}</div>`,
+      `${head("Practise", count)}<ul class="tiles">${others.map((w) => `<li><a href="#">${chip(w)}${text(w, w.short)}</a></li>`).join("")}</ul>`,
+    ],
+    "D. Week first": [
+      `${head("Today's exercise", past)}<ul class="dates" aria-label="This week">${days.map((d, i) => `<li class="${i === 4 ? "today" : state(i)}"><span>${d}</span><b>${23 + i}</b></li>`).join("")}</ul><div class="centre"><span class="badge">Intermediate</span>${title}</div><div class="foot">${btn}</div>`,
+      `${head("Practise")}<a class="lead" href="#">${chip(others[0])}<span><span class="name">Exercises</span><span class="desc">24 of 128 solved</span><span class="track" aria-hidden="true"><i></i></span></span><span class="go" aria-hidden="true">›</span></a><ul class="four">${others.slice(1).concat(ways.filter((w) => w.icon === "calendar")).map((w) => `<li><a href="#">${chip(w)}${text(w, w.short)}</a></li>`).join("")}</ul>`,
+    ],
+  };
+
+  document.querySelector("main").innerHTML = Object.entries(options)
+    .map(([name, cards]) => `<section><p class="tag">${name}</p><div class="pair">${cards.map((c) => `<div class="card">${c}</div>`).join("")}</div></section>`).join("");
+</script>
+</html>

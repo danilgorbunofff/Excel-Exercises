@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scoreboard options</title>
+<style>
+  @font-face { font-family: Inter; font-weight: 400; src: url(../../public/fonts/inter-latin-400-normal.woff2); }
+  @font-face { font-family: Inter; font-weight: 600; src: url(../../public/fonts/inter-latin-600-normal.woff2); }
+  @font-face { font-family: Inter; font-weight: 700; src: url(../../public/fonts/inter-latin-700-normal.woff2); }
+  /* Light values from src/styles/tokens.css, inline because the preview pane cannot load linked files. */
+  :root { --bg: #f9fafb; --surface: #fff; --header: #f3f4f6; --text: #101828; --muted: #4a5565; --faint: #6a7282; --rule: #e5e7eb; --green: #18804f; --green-dark: #126a41; --tint: #e9f9ef;
+    --gold: #894b00; --gold-bg: #fef08a; --silver: #364153; --silver-bg: #e2e5ea; --bronze: #9a3412; --bronze-bg: #fed7aa; color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 2rem 1rem; background: var(--bg); color: var(--text); font: 1rem/1.5 Inter, system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+  .top, main { max-width: 66rem; margin: 0 auto; }
+  .top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 2rem; }
+  h1 { margin: 0; font-size: 1.125rem; }
+  h2 { margin: 0; font-size: 1.25rem; }
+  main { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(29rem, 100%), 1fr)); gap: 3rem 2rem; align-items: start; }
+  section { min-width: 0; }
+  .tag { margin: 0 0 0.75rem; font-size: 0.875rem; font-weight: 600; color: var(--green); }
+  .card { overflow: hidden; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); box-shadow: 0 1px 3px rgb(16 24 40 / 0.08); }
+  .head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 1rem; border-bottom: 1px solid var(--rule); }
+  .seg { display: inline-flex; flex: none; gap: 2px; padding: 2px; border-radius: 8px; background: var(--header); }
+  .seg button { min-height: 2rem; padding: 0 0.75rem; border: 0; border-radius: 6px; background: none; font: 600 0.8125rem Inter, system-ui, sans-serif; color: var(--muted); cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--surface); box-shadow: 0 1px 3px rgb(16 24 40 / 0.12); color: var(--text); }
+  ol { margin: 0; padding: 0.5rem; list-style: none; }
+  li { display: grid; grid-template-columns: 1.75rem 2.25rem minmax(0, 1fr) auto; align-items: center; gap: 0.75rem; padding: 0.5rem; border-radius: 8px; }
+  li.me { background: var(--tint); box-shadow: inset 0 0 0 1px var(--green); }
+  .rank { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: 50%; font-size: 0.875rem; font-weight: 700; color: var(--faint); }
+  .r1 { background: var(--gold-bg); color: var(--gold); }
+  .r2 { background: var(--silver-bg); color: var(--silver); }
+  .r3 { background: var(--bronze-bg); color: var(--bronze); }
+  .ava { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 50%; background: var(--header); font-size: 0.875rem; font-weight: 700; }
+  .me .ava { background: var(--green); color: #fff; }
+  .who { min-width: 0; line-height: 1.35; }
+  .who b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.9375rem; font-weight: 600; }
+  .who small { display: block; font-size: 0.8125rem; color: var(--faint); }
+  .pts { text-align: right; font-weight: 700; }
+  .pts small { margin-left: 0.25rem; font-size: 0.75rem; font-weight: 400; color: var(--faint); }
+  .track { display: block; height: 0.5rem; border-radius: 999px; background: var(--rule); overflow: hidden; }
+  .track i { display: block; height: 100%; border-radius: inherit; background: var(--green); }
+  .level { padding: 0.75rem 1rem; border-top: 1px solid var(--rule); background: var(--bg); }
+  .line { display: flex; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.5rem; font-size: 0.875rem; color: var(--muted); }
+  .line b { color: var(--text); }
+  details { padding: 0.75rem 1rem; border-top: 1px solid var(--rule); font-size: 0.8125rem; color: var(--muted); }
+  summary { cursor: pointer; font-weight: 600; color: var(--green); }
+  details p { margin: 0.5rem 0 0; }
+
+  /* B: green header holds your standing */
+  .hero { background: var(--green-dark); color: #fff; }
+  .hero .head { border: 0; }
+  .hero .seg { background: rgb(255 255 255 / 0.15); }
+  .hero .seg button { color: #fff; }
+  .hero .seg button[aria-pressed="true"] { background: #fff; color: var(--green-dark); }
+  .stats { display: flex; align-items: end; gap: 1.5rem; padding: 0 1rem 1rem; }
+  .stats small { display: block; font-size: 0.8125rem; color: #d1fae0; }
+  .stats strong { display: block; font-size: 2rem; line-height: 1.1; }
+  .stats div:last-child { flex: 1; min-width: 0; }
+  .stats .track { margin: 0.5rem 0 0.125rem; background: rgb(255 255 255 / 0.25); }
+  .stats .track i { background: #fff; }
+
+  /* C: top three as cards */
+  .trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; padding: 1rem 1rem 0.5rem; }
+  .win { display: grid; justify-items: center; gap: 0.25rem; min-width: 0; padding: 0.75rem 0.5rem; border: 1px solid var(--rule); border-radius: 10px; text-align: center; }
+  .win .who { width: 100%; }
+  .win strong { font-size: 1.5rem; line-height: 1.2; }
+  .win.first { border-color: #eab308; background: #fefce8; }
+  .win.me { border-color: var(--green); background: var(--tint); }
+  .win.open { border-style: dashed; color: var(--faint); }
+
+  /* D: points bar on each row */
+  .bars li { grid-template-columns: 1.75rem 2.25rem minmax(0, 1fr) 4rem; }
+  .bars .who .track { height: 0.3125rem; margin-top: 0.25rem; }
+  .win .who b { white-space: normal; overflow-wrap: anywhere; }
+
+  @media (max-width: 24rem) {
+    .head { flex-wrap: wrap; }
+    .stats { gap: 1rem; }
+  }
+</style>
+
+<div class="top">
+  <h1>Scoreboard: 4 options</h1>
+  <div class="seg" role="group" aria-label="Sample data">
+    <button type="button" data-set="few" aria-pressed="false">Few learners</button>
+    <button type="button" data-set="full" aria-pressed="true">Busy week</button>
+  </div>
+</div>
+<main></main>
+
+<script>
+  // name, points, level, title; sheet_pro is the signed-in learner
+  const sets = {
+    few: [["sheet_pro", 5, 1, "Beginner"]],
+    full: [["pivot_queen", 240, 8, "Practitioner"], ["vlookup_vic", 195, 6, "Learner"], ["cell_mate", 160, 4, "Learner"], ["sumif_sam", 140, 5, "Learner"], ["sheet_pro", 125, 2, "Beginner"], ["index_match", 85, 3, "Beginner"], ["xl_newbie", 40, 1, "Beginner"], ["formula_fan", 30, 3, "Beginner"], ["if_else_ivy", 20, 2, "Beginner"], ["sum_total", 10, 1, "Beginner"]],
+  };
+  const mine = {
+    few: { level: 1, next: 2, left: 95, pct: 5 },
+    full: { level: 2, next: 3, left: 45, pct: 62 },
+  };
+  const toggle = `<div class="seg" role="group" aria-label="Period"><button type="button" aria-pressed="true">This week</button><button type="button" aria-pressed="false">All time</button></div>`;
+  const head = `<div class="head"><h2>Scoreboard</h2>${toggle}</div>`;
+  const rules = `<details><summary>How points work</summary><p>10, 20 or 30 points by difficulty, half with help. Daily exercise 10 more, a review 5. Every 7 daily exercises in a row 25.</p></details>`;
+  const level = (my) => `<div class="level"><div class="line"><b>Level ${my.level}, Beginner</b><span>${my.left} points to level ${my.next}</span></div><span class="track" aria-hidden="true"><i style="width:${my.pct}%"></i></span></div>`;
+  const ava = (r) => `<span class="ava" aria-hidden="true">${r.name[0].toUpperCase()}</span>`;
+  const who = (r, under) => `<span class="who"><b>${r.me ? "You" : r.name}</b>${under}</span>`;
+  const meta = (r) => `<small>Level ${r.level}, ${r.title}</small>`;
+  const rows = (list, under = meta) => list.map((r) => `<li class="${r.me ? "me" : ""}" value="${r.rank}"><span class="rank r${r.rank}">${r.rank}</span>${ava(r)}${who(r, under(r))}<span class="pts">${r.points}<small>pts</small></span></li>`).join("");
+
+  const options = {
+    "A. Medals and level bar": (list, me, my) => `<div class="card">${head}<ol>${rows(list)}</ol>${level(my)}${rules}</div>`,
+
+    "B. Green header with your standing": (list, me, my) => `<div class="card">
+      <div class="hero"><div class="head"><h2>Scoreboard</h2>${toggle}</div>
+        <div class="stats"><div><small>Rank</small><strong>${me.rank}</strong></div><div><small>Points</small><strong>${me.points}</strong></div>
+        <div><small>Level ${my.level}, Beginner</small><span class="track" aria-hidden="true"><i style="width:${my.pct}%"></i></span><small>${my.left} to level ${my.next}</small></div></div></div>
+      <ol>${rows(list)}</ol>${rules}</div>`,
+
+    "C. Top three cards": (list, me, my) => `<div class="card">${head}
+      <div class="trio">${[0, 1, 2].map((i) => {
+        const r = list[i];
+        return r
+          ? `<div class="win ${r.me ? "me" : i ? "" : "first"}"><span class="rank r${r.rank}">${r.rank}</span>${ava(r)}${who(r, `<small>Level ${r.level}</small>`)}<strong>${r.points}</strong></div>`
+          : `<div class="win open"><span class="rank r${i + 1}">${i + 1}</span><span class="ava" aria-hidden="true">?</span><span class="who"><b>Open place</b><small>Solve to take it</small></span></div>`;
+      }).join("")}</div>
+      ${list.length > 3 ? `<ol>${rows(list.slice(3))}</ol>` : ""}${level(my)}${rules}</div>`,
+
+    "D. Point bars": (list, me, my) => `<div class="card bars">${head}<ol>${rows(list, (r) => `<span class="track" aria-hidden="true"><i style="width:${(r.points / list[0].points) * 100}%"></i></span>`)}</ol>${level(my)}${rules}</div>`,
+  };
+
+  function paint(set) {
+    const list = sets[set].map(([name, points, lv, title], i) => ({ name, points, level: lv, title, rank: i + 1, me: name === "sheet_pro" }));
+    const me = list.find((r) => r.me);
+    document.querySelector("main").innerHTML = Object.entries(options)
+      .map(([title, draw]) => `<section><p class="tag">${title}</p>${draw(list, me, mine[set])}</section>`).join("");
+    for (const b of document.querySelectorAll("[data-set]")) b.setAttribute("aria-pressed", String(b.dataset.set === set));
+  }
+  for (const b of document.querySelectorAll("[data-set]")) b.addEventListener("click", () => paint(b.dataset.set));
+  paint(location.hash === "#few" ? "few" : "full");
+</script>
+</html>

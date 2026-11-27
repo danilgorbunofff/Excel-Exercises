@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Due for review options</title>
+<style>
+  @font-face { font-family: Inter; font-weight: 400; src: url(../../public/fonts/inter-latin-400-normal.woff2); }
+  @font-face { font-family: Inter; font-weight: 600; src: url(../../public/fonts/inter-latin-600-normal.woff2); }
+  @font-face { font-family: Inter; font-weight: 700; src: url(../../public/fonts/inter-latin-700-normal.woff2); }
+  /* Light values from src/styles/tokens.css, inline because the preview pane cannot load linked files. */
+  :root { --bg: #f9fafb; --surface: #fff; --header: #f3f4f6; --text: #101828; --heading: #1e1e1e; --muted: #4a5565; --faint: #6a7282; --rule: #e5e7eb; --green: #18804f; --tint: #e9f9ef;
+    --miss: #b42318; --miss-bg: #fee4e2; --due: #0063b1; --due-bg: #e3f0fd; --beginner: #016630; --beginner-bg: #dbfce7; --intermediate: #894b00; --intermediate-bg: #fef9c2; --advanced: #9f0712; --advanced-bg: #ffe2e2;
+    --gold: #894b00; --gold-bg: #fef08a; --silver: #364153; --silver-bg: #e2e5ea; --bronze: #9a3412; --bronze-bg: #fed7aa; color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 2rem 1rem; background: var(--bg); color: var(--text); font: 1rem/1.5 Inter, system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+  h1, main { max-width: 76rem; margin: 0 auto; }
+  h1 { margin-bottom: 2rem; font-size: 1.125rem; }
+  section + section { margin-top: 3rem; }
+  .tag { margin: 0 0 0.75rem; font-size: 0.875rem; font-weight: 600; color: var(--green); }
+  /* The two cards share one grid row, so they are always the same height. */
+  .pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(32rem, 100%), 1fr)); gap: 1.5rem 2rem; }
+  .card { display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: 1px solid var(--rule); border-radius: 8px; background: var(--surface); box-shadow: 0 1px 3px rgb(16 24 40 / 0.08); }
+
+  /* Header, as on the scoreboard */
+  .head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; min-height: 4.375rem; padding: 1rem; border-bottom: 1px solid var(--rule); }
+  h2 { margin: 0; font-size: 1.5rem; line-height: 1.25; letter-spacing: -0.01em; color: var(--heading); }
+  .seg { position: relative; display: inline-grid; grid-template-columns: repeat(2, 1fr); gap: 2px; padding: 2px; border-radius: 6px; background: var(--header); }
+  .seg::before { content: ""; position: absolute; inset: 2px auto 2px 2px; width: calc(50% - 3px); border-radius: 4px; background: var(--surface); box-shadow: 0 1px 3px rgb(16 24 40 / 0.12); }
+  .seg:has(button:last-child[aria-pressed="true"])::before { transform: translateX(calc(100% + 2px)); }
+  .seg button { position: relative; min-height: 2rem; padding: 0 0.75rem; border: 0; background: none; font: 500 0.875rem Inter, system-ui, sans-serif; white-space: nowrap; color: var(--muted); cursor: pointer; }
+  .seg button[aria-pressed="true"] { font-weight: 600; color: var(--heading); }
+  @media (prefers-reduced-motion: no-preference) { .seg::before { transition: transform 150ms cubic-bezier(0.2, 0, 0, 1); } }
+
+  ol, ul { margin: 0; padding: 0; list-style: none; }
+  a { color: inherit; text-decoration: none; }
+  .grow { flex: 1; display: flex; flex-direction: column; padding: 0.5rem; }
+  .row { flex: 1; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 0.75rem; min-height: 3.25rem; padding: 0.25rem 0.5rem; border-radius: 6px; }
+  .grow > li { display: flex; }
+  .grow > li > a { width: 100%; }
+  a.row:hover, a.tile:hover { background: var(--bg); }
+  .who { min-width: 0; line-height: 1.35; }
+  .who b, .who small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .who b { font-size: 0.9375rem; font-weight: 600; }
+  .who small { font-size: 0.8125rem; color: var(--faint); }
+  .pill { padding: 0.125rem 0.625rem; border-radius: 999px; font-size: 0.8125rem; font-weight: 600; white-space: nowrap; }
+  .Beginner { background: var(--beginner-bg); color: var(--beginner); }
+  .Intermediate { background: var(--intermediate-bg); color: var(--intermediate); }
+  .Advanced { background: var(--advanced-bg); color: var(--advanced); }
+  .miss { background: var(--miss-bg); color: var(--miss); }
+  .due { background: var(--due-bg); color: var(--due); }
+  .dot { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 50%; font-weight: 700; }
+  .foot { display: flex; justify-content: space-between; gap: 1rem; margin-top: auto; padding: 0.75rem 1rem; border-top: 1px solid var(--rule); background: var(--bg); font-size: 0.8125rem; color: var(--faint); }
+  .foot a { font-weight: 600; color: var(--green); }
+
+  /* Scoreboard, for the height comparison */
+  .board .row { grid-template-columns: 1.75rem 2.25rem minmax(0, 1fr) auto; border: 1px solid transparent; }
+  .board .row.me { border-color: var(--green); background: var(--tint); }
+  .medal { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: 50%; font-size: 0.875rem; font-weight: 700; color: var(--muted); }
+  .m1 { background: var(--gold-bg); color: var(--gold); }
+  .m2 { background: var(--silver-bg); color: var(--silver); }
+  .m3 { background: var(--bronze-bg); color: var(--bronze); }
+  .board .dot { background: var(--header); font-size: 0.875rem; }
+  .board .me .dot { background: var(--green); color: #fff; }
+  .pts { font-weight: 700; }
+  .pts small { font-size: 0.8125rem; font-weight: 400; color: var(--muted); }
+
+  /* C */
+  .group { display: flex; justify-content: space-between; padding: 0.125rem 0.5rem; font-size: 0.8125rem; font-weight: 700; }
+  .group.miss, .group.due { border-radius: 6px; }
+  .c .row { grid-template-columns: minmax(0, 1fr) auto; min-height: 2.75rem; padding-block: 0; }
+  /* D */
+  .next { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; padding: 1rem; border-bottom: 1px solid var(--rule); background: var(--miss-bg); }
+  .next.isdue { background: var(--due-bg); }
+  .next .who { flex: 1 1 12rem; }
+  .next .who b { font-size: 1.125rem; }
+  .next .who small { color: var(--muted); }
+  .go { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1rem; border-radius: 6px; background: var(--green); font-size: 0.875rem; font-weight: 600; color: #fff; }
+  .d .row { grid-template-columns: minmax(0, 1fr) auto; min-height: 2.75rem; }
+  /* E */
+  .tiles { flex: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 0.5rem; padding: 0.5rem; }
+  .tiles li { display: flex; min-width: 0; }
+  .tile { display: flex; flex-direction: column; justify-content: space-between; gap: 0.25rem; width: 100%; padding: 0.375rem 0.625rem; border: 1px solid var(--rule); border-radius: 8px; }
+  .tile b { overflow: hidden; font-size: 0.875rem; line-height: 1.35; text-overflow: ellipsis; white-space: nowrap; }
+  .tile span:last-child { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.25rem; font-size: 0.75rem; color: var(--faint); }
+  .tile .pill { font-size: 0.75rem; }
+  .tile small { font-size: 0.75rem; line-height: 1.2; color: var(--faint); }
+  /* F */
+  .f .row { grid-template-columns: 0.25rem minmax(0, 1fr) auto; }
+  .stripe { align-self: stretch; margin-block: 0.25rem; border-radius: 999px; }
+  .stripe.miss { background: var(--miss); }
+  .stripe.due { background: var(--due); }
+  .f .who small em { font-style: normal; font-weight: 600; }
+  .f .who small em.miss { background: none; }
+  .f .who small em.due { background: none; }
+  .btn { padding: 0.25rem 0.75rem; border: 1px solid var(--rule); border-radius: 6px; font-size: 0.8125rem; font-weight: 600; color: var(--green); }
+
+  .empty { flex: 1; display: grid; place-items: center; color: var(--faint); font-size: 0.875rem; }
+  @media (max-width: 26rem) { .hide-s { display: none; } .tiles { grid-template-columns: 1fr; } }
+</style>
+
+<h1>Due for review: 6 options, each beside the scoreboard</h1>
+<main></main>
+
+<script>
+  // title, function, wrong checks (0 = solved before, due again), level
+  const items = [
+    ["Find a price with XLOOKUP", "XLOOKUP", 3, "Intermediate"],
+    ["VLOOKUP with a wildcard", "VLOOKUP", 2, "Intermediate"],
+    ["Sales summary end to end", "SUMIFS, IF", 2, "Advanced"],
+    ["COUNTIF with wildcards", "COUNTIF", 1, "Intermediate"],
+    ["Multiply price by quantity", "Cell references", 0, "Beginner"],
+    ["Average score", "AVERAGE", 0, "Beginner"],
+  ].map(([title, fn, wrong, level], i) => ({ title, fn, wrong, level, n: i + 1 }));
+  const TOTAL = 29, UNSOLVED = 4;
+
+  const kind = (r) => (r.wrong ? "miss" : "due");
+  const why = (r) => (r.wrong ? `${r.wrong} wrong ${r.wrong === 1 ? "check" : "checks"}` : "Due again");
+  const pill = (r) => `<span class="pill ${r.level}">${r.level}</span>`;
+  const who = (title, under) => `<span class="who"><b>${title}</b><small>${under}</small></span>`;
+  const link = (inner, cls = "row") => `<li><a href="#" class="${cls}">${inner}</a></li>`;
+  const foot = (all) => `<p class="foot" style="margin-bottom:0"><a href="#">Show all ${all ? TOTAL : UNSOLVED}</a><span>Most urgent first</span></p>`;
+  const list = (rows, draw, n = 5) => `<ol class="grow">${rows.slice(0, n).map((r) => link(draw(r))).join("")}</ol>`;
+
+  const options = {
+    "A. Status icons": (rows, all) => list(rows, (r) => `<span class="dot ${kind(r)}" aria-hidden="true">${r.wrong ? "!" : "↻"}</span>${who(r.title, `${why(r)} · ${r.fn}`)}${pill(r)}`) + foot(all),
+
+    "B. Priority numbers": (rows, all) => list(rows, (r) => `<span class="medal ${kind(r)}">${r.n}</span>${who(r.title, `${r.fn} · ${r.level}`)}<span class="pill ${kind(r)}">${why(r)}</span>`) + foot(all),
+
+    "C. Two groups": (rows, all) => {
+      const group = (name, cls, set, count) => set.length ? `<li class="group ${cls}"><span>${name}</span><span>${count}</span></li>${set.map((r) => link(`${who(r.title, r.wrong ? `${why(r)} · ${r.fn}` : r.fn)}${pill(r)}`)).join("")}` : "";
+      const bad = rows.filter((r) => r.wrong).slice(0, all ? 3 : 4), good = rows.filter((r) => !r.wrong).slice(0, 2);
+      return `<ol class="grow c">${group("Not solved yet", "miss", bad, UNSOLVED)}${group("Due again", "due", good, TOTAL - UNSOLVED)}</ol>${foot(all)}`;
+    },
+
+    "D. Next one first": (rows, all) => {
+      const [first, ...rest] = rows;
+      return `<div class="next ${first.wrong ? "" : "isdue"}">${who(first.title, `${why(first)} · ${first.fn} · ${first.level}`)}<a href="#" class="go">Practise now</a></div>${list(rest, (r) => `${who(r.title, `${why(r)} · ${r.fn}`)}${pill(r)}`, 4).replace('class="grow"', 'class="grow d"')}${foot(all)}`;
+    },
+
+    "E. Tiles": (rows, all) => `<ul class="tiles">${rows.slice(0, 6).map((r) => link(`<b>${r.title}</b><small>${r.fn}</small><span><span class="pill ${kind(r)}">${why(r)}</span>${pill(r)}</span>`, "tile")).join("")}</ul>${foot(all)}`,
+
+    "F. Colour stripe": (rows, all) => list(rows, (r) => `<span class="stripe ${kind(r)}" aria-hidden="true"></span>${who(r.title, `<em class="${kind(r)}">${why(r)}</em> · ${r.level}<span class="hide-s"> · ${r.fn}</span>`)}<span class="btn">${r.wrong ? "Retry" : "Review"}</span>`).replace('class="grow"', 'class="grow f"') + foot(all),
+  };
+
+  const names = [["pivot_queen", 240], ["vlookup_vic", 195], ["cell_mate", 160], ["sumif_sam", 140], ["You", 130], ["xl_newbie", 95]];
+  const board = `<div class="card board"><div class="head"><h2>Scoreboard</h2><div class="seg" role="group" aria-label="Period"><button type="button" aria-pressed="true">This week</button><button type="button" aria-pressed="false">All time</button></div></div>
+    <ol class="grow">${names.map(([n, p], i) => `<li><span class="row ${n === "You" ? "me" : ""}" style="width:100%"><span class="medal m${i + 1}">${i + 1}</span><span class="dot" aria-hidden="true">${n === "You" ? "S" : n[0].toUpperCase()}</span><span class="who"><b>${n}</b><small>Level ${[8, 6, 4, 5, 2, 1][i]}</small></span><span class="pts">${p} <small>pts</small></span></span></li>`).join("")}</ol></div>`;
+
+  const body = (name, all) => options[name](all ? items : items.filter((r) => r.wrong), all);
+  document.querySelector("main").innerHTML = Object.keys(options).map((name) => `<section><p class="tag">${name}</p><div class="pair">${board}
+    <div class="card" data-review="${name}"><div class="head"><h2>Due for review</h2><div class="seg" role="group" aria-label="Filter"><button type="button" aria-pressed="true" data-all="1">All ${TOTAL}</button><button type="button" aria-pressed="false" data-all="">Unsolved ${UNSOLVED}</button></div></div><div class="body" style="flex:1;display:flex;flex-direction:column">${body(name, true)}</div></div></div></section>`).join("");
+
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("a")) e.preventDefault();
+    const b = e.target.closest(".seg button");
+    if (!b) return;
+    for (const other of b.parentElement.children) other.setAttribute("aria-pressed", String(other === b));
+    const card = b.closest("[data-review]");
+    if (card) card.querySelector(".body").innerHTML = body(card.dataset.review, Boolean(b.dataset.all));
+  });
+</script>
+</html>
